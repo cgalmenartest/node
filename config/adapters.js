@@ -5,7 +5,7 @@ module.exports.adapters = {
 
 	// If you leave the adapter config unspecified 
 	// in a model definition, 'default' will be used.
-	'default': 'disk',
+	'default': 'postgres',
 	
 	// In-memory adapter for DEVELOPMENT ONLY
 	// (data is NOT preserved when the server shuts down)
@@ -24,6 +24,17 @@ module.exports.adapters = {
 		filePath: './.tmp/dirty.db',
 		inMemory: false
 	},
+
+	// PostgreSQL is a powerful, BSD relational database.
+	// The world's most advanced open source database.
+	// http://www.postgresql.org/
+	postgres: {
+		module      : 'sails-postgresql',
+		host        : 'localhost',
+		user        : 'midas',
+		password    : 'midas',
+		database    : 'midas'
+	}
 
 	// MySQL is the world's most popular relational database.
 	// Learn more: http://en.wikipedia.org/wiki/MySQL
