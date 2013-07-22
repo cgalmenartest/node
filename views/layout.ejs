@@ -5,9 +5,10 @@
 
 		<!-- Viewport mobile tag for sensible mobile support -->
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-		
+
 		<!-- Stylesheets from your assets folder are included here -->
 		<%- assets.css() %>
+		<script data-main="../assets/js/app/bootup" src="../public/vendor/requirejs/require.js"></script>
 	</head>
 
 	<body>
@@ -15,7 +16,6 @@
 
 		<!-- Templates from your view path are included here -->
 		<%- assets.templateLibrary() %>
-		<!-- Javascripts from your assets folder are included here -->
-		<%- assets.js() %>
+
 	</body>
 </html>
