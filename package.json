@@ -7,7 +7,10 @@
         "sails": "0.9.3",
 	"ejs": "0.8.4",
         "optimist": "0.4.0",
-        "sails-postgresql": "*"
+        "sails-postgresql": "0.9.0"
+    },
+    "devDependencies": {
+        "mocha": "*"
     },
     "scripts": {
         "start": "node app.js",
@@ -17,6 +20,9 @@
     "repository": {
         "type": "git",
         "url": "https://github.com/Innovation-Toolkit/midas.git"
+    },
+    "scripts": {
+        "test": "make test"
     },
     "bugs": "https://github.com/Innovation-Toolkit/midas/issues",
     "license": "MIT"
