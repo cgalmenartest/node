@@ -1,4 +1,4 @@
-midas
+midas [![Dependency Status](https://gemnasium.com/Innovation-Toolkit/midas.png)](https://gemnasium.com/Innovation-Toolkit/midas)
 =====
 
 Crowdsourcing platform and collaboration tool, developed in Node.js.
