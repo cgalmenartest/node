@@ -34,7 +34,7 @@ module.exports.adapters = {
 		user        : 'midas',
 		password    : 'midas',
 		database    : 'midas'
-	}
+	},
 
 	// MySQL is the world's most popular relational database.
 	// Learn more: http://en.wikipedia.org/wiki/MySQL

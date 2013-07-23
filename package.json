@@ -4,7 +4,8 @@
     "version": "0.0.0",
     "description": "Crowdsourcing Platform and Collaboration Tool",
     "dependencies": {
-        "sails": "0.8.94",
+        "sails": "0.9.3",
+	"ejs": "0.8.4",
         "optimist": "0.4.0",
         "sails-postgresql": "*"
     },
