@@ -8,11 +8,16 @@
 
 module.exports = {
 
-  attributes: {	
-  	
-  	description	: 'STRING',
-  	title				: 'STRING'
-		    
-  }
+    attributes: {
+        // Current state of the project (active, closed, etc)
+        state: {
+            type: 'STRING',
+            defaultsTo: 'draft'
+        },
+        // Project title
+        title           : 'STRING',
+        // Project description
+        description	    : 'STRING'
+    }
 
 };
