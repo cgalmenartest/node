@@ -56,11 +56,8 @@ module.exports = function (grunt) {
     // automatic listener for incoming messages from Socket.io.
     'linker/js/app.js', 
 
-    'linker/js/vendor/jquery.js',
-    'linker/js/vendor/underscore.js',
-    'linker/js/vendor/backbone.js',
-    'linker/js/app/router.js'
-    // All of the rest of your app scripts imported here
+    // Include all javascript files in js and subdirectories
+    'linker/js/**/*.js'
   ];
 
 
