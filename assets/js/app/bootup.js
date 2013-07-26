@@ -4,9 +4,9 @@
 
 require.config({
     paths: {
-        'jquery': 'jquery',
-        'underscore': 'underscore',
-        'backbone': 'backbone',
+        'jquery': '../vendor/jquery',
+        'underscore': '../vendor/underscore',
+        'backbone': '../vendor/backbone',
         'router': 'router'
     }
 });
@@ -18,5 +18,4 @@ define([
     'router'
 ], function ($, _, Backbone, Router) {
     Router.initialize();
-    console.log("Test");
 });

@@ -2,7 +2,7 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'text!../templates/home.html'
+    'text!../../../../templates/home.html'
 ], function ($, _, Backbone, homeTemplate) {
     'use strict';
     

@@ -2,8 +2,9 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'home'
-], function ($, _, Backbone, HomeView) {
+    'views/marketing/home',
+    'views/projects/list'
+], function ($, _, Backbone, HomeView, ProjectListView) {
     'use strict';
     
     var AppRouter = Backbone.Router.extend({
@@ -12,10 +13,10 @@ define([
         // should be changed to reflect that.  
 
         routes: {
-            // Expects #/api/...
+            // Expects #/home, etc .....
             'api/home'      : 'home',
             'api/projects'  : 'listProjects',
-            'api/tasks'     : 'listTasks',
+            '/tasks'     : 'listTasks',
             '*actions'      : 'defaultAction'
         },
 
