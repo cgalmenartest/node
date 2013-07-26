@@ -4,12 +4,11 @@ import sys
 import os
 from subprocess import call
 
-editor = os.environ['EDITOR']
+editor = os.environ.get('EDITOR', 'nano')
 message_file = sys.argv[1]
 # Used to figure out when we've reached the part in the commit message
 # where the errors go.
 error_header = '# GIT COMMIT MESSAGE FORMAT ERRORS:'
-
 
 def check_format_rules(lineno, line):
     """
@@ -55,6 +54,7 @@ while True:
             commit_fd.write('%s\n' % (error_header,))
             for error in errors:
                 commit_fd.write('#    %s\n' % (error,))
+                print error
         re_edit = raw_input('Invalid git commit message format.  Would you '
                 'like to re-edit it?  (If you answer no, your commit will '
                 'fail) [Y/n]')
