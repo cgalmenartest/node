@@ -11,6 +11,8 @@ define([
             description : null
         },
 
+        url: '/tasks',
+
         initialize: function () {}
 
     });

@@ -12,13 +12,15 @@
 
 <ul>
     <% _.each(projects, function(project) { %>
-        <li><%- project.name %>
+        <li><%- project.title %>
             <ul>
                 <li><%- project.description %></li>
-                <% if (project.tasks.length !== 0) { %>
-                    <strong><%- project.name %> tasks:</strong>
-                <% } else { %>
-                    <a href="#addTasks" role="button" class="btn" data-toggle="modal">Add some tasks</a>
+                <% if (project.tasks !== undefined || project.tasks !== null) { %>
+                    <% if (project.tasks.length !== 0) { %>
+                        <strong><%- project.name %> tasks:</strong>
+                    <% } else { %>
+                        <a href="#addTasks" role="button" class="btn" data-toggle="modal">Add some tasks</a>
+                    <% } %>
                 <% } %>
                 <ul>
                     <% _.each(project.tasks, function(task) { %>
