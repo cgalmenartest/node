@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%- title %></title>
+
+    <!-- Viewport mobile tag for sensible mobile support -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+    <link rel="stylesheet" type="text/css" href="/styles/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="/styles/application.css" />
+
+    <script type="text/javascript" src="/js/vendor/sails/socket.io.js"></script>
+
+    <!-- then beef it up with some convenience logic for talking to Sails.js -->
+    <script type="text/javascript" src="/js/vendor/sails/sails.io.js"></script>
+
+    <!-- listen on socket.io for incoming messages -->
+    <script type="text/javascript" src="/js/vendor/sails/app.js"></script>
+
+    <script type="text/javascript" data-main="/js/app/bootup.js" src="/js/vendor/require.js"></script>
+
+  </head>
+
+  <body>
+
+    <%- body %>
+
+  </body>
+
+</html>

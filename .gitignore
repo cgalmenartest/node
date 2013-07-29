@@ -12,3 +12,15 @@ logs
 results
 
 npm-debug.log
+# Ignore modules, should be built using `node install`
+node_modules
+# Ignore sails.js filesystem database
+.tmp/
+
+# Ignore editor temp files
+*~
+*#
+
+.DS_STORE
+.tmp
+*.idea
