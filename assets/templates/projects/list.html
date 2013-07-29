@@ -12,25 +12,12 @@
 
 <ul>
     <% _.each(projects, function(project) { %>
-        <li><%- project.title %>
-            <ul>
-                <li><%- project.description %></li>
-                <% if (project.tasks !== undefined || project.tasks !== null) { %>
-                    <% if (project.tasks.length !== 0) { %>
-                        <strong><%- project.name %> tasks:</strong>
-                    <% } else { %>
-                        <a href="#addTasks" role="button" class="btn" data-toggle="modal">Add some tasks</a>
-                    <% } %>
-                <% } %>
-                <ul>
-                    <% _.each(project.tasks, function(task) { %>
-                        <li><%- task %></li>
-                    <% }); %>
-                </ul>
-            </ul>
+        <li data-project-id="<%- project.id %>">
+            <a href="#/api/projectShow" class="project"><%- project.title %></a> <br />
+            <%- project.description %>
         </li>
     <% }); %>
-</ul>x
+</ul>
 <div id="addTasks" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 
     <div class="modal-header">

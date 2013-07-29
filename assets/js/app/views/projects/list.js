@@ -14,7 +14,8 @@ define([
         el: $("#container"),
 
         events: {
-            "submit #project-form": "post"
+            "submit #project-form": "post",
+            "click .project": "navigateToProjectShow"
         },  
 
         initialize: function (collection) {
@@ -42,6 +43,10 @@ define([
             
             // Trigger event model to handle the next steps
             this.model.trigger("project:post");
+        },
+
+        navigateToProjectShow: function (event) {
+            console.log($(this.currentTarget));
         }
         
     });

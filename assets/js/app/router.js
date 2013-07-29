@@ -15,10 +15,11 @@ define([
 
         routes: {
             // Expects #/api/home, etc .....
-            'api/home'      : 'home',
-            'api/projects'  : 'listProjects',
-            'api/tasks'     : 'listTasks',
-            '*actions'      : 'defaultAction'
+            'api/home'          : 'home',
+            'api/projects'      : 'listProjects',
+            'api/projectShow'   : 'projectShow',
+            'api/tasks'         : 'listTasks',
+            '*actions'          : 'defaultAction'
         },
 
         home: function () {
@@ -27,10 +28,13 @@ define([
         },
 
         listProjects: function () {
-            console.log("Initializing projects view");
+            console.log("Initializing projects collection and view");
             this.collection = new ProjectsCollection();
             this.collection.fetch();
-            // new ProjectListView();
+        },
+
+        projectShow: function () {
+            console.log("Initializing project show view");
         },
 
         listTasks: function () {

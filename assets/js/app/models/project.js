@@ -23,8 +23,7 @@ define([
         // Setting it up for multiple methods on each route (controller) endpoint.
         methodToURL: {
             'create': '/project/create',
-            'read'  : '',
-            'update': ''
+            'update': '/project/update'
         },
 
         sync: function(method, model, options) {
@@ -63,7 +62,7 @@ define([
         }
 
         // ARCHIVED FOR NOW.
-        
+
         // Check if the tasks model is empty coming from server,
         // and if it is then fill up with tasks in server.
         // If it is empty instantiate new tasks collection.
