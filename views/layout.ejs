@@ -1,21 +1,30 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title><%- title %></title>
+  <head>
+    <title><%- title %></title>
 
-		<!-- Viewport mobile tag for sensible mobile support -->
-		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <!-- Viewport mobile tag for sensible mobile support -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-		<!-- Stylesheets from your assets folder are included here -->
-		<%- assets.css() %>
-		<script data-main="../assets/js/app/bootup" src="../public/vendor/requirejs/require.js"></script>
-	</head>
+    <link rel="stylesheet" type="text/css" href="/styles/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="/styles/application.css" />
 
-	<body>
-		<%- body %>
+    <script type="text/javascript" src="/js/vendor/sails/socket.io.js"></script>
 
-		<!-- Templates from your view path are included here -->
-		<%- assets.templateLibrary() %>
+    <!-- then beef it up with some convenience logic for talking to Sails.js -->
+    <script type="text/javascript" src="/js/vendor/sails/sails.io.js"></script>
 
-	</body>
+    <!-- listen on socket.io for incoming messages -->
+    <script type="text/javascript" src="/js/vendor/sails/app.js"></script>
+
+    <script type="text/javascript" data-main="/js/app/bootup.js" src="/js/vendor/require.js"></script>
+
+  </head>
+
+  <body>
+
+    <%- body %>
+
+  </body>
+
 </html>
