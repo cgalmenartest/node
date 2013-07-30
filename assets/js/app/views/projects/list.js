@@ -60,6 +60,7 @@ define([
             // Then instantiate a new project model passing in the ID to do a fetch()
             id          = $(".project.current").parent().attr('data-project-id')
             this.model  = new ProjectModel({ id: id });
+            window.location.hash = "#/api/projects/" + id;
 
             // Trigger event for model to do fetching logic.
             this.model.trigger("project:show");

@@ -15,7 +15,7 @@
 <ul>
     <% _.each(projects, function(project) { %>
         <li data-project-id="<%- project.id %>">
-            <a class="project"><%- project.title %></a> <br />
+            <a class="project" style="cursor: pointer; cursor: hand;"><%- project.title %></a> <br />
             <%- project.description %>
         </li>
     <% }); %>
