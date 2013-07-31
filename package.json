@@ -9,12 +9,14 @@
         "ejs": "0.8.4",
         "optimist": "0.4.0",
         "passport": "0.1.x",
+        "passport-local": "0.1.6",
+        "passport-oauth": "0.1.x",
+        "bcrypt": "0.7.6",
+        "request": "2.x",
         "sails-postgresql": "0.9.0"
     },
     "devDependencies": {
-        "mocha": "*",
-        "passport-local": "0.1.6",
-        "bcrypt": "0.7.6"
+        "mocha": "*"
     },
     "scripts": {
         "start": "node app.js",

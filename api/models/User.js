@@ -17,6 +17,7 @@ module.exports = {
     // Core attributes about a user
     name: 'STRING',
     email: 'STRING',
+    photoUrl: 'STRING',
 
     // User metadata for service delivery
     isAdmin: 'BOOLEAN'
