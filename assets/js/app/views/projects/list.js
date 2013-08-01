@@ -1,7 +1,9 @@
 // TODO:
 // This file is turning into more of a master layout for projects rather than 
 // just a list view. Switch it up so that it is a /project.js show view as 
-// opposed to list. Then instantiate list from there.  
+// opposed to list. Then instantiate list from there.  Then instantiate the show view
+// from the list view.  Then instantiate the tasks collection from there.
+// So on and so forth.
 
 define([
     'jquery',
@@ -24,6 +26,8 @@ define([
         },  
 
         initialize: function (collection) {
+            this.isRendered = false;
+            this.showHasRendered = false;
             // Allow for global access
             this.collection = collection;
             this.model = new ProjectModel();
@@ -31,9 +35,12 @@ define([
         },
 
         render: function () {
+            if (this.isRendered) return;
+            this.isRendered = true;
             var compiledTemplate;
             compiledTemplate = _.template(projectListTemplate, this.collection);
             this.$el.html(compiledTemplate).hide().fadeIn();
+            console.log(this.$el);
         },
 
         post: function (e) {
@@ -48,6 +55,9 @@ define([
         },
 
         show: function (e) {
+            if (this.showHasRendered) return;
+            this.showHasRendered = true;
+
             var id, project, _this = this, el = e.currentTarget;
 
             if (e.preventDefault()) e.preventDefault();
@@ -58,23 +68,31 @@ define([
 
             // Get the model ID using the ID in the DOM.
             // Then instantiate a new project model passing in the ID to do a fetch()
-            id          = $(".project.current").parent().attr('data-project-id')
-            this.model  = new ProjectModel({ id: id });
-            window.location.hash = "#/api/projects/" + id;
+            id = $(".project.current").parent().attr('data-project-id')
 
-            // Trigger event for model to do fetching logic.
-            this.model.trigger("project:show");
+            // Experimenting
+            for (var i in this.model.attributes) { this.isNull = this.model.attributes[i] === null; }
 
-            app.events.on("projectShow:success", function (data) {
+            if (this.isNull) {
+                this.model.destroy();
+                this.model  = new ProjectModel({ id: id });
+                window.location.hash = "#/api/projects/" + id;
+
+                // Trigger event for model to do fetching logic.
+                this.model.trigger("project:show", id);
+            } else {
+                return;
+            }
+
+            app.events.on("projectShow:success", function (data, id) {
                 new ProjectShowView({
+                    projectId: id,
                     data: data
                 })
             })
-            
-
         }
         
     });
 
     return ProjectListView;
-});
+})

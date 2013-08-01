@@ -29,7 +29,7 @@ define([
 
         listProjects: function () {
             console.log("Initializing projects collection and view");
-            this.collection = new ProjectsCollection();
+            this.collection = new ProjectsCollection(); 
             this.collection.fetch();
         },
 
@@ -39,7 +39,7 @@ define([
 
         listTasks: function () {
             console.log("Initializing tasks view");
-            new TaskListView();
+            // new TaskListView();
         }
     });
 

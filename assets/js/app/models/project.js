@@ -54,9 +54,10 @@ define([
         },
 
         initializeProjectShow: function () {
-            this.on("project:show", function () {
+            this.on("project:show", function (id) {
+                console.log(id);
                 this.fetch({
-                    success: function (data) { 
+                    success: function (data, id) { 
                         app.events.trigger("projectShow:success", data);
                     }
                 });

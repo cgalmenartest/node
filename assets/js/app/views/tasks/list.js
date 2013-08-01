@@ -2,37 +2,41 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'collections/tasks',
+    'models/task',
     'text!../../../../../templates/tasks/list.html'
-], function ($, _, Backbone, TasksCollection, TaskListTemplate) {
+], function ($, _, Backbone, TaskModel, TaskListTemplate) {
     'use strict';
 
     var TaskListView = Backbone.View.extend({
         
         el: $("#container"),
 
-        initialize: function () {
-            this.collection = new TasksCollection();
-            this.collection.fetch();
-            this.collection.on("add", this.render, this);
-
-            this.addTasksDataShim();
-            this.render();
+        events: {
+            "#task-form submit": "post"
         },
 
-        addTasksDataShim: function () {
-            this.collection.add({ name: 'test'})
-            this.collection.add({ name: 'test2'})
-            this.collection.add({ name: 'test3'})
+        initialize: function (data) {
+            this.render(data);
         },
 
-        render: function () {
-            var template, data;
+        render: function (data) {
+            var template = _.template(TaskListTemplate, data);
+            this.$el.append(template).hide().fadeIn();
+            return this;
+        },
 
-            data = { tasks: this.collection.toJSON() }
-            template = _.template(TaskListTemplate, data);
-            
-            this.$el.html(template).hide().fadeIn();
+        post: function (e) {
+            var title, description, projectId;
+
+            if (e.preventDefault()) e.preventDefault();
+
+            this.model = new TaskModel();
+
+            title       = $("#task-title").val();
+            projectId   = $(".project.current").parent().attr('data-project-id');
+            description = $("#task-description").val()
+
+            this.model.trigger("task:save", projectId, title, description);
         }
 
     });
