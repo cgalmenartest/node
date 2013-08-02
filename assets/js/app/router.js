@@ -27,7 +27,9 @@ define([
         },
 
         listProjects: function () {
-            this.collection = new ProjectsCollection(); 
+            if (!this.collection) {
+                this.collection = new ProjectsCollection();
+            }
             this.collection.fetch();
         },
 
