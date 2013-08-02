@@ -3,17 +3,19 @@
 </div>
 
 <form action="" id="project-form">
-    <input type="text" class="project-name" placeholder="Project name" />
-    <div class="clearfix"></div>
-    <input type="text" class="project-description" placeholder="Project description" />
-    <div class="clearfix"></div>
-    <input type="submit" class="btn pull-right" />
+    <fieldset>
+        <input type="text" class="project-name" placeholder="Project name" />
+        <div class="clearfix"></div>
+        <input type="text" class="project-description" placeholder="Project description" />
+        <div class="clearfix"></div>
+        <input type="submit" class="btn pull-right" id="submit" />
+    </fieldset>
 </form>
 
 <ul>
     <% _.each(projects, function(project) { %>
         <li data-project-id="<%- project.id %>">
-            <a href="#/api/projectShow" class="project"><%- project.title %></a> <br />
+            <a class="project" style="cursor: pointer; cursor: hand;"><%- project.title %></a> <br />
             <%- project.description %>
         </li>
     <% }); %>

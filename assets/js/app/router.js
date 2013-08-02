@@ -4,8 +4,9 @@ define([
     'backbone',
     'views/marketing/home',
     'collections/projects',
+    'collections/tasks',
     'views/tasks/list'
-], function ($, _, Backbone, HomeView, ProjectsCollection, TaskListView) {
+], function ($, _, Backbone, HomeView, ProjectsCollection, TasksCollection, TaskListView) {
     'use strict';
     
     var AppRouter = Backbone.Router.extend({
@@ -17,8 +18,6 @@ define([
             // Expects #/api/home, etc .....
             'api/home'          : 'home',
             'api/projects'      : 'listProjects',
-            'api/projectShow'   : 'projectShow',
-            'api/tasks'         : 'listTasks',
             '*actions'          : 'defaultAction'
         },
 
@@ -28,18 +27,12 @@ define([
         },
 
         listProjects: function () {
-            console.log("Initializing projects collection and view");
-            this.collection = new ProjectsCollection();
+            this.collection = new ProjectsCollection(); 
             this.collection.fetch();
         },
 
         projectShow: function () {
             console.log("Initializing project show view");
-        },
-
-        listTasks: function () {
-            console.log("Initializing tasks view");
-            new TaskListView();
         }
     });
 

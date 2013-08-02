@@ -11,9 +11,26 @@ define([
             description : null
         },
 
-        url: '/tasks',
+        urlRoot: '/task',
 
-        initialize: function () {}
+        initialize: function () {
+            this.initializeTaskSave();
+        },
+
+        initializeTaskSave: function () {
+          this.on("task:save", function (title, description) {
+            _this.save({ 
+              title: title, 
+              projectId: projectId, 
+              description: description 
+              }, { success: function (data) { 
+                console.log(data) 
+              }, error: function (data) { 
+                console.log(data) 
+              }
+            });
+          });
+        }
 
     });
 
