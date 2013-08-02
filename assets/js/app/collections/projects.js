@@ -14,7 +14,7 @@ define([
 
         parse: function (response) {
             new ProjectView({ projects: response.projects });
-        }
+        },
 
         initialize: function () {
             this.validate();
