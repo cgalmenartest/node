@@ -1,23 +1,16 @@
 <div class="container" style="padding-top: 60px;">
-<h1> Login with OAuth </h1>
-<p>
-  <a href="/auth/oauth2">OAuth2 Test Server Login</a>
-</p>
-<hr/>
-<h1> Login with Username/Password </h1>
-<p>
-<form action="local" method="post">
-<div>
-<label>Username:</label>
-<input type="text" name="username"/><br/>
-</div>
-<div>
-<label>Password:</label>
-<input type="password" name="password"/>
-</div>
-<div>
-<input type="submit" value="Submit"/>
-</div>
-</form>
-</p>
+  <h3> Login with OAuth </h3>
+  <p>
+    <a class="btn btn-primary" href="/auth/oauth2">OAuth2 Test Server Login</a>
+  </p>
+  <hr/>
+  <h3> Login with Username/Password </h3>
+  <p>
+
+  <form class="form-inline" action="local" method="post">
+    <input type="text" class="form-control" style="width:180px;" id="username" placeholder="Username">
+    <input type="password" class="form-control" style="width:180px;" id="password" placeholder="Password">
+    <button type="submit" class="btn btn-primary">Sign in</button>
+  </form>
+
 </div>
