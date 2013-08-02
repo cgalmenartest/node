@@ -1,13 +1,21 @@
 define([
     'underscore',
     'backbone',
-    '../models/task'
-], function (_, Backbone, TaskModel) {
+    '../models/task',
+    '../views/tasks/list'
+], function (_, Backbone, TaskModel, TaskListView) {
     'use strict';
 
     var TasksCollection = Backbone.Collection.extend({
+        
         model: TaskModel,
-        url: '/tasks'
+        
+        url: '/task/findAllByProject',
+
+        parse: function (response) {
+            new TaskListView({ tasks: response.tasks });
+        }
+
     });
 
     return TasksCollection;

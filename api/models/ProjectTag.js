@@ -9,7 +9,7 @@
 module.exports = {
 
     attributes: {
-        // task that has a tag assigned to it
+        // project that has a tag assigned to it
         projectId: 'INTEGER',
         // id of the tag
         tagId: 'INTEGER'
