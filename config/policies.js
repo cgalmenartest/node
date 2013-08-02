@@ -12,9 +12,26 @@
 
 module.exports.policies = {
 
-  // Default policy for all controllers and actions
-  // (`true` allows public access) 
-  '*': true
+  // default require authentication
+  // see api/policies/authenticated.js
+	'*': 'authenticated',
+
+  // whitelist the auth and main controllers
+	'auth':
+	{
+		'*': true
+	},
+
+	'main':
+	{
+		'*': true
+	},
+
+	// Limit user controller view to just the /user endpoint
+	UserController : {
+		'*': false,
+		'index': true,
+	}
 
   /*
 	// Here's an example of adding some policies to a controller

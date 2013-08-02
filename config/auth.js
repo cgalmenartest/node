@@ -38,7 +38,7 @@ passport.use(new LocalStrategy(
       if (err) { return done(null, false, { message: 'Error looking up user' }); }
       // Look up user and check password hash
       var bcrypt = require('bcrypt');
-      if (user.length == 0) {
+      if (user.length === 0) {
         bcrypt.hash(password, 10, function(err, hash) {
           // Create and store the user
           User.create({

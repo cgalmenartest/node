@@ -20,7 +20,10 @@ module.exports = {
     photoUrl: 'STRING',
 
     // User metadata for service delivery
-    isAdmin: 'BOOLEAN'
+    isAdmin: {
+      type: 'BOOLEAN',
+      defaultTo: false
+    }
   }
 
 };
