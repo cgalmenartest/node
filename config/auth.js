@@ -25,7 +25,7 @@ passport.deserializeUser(function (id, done) {
 // - Add logic to have passport authenticate in your route in AuthController.js
 
 // LocalStrategy - Primarily for testing (non-OAuth provider)
-passport.use(new LocalStrategy(
+passport.use('local', new LocalStrategy(
   function (username, password, done) {
     // Find the user by username. If there is no user with the given
     // username, or the password is not correct, set the user to `false` to
@@ -67,7 +67,7 @@ passport.use(new LocalStrategy(
 // Initially configured with credentials to talk to the
 // example server provided by OAuth2orize.
 // https://github.com/jaredhanson/oauth2orize
-passport.use(new OAuth2Strategy({
+passport.use('oauth2', new OAuth2Strategy({
     authorizationURL: 'http://localhost:3000/dialog/authorize',
     tokenURL: 'http://localhost:3000/oauth/token',
     clientID: 'abc123',

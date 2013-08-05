@@ -1,4 +1,4 @@
-<div class="container" style="padding-top: 60px;">
+<div id="container" class="container" style="padding-top: 60px;">
   <h3> Login with OAuth </h3>
   <p>
     <a class="btn btn-primary" href="/auth/oauth2">OAuth2 Test Server Login</a>
@@ -7,9 +7,9 @@
   <h3> Login with Username/Password </h3>
   <p>
 
-  <form class="form-inline" action="local" method="post">
-    <input type="text" class="form-control" style="width:180px;" id="username" placeholder="Username">
-    <input type="password" class="form-control" style="width:180px;" id="password" placeholder="Password">
+  <form class="form-inline" action="/auth/local" method="post">
+    <input type="text" class="form-control" style="width:180px;" name="username" id="username" placeholder="Username"/>
+    <input type="password" class="form-control" style="width:180px;" name="password" id="password" placeholder="Password"/>
     <button type="submit" class="btn btn-primary">Sign in</button>
   </form>
 
