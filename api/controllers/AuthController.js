@@ -39,13 +39,13 @@ function authenticate(req, res, strategy) {
 /* Process any OAuth based authentication.
  * Handles the initial redirect, and then the callback.
  */
-function processOAuth(req, res, strategy) {
+function processOAuth(req, res, strategy, options) {
   if (req.params['id'] === 'callback') {
     // Authenticate, log in, and create the user if necessary
-    authenticate(req, res, 'oauth2');
+    authenticate(req, res, strategy);
   } else {
     // start the oauth process by redirecting to the service provider
-    passport.authenticate('oauth2')(req, res);
+    passport.authenticate(strategy, options)(req, res);
   }
 }
 
@@ -58,16 +58,20 @@ module.exports = {
     res.view();
   },
 
-  /* Authentication Provider for the 'local' strategy
+  /* Authentication Providers
   */
   local: function(req, res) {
     authenticate(req, res, 'local');
   },
-
   oauth2: function(req, res) {
     processOAuth(req, res, 'oauth2');
   },
+  myusa: function(req, res) {
+    processOAuth(req, res, 'myusa', {scope: 'profile'});
+  },
 
+  /* Logout user from session
+   */
   logout: function (req,res) {
     // logout and redirect back to the app
     req.logout();

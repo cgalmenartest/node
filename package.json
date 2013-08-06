@@ -11,6 +11,7 @@
         "passport": "0.1.x",
         "passport-local": "0.1.6",
         "passport-oauth": "0.1.x",
+        "passport-myusa": "0.1.x",
         "bcrypt": "0.7.6",
         "request": "2.x",
         "sails-postgresql": "0.9.2"
