@@ -12,11 +12,11 @@ define([
     var AppRouter = Backbone.Router.extend({
 
         routes: {
-            // Expects #/api/home, etc .....
-            ''                  : 'home',
-            'api/home'          : 'home',
-            'api/projects'      : 'listProjects',
-            '*actions'          : 'defaultAction'
+            // Expects #home, etc .....
+            ''              : 'home',
+            'home'          : 'home',
+            'projects'      : 'listProjects',
+            '*actions'      : 'defaultAction'
         },
 
         home: function () {
@@ -29,10 +29,6 @@ define([
                 this.collection = new ProjectsCollection();
             }
             this.collection.fetch();
-        },
-
-        projectShow: function () {
-            console.log("Initializing project show view");
         }
     });
 
