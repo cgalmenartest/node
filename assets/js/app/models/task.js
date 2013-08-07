@@ -2,37 +2,39 @@ define([
     'underscore',
     'backbone'
 ], function (_, Backbone) {
-    'use strict';
-    
-    var TaskModel = Backbone.Model.extend({
+  'use strict';
 
-        defaults: {
-            name        : null,
-            description : null
-        },
+  var TaskModel = Backbone.Model.extend({
 
-        urlRoot: '/task',
+    defaults: {
+      name        : null,
+      description : null
+    },
 
-        initialize: function () {
-            this.initializeTaskSave();
-        },
+    urlRoot: '/task',
 
-        initializeTaskSave: function () {
-          this.on("task:save", function (title, description) {
-            _this.save({ 
-              title: title, 
-              projectId: projectId, 
-              description: description 
-              }, { success: function (data) { 
-                console.log(data) 
-              }, error: function (data) { 
-                console.log(data) 
-              }
-            });
-          });
-        }
+    initialize: function () {
+      this.initializeTaskSave();
+    },
 
-    });
+    initializeTaskSave: function () {
+      var _this = this;
+
+      this.on("task:save", function (title, projectId, description) {
+        _this.save({ 
+          title: title, 
+          projectId: projectId, 
+          description: description 
+          }, { success: function (data) { 
+            console.log(data) 
+          }, error: function (data) { 
+            console.log(data) 
+          }
+        });
+      });
+    }
+
+  });
 
     return TaskModel;
 });

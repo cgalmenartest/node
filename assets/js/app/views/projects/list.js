@@ -6,93 +6,90 @@
 // So on and so forth.
 
 define([
-    'jquery',
-    'underscore',
-    'backbone',
-    '../../models/project',
-    '../../collections/projects',
-    '../../views/projects/show',
-    'text!../../../../templates/projects/list.html'
+  'jquery',
+  'underscore',
+  'backbone',
+  '../../models/project',
+  '../../collections/projects',
+  '../../views/projects/show',
+  'text!../../../../templates/projects/list.html'
 ], function ($, _, Backbone, ProjectModel, ProjectsCollection, ProjectShowView, projectListTemplate) {
-    'use strict';
+  'use strict';
 
-    var ProjectListView = Backbone.View.extend({
+  var ProjectListView = Backbone.View.extend({
 
-        el: $("#container"),
+    el: $("#container"),
 
-        events: {
-            "submit #project-form": "post",
-            "click .project": "show"
-        },  
+    events: {
+      "submit #project-form": "post",
+      "click .project": "show"
+    },  
 
-        initialize: function (collection) {
-            this.isRendered = false;
-            this.showHasRendered = false;
-            // Allow for global access
-            this.collection = collection;
-            this.model = new ProjectModel();
-            this.render();
-        },
+    initialize: function (collection) {
+      this.isRendered     = false;
+      this.showRendered   = false;
+      this.collection     = collection;
+      this.model          = new ProjectModel();
 
-        render: function () {
-            if (this.isRendered) return;
-            this.isRendered = true;
-            var compiledTemplate;
-            compiledTemplate = _.template(projectListTemplate, this.collection);
-            this.$el.html(compiledTemplate).hide().fadeIn();
-            console.log(this.$el);
-        },
+      this.render();
+    },
 
-        post: function (e) {
-            e.preventDefault();
+    render: function () {
+      if (this.isRendered) return;
+      this.isRendered = true;
+      var compiledTemplate = _.template(projectListTemplate, this.collection);
+      this.$el.html(compiledTemplate).hide().fadeIn();
+    },
 
-            var title, description;
+    post: function (e) {
+      e.preventDefault();
 
-            title       = $(".project-name").val();
-            description = $(".project-description").val();
+      var title, description;
 
-            this.model.trigger("project:post", title, description);
-        },
+      title       = $(".project-name").val();
+      description = $(".project-description").val();
 
-        show: function (e) {
-            if (this.showHasRendered) return;
-            this.showHasRendered = true;
+      this.model.trigger("project:post", title, description);
+    },
 
-            var id, project, _this = this, el = e.currentTarget;
+    show: function (e) {
+      if (this.showHasRendered) return;
+      this.showHasRendered = true;
 
-            if (e.preventDefault()) e.preventDefault();
+      var id, project, _this = this, el = e.currentTarget;
 
-            // Add a current class to then use to find the ID.
-            // TODO: Remove the class. 
-            $(el).addClass("current");
+      if (e.preventDefault()) e.preventDefault();
 
-            // Get the model ID using the ID in the DOM.
-            // Then instantiate a new project model passing in the ID to do a fetch()
-            id = $(".project.current").parent().attr('data-project-id')
+      // Add a current class to then use to find the ID.
+      // TODO: Remove the class. 
+      $(el).addClass("current");
 
-            // Experimenting
-            for (var i in this.model.attributes) { this.isNull = this.model.attributes[i] === null; }
+      // Get the model ID using the ID in the DOM.
+      // Then instantiate a new project model passing in the ID to do a fetch()
+      id = $(".project.current").parent().attr('data-project-id')
 
-            if (this.isNull) {
-                this.model.destroy();
-                this.model  = new ProjectModel({ id: id });
-                window.location.hash = "#/api/projects/" + id;
+      // Experimenting
+      for (var i in this.model.attributes) { this.isNull = this.model.attributes[i] === null; }
 
-                // Trigger event for model to do fetching logic.
-                this.model.trigger("project:show", id);
-            } else {
-                return;
-            }
+      if (this.isNull) {
+          this.model.destroy();
+          this.model = new ProjectModel({ id: id });
+          // window.location.hash = "#projects/" + id;
 
-            app.events.on("projectShow:success", function (data, id) {
-                new ProjectShowView({
-                    projectId: id,
-                    data: data
-                })
-            })
-        }
-        
-    });
+          // Trigger event for model to do fetching logic.
+          this.model.trigger("project:show", id);
+      } else {
+          return;
+      }
 
-    return ProjectListView;
+      app.events.on("projectShow:success", function (data, id) {
+          new ProjectShowView({
+              projectId: id,
+              data: data
+          })
+      })
+    }
+  });
+
+  return ProjectListView;
 })
