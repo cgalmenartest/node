@@ -30,7 +30,7 @@ function authenticate(req, res, strategy) {
         return;
       }
 
-      res.redirect('/');
+      res.redirect('#projects');
       return;
     });
   })(req, res);
