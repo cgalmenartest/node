@@ -11,14 +11,12 @@ define([
     
     var AppRouter = Backbone.Router.extend({
 
-        // This is really just an API Manager, perhaps the name
-        // should be changed to reflect that.  
-
         routes: {
-            // Expects #/api/home, etc .....
-            'api/home'          : 'home',
-            'api/projects'      : 'listProjects',
-            '*actions'          : 'defaultAction'
+            // Expects #home, etc .....
+            ''              : 'home',
+            'home'          : 'home',
+            'projects'      : 'listProjects',
+            '*actions'      : 'defaultAction'
         },
 
         home: function () {
@@ -31,10 +29,6 @@ define([
                 this.collection = new ProjectsCollection();
             }
             this.collection.fetch();
-        },
-
-        projectShow: function () {
-            console.log("Initializing project show view");
         }
     });
 
