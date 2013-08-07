@@ -39,6 +39,11 @@ define([
     router.on('defaultAction', function (actions) {
       console.log("no route:", actions);
     });
+
+    $(".nav li").on("click", function () {
+      $(".nav li").removeClass("active");
+      $(this).addClass("active");
+    })
   }
 
   return {
