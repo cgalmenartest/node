@@ -11,11 +11,9 @@ define([
     
     var AppRouter = Backbone.Router.extend({
 
-        // This is really just an API Manager, perhaps the name
-        // should be changed to reflect that.  
-
         routes: {
             // Expects #/api/home, etc .....
+            ''                  : 'home',
             'api/home'          : 'home',
             'api/projects'      : 'listProjects',
             '*actions'          : 'defaultAction'
