@@ -13,6 +13,7 @@ define([
 
     routes: {
       // Expects #home, etc .....
+      '/'             : 'home',
       'home'          : 'home',
       'projects'      : 'listProjects',
       '*actions'      : 'defaultAction'
