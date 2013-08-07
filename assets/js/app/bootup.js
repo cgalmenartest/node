@@ -1,7 +1,6 @@
 // Globals and Constants
-window.app          = {};
-app.events          = {};
-window.UserLoggedIn = false;
+window.app  = {};
+app.events  = {};
 
 // Require setup and config
 require.config({
