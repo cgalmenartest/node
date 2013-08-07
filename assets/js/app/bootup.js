@@ -1,6 +1,7 @@
 // Globals and Constants
-window.app = {};
-app.events = {};
+window.app          = {};
+app.events          = {};
+window.UserLoggedIn = false;
 
 // Require setup and config
 require.config({
@@ -20,10 +21,8 @@ define([
     'router'
 ], function ($, _, Backbone, Router) {
 
-    // Commonly used 'global' methods and jQuery addons we wrote
-    serializeMidasForm = function (formName) {
-        $(formName).find('input:not(input[type="submit"])').each(function (key, value) { return $(value).val() });
-    }
+    // Commonly used 'global' methods and jQuery addons 
+
     // Extend the backbone.events object and mixin our own for customization
     _.extend(app.events, Backbone.Events);
 
