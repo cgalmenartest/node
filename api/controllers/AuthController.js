@@ -30,7 +30,7 @@ function authenticate(req, res, strategy) {
         return;
       }
 
-      res.redirect('#projects');
+      res.redirect('/#projects');
       return;
     });
   })(req, res);
@@ -75,7 +75,7 @@ module.exports = {
   logout: function (req,res) {
     // logout and redirect back to the app
     req.logout();
-    res.redirect('/');
+    res.redirect('/#projects');
   }
 
 };
