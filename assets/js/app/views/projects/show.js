@@ -3,8 +3,10 @@ define([
   'underscore',
   'backbone',
   '../../collections/tasks',       
-  'text!../../../../templates/projects/show.html'
-], function ($, _, Backbone, TaskCollection, projectShowTemplate) {
+  'text!../../../../templates/projects/show.html',
+  '../../views/comments/form',
+  '../../collections/comments'
+], function ($, _, Backbone, TaskCollection, projectShowTemplate, CommentFormView, CommentsCollection) {
   'use strict';
 
   var ProjectShowView = Backbone.View.extend({
@@ -21,16 +23,21 @@ define([
       this.isRendered = true;
       
       var compiledTemplate, 
-      id = data.projectId;
-      // merge this data object with an object for tasks.
+      id = parseInt($(".project-id").text());
 
       this.collection = new TaskCollection(id);
       this.collection.url = '/task/findAllByProject?projectId=' + id;
       this.collection.fetch();
 
+      this.commentCollection = new CommentsCollection({ id: id})
+      this.commentCollection.fetch();
+
       compiledTemplate = _.template(projectShowTemplate, data);
       this.$el.html(compiledTemplate).hide().fadeIn();
+
+      new CommentFormView().render();
     }
+
       
   });
 

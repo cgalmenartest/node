@@ -26,17 +26,21 @@ define([
     },  
 
     initialize: function (collection) {
+              var _this = this;
       this.isRendered     = false;
       this.showRendered   = false;
       this.collection     = collection;
       this.model          = new ProjectModel();
 
+
+      app.events.on("project:success", function () {
+        _this.model.fetch();
+        _this.render();
+      });
       this.render();
     },
 
     render: function () {
-      if (this.isRendered) return;
-      this.isRendered = true;
       var compiledTemplate = _.template(projectListTemplate, this.collection);
       this.$el.html(compiledTemplate).hide().fadeIn();
     },
@@ -63,10 +67,16 @@ define([
       // Add a current class to then use to find the ID.
       // TODO: Remove the class. 
       $(el).addClass("current");
-
+  
       // Get the model ID using the ID in the DOM.
       // Then instantiate a new project model passing in the ID to do a fetch()
-      id = $(".project.current").parent().attr('data-project-id')
+      id = $(".project.current").parent().parent().attr('data-project-id')
+
+      $(".project-id").remove();
+      var html = '<div class="project-id" style="display: none;">' +
+                    id +
+                '</div>';
+        $("body").append(html);
 
       // Experimenting
       for (var i in this.model.attributes) { this.isNull = this.model.attributes[i] === null; }

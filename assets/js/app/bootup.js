@@ -8,6 +8,7 @@ require.config({
         'jquery': '../vendor/jquery',
         'underscore': '../vendor/underscore',
         'backbone': '../vendor/backbone',
+        'bootstrap': '../vendor/bootstrap',
         'router': 'router'
     }
 });

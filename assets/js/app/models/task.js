@@ -25,9 +25,11 @@ define([
           title: title, 
           projectId: projectId, 
           description: description 
-          }, { success: function (data) { 
+          }, { 
+          success: function (data) { 
             console.log(data) 
-          }, error: function (data) { 
+          }, 
+          error: function (data) { 
             console.log(data) 
           }
         });

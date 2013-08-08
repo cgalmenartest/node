@@ -1,0 +1,8 @@
+<div class="comment-list-wrapper">
+	<ul class="comment-list">
+		<% _.each(comments, function (comment) { %>
+			<li><%- comment.value %></li>
+			<hr>
+		<% }); %>
+	</ul>
+</div>

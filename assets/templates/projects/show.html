@@ -1,11 +1,22 @@
 <div class="page-header">
-    <h1>Project Show View</h1>
+    <h1 class="project-title"><%= data.get("title") %></h1>
 </div>
 
-<div class="#">
-	<div><%= data.get("title") %></div>
+<div class="project-description">
+	<strong>Description:</strong>
 	<div><%= data.get("description") %></div>
-
 </div>
-<br />
-<a href="/#/api/projects" class="back-to-project-list">Back to list</div>
+
+<hr />
+
+<div class="task-list-wrapper"></div>
+
+<div class="event-list-wrapper">
+	<h3>Events</h3>
+</div>
+
+<hr />
+
+<div class="comment-form-wrapper"></div>
+
+<div class="comment-list-wrapper"></div>

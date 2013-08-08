@@ -1,28 +1,23 @@
 <div id="task-list-page">
+  
+  <h3 class="task-title">Tasks
+    <a href="#addTask" class="add-task" data-toggle="modal">Add Task</a>
+  </h3>
 
-<div class="page-header">
-    <h1>Task Form</h1>
-</div>
+  <div id="task-list-wrapper">
+    <ul>
+      <% _.each(tasks, function(task) { %>
+        <li class="well">
+          <b>Title</b>: <%- task.title %>
+          <br>
+          <b>Description</b>: <%- task.description %>
+        </li>
+      <% }) %>
+    </ul>
+  </div>
+</div> <!-- /task-list-page -->
 
 <div id="task-form-wrapper">
-
 </div>
 
-<ul>
-  <% _.each(tasks, function(task) { %>
-      
-      <li>
-      	<b>Project Id</b>: <%- task.projectId %>
-      	<br>
-      	<b>Title</b>: <%- task.title %>
-      	<br>
-				<b>Description</b>: <%- task.description %>
-      </li>
-
-  <% }) %>
-</ul>
-<br />
-<br>
-<br>
-<br>
-</div>
+     

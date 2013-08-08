@@ -16,6 +16,7 @@ define([
       _.extend(this, Backbone.Events);
       this.initializeModelSave();
       this.initializeProjectShow();
+
     },
 
     urlRoot: '/project',
@@ -44,7 +45,7 @@ define([
       this.on("project:show", function () {
         this.fetch({
           success: function (data) { 
-            app.events.trigger("projectShow:success", data, data.id);
+            app.events.trigger("projectShow:success", data);
           }
         });
       })

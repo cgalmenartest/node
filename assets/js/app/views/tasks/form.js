@@ -1,10 +1,11 @@
 define([
     'jquery',
+    'bootstrap',
     'underscore',
     'backbone',
     'models/task',
     'text!../../../../../templates/tasks/form.html'
-], function ($, _, Backbone, TaskModel, TaskFormTemplate) {
+], function ($, Bootstrap, _, Backbone, TaskModel, TaskFormTemplate) {
 
 	var TaskFormView = Backbone.View.extend({
 

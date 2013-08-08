@@ -12,13 +12,7 @@ define([
         
         url: '/task/findAllByProject',
 
-        initialize: function (id) {
-            var html = '<div class="project-id" style="display: none;">' +
-                            id +
-                        '</div>';
-
-            $("body").append(html)
-        },
+        initialize: function () {},
 
         parse: function (response) {
             new TaskListView({ tasks: response.tasks });
