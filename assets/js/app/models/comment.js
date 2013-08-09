@@ -30,7 +30,7 @@ define([
           projectId : projectId
           }, { 
           success: function (data) { 
-            console.log(data)
+            app.events.trigger("commentSave:success");
           }, 
           error: function (data) { 
             console.log(data) 

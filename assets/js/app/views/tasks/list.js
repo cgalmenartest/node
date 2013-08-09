@@ -23,7 +23,7 @@ define([
 
       var template = _.template(TaskListTemplate, data);
       this.$el.html(template).hide().fadeIn();
-      if (!TaskFormView) new TaskFormView().render()
+      new TaskFormView().render()
       return this;
     }
   });

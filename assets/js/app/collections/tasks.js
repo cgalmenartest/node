@@ -10,9 +10,13 @@ define([
         
         model: TaskModel,
         
-        url: '/task/findAllByProject',
+        initialize: function (projectObject) {
+            this.id = projectObject.id;
+        },
 
-        initialize: function () {},
+        url: function () {
+            return '/task/findAllByProject/' + this.id
+        },
 
         parse: function (response) {
             new TaskListView({ tasks: response.tasks });

@@ -25,12 +25,11 @@ define([
       var compiledTemplate, 
       id = parseInt($(".project-id").text());
 
-      this.collection = new TaskCollection(id);
-      this.collection.url = '/task/findAllByProject?projectId=' + id;
-      this.collection.fetch();
+      this.tasks = new TaskCollection({ id: id });
+      this.tasks.fetch();
 
-      this.commentCollection = new CommentsCollection({ id: id})
-      this.commentCollection.fetch();
+      this.comments = new CommentsCollection({ id: id })
+      this.comments.fetch();
 
       compiledTemplate = _.template(projectShowTemplate, data);
       this.$el.html(compiledTemplate).hide().fadeIn();

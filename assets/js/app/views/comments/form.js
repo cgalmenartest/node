@@ -14,6 +14,10 @@ define([
 			"submit #comment-form": "post"
 		},
 
+		initialize: function () {
+
+		},
+
 		render: function () {
 			var data = {};
 			var template = _.template(CommentFormTemplate, data);
