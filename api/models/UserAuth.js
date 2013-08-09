@@ -8,21 +8,21 @@
 
 module.exports = {
 
-    attributes: {
-        // Mapping to User model record
-        userId: 'INTEGER',
+  attributes: {
+    // Mapping to User model record
+    userId: 'INTEGER',
 
-        // Authentication information
-        // Idenifies the provider used (passport strategy)
-        provider: 'STRING',
-        // The user's unique ID at this provider
-        providerId: 'STRING',
-        // OAuth access token
-        accessToken: 'STRING',
-        // OAuth refresh token
-        refreshToken: 'STRING',
-        // Time at which the accessToken expires
-        refreshTime: 'DATETIME',
-    }
+    // Authentication information
+    // Idenifies the provider used (passport strategy)
+    provider: 'STRING',
+    // The user's unique ID at this provider
+    providerId: 'STRING',
+    // OAuth access token
+    accessToken: 'STRING',
+    // OAuth refresh token
+    refreshToken: 'STRING',
+    // Time at which the accessToken expires
+    refreshTime: 'DATETIME',
+  }
 
 };

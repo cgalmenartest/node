@@ -22,7 +22,7 @@ module.exports = {
     // User metadata for service delivery
     isAdmin: {
       type: 'BOOLEAN',
-      defaultTo: false
+      defaultsTo: false
     }
   }
 
