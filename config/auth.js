@@ -154,8 +154,8 @@ passport.use('oauth2', new OAuth2Strategy({
 //   credentials (in this case, an accessToken, refreshToken, and MyUSA
 //   profile), and invoke a callback with a user object.
 passport.use('myusa', new MyUSAStrategy({
-    clientID: process.env.MYUSA_CLIENT_ID  || '',
-    clientSecret: process.env.MYUSA_CLIENT_SECRET || '',
+    clientID: process.env.MYUSA_CLIENT_ID  || 'CLIENT_ID',
+    clientSecret: process.env.MYUSA_CLIENT_SECRET || 'CLIENT_SECRET',
     callbackURL: 'http://localhost/auth/myusa/callback',
     // Initially use staging.my.usa.gov until app approved for production
     authorizationURL: 'https://staging.my.usa.gov/oauth/authorize',
