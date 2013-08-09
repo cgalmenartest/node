@@ -32,32 +32,40 @@ passport.use('local', new LocalStrategy(
     // username, or the password is not correct, set the user to `false` to
     // indicate failure and set a flash message. Otherwise, return the
     // authenticated `user`.
-    User.findByUsername(username, function (err, user) {
-      if (!user) { user = []; }
-      if (user.length > 0) { user = user[0]; }
-      sails.log.debug('User Lookup:', user);
+    User.findOneByUsername(username, function (err, user) {
       if (err) { return done(null, false, { message: 'Error looking up user' }); }
       // Look up user and check password hash
       var bcrypt = require('bcrypt');
-      if (user.length === 0) {
+      if (!user) {
         bcrypt.hash(password, 10, function(err, hash) {
           // Create and store the user
           User.create({
             username: username,
-            password: hash
           }).done(function (err, user) {
             sails.log.debug('User Created:', user);
             if (err) {
               sails.log.debug('User creation error:', err);
               return done(null, false, { message: 'Unable to create new user'});
             }
-            return done(null, user);
+            var pwObj = {
+              userId: user.id,
+              password: hash
+            };
+            UserPassword.create(pwObj).done(function (err, pwObj) {
+              if (err) { return done(null, false, { message: 'Unable to store password'}) }
+              return done(null, user);
+            });
           });
         });
       } else {
-        bcrypt.compare(password, user.password, function (err, res) {
-          if (res === true) { return done(null, user) }
-          else { return done(null, false, { message: 'Invalid password' }); }
+        UserPassword.findOneByUserId(user.id, function (err, pwObj) {
+          bcrypt.compare(password, pwObj.password, function (err, res) {
+            if (res === true) {
+              sails.log.debug('User Found:', user);
+              return done(null, user);
+            }
+            else { return done(null, false, { message: 'Invalid password' }); }
+          });
         });
       }
     });
@@ -74,7 +82,6 @@ function tokenFlow(provider, tokens, providerUser, done) {
     if (userAuth.length === 0) {
       var user = {
         name: providerUser.displayName,
-        email: providerUser.emails[0].value,
         photoUrl: providerUser.photo
       };
       // create user
@@ -92,7 +99,18 @@ function tokenFlow(provider, tokens, providerUser, done) {
         UserAuth.create(creds).done(function (err, creds) {
           if (err) { return done(null, false, { message: 'Unable to store user credentials.' }); }
           sails.log.debug('Created Credentials:', creds);
-          return done(null, user);
+          if (providerUser.emails && (providerUser.emails.length > 0)) {
+            var email = {
+              userId: user['id'],
+              email: providerUser.emails[0].value,
+            }
+            UserEmail.create(email).done(function (err, email) {
+              if (err) { return done(null, false, { message: 'Unable to store user email address.' }); }
+              return done(null, user);
+            });
+          } else {
+            return done(null, user);
+          }
         });
       });
     }
