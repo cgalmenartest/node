@@ -30,9 +30,19 @@ define([
         $(".modal a[href='#addTask']").modal('hide');
         $('body').removeClass('modal-open');
         $('.modal-backdrop').remove();
+
+        var height = $("#task-list-wrapper").height();
+        
+        var len = $("#task-list-wrapper").children().find('li').length 
+        var scrollLength = len * 90;
+
+        setTimeout(function () {
+          $("#task-list-wrapper").animate({ scrollTop: scrollLength })
+          console.log($("#task-list-page"))
+        }, 500);
       });
 
-      return this;
+      // return this;
 
     }
 
