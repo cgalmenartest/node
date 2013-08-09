@@ -12,6 +12,11 @@ define([
         
         initialize: function (projectObject) {
             this.id = projectObject.id;
+            var _this = this;
+            app.events.on("taskSave:success", function () {
+                _this.fetch();
+                app.events.trigger("task:render");
+            })
         },
 
         url: function () {

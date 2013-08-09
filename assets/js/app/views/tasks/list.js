@@ -24,8 +24,18 @@ define([
       var template = _.template(TaskListTemplate, data);
       this.$el.html(template).hide().fadeIn();
       new TaskFormView().render()
+
+      app.events.on("task:render", function () {
+        // Hard wipe out the modal upon the rendering of a task (success)
+        $(".modal a[href='#addTask']").modal('hide');
+        $('body').removeClass('modal-open');
+        $('.modal-backdrop').remove();
+      });
+
       return this;
+
     }
+
   });
 
   return TaskListView;

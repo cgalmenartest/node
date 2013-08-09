@@ -27,7 +27,7 @@ define([
           description: description 
           }, { 
           success: function (data) { 
-            console.log(data) 
+            app.events.trigger("taskSave:success")
           }, 
           error: function (data) { 
             console.log(data) 
