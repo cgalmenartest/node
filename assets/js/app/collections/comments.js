@@ -1,10 +1,9 @@
 define([
-  'jquery',
   'underscore',
   'backbone',
   '../models/comment',
   '../views/comments/list'
-], function ($, _, Backbone, CommentModel, CommentListView) {
+], function (_, Backbone, CommentModel, CommentListView) {
   'use strict';
 
   var CommentsCollection = Backbone.Collection.extend({
