@@ -19,7 +19,7 @@ define([
 
 			app.events.on("comment:render", function () {
 				$(".comment-content").val("");
-				$("html, body").animate({ scrollTop: $(document).height() }, "slow");
+				$("html, body").animate({ scrollTop: $(document).height() });
 			});
 		}
 
