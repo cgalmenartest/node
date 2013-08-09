@@ -11,7 +11,7 @@ module.exports = {
         defaultsTo: 'draft'
     },
     // user id of the task owner
-    ownerId: 'INTEGER',
+    userId: 'INTEGER',
     // project id of the parent project
     projectId: 'INTEGER',
     // title of the task

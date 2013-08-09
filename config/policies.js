@@ -14,7 +14,7 @@ module.exports.policies = {
 
   // default require authentication
   // see api/policies/authenticated.js
-  '*': 'authenticated',
+  '*': ['authenticated', 'addUserId'],
 
   // whitelist the auth and main controllers
   'auth':
