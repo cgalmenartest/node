@@ -9,6 +9,10 @@ define([
 
 		el: "#container",
 
+		events: {
+			"submit #profile-form": "post"
+		},
+
 		initialize: function () {
 			this.render();
 		},
@@ -18,6 +22,12 @@ define([
 					template 	= _.template(ProfileTemplate, data);
 
 			this.$el.html(template)
+		},
+
+		post: function (e) {
+			if (e.preventDefault()) e.preventDefault();
+			
+			alert("Profile post button hit.  Modify from here");
 		}
 
 	});

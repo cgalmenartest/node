@@ -2,6 +2,10 @@
 	<h1>Profile for <%- username %></h1>
 </div>
 
+<!-- Here you can add the photo once you get the form post done 
+	So that you can test it is working.  Just so you know it is in the same fashion here
+  <% attribute_key_name %> -->
+
 Just to show this is working (for Joe):
 <ul>
 	<li><strong>Username:</strong> <%- username %></li>
@@ -10,3 +14,14 @@ Just to show this is working (for Joe):
 	<li><strong>User is admin?</strong> <%- isAdmin %></li>
 </ul>
 
+<hr />
+
+<!-- Super basic form with almost no styles so go ahead and do any modifications you need here -->
+<form action="" id="profile-form">
+
+	<input type="file" class="form-control" /> 
+	
+	<div class="seperator"></div>
+
+	<input type="submit" class="btn btn-primary">
+</form>
