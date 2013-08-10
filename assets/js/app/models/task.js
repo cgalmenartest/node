@@ -17,6 +17,18 @@ define([
       this.initializeTaskSave();
     },
 
+    validate: function (attrs) {
+      var errors = new Array();
+      if (_.isEmpty(attrs.title) === true) {
+        errors.push({
+          type: 'form',
+          attribute: 'title',
+          message: 'Please enter a title'
+        })
+        return;
+      }
+    },
+
     initializeTaskSave: function () {
       var _this = this;
 
