@@ -35,7 +35,6 @@ define([
 
         title       = $("#task-title").val();
         projectId   = parseInt($(".project-id").text());
-        console.log(projectId)
         description = $("#task-description").val()
 
         this.model.trigger("task:save", title, projectId, description);
