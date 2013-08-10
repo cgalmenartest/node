@@ -20,12 +20,47 @@
 /*****************
 =  PROJECTS 
 ******************/
-#project-form {
-    float: right;
+.add-project {
+	float: right;
+}
+
+.project-background-image {
+	width: 100%;
+	height: 40%;
+	background: url('http://placehold.it/180x180');
+}
+
+.project-list-description {
+	height: 60px;
+	margin: 10px;
+	font-size: 13px;
+	overflow: hidden;
+	word-wrap: break-word;
+}
+
+div.project-title {
+	position: relative;
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+a[class='project'] {
+	position: absolute;
+	bottom: 5px;
+	left: 5px;
+}
+
+#project-form input {
+	margin: 5px 0 5px 0;
 }
 
 #project-form > input[type='submit'] {
     outline: none;
+}
+
+.project-image {
+	margin: 5px 0 0 8px;
 }
 
 #project-list li {
@@ -38,9 +73,10 @@
 	overflow: hidden;
 	border: 1px #aaa solid;
 	float: left;
-	margin: 0 0 10px 15px;
-	-webkit-box-shadow: 0px 0px 2px #ccc;
+	-webkit-box-shadow: 0px 0px 4px 0px #eee;
 	border-radius: 5px;
+	margin-right: 20px;
+	margin-bottom: 10px;
 }
 
 /*****************
