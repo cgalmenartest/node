@@ -5,8 +5,9 @@ define([
   'views/marketing/home',
   'collections/projects',
   'collections/tasks',
-  'views/tasks/list'
-], function ($, _, Backbone, HomeView, ProjectsCollection, TasksCollection, TaskListView) {
+  'views/tasks/list',
+  'views/profile/show'
+], function ($, _, Backbone, HomeView, ProjectsCollection, TasksCollection, TaskListView, ProfileView) {
   'use strict';
   
   var AppRouter = Backbone.Router.extend({
@@ -15,6 +16,7 @@ define([
       // Expects #home, etc .....
       '/'             : 'home',
       'home'          : 'home',
+      'user'          : 'profile',
       'projects'      : 'listProjects',
       '*actions'      : 'defaultAction'
     },
@@ -22,6 +24,10 @@ define([
     home: function () {
       console.log("Initializing home view");
       new HomeView();
+    },
+
+    profile: function () {
+      var profile = new ProfileView();
     },
 
     listProjects: function () {
