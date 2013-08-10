@@ -7,7 +7,7 @@
  */
 
 module.exports = {
-
+  tableName: 'midas_user',
   attributes: {
     // Login information
     username: 'STRING',

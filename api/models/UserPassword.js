@@ -13,7 +13,7 @@ module.exports = {
     // Reference to the user object
     userId: 'INTEGER',
     // For when local authentication is used
-    password: 'STRING',
+    password: 'STRING'
 
   }
 
