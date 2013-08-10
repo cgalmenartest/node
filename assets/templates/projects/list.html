@@ -1,23 +1,26 @@
 <div class="page-header">
-    <h1>Project Listings</h1>
-</div>
+    <h1>Available Projects</h1>
 
-<form action="" id="project-form">
-    <fieldset>
-        <input type="text" class="project-name form-control" placeholder="Project name" />
-        <div class="clearfix"></div>
-        <input type="text" class="project-description form-control" placeholder="Project description" />
-        <div class="clearfix"></div>
-        <input type="submit" class="btn btn-primary pull-right" id="submit" value="Add"/>
-    </fieldset>
-</form>
+    <a href="#addProject" class="add-project" data-toggle="modal">Add Task</a>
+    <div class="clearfix"></div>
+</div>
 
 <ul id="project-list">
     <% _.each(projects, function(project) { %>
         <li data-project-id="<%- project.id %>" class="project-box">
-            <a class="project" style="cursor: pointer; cursor: hand;">
-                <div class="project-title"><%- project.title %></a> <br />
+
+            <div class="project-background-image">
+                <div class="project-title">
+                    <a href="" class="project" style="cursor: pointer; cursor: hand;">
+                        <%- project.title %>
+                    </a>
+                </div>
+
+            </div>
+            
+            <div class="project-list-description">
                 <%- project.description %>
+            </div>
         </li>
     <% }); %>
 </ul>
@@ -39,4 +42,8 @@
         <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
         <button class="btn btn-primary">Save changes</button>
     </div>
+</div>
+
+<!-- Doesn't matter where this is, due to the fact that it will render a modal inside of it -->
+<div id="project-form-wrapper">
 </div>

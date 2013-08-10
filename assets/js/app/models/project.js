@@ -16,7 +16,6 @@ define([
       _.extend(this, Backbone.Events);
       this.initializeModelSave();
       this.initializeProjectShow();
-
     },
 
     urlRoot: '/project',
@@ -31,7 +30,7 @@ define([
         }, { 
           success: function () {
             // Implement this event trigger in the view.
-            app.events.trigger("project:success");
+            app.events.trigger("projectSave:success");
           }, 
           error: function () {
             // Implement this event trigger in the view.

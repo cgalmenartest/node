@@ -17,7 +17,12 @@ define([
         },
 
         initialize: function () {
-            this.validate();
+            var _this = this;
+            app.events.on("projectSave:success", function () {
+                _this.fetch();
+                app.events.trigger("project:render");
+            })
+            // this.validate();
         },
         
         validate: function (attrs) {
