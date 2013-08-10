@@ -19,18 +19,21 @@ define([
 		},
 
 		render: function () {
-			var data = {};
-			var template = _.template(CommentFormTemplate, data);
+			var data 			= {},
+					template 	= _.template(CommentFormTemplate, data);
+
 			this.$el.html(template);
 		},
 
 		post: function (e) {
 			if (e.preventDefault()) e.preventDefault();
-			var comment 		= $(".comment-content").val();
-			var projectId 	= parseInt($(".project-id").text());
+
+			var comment 		= $(".comment-content").val(),
+					projectId 	= parseInt($(".project-id").text()),
+					parentId;
 
 			if (this.options) {
-				var parentId = parseInt(this.options.parentId);
+				parentId = parseInt(this.options.parentId);
 			}
 
 			this.model = new CommentModel();

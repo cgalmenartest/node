@@ -12,7 +12,7 @@ define([
 		el: ".comment-list-wrapper",
 
 		events: {
-			"click .reply-to": "replyToComment"
+			"click .reply-to": "reply"
 		},
 
 		initialize: function (collection) {
@@ -30,7 +30,7 @@ define([
 			});
 		},
 
-		replyToComment: function (e) {
+		reply: function (e) {
 			if (e.preventDefault()) e.preventDefault();
 
 			new CommentForm({

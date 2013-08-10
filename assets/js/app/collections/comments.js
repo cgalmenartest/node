@@ -10,33 +10,26 @@ define([
     
     model: CommentModel,
     
-    initialize: function (projectObject) {
-      // Instance variable with the ID for the parent project.
+    initialize: function (projectObject) {      
       this.id = projectObject.id;
-
-      var _this = this;
-      app.events.on("commentSave:success", function () {
-        // This fetch calls the parse method automatically.
-        // So all we do here is wait for the save of a comment
-        // parse, and render.
-        app.events.trigger("comment:render");
-        _this.fetch();
-      })
+      this.initializeSaveListeners();
     },
 
     url: function () {
-      return '/comment/findAllByProjectId/' + this.id
+      return '/comment/findAllByProjectId/' + this.id;
+    },
+
+    initializeSaveListeners: function () {
+      var _this = this;
+      
+      app.events.on("commentSave:success", function () {
+        _this.fetch();
+        app.events.trigger("comment:render");
+      })
     },
 
     parse: function (response) {
-      new CommentListView({ comments: response.comments });
-
-      // _.each(response.comments, function(comment) { 
-      //   for (var i in comment) {
-      //     if comment['parentId'])
-      //   }
-      // })
-      
+      new CommentListView({ comments: response.comments });      
     }
 
   });
