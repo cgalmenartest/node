@@ -59,6 +59,7 @@ passport.use('local', new LocalStrategy(
         });
       } else {
         UserPassword.findOneByUserId(user.id, function (err, pwObj) {
+          if (err || !pwObj) { return done(null, false, { message: 'Invalid password'}); }
           bcrypt.compare(password, pwObj.password, function (err, res) {
             if (res === true) {
               sails.log.debug('User Found:', user);
