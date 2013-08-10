@@ -3,10 +3,7 @@ define([
 	'backbone',
 	'jquery',
 ], function ($, _, Backbone) {
-	var TasksMasterLayout = Backbone.View.Extend({
-
-	
-	});
+	var TasksMasterLayout = Backbone.View.Extend({});
 
 	return TasksMasterLayout;
 })
