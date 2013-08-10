@@ -12,8 +12,9 @@ define([
   '../../models/project',
   '../../collections/projects',
   '../../views/projects/show',
-  'text!../../../../templates/projects/list.html'
-], function ($, _, Backbone, ProjectModel, ProjectsCollection, ProjectShowView, projectListTemplate) {
+  'text!../../../../templates/projects/list.html',
+  '../../views/projects/form'
+], function ($, _, Backbone, ProjectModel, ProjectsCollection, ProjectShowView, projectListTemplate, ProjectForm) {
   'use strict';
 
   var ProjectListView = Backbone.View.extend({
@@ -21,20 +22,18 @@ define([
     el: $("#container"),
 
     events: {
-      "submit #project-form": "post",
-      "click .project": "show"
-    },  
+      "click .add-project": "add",
+      "click .project"    : "show"
+    },
 
     initialize: function (collection) {
-              var _this = this;
+      var _this           = this;
       this.isRendered     = false;
       this.showRendered   = false;
       this.collection     = collection;
       this.model          = new ProjectModel();
 
-
-      app.events.on("project:success", function () {
-        _this.model.fetch();
+      app.events.on("project:render", function () { 
         _this.render();
       });
       this.render();
@@ -43,18 +42,18 @@ define([
     render: function () {
       var compiledTemplate = _.template(projectListTemplate, this.collection);
       this.$el.html(compiledTemplate).hide().fadeIn();
+
+      app.events.on("project:render", function () {
+        $(".modal a[href='#addProject']").modal('hide');
+        $("body").removeClass("modal-open");
+        $(".modal-backdrop").remove();
+      })
     },
 
-    post: function (e) {
-      e.preventDefault();
-
-      var title, description;
-
-      title       = $(".project-name").val();
-      description = $(".project-description").val();
-
-      this.model.trigger("project:post", title, description);
+    add: function () {
+      new ProjectForm({ model: this.model })
     },
+
 
     show: function (e) {
       if (this.showHasRendered) return;
@@ -102,4 +101,4 @@ define([
   });
 
   return ProjectListView;
-})
+});
