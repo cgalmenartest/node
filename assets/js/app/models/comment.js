@@ -22,15 +22,20 @@ define([
     initializeCommentSave: function () {
       var _this = this;
 
-      this.on("comment:save", function (comment, projectId) {
+      this.on("comment:save", function (parentId, comment, projectId) {
         // Comment content is saved in the DB as 'value' 
         // on the Comment table.
         _this.save({ 
+          parentId  : parentId,
           value     : comment,
           projectId : projectId
           }, { 
           success: function (data) { 
-            app.events.trigger("commentSave:success");
+            if (_this.attributes.parentId !== null) {
+              app.events.trigger("nestedCommentSave:success")
+            } else {
+              app.events.trigger("commentSave:success");
+            }
           }, 
           error: function (data) { 
             console.log(data) 
@@ -40,5 +45,5 @@ define([
     }
   });
 
-    return CommentModel;
+  return CommentModel;
 });

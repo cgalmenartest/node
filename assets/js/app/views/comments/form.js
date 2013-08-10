@@ -14,8 +14,8 @@ define([
 			"submit #comment-form": "post"
 		},
 
-		initialize: function () {
-
+		initialize: function (options) {
+			this.options = options;
 		},
 
 		render: function () {
@@ -26,11 +26,15 @@ define([
 
 		post: function (e) {
 			if (e.preventDefault()) e.preventDefault();
-			var comment 		= $(".comment-content").val(),
-					projectId 	= parseInt($(".project-id").text());
+			var comment 		= $(".comment-content").val();
+			var projectId 	= parseInt($(".project-id").text());
+
+			if (this.options) {
+				var parentId = parseInt(this.options.parentId);
+			}
 
 			this.model = new CommentModel();
-			this.model.trigger("comment:save", comment, projectId);
+			this.model.trigger("comment:save", parentId, comment, projectId);
 		}
 
 	});

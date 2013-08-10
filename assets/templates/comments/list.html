@@ -1,10 +1,20 @@
 <div class="comment-list-wrapper">
 	<ul class="comment-list">
+
 		<% _.each(comments, function (comment) { %>
 			<li><%- comment.value %></li>
+			
+			<div class="reply" class="pull-right clearfix">
+				<a class="reply-to" style="cursor: pointer; cursor: hand;" data-comment-id="<%- comment.id %>">Reply</a>
+			</div>
+					
 			<ul>
-				<li></li>
+			<% _.each(comment.children, function (childComment) { %>
+				<li><%- comment.value %></li>
+			<% }); %>
 			</ul>
+
+
 			<hr>
 		<% }); %>
 	</ul>

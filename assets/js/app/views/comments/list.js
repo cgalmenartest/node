@@ -3,10 +3,17 @@ define([
 	'underscore',
 	'backbone',
 	'../../collections/comments',
-	'text!../../../../templates/comments/list.html'
-], function ($, _, Backbone, CommentsCollection, CommentListTemplate) {
+	'text!../../../../templates/comments/list.html',
+	'../../views/comments/form'
+], function ($, _, Backbone, CommentsCollection, CommentListTemplate, CommentForm) {
 
 	var CommentListView = Backbone.View.extend({
+
+		el: ".comment-list-wrapper",
+
+		events: {
+			"click .reply-to": "replyToComment"
+		},
 
 		initialize: function (collection) {
 			this.collection = collection;
@@ -21,6 +28,15 @@ define([
 				$(".comment-content").val("");
 				$("html, body").animate({ scrollTop: $(document).height() });
 			});
+		},
+
+		replyToComment: function (e) {
+			if (e.preventDefault()) e.preventDefault();
+
+			new CommentForm({
+				el: $(e.currentTarget).parent(),
+				parentId: $(e.currentTarget).attr("data-comment-id")
+			}).render();
 		}
 
 	});

@@ -30,6 +30,13 @@ define([
 
     parse: function (response) {
       new CommentListView({ comments: response.comments });
+
+      // _.each(response.comments, function(comment) { 
+      //   for (var i in comment) {
+      //     if comment['parentId'])
+      //   }
+      // })
+      
     }
 
   });

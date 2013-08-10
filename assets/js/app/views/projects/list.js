@@ -69,7 +69,7 @@ define([
   
       // Get the model ID using the ID in the DOM.
       // Then instantiate a new project model passing in the ID to do a fetch()
-      id = $(".project.current").parent().parent().attr('data-project-id')
+      id = $(".project.current").parent().parent().parent().attr('data-project-id')
 
       $(".project-id").remove();
       var html = '<div class="project-id" style="display: none;">' +
