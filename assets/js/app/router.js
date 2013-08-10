@@ -6,8 +6,8 @@ define([
   'collections/projects',
   'collections/tasks',
   'views/tasks/list',
-  'views/profile/show'
-], function ($, _, Backbone, HomeView, ProjectsCollection, TasksCollection, TaskListView, ProfileView) {
+  'models/profile'
+], function ($, _, Backbone, HomeView, ProjectsCollection, TasksCollection, TaskListView, ProfileModel) {
   'use strict';
   
   var AppRouter = Backbone.Router.extend({
@@ -27,7 +27,8 @@ define([
     },
 
     profile: function () {
-      var profile = new ProfileView();
+      this.profile = new ProfileModel();
+      this.profile.trigger("profile:fetch");
     },
 
     listProjects: function () {

@@ -1,7 +1,8 @@
 define([
 	'underscore',
 	'backbone',
-], function (_, Backbone) {
+	'../views/profile/show'
+], function (_, Backbone, ProfileView) {
 
 	var ProfileModel = Backbone.Model.extend({
 
@@ -23,7 +24,7 @@ define([
 			this.on("profile:fetch", function () {
 				_this.fetch({
 					success: function (data) {
-						console.log(data);
+						var profileView = new ProfileView({ model: data });
 					},
 					error: function (data) {
 						console.log(data);

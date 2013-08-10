@@ -2,21 +2,21 @@ define([
 	'jquery',
 	'underscore',
 	'backbone',
-	'../../models/profile',
-	'text!../../../../templates/profile/show.html'
-], function ($, _, Backbone, ProfileModel, ProfileTemplate) {
+	'text!../../../../../templates/profile/show.html'
+], function ($, _, Backbone, ProfileTemplate) {
 
 	var ProfileShowView = Backbone.View.extend({
 
 		el: "#container",
 
 		initialize: function () {
-			this.model = new ProfileModel();
-			this.model.trigger("profile:fetch");
+			this.render();
 		},
 
 		render: function () {
-			var template = _.template(ProfileTemplate, this.model.toJSON());
+			var data 			= this.model.toJSON()[0]
+					template 	= _.template(ProfileTemplate, data);
+
 			this.$el.html(template)
 		}
 
