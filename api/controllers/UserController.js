@@ -39,7 +39,7 @@ module.exports = {
       var params = _.extend(req.body || {}, req.params);
       if (params.name) { user.name = params.name; }
       if (params.email) { user.email = params.email; }
-      if (params.photoId) { user.photoUrl = params.photoId; }
+      if (params.photoId) { user.photoId = params.photoId; }
       if (params.photoUrl) { user.photoUrl = params.photoUrl; }
       sails.log.debug('User Update:', user);
       user.save(function (err) {
