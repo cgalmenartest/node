@@ -54,13 +54,13 @@ module.exports = {
   photo: function(req, res) {
     if (req.route.params.id) {
       User.findOneById(req.route.params.id, function (err, user) {
-        if (err) { return res.send(500); }
+        if (err || !user) { return res.redirect('/assets/images/default-user-icon-profile.png'); }
         if (user.photoId) {
-          res.redirect('/file/get' + user.photoId);
+          return res.redirect('/file/get' + user.photoId);
         } else if (user.photoUrl) {
-          res.redirect(user.photoUrl);
+          return res.redirect(user.photoUrl);
         } else {
-          res.redirect('default photo');
+          return res.redirect('/images/default-user-icon-profile.png');
         }
       });
     }
