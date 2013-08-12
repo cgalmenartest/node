@@ -5,6 +5,7 @@
     "description": "Crowdsourcing Platform and Collaboration Tool",
     "dependencies": {
         "sails": "0.9.3",
+        "async": "0.2.9",
         "grunt": "0.4.1",
         "ejs": "0.8.4",
         "underscore": "1.x",
