@@ -31,6 +31,7 @@ module.exports.policies = {
   UserController : {
     '*': false,
     'index': true,
+    'photo': true,
     'find': 'admin',
     'findAll': 'admin'
   },

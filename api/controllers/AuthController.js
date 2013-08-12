@@ -12,28 +12,35 @@ var passport = require('passport');
  * remote server.
  */
 function authenticate(req, res, strategy) {
-  passport.authenticate(strategy, function(err, user, info)
-  {
-    if ((err) || (!user))
+  if (req.user) {
+    passport.authorize(strategy, function(err, user, info)
     {
-      sails.log.debug('Authentication Error:', err, info);
-      res.redirect('/auth');
-      return;
-    }
-
-    req.logIn(user, function(err)
+      res.redirect('/#user');
+    })(req, res);
+  } else {
+    passport.authenticate(strategy, function(err, user, info)
     {
-      if (err)
+      if ((err) || (!user))
       {
         sails.log.debug('Authentication Error:', err, info);
         res.redirect('/auth');
         return;
       }
 
-      res.redirect('/#projects');
-      return;
-    });
-  })(req, res);
+      req.logIn(user, function(err)
+      {
+        if (err)
+        {
+          sails.log.debug('Authentication Error:', err, info);
+          res.redirect('/auth');
+          return;
+        }
+
+        res.redirect('/#projects');
+        return;
+      });
+    })(req, res);
+  }
 };
 
 /* Process any OAuth based authentication.
@@ -68,6 +75,9 @@ module.exports = {
   },
   myusa: function(req, res) {
     processOAuth(req, res, 'myusa', {scope: 'profile'});
+  },
+  linkedin: function(req, res) {
+    processOAuth(req, res, 'linkedin', {scope: ['r_basicprofile', 'r_fullprofile', 'r_emailaddress', 'r_network']});
   },
 
   /* Logout user from session

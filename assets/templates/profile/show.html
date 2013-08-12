@@ -1,16 +1,27 @@
 <div class="page-header">
-	<h1>Profile for <%- username %></h1>
+	<h1>Profile for <% if (name) { %><%- name %><% } else { %><%- username %><% } %></h1>
 </div>
 
 <!-- Here you can add the photo once you get the form post done 
 	So that you can test it is working.  Just so you know it is in the same fashion here -->
 
-Just to show this is working (for Joe):
+<% if (photoId) { %>
+<img src="/file/get/<%- photoId %>"/>
+<% } else { if (photoUrl) { %>
+<img src="<%- photoUrl %>"/>
+<% } } %>
 <ul>
 	<li><strong>Username:</strong> <%- username %></li>
+	<li><strong>Full Name:</strong> <%- name %></li>
 	<li><strong>User created at:</strong> <%- createdAt %></li>
 	<li><strong>ID for user:</strong> <%- id %></li>
 	<li><strong>User is admin?</strong> <%- isAdmin %></li>
+	<li><% if (_.contains(auths, 'linkedin')) { %>
+		<strong>Connected to LinkedIn.</strong>
+		<% } else { %>
+		<strong>Not connected to LinkedIn.</strong>
+		<a href="/auth/linkedin">Connect</a>
+		<% } %>
 </ul>
 
 <hr />

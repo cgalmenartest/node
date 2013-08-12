@@ -3,7 +3,8 @@ var       passport = require('passport')
          , request = require('request')
    , LocalStrategy = require('passport-local').Strategy
   , OAuth2Strategy = require('passport-oauth').OAuth2Strategy
-   , MyUSAStrategy = require('passport-myusa').Strategy;
+   , MyUSAStrategy = require('passport-myusa').Strategy
+, LinkedInStrategy = require('passport-linkedin').Strategy;
 
 // Passport session setup.
 // To support persistent login sessions, Passport needs to be able to
@@ -73,7 +74,7 @@ passport.use('local', new LocalStrategy(
   }
 ));
 
-function tokenFlow(provider, tokens, providerUser, done) {
+function tokenFlow(provider, req, tokens, providerUser, done) {
   // check if the remote credentials match an existing user
   UserAuth.find({ where: { providerId: providerUser.id, provider: provider } }, function (err, userAuth) {
     if (!userAuth) { userAuth = []; }
@@ -83,12 +84,10 @@ function tokenFlow(provider, tokens, providerUser, done) {
     if (userAuth.length === 0) {
       var user = {
         name: providerUser.displayName,
-        photoUrl: providerUser.photo
+        photoUrl: providerUser.photoUrl
       };
-      // create user
-      User.create(user).done(function (err, user) {
-        sails.log.debug('Created User: ', user);
-        if (err) { return done(null, false, { message: 'Unable to create user.' }); }
+
+      function user_cb(err, user) {
         var creds = {
           userId: user['id'],
           provider: provider,
@@ -113,7 +112,23 @@ function tokenFlow(provider, tokens, providerUser, done) {
             return done(null, user);
           }
         });
-      });
+      }
+
+      if (req.user) {
+        if (!req.user[0].photoId && !req.user[0].photoUrl && providerUser.photoUrl) {
+          req.user[0].photoUrl = providerUser.photoUrl;
+          req.user[0].save(function (err) {
+            user_cb(null, req.user[0]);
+          });
+        }
+      } else {
+        // create user
+        User.create(user).done(function (err, user) {
+          sails.log.debug('Created User: ', user);
+          if (err) { return done(null, false, { message: 'Unable to create user.' }); }
+          user_cb(err, user);
+        });
+      }
     }
     // Look up the user by the provider id
     else {
@@ -157,6 +172,7 @@ passport.use('oauth2', new OAuth2Strategy({
       providerUser.id = providerUser.user_id;
       providerUser.emails = [ {value: providerUser.email, type:'work'} ];
       providerUser.displayName = providerUser.name;
+      providerUser.photoUrl = providerUser.photo;
       // Send through standard OAuth token flow to store credentials
       tokenFlow('oauth2',
                 { accessToken: accessToken,
@@ -173,6 +189,7 @@ passport.use('oauth2', new OAuth2Strategy({
 //   credentials (in this case, an accessToken, refreshToken, and MyUSA
 //   profile), and invoke a callback with a user object.
 passport.use('myusa', new MyUSAStrategy({
+    passReqToCallback: true,
     clientID: process.env.MYUSA_CLIENT_ID  || 'CLIENT_ID',
     clientSecret: process.env.MYUSA_CLIENT_SECRET || 'CLIENT_SECRET',
     callbackURL: 'http://localhost/auth/myusa/callback',
@@ -185,8 +202,33 @@ passport.use('myusa', new MyUSAStrategy({
     //tokenURL: 'http://172.23.195.136:3000/oauth/authorize',
     //profileURL: 'http://172.23.195.136:3000/api/profile'
   },
-  function(accessToken, refreshToken, profile, done) {
+  function(req, accessToken, refreshToken, profile, done) {
     tokenFlow('myusa',
+          req,
+          { accessToken: accessToken,
+            refreshToken: refreshToken },
+          profile,
+          done
+          );
+  }
+));
+
+// Use the LinkedIn within Passport.
+//   Strategies in Passport require a `verify` function, which accept
+//   credentials (in this case, an accessToken, refreshToken, and MyUSA
+//   profile), and invoke a callback with a user object.
+passport.use('linkedin', new LinkedInStrategy({
+    passReqToCallback: true,
+    profileFields: ['id', 'first-name', 'last-name', 'formatted-name', 'email-address', 'headline', 'picture-url'],
+    consumerKey: process.env.LINKEDIN_CLIENT_ID  || 'CLIENT_ID',
+    consumerSecret: process.env.LINKEDIN_CLIENT_SECRET || 'CLIENT_SECRET',
+    callbackURL: 'http://localhost/auth/linkedin/callback',
+  },
+  function(req, accessToken, refreshToken, profile, done) {
+    profile.photoUrl = profile._json.pictureUrl;
+    console.log('LINKEDIN:', profile);
+    tokenFlow('linkedin',
+          req,
           { accessToken: accessToken,
             refreshToken: refreshToken },
           profile,

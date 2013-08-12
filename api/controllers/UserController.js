@@ -13,28 +13,56 @@ module.exports = {
     }
     // Get information about the currently logged in user
     if (req.route.method === 'get') {
-      sails.log.debug('User Get:', user);
+
       if (req.route.params.id) {
         User.findOneById(req.route.params.id, function (err, user) {
           if (err) { return res.send(400, {message:'Error looking up user'}); }
+          sails.log.debug('User Get:', user);
           return res.send(user);
         });
       }
-      return res.send(req.user[0]);
+      // Look up which providers the user has authorized
+      UserAuth.findByUserId(req.user[0].id, function (err, auths) {
+        if (err) { return res.send(400, {message:'Error looking up user authorizations'}); }
+        var user = req.user[0];
+        user.auths = [];
+        for (var i = 0; i < auths.length; i++) {
+          user.auths.push(auths[i].provider);
+        }
+        sails.log.debug('User Get:', user);
+        return res.send(user);
+      });
     }
     // Update information about the currently logged in user
     else if (req.route.method === 'put') {
       var user = req.user[0];
-      if (req.params.name) { user.name = req.params.name; }
-      if (req.params.email) { user.email = req.params.email; }
-      if (req.params.photoId) { user.photoUrl = req.params.photoId; }
-      if (req.params.photoUrl) { user.photoUrl = req.params.photoUrl; }
+      var params = _.extend(req.body || {}, req.params);
+      if (params.name) { user.name = params.name; }
+      if (params.email) { user.email = params.email; }
+      if (params.photoId) { user.photoUrl = params.photoId; }
+      if (params.photoUrl) { user.photoUrl = params.photoUrl; }
       sails.log.debug('User Update:', user);
       user.save(function (err) {
         if (err) { return res.send(400, {message:'Error while saving user.'}) }
         return res.send(user);
       });
+    } else {
+      return res.send(400, {message:'Invalid Operation'});
     }
-    return res.send(400, {message:'Invalid Operation'});
+  },
+
+  photo: function(req, res) {
+    if (req.route.params.id) {
+      User.findOneById(req.route.params.id, function (err, user) {
+        if (err) { return res.send(500); }
+        if (user.photoId) {
+          res.redirect('/file/get' + user.photoId);
+        } else if (user.photoUrl) {
+          res.redirect(user.photoUrl);
+        } else {
+          res.redirect('default photo');
+        }
+      });
+    }
   }
 };
