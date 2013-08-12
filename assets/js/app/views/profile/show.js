@@ -1,36 +1,68 @@
 define([
-	'jquery',
-	'underscore',
-	'backbone',
-	'text!../../../../../templates/profile/show.html'
-], function ($, _, Backbone, ProfileTemplate) {
+  'jquery',
+  'dropzone',
+  'underscore',
+  'backbone',
+  'text!../../../../../templates/profile/show.html'
+], function ($, dropzone, _, Backbone, ProfileTemplate) {
 
-	var ProfileShowView = Backbone.View.extend({
+  var ProfileShowView = Backbone.View.extend({
 
-		el: "#container",
+    el: "#container",
 
-		events: {
-			"submit #profile-form": "post"
-		},
+    // events: {
+    //  "submit #profile-form": "post"
+    // },
 
-		initialize: function () {
-			this.render();
-		},
+    initialize: function () {
 
-		render: function () {
-			var data 			= this.model.toJSON()
-					template 	= _.template(ProfileTemplate, data);
+      this.render();
+      var _this = this;
 
-			this.$el.html(template)
-		},
+      var myDropzone = new dropzone("#fileupload", {
+        url: "/file/create",
+      });
+      myDropzone.on("addedfile", function(file) {
+        // no need for the dropzone preview
+        $('.dz-preview').hide();
+      });
+      myDropzone.on("sending", function(file) {
+        $('#file-upload-progress-container').show();
+      });
+      // Show the progress bar
+      myDropzone.on("uploadprogress", function(file, progress, bytesSent) {
+        console.log(progress);
+        $('#file-upload-progress').css(
+          'width',
+          progress + '%'
+        );
+      });
+      myDropzone.on("success", function(file, data) {
+        _this.model.trigger("profile:updateWithPhotoId", data);
+      });
+      myDropzone.on("thumbnail", function(file) { });
 
-		post: function (e) {
-			if (e.preventDefault()) e.preventDefault();
-			
-			alert("Profile post button hit.  Modify from here");
-		}
+      this.model.on("profile:updatedPhoto", function (data) {
+        var url;
+        if (data.get("photoId")) {
+          url = '/file/get/' + data.get("photoId");
+        } else {
+          url = data.get("photoUrl");
+        }
+        $("#profile-photo").attr("src",url);
+        $('#file-upload-progress-container').hide();
+      });
 
-	});
+    },
 
-	return ProfileShowView;
+    render: function () {
+      var data      = this.model.toJSON()
+          template  = _.template(ProfileTemplate, data);
+
+      this.$el.html(template)
+    },
+
+  });
+
+  return ProfileShowView;
 });

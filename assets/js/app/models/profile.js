@@ -7,11 +7,10 @@ define([
 	var ProfileModel = Backbone.Model.extend({
 
 		defaults: {
-			username	: null,
-			photo			: null
+			username	: null
 		},
 
-		urlRoot: '/user',
+		urlRoot: '/user/index',
 
 		initialize: function () {
 			this.initializeProfileSave();
@@ -35,6 +34,20 @@ define([
 
 		initializeProfileSave: function () {
 			var _this = this;
+
+			this.on("profile:updateWithPhotoId", function(file) {
+				var _self = this;
+				_this.save({
+					photoId: file['id']
+				}, {
+				success: function (data) {
+					_this.trigger("profile:updatedPhoto", data);
+				},
+				error: function (data) {
+					console.log(data);
+				}
+				});
+			});
 
 			this.on("profile:save", function (serializedProfileForm) {
 				console.log(serializedProfileForm);

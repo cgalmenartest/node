@@ -6,6 +6,7 @@ app.events  = {};
 require.config({
     paths: {
         'jquery': '../vendor/jquery',
+        'dropzone': '../vendor/dropzone-amd-module',
         'underscore': '../vendor/underscore',
         'backbone': '../vendor/backbone',
         'bootstrap': '../vendor/bootstrap',

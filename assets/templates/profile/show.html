@@ -2,14 +2,8 @@
 	<h1>Profile for <% if (name) { %><%- name %><% } else { %><%- username %><% } %></h1>
 </div>
 
-<!-- Here you can add the photo once you get the form post done 
-	So that you can test it is working.  Just so you know it is in the same fashion here -->
-
-<% if (photoId) { %>
-<img src="/file/get/<%- photoId %>"/>
-<% } else { if (photoUrl) { %>
-<img src="<%- photoUrl %>"/>
-<% } } %>
+<div class="row">
+	<div class="col-8">
 <ul>
 	<li><strong>Username:</strong> <%- username %></li>
 	<li><strong>Full Name:</strong> <%- name %></li>
@@ -24,14 +18,20 @@
 		<% } %>
 </ul>
 
-<hr />
+	</div>
+	<div class="col-4">
+<% if (photoId) { %>
+<img id="profile-photo" src="/file/get/<%- photoId %>" style="max-width: 150px; max-height: 150px;"/>
+<% } else { if (photoUrl) { %>
+<img id="profile-photo" src="<%- photoUrl %>" style="max-width: 150px; max-height: 150px;"/>
+<% } } %>
+<br/>
+<div id="fileupload" style="margin-top: 10px;" class="btn btn-primary">Change Photo</div><br/>
+<div id="file-upload-progress-container" style="margin-top: 10px; display: none;" class="progress progress-striped active">
+  <div id="file-upload-progress" class="progress-bar" style="width: 0"></div>
+</div>
 
-<!-- Super basic form with almost no styles so go ahead and do any modifications you need here -->
-<form action="" id="profile-form">
-
-	<input type="file" class="form-control" /> 
-	
-	<div class="seperator"></div>
-
-	<input type="submit" class="btn btn-primary">
 </form>
+
+  </div>
+</div>
