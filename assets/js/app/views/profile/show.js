@@ -18,7 +18,7 @@ define([
 		},
 
 		render: function () {
-			var data 			= this.model.toJSON()[0]
+			var data 			= this.model.toJSON()
 					template 	= _.template(ProfileTemplate, data);
 
 			this.$el.html(template)
