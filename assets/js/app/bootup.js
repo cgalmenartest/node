@@ -1,6 +1,7 @@
 // Globals and Constants
-window.app  = {};
-app.events  = {};
+window.app          = {};
+app.events          = {};
+window.activeViews  = [];
 
 // Require setup and config
 require.config({

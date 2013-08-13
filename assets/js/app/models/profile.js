@@ -35,6 +35,7 @@ define([
 		initializeProfileSave: function () {
 			var _this = this;
 
+
 			this.on("profile:updateWithPhotoId", function(file) {
 				var _self = this;
 				_this.save({
@@ -51,12 +52,14 @@ define([
 
 			this.on("profile:save", function (serializedProfileForm) {
 				console.log(serializedProfileForm);
+
 				_this.save({
 					// db : local name
-					photo: photo
+					photoId: photoId
 				}, { 	
 				success: function (data) { 
 					console.log(data);
+					this.trigger("profilePhoto:update", data);
 				},
 				error: function (data) {
 					console.log(data);

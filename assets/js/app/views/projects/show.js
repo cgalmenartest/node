@@ -19,16 +19,26 @@ define([
     },
 
     render: function (data) {
+      var _this = this;
+
       if (this.isRendered) return;
       this.isRendered = true;
       
       var compiledTemplate, 
       id = parseInt($(".project-id").text());
 
-      this.tasks = new TaskCollection({ id: id });
-      this.tasks.fetch();
+      if (!this.tasks) {
+        this.tasks = new TaskCollection({ id: id });
+        this.tasks.fetch();
+      } else { 
+        this.tasks.fetch();
+      }
 
-      this.comments = new CommentsCollection({ id: id })
+      // this.comments.fetch();
+
+      if (!this.comments) {
+        this.comments = new CommentsCollection({ id: id })
+      }
       this.comments.fetch();
 
       compiledTemplate = _.template(projectShowTemplate, data);

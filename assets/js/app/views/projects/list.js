@@ -31,7 +31,7 @@ define([
       this.isRendered     = false;
       this.showRendered   = false;
       this.collection     = collection;
-      this.model          = new ProjectModel();
+      this.model = new ProjectModel();
 
       app.events.on("project:render", function () { 
         _this.render();
@@ -77,6 +77,7 @@ define([
                 '</div>';
         $("body").append(html);
 
+      // window.location.hash = "#projects/" + id;
       // Experimenting
       for (var i in this.model.attributes) { this.isNull = this.model.attributes[i] === null; }
 

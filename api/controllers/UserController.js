@@ -56,7 +56,7 @@ module.exports = {
       User.findOneById(req.route.params.id, function (err, user) {
         if (err || !user) { return res.redirect('/assets/images/default-user-icon-profile.png'); }
         if (user.photoId) {
-          return res.redirect('/file/get' + user.photoId);
+          return res.redirect('/file/get/' + user.photoId);
         } else if (user.photoUrl) {
           return res.redirect(user.photoUrl);
         } else {

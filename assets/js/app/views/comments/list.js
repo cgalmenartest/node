@@ -21,6 +21,7 @@ define([
 		},
 
 		render: function () {
+			console.log(this.collection);
 			compiledTemplate = _.template(CommentListTemplate, this.collection)
 			$(".comment-list-wrapper").html(compiledTemplate);
 

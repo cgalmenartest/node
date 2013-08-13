@@ -171,6 +171,7 @@ a[class='project'] {
 
 ul.comment-list > li {
 	list-style: none;
+	position: relative;
 }
 
 .comment-list-wrapper {
@@ -178,11 +179,7 @@ ul.comment-list > li {
 }
 
 .comment-list {
-	width: 900px;
-}
-
-.comment-content {
-	margin-top: 20px;
+	width: 870px;
 }
 
 .comment-form-wrapper {
@@ -193,4 +190,42 @@ ul.comment-list > li {
 	float: right;
 	margin-top: 10px;
 	margin-bottom: -10px;
+}
+
+.user-username {
+	font-size: 16px;
+	font-weight: bold;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+.comment-created-at {
+	font-size: 11px;
+	color: #000;
+}
+
+.comment-content {
+	/*padding: 10px;*/
+	font-size: 14px;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+.comment-item {
+	overflow: hidden;
+}
+
+.user-image > img {
+	width: 100px;
+	margin-bottom: 10px;
+}
+
+.comment-inner {
+	padding: 20px;
+}
+
+.reply-to {
+	cursor: pointer;
+	cursor: hand;
+	font-size: 14px;
+	position: absolute;
+	bottom: 5px;
 }

@@ -50,7 +50,9 @@ define([
     $(".nav li").on("click", function () {
       $(".nav li").removeClass("active");
       $(this).addClass("active");
-    })
+    });
+
+    // window.location.hash === "" ? new AppRouter({routes: { '': 'home' }}) : '';
   }
 
   return {
