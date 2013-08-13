@@ -88,6 +88,20 @@ a[class='project'] {
 	font-size: 17px;
 }
 
+.nopadding {
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.project-people-bar {
+	width: 100%;
+	background-color: #303030;
+}
+
+.project-people {
+	max-height: 40px;
+}
+
 #project-form input {
 	margin: 5px 0 5px 0;
 }
