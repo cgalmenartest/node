@@ -1,9 +1,21 @@
-<div class="page-header">
+<div class="row">
+  <% if (data.get("coverId")) { %>
+  <div class="col-12" id="project-header" style="background-image:url('/file/get/<%= data.get("coverId") %>');">
+  <% } else { %>
+  <div class="col-12" id="project-header">
+  <% } %>
     <h1 class="project-title"><%= data.get("title") %></h1>
+    <% if (data.get("isOwner")) { %>
+    <div id="fileupload" class="btn btn-primary"><i class="icon-camera icon-large" title="Change Cover Photo"></i></div>
+    <div id="file-upload-progress-container" style="display: none;" class="progress progress-striped active">
+      <div id="file-upload-progress" class="progress-bar" style="width: 0"></div>
+    </div>
+    <% } else { %><div id="fileupload" style="display: none;"></div><% } %>
+
+  </div>
 </div>
 
 <div class="project-description">
-	<strong>Description:</strong>
 	<div><%= data.get("description") %></div>
 </div>
 

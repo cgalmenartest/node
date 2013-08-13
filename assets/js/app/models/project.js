@@ -1,6 +1,6 @@
 define([
   'underscore',
-  'backbone'
+  'backbone',
   // '../collections/tasks'
 ], function (_, Backbone) {
   'use strict';
@@ -22,6 +22,19 @@ define([
 
     initializeModelSave: function () {
       var _this = this;
+
+      this.on("project:updateWithPhotoId", function(file) {
+        _this.save({
+          coverId: file['id']
+        }, {
+        success: function (data) {
+          _this.trigger("project:updatedPhoto", data);
+        },
+        error: function (data) {
+          console.log(data);
+        }
+        });
+      });
 
       this.on("project:post", function (title, description) {
         _this.save({
