@@ -38,14 +38,11 @@ define([
       app.events.on("project:render", function () {
         _this.collection.fetch({ success: function () { _this.render(); }})
       });
-      // this.collection.on("add", this.render());
-      // this.listenTo(this.collection, "add", this.render());
-      // this.render();
     },
 
     render: function () {
       var data, compiledTemplate;
-      console.log(this.collection.toJSON())
+
       data = { projects: this.collection.toJSON()  }
 
       compiledTemplate = _.template(projectListTemplate, data);
@@ -87,7 +84,6 @@ define([
                 '</div>';
         $("body").append(html);
 
-      // window.location.hash = "#projects/" + id;
       // Experimenting
       for (var i in this.model.attributes) { this.isNull = this.model.attributes[i] === null; }
 
