@@ -7,6 +7,7 @@
 
 define([
   'jquery',
+  '../../../vendor/jquery.dotdotdot',
   'underscore',
   'backbone',
   '../../models/project',
@@ -14,7 +15,7 @@ define([
   '../../views/projects/show',
   'text!../../../../templates/projects/list.html',
   '../../views/projects/form'
-], function ($, _, Backbone, ProjectModel, ProjectsCollection, ProjectShowView, projectListTemplate, ProjectForm) {
+], function ($, dotdotdot, _, Backbone, ProjectModel, ProjectsCollection, ProjectShowView, projectListTemplate, ProjectForm) {
   'use strict';
 
   var ProjectListView = Backbone.View.extend({
@@ -26,28 +27,37 @@ define([
       "click .project"    : "show"
     },
 
-    initialize: function (collection) {
-      var _this           = this;
-      this.isRendered     = false;
-      this.showRendered   = false;
-      this.collection     = collection;
+    initialize: function () {
+      var _this = this;
+
       this.model = new ProjectModel();
 
-      app.events.on("project:render", function () { 
-        _this.render();
+      this.collection = new ProjectsCollection();
+      this.collection.fetch({ success: function() { _this.render() }});
+
+      app.events.on("project:render", function () {
+        _this.collection.fetch({ success: function () { _this.render(); }})
       });
-      this.render();
+      // this.collection.on("add", this.render());
+      // this.listenTo(this.collection, "add", this.render());
+      // this.render();
     },
 
     render: function () {
-      var compiledTemplate = _.template(projectListTemplate, this.collection);
-      this.$el.html(compiledTemplate).hide().fadeIn();
+      var data, compiledTemplate;
+      console.log(this.collection.toJSON())
+      data = { projects: this.collection.toJSON()  }
 
+      compiledTemplate = _.template(projectListTemplate, data);
+      this.$el.html(compiledTemplate).hide().fadeIn();
+            
       app.events.on("project:render", function () {
         $(".modal a[href='#addProject']").modal('hide');
         $("body").removeClass("modal-open");
         $(".modal-backdrop").remove();
       })
+
+      $(".project-list-description").dotdotdot();
     },
 
     add: function () {

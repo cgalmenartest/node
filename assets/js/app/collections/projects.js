@@ -13,7 +13,8 @@ define([
     url: '/project/findAll',
 
     parse: function (response) {
-      new ProjectView({ projects: response.projects });
+      return response.projects;
+      // new ProjectView({ projects: response.projects });
     },
 
     initialize: function () {

@@ -28,8 +28,13 @@ define([
 		post: function (e) {
 			if (e.preventDefault()) e.preventDefault();
 
-			var comment 		= $(".comment-content").val(),
-					projectId 	= parseInt($(".project-id").text()),
+			if ($(e.currentTarget).children(".comment-content").val() !== "") {
+				this.comment = $(e.currentTarget).children(".comment-content").val();
+			} else {
+				this.comment = $(".comment-content").val();
+			}
+
+			var projectId 	= parseInt($(".project-id").text()),
 					parentId;
 
 			if (this.options) {
@@ -37,7 +42,7 @@ define([
 			}
 
 			this.model = new CommentModel();
-			this.model.trigger("comment:save", parentId, comment, projectId);
+			this.model.trigger("comment:save", parentId, this.comment, projectId);
 		}
 
 	});

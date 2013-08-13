@@ -3,11 +3,11 @@ define([
   'underscore',
   'backbone',
   'views/marketing/home',
-  'collections/projects',
+  'views/projects/list',
   'collections/tasks',
   'views/tasks/list',
   'models/profile'
-], function ($, _, Backbone, HomeView, ProjectsCollection, TasksCollection, TaskListView, ProfileModel) {
+], function ($, _, Backbone, HomeView, ProjectListView, TasksCollection, TaskListView, ProfileModel) {
   'use strict';
   
   var AppRouter = Backbone.Router.extend({
@@ -32,10 +32,7 @@ define([
     },
 
     listProjects: function () {
-      if (!this.collection) {
-          this.collection = new ProjectsCollection();
-      }
-      this.collection.fetch();
+      var projectList = new ProjectListView();
     }
   });
 

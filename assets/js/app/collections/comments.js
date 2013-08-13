@@ -21,7 +21,11 @@ define([
 
     initializeSaveListeners: function () {
       var _this = this;
-      
+      app.events.on("nestedCommentSave:success", function () {
+        _this.fetch();
+        app.events.trigger("comment:render");
+      });
+
       app.events.on("commentSave:success", function () {
         _this.fetch();
         app.events.trigger("comment:render");
