@@ -8,9 +8,9 @@
     <ul>
       <% _.each(tasks, function(task) { %>
         <li class="well">
-          <b>Title</b>: <%- task.title %>
+          <strong><%- task.title %></strong>
           <br>
-          <b>Description</b>: <%- task.description %>
+          <%- task.description %>
         </li>
       <% }) %>
     </ul>
