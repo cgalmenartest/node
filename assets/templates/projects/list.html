@@ -9,7 +9,11 @@
     <% _.each(projects, function(project) { %>
         <li data-project-id="<%- project.id %>" class="project-box">
 
-            <div class="project-background-image">
+            <% if (project.coverId) { %>
+            <div class="project-background-image" style="background-image: url(/file/get/<%= project.coverId %>)">
+            <% } else { %>
+            <div class="project-background-image project-background-image-default">
+            <% } %>
                 <div class="project-title">
                     <a href="" class="project" style="cursor: pointer; cursor: hand;">
                         <%- project.title %>
