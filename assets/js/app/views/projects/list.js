@@ -95,7 +95,8 @@ define([
       app.events.on("projectShow:success", function (data, id) {
           new ProjectShowView({
               projectId: id,
-              data: data
+              data: data,
+              model: _this.model
           })
       })
     }

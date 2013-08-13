@@ -14,7 +14,9 @@ module.exports = {
       if (!proj) { return res.send({}); }
       ProjectOwner.findByProjectId(proj.id, function(err, owners) {
         proj.owners = [];
+        proj.isOwner = false;
         for (var i = 0; i < owners.length; i++) {
+          if (req.user && (owners[i].userId == req.user[0].id)) { proj.isOwner = true; }
           proj.owners.push({ id: owners[i].id, userId: owners[i].userId });
         }
         res.send(proj);

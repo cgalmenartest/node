@@ -45,10 +45,47 @@ div.project-title {
 	height: 100%;
 }
 
+h1.project-title {
+	width: 100%;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	padding-left: 10px;
+	margin-bottom: 0;
+	background-color: rgb(230, 230, 230);
+	background-color: rgba(255, 255, 255, 0.7);
+	color: #393939;
+}
+
 a[class='project'] {
 	position: absolute;
 	bottom: 5px;
 	left: 5px;
+}
+
+#project-header {
+	padding-top: 10px;
+	height: 200px;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+#project-header #fileupload {
+	position: absolute;
+	bottom: 3px;
+	right: 10px;
+}
+
+#project-header #file-upload-progress-container {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	width: 150px;
+}
+
+.project-description {
+	padding-top:20px;
+	font-size: 17px;
 }
 
 #project-form input {
