@@ -286,9 +286,9 @@ ul.comment-list > li {
 }
 
 .user-image > img {
-	height: 60px;
-	width: 80px;
-	margin-bottom: 10px;
+	height: 70px;
+	width: 70px;
+	margin-bottom: 20px;
 }
 
 .comment-inner {
@@ -301,4 +301,17 @@ ul.comment-list > li {
 	font-size: 14px;
 	position: absolute;
 	bottom: 5px;
+}
+
+.project-people-bar {
+	width: 100%;
+	height: 50px;
+	background-color: rgba(0,0,9,0.1);
+}
+
+.project-people {
+	max-height: 40px;
+	border-radius: 25px;
+	margin-top: 5px;
+	margin-left: 5px;
 }
