@@ -251,7 +251,8 @@ ul.comment-list > li {
 }
 
 .user-image > img {
-	width: 100px;
+	height: 60px;
+	width: 80px;
 	margin-bottom: 10px;
 }
 
