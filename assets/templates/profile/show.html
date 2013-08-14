@@ -21,11 +21,11 @@
 </div>
 
 <div class="col-4">
-	<% if (photoId) { %>
-	<img id="profile-photo" src="/file/get/<%- photoId %>" style="max-width: 150px; max-height: 150px;"/>
-	<% } else { if (photoUrl) { %>
-	<img id="profile-photo" src="<%- photoUrl %>" style="max-width: 150px; max-height: 150px;"/>
-	<% } } %>
+	<% if (photoUrl) { %>
+  <img id="profile-photo" src="<%- photoUrl %>" style="max-width: 150px; max-height: 150px;"/>
+	<% } else { %>
+  <img id="profile-photo" src="/user/photo/<%- id %>" style="max-width: 150px; max-height: 150px;"/>
+	<% } %>
 	<br/>
 	<div id="fileupload" style="margin-top: 10px;" class="btn btn-primary">Change Photo</div><br/>
 	<div id="file-upload-progress-container" style="margin-top: 10px; display: none;" class="progress progress-striped active">
