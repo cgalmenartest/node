@@ -17,6 +17,10 @@ node_modules
 # Ignore sails.js filesystem database
 .tmp/
 
+# Ignore the configuration files
+config/local.js
+config/settings/auth.js
+
 # Ignore editor temp files
 *~
 *#
