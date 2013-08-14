@@ -15,7 +15,6 @@ Copy the main settings files and edit them.
 Copy the module settings files and edit.
 
      cd config/settings
-     cp auth.ex.js auth.js
 
 Lift sails from the main directory.
 
