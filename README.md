@@ -23,7 +23,7 @@ Lift sails from the main directory.
 
 ## Development
 
-This project follows the (http://nvie.com/posts/a-successful-git-branching-model/)[git flow] branching model of product development.
+This project follows the [git flow](http://nvie.com/posts/a-successful-git-branching-model/) branching model of product development.
 
 ### Git Hooks
 
@@ -33,7 +33,7 @@ When working in the development environment, be sure to install the project spec
 
 ### Code Style
 
-Generally try to follow the (http://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml)[Google Javascript Style Guide].  Spaces should be used instead of tabs, and the tab width should be set to 2 spaces.  No spaces at the end of lines.
+Generally try to follow the [Google Javascript Style Guide](http://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml).  Spaces should be used instead of tabs, and the tab width should be set to 2 spaces.  No spaces at the end of lines.
 
 ### Commit Messages
 
