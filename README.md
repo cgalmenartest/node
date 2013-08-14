@@ -7,6 +7,8 @@ Innovation platform providing collaboration and crowdsourcing tools, developed i
 
 Clone the git repository.
 
+     git clone https://github.com/Innovation-Toolkit/midas.git
+
 Copy the main settings files and edit them.
 
      cd config
@@ -27,7 +29,7 @@ This project follows the [git flow](http://nvie.com/posts/a-successful-git-branc
 
 ### Git Hooks
 
-When working in the development environment, be sure to install the project specific git hooks
+When working in the development environment, be sure to install the project specific git hooks.
 
      tools/git_hooks/create-sym-links
 
