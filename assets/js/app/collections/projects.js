@@ -18,7 +18,6 @@ define([
 
     initialize: function () {
       this.initializeSaveListeners();
-      this.validate();
     },
 
     initializeSaveListeners: function () {
