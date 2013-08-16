@@ -45,7 +45,17 @@ module.exports.policies = {
     'testupload': true,
     // everything else is protected
     '*': 'protectedFile'
-  }
+  },
+
+  ProjectController : {
+    '*': ['authenticated', 'addUserId', 'project']
+  },
+
+  // XXX TODO: Add project authentication to task and comment controllers
+  // There seems to be a sails.js bug in running custom policies like this one below:
+  // TaskController : {
+  //   findAllByProject: ['authenticated', 'addUserId', 'project']
+  // },
 
   /*
   // Here's an example of adding some policies to a controller
