@@ -67,7 +67,7 @@ define([
 
     add: function () {
       if (this.formView) {
-        this.formView.remove();
+        this.formView.initialize();
       } else {
         this.formView = new ProjectForm({ collection: this.collection })
       }
