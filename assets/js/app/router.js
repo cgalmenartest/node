@@ -22,10 +22,9 @@ define([
     },
 
     home: function () {
-      console.log("Initializing home view");
-      if (this.homeView) this.homeView.remove();
-      console.log(this.homeView);
-
+      // HomeView is a no-op, so it doesn't matter
+      // For now if being re-initialized.  Will fix this
+      // When we use the router extension manager.
       new HomeView(); 
     },
 
@@ -36,12 +35,9 @@ define([
 
     listProjects: function () {
       if (this.projectList) {
-        console.log("PROJECT LIST VIEW ALREADY EXISTS");
         this.projectList.initialize();
       } else {
-        console.log("NEW PROJECT LIST VIEW");
         this.projectList = new ProjectListView();
-        // console.log(this.projectList.models.length);
       }
     }
   });
@@ -59,7 +55,6 @@ define([
       $(this).addClass("active");
     });
 
-    // window.location.hash === "" ? new AppRouter({routes: { '': 'home' }}) : '';
   }
 
   return {

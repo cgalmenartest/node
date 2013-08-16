@@ -62,10 +62,6 @@ define([
         $(".modal-backdrop").remove();
       });
 
-      // this.collection.each(function (model) {
-        // this.projectItem = new ProjectItemView({ model: model })
-      // })
-
       $(".project-list-description").dotdotdot();
     },
 
