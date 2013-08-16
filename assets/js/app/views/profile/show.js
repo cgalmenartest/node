@@ -10,25 +10,39 @@ define([
 
     el: "#container",
 
-    // events: {
-    //  "submit #profile-form": "post"
-    // },
+    events: {
+     "submit #profile-form": "post"
+    },
 
     initialize: function () {
-
       this.render();
+      this.initializeFileUpload();
+      this.updatePhoto
+    },
+
+    render: function () {
+      var data      = this.model.toJSON()
+          template  = _.template(ProfileTemplate, data);
+
+      this.$el.html(template)
+    },
+
+    initializeFileUpload: function () {
       var _this = this;
 
       var myDropzone = new dropzone("#fileupload", {
         url: "/file/create",
       });
+
       myDropzone.on("addedfile", function(file) {
         // no need for the dropzone preview
         $('.dz-preview').hide();
       });
+
       myDropzone.on("sending", function(file) {
         $('#file-upload-progress-container').show();
       });
+
       // Show the progress bar
       myDropzone.on("uploadprogress", function(file, progress, bytesSent) {
         console.log(progress);
@@ -37,11 +51,15 @@ define([
           progress + '%'
         );
       });
+
       myDropzone.on("success", function(file, data) {
         _this.model.trigger("profile:updateWithPhotoId", data);
       });
-      myDropzone.on("thumbnail", function(file) { });
 
+      myDropzone.on("thumbnail", function(file) { });
+    },
+
+    updatePhoto: function () {
       this.model.on("profile:updatedPhoto", function (data) {
         var url;
         if (data.get("photoId")) {
@@ -52,16 +70,7 @@ define([
         $("#profile-photo").attr("src",url);
         $('#file-upload-progress-container').hide();
       });
-
-    },
-
-    render: function () {
-      var data      = this.model.toJSON()
-          template  = _.template(ProfileTemplate, data);
-
-      this.$el.html(template)
-    },
-
+    }
   });
 
   return ProfileShowView;

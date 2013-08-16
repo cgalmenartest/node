@@ -28,6 +28,8 @@ define([
 				$(".comment-content").val("");
 				$("html, body").animate({ scrollTop: $(document).height() });
 			});
+
+			return this;
 		},
 
 		reply: function (e) {

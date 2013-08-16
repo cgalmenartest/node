@@ -30,22 +30,8 @@ define([
 
     parse: function (response) {
       new TaskListView({ tasks: response.tasks });
-    },
-
-    validate: function (attrs) {
-      app.events.on("taskSave:success", function (data) {
-        if (data.attributes.title === "" && data.attributes.description === "") {
-          alert("Please enter a name and description");
-          this.pop();
-        } else if (data.attributes.name === "") {
-          alert("Please enter a name");
-          this.pop();
-        } else if (data.attributes.description === "") {
-          alert("Please enter a description");
-          this.pop();
-        }
-      });
     }
+    
   });
 
   return TasksCollection;
