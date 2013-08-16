@@ -17,10 +17,9 @@ define([
 			this.render();
 		},
 
-		render: function () {
-			data = {};
-			var compiledTemplate = _.template(ProjectFormTemplate, data)
-			this.$el.html(compiledTemplate);
+	render: function () {
+			var template = _.template(ProjectFormTemplate)
+			this.$el.html(template);
 		},
 
 		post: function (e) {
@@ -31,7 +30,7 @@ define([
       title       = $(".project-name").val();
       description = $(".project-description").val();
   
-      this.model.trigger("project:post", title, description);
+      this.collection.trigger("project:post", title, description);
 		}
 
 	});

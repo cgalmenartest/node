@@ -5,13 +5,15 @@ define([
 	'../../models/comment',
 	'text!../../../../templates/comments/form.html'
 ], function ($, _, Backbone, CommentModel, CommentFormTemplate) {
+	'use strict';	
 
 	var CommentFormView = Backbone.View.extend({
 
 		el: ".comment-form-wrapper",
 
 		events: {
-			"submit #comment-form": "post"
+			"submit #comment-form": "post",
+			"click #comment": "add"
 		},
 
 		initialize: function (options) {
@@ -23,6 +25,8 @@ define([
 					template 	= _.template(CommentFormTemplate, data);
 
 			this.$el.html(template);
+			
+			return this;
 		},
 
 		post: function (e) {

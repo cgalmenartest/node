@@ -3,6 +3,7 @@ define([
 	'backbone',
 	'../views/profile/show'
 ], function (_, Backbone, ProfileView) {
+	'use strict';
 
 	var ProfileModel = Backbone.Model.extend({
 

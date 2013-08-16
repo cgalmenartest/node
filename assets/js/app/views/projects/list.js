@@ -30,11 +30,19 @@ define([
     initialize: function () {
       var _this = this;
 
-      this.model = new ProjectModel();
+      if (this.model) {
+        this.model.destroy();
+      }  else {
+        this.model = new ProjectModel();
+      }
 
-      this.collection = new ProjectsCollection();
-      this.collection.fetch({ success: function() { _this.render() }});
-
+      if (this.collection) { 
+        this.collection.fetch({ success: function() { _this.render() }})
+      } else {
+        this.collection = new ProjectsCollection();
+        this.collection.fetch({ success: function() { _this.render() }});  
+      }
+      
       app.events.on("project:render", function () {
         _this.collection.fetch({ success: function () { _this.render(); }})
       });
@@ -52,13 +60,17 @@ define([
         $(".modal a[href='#addProject']").modal('hide');
         $("body").removeClass("modal-open");
         $(".modal-backdrop").remove();
-      })
+      });
 
       $(".project-list-description").dotdotdot();
     },
 
     add: function () {
-      new ProjectForm({ model: this.model })
+      if (this.formView) {
+        this.formView.remove();
+      } else {
+        this.formView = new ProjectForm({ collection: this.collection })
+      }
     },
 
 

@@ -22,8 +22,10 @@ define([
     },
 
     home: function () {
-      console.log("Initializing home view");
-      new HomeView();
+      // HomeView is a no-op, so it doesn't matter
+      // For now if being re-initialized.  Will fix this
+      // When we use the router extension manager.
+      new HomeView(); 
     },
 
     profile: function () {
@@ -32,7 +34,11 @@ define([
     },
 
     listProjects: function () {
-      var projectList = new ProjectListView();
+      if (this.projectList) {
+        this.projectList.initialize();
+      } else {
+        this.projectList = new ProjectListView();
+      }
     }
   });
 
@@ -49,7 +55,6 @@ define([
       $(this).addClass("active");
     });
 
-    // window.location.hash === "" ? new AppRouter({routes: { '': 'home' }}) : '';
   }
 
   return {
