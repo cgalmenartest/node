@@ -23,7 +23,10 @@ define([
 
     home: function () {
       console.log("Initializing home view");
-      new HomeView();
+      if (this.homeView) this.homeView.remove();
+      console.log(this.homeView);
+
+      new HomeView(); 
     },
 
     profile: function () {
@@ -32,7 +35,14 @@ define([
     },
 
     listProjects: function () {
-      var projectList = new ProjectListView();
+      if (this.projectList) {
+        console.log("PROJECT LIST VIEW ALREADY EXISTS");
+        this.projectList.initialize();
+      } else {
+        console.log("NEW PROJECT LIST VIEW");
+        this.projectList = new ProjectListView();
+        // console.log(this.projectList.models.length);
+      }
     }
   });
 

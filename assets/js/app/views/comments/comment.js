@@ -3,6 +3,7 @@ define([
 	'underscore',
 	'backbone'
 ], function ($, _, Backbone) {
+	'use strict';
 
 	var CommentView = Backbone.View.extend({
 		
