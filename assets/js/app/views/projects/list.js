@@ -66,14 +66,10 @@ define([
     },
 
     add: function () {
-      if (this.formView) {
-        this.formView.remove();
-      } else {
-        this.formView = new ProjectForm({ collection: this.collection })
-      }
+        this.formView = new ProjectForm({ collection: this.collection });
     },
 
-
+    
     show: function (e) {
       if (this.showHasRendered) return;
       this.showHasRendered = true;
