@@ -5,7 +5,7 @@ define([
 	'base_controller',
 	'projects_collection',
 	'projects_collection_view',
-	'../../show/controllers/project_show_controller'
+	'projects_show_controller'
 ], function (_, Backbone, Utilities, BaseController, ProjectsCollection, ProjectsCollectionView, ProjectShowController) {
 
 	Application.Project = {};

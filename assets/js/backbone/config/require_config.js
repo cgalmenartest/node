@@ -42,7 +42,7 @@ require.config({
     'projects_collection_view': '../apps/project/list/views/projects_collection_view',
 
     'projects_show_controller': '../apps/project/show/controllers/project_show_controller',
-    'projects_item_view'      : '../apps/project/show/views/project_item_view',
+    'project_item_view'       : '../apps/project/show/views/project_item_view',
 
     // ----------
     //= Entities
@@ -53,8 +53,8 @@ require.config({
     // ----------
     //= Templates
     // ----------
-    'project_show_template': '../apps/project/show/templates/show.html',
-    'project_list_template': '../apps/project/list/templates/list.html'
+    'project_show_template': '../apps/project/show/templates/project_item_view_template.html',
+    'project_list_template': '../apps/project/list/templates/project_collection_view_template.html'
   }
 
 });

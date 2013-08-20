@@ -1,11 +1,11 @@
 <div class="row">
-  <% if (data.get("coverId")) { %>
-  <div class="col-12" id="project-header" style="background-image:url('/file/get/<%= data.get("coverId") %>');">
+  <% if (data.coverId) { %>
+  <div class="col-12" id="project-header" style="background-image:url('/file/get/<%= data.coverId %>');">
   <% } else { %>
   <div class="col-12" id="project-header">
   <% } %>
-    <h1 class="project-title"><%= data.get("title") %></h1>
-    <% if (data.get("isOwner")) { %>
+    <h1 class="project-title"><%= data.title %></h1>
+    <% if (data.isOwner) { %>
     <div id="fileupload" class="btn btn-primary"><i class="icon-camera icon-large" title="Change Cover Photo"></i></div>
     <div id="file-upload-progress-container" style="display: none;" class="progress progress-striped active">
       <div id="file-upload-progress" class="progress-bar" style="width: 0"></div>
@@ -16,8 +16,10 @@
 <div class="row">
   <div class="col-12 nopadding">
     <div class="project-people-bar">
-      <% for (var i = 0; i < data.get("owners").length; i++) { %>
-      <img src="/user/photo/<%= data.get("owners")[i].userId %>" class="project-people"/>
+      <% if (data.owners) { %>
+        <% for (var i = 0; i < data.owners.length; i++) { %>
+        <img src="/user/photo/<%= data.get("owners")[i].userId %>" class="project-people"/>
+        <% } %>
       <% } %>
     </div>
   </div>
@@ -25,7 +27,7 @@
 <div class="row">
   <div class="col-12">
     <div class="project-description">
-      <div><%= data.get("description") %></div>
+      <div><%= data.description %></div>
     </div>
 
     <hr />
