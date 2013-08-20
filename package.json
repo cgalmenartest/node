@@ -20,7 +20,8 @@
         "sails-postgresql": "0.9.2"
     },
     "devDependencies": {
-        "mocha": "*"
+        "mocha": "*",
+        "wrench": "*"
     },
     "scripts": {
         "start": "node app.js",

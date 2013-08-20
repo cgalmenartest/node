@@ -11,7 +11,7 @@ describe('Starting sails server with lift', function() {
 
   describe('in midas directory', function() {
     it('should start server without error', function(done) {
-      app.spawnAsync(function (sailsServer, data) {
+      app.spawn(function (sailsServer, data) {
         if (sailsServer) {
           app.kill(sailsServer);
         }

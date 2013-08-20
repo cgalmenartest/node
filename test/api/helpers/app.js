@@ -1,13 +1,18 @@
 var spawn = require('child_process').spawn;
+var wrench = require('wrench');
 var sailsBin = './node_modules/sails/bin/sails.js';
 var conf = require('./config');
 
 module.exports = {
-  spawn: function() {
+  spawnSync: function() {
+    // clean out the database directories
+    wrench.rmdirSyncRecursive('./.tmp', true);
     var sailsServer = spawn(sailsBin, ['lift'], { env: conf.env });
     return sailsServer;
   },
-  spawnAsync: function(cb) {
+  spawn: function(cb) {
+    // clean out the database directories
+    wrench.rmdirSyncRecursive('./.tmp', true);
     var sailsServer = spawn(sailsBin, ['lift'], { env: conf.env });
     var lifted = false;
     var dataString = '';
