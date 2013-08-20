@@ -11,29 +11,12 @@ define([
 
     el: $("#container"),
 
-    initialize: function () {
-      this.render();
-
-
-      // this.initializeFileUpload();
-      // this.updatePhoto();
-    },
-
     render: function (data) {
-      var _this = this;
+      var data, compiledTemplate;
 
-      var data = {
-        data: this.model.toJSON()
-      }
-
-      var compiledTemplate = _.template(ProjectShowTemplate, data);
-      this.$el.html(compiledTemplate).hide().fadeIn();
-
-      // if (this.isRendered) return;
-      // this.isRendered = true;
-      
-      // var compiledTemplate, 
-      // id = parseInt($(".project-id").text());
+      data = { data: this.model.toJSON() }
+      compiledTemplate = _.template(ProjectShowTemplate, data);
+      this.$el.html(compiledTemplate);
 
       // if (!this.tasks) {
       //   this.tasks = new TaskCollection({ id: id });

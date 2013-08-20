@@ -2,21 +2,23 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'marketing_app',
   'projects_app'
-], function ($, _, Backbone, ProjectApp) {
+], function ($, _, Backbone, MarketingApp, ProjectApp) {
 
   var AppRouter = Backbone.Router.extend({
 
     routes: {
-      'projects': 'initializeProjectsApp'
+      'home'          : 'initializeMarketingApp',
+      'projects'      : 'initializeProjectsApp'
+    },
+
+    initializeMarketingApp: function () {
+      this.homeApp ? this.homeApp.initialize() : this.homeApp = new MarketingApp();
     },
 
     initializeProjectsApp: function () {
-      if (this.projectsApp) {
-        this.projectsApp.initialize();
-      } else {
-        this.projectsApp = new ProjectApp();
-      }
+      this.projectsApp ? this.projectsApp.initialize() : this.projectsApp = new ProjectApp();
     }
   });
 

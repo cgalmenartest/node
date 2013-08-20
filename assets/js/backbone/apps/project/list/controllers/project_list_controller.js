@@ -48,15 +48,16 @@ define([
 		renderProjectCollectionView: function () {
 			var self = this;
 
-
 			if (this.projectCollectionView) {
-				this.projectCollectionView.initialize();
+				this.projectCollectionView.render();
+				console.log("SAME VIEW", this.projectCollectionView);
 			} else {
 				this.projectCollectionView = new ProjectsCollectionView({
 					el: "#container",
 					onRender: true,
 					collection: this.collection
 				}).render();
+				console.log("NEW VIEW INSTANCE", this.projectCollectionView);
 			}
 
 		},

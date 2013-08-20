@@ -7,7 +7,7 @@ define([
 ], function ($, _, Backbone, BaseController, ProjectItemView) {
 
 	Application.Project = {};
-	
+
 	Application.Project.ShowController = BaseController.extend({
 
 		events: {
@@ -23,7 +23,7 @@ define([
 			if (this.projectShowItemView) {
 				this.projectShowItemView.initialize();
 			} else {
-				this.projectShowItemView = new ProjectItemView({ model: this.model });
+				this.projectShowItemView = new ProjectItemView({ model: this.model }).render();
 			}
 		}
 	
