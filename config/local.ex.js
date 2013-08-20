@@ -56,7 +56,7 @@ module.exports = {
   // Set your postgres database settings here, including the username, password
   // and database name
   adapters: {
-    'default': 'postgresql',
+    'default': process.env.ADAPTER_DEFAULT || 'postgresql',
     postgresql: {
       user        : 'midas',
       password    : 'midas',
