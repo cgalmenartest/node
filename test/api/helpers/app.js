@@ -3,6 +3,13 @@ var wrench = require('wrench');
 var sailsBin = './node_modules/sails/bin/sails.js';
 var conf = require('./config');
 
+var kill = function(sailsServer, cb) {
+  sailsServer.on('exit', function(code, signal){
+    cb();
+  });
+  sailsServer.kill('SIGINT');
+};
+
 module.exports = {
   spawnSync: function() {
     // clean out the database directories
@@ -27,12 +34,11 @@ module.exports = {
       // Otherwise check for an error message
       if (dataString.toLowerCase().indexOf('error') !== -1) {
         lifted = true;
-        sailsServer.kill();
-        return cb(null, dataString);
+        kill(sailsServer, function() {
+          return cb(null, dataString);
+        });
       }
     });
   },
-  kill: function(sailsServer) {
-    sailsServer.kill('SIGINT');
-  }
+  kill: kill
 };

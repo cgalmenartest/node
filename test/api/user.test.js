@@ -13,8 +13,10 @@ describe('Sails lift:', function() {
     });
   });
 
-  after(function() {
-    sailsServer.kill();
+  after(function(done) {
+    app.kill(sailsServer, function() {
+      done();
+    });
   });
 
   describe('user:', function() {
