@@ -20,7 +20,8 @@ module.exports = {
   spawn: function(cb) {
     // clean out the database directories
     wrench.rmdirSyncRecursive('./.tmp', true);
-    var sailsServer = spawn(sailsBin, ['lift'], { env: conf.env });
+    // var sailsServer = spawn(sailsBin, ['lift'], { env: conf.env });
+    var sailsServer = spawn('node', ['./app.js'], { env: conf.env });
     var lifted = false;
     var dataString = '';
     sailsServer.stdout.on('data', function(data) {
