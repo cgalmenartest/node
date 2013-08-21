@@ -17,8 +17,8 @@ define([
     initialize: function () {
       var self = this;
       // this.initializeSaveListeners();
-      entities.request.on("projects:fetch", function () {
-        self.fetch({ 
+      entities.request.once("projects:fetch", function () {
+        self.fetch({
           success: function (data) { 
             entities.request.trigger("projectFetch:success", data)
           }

@@ -7,15 +7,14 @@ define([
 	'projects_collection_view',
 	'projects_show_controller'
 ], function (_, Backbone, Utilities, BaseController, ProjectsCollection, ProjectsCollectionView, ProjectShowController) {
-
-	Application.Project = {};
 	
 	Application.Project.ListController = BaseController.extend({
 
 		el: "#container",
 
 		events: {
-			"click .project": "show"
+			"click .project"			: "show",
+			"click .add-project"	: "add"
 		},
 
 		initialize: function () {
@@ -27,6 +26,7 @@ define([
 			entities.request.on("projectFetch:success", function (collection) {  
 				// -Instance variable for collection 
 				self.collection = collection;
+
 				// Render collection view to use instance variable, instead of passing
 				// It down explicitly.  This offers more dynamic use in other methods.
 				self.renderProjectCollectionView();
@@ -46,20 +46,13 @@ define([
 		},
 
 		renderProjectCollectionView: function () {
-			var self = this;
-
-			if (this.projectCollectionView) {
-				this.projectCollectionView.render();
-				console.log("SAME VIEW", this.projectCollectionView);
-			} else {
+			this.projectCollectionView ?	
+				this.projectCollectionView.render() :
 				this.projectCollectionView = new ProjectsCollectionView({
 					el: "#container",
 					onRender: true,
 					collection: this.collection
 				}).render();
-				console.log("NEW VIEW INSTANCE", this.projectCollectionView);
-			}
-
 		},
 
 		show: function (e) {
@@ -75,11 +68,14 @@ define([
 			// Store the model as the return of this utility function.
 			model = getCurrentModelFromId(this.collection, id);
 
-			if (this.projectShowController) {
-				this.projectShowController.initialize();
-			} else {
-				this.projectShowController = new ProjectShowController({ model: model });
-			}
+			this.projectShowController ?
+				this.projectShowController.initialize() :
+				this.projectShowController = new ProjectShowController({ model: model })
+		},
+
+		add: function (e) {
+			if (e.preventDefault()) e.preventDefault();
+			console.log("Clicked");
 		}
 
 	});

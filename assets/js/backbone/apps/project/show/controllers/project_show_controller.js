@@ -17,14 +17,16 @@ define([
 		initialize: function () {
 			this.rendered = true;
 			this.renderShowView();
+
+			// Here what we do is trigger that this has happened,
+			// then what we do is use this in another place to render controllers.
+			rendering.trigger("project:show");
 		},
 
 		renderShowView: function () {
-			if (this.projectShowItemView) {
-				this.projectShowItemView.initialize();
-			} else {
+			this.projectShowItemView ? 
+				this.projectShowItemView.initialize() :
 				this.projectShowItemView = new ProjectItemView({ model: this.model }).render();
-			}
 		}
 	
 	});

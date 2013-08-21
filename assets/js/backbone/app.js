@@ -14,6 +14,7 @@ Application.Controller = {};
 // Set up req
 entities.request = {};
 
+rendering = {}
 
 define([
   'underscore',
@@ -31,6 +32,9 @@ define([
 
       // Mixin backbone events into our pub sub handler
       _.extend(entities.request, Backbone.Events);
+      
+      // Mixin backbone events into our rendering event handler
+      _.extend(rendering, Backbone.Events);
 
       if (this.started) {
         self.started = false;
