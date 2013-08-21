@@ -1,6 +1,6 @@
 
 MOCHA_OPTS= --check-leaks --timeout 60000
-REPORTER = dot
+REPORTER = spec
 
 check: test
 
