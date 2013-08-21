@@ -1,6 +1,6 @@
 var spawn = require('child_process').spawn;
 var wrench = require('wrench');
-var sailsBin = './node_modules/sails/bin/sails.js';
+var sailsBin = './app.js';
 var conf = require('./config');
 
 var kill = function(sailsServer, cb) {
