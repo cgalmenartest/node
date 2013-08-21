@@ -17,7 +17,7 @@
         "passport-linkedin": "0.1.x",
         "bcrypt": "0.7.6",
         "request": "2.x",
-        "sails-postgresql": "0.9.2"
+        "sails-postgresql": "~0.9.3"
     },
     "devDependencies": {
         "mocha": "*"
