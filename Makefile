@@ -1,5 +1,5 @@
 
-MOCHA_OPTS= --check-leaks --timeout 60000
+MOCHA_OPTS= --check-leaks --timeout 240000
 REPORTER = dot
 
 check: test
