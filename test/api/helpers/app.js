@@ -21,7 +21,8 @@ module.exports = {
     // clean out the database directories
     wrench.rmdirSyncRecursive('./.tmp', true);
     console.log(sailsBin);
-    var sailsServer = spawn(sailsBin, ['lift'], { env: conf.env });
+    // var sailsServer = spawn(sailsBin, ['lift'], { env: conf.env });
+    var sailsServer = spawn(sailsBin, ['lift']);
     var lifted = false;
     var dataString = '';
     sailsServer.stdout.on('data', function(data) {
