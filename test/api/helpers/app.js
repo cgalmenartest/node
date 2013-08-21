@@ -28,16 +28,13 @@ module.exports = {
       fs.unlinkSync('./tmp/disk.db');
     }
     // wrench.rmdirSyncRecursive('./.tmp', true);
-    console.log(sailsBin);
     // var sailsServer = spawn(sailsBin, ['lift'], { env: conf.env });
-    console.log(_.extend(process.env, conf.env));
     var sailsServer = spawn(sailsBin, ['lift'], { env: _.extend(process.env, conf.env) });
     var lifted = false;
     var dataString = '';
     sailsServer.stdout.on('data', function(data) {
       if (lifted) { return; }
       dataString = dataString + data;
-      console.log(dataString);
       // If the server lifted, it passed
       if (dataString.indexOf('Server lifted') !== -1) {
         lifted = true;
