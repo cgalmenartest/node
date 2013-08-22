@@ -1,5 +1,6 @@
 
-MOCHA_OPTS= --check-leaks --timeout 60000
+#MOCHA_OPTS= --check-leaks --timeout 60000
+MOCHA_OPTS= --timeout 60000
 REPORTER = spec
 
 check: test
@@ -22,4 +23,4 @@ test-api:
 	@NODE_ENV=test ./node_modules/.bin/mocha \
 		--reporter $(REPORTER) \
 		$(MOCHA_OPTS) \
-		test/api/**
+		--recursive test/api
