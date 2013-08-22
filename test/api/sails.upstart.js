@@ -2,10 +2,17 @@
    Global before() and after() launcher for Sails application
    to run tests like Controller and Models test
 */
+var fs = require('fs');
+
 var sails;
 var err;
 
 before(function(done) {
+  // remove the database directories
+  if (fs.existsSync('./tmp/disk.db')) {
+    fs.unlinkSync('./tmp/disk.db');
+  }
+
   // Lift Sails and store the app reference
   require('sails').lift({
 
