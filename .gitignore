@@ -24,6 +24,7 @@ config/settings/auth.js
 # Ignore editor temp files
 *~
 *#
+*.bak
 
 .DS_STORE
 .tmp
