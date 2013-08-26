@@ -5,7 +5,6 @@
  * @description :: An event -- mirrors the iCalendar internet format
  *
  */
-uuid = require('node-uuid');
 
 module.exports = {
 
@@ -17,10 +16,7 @@ module.exports = {
       defaultsTo: 'CONFIRMED'
     },
     // UUID for the event
-    uuid: {
-      type: 'UUIDV4',
-      defaultsTo: uuid.v4()
-    },
+    uuid: 'UUIDV4',
     // Title of the event
     title: 'STRING',
     // More information about the event
