@@ -6,8 +6,9 @@ define([
 	'underscore',
 	'backbone',
 	'base_app_module',
-	'project_list_controller'
-], function (_, Backbone, BaseAppModule, ProjectListController) {
+	'project_list_controller',
+	'task_list_controller'
+], function (_, Backbone, BaseAppModule, ProjectListController, TaskListController) {
 	
 	Application.AppModule.Project = BaseAppModule.extend({
 
@@ -25,19 +26,15 @@ define([
 
 		onProjectShowRender: function () {
 			var self = this;
-			rendering.on("project:show", function () {
+			rendering.on("project:show", function (projectId) {
 
-				// self.initializeControllerSafely(self.rendered, TaskListController);
-				
-				// Here we put the logic for the show view that we want in the app delegate for this area.
-				// For instance we want task lists controller to be instantiated but we dont want to do that on the 
-				// projects controller.
-				console.log("project show has been rendered, and is ready to instantiate controllers for this area.");
-
+				if (this.taskListController) {
+					this.taskListController.cleanup();
+				}
+				this.taskListController = new TaskListController({ projectId: projectId });
 
 			});
 		}
-
 
 
 	});

@@ -57,6 +57,9 @@ require.config({
     // ----------
     'project_model'             : '../entities/projects/project_model',
     'projects_collection'       : '../entities/projects/projects_collection',
+    'tasks_collection'          : '../entities/tasks/tasks_collection',
+    'task_model'                : '../entities/tasks/task_model',
+
 
     // ----------
     //= Templates
@@ -64,7 +67,15 @@ require.config({
     'project_show_template'     : '../apps/project/show/templates/project_item_view_template.html',
     'project_list_template'     : '../apps/project/list/templates/project_collection_view_template.html',
     'marketing_home_template'   : '../apps/marketing/home/templates/marketing_home_template.html',
+    'task_list_template'        : '../apps/tasks/list/templates/task_collection_view_template.html',
+    'task_form_template'        : '../apps/tasks/new/templates/task_form_template.html',
 
+    // ----------
+    //= Tasks
+    // ----------
+    'task_list_controller'      : '../apps/tasks/list/controllers/task_list_controller',
+    'task_collection_view'      : '../apps/tasks/list/views/task_collection_view',
+    'task_form_view'            : '../apps/tasks/new/views/task_form_view',
 
     // ----------
     //= Components

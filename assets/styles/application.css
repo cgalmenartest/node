@@ -248,6 +248,21 @@ a[class='project'] {
 	background: rgba(100,50,24,0.4);
 }
 
+#task-list-wrapper > ul > li {
+	list-style: none;
+}
+
+li.well {
+	list-style: none;
+	width: 410px;
+}
+
+#task-list {
+	overflow-y: scroll;
+	overflow-x: hidden;
+	height: 380px;
+}
+
 ul.comment-list > li {
 	list-style: none;
 	position: relative;

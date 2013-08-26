@@ -18,9 +18,12 @@ define([
 			this.rendered = true;
 			this.renderShowView();
 
+			// Experimenting with Backbone.history
+			// Backbone.history.navigate("projects/" + this.model.id, {trigger: true});
+
 			// Here what we do is trigger that this has happened,
 			// then what we do is use this in another place to render controllers.
-			rendering.trigger("project:show");
+			rendering.trigger("project:show", this.model.id);
 		},
 
 		renderShowView: function () {
