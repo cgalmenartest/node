@@ -56,6 +56,7 @@ module.exports.policies = {
   },
 
   EventController : {
+    'create': ['authenticated', 'addUserId', 'eventUuid'],
     'findAllByProjectId': ['authenticated', 'addUserId', 'project'],
     'ical': ['authenticated', 'addUserId', 'project']
   }

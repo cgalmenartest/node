@@ -1,4 +1,5 @@
 var assert = require('assert');
+var icalendar = require('icalendar');
 var conf = require('./helpers/config');
 var utils = require('./helpers/utils');
 var request;
@@ -131,12 +132,50 @@ describe('event:', function() {
     });
 
     it('findAllByProjectId denied', function(done) {
-      request.get({ url: conf.url + '/event/findAllByProjectId/' + draftEvent.projectId },
+      request.get({ url: conf.url + '/event/findAllByProjectId/' + draftProject.id },
                   function(err, response, body) {
         // access should be denied
         assert.equal(response.statusCode, 403);
         done(err);
       });
+    });
+
+    it('ical', function(done) {
+      request.get({ url: conf.url + '/event/ical/' + publicProject.id },
+                  function(err, response, body) {
+        assert.equal(response.statusCode, 200);
+        assert.equal(response.headers['content-type'].toLowerCase(), 'text/calendar');
+        var ical = icalendar.parse_calendar(body);
+        var events = ical.events();
+        assert.equal(events.length, 3);
+        var foundEvent = false;
+        for (var i = 0; i < events.length; i++) {
+          // if the UID matches the public event, check its parameters
+          if (events[i].getProperty('UID').value === confirmedEvent.uuid) {
+            assert.equal(events[i].getProperty('SUMMARY').value, confirmedEvent.title);
+            assert.equal(events[i].getProperty('DESCRIPTION').value, confirmedEvent.description);
+            assert.equal(events[i].getProperty('LOCATION').value, confirmedEvent.location);
+            var start = new Date(confirmedEvent.start);
+            var end = new Date(confirmedEvent.end);
+            start.setMilliseconds(0);
+            end.setMilliseconds(0);
+            assert.equal(events[i].getProperty('DTSTART').value.toString(), start.toString());
+            assert.equal(events[i].getProperty('DTEND').value.toString(), end.toString());
+            foundEvent = true;
+          }
+        }
+        // Make sure we found the public event
+        assert(foundEvent);
+        done(err);
+      })
+    });
+
+    it('ical denied', function(done) {
+      request.get({ url: conf.url + '/event/ical/' + draftProject.id },
+                  function(err, response, body) {
+        assert.equal(response.statusCode, 403);
+        done(err);
+      })
     });
 
   });

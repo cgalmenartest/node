@@ -5,23 +5,10 @@
  * @description	:: Interaction with events
  */
 
-var uuid = require('node-uuid');
 var icalendar = require('icalendar');
 var projUtils = require('../services/projectUtils');
 
 module.exports = {
-
-  create: function (req, res) {
-    if (req.route.method != 'post') { return res.send(400, { message: 'Unsupported operation.' } ); }
-    var ev = _.extend(req.body || {}, req.params);
-    // Add a uuid to the event;
-    // XXX TODO: when policies are fixed, make this a policy that injects uuid
-    ev.uuid = uuid.v4();
-    Event.create(ev, function (err, newEv) {
-      if (err) { return res.send(400, { message: 'Error creating event.' } ); }
-      return res.send(newEv);
-    });
-  },
 
   'find': function (req, res) {
     Event.findOneById(req.params.id, function (err, ev) {
@@ -55,7 +42,7 @@ module.exports = {
       for (var i = 0; i < events.length; i++) {
         var ev = new icalendar.VEvent(events[i].uuid);
         ev.setSummary(events[i].title);
-        ev.setDate(events[i].start, events[i].end);
+        ev.setDate(new Date(events[i].start), new Date(events[i].end));
         ev.setDescription(events[i].description);
         if (events[i].location) {
           ev.addProperty('LOCATION', events[i].location);
