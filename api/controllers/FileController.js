@@ -44,7 +44,7 @@ module.exports = {
       });
     }
   },
-
+  
   create: function(req, res) {
     // Create only accepts post
     if (req.route.method != 'post') { return res.send(400, {message:'Unsupported operation.'}) }

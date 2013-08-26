@@ -14,13 +14,14 @@ define([
 
     initialize: function () {
       this.initializeProjectFetchListener();
+      this.initializePhotoSaveListener();
     },
 
     urlRoot: '/project',
 
     initializeProjectFetchListener: function () {
       var self = this;
-      
+
       this.listenTo(this, "project:model:fetch", function (id) {
         self.get(id);
       });
@@ -34,24 +35,25 @@ define([
           self.trigger("project:model:fetch:success", data);
         }
       })
+    },
+
+    initializePhotoSaveListener: function () {
+      var self = this;
+
+      this.listenTo(this, "project:update:photoId", function(file) {
+        self.save({
+          coverId: file['id']
+          }, {
+          success: function (data) {
+            self.trigger("project:updated:photo:success", data);
+          }
+        });
+      });
     }
 
     // initializeModelSave: function () {
     //   var _this = this;
 
-    //   this.on("project:updateWithPhotoId", function(file) {
-    //     _this.save({
-    //       coverId: file['id']
-    //     }, {
-    //     success: function (data) {
-    //       _this.trigger("project:updatedPhoto", data);
-    //     },
-    //     error: function (data) {
-    //       console.log(data);
-    //     }
-    //     });
-    //   });
-    // },
 
     // initializeProjectShow: function () {
     //   this.on("project:show", function () {

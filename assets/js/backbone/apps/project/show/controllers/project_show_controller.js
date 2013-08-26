@@ -11,7 +11,7 @@ define([
 	Application.Project.ShowController = BaseController.extend({
 
 		events: {
-
+			
 		},
 
 		initialize: function () {

@@ -33,57 +33,60 @@ define([
       // this.$el.html(compiledTemplate).hide().fadeIn();
 
       // new CommentFormView().render();
+
+      this.initializeFileUpload();
+      this.updatePhoto();
+
       return this;
     },
 
-    cleanup: function () {
-      $(this).remove();
-      $(this.el).undelegateEvents();
-    }
+    updatePhoto: function () {
+      this.listenTo(this.model, "project:updated:photo:success", function (data) {
+        var model = data.toJSON(), url;
 
-    // updatePhoto: function () {
-    //   this.model.on("project:updatedPhoto", function (data) {
-    //     var url;
-    //     if (data.get("coverId")) {
-    //       url = '/file/get/' + data.get("coverId");
-    //       $("#project-header").css('background-image', "url(" + url + ")");
-    //     }
-    //     $('#file-upload-progress-container').hide();
-    //   });
-    // },
+        if (model.coverId) {
+          url = '/file/get/' + model.coverId;
+          $("#project-header").css('background-image', "url(" + url + ")");
+        }
+        $('#file-upload-progress-container').hide();
+      });
+    },
 
-    // initializeFileUpload: function () {
-    //   var _this = this;
+    initializeFileUpload: function () {
+      var self = this;
 
-    //   var myDropzone = new dropzone("#fileupload", {
-    //     url: "/file/create",
-    //   });
+      var myDropzone = new dropzone("#fileupload", {
+        url: "/file/create",
+      });
 
-    //   myDropzone.on("addedfile", function(file) {
-    //     // no need for the dropzone preview
-    //     $('.dz-preview').hide();
-    //   });
+      myDropzone.on("addedfile", function(file) {
+        // no need for the dropzone preview
+        $('.dz-preview').hide();
+      });
 
-    //   myDropzone.on("sending", function(file) {
-    //     $('#file-upload-progress-container').show();
-    //   });
+      myDropzone.on("sending", function(file) {
+        $('#file-upload-progress-container').show();
+      });
 
-    //   // Show the progress bar
-    //   myDropzone.on("uploadprogress", function(file, progress, bytesSent) {
-    //     $('#file-upload-progress').css(
-    //       'width',
-    //       progress + '%'
-    //     );
-    //   });
+      // Show the progress bar
+      myDropzone.on("uploadprogress", function(file, progress, bytesSent) {
+        $('#file-upload-progress').css(
+          'width',
+          progress + '%'
+        );
+      });
 
-    //   myDropzone.on("success", function(file, data) {
-    //     _this.model.trigger("project:updateWithPhotoId", data);
-    //   });
+      myDropzone.on("success", function(file, data) {
+        self.model.trigger("project:update:photoId", data);
+      });
 
-    //   myDropzone.on("thumbnail", function(file) { });
-    // }
+      myDropzone.on("thumbnail", function(file) { });
+    },
 
       
+    cleanup: function () {
+      $(this).remove();
+    },
   });
 
   return ProjectShowView;
