@@ -4,9 +4,6 @@ var request = require('request');
 
 module.exports = {
   init: function(keepDb) {
-    if (fs.existsSync('./.tmp/disk.db') && (keepDb !== true)) {
-      fs.unlinkSync('./.tmp/disk.db');
-    }
     var j = request.jar();
     var r = request.defaults({ jar: j, followRedirect: false });
     return r;
@@ -25,7 +22,21 @@ module.exports = {
         cb(null);
       });
     });
+  },
 
+  createProject: function(request, public, cb) {
+    if (!public) {
+      conf.project.state = 'draft';
+    } else {
+      conf.project.state = 'public';
+    }
+    request.post({ url: conf.url + '/project',
+                   body: JSON.stringify(conf.project)
+                 }, function(err, response, body) {
+      if (err) { return cb(err, null); }
+      var b = JSON.parse(body);
+      cb(null, b);
+    });
   }
 
 };

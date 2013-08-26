@@ -9,5 +9,9 @@ module.exports = {
       adapters: {
         'default': 'disk'
       }
-    }
+    },
+  'project': {
+    'title': 'Project Title',
+    'description': 'Project Description'
+  }
 };
