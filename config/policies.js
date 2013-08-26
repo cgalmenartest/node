@@ -51,11 +51,14 @@ module.exports.policies = {
     '*': ['authenticated', 'addUserId', 'project']
   },
 
-  // XXX TODO: Add project authentication to task and comment controllers
-  // There seems to be a sails.js bug in running custom policies like this one below:
-  // TaskController : {
-  //   findAllByProject: ['authenticated', 'addUserId', 'project']
-  // },
+  TaskController : {
+    'findAllByProject': ['authenticated', 'addUserId', 'project']
+  },
+
+  EventController : {
+    'findAllByProjectId': ['authenticated', 'addUserId', 'project'],
+    'ical': ['authenticated', 'addUserId', 'project']
+  }
 
   /*
   // Here's an example of adding some policies to a controller
