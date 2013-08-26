@@ -14,7 +14,6 @@ define([
 		initialize: function () {
 			this.rendered = true;
 			this.initializeProjectListController();
-
 			// Psudo-Event
 			this.onProjectShowRender();
 
@@ -28,7 +27,7 @@ define([
 			var self = this;
 			rendering.on("project:show", function () {
 
-				self.initializeControllerSafely(self.rendered, TaskListController);
+				// self.initializeControllerSafely(self.rendered, TaskListController);
 				
 				// Here we put the logic for the show view that we want in the app delegate for this area.
 				// For instance we want task lists controller to be instantiated but we dont want to do that on the 

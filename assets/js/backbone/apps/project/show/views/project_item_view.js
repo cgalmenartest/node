@@ -11,11 +11,10 @@ define([
 
     el: $("#container"),
 
-    render: function (data) {
+    render: function () {
       var data, compiledTemplate;
 
-      data = { data: this.model.toJSON() }
-      compiledTemplate = _.template(ProjectShowTemplate, data);
+      compiledTemplate = _.template(ProjectShowTemplate, this.model.toJSON());
       this.$el.html(compiledTemplate);
 
       // if (!this.tasks) {
@@ -34,7 +33,13 @@ define([
       // this.$el.html(compiledTemplate).hide().fadeIn();
 
       // new CommentFormView().render();
+      return this;
     },
+
+    cleanup: function () {
+      $(this).remove();
+      $(this.el).undelegateEvents();
+    }
 
     // updatePhoto: function () {
     //   this.model.on("project:updatedPhoto", function (data) {

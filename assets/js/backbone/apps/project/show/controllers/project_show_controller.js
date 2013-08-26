@@ -24,10 +24,25 @@ define([
 		},
 
 		renderShowView: function () {
+			var self = this;
+
+			this.model.trigger("project:model:fetch", this.model.id);	
+			this.listenTo(this.model, "project:model:fetch:success", function (model) {
+				self.fireUpViewWithModelData(model);
+			});
+		},
+
+		fireUpViewWithModelData: function (model) {
 			this.projectShowItemView ? 
-				this.projectShowItemView.initialize() :
-				this.projectShowItemView = new ProjectItemView({ model: this.model }).render();
+				this.projectShowItemView.cleanup() :
+				this.projectShowItemView = new ProjectItemView({ model: model }).render();
+		},
+		 	
+		cleanup: function() {
+		  this.undelegateEvents();
+		  $(this.el).remove();
 		}
+
 	
 	});
 

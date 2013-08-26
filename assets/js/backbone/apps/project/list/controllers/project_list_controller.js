@@ -5,8 +5,9 @@ define([
 	'base_controller',
 	'projects_collection',
 	'projects_collection_view',
-	'projects_show_controller'
-], function (_, Backbone, Utilities, BaseController, ProjectsCollection, ProjectsCollectionView, ProjectShowController) {
+	'projects_show_controller',
+	'modal_component'
+], function (_, Backbone, Utilities, BaseController, ProjectsCollection, ProjectsCollectionView, ProjectShowController, Modal) {
 	
 	Application.Project.ListController = BaseController.extend({
 
@@ -18,6 +19,8 @@ define([
 		},
 
 		initialize: function () {
+			_.bindAll(this, 'cleanup')
+
 			var self = this;
 			this.rendered = true;
 			this.fireUpProjectsCollection();
@@ -63,19 +66,39 @@ define([
 			// This model will be retrived from the ID not the attributes currently existing.
 
 			// Grab the id for the model nearest the click
-			id = $(e.currentTarget).closest('li[data-project-id]').attr('data-project-id')
+			id = $(e.currentTarget).closest('li[data-project-id]').attr('data-project-id')	
 
 			// Store the model as the return of this utility function.
 			model = getCurrentModelFromId(this.collection, id);
 
-			this.projectShowController ?
-				this.projectShowController.initialize() :
-				this.projectShowController = new ProjectShowController({ model: model })
+			if (this.projectShowController) {
+				this.projectShowController.cleanup();
+			}
+			this.projectShowController = new ProjectShowController({ model: model })
+			
 		},
 
 		add: function (e) {
 			if (e.preventDefault()) e.preventDefault();
-			console.log("Clicked");
+			
+			var project;
+
+			// instantiate data we need to render the modal.
+			// In this case its the class that will contain it
+
+			if (this.modal) {
+				this.modal.initialize();
+			} else {
+				this.modal = new Modal();
+			}
+
+			// Here we are going to create a component to handle modals.
+			rendering.trigger("modal:show", project);
+		},
+
+		cleanup: function() {
+		  this.undelegateEvents();
+		  $(this.el).clear();
 		}
 
 	});
