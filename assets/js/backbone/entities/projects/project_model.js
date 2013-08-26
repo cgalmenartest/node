@@ -13,12 +13,28 @@ define([
     },
 
     initialize: function () {
-      // _.extend(this, Backbone.Events);
-      // this.initializeModelSave();
-      // this.initializeProjectShow();
-    },  
+      this.initializeProjectFetchListener();
+    },
 
-    url: '/project'
+    urlRoot: '/project',
+
+    initializeProjectFetchListener: function () {
+      var self = this;
+      
+      this.listenTo(this, "project:model:fetch", function (id) {
+        self.get(id);
+      });
+    },
+
+    get: function (id) {
+      var self = this;
+
+      this.fetch({ id: id,
+        success: function (data) {
+          self.trigger("project:model:fetch:success", data);
+        }
+      })
+    }
 
     // initializeModelSave: function () {
     //   var _this = this;

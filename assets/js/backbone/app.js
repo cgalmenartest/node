@@ -10,6 +10,7 @@ window.dispatcher
 // These need to stay out of the flow of the application itself.
 Application.AppModule = {};
 Application.Controller = {};
+Application.Component = {};
 
 // Set up req
 entities.request = {};

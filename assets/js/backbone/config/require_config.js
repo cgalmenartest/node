@@ -33,6 +33,7 @@ require.config({
     // ----------
     'base_controller'           : '../base/base_controller',
     'base_app_module'           : '../base/base_app_module',
+    'base_component'            : '../base/base_component',
 
     // ----------
     //= Home
@@ -62,7 +63,13 @@ require.config({
     // ----------
     'project_show_template'     : '../apps/project/show/templates/project_item_view_template.html',
     'project_list_template'     : '../apps/project/list/templates/project_collection_view_template.html',
-    'marketing_home_template'   : '../apps/marketing/home/templates/marketing_home_template.html'
+    'marketing_home_template'   : '../apps/marketing/home/templates/marketing_home_template.html',
+
+
+    // ----------
+    //= Components
+    // ----------
+    'modal_component'           : '../components/modal'
   }
 
 });

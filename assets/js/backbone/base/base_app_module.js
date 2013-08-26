@@ -1,11 +1,11 @@
-// Base App Module
-
 define([
 	'underscore',
 	'backbone'
 ], function (_, Backbone) {
 	
 	Application.AppModule.BaseAppModule = Backbone.View.extend({
+
+		initialize: function () {},
 		
 		initializeControllerSafely: function (appModuleRenderState, controllerToRender) {
 			if (appModuleRenderState === true) {

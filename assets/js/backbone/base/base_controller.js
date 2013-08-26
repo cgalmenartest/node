@@ -7,9 +7,11 @@ define([
 
 	Application.Controller.BaseController = Backbone.View.extend({
 		
-		initialize: function () {
+		initialize: function () {},
 
-		},
+		// ------------
+		//= Class Methods available for other views 
+		// ------------
 
 		initializeViewSafely: function (viewName) {
 			if (this.view) {
@@ -17,6 +19,11 @@ define([
 			} else {
 				this.view = new viewName();
 			}
+		},
+
+		cleanup: function () {
+			$(this).remove();
+			$(this.el).undelegateEvents();
 		}
 
 	});
