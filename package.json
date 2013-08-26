@@ -15,6 +15,7 @@
         "passport-oauth": "0.1.x",
         "passport-myusa": "0.1.x",
         "passport-linkedin": "0.1.x",
+        "icalendar": "0.6.5",
         "node-uuid": "1.4.x",
         "bcrypt": "0.7.6",
         "request": "2.x",
