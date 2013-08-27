@@ -9,11 +9,14 @@ before_install:
   - npm install
   - cd ..
   - ln -s anchor node_modules/anchor
+  - ls -l node_modules
   - git clone git://github.com/balderdashy/sails.git
   - cd sails
   - git checkout 88023b5e4557b42258e6f651b99070d19d55502c
   - mkdir node_modules
   - ln -s ../anchor node_modules/anchor
+  - ls -l node_modules
   - npm install
   - cd ..
   - ln -s sails node_modules/sails
+  - ls -l node_modules
