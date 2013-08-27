@@ -4,15 +4,14 @@ define([
   'backbone',
   'marketing_app',
   'projects_app',
-  'profile_show_controller'
-], function ($, _, Backbone, MarketingApp, ProjectApp, Profile) {
+  'profile_app'
+], function ($, _, Backbone, MarketingApp, ProjectApp, ProfileApp) {
 
   var AppRouter = Backbone.Router.extend({
 
     routes: {
       'home'          : 'initializeMarketingApp',
-      'projects'      : 'initializeProjectsApp',
-      'user'          : 'initializeUserApp'
+      'projects'      : 'initializeProjectsApp'
     },
 
     initializeMarketingApp: function () {
@@ -21,15 +20,17 @@ define([
 
     initializeProjectsApp: function () {
       this.projectsApp ? this.projectsApp.initialize() : this.projectsApp = new ProjectApp();
-    },
-
-    initializeUserApp: function () {
-      this.profile ? this.profile.initialize() : this.profile = new Profile();
     }
   });
 
   var initialize = function () {
-    var router = new AppRouter();
+
+    // Here we are going to fire up all the routers for our app to listen
+    // in on their respective applications.  We are -testing- this functionality
+    // by using the profile application as a starting point (very simple, 1 route).
+    var router  = new AppRouter();    
+    var profile = ProfileApp.initialize();
+
     Backbone.history.start({pushState: false});
 
     $(".nav li").on("click", function () {
