@@ -1,19 +1,16 @@
 // Set and 'cache' global Application object.
 window.Application = window.Application || {};
 
-// Set up the global req res || pub/sub handler.
-window.entities = {};
-
-window.dispatcher 
-
 // Set up the sub-objects within the Application object.
 // These need to stay out of the flow of the application itself.
 Application.AppModule = {};
 Application.Controller = {};
 Application.Component = {};
 
-// Set up req
-entities.request = {};
+// EVENT OBJECTS:
+window.entities = {
+  request: {}
+};
 
 rendering = {}
 

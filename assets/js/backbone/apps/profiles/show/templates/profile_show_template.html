@@ -1,0 +1,32 @@
+<div class="page-header">
+	<h1>Profile for <% if (name) { %><%- name %><% } else { %><%- username %><% } %></h1>
+</div>
+
+<div class="row">
+	<div class="col-8">
+<ul>
+	<li><strong>Username:</strong> <%- username %></li>
+	<li><strong>Full Name:</strong> <%- name %></li>
+	<li><strong>User created at:</strong> <%- createdAt %></li>
+	<li><strong>ID for user:</strong> <%- id %></li>
+	<li><strong>User is admin?</strong> <%- isAdmin %></li>
+	<li><% if (_.contains(auths, 'linkedin')) { %>
+		<strong>Connected to LinkedIn.</strong>
+		<% } else { %>
+		<strong>Not connected to LinkedIn.</strong>
+		<a href="/auth/linkedin">Connect</a>
+		<% } %>
+</ul>
+
+</div>
+
+<div class="col-4">
+  <img id="profile-photo" src="/user/photo/<%- id %>" style="max-width: 150px; max-height: 150px;"/>
+	<br/>
+	<div id="fileupload" style="margin-top: 10px;" class="btn btn-primary">Change Photo</div><br/>
+	<div id="file-upload-progress-container" style="margin-top: 10px; display: none;" class="progress progress-striped active">
+  <div id="file-upload-progress" class="progress-bar" style="width: 0"></div>
+</div>
+
+  </div>
+</div>

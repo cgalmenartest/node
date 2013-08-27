@@ -1,0 +1,69 @@
+define([
+	'underscore',
+	'backbone'
+], function (_, Backbone) {
+	'use strict';
+
+	var ProfileModel = Backbone.Model.extend({
+
+		urlRoot: '/user/index',
+
+		initialize: function () {
+			this.initializeProfileSave();
+			this.initializeProfileGet();
+		},
+
+		initializeProfileGet: function () {
+			var self = this;
+
+			this.listenTo(this, "profile:fetch", function () {
+				self.fetch({
+					success: function (data) {
+						self.trigger("profile:fetch:success", data);
+					},
+					error: function (data) {
+						console.log(data);
+					}
+				});
+			});
+		},
+
+		initializeProfileSave: function () {
+			var _this = this;
+
+			this.listenTo(this, "profile:updateWithPhotoId", function(file) {
+				var _self = this;
+				_this.save({
+					photoId: file['id']
+				}, {
+				success: function (data) {
+					_this.trigger("profile:updatedPhoto", data);
+				},
+				error: function (data) {
+					console.log(data);
+				}
+				});
+			});
+
+			this.listenTo(this, "profile:save", function (serializedProfileForm) {
+				console.log(serializedProfileForm);
+
+				_this.save({
+					// db : local name
+					photoId: photoId
+				}, { 	
+				success: function (data) { 
+					console.log(data);
+					this.trigger("profilePhoto:update", data);
+				},
+				error: function (data) {
+					console.log(data);
+				} 
+				});
+			});
+		}
+
+	});
+
+	return ProfileModel;
+});

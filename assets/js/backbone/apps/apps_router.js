@@ -4,8 +4,8 @@ define([
   'backbone',
   'marketing_app',
   'projects_app',
-  'user_app'
-], function ($, _, Backbone, MarketingApp, ProjectApp, UserApp) {
+  'profile_show_controller'
+], function ($, _, Backbone, MarketingApp, ProjectApp, Profile) {
 
   var AppRouter = Backbone.Router.extend({
 
@@ -24,7 +24,7 @@ define([
     },
 
     initializeUserApp: function () {
-      this.userApp ? this.userApp.initialize() : this.userApp = new UserApp();
+      this.profile ? this.profile.initialize() : this.profile = new Profile();
     }
   });
 

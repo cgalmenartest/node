@@ -78,6 +78,14 @@ require.config({
     'task_form_view'            : '../apps/tasks/new/views/task_form_view',
 
     // ----------
+    //= PROFILE
+    // ----------
+    'profile_model'             : '../entities/profiles/profile_model',
+    'profile_show_view'         : '../apps/profiles/show/views/profile_show_view',
+    'profile_show_controller'   : '../apps/profiles/show/controllers/profile_show_controller',
+    'profile_show_template'     : '../apps/profiles/show/templates/profile_show_template.html',
+
+    // ----------
     //= Components
     // ----------
     'modal_component'           : '../components/modal'
