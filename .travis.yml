@@ -1,3 +1,19 @@
 language: node_js
 node_js:
   - "0.10"
+
+before_install:
+  - mkdir node_modules
+  - ln -s sails node_modules/sails
+  - git clone git://github.com/Innovation-Toolkit/anchor.git
+  - cd anchor
+  - npm install
+  - cd ..
+  - ln -s anchor node_modules/anchor
+  - git clone git://github.com/balderdashy/sails.git
+  - cd sails
+  - git checkout 88023b5e4557b42258e6f651b99070d19d55502c
+  - mkdir node_modules
+  - ln -s ../anchor node_modules/anchor
+  - npm install
+  - cd ..
