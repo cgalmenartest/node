@@ -23,7 +23,6 @@ define([
 
 		cleanup: function () {
 			$(this).remove();
-			$(this.el).undelegateEvents();
 		}
 
 	});

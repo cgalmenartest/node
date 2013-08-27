@@ -12,26 +12,13 @@ define([
      "submit #profile-form": "post"
     },
 
-    initialize: function () {
-      this.initializeModelGet();
+    render: function () {
+      template  = _.template(ProfileTemplate, this.model.toJSON());
+      this.$el.html(template);
       this.initializeFileUpload();
       this.updatePhoto();
-    },
 
-    initializeModelGet: function () {
-      var self = this;
-
-      this.model.trigger("profile:fetch");
-      this.listenTo(this.model, "profile:fetch:success", function (modelData) {
-        // @instance
-        self.modelData = modelData;
-        self.render();
-      });
-    },
-
-    render: function () {
-      template  = _.template(ProfileTemplate, this.modelData.toJSON());
-      this.$el.html(template)
+      return this;
     },
 
     initializeFileUpload: function () {
