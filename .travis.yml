@@ -4,7 +4,6 @@ node_js:
 
 before_install:
   - mkdir node_modules
-  - ln -s sails node_modules/sails
   - git clone git://github.com/Innovation-Toolkit/anchor.git
   - cd anchor
   - npm install
@@ -17,3 +16,4 @@ before_install:
   - ln -s ../anchor node_modules/anchor
   - npm install
   - cd ..
+  - ln -s sails node_modules/sails
