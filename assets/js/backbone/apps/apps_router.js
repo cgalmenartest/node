@@ -10,26 +10,23 @@ define([
   var AppRouter = Backbone.Router.extend({
 
     routes: {
-      'home'          : 'initializeMarketingApp',
-      'projects'      : 'initializeProjectsApp'
+      'home'          : 'initializeMarketingApp'
     },
 
     initializeMarketingApp: function () {
       this.homeApp ? this.homeApp.initialize() : this.homeApp = new MarketingApp();
-    },
-
-    initializeProjectsApp: function () {
-      this.projectsApp ? this.projectsApp.initialize() : this.projectsApp = new ProjectApp();
     }
   });
 
   var initialize = function () {
+    var router, profile, project;
 
     // Here we are going to fire up all the routers for our app to listen
     // in on their respective applications.  We are -testing- this functionality
     // by using the profile application as a starting point (very simple, 1 route).
-    var router  = new AppRouter();    
-    var profile = ProfileApp.initialize();
+    router  = new AppRouter();    
+    profile = ProfileApp.initialize();
+    project = ProjectApp.initialize();
 
     Backbone.history.start({pushState: false});
 

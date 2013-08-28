@@ -10,21 +10,12 @@ define([
   'use strict';
 
   Application.Controller.TaskList = Backbone.View.extend({
-      
-    el: ".task-list-wrapper",
-
-    events: {
-      "click .task": "show"
-    },
 
     initialize: function (settings) {
-      _.bindAll(this, 'cleanup');
       this.options = _.extend(settings, this.defaults);
 
-      this.rendered = true;
       this.fireUpTasksCollection();
       this.requestTasksCollectionData();
-      this.initializeTaskFetchListeners();
     },
 
     fireUpTasksCollection: function () {
@@ -36,30 +27,30 @@ define([
     },
 
     requestTasksCollectionData: function () {
-      entities.request.trigger("tasks:fetch", this.options.projectId);
-    },
-
-    initializeTaskFetchListeners: function () {
       var self = this;
 
-      this.listenTo(entities.request, "tasks:fetch:success", function (collection) {
-        // @collection instance variable.
-        self.collection = collection;
-        self.renderTaskCollectionView();
+      this.collection.fetch({
+        url: '/task/findAllByProject/' + parseInt(this.options.projectId),
+        success: function (collection) {
+          self.renderTaskCollectionView(collection)
+        }
       });
     },
 
-    renderTaskCollectionView: function () {
+    renderTaskCollectionView: function (collection) {
       $(".modal-backdrop").hide();
       $(".modal").modal('hide');
-      
-      this.taskCollectionView ?
-        this.taskCollectionView.render() :
-        this.taskCollectionView = new TaskCollectionView({
-          el: ".task-list-wrapper",
-          onRender: true,
-          collection: this.collection
-        }).render();
+        
+      if (this.taskCollectionView) {
+        this.taskCollectionView.cleanup();
+      }
+
+      this.taskCollectionView = new TaskCollectionView({
+        el: ".task-list-wrapper",
+        onRender: true,
+        collection: collection
+      });
+
         if (this.taskFormView) {
           this.taskFormView.remove();
         }

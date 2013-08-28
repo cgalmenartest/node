@@ -1,60 +1,75 @@
 define([
 	'underscore',
 	'backbone',
+	'bootstrap',
 	'utilities',
 	'base_controller',
 	'projects_collection',
 	'projects_collection_view',
 	'projects_show_controller',
-	'modal_component'
-], function (_, Backbone, Utilities, BaseController, ProjectsCollection, ProjectsCollectionView, ProjectShowController, Modal) {
+	'project_form_view',
+	'projects_app',
+	'task_list_controller',
+	'comment_list_controller',
+	'comment_form_view'
+], function (
+	_, Backbone, Bootstrap, Utilities, BaseController, 
+	ProjectsCollection, ProjectsCollectionView, ProjectShowController, 
+	ProjectFormView, ProjectApp, TaskListController, CommentListController,
+	CommentFormView) {
 	
 	Application.Project.ListController = BaseController.extend({
 
 		el: "#container",
 
 		events: {
-			"click .project"			: "show",
-			"click .add-project"	: "add"
+			"click .project"				: "show",
+			"click .add-project"		: "add",
+			"click .delete-project"	: "delete",
+			"click .edit-project"		: "edit"
 		},
 
 		initialize: function () {
-			_.bindAll(this, 'cleanup')
-
 			var self = this;
-			this.rendered = true;
 			this.fireUpProjectsCollection();
-			this.requestProjectsCollectionData();
+			this.bindToProjectFetchListeners();
+			this.collection.trigger("projects:fetch");
 
-			entities.request.on("projectFetch:success", function (collection) {  
-				// -Instance variable for collection 
-				self.collection = collection;
-
-				// Render collection view to use instance variable, instead of passing
-				// It down explicitly.  This offers more dynamic use in other methods.
-				self.renderProjectCollectionView();
-			});
+			this.listenTo(this.collection, "project:save:success", function () {
+				$(".modal-backdrop").hide();
+      	$(".modal").modal('hide');
+      	self.renderProjectCollectionView();
+			})
 		},
 
 		fireUpProjectsCollection: function () {
 			if (this.collection) {
+				console.log("ALREDY EXISTING COLLECTION", this.collection);
 				this.collection.initialize();
 			} else {
 				this.collection = new ProjectsCollection();
+				console.log("NEW COLLECTION", this.collection);
 			}
 		},
 
-		requestProjectsCollectionData: function () {
-			entities.request.trigger("projects:fetch");
+		bindToProjectFetchListeners: function () {
+			var self = this;
+			this.listenToOnce(this.collection, "projects:fetch", function () {
+				self.collection.fetch({
+					success: function (collection) {
+						self.renderProjectCollectionView(collection);
+					}
+				})
+			})
 		},
 
-		renderProjectCollectionView: function () {
+		renderProjectCollectionView: function (collection) {
 			this.projectCollectionView ?	
 				this.projectCollectionView.render() :
 				this.projectCollectionView = new ProjectsCollectionView({
 					el: "#container",
 					onRender: true,
-					collection: this.collection
+					collection: collection
 				}).render();
 		},
 
@@ -63,42 +78,67 @@ define([
 
 			var id, model;
 
-			// This model will be retrived from the ID not the attributes currently existing.
-
 			// Grab the id for the model nearest the click
 			id = $(e.currentTarget).closest('li[data-project-id]').attr('data-project-id')	
 
-			// Store the model as the return of this utility function.
+			// // Store the model as the return of this utility function.
 			model = getCurrentModelFromId(this.collection, id);
 
 			if (this.projectShowController) {
 				this.projectShowController.cleanup();
 			}
 			this.projectShowController = new ProjectShowController({ model: model })
+
+			// Backbone.history.navigate('projects/' + id, { trigger: true })
 			
+			rendering.on("project:show:rendered", function () {
+				if (this.taskListController) {
+					this.taskListController.cleanup();
+				}
+				this.taskListController = new TaskListController({ projectId: id });
+
+				if (this.commentListController) {
+					this.commentListController.cleanup();
+				}
+				this.commentListController = new CommentListController({ projectId: id })
+
+				if (this.commentForm) {
+					this.commentForm.cleanup();
+				}
+				this.commentForm = new CommentFormView({ projectId: id });
+			});
+
 		},
 
 		add: function (e) {
 			if (e.preventDefault()) e.preventDefault();
-			
-			var project;
 
-			// instantiate data we need to render the modal.
-			// In this case its the class that will contain it
-
-			if (this.modal) {
-				this.modal.initialize();
-			} else {
-				this.modal = new Modal();
+			// Don't need to instantiate collection -again- in this view,
+			// simply pass it down.
+			if (this.projectFormView) {
+				this.projectFormView.cleanup();
 			}
+			
+			this.projectFormView = new ProjectFormView({
+				el: "#project-form-wrapper",
+				collection: this.collection
+			}).render();
+		
+		},
 
-			// Here we are going to create a component to handle modals.
-			rendering.trigger("modal:show", project);
+		delete: function (e) {
+			if (e.preventDefault()) e.preventDefault();
+			var model;
+
+			id = $(e.currentTarget).closest('li[data-project-id]').attr('data-project-id')	
+			model = getCurrentModelFromId(this.collection, id);
+
+			model.destroy();
+			this.renderProjectCollectionView();
 		},
 
 		cleanup: function() {
-		  this.undelegateEvents();
-		  $(this.el).clear();
+		  $(this.el).remove();
 		}
 
 	});

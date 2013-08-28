@@ -1,43 +1,30 @@
-// This is the Project Application Module or AppModule.
-// Here we are going to fire up all the regions we need to exert
-// Some control over, in an incredibly safe maner.
-
 define([
-	'underscore',
-	'backbone',
-	'base_app_module',
-	'project_list_controller',
-	'task_list_controller'
-], function (_, Backbone, BaseAppModule, ProjectListController, TaskListController) {
-	
-	Application.AppModule.Project = BaseAppModule.extend({
+  'jquery',
+  'underscore',
+  'backbone',
+  'project_list_controller'
+], function ($, _, Backbone, ProjectListController) {
 
-		initialize: function () {
-			this.rendered = true;
-			this.initializeProjectListController();
-			// Psudo-Event
-			this.onProjectShowRender();
+  var ProjectRouter = Backbone.Router.extend({
 
-		},
+    routes: {
+      'projects'			: 'list'
+    },
 
-		initializeProjectListController: function () {
-			this.initializeControllerSafely(this.rendered, ProjectListController);
-		},
+    list: function () {
+      if (this.projectListController) {
+        this.projectListController.initialize();
+      } else {
+        this.projectListController = new ProjectListController();
+      }
+    }
+  });
 
-		onProjectShowRender: function () {
-			var self = this;
-			rendering.on("project:show", function (projectId) {
+  var initialize = function () {
+    var router = new ProjectRouter();
+  } 
 
-				if (this.taskListController) {
-					this.taskListController.cleanup();
-				}
-				this.taskListController = new TaskListController({ projectId: projectId });
-
-			});
-		}
-
-
-	});
-
-	return Application.AppModule.Project;
-})
+  return {
+    initialize: initialize
+  };
+});

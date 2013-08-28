@@ -15,20 +15,18 @@ define([
     },
 
     initialize: function () {
-      this.initializeProjectCollectionFetchListeners();
-    },
-
-    initializeProjectCollectionFetchListeners: function () {
       var self = this;
-      
-      entities.request.once("projects:fetch", function () {
-        self.fetch({
-          success: function (data) { 
-            entities.request.trigger("projectFetch:success", data)
-          }
+
+      this.listenTo(this, "project:save", function (title, description) {
+        var project = new ProjectModel({ title: title, description: description })
+        console.log("BEFORE WE ADD PROJECT MODEL TO SELF", self);
+        self.add(project);
+        console.log("AFTER WE ADD PROJECT MODEL TO SELF", self);
+        self.models.forEach(function (model) {
+          model.save();
         });
-        
-      })
+        self.trigger("project:save:success");
+      });
     } 
 
   });

@@ -16,21 +16,7 @@ define([
     url: '/task', 
 
     initialize: function () {
-      this.initializeGetListeners();
       this.initializeSaveListeners();
-    },
-
-    initializeGetListeners: function () {
-      var self = this;
-
-      entities.request.on("tasks:fetch", function (projectId) {
-        self.fetch({
-          url: '/task/findAllByProject/' + projectId,
-          success: function (data) {
-            entities.request.trigger("tasks:fetch:success", data);
-          }
-        });
-      });
     },
 
     initializeSaveListeners: function () {

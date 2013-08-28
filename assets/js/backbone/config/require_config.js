@@ -1,4 +1,4 @@
-// Require setup and config
+
 require.config({
 
   paths: {
@@ -55,6 +55,8 @@ require.config({
     'project_list_template'     : '../apps/project/list/templates/project_collection_view_template.html',
     'project_model'             : '../entities/projects/project_model',
     'projects_collection'       : '../entities/projects/projects_collection',
+    'project_form_view'         : '../apps/project/new/views/project_new_form_view',
+    'project_form_template'     : '../apps/project/new/templates/project_new_form_template.html',
 
 
     // ----------
@@ -76,6 +78,17 @@ require.config({
     'profile_show_view'         : '../apps/profiles/show/views/profile_show_view',
     'profile_show_controller'   : '../apps/profiles/show/controllers/profile_show_controller',
     'profile_show_template'     : '../apps/profiles/show/templates/profile_show_template.html',
+    
+    // ----------
+    //= Comments
+    // ----------
+    'comment_list_controller'   : '../apps/comments/list/controllers/comment_list_controller',
+    'comment_list_template'     : '../apps/comments/list/templates/comment_list_template.html',
+    'comment_list_view'         : '../apps/comments/list/views/comment_list_view',
+    'comment_collection'        : '../entities/comments/comment_collection',
+    'comment_model'             : '../entities/comments/comment_model',
+    'comment_form_view'         : '../apps/comments/new/views/comment_form_view',
+    'comment_form_template'     : '../apps/comments/new/templates/comment_form_template.html',
     
     // ----------
     //= Components

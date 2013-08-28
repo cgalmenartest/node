@@ -10,10 +10,6 @@ define([
 
 	Application.Project.ShowController = BaseController.extend({
 
-		events: {
-			
-		},
-
 		initialize: function () {
 			this.rendered = true;
 			this.renderShowView();
@@ -30,7 +26,7 @@ define([
 			var self = this;
 
 			this.model.trigger("project:model:fetch", this.model.id);	
-			this.listenTo(this.model, "project:model:fetch:success", function (model) {
+			this.listenToOnce(this.model, "project:model:fetch:success", function (model) {
 				self.fireUpViewWithModelData(model);
 			});
 		},
@@ -39,10 +35,10 @@ define([
 			this.projectShowItemView ? 
 				this.projectShowItemView.cleanup() :
 				this.projectShowItemView = new ProjectItemView({ model: model }).render();
+			rendering.trigger("project:show:rendered");
 		},
 		 	
 		cleanup: function() {
-		  this.undelegateEvents();
 		  $(this.el).remove();
 		}
 

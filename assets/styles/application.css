@@ -71,9 +71,6 @@ div.project-title {
 
 h1.project-title {
 	width: 100%;
-	position: absolute;
-	bottom: 0;
-	left: 0;
 	padding-left: 10px;
 	margin-bottom: 0;
 	background-color: rgb(230, 230, 230);

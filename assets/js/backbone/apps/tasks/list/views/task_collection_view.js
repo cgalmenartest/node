@@ -7,7 +7,14 @@ define([
 
 	var TasksCollectionView = Backbone.View.extend({
 
+		el: ".task-list-wrapper",
+
+		initialize: function () {
+			this.render();
+		},
+
 		render: function () {
+			
 			var tasksJSON = {
 				tasks: this.options.collection.toJSON()
 			}

@@ -13,8 +13,10 @@ define([
 
     render: function () {
       var data, compiledTemplate;
-
-      compiledTemplate = _.template(ProjectShowTemplate, this.model.toJSON());
+      var data = {
+        data: this.model.toJSON()
+      }
+      compiledTemplate = _.template(ProjectShowTemplate, data);
       this.$el.html(compiledTemplate);
 
       // if (!this.tasks) {

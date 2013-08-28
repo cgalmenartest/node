@@ -5,10 +5,11 @@
     <a href="#addProject" class="add-project" data-toggle="modal">Add Project</a>
     <div class="clearfix"></div>
 </div>
+
 <ul id="project-list">
     <% _.each(projects, function(project) { %>
         <li data-project-id="<%- project.id %>" class="project-box">
-
+            
             <% if (project.coverId) { %>
             <div class="project-background-image" style="background-image: url(/file/get/<%= project.coverId %>)">
             <% } else { %>
@@ -17,6 +18,8 @@
                 <div class="project-title">
                     <a href="" class="project" style="cursor: pointer; cursor: hand;">
                         <%- project.title %>
+                        <a href="#destroy" class="delete-project">Delete</a> |
+                        <a href="#edit" class="edit-project">Edit</a>
                     </a>
                 </div>
             </div>
