@@ -28,11 +28,18 @@ module.exports = {
       // Query the model for matching entries
       model.find(where, function (err, models) {
         for (var i = 0; i < models.length; i++) {
-          results.push( { value: models[i][field['name']],
+          var result = { value: models[i][field['name']],
                           id: models[i].id,
                           field: field['name'],
                           target: config.target.toLowerCase()
-                        } );
+                        }
+          // If search by multiple fields, include the values
+          // for the other fields (eg, if the match is in the
+          // username of a user profile, also return the name)
+          for (var j = 0; j < config.fields.length; j++) {
+            result[config.fields[j].name] = models[i][config.fields[j].name];
+          }
+          results.push( result );
         }
         return done(err);
       });
