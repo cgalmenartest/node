@@ -48,6 +48,24 @@ module.exports = {
     // Search for each field and add to the results array
     async.each(config.fields, doIt, function (err) {
       if (err) { return cb(err, null); }
+      // performance optimization; only dedup if multiple fields are queried
+      if (config.fields.length > 1) {
+        // dedup results for multiple matches
+        var out = [];
+        for (var i = 0; i < results.length; i++) {
+          var found = false;
+          for (var j = 0; j < out.length; j++) {
+            if (out[j].id === results[i].id) {
+              found = true;
+              break;
+            }
+          }
+          if (!found) {
+            out.push(results[i]);
+          }
+        }
+        return cb(null, out);
+      }
       return cb(null, results);
     });
   }
