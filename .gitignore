@@ -20,6 +20,7 @@ node_modules
 # Ignore the configuration files
 config/local.js
 config/settings/auth.js
+config/settings/sources.js
 
 # Ignore editor temp files
 *~
