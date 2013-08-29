@@ -44,11 +44,9 @@ define([
 
 		fireUpProjectsCollection: function () {
 			if (this.collection) {
-				console.log("ALREDY EXISTING COLLECTION", this.collection);
-				this.collection.initialize();
+				this.collection;
 			} else {
 				this.collection = new ProjectsCollection();
-				console.log("NEW COLLECTION", this.collection);
 			}
 		},
 
