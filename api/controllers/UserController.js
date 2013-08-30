@@ -4,6 +4,8 @@
  * @module		:: Controller
  * @description	:: Get and update information about currently logged in user.
  */
+var async = require('async');
+var _ = require('underscore');
 
 module.exports = {
   index: function(req, res) {
@@ -29,8 +31,14 @@ module.exports = {
         for (var i = 0; i < auths.length; i++) {
           user.auths.push(auths[i].provider);
         }
-        sails.log.debug('User Get:', user);
-        return res.send(user);
+        // Look up the user's email addresses
+        UserEmail.findByUserId(req.user[0].id, function (err, emails) {
+          if (err) { return res.send(400, {message:'Error looking up user email addresses'}); }
+          user.emails = [];
+          if (emails) { user.emails = emails; }
+          sails.log.debug('User Get:', user);
+          return res.send(user);
+        });
       });
     }
     // Update information about the currently logged in user
@@ -41,11 +49,31 @@ module.exports = {
       if (params.email) { user.email = params.email; }
       if (params.photoId) { user.photoId = params.photoId; }
       if (params.photoUrl) { user.photoUrl = params.photoUrl; }
-      sails.log.debug('User Update:', user);
-      user.save(function (err) {
-        if (err) { return res.send(400, {message:'Error while saving user.'}) }
-        return res.send(user);
-      });
+      // The main user object is being updated
+      if (user) {
+        sails.log.debug('User Update:', user);
+        user.save(function (err) {
+          if (err) { return res.send(400, {message:'Error while saving user.'}) }
+          // Check if a userauth was removed
+          if (params.auths) {
+            var checkAuth = function(auth, done) {
+              if (_.contains(params.auths, auth.provider)) {
+                return done();
+              }
+              auth.destroy(done);
+            };
+
+            UserAuth.findByUserId(req.user[0].id, function (err, auths) {
+              if (err) { return res.send(400, {message:'Error finding authorizations.'}); }
+              async.each(auths, checkAuth, function(err) {
+                if (err) { return res.send(400, {message:'Error finding authorizations.'}); }
+                user.auths = params.auths;
+                return res.send(user);
+              });
+            });
+          }
+        });
+      }
     } else {
       return res.send(400, {message:'Invalid Operation'});
     }
