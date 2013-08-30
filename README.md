@@ -28,7 +28,8 @@ Lift sails from the main directory.
 This project follows the [git flow](http://nvie.com/posts/a-successful-git-branching-model/) branching model of product development.
 
 ### Backbone
-We generally try to document our standards and best practices on the front-end here: [Midas Backbone Practices](https://github.com/Innovation-Toolkit/midas/wiki/Backbone-Best-Practices).
+We generally try to document our standards and best practices on the front-end here: 
+[Midas Backbone Best Practices](https://github.com/Innovation-Toolkit/midas/wiki/Backbone-Best-Practices).
 
 ### Git Hooks
 
