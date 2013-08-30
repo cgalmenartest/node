@@ -26,8 +26,8 @@ define([
       var title, description;
 
       // Serialize form.
-      title       = $(".project-name").val();
-      description = $(".project-description").val();
+      title       = $(".project-name", this.el).val();
+      description = $(".project-description", this.el).val();
 
       this.collection.trigger("project:save", title, description);
     },

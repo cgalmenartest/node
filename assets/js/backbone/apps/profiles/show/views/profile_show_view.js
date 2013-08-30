@@ -9,17 +9,16 @@ define([
   var ProfileShowView = Backbone.View.extend({
 
     events: {
-      //"submit #profile-form": "post"
       "submit #profile-form"       : "save",
       "keyup #name, #username"     : "fieldModified",
-      // "change input.username"      : "modified",
       "click .addEmail"            : "addEmail",
       "click .removeAuth"          : "removeAuth"
     },
 
     render: function () {
-      template  = _.template(ProfileTemplate, this.model.toJSON());
+      var template = _.template(ProfileTemplate, this.model.toJSON());
       this.$el.html(template);
+      
       this.initializeFileUpload();
       this.initializeForm();
       this.updatePhoto();
@@ -70,6 +69,7 @@ define([
     initializeForm: function() {
       var _this = this;
       $("#submit").html("Save Changes");
+      
       this.model.on("profile:saveDone", function (data) {
         $("#submit").html("Saved!");
         $("#submit").removeClass("btn-primary");
@@ -94,10 +94,12 @@ define([
       if (e.preventDefault()) e.preventDefault();
       $("#submit").attr("disabled", "disabled");
       $("#submit").html('<i class="icon-spinner icon-spin"></i> Saving...');
+
       var data = {
         name: $("#name").val(),
         username: $("#username").val()
       };
+
       this.model.trigger("profile:save", data);
     },
 

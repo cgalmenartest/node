@@ -8,6 +8,8 @@ define([
   
     model: ProjectModel,
 
+    project: null,
+
     url: '/project/findAll',
 
     parse: function (response) {
@@ -25,7 +27,8 @@ define([
         });
         self.trigger("project:save:success");
       });
-    } 
+
+    }
 
   });
 

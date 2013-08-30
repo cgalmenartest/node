@@ -11,12 +11,13 @@ define([
 	'projects_app',
 	'task_list_controller',
 	'comment_list_controller',
-	'comment_form_view'
+	'comment_form_view',
+	'modal_component'
 ], function (
 	_, Backbone, Bootstrap, Utilities, BaseController, 
 	ProjectsCollection, ProjectsCollectionView, ProjectShowController, 
 	ProjectFormView, ProjectApp, TaskListController, CommentListController,
-	CommentFormView) {
+	CommentFormView, ModalComponent) {
 	
 	Application.Project.ListController = BaseController.extend({
 
@@ -71,61 +72,59 @@ define([
 				}).render();
 		},
 
+		//TODO: CLEAN UP THIS MONSTER METHOD.  Move this out to an app_module
+		// And then the rendering.on event should return out there then allow
+		// the instantiation of all these controllers there.
 		show: function (e) {
 			if (e.preventDefault()) e.preventDefault();
-
 			var id, model;
-
 			// Grab the id for the model nearest the click
 			title = $(e.currentTarget).closest(".project-title").children(".project").text();
-
-			// // Store the model as the return of this utility function.
+			// Store the model as the return of this utility function.
 			model = getCurrentProjectModelFromFormAttributes(this.collection, title);
-
 			if (this.projectShowController) {
 				this.projectShowController.cleanup();
 			}
 			this.projectShowController = new ProjectShowController({ model: model })
-
-			// Backbone.history.navigate('projects/' + id, { trigger: true })
-			
 			rendering.on("project:show:rendered", function () {
 				if (this.taskListController) {
 					this.taskListController.cleanup();
 				}
 				this.taskListController = new TaskListController({ projectId: model.id });
-
 				if (this.commentListController) {
 					this.commentListController.cleanup();
 				}
 				this.commentListController = new CommentListController({ projectId: model.id })
-
 				if (this.commentForm) {
 					this.commentForm.cleanup();
 				}
 				this.commentForm = new CommentFormView({ projectId: model.id });
 			});
-
 		},
 
 		add: function (e) {
 			if (e.preventDefault()) e.preventDefault();
+			var self = this;
 
-			// Don't need to instantiate collection -again- in this view,
-			// simply pass it down.
-			if (this.projectFormView) {
-				this.projectFormView.cleanup();
-			}
-			
-			this.projectFormView = new ProjectFormView({
-				el: "#project-form-wrapper",
-				collection: this.collection
-			}).render();
-		
+      if (this.modalComponent) this.modalComponent;
+      this.modalComponent = new ModalComponent({
+        el: "#container",
+        id: "addProject"
+      }).render();  
+
+      if (!_.isUndefined(this.modalComponent)) {
+        if (this.projectFormView) this.projectFormView();
+        this.projectFormView = new ProjectFormView({
+          el: ".modal-body",
+          collection: self.collection
+        }).render();  
+      }
+      
 		},
 
+		// TODO: Review 
 		delete: function (e) {
-			if (e.preventDefault()) e.preventDefault();
+		if (e.preventDefault()) e.preventDefault();
 			var model;
 
 			title = $(e.currentTarget).closest(".project-title").children(".project").text();
