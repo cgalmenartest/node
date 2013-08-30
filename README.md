@@ -1,8 +1,6 @@
 midas [![Build Status](https://travis-ci.org/Innovation-Toolkit/midas.png?branch=master)](https://travis-ci.org/Innovation-Toolkit/midas) [![Dependency Status](https://gemnasium.com/Innovation-Toolkit/midas.png)](https://gemnasium.com/Innovation-Toolkit/midas)
 =====
 
-[Midas Backbone Practices](https://github.com/Innovation-Toolkit/midas/wiki/Backbone-Best-Practices)
-
 Innovation platform providing collaboration and crowdsourcing tools, developed in Node.js.
 
 ## Installation
@@ -28,6 +26,9 @@ Lift sails from the main directory.
 ## Development
 
 This project follows the [git flow](http://nvie.com/posts/a-successful-git-branching-model/) branching model of product development.
+
+### Backbone
+We generally try to document our standards and best practices on the front-end here: [Midas Backbone Practices](https://github.com/Innovation-Toolkit/midas/wiki/Backbone-Best-Practices).
 
 ### Git Hooks
 
