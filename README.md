@@ -4,7 +4,6 @@ midas [![Build Status](https://travis-ci.org/Innovation-Toolkit/midas.png?branch
 Innovation platform providing collaboration and crowdsourcing tools, developed in Node.js.
 
 ## License
----
 
 This project constitutes an original work of the United States Government.
 
