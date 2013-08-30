@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
     <link rel="stylesheet" type="text/css" href="/styles/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="/styles/bootstrap-theme.css" />
+    <link rel="stylesheet" type="text/css" href="/styles/font-awesome/css/font-awesome.min.css" />
     <link rel="stylesheet" type="text/css" href="/styles/application.css" />
 
     <script type="text/javascript" src="/js/vendor/sails/socket.io.js"></script>
@@ -17,7 +19,7 @@
     <!-- listen on socket.io for incoming messages -->
     <script type="text/javascript" src="/js/vendor/sails/app.js"></script>
 
-    <script type="text/javascript" data-main="/js/app/bootup.js" src="/js/vendor/require.js"></script>
+    <script type="text/javascript" data-main="/js/backbone/config/require_config.js" src="/js/vendor/require.js"></script>
 
   </head>
 
@@ -25,15 +27,19 @@
   
     <div class="navbar navbar-fixed-top">
       <div class="container">
-        <a class="navbar-brand" href="#/api/home">Midas</a>
+        <a class="navbar-brand" href="#home">Midas</a>
         <ul class="nav navbar-nav">
-          <li class="active"><a href="#/api/home">Home</a></li>
-          <li><a href="#/api/projects">Projects</a></li>
-          <li><a href="#">Tasks</a></li>
+          <li class="home"><a href="#home">Home</a></li>
+          <li class="projects"><a href="#projects">Projects</a></li>
         </ul>
         <ul class="nav navbar-nav pull-right">
-          <li><a href="">Login</a></li>
-          <li><a href="">Register</a></li>
+          <% if (req.user) { %>
+            <li><a href="#user">Profile</a></li>
+            <li><a href="/auth/logout">Logout</a></li>
+          <% } else { %>
+            <li><a href="/auth">Login</a></li>
+          <% }; %>
+        </ul>
       </div>
     </div>
 
