@@ -1,26 +1,63 @@
 <div class="page-header">
-	<h1>Profile for <% if (name) { %><%- name %><% } else { %><%- username %><% } %></h1>
+	<h1 id="profile-header"><% if (name) { %><%- name %><% } else { %><%- username %><% } %></h1>
 </div>
 
 <div class="row">
-	<div class="col-8">
-<ul>
-	<li><strong>Username:</strong> <%- username %></li>
-	<li><strong>Full Name:</strong> <%- name %></li>
-	<li><strong>User created at:</strong> <%- createdAt %></li>
-	<li><strong>ID for user:</strong> <%- id %></li>
-	<li><strong>User is admin?</strong> <%- isAdmin %></li>
-	<li><% if (_.contains(auths, 'linkedin')) { %>
-		<strong>Connected to LinkedIn.</strong>
-		<% } else { %>
-		<strong>Not connected to LinkedIn.</strong>
-		<a href="/auth/linkedin">Connect</a>
-		<% } %>
-</ul>
+  <% if (isAdmin) { %>
+  <div class="alert alert-info">You are an administrator.</div>
+  <% } %>
+
+	<div class="col-lg-8">
+    <form class="form-horizontal" role="form" id="profile-form">
+      <div class="form-group">
+        <label for="name" class="col-lg-3 control-label">Full Name</label>
+        <div class="col-lg-9">
+          <input type="text" class="form-control" id="name" name="name" placeholder="Your Full Name" value="<% if (name) { %><%- name %><% } %>"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="username" class="col-lg-3 control-label">Username</label>
+        <div class="col-lg-9">
+          <input type="text" class="form-control" id="username" name="username" placeholder="username" value="<% if (username) { %><%- username %><% } %>"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="primaryEmail" class="col-lg-3 control-label">Primary Email</label>
+        <div class="col-lg-9">
+          <% for (var e = 0; e < emails.length; e++) { %>
+            <div class="radio">
+              <label>
+                <input type="radio" name="primaryEmail" id="email-<%- emails[e].id %>" value="<%- emails[e].email %>" <% if (emails[e].isPrimary) { %>checked<% } %>>
+                <a href="#" class="email-remove" id="email-remove-<%- emails[e].id %>"><span class="glyphicon glyphicon-trash"></a> <%- emails[e].email %>
+              </label>
+            </div>
+          <% } %>
+          <a href="#" class="btn btn-default btn-xs" disabled="disabled">Add Email Address</a>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="services" class="col-lg-3 control-label">Services</label>
+        <div class="col-lg-9">
+          <% if (_.contains(auths, 'linkedin')) { %>
+            <button class="btn btn-success btn-xs" disabled="disabled"><span class="glyphicon glyphicon-ok" alt="Connected"></span></button>
+            <a href="#" class="btn btn-default btn-xs removeAuth" id="linkedin"><span class="glyphicon glyphicon-remove"></span></a>
+          <% } else { %>
+            <button class="btn btn-danger btn-xs" disabled="disabled"><span class="glyphicon glyphicon-remove" alt="Disconnected"></span></button>
+            <a href="/auth/linkedin" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-plus"></span></a>
+          <% } %>
+          <i class="icon icon-linkedin-sign" alt="LinkedIn"></i> LinkedIn
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-lg-offset-3 col-lg-9">
+          <button id="submit" type="submit" class="btn btn-primary" disabled="disabled">Save Changes</button>
+        </div>
+      </div>
+    </form>
 
 </div>
 
-<div class="col-4">
+<div class="col-lg-4">
 	<% if (photoId) { %>
   	<img src="/file/get/<%- photoId %>" alt="" id="profile-photo" style="max-width: 150px; max-height: 150px;" />
   <% } else { %>

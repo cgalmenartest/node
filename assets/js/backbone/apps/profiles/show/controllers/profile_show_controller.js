@@ -16,6 +16,9 @@ define([
 
 		el: "#container",
 
+		events: {
+		},
+
 		initialize: function () {
 			this.initializeProfileModelInstance();
 		},
@@ -40,7 +43,7 @@ define([
 					el: this.$el,
 					model: this.model
 				}).render();
-		}
+		},
 
 	});
 
