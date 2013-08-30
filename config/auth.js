@@ -102,11 +102,14 @@ function tokenFlow(provider, req, tokens, providerUser, done) {
           if (providerUser.emails && (providerUser.emails.length > 0)) {
             var email = {
               userId: user['id'],
-              email: providerUser.emails[0].value,
+              email: providerUser.emails[0].value.toLowerCase(),
             }
-            UserEmail.create(email).done(function (err, email) {
-              if (err) { return done(null, false, { message: 'Unable to store user email address.' }); }
-              return done(null, user);
+            UserEmail.find(email, function (err, storedEmail) {
+              if (storedEmail) { return done(null, user); }
+              UserEmail.create(email).done(function (err, email) {
+                if (err) { return done(null, false, { message: 'Unable to store user email address.' }); }
+                return done(null, user);
+              });
             });
           } else {
             return done(null, user);
@@ -120,6 +123,8 @@ function tokenFlow(provider, req, tokens, providerUser, done) {
           req.user[0].save(function (err) {
             user_cb(null, req.user[0]);
           });
+        } else {
+          user_cb(null, req.user[0]);
         }
       } else {
         // create user
