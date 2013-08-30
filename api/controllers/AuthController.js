@@ -12,40 +12,47 @@ var passport = require('passport');
  * remote server.
  */
 function authenticate(req, res, strategy) {
-  passport.authenticate(strategy, function(err, user, info)
-  {
-    if ((err) || (!user))
+  if (req.user) {
+    passport.authorize(strategy, function(err, user, info)
     {
-      sails.log.debug('Authentication Error:', err, info);
-      res.redirect('/auth');
-      return;
-    }
-
-    req.logIn(user, function(err)
+      res.redirect('/#user');
+    })(req, res);
+  } else {
+    passport.authenticate(strategy, function(err, user, info)
     {
-      if (err)
+      if ((err) || (!user))
       {
         sails.log.debug('Authentication Error:', err, info);
         res.redirect('/auth');
         return;
       }
 
-      res.redirect('/');
-      return;
-    });
-  })(req, res);
+      req.logIn(user, function(err)
+      {
+        if (err)
+        {
+          sails.log.debug('Authentication Error:', err, info);
+          res.redirect('/auth');
+          return;
+        }
+
+        res.redirect('/#projects');
+        return;
+      });
+    })(req, res);
+  }
 };
 
 /* Process any OAuth based authentication.
  * Handles the initial redirect, and then the callback.
  */
-function processOAuth(req, res, strategy) {
+function processOAuth(req, res, strategy, options) {
   if (req.params['id'] === 'callback') {
     // Authenticate, log in, and create the user if necessary
-    authenticate(req, res, 'oauth2');
+    authenticate(req, res, strategy);
   } else {
     // start the oauth process by redirecting to the service provider
-    passport.authenticate('oauth2')(req, res);
+    passport.authenticate(strategy, options)(req, res);
   }
 }
 
@@ -58,20 +65,27 @@ module.exports = {
     res.view();
   },
 
-  /* Authentication Provider for the 'local' strategy
+  /* Authentication Providers
   */
   local: function(req, res) {
     authenticate(req, res, 'local');
   },
-
   oauth2: function(req, res) {
     processOAuth(req, res, 'oauth2');
   },
+  myusa: function(req, res) {
+    processOAuth(req, res, 'myusa', {scope: 'profile'});
+  },
+  linkedin: function(req, res) {
+    processOAuth(req, res, 'linkedin', {scope: ['r_basicprofile', 'r_fullprofile', 'r_emailaddress', 'r_network']});
+  },
 
+  /* Logout user from session
+   */
   logout: function (req,res) {
     // logout and redirect back to the app
     req.logout();
-    res.redirect('/');
+    res.redirect('/#projects');
   }
 
 };

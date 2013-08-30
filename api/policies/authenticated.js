@@ -1,15 +1,23 @@
 /**
 * Allow any authenticated user.
 */
-module.exports = function (req,res,ok) {
-	
-	// User is allowed, proceed to controller
-	if (req.session.authenticated) {
-		return ok();
-	}
+module.exports = function authenticated (req, res, next) {
 
-	// User is not allowed
-	else {
-		return res.send("You are not permitted to perform this action.",403);
-	}
+  // If the request is a GET, allow anyone to access.
+  if (req.route.method === 'get') {
+    return next();
+  }
+
+  // User is allowed, proceed to controller for all other operations
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  // Could redirect the user, although most routes are APIs
+  // since backbone handles the user views
+  // res.redirect('/auth')
+
+  // User is not allowed, send 403 message
+  else {
+    return res.send(403, {message: "You are not permitted to perform this action."});
+  }
 };
