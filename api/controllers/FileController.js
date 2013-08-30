@@ -30,7 +30,11 @@ module.exports = {
       File.findOneById(req.params.id, function(err, f) {
         if (err) { return res.send(400, {message:'Error while finding file.'}) }
         if (!f || !f.data) { return res.send(400, {message:'Error while finding file.'}) }
+        // Don't let browsers cache the response
         res.set('Content-Type', f.mimeType);
+        res.set('Cache-Control', 'no-cache, no-store, must-revalidate'); // HTTP 1.1.
+        res.set('Pragma', 'no-cache'); // HTTP 1.0.
+        res.set('Expires', '0'); // Proxies.
         return res.send(f.data);
       });
     }
@@ -44,7 +48,7 @@ module.exports = {
       });
     }
   },
-
+  
   create: function(req, res) {
     // Create only accepts post
     if (req.route.method != 'post') { return res.send(400, {message:'Unsupported operation.'}) }

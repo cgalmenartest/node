@@ -16,8 +16,6 @@
 
 module.exports = function (grunt) {
 
-
-
   /**
    * CSS files to inject in order
    * (uses Grunt-style wildcard/glob/splat expressions)
@@ -57,7 +55,7 @@ module.exports = function (grunt) {
     'linker/js/app.js', 
 
     // Include all javascript files in js and subdirectories
-    'linker/js/**/*.js'
+    'linker/js/backbone/**/*.js'
   ];
 
 

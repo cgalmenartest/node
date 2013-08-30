@@ -1,4 +1,4 @@
-	  /*****************
+/*****************
 =  GLOBAL 
 ******************/
 #container {
@@ -20,6 +20,11 @@
 /*****************
 =  PROJECTS 
 ******************/
+
+#projects {
+	display: inline-block !important;
+}
+
 .add-project {
 	float: right;
 }
@@ -66,9 +71,6 @@ div.project-title {
 
 h1.project-title {
 	width: 100%;
-	position: absolute;
-	bottom: 0;
-	left: 0;
 	padding-left: 10px;
 	margin-bottom: 0;
 	background-color: rgb(230, 230, 230);
@@ -241,6 +243,21 @@ a[class='project'] {
 
 #task-list-wrapper::-webkit-scrollbar-thumb:window-inactive {
 	background: rgba(100,50,24,0.4);
+}
+
+#task-list-wrapper > ul > li {
+	list-style: none;
+}
+
+li.well {
+	list-style: none;
+	width: 410px;
+}
+
+#task-list {
+	overflow-y: scroll;
+	overflow-x: hidden;
+	height: 380px;
 }
 
 ul.comment-list > li {
