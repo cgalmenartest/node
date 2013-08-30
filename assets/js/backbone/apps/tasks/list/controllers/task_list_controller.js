@@ -62,28 +62,20 @@ define([
     add: function (e) {
       if (e.preventDefault()) e.preventDefault();
 
-      // Only on the add click do we bring into the DOM these elements
-      // First the modal component.
-      // REMEMBER: id = a href='#IdName'
-      // This is for bootstrap to launch the modal with a link named the same as 
-      // the id set here
       if (this.modalComponent) this.modalComponent;
       this.modalComponent = new ModalComponent({
         el: ".task-list-wrapper",
         id: "addTask"
       }).render();  
 
-      // And then here we set the new form view to the body
-      // of the modal component that we mixed in.  
-      // Then we obviously give whatever sort of data we need on it.
-      // TODO: Remove click events from form view and move them to 
-      // modal component (such as form submission, etc)
-      if (this.taskFormView) this.taskFormView;
-      this.taskFormView = new TaskFormView({
-        el: ".modal-body",
-        projectId: this.options.projectId
-      }).render();
-
+      if (!_.isUndefined(this.modalComponent)) {
+        if (this.taskFormView) this.taskFormView;
+        this.taskFormView = new TaskFormView({
+          el: ".modal-body",
+          projectId: this.options.projectId
+        }).render();  
+      }
+      
     },
 
     cleanup: function () {

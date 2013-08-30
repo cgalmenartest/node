@@ -31,6 +31,8 @@ define([
 
       var compiledTemplate = this.template(this.data);
       this.$el.append(compiledTemplate);
+
+      return this;
     }
 
 	});
