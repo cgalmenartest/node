@@ -48,6 +48,10 @@ define([
 
       this.model = new CommentModel();
       this.model.trigger("comment:save", parentId, this.comment, projectId);
+    },
+
+    cleanup: function () {
+      $(this.el).remove()
     }
 
   });

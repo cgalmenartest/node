@@ -51,6 +51,10 @@ define([
       if (e.preventDefault()) e.preventDefault();
 
 
+    },
+
+    cleanup: function () {
+      $(this.el).remove();
     }
 
   });

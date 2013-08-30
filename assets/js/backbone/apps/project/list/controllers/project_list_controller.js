@@ -77,10 +77,10 @@ define([
 			var id, model;
 
 			// Grab the id for the model nearest the click
-			id = $(e.currentTarget).closest('li[data-project-id]').attr('data-project-id')	
+			title = $(e.currentTarget).closest(".project-title").children(".project").text();
 
 			// // Store the model as the return of this utility function.
-			model = getCurrentModelFromId(this.collection, id);
+			model = getCurrentProjectModelFromFormAttributes(this.collection, title);
 
 			if (this.projectShowController) {
 				this.projectShowController.cleanup();
@@ -93,17 +93,17 @@ define([
 				if (this.taskListController) {
 					this.taskListController.cleanup();
 				}
-				this.taskListController = new TaskListController({ projectId: id });
+				this.taskListController = new TaskListController({ projectId: model.id });
 
 				if (this.commentListController) {
 					this.commentListController.cleanup();
 				}
-				this.commentListController = new CommentListController({ projectId: id })
+				this.commentListController = new CommentListController({ projectId: model.id })
 
 				if (this.commentForm) {
 					this.commentForm.cleanup();
 				}
-				this.commentForm = new CommentFormView({ projectId: id });
+				this.commentForm = new CommentFormView({ projectId: model.id });
 			});
 
 		},
@@ -128,8 +128,8 @@ define([
 			if (e.preventDefault()) e.preventDefault();
 			var model;
 
-			id = $(e.currentTarget).closest('li[data-project-id]').attr('data-project-id')	
-			model = getCurrentModelFromId(this.collection, id);
+			title = $(e.currentTarget).closest(".project-title").children(".project").text();
+			model = getCurrentProjectModelFromFormAttributes(this.collection, title);
 
 			model.destroy();
 			this.renderProjectCollectionView();
