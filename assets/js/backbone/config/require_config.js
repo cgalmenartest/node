@@ -93,7 +93,8 @@ require.config({
     // ----------
     //= Components
     // ----------
-    'modal_component'           : '../components/modal'
+    'modal_component'           : '../components/modal',
+    'modal_template'            : '../components/modal_template.html'
   }
 
 });
