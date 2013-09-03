@@ -68,23 +68,29 @@ define([
 
     initializeForm: function() {
       var _this = this;
-      $("#submit").html("Save Changes");
       
-      this.model.on("profile:saveDone", function (data) {
-        $("#submit").html("Saved!");
+      this.listenTo(_this.model, "profile:save:success", function (data) {
+        $("#submit").button('success');
+        // Bootstrap .button() has execution order issue since it
+        // uses setTimeout to change the text of buttons.
+        // make sure attr() runs last
+        setTimeout(function() { $("#submit").attr("disabled", "disabled") }, 0);
         $("#submit").removeClass("btn-primary");
         $("#submit").addClass("btn-success");
         var headerText = data.get("name");
         if (!headerText) { headerText = data.get("username"); }
         $("#profile-header").html(headerText);
       });
-      this.model.on("profile:removeAuthDone", function (data, id) {
+      this.listenTo(_this.model, "profile:save:fail", function (data) {
+        $("#submit").button('fail');
+      });
+      this.listenTo(_this.model, "profile:removeAuth:success", function (data, id) {
         _this.render();
       });
     },
 
     fieldModified: function(e) {
-      $("#submit").html("Save Changes");
+      $("#submit").button('reset');
       $("#submit").removeAttr("disabled");
       $("#submit").removeClass("btn-success");
       $("#submit").addClass("btn-primary");
@@ -92,9 +98,8 @@ define([
 
     save: function (e) {
       if (e.preventDefault()) e.preventDefault();
-      $("#submit").attr("disabled", "disabled");
-      $("#submit").html('<i class="icon-spinner icon-spin"></i> Saving...');
-
+      $("#submit").button('loading');
+      setTimeout(function() { $("#submit").attr("disabled", "disabled") }, 0);
       var data = {
         name: $("#name").val(),
         username: $("#username").val()
