@@ -51,6 +51,13 @@ module.exports.policies = {
     '*': ['authenticated', 'addUserId', 'project']
   },
 
+  LikeController : {
+    '*': ['authenticated', 'addUserId', 'project'],
+    'count': ['authenticated', 'requireId', 'project'],
+    'like': ['authenticated', 'requireUserId', 'addUserId', 'requireId'],
+    'unlike': ['authenticated', 'requireUserId', 'addUserId', 'requireId']
+  },
+
   TaskController : {
     'findAllByProject': ['authenticated', 'addUserId', 'project']
   },
