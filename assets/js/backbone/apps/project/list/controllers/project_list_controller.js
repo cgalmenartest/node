@@ -80,9 +80,9 @@ define([
 			if (e.preventDefault()) e.preventDefault();
 			var id, model;
 			// Grab the id for the model nearest the click
-			title = $(e.currentTarget).closest(".project-title").children(".project").text();
+			attr = $(e.currentTarget).closest(".project-title").children(".project").text();
 			// Store the model as the return of this utility function.
-			model = getCurrentProjectModelFromFormAttributes(this.collection, title);
+			model = getCurrentModelFromFormAttributes(this.collection, attr);
 			if (this.projectShowController) {
 				this.projectShowController.cleanup();
 			}
@@ -128,8 +128,8 @@ define([
 		if (e.preventDefault()) e.preventDefault();
 			var model, title;
 
-			title = $(e.currentTarget).closest(".project-title").children(".project").text();
-			model = getCurrentProjectModelFromFormAttributes(this.collection, title);
+			attr = $(e.currentTarget).closest(".project-title").children(".project").text();
+			model = getCurrentModelFromFormAttributes(this.collection, attr);
 
 			model.destroy();
 			this.renderProjectCollectionView();
