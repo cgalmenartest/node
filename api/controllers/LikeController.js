@@ -50,7 +50,7 @@ module.exports = {
    * Syntax: /like/like/:projectId where :id is the projectId
    */
   like: function (req, res) {
-    like = { projectId: req.params.id, userId: req.user[0].id };
+    var like = { projectId: req.params.id, userId: req.user[0].id };
     Like.findOne({ where: like}, function (err, existing) {
       if (err) { return res.send(400, { message: 'Error creating like.' }); }
       if (existing) { return res.send(existing); }
