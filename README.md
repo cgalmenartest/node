@@ -18,10 +18,19 @@ Copy the module settings files and edit.
 
      cd config/settings
      cp auth.ex.js auth.js
+     cp sources.ex.js sources.js
 
 Lift sails from the main directory.
 
-     lift sails
+     sails lift
+
+### Forked Libraries
+
+This project uses forked repositories and libaries, which you will
+need to `npm link` in order for everything to function properly.
+
+- [sails-postgresql](https://github.com/Innovation-Toolkit/sails-postgresql). Forked to provide soft deletes and support binary objects.
+- [sails](https://github.com/balderdashy/sails). Use the master branch rather than 0.9.3. May not be necessary once Balderdash releases a new version.
 
 ## Development
 
