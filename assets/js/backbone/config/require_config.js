@@ -57,6 +57,8 @@ require.config({
     'projects_collection'       : '../entities/projects/projects_collection',
     'project_form_view'         : '../apps/project/new/views/project_new_form_view',
     'project_form_template'     : '../apps/project/new/templates/project_new_form_template.html',
+    'project_edit_form_template': '../apps/project/edit/templates/project_edit_form_template.html',
+    'project_edit_form_view'    : '../apps/project/edit/views/project_edit_form_view',
 
 
     // ----------

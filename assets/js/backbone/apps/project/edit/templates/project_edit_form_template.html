@@ -1,0 +1,21 @@
+<% if (model) { %>
+  
+  <form action="" id="project-edit-form">
+    <fieldset>
+      <label for="project-title">
+        Project Title
+        <input id="project-edit-form-title" class="form-control" type="text" value="<%- model.attributes.title %>" />
+      </label>
+
+      <label for="project-description">
+        Project Description
+        <input type="text" id="project-edit-form-description" class="form-control" value="<%- model.attributes.description %>" />
+      </label>
+
+      <div class="clearfix"></div>
+
+      <input type="submit" class="btn btn-primary pull-right" id="submit" value="edit">
+    </fieldset>
+  </form>
+
+<% }; %>

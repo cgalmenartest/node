@@ -12,12 +12,13 @@ define([
 	'task_list_controller',
 	'comment_list_controller',
 	'comment_form_view',
-	'modal_component'
+	'modal_component',
+	'project_edit_form_view'
 ], function (
 	_, Backbone, Bootstrap, Utilities, BaseController, 
 	ProjectsCollection, ProjectsCollectionView, ProjectShowController, 
 	ProjectFormView, ProjectApp, TaskListController, CommentListController,
-	CommentFormView, ModalComponent) {
+	CommentFormView, ModalComponent, ProjectEditFormView) {
 	
 	Application.Project.ListController = BaseController.extend({
 
@@ -109,7 +110,8 @@ define([
       if (this.modalComponent) this.modalComponent;
       this.modalComponent = new ModalComponent({
         el: "#container",
-        id: "addProject"
+        id: "addProject",
+        modalTitle: "Add Project"
       }).render();  
 
       if (!_.isUndefined(this.modalComponent)) {
@@ -125,13 +127,37 @@ define([
 		// TODO: Review 
 		delete: function (e) {
 		if (e.preventDefault()) e.preventDefault();
-			var model;
+			var model, title;
 
 			title = $(e.currentTarget).closest(".project-title").children(".project").text();
 			model = getCurrentProjectModelFromFormAttributes(this.collection, title);
 
 			model.destroy();
 			this.renderProjectCollectionView();
+		},
+
+		edit: function (e) {
+			if (e.preventDefault()) e.preventDefault();
+			var model, title, self = this;
+			
+			title = $(e.currentTarget).closest(".project-title").children(".project").text();
+			model = getCurrentProjectModelFromFormAttributes(this.collection, title);
+
+			if (this.modalComponent) this.modalComponent;
+			this.modalComponent = new ModalComponent({
+				el: "#container",
+				id: "editProject",
+				modalTitle: "Edit Project"
+			}).render();
+
+			if (!_.isUndefined(this.modalComponent) && model) {
+				if (this.projectEditFormView) this.projectEditForm();
+				this.projectEditFormView = new ProjectEditFormView({
+					el: ".modal-body",
+					model: model
+				}).render();
+			}
+
 		},
 
 		cleanup: function() {

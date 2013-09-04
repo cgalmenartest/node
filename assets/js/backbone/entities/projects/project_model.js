@@ -14,6 +14,7 @@ define([
 
     initialize: function () {
       this.initializeProjectFetchListener();
+      this.initializeProjectUpdateListener();
       this.initializePhotoSaveListener();
     },
 
@@ -24,6 +25,25 @@ define([
 
       this.listenTo(this, "project:model:fetch", function (id) {
         self.get(id);
+      });
+    },
+
+    initializeProjectUpdateListener: function () {
+      var self = this;
+      this.listenTo(this, "project:model:update", function (data) {
+        self.update(data);
+      });
+    },
+
+    update: function (data  ) {
+      var self = this;
+
+      this.save({ 
+        title: data['title'],
+        description: data['description']
+      }, { success: function (returnModel) {
+          self.trigger("project:save:success");
+        }
       });
     },
 
@@ -51,20 +71,6 @@ define([
       });
     }
 
-    // initializeModelSave: function () {
-    //   var _this = this;
-
-
-    // initializeProjectShow: function () {
-    //   this.on("project:show", function () {
-    //     this.fetch({
-    //       success: function (data) { 
-    //         app.events.trigger("projectShow:success", data);
-    //       }
-    //     });
-    //   })
-    // }
-    
   });
 
   return ProjectModel;
