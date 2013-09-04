@@ -40,6 +40,7 @@ This project follows the [git flow](http://nvie.com/posts/a-successful-git-branc
 
 - [Midas Backbone Best Practices](https://github.com/Innovation-Toolkit/midas/wiki/Backbone-Best-Practices).
 - [Modal Component Usage](https://github.com/Innovation-Toolkit/midas/wiki/Modal-Component)
+- [Models and Collections](https://github.com/Innovation-Toolkit/midas/wiki/Model-&-Collections)
 
 ### Git Hooks
 
