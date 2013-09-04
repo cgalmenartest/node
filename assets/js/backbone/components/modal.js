@@ -23,9 +23,10 @@ define([
 
     render: function () {
 
-      if (this.options.id) {
+      if (this.options) {
         this.data = {
-          id: this.options.id
+          id: this.options.id,
+          modalTitle: this.options.modalTitle
         }
       }
 
