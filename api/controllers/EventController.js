@@ -44,11 +44,17 @@ module.exports = {
     Event.findByProjectId(req.params.id, function (err, events) {
       if (err) return res.send(400, { message: 'Error looking up events.'});
       // helper function to take an event and check the RSVP state
-      var checkRsvp = function (event, done) {
-        EventRsvp.findOne({ eventId: event.id, userId: userId }, function (err, attend) {
-          if (err) { return done(err); }
-          if (attend) { event.rsvp = true; }
-          else { event.rsvp = false; }
+      var checkRsvp = function (ev, done) {
+        EventRsvp.findByEventId(ev.id, function (err, rsvps) {
+          ev.rsvps = [];
+          for (var i = 0; i < rsvps.length; i++) {
+            ev.rsvps.push(rsvps[i].userId);
+          }
+          // Check if this user has RSVP'd
+          ev.rsvp = false;
+          if (userId && _.contains(ev.rsvps, userId)) {
+            ev.rsvp = true;
+          }
           return done();
         });
       };

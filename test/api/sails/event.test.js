@@ -169,7 +169,7 @@ describe('event:', function() {
 
     it('view rsvp of draft event', function (done) {
       request.get({ url: conf.url + '/event/' + draftEvent.id },
-                  function(err, response, body) {
+                  function (err, response, body) {
         if (err) { return done(err); }
         var b = JSON.parse(body);
         // check that the values passed in are the same as those passed back
@@ -186,14 +186,38 @@ describe('event:', function() {
         assert.equal(b.rsvp, true);
         done();
       });
+    });
 
+    it('findAllByProjectId of draft event', function (done) {
+      request.get({ url: conf.url + '/event/findAllByProjectId/' + draftProject.id },
+                  function (err, response, body) {
+        if (err) { return done(err); }
+        var b = JSON.parse(body);
+        assert.equal(b.events.length, 1);
+        var ev = b.events[0];
+        // check that the values passed in are the same as those passed back
+        assert.equal(draftEvent.title, ev.title);
+        assert.equal(draftEvent.description, ev.description);
+        assert.equal(draftEvent.location, ev.location);
+        assert.equal(draftEvent.projectId, ev.projectId);
+        // make sure the automatically populated fields get set
+        assert(ev.id);
+        assert(ev.userId);
+        assert(ev.uuid);
+        assert(ev.status);
+        // make sure you've RSVP'd
+        assert.equal(ev.rsvp, true);
+        assert.equal(ev.rsvps.length, 1);
+        assert.equal(ev.rsvps[0], ev.userId);
+        done();
+      });
     });
 
   });
 
   describe('logged out:', function () {
 
-    before(function() {
+    before(function () {
       request = utils.init(true);
     });
 
@@ -260,7 +284,6 @@ describe('event:', function() {
       });
     });
 
-
     it('ical', function(done) {
       request.get({ url: conf.url + '/event/ical/' + publicProject.id },
                   function(err, response, body) {
@@ -288,7 +311,7 @@ describe('event:', function() {
         // Make sure we found the public event
         assert(foundEvent);
         done(err);
-      })
+      });
     });
 
     it('ical denied', function(done) {
@@ -296,7 +319,7 @@ describe('event:', function() {
                   function(err, response, body) {
         assert.equal(response.statusCode, 403);
         done(err);
-      })
+      });
     });
 
   });
