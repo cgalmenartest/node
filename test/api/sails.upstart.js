@@ -9,8 +9,8 @@ var err;
 
 before(function(done) {
   // remove the database directories
-  if (fs.existsSync('./tmp/disk.db')) {
-    fs.unlinkSync('./tmp/disk.db');
+  if (fs.existsSync('./.tmp/disk.db')) {
+    fs.unlinkSync('./.tmp/disk.db');
   }
 
   // Lift Sails and store the app reference
