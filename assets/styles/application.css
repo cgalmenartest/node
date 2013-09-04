@@ -48,15 +48,6 @@
 	word-wrap: break-word;
 }
 
-.project-title {
-	width: 100%;
-	background-color: rgb(230, 230, 230);
-	background-color: rgba(255, 255, 255, 0.75);
-	color: #393939;
-	font-size: 16px;
-	font-weight: bold;
-}
-
 .project-title > a {
 	color: #393939;
 }
@@ -66,6 +57,8 @@ div.project-title {
 	height: 100%;
 	position: relative;
 	display: block;
+	font-weight: bold;
+	font-size: 14px;
 }
 
 
@@ -86,6 +79,7 @@ a[class='project'] {
 	left: 5px;
 }
 
+
 #project-header {
 	padding-top: 10px;
 	height: 200px;
@@ -104,11 +98,6 @@ a[class='project'] {
 	top: 10px;
 	right: 10px;
 	width: 150px;
-}
-
-.project-description {
-	padding-top:20px;
-	font-size: 17px;
 }
 
 .nopadding {

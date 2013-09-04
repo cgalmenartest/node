@@ -83,6 +83,7 @@ define([
 			attr = $(e.currentTarget).closest(".project-title").children(".project").text();
 			// Store the model as the return of this utility function.
 			model = getCurrentModelFromFormAttributes(this.collection, attr);
+			
 			if (this.projectShowController) {
 				this.projectShowController.cleanup();
 			}
