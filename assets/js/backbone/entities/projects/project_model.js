@@ -35,7 +35,7 @@ define([
       });
     },
 
-    update: function (data  ) {
+    update: function (data) {
       var self = this;
 
       this.save({ 
