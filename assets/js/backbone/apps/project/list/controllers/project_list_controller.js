@@ -124,7 +124,6 @@ define([
       
 		},
 
-		// TODO: Review 
 		delete: function (e) {
 		if (e.preventDefault()) e.preventDefault();
 			var model, title;
@@ -140,8 +139,8 @@ define([
 			if (e.preventDefault()) e.preventDefault();
 			var model, title, self = this;
 			
-			title = $(e.currentTarget).closest(".project-title").children(".project").text();
-			model = getCurrentProjectModelFromFormAttributes(this.collection, title);
+			attr = $(e.currentTarget).closest(".project-title").children(".project").text();
+			model = getCurrentProjectModelFromFormAttributes(this.collection, attr);
 
 			if (this.modalComponent) this.modalComponent;
 			this.modalComponent = new ModalComponent({
