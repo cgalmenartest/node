@@ -182,6 +182,7 @@ module.exports = {
           Event.findOneById(rsvp.eventId, function (err, ev) {
             if (err) { return done(err); }
             events.push(ev);
+            done();
           });
         };
         async.each(rsvps, getEvents, function (err) {
