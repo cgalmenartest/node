@@ -8,8 +8,6 @@ define([
   
     model: ProjectModel,
 
-    project: null,
-
     url: '/project/findAll',
 
     parse: function (response) {
@@ -34,20 +32,3 @@ define([
 
   return ProjectsCollection;
 });
-
-// Archived to refer back to:
-//   this.on("project:post", function (title, description) {
-//     var project = new ProjectModel({ title: title, description: description })
-//     _this.add(project);
-//     _this.models.forEach(function (_model) {
-//       _model.save();
-//     });
-//     app.events.trigger("projectSave:success");
-//   });
-
-//   app.events.on("projectSave:success", function () {
-//     _this.fetch();
-//     app.events.trigger("project:render");
-//   });
-
-// },
