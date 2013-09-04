@@ -12,7 +12,7 @@ var getCurrentModelFromId = function (collection, modelId) {
 	}
 }
 
-var getCurrentProjectModelFromFormAttributes = function (collection, attr) {
+var getCurrentModelFromFormAttributes = function (collection, attr) {
 	var	j,
 			i = 0,
 			attr = $.trim(attr),

@@ -140,7 +140,7 @@ define([
 			var model, title, self = this;
 			
 			attr = $(e.currentTarget).closest(".project-title").children(".project").text();
-			model = getCurrentProjectModelFromFormAttributes(this.collection, attr);
+			model = getCurrentModelFromFormAttributes(this.collection, attr);
 
 			if (this.modalComponent) this.modalComponent;
 			this.modalComponent = new ModalComponent({
