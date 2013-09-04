@@ -1,4 +1,5 @@
 var assert = require('assert');
+var _ = require('underscore');
 var icalendar = require('icalendar');
 var conf = require('./helpers/config');
 var utils = require('./helpers/utils');
@@ -24,8 +25,7 @@ describe('event:', function() {
     });
   });
 
-  describe('logged in:', function() {
-
+  describe('logged in:', function () {
 
     var testEvent = {
       title: 'Test Event',
@@ -34,22 +34,22 @@ describe('event:', function() {
       location: 'San Francisco, CA',
     }
 
-    before(function(done) {
+    before(function (done) {
       testEvent.start = new Date(testEvent.end);
       testEvent.start.setHours(testEvent.end.getHours() - 1);
       request = utils.init();
-      utils.login(request, function(err) {
+      utils.login(request, function (err) {
         done(err);
       });
     });
 
-    it('create', function(done) {
+    it('create', function (done) {
       testEvent.projectId = publicProject.id;
       request.post({ url: conf.url + '/event',
                      body: JSON.stringify(testEvent)
-                   }, function(err, response, body) {
+                   }, function (err, response, body) {
         if (err) { return done(err); }
-        assert(response.statusCode === 200);
+        assert.equal(response.statusCode, 200);
         var b = JSON.parse(body);
         // check that the values passed in are the same as those passed back
         assert.equal(testEvent.title, b.title);
@@ -66,17 +66,19 @@ describe('event:', function() {
       });
     });
 
-    it('create unique uuid', function(done) {
+    it('create unique uuid', function (done) {
       testEvent.projectId = publicProject.id;
       request.post({ url: conf.url + '/event',
                      body: JSON.stringify(testEvent)
                    }, function(err, response, body) {
         if (err) { return done(err); }
+        assert.equal(response.statusCode, 200);
         var p1 = JSON.parse(body);
         request.post({ url: conf.url + '/event',
                        body: JSON.stringify(testEvent)
-                     }, function(err, response, body) {
+                     }, function (err, response, body) {
           if (err) { return done(err); }
+          assert.equal(response.statusCode, 200);
           var p2 = JSON.parse(body);
           assert.notEqual(p1.uuid, p2.uuid);
           done();
@@ -84,26 +86,118 @@ describe('event:', function() {
       });
     });
 
-    it('create in draft project', function(done) {
+    it('create in draft project', function (done) {
       testEvent.projectId = draftProject.id;
       request.post({ url: conf.url + '/event',
                      body: JSON.stringify(testEvent)
-                   }, function(err, response, body) {
+                   }, function (err, response, body) {
         if (err) { return done(err); }
+        assert.equal(response.statusCode, 200);
         var b = JSON.parse(body);
         draftEvent = b;
         done();
       });
     });
+
+    it('attend', function (done) {
+      request.get({ url: conf.url + '/event/attend/' + confirmedEvent.id },
+        function (err, response, body) {
+          if (err) { return done(err); }
+          assert.equal(response.statusCode, 200);
+          var b = JSON.parse(body);
+          assert(b.id);
+          assert.equal(b.eventId, confirmedEvent.id);
+          assert(b.userId);
+          done();
+        });
+    });
+
+    it('attend in draft project', function (done) {
+      request.get({ url: conf.url + '/event/attend/' + draftEvent.id },
+        function (err, response, body) {
+          if (err) { return done(err); }
+          assert.equal(response.statusCode, 200);
+          var b = JSON.parse(body);
+          assert(b.id);
+          assert.equal(b.eventId, draftEvent.id);
+          assert(b.userId);
+          done();
+        });
+    });
+
+    it('rsvp', function (done) {
+      request.get({ url: conf.url + '/event/rsvp/' }, function (err, response, body) {
+        if (err) { return done(err); }
+        assert.equal(response.statusCode, 200);
+        var b = JSON.parse(body);
+        assert.equal(b.length, 2);
+        assert(_.contains(b, draftEvent.id));
+        assert(_.contains(b, confirmedEvent.id));
+        done();
+      });
+    });
+
+    it('rsvp check a specific event', function (done) {
+      request.get({ url: conf.url + '/event/rsvp/' + confirmedEvent.id}, function (err, response, body) {
+        if (err) { return done(err); }
+        assert.equal(response.statusCode, 200);
+        var b = JSON.parse(body);
+        assert.equal(b, true);
+        done();
+      });
+    });
+
+    it('cancel rsvp', function (done) {
+      request.get({ url: conf.url + '/event/cancel/' + confirmedEvent.id },
+        function (err, response, body) {
+          if (err) { return done(err); }
+          assert.equal(response.statusCode, 200);
+          assert.equal(body, '');
+          // re-add RSVP for later tests
+          request.get({ url: conf.url + '/event/attend/' + confirmedEvent.id },
+            function (err, response, body) {
+              if (err) { return done(err); }
+              assert.equal(response.statusCode, 200);
+              var b = JSON.parse(body);
+              assert(b.id);
+              assert.equal(b.eventId, confirmedEvent.id);
+              assert(b.userId);
+              done();
+            });
+        });
+    });
+
+    it('view rsvp of draft event', function (done) {
+      request.get({ url: conf.url + '/event/' + draftEvent.id },
+                  function(err, response, body) {
+        if (err) { return done(err); }
+        var b = JSON.parse(body);
+        // check that the values passed in are the same as those passed back
+        assert.equal(draftEvent.title, b.title);
+        assert.equal(draftEvent.description, b.description);
+        assert.equal(draftEvent.location, b.location);
+        assert.equal(draftEvent.projectId, b.projectId);
+        // make sure the automatically populated fields get set
+        assert(b.id);
+        assert(b.userId);
+        assert(b.uuid);
+        assert(b.status);
+        // make sure you've RSVP'd
+        assert.equal(b.rsvp, true);
+        done();
+      });
+
+    });
+
   });
 
-  describe('logged out:', function() {
+  describe('logged out:', function () {
 
     before(function() {
       request = utils.init(true);
     });
 
-    it('view', function(done) {
+    it('view', function (done) {
       request.get({ url: conf.url + '/event/' + confirmedEvent.id },
                   function(err, response, body) {
         if (err) { return done(err); }
@@ -118,6 +212,9 @@ describe('event:', function() {
         assert(b.userId);
         assert(b.uuid);
         assert(b.status);
+        // check if rsvp list is populated
+        assert.equal(b.rsvps.length, 1);
+        assert.equal(b.rsvp, false);
         done();
       });
     });
@@ -139,6 +236,30 @@ describe('event:', function() {
         done(err);
       });
     });
+
+    it('attend denied', function (done) {
+      request.get({ url: conf.url + '/event/attend/' + confirmedEvent.id },
+        function (err, response, body) {
+          assert.equal(response.statusCode, 403);
+          done(err);
+        });
+    });
+
+    it('cancel denied', function (done) {
+      request.get({ url: conf.url + '/event/cancel/' + confirmedEvent.id },
+        function (err, response, body) {
+          assert.equal(response.statusCode, 403);
+          done(err);
+        });
+    });
+
+    it('rsvp denied', function (done) {
+      request.get({ url: conf.url + '/event/rsvp/' + confirmedEvent.id}, function (err, response, body) {
+        assert.equal(response.statusCode, 403);
+        done(err);
+      });
+    });
+
 
     it('ical', function(done) {
       request.get({ url: conf.url + '/event/ical/' + publicProject.id },

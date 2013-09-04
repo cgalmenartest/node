@@ -59,12 +59,15 @@ module.exports.policies = {
   },
 
   TaskController : {
-    'findAllByProject': ['authenticated', 'addUserId', 'project']
+    'findAllByProjectId': ['authenticated', 'addUserId', 'project']
   },
 
   EventController : {
     'create': ['authenticated', 'addUserId', 'eventUuid'],
-    'findAllByProjectId': ['authenticated', 'addUserId', 'project'],
+    'findAllByProjectId': ['authenticated', 'addUserId', 'requireId', 'project'],
+    'attend': ['authenticated', 'requireUserId', 'addUserId', 'requireId'],
+    'cancel': ['authenticated', 'requireUserId', 'addUserId', 'requireId'],
+    'rsvp': ['authenticated', 'requireUserId', 'addUserId'],
     'ical': ['authenticated', 'addUserId', 'project']
   }
 
