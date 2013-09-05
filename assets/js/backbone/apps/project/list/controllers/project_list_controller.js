@@ -9,16 +9,12 @@ define([
 	'projects_show_controller',
 	'project_form_view',
 	'projects_app',
-	'task_list_controller',
-	'comment_list_controller',
-	'comment_form_view',
 	'modal_component',
 	'project_edit_form_view'
 ], function (
 	_, Backbone, Bootstrap, Utilities, BaseController, 
 	ProjectsCollection, ProjectsCollectionView, ProjectShowController, 
-	ProjectFormView, ProjectApp, TaskListController, CommentListController,
-	CommentFormView, ModalComponent, ProjectEditFormView) {
+	ProjectFormView, ProjectApp, ModalComponent, ProjectEditFormView) {
 	
 	Application.Project.ListController = BaseController.extend({
 
@@ -27,8 +23,8 @@ define([
 		events: {
 			"click .project"				: "show",
 			"click .add-project"		: "add",
-			"click .delete-project"	: "delete",
-			"click .edit-project"		: "edit"
+			"click .edit-project"		: "edit",
+			"click .delete-project"	: "delete"
 		},
 
 		initialize: function () {
@@ -73,35 +69,17 @@ define([
 				}).render();
 		},
 
-		//TODO: CLEAN UP THIS MONSTER METHOD.  Move this out to an app_module
-		// And then the rendering.on event should return out there then allow
-		// the instantiation of all these controllers there.
+		// -----------------------
+		//= BEGIN CLASS METHODS
+		// -----------------------
 		show: function (e) {
 			if (e.preventDefault()) e.preventDefault();
-			var id, model;
-			// Grab the id for the model nearest the click
-			attr = $(e.currentTarget).closest(".project-title").children(".project").text();
-			// Store the model as the return of this utility function.
-			model = getCurrentModelFromFormAttributes(this.collection, attr);
-			
-			if (this.projectShowController) {
-				this.projectShowController.cleanup();
-			}
+
+			var attr 	= $(e.currentTarget).closest(".project-title").children(".project").text(),
+					model = getCurrentModelFromFormAttributes(this.collection, attr);
+
+			if (this.projectShowController) this.projectShowController.cleanup();
 			this.projectShowController = new ProjectShowController({ model: model })
-			rendering.on("project:show:rendered", function () {
-				if (this.taskListController) {
-					this.taskListController.cleanup();
-				}
-				this.taskListController = new TaskListController({ projectId: model.id });
-				if (this.commentListController) {
-					this.commentListController.cleanup();
-				}
-				this.commentListController = new CommentListController({ projectId: model.id })
-				if (this.commentForm) {
-					this.commentForm.cleanup();
-				}
-				this.commentForm = new CommentFormView({ projectId: model.id });
-			});
 		},
 
 		add: function (e) {
@@ -122,44 +100,12 @@ define([
           collection: self.collection
         }).render();  
       }
-      
-		},
-
-		delete: function (e) {
-		if (e.preventDefault()) e.preventDefault();
-			var model, title;
-
-			attr = $(e.currentTarget).closest(".project-title").children(".project").text();
-			model = getCurrentModelFromFormAttributes(this.collection, attr);
-
-			model.destroy();
-			this.renderProjectCollectionView();
-		},
-
-		edit: function (e) {
-			if (e.preventDefault()) e.preventDefault();
-			var model, title, self = this;
-			
-			attr = $(e.currentTarget).closest(".project-title").children(".project").text();
-			model = getCurrentModelFromFormAttributes(this.collection, attr);
-
-			if (this.modalComponent) this.modalComponent;
-			this.modalComponent = new ModalComponent({
-				el: "#container",
-				id: "editProject",
-				modalTitle: "Edit Project"
-			}).render();
-
-			if (!_.isUndefined(this.modalComponent) && model) {
-				if (this.projectEditFormView) this.projectEditForm();
-				this.projectEditFormView = new ProjectEditFormView({
-					el: ".modal-body",
-					model: model
-				}).render();
-			}
 
 		},
 
+		// ---------------------
+		//= UTILITY METHODS
+		// ---------------------
 		cleanup: function() {
 		  $(this.el).remove();
 		}

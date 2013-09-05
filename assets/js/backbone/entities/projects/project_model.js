@@ -12,27 +12,35 @@ define([
       archived    : false
     },
 
+    // Initialize contains only event bindings and if/then response
+    // functions (class methods).
     initialize: function () {
-      this.initializeProjectFetchListener();
-      this.initializeProjectUpdateListener();
-      this.initializePhotoSaveListener();
-    },
-
-    urlRoot: '/project',
-
-    initializeProjectFetchListener: function () {
       var self = this;
 
       this.listenTo(this, "project:model:fetch", function (id) {
         self.get(id);
       });
-    },
 
-    initializeProjectUpdateListener: function () {
-      var self = this;
       this.listenTo(this, "project:model:update", function (data) {
         self.update(data);
       });
+
+      this.listenTo(this, "project:update:photoId", function (file) {
+        self.updatePhoto(file);
+      });
+
+    },
+
+    urlRoot: '/project',
+    
+    get: function (id) {
+      var self = this;
+
+      this.fetch({ id: id,
+        success: function (data) {
+          self.trigger("project:model:fetch:success", data);
+        }
+      })
     },
 
     update: function (data) {
@@ -47,28 +55,15 @@ define([
       });
     },
 
-    get: function (id) {
-      var self = this;
-
-      this.fetch({ id: id,
+    // TODO: Update this method and move it into the global update method.
+    updatePhoto: function (file) {
+      this.save({
+        coverId: file['id']
+      }, {
         success: function (data) {
-          self.trigger("project:model:fetch:success", data);
+          self.trigger("project:updated:photo:success", data);
         }
       })
-    },
-
-    initializePhotoSaveListener: function () {
-      var self = this;
-
-      this.listenTo(this, "project:update:photoId", function(file) {
-        self.save({
-          coverId: file['id']
-          }, {
-          success: function (data) {
-            self.trigger("project:updated:photo:success", data);
-          }
-        });
-      });
     }
 
   });

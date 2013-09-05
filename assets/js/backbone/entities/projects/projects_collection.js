@@ -18,14 +18,25 @@ define([
       var self = this;
 
       this.listenTo(this, "project:save", function (data) {
-        var project = new ProjectModel({ title: data['title'], description: data['description'] })
-        self.add(project);
-        self.models.forEach(function (model) {
-          model.save();
-        });
-        self.trigger("project:save:success");
+        self.addAndSave(data);
+      });
+    },
+
+    addAndSave: function (data) {
+      var project, self = this;
+
+      project = new ProjectModel({ 
+        title: data['title'], 
+        description: data['description'] 
+      })
+      
+      self.add(project);
+
+      self.models.forEach(function (model) {
+        model.save();
       });
 
+      self.trigger("project:save:success");
     }
 
   });
