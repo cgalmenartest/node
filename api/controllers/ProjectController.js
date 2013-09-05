@@ -9,7 +9,7 @@ module.exports = {
 
   find: function(req, res) {
     // Find a given project and return the full information including owners.
-    res.send(req.project);
+    res.send(req.proj);
   },
 
   // Namespace the find() method that returns the array of objects into
@@ -71,7 +71,7 @@ module.exports = {
     });
   },
 
-  // XXX TODO: Update this function to use req.project rather than repeating the lookup
+  // XXX TODO: Update this function to use req.proj rather than repeating the lookup
   // update: function (req, res) {
   // }
 
