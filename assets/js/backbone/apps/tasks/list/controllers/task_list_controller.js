@@ -65,7 +65,8 @@ define([
       if (this.modalComponent) this.modalComponent;
       this.modalComponent = new ModalComponent({
         el: "#task-list-wrapper",
-        id: "addTask"
+        id: "addTask",
+        modalTitle: 'Add Task'
       }).render();  
 
       if (!_.isUndefined(this.modalComponent)) {
