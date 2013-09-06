@@ -7,7 +7,7 @@ define([
 
 	var TasksCollectionView = Backbone.View.extend({
 
-		el: ".task-list-wrapper",
+		el: "#task-list-wrapper",
 
 		initialize: function () {
 			this.render();
@@ -19,7 +19,9 @@ define([
 				tasks: this.options.collection.toJSON()
 			}
 
-			this.compiledTemplate = _.template(TaskListTemplate, tasksJSON)
+			this.compiledTemplate = _.template(TaskListTemplate, tasksJSON);
+			console.log(this.$el);
+			//$(this.el).html(this.compiledTemplate);
 			this.$el.html(this.compiledTemplate);
 
 			// Allow chaining.

@@ -12,7 +12,7 @@ define([
 
   Application.Controller.TaskList = Backbone.View.extend({
 
-    el: ".task-list-wrapper",
+    el: "#task-list-wrapper",
 
     events: {
       'click .add-task': 'add'
@@ -52,7 +52,7 @@ define([
         this.taskCollectionView.cleanup();
       }
       this.taskCollectionView = new TaskCollectionView({
-        el: ".task-list-wrapper",
+        el: "#task-list-wrapper",
         onRender: true,
         collection: collection
       });
@@ -64,7 +64,7 @@ define([
 
       if (this.modalComponent) this.modalComponent;
       this.modalComponent = new ModalComponent({
-        el: ".task-list-wrapper",
+        el: "#task-list-wrapper",
         id: "addTask"
       }).render();  
 

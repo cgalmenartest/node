@@ -1,22 +1,51 @@
-<div class="page-header">
-  <h1 class="project-title"><%= data.title %></h1>
+<% if (data.isOwner) { %>
+<div class="row">
+  <div class="col-lg-12">
+    <div class="well well-sm" id="project-admin-bar">
+      <div class="project-admin-title">
+        Project Administration Tools
+      </div>
+      <div class="row">
+        <div class="col-lg-9 project-admin nopadding">
+            <button id="editProject" class="btn btn-primary">Edit</button>
+            <span id="fileupload" class="btn btn-primary"><i class="icon-camera icon-large" title="Change Cover Photo"></i></span>
+        </div>
+        <div class="col-lg-2 nopadding">
+        <form class="form-inline" role="form">
+          <div class="form-group project-admin-select">
+            <select class="form-control" id="project-state">
+              <option>Draft</option>
+              <option>Public</option>
+              <option>Closed</option>
+            </select>
+          </div>
+        </form>
+        </div>
+        <div class="col-lg-1 project-admin-state">
+          <span class="glyphicon glyphicon-ok green" id="project-admin-state"></span>
+        </div>
+      </div>
+      <div id="file-upload-progress-container" style="display: none;" class="progress progress-striped active">
+        <div id="file-upload-progress" class="progress-bar" style="width: 0"></div>
+      </div>
+    </div>
+  </div>
 </div>
+<% } else { %><div id="fileupload" style="display: none;"></div><% } %>
 
 <div class="row">
-
-  <% if (data.isOwner) { %>
-  <div id="fileupload" class="btn btn-primary"><i class="icon-camera icon-large" title="Change Cover Photo"></i></div>
-  <div id="file-upload-progress-container" style="display: none;" class="progress progress-striped active">
-    <div id="file-upload-progress" class="progress-bar" style="width: 0"></div>
-  </div>
-  <% } else { %><div id="fileupload" style="display: none;"></div><% } %>
+  <% if (data.coverId) { %>
+  <div class="col-lg-12" id="project-header" style="background-image:url('/file/get/<%= data.coverId %>');">
+  <% } else { %>
+  <div class="col-lg-12" id="project-header">
+  <% } %>
+    <h1 class="project-title"><%= data.title %></h1>
   </div>
 </div>
 
-<a href="#editProject" class="edit-project">Edit</a>
 
 <div class="row">
-  <div class="col-12 nopadding">
+  <div class="col-lg-12 nopadding">
     <div class="project-people-bar">
       <% if (data.owners) { %>
         <% for (var i = 0; i < data.owners.length; i++) { %>
@@ -27,23 +56,81 @@
   </div>
 </div>
 <div class="row">
-  <div class="col-12">
+  <div class="col-lg-12">
     <div class="project-description">
       <div><%= data.description %></div>
+      <hr />
     </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-5">
+    <div class="list-wrapper" id="task-list-wrapper"></div>
+  </div>
+  <div class="col-lg-5">
+    <div class="list-wrapper" id="event-list-wrapper">
 
-    <hr />
+      <!-- BEGIN EVENT MOCKUP -->
+      <div class="list-page">
 
-    <div class="task-list-wrapper"></div>
+        <h3 class="list-title">Events
+          <button class="btn btn-primary btn-xs list-add" data-toggle="modal"><span class="glyphicon glyphicon-calendar"></span> iCal</button>
+          <button class="btn btn-default btn-xs list-add" data-toggle="modal">Add Event</button>
+        </h3>
 
-    <div class="event-list-wrapper">
-      <h3>Events</h3>
+        <div id="event-list">
+          <ul class="list-ul">
+
+              <li class="well">
+                <strong>Title</strong>
+                <br>
+                Description
+              </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="list-form-wrapper">
+      </div>
+      <!-- END EVENT MOCKUP -->
+
     </div>
+  </div>
+  <div class="col-lg-2">
+    <div class="list-wrapper" id="sharing-list-wrapper">
 
+      <!-- BEGIN SHARING MOCKUP -->
+      <div class="list-page">
+
+        <h3 class="list-title">About
+        </h3>
+
+        <div class="like-content">
+
+          <span class="like-number">37</span>
+          likes
+
+          <i class="icon icon-star-empty icon-large gold"></i>
+
+          <div style="padding-top: 10px;">
+            <button class="btn btn-danger"><i class="icon icon-envelope-alt"></i> Email</button>
+          </div>
+          <div style="padding-top: 10px;">
+            <button class="btn btn-primary"><i class="icon icon-twitter"></i> Tweet</button>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="list-form-wrapper">
+      </div>
+      <!-- END EVENT MOCKUP -->
+  </div>
+</div>
+<div class="row">
+  <div class="col-12">
     <hr />
-
     <div class="comment-form-wrapper"></div>
-
     <div class="comment-list-wrapper"></div>
   </div>
 </div>

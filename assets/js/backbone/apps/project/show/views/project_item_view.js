@@ -30,7 +30,6 @@ define([
     updatePhoto: function () {
       this.listenTo(this.model, "project:updated:photo:success", function (data) {
         var model = data.toJSON(), url;
-
         if (model.coverId) {
           url = '/file/get/' + model.coverId;
           $("#project-header").css('background-image', "url(" + url + ")");
