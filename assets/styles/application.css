@@ -1,10 +1,12 @@
 /*****************
 =  GLOBAL 
 ******************/
+/*
 #container {
     width: 960px;
     margin: 0 auto;
 }
+*/
 
 .seperator {
 	margin: 10px 0 10px 0;
@@ -107,7 +109,7 @@ a[class='project'] {
 
 .project-admin-title {
 	position: absolute;
-	bottom: 5px;
+	top: 5px;
 	font-size: 15px;
 }
 

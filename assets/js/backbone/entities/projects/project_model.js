@@ -57,6 +57,8 @@ define([
 
     // TODO: Update this method and move it into the global update method.
     updatePhoto: function (file) {
+      var self = this;
+
       this.save({
         coverId: file['id']
       }, {
