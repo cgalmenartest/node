@@ -192,7 +192,6 @@ a[class='project'] {
 	padding-left: 10px;
 	margin: 0;
 	padding-bottom: 5px;
-	margin-bottom: 10px;
 }
 
 .list-wrapper > ul > li {
@@ -252,6 +251,8 @@ a[class='project'] {
 
 li.well {
 	list-style: none;
+	margin-top: 10px;
+	margin-bottom: 10px;
 }
 
 #task-list {
@@ -271,6 +272,110 @@ li.well {
 	font-size: 40px;
 	font-weight: bold;
 }
+
+/*****************
+=  EVENTS
+******************/
+
+.event {
+	width: 100%;
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	font-size: 10px;
+	background-color: #f0f0f0;
+	border-bottom-style: solid;
+	border-color: #c0c0c0;
+	border-bottom-width: 1px;
+}
+
+.first {
+	background-color: #fc6e51;
+	color: #3c3c3c;
+	font-size: 14px;
+	border-style: none;
+}
+
+.event > .event-title {
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.event > .event-going {
+}
+
+.event-next {
+	background-color: #e9573f;
+	color: #f2f2f2;
+	width: 100%;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	font-weight: bold;
+	font-size: 22px;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+.first > .event-title {
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.first > .event-date {
+	background-color: #f0f0f0;
+	border-style: solid;
+	border-color: #c0c0c0;
+	border-width: 1px;
+	margin-top: 10px;
+	padding: 6px;
+	text-align: center;
+}
+
+.first > .event-date > .event-day {
+	font-size: 18px;
+}
+
+.first > .event-date > .event-time {
+	font-size: 14px;
+}
+
+.first > .event-description {
+	font-size: 10px;
+}
+
+/*****************
+=  EVENTS
+******************/
+
+.about-list {
+	min-height: 200px;
+}
+
+.file-list {
+	margin-top: 20px;
+	min-height: 100px;
+	padding-bottom: 10px;
+}
+
+.file-content {
+	padding-right: 5px;
+	padding-left: 5px;
+}
+
+.file-item {
+	display: block;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+	border-bottom-color: #c0c0c0;
+}
+
+
+/*****************
+=  COMMENTS
+******************/
 
 ul.comment-list > li {
 	list-style: none;
