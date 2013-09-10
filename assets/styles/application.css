@@ -177,7 +177,6 @@ a[class='project'] {
 	margin-bottom: 10px;
 }
 
-
 /*****************
 =  TASKS 
 ******************/
@@ -271,6 +270,10 @@ li.well {
 .like-number {
 	font-size: 40px;
 	font-weight: bold;
+}
+
+#like-button {
+	text-decoration: none;
 }
 
 /*****************

@@ -10,6 +10,7 @@ module.exports = {
   /**
    * Override find to only find for this userid
    * Syntax: /like/find returns all likes for that user
+   * Otherwise /like/find/:id looks up likes for that project id
    */
   find: function (req, res) {
     if (!req.user) { return res.send(403, { message: 'Not authorized' }); }

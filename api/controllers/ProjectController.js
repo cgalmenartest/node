@@ -9,7 +9,19 @@ module.exports = {
 
   find: function(req, res) {
     // Find a given project and return the full information including owners.
-    res.send(req.proj);
+    // Look up the number of likes and whether this user liked it.
+    req.proj.like = false;
+    Like.countByProjectId( req.proj.id, function (err, likes) {
+      req.proj.likeCount = likes;
+      if (!req.user) {
+        return res.send(req.proj);
+      }
+      Like.findOne({ where: { userId: req.user[0].id, projectId: req.proj.id }}, function (err, like) {
+        if (err) { return res.send(400, { message: 'Error looking up likes.' }); }
+        if (like) { req.proj.like = true; }
+        return res.send(req.proj);
+      });
+    });
   },
 
   // Namespace the find() method that returns the array of objects into

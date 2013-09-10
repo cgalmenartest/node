@@ -157,10 +157,12 @@
 
         <div class="like-content">
 
-          <span class="like-number">37</span>
-          likes
+          <span class="like-number" id="like-number"><%- data.likeCount %></span>
+          <span class="like-plural" id="like-text" data-plural="likes" data-singular="like">likes</span>
 
-          <i class="icon icon-star-empty icon-large gold"></i>
+          <a href="#" id="like-button">
+            <i id="like-button-icon" class="icon icon-star-empty icon-large gold"></i>
+          </a>
 
           <div style="padding-top: 10px;">
             <button class="btn btn-danger"><i class="icon icon-envelope-alt"></i> Email</button>
