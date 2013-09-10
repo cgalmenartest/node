@@ -14,15 +14,17 @@
         <form class="form-inline" role="form">
           <div class="form-group project-admin-select">
             <select class="form-control" id="project-state">
-              <option>Draft</option>
-              <option>Public</option>
-              <option>Closed</option>
+              <option value="draft" <% if (data.state == 'draft') { %>selected<% } %>>Draft</option>
+              <option value="public" <% if (data.state == 'public') { %>selected<% } %>>Public</option>
+              <option value="closed" <% if (data.state == 'closed') { %>selected<% } %>>Closed</option>
             </select>
           </div>
         </form>
         </div>
         <div class="col-lg-1 project-admin-state">
-          <span class="glyphicon glyphicon-ok green" id="project-admin-state"></span>
+          <button id="project-admin-state" class="btn btn-link" data-loading-text="<i class='icon-spinner icon-spin'></i>">
+            <span class="glyphicon glyphicon-ok green" ></span>
+          </button>
         </div>
       </div>
       <div id="file-upload-progress-container" style="display: none;" class="progress progress-striped active">

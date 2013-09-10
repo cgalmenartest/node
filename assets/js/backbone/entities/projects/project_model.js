@@ -29,6 +29,9 @@ define([
         self.updatePhoto(file);
       });
 
+      this.listenTo(this, "project:update:state", function (state) {
+        self.updateState(state);
+      });
     },
 
     urlRoot: '/project',
@@ -65,7 +68,19 @@ define([
         success: function (data) {
           self.trigger("project:updated:photo:success", data);
         }
-      })
+      });
+    },
+
+    updateState: function (state) {
+      var self = this;
+
+      this.save({
+        state: state
+      }, {
+        success: function(data) {
+          self.trigger("project:update:state:success", data);
+        }
+      });
     }
 
   });

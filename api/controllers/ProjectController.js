@@ -52,8 +52,8 @@ module.exports = {
         // Get the projects that I have access to but are draft
         Project.find({ 'where': { 'id': myprojIds, 'state': 'draft' }}).done(function (err, myprojects) {
           if (err) return res.send(400, { message: 'Error looking up projects.'});
-          _.extend(projects, myprojects);
-          return res.send({ projects: projects });
+          var finalprojects = projects.concat(myprojects);
+          return res.send({ projects: finalprojects });
         })
       });
     }

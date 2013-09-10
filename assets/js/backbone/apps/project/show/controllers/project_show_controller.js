@@ -21,8 +21,9 @@ define([
 		model: null,
 
 		events: {
-			"click .edit-project": "edit",
-			"click #like-button" : "like"
+			"click .edit-project"   : "edit",
+			"click #like-button"    : "like",
+			"change #project-state" : "updateState"
 		},
 
 		// The initialize method is mainly used for event bindings (for effeciency)
@@ -38,6 +39,7 @@ define([
 			rendering.on("project:show:rendered", function () {
 				self.initializeItemViewControllers();	
 				self.initializeLikes();
+				self.initializeHandlers();
 			});
 		},
 
@@ -72,6 +74,12 @@ define([
 			}
 		},
 
+		initializeHandlers: function() {
+			this.listenTo(this.model, "project:update:state:success", function (data) {
+				$("#project-admin-state").button('reset');
+			});
+		},
+
 		edit: function (e) {
 			if (e.preventDefault()) e.preventDefault();
 			var self = this;
@@ -90,6 +98,15 @@ define([
 					model: self.model
 				}).render();
 			}
+		},
+
+		updateState: function (e) {
+			if (e.preventDefault()) e.preventDefault();
+			var self = this;
+			var state  = $(e.currentTarget).val();
+			console.log(state);
+			$("#project-admin-state").button('loading');
+			this.model.trigger("project:update:state", state);
 		},
 
 		like: function (e) {
