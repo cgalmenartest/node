@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
     <link rel="stylesheet" type="text/css" href="/styles/bootstrap.css" />
-    <link rel="stylesheet" type="text/css" href="/styles/midas-theme.css" />
+    <link rel="stylesheet" type="text/css" href="/styles/innovation-theme.css" />
     <link rel="stylesheet" type="text/css" href="/styles/font-awesome/css/font-awesome.min.css" />
     <link rel="stylesheet" type="text/css" href="/styles/application.css" />
 
@@ -32,19 +32,49 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#home">Midas</a>
+          <a class="navbar-brand" href="#home">
+            <img src="/images/innovation-logo.png" alt="innovation.gov">
+          </a>
         </div>
-        <div class="navbar-collapse collapse">
+        <div class="navbar-collapse collapse pull-right">
           <ul class="nav navbar-nav">
-            <li class="home"><a href="#home">Home</a></li>
-            <li class="projects"><a href="#projects">Projects</a></li>
-          </ul>
-          <ul class="nav navbar-nav pull-right">
+
+            <li class="people">
+              <a href="#people">
+                <span class="glyphicon glyphicon-user"></span>
+                <span class="navbar-title-small">Find</span><br/>
+                <span class="navbar-title-big">People</span>
+              </a>
+            </li>
+            <li class="projects">
+              <a href="#projects">
+                <i class="icon-rocket"></i>
+                <span class="navbar-title-small">Browse</span><br/>
+                <span class="navbar-title-big">Projects</span>
+              </a>
+            </li>
+            <li class="knowledge">
+              <a href="#knowledge">
+                <i class="icon-comments"></i>
+                <span class="navbar-title-small">Share</span><br/>
+                <span class="navbar-title-big">Knowledge</span>
+              </a>
+            </li>
+            <li class="divider-vertical navbar-text"></li>
             <% if (req.user) { %>
-              <li><a href="#user">Profile</a></li>
-              <li><a href="/auth/logout">Logout</a></li>
+              <li class="profile dropdown"><a href="#user" id="navbar-profile" role="button" class="dropdown-toggle" data-toggle="dropdown">
+                <img src="/user/photo/<%- req.user[0].id %>" class="navbar-people"/> <%- req.user[0].name %></a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="navbar-profile">
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#user">Profile</a></li>
+                  <li role="presentation" class="divider"></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="/auth/logout">Logout</a></li>
+                </ul>
+              </li>
+              <!--
+              <li class="navbar-text"><a href="/auth/logout"><i class="icon-minus-sign"></i> Logout</a></li>
+            -->
             <% } else { %>
-              <li><a href="/auth">Login</a></li>
+              <li class="navbar-text"><a href="/auth"><i class="icon-plus-sign"></i> Sign In</a></li>
             <% }; %>
           </ul>
         </div>

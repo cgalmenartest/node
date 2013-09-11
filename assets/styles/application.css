@@ -13,6 +13,30 @@
 }
 
 /*****************
+=  NAVBAR
+******************/
+
+.navbar .nav .navbar-title-small {
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.navbar .nav .navbar-title-big {
+	font-size: 18px;
+}
+
+.navbar .nav .divider-vertical {
+  background-color: white;
+  height: 40px;
+  width: 1px;
+}
+
+.navbar-people {
+	max-height: 40px;
+	border-radius: 25px;
+}
+
+/*****************
 =  TEXT COLORS
 ******************/
 .green {
