@@ -33,8 +33,8 @@ define([
     post: function (e) {
       if (e.preventDefault()) e.preventDefault();
 
-      if ($(e.currentTarget).children(".comment-content").val() !== "") {
-        this.comment = $(e.currentTarget).children(".comment-content").val();
+      if ($(e.currentTarget).find(".comment-content").val() !== "") {
+        this.comment = $(e.currentTarget).find(".comment-content").val();
       } else {
         this.comment = $(".comment-content").val();
       }
