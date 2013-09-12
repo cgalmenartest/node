@@ -557,7 +557,7 @@ ul.comment-list {
 
 .comment-image {
 	float: left;
-	padding: 5px;
+	margin: 2px;
 	display: table-cell;
 	vertical-align: top;
 }

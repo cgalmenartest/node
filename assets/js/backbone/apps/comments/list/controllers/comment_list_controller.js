@@ -13,9 +13,9 @@ define([
 
     events: {
       "click .reply-to": "reply",
-      "mouseenter .project-people-div" : popoverPeopleOn,
-      "mouseleave .project-people-div" : popoverPeopleOff,
-      "click .project-people-div" : popoverPeopleOn
+      "mouseenter .comment-user-link" : popoverPeopleOn,
+      "mouseleave .comment-user-link" : popoverPeopleOff
+      // "click .comment-user-link" : popoverPeopleOn
     },
 
     initialize: function () {
@@ -48,7 +48,7 @@ define([
         collection: collection
       }).render();
 
-      popoverPeopleInit(".project-people-div");
+      popoverPeopleInit(".comment-user-link");
     },
 
     reply: function (e) {

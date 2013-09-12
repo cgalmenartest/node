@@ -4,22 +4,20 @@
     <% } else { %>
     <% _.each(comments, function (comment) { %>
       <li class="comment-item clearfix" style="background: #eee; margin-top: 10px;">
-          <div class="comment-image">
-            <div class="project-people-div" data-userid="<%- comment.userId %>">
-              <img src="/user/photo/<%- comment.userId %>" class="comment-image"/>
-            </div>
-          </div>
+        <div class="comment-image">
+          <img src="/user/photo/<%- comment.userId %>" class="comment-image"/>
+        </div>
 
         <div class="comment-inner">
 
           <% if (comment.user.name) { %>
-            <span class="user-username">
+            <span class="user-username" data-userid="<%- comment.userId %>">
               <a href="#" class="comment-user-link" data-userid="<%- comment.userId %>">
                 <%- comment.user.name %>
               </a>
             </span>
           <% } else { %>
-            <span class="user-username">
+            <span class="user-username" data-userid="<%- comment.userId %>">
               <a href="#" class="comment-user-link" data-userid="<%- comment.userId %>">
                 <%- comment.user.username %>
               </a>
