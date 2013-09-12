@@ -13,6 +13,7 @@ module.exports = {
     if (req.route.params.id) {
       User.findOneById(req.route.params.id, function (err, user) {
         if (err) { return res.send(400, {message:'Error looking up user'}); }
+        if (!user) { return res.send(404, { message: 'User not found.'}); }
         sails.log.debug('User Get:', user);
         var cleanUser = {
           id: user.id,
