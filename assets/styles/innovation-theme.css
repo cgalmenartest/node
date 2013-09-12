@@ -23,13 +23,13 @@ h3 {
 }
 
 h4 {
-  color: #CBCBCB;
+  color: #818991;
   font-size: 18px;
   font-weight: normal;
 }
 
 h5 {
-  color: #CBCBCB;
+  color: #818991;
   font-size: 12px;
   font-weight: normal;
 }
@@ -49,6 +49,41 @@ h6 {
 
 .topics > ul > li {
   background-color: #FFE084;
+}
+
+/**
+ * COLORS
+ */
+.c1 {
+  color: #00A651;
+}
+
+.c1-border {
+  border-color: #00A651;
+}
+
+.c2 {
+  color: #F15A22;
+}
+
+.c2-border {
+  border-color: #F15A22;
+}
+
+.c3 {
+  color: #0075B2;
+}
+
+.c3-border {
+  border-color: #0075B2;
+}
+
+.c4 {
+  color: #B72467;
+}
+
+.c4-border {
+  border-color: #B72467;
 }
 
 /**

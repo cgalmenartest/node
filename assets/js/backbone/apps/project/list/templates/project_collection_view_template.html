@@ -1,27 +1,26 @@
 
 <div class="page-header">
-    <h1>Projects</h1>
-
-    <a href="#addProject" class="add-project" data-toggle="modal">Add Project</a>
-    <div class="clearfix"></div>
+    <h1>Projects
+        <div class="pull-right" style="margin-top: 20px">
+            <a href="#addProject" class="btn btn-c1 add-project" data-toggle="modal">Add Project</a>
+        </div>
+    </h1>
 </div>
 
 <ul id="project-list">
     <% _.each(projects, function(project) { %>
-        <li data-project-id="<%- project.id %>" class="project-box">
+        <li data-project-id="<%- project.id %>" class="project-box c3-border">
             
             <% if (project.coverId) { %>
-            <div class="project-background-image" style="background-image: url(/file/get/<%= project.coverId %>)">
+            <div class="project-background-image c3-border" style="background-image: url(/file/get/<%= project.coverId %>)">
             <% } else { %>
-            <div class="project-background-image project-background-image-default">
+            <div class="project-background-image c3-border project-background-image-default">
             <% } %>
-                <div class="project-title">
-                    <a href="" class="project" style="cursor: pointer; cursor: hand;">
-                        <%- project.title %>
-                        <a href="#destroy" class="delete-project">Delete</a> |
-                        <a href="#editProject" class="edit-project" data-toggle="modal">Edit</a>
-                    </a>
-                </div>
+            </div>
+            <div class="project-title">
+                <a href="" class="project c3">
+                    <%- project.title %>
+                </a>
             </div>
             
             <div class="project-list-description">
