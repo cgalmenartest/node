@@ -32,6 +32,7 @@ module.exports.policies = {
     '*': false,
     'index': true,
     'photo': true,
+    'info': ['authenticated', 'requireUserId', 'addUserId', 'requireId'],
     'find': 'admin',
     'findAll': 'admin'
   },
