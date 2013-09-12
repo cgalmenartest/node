@@ -283,6 +283,8 @@ ul.tags > li {
 .list-box > h2 {
 	margin-top: 0;
 	margin-bottom: 1px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 	padding-left: 15px;
 	font-weight: normal;
 	font-size: 14px;
@@ -337,6 +339,8 @@ ul.tags > li {
 }
 
 .like-content {
+	margin-top: 25px;
+	margin-bottom: 15px;
 	font-size: 18px;
 }
 
