@@ -4,8 +4,9 @@ define([
   'backbone',
   'popovers',
   'comment_collection',
-  'comment_list_view'
-], function ($, _, Backbone, Popovers, CommentCollection, CommentListView) {
+  'comment_list_view',
+  'comment_form_view'
+], function ($, _, Backbone, Popovers, CommentCollection, CommentListView, CommentFormView) {
 
   Application.Controller.Comment = Backbone.View.extend({
 
@@ -20,22 +21,27 @@ define([
 
     initialize: function () {
       this.initializeCommentCollection();
+      this.commentCollection.on("comment:save:success", this.initializeCommentCollection())
     },
 
     initializeCommentCollection: function () {
       var self = this;
 
       if (this.commentCollection) {
-        this.commentCollection.destroy();
+      
+        this.commentCollection.destroy()
       }
 
-      this.commentCollection = new CommentCollection();
-      this.commentCollection.fetch({
-        url: '/comment/findAllByProjectId/' + this.options.projectId,
-        success: function (collection) {
-          self.renderView(collection);
-        }
-      })
+        this.commentCollection = new CommentCollection();
+
+
+        this.commentCollection.fetch({
+          url: '/comment/findAllByProjectId/' + this.options.projectId,
+          success: function (collection) {
+            self.renderView(collection);
+          }
+        })
+
     },
 
     renderView: function (collection) {
@@ -49,6 +55,9 @@ define([
       }).render();
 
       popoverPeopleInit(".comment-user-link");
+
+            if (this.commentForm) this.commentForm.cleanup();
+      this.commentForm = new CommentFormView({ projectId: this.options.projectId, collection: collection });
     },
 
     reply: function (e) {

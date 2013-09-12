@@ -24,7 +24,12 @@
             </span>
           <% } %>
           &nbsp;
-          <span class="comment-content"><%- comment.value %></span>
+          <% if (comment.wikiLink) { %>
+            <span class="comment-content"><a href="#"><%- comment.value %></a></span>  
+          <% } else { %>
+
+            <span class="comment-content"><%- comment.value %></span>
+          <% } %>
           <br/>
           <time class="timeago comment-created-at" datetime="<%- comment.createdAt %>"><%- comment.createdAt %></time>
           -

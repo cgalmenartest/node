@@ -98,7 +98,8 @@ require.config({
     //= Components
     // ----------
     'modal_component'           : '../components/modal',
-    'modal_template'            : '../components/modal_template.html'
+    'modal_template'            : '../components/modal_template.html',
+    'autocomplete'              : '../mixins/autocomplete'
   }
 
 });

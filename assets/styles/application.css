@@ -8,8 +8,20 @@
 }
 */
 
+.search-result-row:hover {
+	background: #ccc;
+}
+
+
 .seperator {
 	margin: 10px 0 10px 0;
+}
+
+.search-result-row {
+	min-width: 200px; 
+	height: 40px; 
+	background: #eee; 
+	border-bottom: 1px #000 solid;
 }
 
 /*****************
