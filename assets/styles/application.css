@@ -85,31 +85,17 @@
 	word-wrap: break-word;
 }
 
+div.project-title {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: block;
+  font-weight: bold;
+  font-size: 14px;
+}
+
 .project-title > a {
 	color: #393939;
-}
-
-div.project-title {
-	width: 100%;
-	height: 100%;
-	position: relative;
-	display: block;
-	font-weight: bold;
-	font-size: 14px;
-}
-
-
-h1.project-title {
-	width: 100%;
-	padding-left: 10px;
-	margin-bottom: 0;
-	background-color: rgb(230, 230, 230);
-	background-color: rgba(255, 255, 255, 0.7);
-	color: #393939;
-	font-size: 40px;
-	font-weight: normal;
-	position: absolute;
-	bottom: 0;
 }
 
 a[class='project'] {
@@ -118,56 +104,9 @@ a[class='project'] {
 	left: 5px;
 }
 
-#project-header {
-	padding-top: 10px;
-	padding-left: 0;
-	height: 200px;
-	background-repeat: no-repeat;
-	background-size: cover;
-}
-
-.project-admin {
-	text-align: right;
-	padding-left: 15px;
-}
-
-.project-admin-title {
-	position: absolute;
-	top: 5px;
-	font-size: 15px;
-}
-
-.project-admin-select {
-	width: 100%;
-	padding-left: 4px;
-}
-
-.project-admin-state {
-	text-align: center;
-	font-size: 24px;
-}
-
-#project-admin-bar {
-	position: relative;
-}
-
-#project-admin-bar #file-upload-progress-container {
-	margin-top: 10px;
-	margin-bottom: 0;
-}
-
 .nopadding {
 	padding-left: 0;
 	padding-right: 0;
-}
-
-.project-people-bar {
-	width: 100%;
-	background-color: #303030;
-}
-
-.project-people {
-	max-height: 40px;
 }
 
 #project-form input {
@@ -202,11 +141,159 @@ a[class='project'] {
 }
 
 /*****************
-=  TASKS 
+=  PROJECT SHOW
 ******************/
+
+.project-header-wrapper {
+	width: 100%;
+	padding: 17px;
+	background-color: #E5E5E5;
+	margin-bottom: 10px;
+}
+
+#project-header {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 100% ; /* % of width, defines aspect ratio*/
+  background-color: white;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+}
+
+.project-description {
+	font-size: 16px;
+	column-count: 2;
+	column-fill: balance;
+	-moz-column-count: 2;
+	-moz-column-fill: balance;
+	-webkit-column-count: 2;
+	-webkit-column-fill: balance;
+	margin-bottom: 20px;
+	line-height: 1.5em;
+}
+
+.project-status {
+	margin-bottom: 20px;
+}
+
+.project-participants {
+	margin-bottom: 20px;
+}
+
+.project-people {
+	height: 40px;
+	width: 40px;
+	max-height: 40px;
+	border-radius: 25px;
+}
+
+.project-people-div {
+	display: inline-block;
+}
+
+.project-people-popover {
+	max-height: 60px;
+	border-radius: 35px;
+	margin-right: 10px;
+}
+
+.project-contributors > .popover > .popover-content > .popover-spinner {
+	font-size: 30px;
+	text-align: center;
+}
+
+.project-contributors > .popover > .popover-content > .popover-spinner > .loading {
+	font-size: 14px;
+}
+
+.project-contributors > .popover {
+	width: 350px;
+	max-width: 350px;
+	height: 80px;
+}
+
+.popover-person {
+	font-size: 12px;
+}
+.popover-person > .title {
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.project-admin {
+	text-align: right;
+	padding-left: 15px;
+}
+
+.project-admin-title {
+	position: absolute;
+	top: 5px;
+	font-size: 15px;
+}
+
+.project-admin-select {
+	width: 100%;
+	padding-left: 4px;
+}
+
+.project-admin-state {
+	text-align: center;
+	font-size: 24px;
+}
+
+#project-admin-bar {
+	position: relative;
+}
+
+#project-admin-bar #file-upload-progress-container {
+	margin-top: 10px;
+	margin-bottom: 0;
+}
+
+ul.tags {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+ul.tags > li {
+	font-size: 12px;
+	padding-right: 6px;
+	padding-left: 6px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	margin-bottom: 5px;
+	margin-right: 5px;
+	display: inline-block;
+}
+
+.project-sidebar > .locations {
+	margin-bottom: 10px;
+}
+
+/*****************
+=  LISTS
+******************/
+.list-box {
+	margin: 0;
+}
+
+.list-box > h2 {
+	margin-top: 0;
+	margin-bottom: 1px;
+	padding-left: 15px;
+	font-weight: normal;
+	font-size: 14px;
+	text-transform: uppercase;
+}
+
 .list-add {
 	float: right;
 	margin-right: 10px;
+	margin-top: -3px;
+	text-transform: none;
 }
 
 .list-title {
@@ -245,134 +332,155 @@ a[class='project'] {
 	height: 100%;
 }
 
-/*
-.list-wrapper::-webkit-scrollbar {
-	width: 12px;
-}
-
-.list-wrapper::-webkit-scrollbar-track {
-	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-	-webkit-border-radius: 10px;
-					border-radius: 10px;
-}
-
-.list-wrapper::-webkit-scrollbar-thumb {
-	background: rgba(0, 0, 255, 0.8);
-	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
-	-webkit-border-radius: 10px;
-					border-radius: 10px;
-}
-
-.list-wrapper::-webkit-scrollbar-thumb:window-inactive {
-	background: rgba(100,50,24,0.4);
-}
-*/
-
 .list-wrapper > ul > li {
 	list-style: none;
 }
 
-li.well {
-	list-style: none;
-	margin-top: 10px;
-	margin-bottom: 10px;
-}
-
-#task-list {
-	overflow-y: scroll;
-	overflow-x: hidden;
-	min-height: 380px;
-}
-
 .like-content {
-	padding-left: 5px;
-	padding-right: 5px;
-	font-size: 20px;
-	text-align: center;
+	font-size: 18px;
+}
+
+.like-buttons {
+	padding-top: 5px;
 }
 
 .like-number {
-	font-size: 40px;
+	font-size: 32px;
 	font-weight: bold;
 }
 
 #like-button {
+	font-size: 22px;
+	vertical-align: text-bottom;
 	text-decoration: none;
 }
+
+/*****************
+=  TASKS
+******************/
+.task {
+	font-size: 13px;
+}
+.task-title {
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.task-description {
+	margin-top: 10px;
+}
+
+.task-heading {
+	margin-top: 10px;
+	font-weight: bold;
+	font-size: 15px;
+}
+
+.task-view {
+	margin-top: 10px;
+}
+
+#task-list-wrapper {
+	margin-top: 20px;
+}
+
 
 /*****************
 =  EVENTS
 ******************/
 
-.event {
+.event, .task {
 	width: 100%;
-	padding-left: 5px;
-	padding-right: 5px;
-	padding-top: 10px;
-	padding-bottom: 10px;
-	font-size: 10px;
-	background-color: #f0f0f0;
-	border-bottom-style: solid;
-	border-color: #c0c0c0;
-	border-bottom-width: 1px;
+	padding: 15px;
+	padding-left: 11px;
+	font-size: 11px;
+	border-left: 4px solid;
+	margin-bottom: 1px;
 }
 
-.first {
-	background-color: #fc6e51;
-	color: #3c3c3c;
-	font-size: 14px;
-	border-style: none;
+.event-icon {
+	font-size: 18px;
+	width: 37px;
+	padding-right: 10px;
+	padding-left: 10px;
+	display: inline-table;
 }
 
 .event > .event-title {
 	font-size: 14px;
 	font-weight: bold;
+	line-height: 1.1em;
+	margin-bottom: 10px;
 }
 
-.event > .event-going {
+.event-wrapper {
+	display: table-cell;
+	vertical-align: top
 }
 
-.event-next {
-	background-color: #e9573f;
-	color: #f2f2f2;
-	width: 100%;
-	padding-top: 10px;
-	padding-bottom: 10px;
-	font-weight: bold;
-	font-size: 22px;
-	padding-left: 5px;
-	padding-right: 5px;
+.event-item {
+	display: inline-table;
+	margin-top: 10px;
+}
+
+.event-people {
+	vertical-align: middle;
+}
+
+.first {
+	font-size: 14px;
+	padding: 15px;
+	border-style: none;
+	margin-bottom: 0;
 }
 
 .first > .event-title {
-	font-size: 20px;
+	font-size: 16px;
+}
+
+.first > .event-item {
+	margin-top: 15px;
+	display: block;
+}
+
+.first > .event-item > .event-icon {
+	font-size: 24px;
+	padding-right: 12px;
+	padding-left: 12px;
+	display: inline-table;
+}
+
+.first > .event-item > .event-wrapper {
+	display: inline-table;
+}
+
+.first > .event-item > .event-wrapper > .event-day {
+	font-size: 15px;
 	font-weight: bold;
 }
 
-.first > .event-date {
-	background-color: #f0f0f0;
-	border-style: solid;
-	border-color: #c0c0c0;
-	border-width: 1px;
-	margin-top: 10px;
-	padding: 6px;
-	text-align: center;
-}
-
-.first > .event-date > .event-day {
-	font-size: 18px;
-}
-
-.first > .event-date > .event-time {
-	font-size: 14px;
-}
-
-.first > .event-description {
+.first > .event-item > .event-wrapper > .event-time {
 	font-size: 10px;
+	padding: 0;
+}
+
+.first > .event-item > .event-wrapper > .event-location {
+	font-size: 12px;
+}
+
+.first > .event-item > .event-people {
+	margin-top: 10px;
+	margin-right: 5px;
+	vertical-align: bottom;
+}
+
+.event-people-bar {
+	margin-top: 15px;
+	margin-bottom: 5px;
 }
 
 /*****************
-=  EVENTS
+=  FILES
 ******************/
 
 .about-list {
@@ -410,71 +518,56 @@ ul.comment-list > li {
 }
 
 .comment-list-wrapper {
-	/*margin-left: -25px;*/
 }
 
-.comment-list {
-	width: 870px;
+ul.comment-list {
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+	font-size: 13px;
 }
 
 .comment-form-wrapper {
-	margin-top: 460px;
 }
 
 .add-comment-button {
 	float: right;
-	margin-top: 10px;
-	margin-bottom: -10px;
 }
 
 .user-username {
-	font-size: 16px;
 	font-weight: bold;
-	font-family: Arial, Helvetica, sans-serif;
 }
 
 .comment-created-at {
-	font-size: 11px;
-	color: #000;
+	color: #858585;
 }
 
 .comment-content {
-	/*padding: 10px;*/
-	font-size: 14px;
-	font-family: Arial, Helvetica, sans-serif;
 }
 
 .comment-item {
 	overflow: hidden;
+	display: inline-table;
 }
 
-.user-image > img {
-	height: 70px;
-	width: 70px;
-	margin-bottom: 20px;
+.user-image {
+	float: left;
+	padding: 5px;
+	display: table-cell;
+	vertical-align: top;
+}
+
+.comment-image {
+	max-height: 40px;
+	max-width: 40px;
+	height: 40px;
+	width: 40px;
 }
 
 .comment-inner {
-	padding: 20px;
-}
-
-.reply-to {
-	cursor: pointer;
-	cursor: hand;
-	font-size: 14px;
-	position: absolute;
-	bottom: 5px;
-}
-
-.project-people-bar {
+	padding: 5px;
+	display: table-cell;
 	width: 100%;
-	height: 50px;
-	background-color: rgba(0,0,9,0.1);
-}
-
-.project-people {
-	max-height: 40px;
-	border-radius: 25px;
-	margin-top: 5px;
-	margin-left: 5px;
+	vertical-align: top;
 }

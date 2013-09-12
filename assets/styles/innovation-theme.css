@@ -10,6 +10,7 @@ h1 {
 h2 {
   padding-top: 10px;
   padding-bottom: 10px;
+  padding-left: 10px;
   font-size: 16px;
   font-weight: bold;
   background-color: #CBCBCB;
@@ -37,6 +38,56 @@ h6 {
   color: #2E4D4C;
   font-size: 10px;
   font-weight: bold;
+}
+
+/**
+ * TAGS
+ */
+.skills > ul > li {
+  background-color: #FFCB32;
+}
+
+.topics > ul > li {
+  background-color: #FFE084;
+}
+
+/**
+ * EVENTS
+ */
+.sidebar-primary {
+  background-color: #33D0C5;
+  color: #4D4D4D;
+}
+
+.sidebar-primary-light {
+  background-color: #ADECE8;
+  color: #2E4D4C;
+}
+
+.sidebar-highlight {
+  color: white;
+}
+
+.sidebar-primary-bar {
+  border-color: #33D0C5;
+}
+
+.sidebar-secondary {
+  background-color: #FFCB32;
+  color: #4D4D4D;
+}
+
+.sidebar-secondary-light {
+  background-color: #FFE084;
+  color: #2E4D4C;
+}
+
+.sidebar-secondary-highlight {
+  color: white;
+}
+
+.sidebar-secondary-bar {
+  border-color: #FFCB32;
 }
 
 /**

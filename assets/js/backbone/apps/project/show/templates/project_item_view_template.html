@@ -36,145 +36,243 @@
 <% } else { %><div id="fileupload" style="display: none;"></div><% } %>
 
 <div class="row">
-  <% if (data.coverId) { %>
-  <div class="col-lg-12" id="project-header" style="background-image:url('/file/get/<%= data.coverId %>');">
-  <% } else { %>
-  <div class="col-lg-12" id="project-header">
-  <% } %>
-    <h1 class="project-title"><%= data.title %></h1>
+  <div class="col-lg-4 project-sidebar">
+    <!-- LEFT SIDEBAR -->
+    <div class="project-header-wrapper">
+      <% if (data.coverId) { %>
+      <div id="project-header" style="background-image:url('/file/get/<%= data.coverId %>');">
+      <% } else { %>
+      <div id="project-header">
+      <% } %>
+      </div>
+    </div>
+
+    <div class="row like-content">
+      <div class="col-lg-12">
+        <a href="#" id="like-button">
+          <i id="like-button-icon" class="icon icon-star-empty icon-large gold"></i>
+        </a>
+        <span class="like-number" id="like-number"><%- data.likeCount %></span>
+        <span class="like-plural" id="like-text" data-plural="likes" data-singular="like">likes</span>
+
+        <div class="pull-right like-buttons">
+          <button class="btn btn-danger"><i class="icon icon-envelope-alt"></i> Email</button>
+          <button class="btn btn-primary"><i class="icon icon-twitter"></i> Tweet</button>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="skills">
+      <h4><i class="icon-atom"></i> Skills</h4>
+      <ul class="tags">
+        <li>community building</li>
+        <li>node.js</li>
+        <li>human-centered design</li>
+        <li>web design</li>
+        <li>databases</li>
+      </ul>
+    </div>
+
+    <div class="topics">
+      <h4><i class="icon-briefcase"></i> Topics</h4>
+      <ul class="tags">
+        <li>collaboration</li>
+        <li>innovation</li>
+        <li>networking</li>
+        <li>knowledge sharing</li>
+        <li>crowdsourcing</li>
+      </ul>
+    </div>
+
+    <div class="agencies">
+      <h4><i class="icon-library"></i> Agencies</h4>
+      <ul class="tags">
+        <li>Office of Science and Technology Policy</li>
+        <li>Department of State</li>
+        <li>General Services Administration</li>
+      </ul>
+    </div>
+
+    <div class="locations">
+      <h4><span class="glyphicon glyphicon-map-marker"></span> Location</h4>
+      <ul class="tags">
+        <li>Washington, DC</li>
+        <li>San Francisco, CA</li>
+      </ul>
+    </div>
+
+    <!-- BEGIN EVENTS -->
+    <div class="list-box">
+
+      <h2 class="sidebar-primary sidebar-highlight">
+        Next Event
+        <a href="/event/ical/<%= data.id %>" class="btn btn-primary btn-xs list-add"><span class="glyphicon glyphicon-calendar"></span> iCal</a>
+        <button class="btn btn-default btn-xs list-add" data-toggle="modal">Add Event</button>
+      </h2>
+
+      <div class="event first sidebar-primary">
+        <div class="event-title sidebar-highlight">Presidential Innovation Fellows Demo Day</div>
+        <div class="event-description">
+          The next demo day will be a chance to see Innovation Toolkit in action.  Please attend to ask questions, provide feedback, and help make Innovation Toolkit better.  Below are the ...
+          <a href="#">MORE</a>
+        </div>
+        <div class="event-item sidebar-highlight">
+          <div class="event-icon">
+            <i class="icon-calendar"></i>
+          </div>
+          <div class="event-wrapper">
+            <div class="event-day"> October 10, 2013</div>
+            <div class="event-time">8:00pm - 10:00pm</div>
+          </div>
+        </div>
+
+        <div class="event-item sidebar-highlight">
+          <div class="event-icon">
+            <span class="glyphicon glyphicon-map-marker"></span>
+          </div>
+          <div class="event-wrapper">
+            <div class="event-location">
+              General Services Administration
+            </div>
+            <div class="event-location">
+              1800 F Street NW
+            </div>
+            <div class="event-location">
+              Washington, DC
+            </div>
+          </div>
+        </div>
+
+        <div class="event-item sidebar-highlight">
+          <div class="event-icon">
+            <i class="icon-ok-sign"></i>
+          </div>
+          <div class="event-wrapper">
+            <div class="event-rsvp">
+              <button class="btn btn-primary btn-sm">RSVP</button>
+            </div>
+          </div>
+          <div class="event-people pull-right"><i class="icon-male"></i> 43 people going</div>
+        </div>
+        <div class="event-people-bar">
+          <img src="/user/photo/1" class="project-people"/>
+          <img src="/user/photo/1" class="project-people"/>
+          <img src="/user/photo/1" class="project-people"/>
+          <img src="/user/photo/1" class="project-people"/>
+          <img src="/user/photo/1" class="project-people"/>
+          <img src="/user/photo/1" class="project-people"/>
+        </div>
+      </div>
+    </div>
+    <div class="list-box">
+      <h2 class="sidebar-primary-light">Upcoming Events</h2>
+      <div class="event sidebar-primary-light sidebar-primary-bar">
+        <div class="event-title">
+          Project Kickoff Meeting
+        </div>
+
+        <div class="event-description">
+          Please join us for a project kickoff meeting, where we’ll discuss the primary objectives, project milestones, and develop an ... <a href="#">MORE</a>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="event-item">
+              <div class="event-icon">
+                <i class="icon-calendar"></i>
+              </div>
+              <div class="event-wrapper">
+                October 24, 2013<br/>
+                10:00am - 2:00pm
+              </div>
+            </div>
+
+          </div>
+          <div class="col-lg-6">
+            <div class="event-item">
+              <div class="event-icon">
+                <span class="glyphicon glyphicon-map-marker"></span>
+              </div>
+              <div class="event-wrapper">
+                1800 F Street NW<br/>
+                Washington, DC
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="event-item">
+              <div class="event-icon">
+                <i class="icon-male"></i>
+              </div>
+              <div class="event-wrapper event-people">
+                18 people going
+              </div>
+            </div>
+
+          </div>
+          <div class="col-lg-6">
+            <div class="event-item">
+              <div class="event-icon">
+                <i class="icon-ok-sign"></i>
+              </div>
+              <div class="event-wrapper">
+                <button class="btn btn-primary btn-xs">RSVP</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <!-- END EVENTS -->
+
+    <!-- BEGIN TASKS -->
+    <div class="list-box" id="task-list-wrapper">
+    </div>
+
   </div>
-</div>
 
+  <div class="col-lg-8">
+    <!-- RIGHT MAIN BAR -->
 
-<div class="row">
-  <div class="col-lg-12 nopadding">
-    <div class="project-people-bar">
+    <h1><%= data.title %></h1>
+
+    <div class="project-description">
+      <%= data.description %>
+    </div>
+
+    <h4>Project Status</h4>
+    <div class="project-status">
+      <%= data.status %>
+    </div>
+
+    <h4>Project Participants</h4>
+    <div class="project-contributors">
       <% if (data.owners) { %>
         <% for (var i = 0; i < data.owners.length; i++) { %>
-        <img src="/user/photo/<%= data.owners[i].userId %>" class="project-people"/>
+        <div class="project-people-div" data-userid="<%= data.owners[i].userId %>">
+          <img src="/user/photo/<%= data.owners[i].userId %>" class="project-people"/>
+        </div>
         <% } %>
       <% } %>
     </div>
+
+    <h4>Discussion</h4>
+    <div class="project-comments">
+      <div class="comment-form-wrapper"></div>
+      <div class="comment-list-wrapper"></div>
+    </div>
+
   </div>
 </div>
+
 <div class="row">
-  <div class="col-lg-12">
-    <div class="project-description">
-      <div><%= data.description %></div>
-      <hr />
-    </div>
-  </div>
-</div>
-<div class="row">
-  <div class="col-lg-5">
-    <div class="list-wrapper" id="task-list-wrapper"></div>
-  </div>
-  <div class="col-lg-5">
-    <div class="list-wrapper" id="event-list-wrapper">
-
-      <!-- BEGIN EVENT MOCKUP -->
-      <div class="list-page">
-
-        <h3 class="list-title">Events
-          <button class="btn btn-primary btn-xs list-add" data-toggle="modal"><span class="glyphicon glyphicon-calendar"></span> iCal</button>
-          <button class="btn btn-default btn-xs list-add" data-toggle="modal">Add Event</button>
-        </h3>
-
-        <div id="event-list">
-          <div class="event-next">Next Event</div>
-          <div class="event first">
-            <div class="event-date pull-right">
-              <span class="event-day"><i class="icon-calendar"></i> Oct 17</span><br><span class="event-time">8:00pm</a><br/>
-              <button class="btn btn-success"><i class="icon-check"></i> I'm Going</button>
-            </div>
-            <div class="event-title">Meet with Presidential Innovation Fellows</div>
-            <div class="event-location"><i class="icon-map-marker"></i> The White House, Washington DC</div>
-            <div class="event-description">
-              Donec at turpis eu risus luctus vehicula. Donec pretium tellus adipiscing erat elementum, et porttitor arcu eleifend. Aenean eget leo dolor. Nunc ornare vitae leo non bibendum. Lorem ipsum dolor sit amet, consectetur adipiscing ... <br/>
-              <button class="btn btn-xs btn-default">More</button>
-            </div>
-            <div class="event-people"><i class="icon-male"></i> 43 people going</div>
-            <div class="event-people-bar">
-              <img src="/user/photo/1" class="project-people"/>
-              <img src="/user/photo/1" class="project-people"/>
-              <img src="/user/photo/1" class="project-people"/>
-              <img src="/user/photo/1" class="project-people"/>
-              <img src="/user/photo/1" class="project-people"/>
-              <img src="/user/photo/1" class="project-people"/>
-            </div>
-          </div>
-          <div class="event">
-            <div class="event-title">Meet with Presidential Innovation Fellows</div>
-            <div class="event-going pull-right">
-              <button class="btn btn-default btn-xs"><i class="icon-ok"></i> RSVP</button>
-            </div>
-            <div class="event-location"><i class="icon-map-marker"></i> The White House, Washington DC</div>
-            <div class="event-date"><i class="icon-calendar"></i> Monday, April 17 at 8:00pm</div>
-            <div class="event-people"><i class="icon-male"></i> 43 people going</div>
-          </div>
-          <div class="event">
-            <div class="event-title">Meet with Presidential Innovation Fellows</div>
-            <div class="event-going pull-right">
-              <button class="btn btn-default btn-xs"><i class="icon-ok"></i> RSVP</button>
-            </div>
-            <div class="event-location"><i class="icon-map-marker"></i> The White House, Washington DC</div>
-            <div class="event-date"><i class="icon-calendar"></i> Monday, April 17 at 8:00pm</div>
-            <div class="event-people"><i class="icon-male"></i> 43 people going</div>
-          </div>
-          <div class="event">
-            <div class="event-title">Meet with Presidential Innovation Fellows</div>
-            <div class="event-going pull-right">
-              <button class="btn btn-default btn-xs"><i class="icon-ok"></i> RSVP</button>
-            </div>
-            <div class="event-location"><i class="icon-map-marker"></i> The White House, Washington DC</div>
-            <div class="event-date"><i class="icon-calendar"></i> Monday, April 17 at 8:00pm</div>
-            <div class="event-people"><i class="icon-male"></i> 43 people going</div>
-          </div>
-          <div class="event">
-            <div class="event-title">Meet with Presidential Innovation Fellows</div>
-            <div class="event-going pull-right">
-              <button class="btn btn-default btn-xs"><i class="icon-ok"></i> RSVP</button>
-            </div>
-            <div class="event-location"><i class="icon-map-marker"></i> The White House, Washington DC</div>
-            <div class="event-date"><i class="icon-calendar"></i> Monday, April 17 at 8:00pm</div>
-            <div class="event-people"><i class="icon-male"></i> 43 people going</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="list-form-wrapper">
-      </div>
-      <!-- END EVENT MOCKUP -->
-
-    </div>
-  </div>
   <div class="col-lg-2">
     <div class="list-wrapper" id="sharing-list-wrapper">
-
-      <!-- BEGIN SHARING MOCKUP -->
-      <div class="list-page about-list">
-
-        <h3 class="list-title">About
-        </h3>
-
-        <div class="like-content">
-
-          <span class="like-number" id="like-number"><%- data.likeCount %></span>
-          <span class="like-plural" id="like-text" data-plural="likes" data-singular="like">likes</span>
-
-          <a href="#" id="like-button">
-            <i id="like-button-icon" class="icon icon-star-empty icon-large gold"></i>
-          </a>
-
-          <div style="padding-top: 10px;">
-            <button class="btn btn-danger"><i class="icon icon-envelope-alt"></i> Email</button>
-          </div>
-          <div style="padding-top: 10px;">
-            <button class="btn btn-primary"><i class="icon icon-twitter"></i> Tweet</button>
-          </div>
-        </div>
-
-      </div>
 
       <!-- BEGIN SHARING MOCKUP -->
       <div class="list-page file-list">
@@ -206,7 +304,5 @@
 <div class="row">
   <div class="col-12">
     <hr />
-    <div class="comment-form-wrapper"></div>
-    <div class="comment-list-wrapper"></div>
   </div>
 </div>

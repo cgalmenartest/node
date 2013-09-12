@@ -8,6 +8,7 @@ require.config({
     // ----------
     'text'                      : '../../vendor/text',
     'jquery'                    : '../../vendor/jquery',
+    'jquery_timeago'            : '../../vendor/jquery.timeago',
     'dropzone'                  : '../../vendor/dropzone-amd-module',
     'underscore'                : '../../vendor/underscore',
     'backbone'                  : '../../vendor/backbone',
