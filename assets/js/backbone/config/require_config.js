@@ -18,6 +18,7 @@ require.config({
     //= Mixins
     // ---------
     'utilities'                 : '../../backbone/mixins/utilities',
+    'popovers'                  : '../../backbone/mixins/popovers',
 
     // ---------
     //= Core App

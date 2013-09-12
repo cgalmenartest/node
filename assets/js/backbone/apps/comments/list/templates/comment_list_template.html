@@ -4,8 +4,10 @@
     <% } else { %>
     <% _.each(comments, function (comment) { %>
       <li class="comment-item clearfix" style="background: #eee; margin-top: 10px;">
-          <div class="user-image">
-            <img src="/user/photo/<%- comment.userId %>" class="comment-image"/>
+          <div class="comment-image">
+            <div class="project-people-div" data-userid="<%- comment.userId %>">
+              <img src="/user/photo/<%- comment.userId %>" class="comment-image"/>
+            </div>
           </div>
 
         <div class="comment-inner">

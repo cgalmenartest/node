@@ -208,7 +208,7 @@ a[class='project'] {
 	font-size: 14px;
 }
 
-.project-contributors > .popover {
+body > .popover {
 	width: 350px;
 	max-width: 350px;
 	height: 80px;
@@ -555,7 +555,7 @@ ul.comment-list {
 	display: inline-table;
 }
 
-.user-image {
+.comment-image {
 	float: left;
 	padding: 5px;
 	display: table-cell;

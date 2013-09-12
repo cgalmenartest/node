@@ -2,16 +2,20 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'popovers',
   'comment_collection',
   'comment_list_view'
-], function ($, _, Backbone, CommentCollection, CommentListView) {
+], function ($, _, Backbone, Popovers, CommentCollection, CommentListView) {
 
   Application.Controller.Comment = Backbone.View.extend({
 
     el: ".comment-list-wrapper",
 
     events: {
-      "click .reply-to": "reply"
+      "click .reply-to": "reply",
+      "mouseenter .project-people-div" : popoverPeopleOn,
+      "mouseleave .project-people-div" : popoverPeopleOff,
+      "click .project-people-div" : popoverPeopleOn
     },
 
     initialize: function () {
@@ -43,9 +47,9 @@ define([
         el: ".comment-list-wrapper",
         collection: collection
       }).render();
+
+      popoverPeopleInit(".project-people-div");
     },
-
-
 
     reply: function (e) {
       if (e.preventDefault()) e.preventDefault();
