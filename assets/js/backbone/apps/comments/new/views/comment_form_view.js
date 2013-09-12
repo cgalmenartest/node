@@ -39,7 +39,7 @@ define([
         this.comment = $(".comment-content:first-child").text();
       }
 
-      if ($(".comment-content:first-child").children("a").attr("href") !== undefined) this.WikiLink = true
+      if ($(".comment-content:first-child").children("a").attr("href") !== undefined) this.WikiLink = _.escape($(".comment-content:first-child").children("a").attr("href"))
 
       var projectId   = this.options.projectId,
           parentId;

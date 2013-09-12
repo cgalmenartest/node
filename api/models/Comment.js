@@ -20,7 +20,7 @@ module.exports = {
     userId: 'INTEGER',
     // content of the comment
     value: 'STRING',
-    wikiLink: 'BOOLEAN'
+    wikiLink: 'STRING'
 
   }
 

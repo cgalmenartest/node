@@ -27,10 +27,6 @@ define([
     initializeCommentCollection: function () {
       var self = this;
 
-      if (this.commentCollection) {
-      
-        this.commentCollection.destroy()
-      }
 
         this.commentCollection = new CommentCollection();
 
@@ -55,9 +51,14 @@ define([
       }).render();
 
       popoverPeopleInit(".comment-user-link");
-
-            if (this.commentForm) this.commentForm.cleanup();
-      this.commentForm = new CommentFormView({ projectId: this.options.projectId, collection: collection });
+      
+      var self = this;
+      rendering.trigger("renderForm");
+      rendering.once("renderForm", function () {
+        if (this.commentForm) this.commentForm.cleanup();
+        this.commentForm = new CommentFormView({ projectId: self.options.projectId, collection: collection });  
+      })
+      
     },
 
     reply: function (e) {

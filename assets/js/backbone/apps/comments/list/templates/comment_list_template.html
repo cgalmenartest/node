@@ -25,7 +25,7 @@
           <% } %>
           &nbsp;
           <% if (comment.wikiLink) { %>
-            <span class="comment-content"><a href="#"><%- comment.value %></a></span>  
+            <span class="comment-content"><a href="<%- _.unescape(comment.wikiLink) %>"><%- comment.value %></a></span>  
           <% } else { %>
 
             <span class="comment-content"><%- comment.value %></span>
