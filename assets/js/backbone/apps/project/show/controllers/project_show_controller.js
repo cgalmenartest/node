@@ -28,7 +28,7 @@ define([
 			"change #project-state" : "updateState",
 			"mouseenter .project-people-div" : popoverPeopleOn,
 			"mouseleave .project-people-div" : popoverPeopleOff,
-			"click .project-people" : popoverPeopleOn,
+			"click .project-people-div" : popoverPeopleOn,
 			"keyup .comment-content": "search"
 		},
 
@@ -44,8 +44,8 @@ define([
 
 			rendering.on("project:show:rendered", function () {
 				self.initializeItemViewControllers();	
-				self.initializeLikes();
 				self.initializeHandlers();
+				self.initializeLikes();
 				self.initializeUI();
 			});
 
