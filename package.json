@@ -4,7 +4,7 @@
     "version": "0.0.4",
     "description": "Crowdsourcing Platform and Collaboration Tool",
     "dependencies": {
-        "sails": "0.9.3",
+        "sails": "0.9.4",
         "async": "0.2.9",
         "grunt": "0.4.1",
         "ejs": "0.8.4",
@@ -17,9 +17,9 @@
         "passport-linkedin": "0.1.x",
         "icalendar": "0.6.5",
         "node-uuid": "1.4.x",
-        "bcrypt": "0.7.6",
+        "bcrypt": "0.7.7",
         "request": "2.x",
-        "sails-postgresql": "~0.9.3"
+        "sails-postgresql": "~0.9.4"
     },
     "devDependencies": {
         "mocha": "*"
