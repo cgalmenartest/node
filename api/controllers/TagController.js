@@ -2,15 +2,9 @@
  * TagController
  *
  * @module    :: Controller
- * @description :: Contains logic for handling requests.
+ * @description :: Manipulate tags (add / delete / assign to projects/tasks)
  */
 
 module.exports = {
-
-  /* e.g.
-  sayHello: function (req, res) {
-    res.send('hello world!');
-  }
-  */
 
 };
