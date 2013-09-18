@@ -52,10 +52,10 @@ define([
 				}, {
 				success: function (data) {
 					console.log(data);
-					_this.trigger("profile:saveDone", data);
+					_this.trigger("profile:save:success", data);
 				},
 				error: function (data) {
-					_this.trigger("profile:saveDone", data);
+					_this.trigger("profile:save:fail", data);
 					console.log(data);
 				}
 				});
@@ -69,10 +69,10 @@ define([
 				}, {
 				success: function (data) {
 					console.log(data);
-					_this.trigger("profile:removeAuthDone", data, id);
+					_this.trigger("profile:removeAuth:success", data, id);
 				},
 				error: function (data) {
-					_this.trigger("profile:removeAuthDone", data, id);
+					_this.trigger("profile:removeAuth:fail", data, id);
 					console.log(data);
 				} 
 				});

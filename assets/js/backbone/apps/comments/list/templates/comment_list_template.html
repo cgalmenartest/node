@@ -4,30 +4,36 @@
     <% } else { %>
     <% _.each(comments, function (comment) { %>
       <li class="comment-item clearfix" style="background: #eee; margin-top: 10px;">
+        <div class="comment-image">
+          <img src="/user/photo/<%- comment.userId %>" class="comment-image"/>
+        </div>
+
         <div class="comment-inner">
 
           <% if (comment.user.name) { %>
-            <span class="user-username">
-              <%- comment.user.name %>
+            <span class="user-username" data-userid="<%- comment.userId %>">
+              <a href="#" class="comment-user-link" data-userid="<%- comment.userId %>">
+                <%- comment.user.name %>
+              </a>
             </span>
           <% } else { %>
-            <span class="user-username">
-              <%- comment.user.username %>
+            <span class="user-username" data-userid="<%- comment.userId %>">
+              <a href="#" class="comment-user-link" data-userid="<%- comment.userId %>">
+                <%- comment.user.username %>
+              </a>
             </span>
           <% } %>
+          &nbsp;
+          <% if (comment.wikiLink) { %>
+            <span class="comment-content"><a href="<%- _.unescape(comment.wikiLink) %>"><%- comment.value %></a></span>  
+          <% } else { %>
 
-          <span class="comment-created-at"><%- comment.createdAt %></span>
-
-          <div class="user-image pull-right">
-            <img src="/user/photo/<%- comment.userId %>" />
-          </div>
-
-          <div class="comment-content"><%- comment.value %></div>
-
-          
-          <div class="reply" class="pull-right clearfix">
-            <a class="reply-to" data-comment-id="<%- comment.id %>">Reply</a>
-          </div>
+            <span class="comment-content"><%- comment.value %></span>
+          <% } %>
+          <br/>
+          <time class="timeago comment-created-at" datetime="<%- comment.createdAt %>"><%- comment.createdAt %></time>
+          -
+          <a href="#" class="reply-to" data-comment-id="<%- comment.id %>">Reply</a>
           
           <ul>  
           <% _.each(comment.children, function (childComment) { %>

@@ -5,11 +5,18 @@ define([
   'bootstrap',
   'tasks_collection',
   'task_collection_view',
-  'task_form_view'
-], function ($, _, Backbone, Bootstrap, TasksCollection, TaskCollectionView, TaskFormView) {
+  'task_form_view',
+  'modal_component'
+], function ($, _, Backbone, Bootstrap, TasksCollection, TaskCollectionView, TaskFormView, ModalComponent) {
   'use strict';
 
   Application.Controller.TaskList = Backbone.View.extend({
+
+    el: "#task-list-wrapper",
+
+    events: {
+      'click .add-task': 'add'
+    },
 
     initialize: function (settings) {
       this.options = _.extend(settings, this.defaults);
@@ -30,7 +37,7 @@ define([
       var self = this;
 
       this.collection.fetch({
-        url: '/task/findAllByProject/' + parseInt(this.options.projectId),
+        url: '/task/findAllByProjectId/' + parseInt(this.options.projectId),
         success: function (collection) {
           self.renderTaskCollectionView(collection)
         }
@@ -44,20 +51,32 @@ define([
       if (this.taskCollectionView) {
         this.taskCollectionView.cleanup();
       }
-
       this.taskCollectionView = new TaskCollectionView({
-        el: ".task-list-wrapper",
+        el: "#task-list-wrapper",
         onRender: true,
         collection: collection
       });
 
-        if (this.taskFormView) {
-          this.taskFormView.remove();
-        }
+    },
+
+    add: function (e) {
+      if (e.preventDefault()) e.preventDefault();
+
+      if (this.modalComponent) this.modalComponent;
+      this.modalComponent = new ModalComponent({
+        el: "#task-list-wrapper",
+        id: "addTask",
+        modalTitle: 'Add Task'
+      }).render();  
+
+      if (!_.isUndefined(this.modalComponent)) {
+        if (this.taskFormView) this.taskFormView;
         this.taskFormView = new TaskFormView({
-          el: "#task-form-wrapper",
+          el: ".modal-body",
           projectId: this.options.projectId
-        }).render();
+        }).render();  
+      }
+      
     },
 
     cleanup: function () {

@@ -10,8 +10,8 @@ var async = require('async');
 module.exports = {
 
   findAllByProjectId: function (req, res) {
-    Comment.findByProjectId(req.params.id, function(err, comments) {
-      if (err) return res.send(err, 500);
+    Comment.findByProjectId(req.params.id, function (err, comments) {
+      if (err) return res.send(400, { message: 'Error looking up comments.'});
       var newArray = {};
       var userIds = [];
       var users = {};
@@ -32,6 +32,7 @@ module.exports = {
       };
 
       async.each(userIds, getId, function (err) {
+        if (err) return res.send(400, { message: 'Error looking up events.'});
         // Find children and attach them to their parent
         for (var i = 0; i < comments.length; i++) {
           comments[i].user = { username: users[comments[i].userId].username, name: users[comments[i].userId].name }

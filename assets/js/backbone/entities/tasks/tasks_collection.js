@@ -10,7 +10,9 @@ define([
     model: TaskModel,
     
     parse: function (response) {
-      return response.tasks;
+      if (response) {
+        return response.tasks;
+      }
     },
 
     url: '/task', 

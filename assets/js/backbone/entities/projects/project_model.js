@@ -12,21 +12,30 @@ define([
       archived    : false
     },
 
+    // Initialize contains only event bindings and if/then response
+    // functions (class methods).
     initialize: function () {
-      this.initializeProjectFetchListener();
-      this.initializePhotoSaveListener();
-    },
-
-    urlRoot: '/project',
-
-    initializeProjectFetchListener: function () {
       var self = this;
 
       this.listenTo(this, "project:model:fetch", function (id) {
         self.get(id);
       });
+
+      this.listenTo(this, "project:model:update", function (data) {
+        self.update(data);
+      });
+
+      this.listenTo(this, "project:update:photoId", function (file) {
+        self.updatePhoto(file);
+      });
+
+      this.listenTo(this, "project:update:state", function (state) {
+        self.updateState(state);
+      });
     },
 
+    urlRoot: '/project',
+    
     get: function (id) {
       var self = this;
 
@@ -37,34 +46,43 @@ define([
       })
     },
 
-    initializePhotoSaveListener: function () {
+    update: function (data) {
       var self = this;
 
-      this.listenTo(this, "project:update:photoId", function(file) {
-        self.save({
-          coverId: file['id']
-          }, {
-          success: function (data) {
-            self.trigger("project:updated:photo:success", data);
-          }
-        });
+      this.save({ 
+        title: data['title'],
+        description: data['description']
+      }, { success: function (returnModel) {
+          self.trigger("project:save:success");
+        }
+      });
+    },
+
+    // TODO: Update this method and move it into the global update method.
+    updatePhoto: function (file) {
+      var self = this;
+
+      this.save({
+        coverId: file['id']
+      }, {
+        success: function (data) {
+          self.trigger("project:updated:photo:success", data);
+        }
+      });
+    },
+
+    updateState: function (state) {
+      var self = this;
+
+      this.save({
+        state: state
+      }, {
+        success: function(data) {
+          self.trigger("project:update:state:success", data);
+        }
       });
     }
 
-    // initializeModelSave: function () {
-    //   var _this = this;
-
-
-    // initializeProjectShow: function () {
-    //   this.on("project:show", function () {
-    //     this.fetch({
-    //       success: function (data) { 
-    //         app.events.trigger("projectShow:success", data);
-    //       }
-    //     });
-    //   })
-    // }
-    
   });
 
   return ProjectModel;

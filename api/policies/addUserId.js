@@ -1,7 +1,7 @@
 /**
 * Add userId into params for knowing who created them.
 */
-//var _ = require('underscore');
+var _ = require('underscore');
 
 module.exports = function addUserId (req, res, next) {
   if (req.user) {

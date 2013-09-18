@@ -1,14 +1,19 @@
-/*---------------------
-    :: Tag
-    -> model
----------------------*/
+/**
+ * Tag
+ *
+ * @module      :: Model
+ * @description :: Mapping of tags to projects, tasks, and other entities
+ *
+ */
+
 module.exports = {
 
   attributes: {
-    // type of the tag (such as 'qual' for qualification)
-    type: 'STRING',
-    // name of the tag
-    name: 'STRING'
+
+    projectId: 'INTEGER',
+    taskId: 'INTEGER',
+    tagId: 'INTEGER'
+
   }
 
 };

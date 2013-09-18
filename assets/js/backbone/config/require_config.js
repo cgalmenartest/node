@@ -8,6 +8,7 @@ require.config({
     // ----------
     'text'                      : '../../vendor/text',
     'jquery'                    : '../../vendor/jquery',
+    'jquery_timeago'            : '../../vendor/jquery.timeago',
     'dropzone'                  : '../../vendor/dropzone-amd-module',
     'underscore'                : '../../vendor/underscore',
     'backbone'                  : '../../vendor/backbone',
@@ -17,6 +18,7 @@ require.config({
     //= Mixins
     // ---------
     'utilities'                 : '../../backbone/mixins/utilities',
+    'popovers'                  : '../../backbone/mixins/popovers',
 
     // ---------
     //= Core App
@@ -57,6 +59,8 @@ require.config({
     'projects_collection'       : '../entities/projects/projects_collection',
     'project_form_view'         : '../apps/project/new/views/project_new_form_view',
     'project_form_template'     : '../apps/project/new/templates/project_new_form_template.html',
+    'project_edit_form_template': '../apps/project/edit/templates/project_edit_form_template.html',
+    'project_edit_form_view'    : '../apps/project/edit/views/project_edit_form_view',
 
 
     // ----------
@@ -93,7 +97,9 @@ require.config({
     // ----------
     //= Components
     // ----------
-    'modal_component'           : '../components/modal'
+    'modal_component'           : '../components/modal',
+    'modal_template'            : '../components/modal_template.html',
+    'autocomplete'              : '../mixins/autocomplete'
   }
 
 });

@@ -1,5 +1,10 @@
-<form id="comment-form" action="">
-   <input type="text" class="comment-content form-control input-lg" placeholder="Comment">
-  <input type="submit" class="add-comment-button btn btn-primary">
-  <div class="clearfix"></div>
+
+<form id="comment-form" action="" class="form-inline" role="form">
+  <div class="input-group">
+    <div class="comment comment-content form-control input-sm" contentEditable="true"></div>
+    <span class="input-group-btn">
+      <input class="btn btn-c3 btn-sm" type="submit" value="Add">
+    </span>
+  </div>
+  <div class="search-result-wrapper"></div>
 </form>

@@ -1,48 +1,328 @@
-<div class="page-header">
-  <h1 class="project-title"><%= data.title %></h1>
+<% if (data.isOwner) { %>
+<div class="row">
+  <div class="col-lg-12">
+    <div class="well well-sm" id="project-admin-bar">
+      <div class="project-admin-title">
+        Project Administration Tools
+      </div>
+      <div class="row">
+        <div class="col-lg-9 project-admin nopadding">
+            <button id="editProject" class="btn btn-c4">Edit</button>
+            <span id="fileupload" class="btn btn-c4"><i class="icon-camera icon-large" title="Change Cover Photo"></i></span>
+        </div>
+        <div class="col-lg-2 nopadding">
+        <form class="form-inline" role="form">
+          <div class="form-group project-admin-select">
+            <select class="form-control" id="project-state">
+              <option value="draft" <% if (data.state == 'draft') { %>selected<% } %>>Draft</option>
+              <option value="public" <% if (data.state == 'public') { %>selected<% } %>>Public</option>
+              <option value="closed" <% if (data.state == 'closed') { %>selected<% } %>>Closed</option>
+            </select>
+          </div>
+        </form>
+        </div>
+        <div class="col-lg-1 project-admin-state">
+          <button id="project-admin-state" class="btn btn-link" data-loading-text="<i class='icon-spinner icon-spin'></i>">
+            <span class="glyphicon glyphicon-ok green" ></span>
+          </button>
+        </div>
+      </div>
+      <div id="file-upload-progress-container" style="display: none;" class="progress progress-striped active">
+        <div id="file-upload-progress" class="progress-bar" style="width: 0"></div>
+      </div>
+    </div>
+  </div>
 </div>
+<% } else { %><div id="fileupload" style="display: none;"></div><% } %>
 
 <div class="row">
+  <div class="col-lg-4 project-sidebar">
+    <!-- LEFT SIDEBAR -->
+    <div class="row like-content">
+      <div class="col-lg-12">
+        <a href="#" id="like-button">
+          <i id="like-button-icon" class="icon icon-star-empty icon-large gold"></i>
+        </a>
+        <span class="like-number" id="like-number"><%- data.likeCount %></span>
+        <span class="like-plural" id="like-text" data-plural="likes" data-singular="like">likes</span>
 
+        <div class="pull-right like-buttons">
+          <button class="btn btn-c4"><i class="icon icon-envelope-alt"></i> Email</button>
+          <button class="btn btn-c3"><i class="icon icon-twitter"></i> Tweet</button>
+        </div>
+      </div>
+    </div>
 
+    <div class="project-header-wrapper">
+      <% if (data.coverId) { %>
+      <div id="project-header" style="background-image:url('/file/get/<%= data.coverId %>');">
+      <% } else { %>
+      <div id="project-header">
+      <% } %>
+      </div>
+    </div>
 
-  <% if (data.isOwner) { %>
-  <div id="fileupload" class="btn btn-primary"><i class="icon-camera icon-large" title="Change Cover Photo"></i></div>
-  <div id="file-upload-progress-container" style="display: none;" class="progress progress-striped active">
-    <div id="file-upload-progress" class="progress-bar" style="width: 0"></div>
+    <div class="skills">
+      <h4><i class="icon-atom"></i> Skills</h4>
+      <ul class="tags">
+        <li>community building</li>
+        <li>node.js</li>
+        <li>human-centered design</li>
+        <li>web design</li>
+        <li>databases</li>
+      </ul>
+    </div>
+
+    <div class="topics">
+      <h4><i class="icon-briefcase"></i> Topics</h4>
+      <ul class="tags">
+        <li>collaboration</li>
+        <li>innovation</li>
+        <li>networking</li>
+        <li>knowledge sharing</li>
+        <li>crowdsourcing</li>
+      </ul>
+    </div>
+
+    <div class="agencies">
+      <h4><i class="icon-library"></i> Agencies</h4>
+      <ul class="tags">
+        <li>Office of Science and Technology Policy</li>
+        <li>Department of State</li>
+        <li>General Services Administration</li>
+      </ul>
+    </div>
+
+    <div class="locations">
+      <h4><span class="glyphicon glyphicon-map-marker"></span> Location</h4>
+      <ul class="tags">
+        <li>Washington, DC</li>
+        <li>San Francisco, CA</li>
+      </ul>
+    </div>
+
+    <!-- BEGIN EVENTS -->
+    <div class="list-box">
+
+      <h2 class="sidebar-c1 sidebar-c1-highlight">
+        Next Event
+        <a href="/event/ical/<%= data.id %>" class="btn btn-c1 btn-xs list-add"><span class="glyphicon glyphicon-calendar"></span> iCal</a>
+        <button class="btn btn-c0 btn-xs list-add" data-toggle="modal">Add Event</button>
+      </h2>
+
+      <div class="event first sidebar-c1">
+        <div class="event-title sidebar-c1-highlight">Presidential Innovation Fellows Demo Day</div>
+        <div class="event-description">
+          The next demo day will be a chance to see Innovation Toolkit in action.  Please attend to ask questions, provide feedback, and help make Innovation Toolkit better.  Below are the ...
+          <a href="#">MORE</a>
+        </div>
+        <div class="event-item sidebar-c1-highlight">
+          <div class="event-icon">
+            <i class="icon-calendar"></i>
+          </div>
+          <div class="event-wrapper">
+            <div class="event-day"> October 10, 2013</div>
+            <div class="event-time">8:00pm - 10:00pm</div>
+          </div>
+        </div>
+
+        <div class="event-item sidebar-c1-highlight">
+          <div class="event-icon">
+            <span class="glyphicon glyphicon-map-marker"></span>
+          </div>
+          <div class="event-wrapper">
+            <div class="event-location">
+              General Services Administration
+            </div>
+            <div class="event-location">
+              1800 F Street NW
+            </div>
+            <div class="event-location">
+              Washington, DC
+            </div>
+          </div>
+        </div>
+
+        <div class="event-item sidebar-c1-highlight">
+          <div class="event-icon">
+            <i class="icon-ok-sign"></i>
+          </div>
+          <div class="event-wrapper">
+            <div class="event-rsvp">
+              <button class="btn btn-c1 btn-sm">RSVP</button>
+            </div>
+          </div>
+          <div class="event-people pull-right"><i class="icon-male"></i> 43 people going</div>
+        </div>
+        <div class="event-people-bar">
+          <div class="project-people-div" data-userid="1">
+            <img src="/user/photo/1" class="project-people"/>
+          </div>
+          <div class="project-people-div" data-userid="2">
+            <img src="/user/photo/2" class="project-people"/>
+          </div>
+          <div class="project-people-div" data-userid="3">
+            <img src="/user/photo/3" class="project-people"/>
+          </div>
+          <div class="project-people-div" data-userid="4">
+            <img src="/user/photo/4" class="project-people"/>
+          </div>
+          <div class="project-people-div" data-userid="5">
+            <img src="/user/photo/5" class="project-people"/>
+          </div>
+          <div class="project-people-div" data-userid="6">
+            <img src="/user/photo/6" class="project-people"/>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="list-box">
+      <h2 class="sidebar-c1-light">Upcoming Events</h2>
+      <div class="event sidebar-c1-light sidebar-c1-bar">
+        <div class="event-title">
+          Project Kickoff Meeting
+        </div>
+
+        <div class="event-description">
+          Please join us for a project kickoff meeting, where we’ll discuss the primary objectives, project milestones, and develop an ... <a href="#">MORE</a>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="event-item">
+              <div class="event-icon">
+                <i class="icon-calendar"></i>
+              </div>
+              <div class="event-wrapper">
+                October 24, 2013<br/>
+                10:00am - 2:00pm
+              </div>
+            </div>
+
+          </div>
+          <div class="col-lg-6">
+            <div class="event-item">
+              <div class="event-icon">
+                <span class="glyphicon glyphicon-map-marker"></span>
+              </div>
+              <div class="event-wrapper">
+                1800 F Street NW<br/>
+                Washington, DC
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="event-item">
+              <div class="event-icon">
+                <i class="icon-male"></i>
+              </div>
+              <div class="event-wrapper event-people">
+                18 people going
+              </div>
+            </div>
+
+          </div>
+          <div class="col-lg-6">
+            <div class="event-item">
+              <div class="event-icon">
+                <i class="icon-ok-sign"></i>
+              </div>
+              <div class="event-wrapper">
+                <button class="btn btn-c1 btn-xs">RSVP</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <!-- END EVENTS -->
+
+    <!-- BEGIN TASKS -->
+    <div class="list-box" id="task-list-wrapper">
+    </div>
+
   </div>
-  <% } else { %><div id="fileupload" style="display: none;"></div><% } %>
-  </div>
-</div>
-<div class="row">
-  <div class="col-12 nopadding">
-    <div class="project-people-bar">
+
+  <div class="col-lg-8">
+    <!-- RIGHT MAIN BAR -->
+
+    <h1><%= data.title %></h1>
+
+    <div class="project-description">
+      <%= data.description %>
+    </div>
+
+    <h4>Project Status</h4>
+    <div class="project-status c2">
+      <%= data.status %>
+      Building out the project marketplace and testing it with federal employees.
+    </div>
+    <img src="/images/mockups/status-mockup.gif" style="margin-bottom: 20px"/>
+
+    <h4>Project Participants</h4>
+    <div class="project-contributors">
       <% if (data.owners) { %>
         <% for (var i = 0; i < data.owners.length; i++) { %>
-        <img src="/user/photo/<%= data.owners[i].userId %>" class="project-people"/>
+        <div class="project-people-div" data-userid="<%= data.owners[i].userId %>">
+          <img src="/user/photo/<%= data.owners[i].userId %>" class="project-people"/>
+        </div>
         <% } %>
       <% } %>
     </div>
-  </div>
-</div>
-<div class="row">
-  <div class="col-12">
-    <div class="project-description">
-      <div><%= data.description %></div>
+
+    <h4>Discussion
+      <button class="btn btn-c3 btn-sm file-add">Add Topic</button>
+    </h4>
+    <div class="project-comments">
+      <div class="comment-list-wrapper"></div>
+      <div class="comment-form-wrapper"></div>
     </div>
 
-    <hr />
-
-    <div class="task-list-wrapper"></div>
-
-    <div class="event-list-wrapper">
-      <h3>Events</h3>
+    <h4>Attachments
+      <button class="btn btn-c3 btn-sm file-add">Add File</button>
+    </h4>
+    <div class="file-list">
+      <table class="table table-hover table-condensed">
+        <tbody>
+          <tr>
+            <td>
+              <span class="file-tag c3-bg white">wikipedia</span>
+            </td>
+            <td>
+              <a href="http://en.wikipedia.org/wiki/Presidential_Innovation_Fellows">Presidential Innovation Fellows</a>
+            </td>
+            <td class="file-uploader">
+              added by <a href="#">Joe Polastre</a>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span class="file-tag c1-bg white">project</span>
+            </td>
+            <td>
+              <a href="#">GSA Open Opportunities</a>
+            </td>
+            <td class="file-uploader">
+              added by <a href="#">Dain Miller</a>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span class="file-tag c0-bg white">file</span>
+            </td>
+            <td>
+              <a href="#">innovation_styleguide.v1.1.ai</a>
+            </td>
+            <td class="file-uploader">
+              added by <a href="#">Joe Polastre</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-
-    <hr />
-
-    <div class="comment-form-wrapper"></div>
-
-    <div class="comment-list-wrapper"></div>
   </div>
 </div>

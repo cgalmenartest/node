@@ -19,7 +19,8 @@ module.exports = {
     // user id of the person contributing the comment
     userId: 'INTEGER',
     // content of the comment
-    value: 'STRING'
+    value: 'STRING',
+    wikiLink: 'STRING'
 
   }
 

@@ -22,14 +22,14 @@ define([
 
     post: function (e) {
       if (e.preventDefault()) e.preventDefault();
+      var data;
 
-      var title, description;
+      data = {
+        title       : $(".project-title", this.el).val(),
+        description : $(".project-description", this.el).val()
+      }
 
-      // Serialize form.
-      title       = $(".project-name").val();
-      description = $(".project-description").val();
-
-      this.collection.trigger("project:save", title, description);
+      this.collection.trigger("project:save", data);
     },
 
     cleanup: function () {
