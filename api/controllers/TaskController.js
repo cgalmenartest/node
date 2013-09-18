@@ -1,10 +1,13 @@
-/*---------------------
-	:: Task 
-	-> controller
----------------------*/
-var TaskController = {
+/**
+ * TaskController
+ *
+ * @module    :: Controller
+ * @description :: Interaction with tasks
+ */
 
-	findAllByProject: function (req, res) {
+module.exports = {
+
+	findAllByProjectId: function (req, res) {
 		Task.findByProjectId(req.params.id, function(err, tasks) {
 			if (err) return res.send(err, 500);
 			res.send({ tasks: tasks });
@@ -12,4 +15,3 @@ var TaskController = {
 	}
 
 };
-module.exports = TaskController;

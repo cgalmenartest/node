@@ -6,6 +6,8 @@ var       passport = require('passport')
    , MyUSAStrategy = require('passport-myusa').Strategy
 , LinkedInStrategy = require('passport-linkedin').Strategy;
 
+var authSettings   = require('./settings/auth.js');
+
 // Passport session setup.
 // To support persistent login sessions, Passport needs to be able to
 // serialize users into and deserialize users out of the session. Typically,
@@ -195,8 +197,8 @@ passport.use('oauth2', new OAuth2Strategy({
 //   profile), and invoke a callback with a user object.
 passport.use('myusa', new MyUSAStrategy({
     passReqToCallback: true,
-    clientID: process.env.MYUSA_CLIENT_ID  || 'CLIENT_ID',
-    clientSecret: process.env.MYUSA_CLIENT_SECRET || 'CLIENT_SECRET',
+    clientID: authSettings.auth.myusa.clientId,
+    clientSecret: authSettings.auth.myusa.clientSecret,
     callbackURL: 'http://localhost/auth/myusa/callback',
     // Initially use staging.my.usa.gov until app approved for production
     authorizationURL: 'https://staging.my.usa.gov/oauth/authorize',
@@ -241,3 +243,16 @@ passport.use('linkedin', new LinkedInStrategy({
           );
   }
 ));
+
+module.exports = {
+ // Register Express middleware extensions
+  express: {
+    customMiddleware: function(app)
+    {
+      // Passport for authentication
+      // See http://www.passportjs.org
+      app.use(passport.initialize());
+      app.use(passport.session());
+    }
+  }
+}

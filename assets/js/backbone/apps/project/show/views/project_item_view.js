@@ -12,29 +12,14 @@ define([
     el: $("#container"),
 
     render: function () {
-      var data, compiledTemplate;
-      var data = {
-        data: this.model.toJSON()
-      }
+      var compiledTemplate,
+          data = {
+            data: this.model.toJSON()
+          };
+
       compiledTemplate = _.template(ProjectShowTemplate, data);
       this.$el.html(compiledTemplate);
-
-      // if (!this.tasks) {
-      //   this.tasks = new TaskCollection({ id: id });
-      //   this.tasks.fetch();
-      // } else { 
-      //   this.tasks.fetch();
-      // }
-
-      // if (!this.comments) {
-      //   this.comments = new CommentsCollection({ id: id })
-      // }
-      // this.comments.fetch();
-
-      // compiledTemplate = _.template(projectShowTemplate, data);
-      // this.$el.html(compiledTemplate).hide().fadeIn();
-
-      // new CommentFormView().render();
+      rendering.trigger("project:show:rendered");
 
       this.initializeFileUpload();
       this.updatePhoto();
@@ -45,7 +30,6 @@ define([
     updatePhoto: function () {
       this.listenTo(this.model, "project:updated:photo:success", function (data) {
         var model = data.toJSON(), url;
-
         if (model.coverId) {
           url = '/file/get/' + model.coverId;
           $("#project-header").css('background-image', "url(" + url + ")");

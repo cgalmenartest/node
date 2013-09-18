@@ -1,23 +1,35 @@
-<div id="task-list-page">
-  
-  <h3 class="task-title">Tasks
-    <a href="#addTask" class="add-task" data-toggle="modal">Add Task</a>
-  </h3>
+<h2 class="sidebar-c3 sidebar-c3-highlight">
+  Available Opportunities
+  <a href="#addTask" class="btn btn-c0 btn-xs list-add add-task" data-toggle="modal">Add Opportunity</a>
+</h2>
 
-  <div id="task-list">
-    <ul>
-      <% _.each(tasks, function(task) { %>
-        <li class="well">
-          <strong><%- task.title %></strong>
-          <br>
-          <%- task.description %>
-        </li>
-      <% }) %>
+<% _.each(tasks, function(task) { %>
+<div class="task sidebar-c3-light sidebar-c3-bar">
+  <div class="task-title">
+    <%- task.title %>
+  </div>
+  <div class="task-description">
+    <%- task.description %>
+  </div>
+  <div class="task-heading">
+    Tags
+  </div>
+  <div class="skills">
+    <ul class="tags">
+      <li>graphic design</li>
+      <li>web design</li>
+      <li>branding & identity</li>
     </ul>
   </div>
-</div> <!-- /task-list-page -->
-
-<div id="task-form-wrapper">
+  <div class="row task-view">
+    <div class="col-lg-12">
+      <div class="pull-right">
+        <button class="btn btn-c3 btn-sm">View Opportunity</button>
+      </div>
+    </div>
+  </div>
 </div>
+<% }) %>
 
-     
+<div class="list-form-wrapper" id="task-form-wrapper">
+</div>

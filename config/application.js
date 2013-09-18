@@ -1,7 +1,3 @@
-var passport = require('passport');
-
-require('./auth.js');
-
 module.exports = {
 
   // Name of the application (used as default <title>)
@@ -30,16 +26,5 @@ module.exports = {
   log: {
     level: 'info'
   },
-
-  // Register Express middleware extensions
-  express: {
-    customMiddleware: function(app)
-    {
-      // Passport for authentication
-      // See http://www.passportjs.org
-      app.use(passport.initialize());
-      app.use(passport.session());
-    }
-  }
 
 };

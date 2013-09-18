@@ -8,6 +8,25 @@ var async = require('async');
 var _ = require('underscore');
 
 module.exports = {
+
+  info: function(req, res) {
+    if (req.route.params.id) {
+      User.findOneById(req.route.params.id, function (err, user) {
+        if (err) { return res.send(400, {message:'Error looking up user'}); }
+        if (!user) { return res.send(404, { message: 'User not found.'}); }
+        sails.log.debug('User Get:', user);
+        var cleanUser = {
+          id: user.id,
+          name: user.name,
+          username: user.username,
+          photoId: user.photoId,
+          createdAt: user.createdAt
+        }
+        return res.send(cleanUser);
+      });
+    }
+  },
+
   index: function(req, res) {
     // If the user is not logged in, return null object
     if (!req.user) {
@@ -15,14 +34,6 @@ module.exports = {
     }
     // Get information about the currently logged in user
     if (req.route.method === 'get') {
-
-      if (req.route.params.id) {
-        User.findOneById(req.route.params.id, function (err, user) {
-          if (err) { return res.send(400, {message:'Error looking up user'}); }
-          sails.log.debug('User Get:', user);
-          return res.send(user);
-        });
-      }
       // Look up which providers the user has authorized
       UserAuth.findByUserId(req.user[0].id, function (err, auths) {
         if (err) { return res.send(400, {message:'Error looking up user authorizations'}); }
@@ -82,7 +93,7 @@ module.exports = {
   photo: function(req, res) {
     if (req.route.params.id) {
       User.findOneById(req.route.params.id, function (err, user) {
-        if (err || !user) { return res.redirect('/assets/images/default-user-icon-profile.png'); }
+        if (err || !user) { return res.redirect('/images/default-user-icon-profile.png'); }
         if (user.photoId) {
           return res.redirect('/file/get/' + user.photoId);
         } else if (user.photoUrl) {

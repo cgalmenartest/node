@@ -2,9 +2,9 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'comment_model',
+  'comment_collection',
   'text!comment_form_template'
-], function ($, _, Backbone, CommentModel, CommentFormTemplate) {
+], function ($, _, Backbone, CommentCollection, CommentFormTemplate) {
   'use strict'; 
 
   var CommentFormView = Backbone.View.extend({
@@ -33,11 +33,13 @@ define([
     post: function (e) {
       if (e.preventDefault()) e.preventDefault();
 
-      if ($(e.currentTarget).children(".comment-content").val() !== "") {
-        this.comment = $(e.currentTarget).children(".comment-content").val();
+      if ($(e.currentTarget).find(".comment-content").val() !== "") {
+        this.comment = $(e.currentTarget).find(".comment-content").text();
       } else {
-        this.comment = $(".comment-content").val();
+        this.comment = $(".comment-content:first-child").text();
       }
+
+      if ($(".comment-content:first-child").children("a").attr("href") !== undefined) this.WikiLink = _.escape($(".comment-content:first-child").children("a").attr("href"))
 
       var projectId   = this.options.projectId,
           parentId;
@@ -46,8 +48,14 @@ define([
         parentId = parseInt(this.options.parentId);
       }
 
-      this.model = new CommentModel();
-      this.model.trigger("comment:save", parentId, this.comment, projectId);
+      var data = {
+        projectId: projectId,
+        parentId: parentId,
+        comment: this.comment,
+        wikiLink: this.WikiLink
+      }
+
+      this.collection.trigger("comment:save", data);
     },
 
     cleanup: function () {

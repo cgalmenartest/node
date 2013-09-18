@@ -32,6 +32,7 @@ module.exports.policies = {
     '*': false,
     'index': true,
     'photo': true,
+    'info': ['authenticated', 'requireUserId', 'addUserId', 'requireId'],
     'find': 'admin',
     'findAll': 'admin'
   },
@@ -45,6 +46,30 @@ module.exports.policies = {
     'testupload': true,
     // everything else is protected
     '*': 'protectedFile'
+  },
+
+  ProjectController : {
+    '*': ['authenticated', 'addUserId', 'project']
+  },
+
+  LikeController : {
+    '*': ['authenticated', 'addUserId', 'project'],
+    'count': ['authenticated', 'requireId', 'project'],
+    'like': ['authenticated', 'requireUserId', 'addUserId', 'requireId'],
+    'unlike': ['authenticated', 'requireUserId', 'addUserId', 'requireId']
+  },
+
+  TaskController : {
+    'findAllByProjectId': ['authenticated', 'addUserId', 'project']
+  },
+
+  EventController : {
+    'create': ['authenticated', 'addUserId', 'eventUuid'],
+    'findAllByProjectId': ['authenticated', 'addUserId', 'requireId', 'project'],
+    'attend': ['authenticated', 'requireUserId', 'addUserId', 'requireId'],
+    'cancel': ['authenticated', 'requireUserId', 'addUserId', 'requireId'],
+    'rsvp': ['authenticated', 'requireUserId', 'addUserId'],
+    'ical': ['authenticated', 'addUserId', 'project']
   }
 
   /*

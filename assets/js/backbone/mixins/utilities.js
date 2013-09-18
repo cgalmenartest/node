@@ -12,16 +12,28 @@ var getCurrentModelFromId = function (collection, modelId) {
 	}
 }
 
-var getCurrentProjectModelFromFormAttributes = function (collection, title) {
-	var i = 0,
-			title = $.trim(title),
+var getCurrentModelFromFormAttributes = function (collection, attr) {
+	var	j,
+			i = 0,
+			attr = $.trim(attr),
 			models = collection.models;
 
+			// Loop through all the models
 			for ( ; i < models.length; i += 1) {
-				if (models[i].attributes.title === title) {
-					return models[i];
-				} else {
-					continue;
+
+				// Loop through all the attributes within the model
+				for (j in models[i].attributes) {
+
+					// If we find the model.attr[value] on the current models
+					// attribute that we are looping over, then stop and return that
+					// model back out to the front-end.
+					if (models[i].attributes[j] === attr) {
+						return models[i]
+					} else {
+						// Otherwise continue on.
+						continue;
+					}
 				}
+
 			}
 }

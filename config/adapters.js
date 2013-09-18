@@ -5,7 +5,7 @@ module.exports.adapters = {
 
   // If you leave the adapter config unspecified
   // in a model definition, 'default' will be used.
-  'default': 'postgres',
+  'default': 'postgresql',
 
   // In-memory adapter for DEVELOPMENT ONLY
   // (data is NOT preserved when the server shuts down)
@@ -38,13 +38,10 @@ module.exports.adapters = {
   // PostgreSQL is a powerful, BSD relational database.
   // The world's most advanced open source database.
   // http://www.postgresql.org/
-  postgres: {
+  postgresql: {
     module      : 'sails-postgresql',
     softDelete  : true,
     host        : 'localhost',
-    user        : 'midas',
-    password    : 'midas',
-    database    : 'midas'
   }
 
 };
