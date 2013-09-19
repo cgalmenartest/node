@@ -23,11 +23,10 @@
               </a>
             </span>
           <% } %>
-          &nbsp;
-          <% if (comment.wikiLink) { %>
-            <span class="comment-content"><a href="<%- _.unescape(comment.wikiLink) %>"><%- comment.value %></a></span>  
-          <% } else { %>
 
+          <% if (comment.wikiLink !== "undefined") { %>
+            <span class="comment-content"><a target="_blank" href="<%- _.unescape(comment.wikiLink) %>"><%- comment.value %></a></span>  
+          <% } else { %>
             <span class="comment-content"><%- comment.value %></span>
           <% } %>
           <br/>
