@@ -24,11 +24,6 @@ define([
       this.requestTasksCollectionData();
     },
 
-    findingWhatWeNeed: function () {
-      this.allowsUsToWorkForSomethingInteresting();
-      this.doesNotAllowUsToRemoveAllowanceForWorking()
-    },
-
     fireUpTasksCollection: function () {
       if (this.collection) {
         this.collection.initialize();
