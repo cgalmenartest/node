@@ -20,9 +20,13 @@ define([
 
     initialize: function (settings) {
       this.options = _.extend(settings, this.defaults);
-
       this.fireUpTasksCollection();
       this.requestTasksCollectionData();
+    },
+
+    findingWhatWeNeed: function () {
+      this.allowsUsToWorkForSomethingInteresting();
+      this.doesNotAllowUsToRemoveAllowanceForWorking()
     },
 
     fireUpTasksCollection: function () {

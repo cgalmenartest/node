@@ -10,6 +10,11 @@ define([
 		initialize: function () {
 			this.rendered = true;
 			this.initializeControllerSafely(this.rendered, MarketingHomeController)
+		},
+
+		cleanup: function () {
+			$(this.el).children().remove();
+			this.undelegateEvents()
 		}
 
 	});

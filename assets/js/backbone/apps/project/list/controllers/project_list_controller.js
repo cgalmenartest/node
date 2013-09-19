@@ -60,13 +60,14 @@ define([
 		},
 
 		renderProjectCollectionView: function (collection) {
-			this.projectCollectionView ?	
-				this.projectCollectionView.render() :
-				this.projectCollectionView = new ProjectsCollectionView({
-					el: "#container",
-					onRender: true,
-					collection: collection
-				}).render();
+			if (this.projectCollectionView)
+				$("#container").children().remove();
+
+			this.projectCollectionView = new ProjectsCollectionView({
+				el: "#container",
+				onRender: true,
+				collection: collection
+			}).render();
 		},
 
 		// -----------------------

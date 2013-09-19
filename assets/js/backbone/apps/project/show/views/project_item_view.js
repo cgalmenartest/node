@@ -13,12 +13,11 @@ define([
 
     render: function () {
       var compiledTemplate,
-          data = {
-            data: this.model.toJSON()
-          };
+          data = { data: this.model.toJSON() };
 
       compiledTemplate = _.template(ProjectShowTemplate, data);
       this.$el.html(compiledTemplate);
+
       rendering.trigger("project:show:rendered");
 
       this.initializeFileUpload();
@@ -71,7 +70,8 @@ define([
 
       
     cleanup: function () {
-      $(this).remove();
+      $(this.el).children().remove();
+      this.undelegateEvents()
     },
   });
 
