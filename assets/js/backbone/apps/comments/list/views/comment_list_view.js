@@ -11,8 +11,23 @@ define([
     template: _.template(CommentListTemplate),
 
     render: function () {
-      var compiledTemplate = this.template(this.collection.toJSON()[0]);
+      var i,
+          value,
+          wikiLink,
+          comments    = this.collection.toJSON()[0].comments
+          collection  = this.collection.toJSON()[0]
+
+      for (i in comments) {
+        value     = comments[i].value.split("||")[0]
+        wikiLink  = comments[i].value.split("||")[1]
+
+        comments[i]['value'] = value
+        comments[i]['wikiLink'] = wikiLink
+      }
+
+      var compiledTemplate = this.template(collection);
       this.$el.html(compiledTemplate);
+
       $("time.timeago").timeago();
     }
 

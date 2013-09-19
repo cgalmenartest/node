@@ -16,7 +16,6 @@ define([
       "click .reply-to": "reply",
       "mouseenter .comment-user-link" : popoverPeopleOn,
       "mouseleave .comment-user-link" : popoverPeopleOff
-      // "click .comment-user-link" : popoverPeopleOn
     },
 
     initialize: function () {
@@ -27,9 +26,7 @@ define([
     initializeCommentCollection: function () {
       var self = this;
 
-
         this.commentCollection = new CommentCollection();
-
 
         this.commentCollection.fetch({
           url: '/comment/findAllByProjectId/' + this.options.projectId,
@@ -51,9 +48,8 @@ define([
       }).render();
 
       popoverPeopleInit(".comment-user-link");
-      
       var self = this;
-      rendering.trigger("renderForm");
+      rendering.trigger("renderForm")
       rendering.once("renderForm", function () {
         if (this.commentForm) this.commentForm.cleanup();
         this.commentForm = new CommentFormView({ projectId: self.options.projectId, collection: collection });  

@@ -39,7 +39,8 @@ define([
         this.comment = $(".comment-content:first-child").text();
       }
 
-      if ($(".comment-content:first-child").children("a").attr("href") !== undefined) this.WikiLink = _.escape($(".comment-content:first-child").children("a").attr("href"))
+      if ($(".comment-content:first-child").children("a").attr("href") !== undefined)
+        this.wikiLink = _.escape($(".comment-content:first-child").children("a").attr("href"))
 
       var projectId   = this.options.projectId,
           parentId;
@@ -51,8 +52,7 @@ define([
       var data = {
         projectId: projectId,
         parentId: parentId,
-        comment: this.comment,
-        wikiLink: this.WikiLink
+        comment: this.comment + "||" + this.wikiLink
       }
 
       this.collection.trigger("comment:save", data);
