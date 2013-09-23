@@ -25,6 +25,9 @@ define([
 		events: {
 			"click .edit-project"   : "edit",
 			"click #like-button"    : "like",
+			"click #tag-create"     : "tagCreate",
+			"click #tag-save"       : "tagSave",
+			"click .tag-delete"     : "tagDelete",
 			"change #project-state" : "updateState",
 			"mouseenter .project-people-div" : popoverPeopleOn,
 			"mouseleave .project-people-div" : popoverPeopleOff,
@@ -48,8 +51,6 @@ define([
 				self.initializeLikes();
 				self.initializeUI();
 			});
-
-
 
 		},
 
@@ -188,6 +189,25 @@ define([
 					// response should be null (empty)
 				});
 			}
+		},
+
+		tagCreate: function (e) {
+			// Pop up dialog box to create tag,
+			// then put tag into the select box
+			console.log(e);
+		},
+
+		tagSave: function (e) {
+			// Cycle through tags in select box
+			// and call create on each one, then
+			// render
+			console.log(e);
+		},
+
+		tagDelete: function (e) {
+			// Get the data-id of the currentTarget
+			// and then call HTTP DELETE on that tag id
+			console.log(e);
 		},
 
 		delete: function (e) {

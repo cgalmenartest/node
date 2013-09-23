@@ -1,10 +1,11 @@
 define([
   'jquery',
   'dropzone',
+  'jquery_select2',
   'underscore',
   'backbone',
   'text!project_show_template'
-], function ($, dropzone, _, Backbone, ProjectShowTemplate) {
+], function ($, dropzone, select2, _, Backbone, ProjectShowTemplate) {
   'use strict';
 
   var ProjectShowView = Backbone.View.extend({
@@ -21,6 +22,7 @@ define([
       rendering.trigger("project:show:rendered");
 
       this.initializeFileUpload();
+      this.initializeTags();
       this.updatePhoto();
 
       return this;
@@ -34,6 +36,23 @@ define([
           $("#project-header").css('background-image', "url(" + url + ")");
         }
         $('#file-upload-progress-container').hide();
+      });
+    },
+
+    initializeTags: function() {
+      $("#input-tags").select2({
+        placeholder: 'Add tags',
+        multiple: true,
+        ajax: {
+          url: '/ac/tag',
+          dataType: 'json',
+          data: function (term) {
+            return { q: term };
+          },
+          results: function (data) {
+            return { results: data }
+          }
+        }
       });
     },
 

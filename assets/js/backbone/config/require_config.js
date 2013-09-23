@@ -9,6 +9,7 @@ require.config({
     'text'                      : '../../vendor/text',
     'jquery'                    : '../../vendor/jquery',
     'jquery_timeago'            : '../../vendor/jquery.timeago',
+    'jquery_select2'            : '../../vendor/select2/select2',
     'dropzone'                  : '../../vendor/dropzone-amd-module',
     'underscore'                : '../../vendor/underscore',
     'backbone'                  : '../../vendor/backbone',
@@ -100,6 +101,14 @@ require.config({
     'modal_component'           : '../components/modal',
     'modal_template'            : '../components/modal_template.html',
     'autocomplete'              : '../mixins/autocomplete'
+  },
+
+  shim: {
+    // Select2 is not an AMD module
+    'jquery_select2': {
+      deps: ['jquery'],
+      exports: 'select2'
+    }
   }
 
 });
