@@ -26,6 +26,15 @@
         }
       ]
     },
+    'tag': {
+      type: 'model',
+      target: 'TagEntity',
+      fields: [
+        {
+          name: 'name'
+        }
+      ]
+    },
     'wikipedia': {
       type: 'mediawiki',
       target: 'wikipedia',
@@ -39,8 +48,8 @@
   // attachments is for the attachment sidebar
   autocomplete: {
     'search': ['project'],
-    'test': ['project'],
     'inline': ['profile', 'project', 'wikipedia'],
-    'attachments': ['profile', 'project', 'wikipedia']
+    'tag': ['tag'],
+    'attachments': ['profile', 'wikipedia']
   }
 };
