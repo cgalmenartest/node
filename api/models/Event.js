@@ -16,7 +16,7 @@ module.exports = {
       defaultsTo: 'CONFIRMED'
     },
     // UUID for the event
-    // uuid: 'UUIDV4',
+    uuid: 'UUIDV4',
     // Title of the event
     title: 'STRING',
     // More information about the event
