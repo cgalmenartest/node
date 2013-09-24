@@ -84,6 +84,17 @@ require.config({
     'task_form_view'            : '../apps/tasks/new/views/task_form_view',
 
     // ----------
+    //= Events
+    // ----------
+    'event_list_template'        : '../apps/events/list/templates/event_collection_view_template.html',
+    'event_form_template'        : '../apps/events/new/templates/event_form_template.html',
+    'events_collection'          : '../entities/events/events_collection', 
+    'event_model'                : '../entities/events/event_model',
+    'event_list_controller'      : '../apps/events/list/controllers/event_list_controller',
+    'event_collection_view'      : '../apps/events/list/views/event_collection_view',
+    'event_form_view'            : '../apps/events/new/views/event_form_view',
+
+    // ----------
     //= PROFILE
     // ----------
     'profile_app'               : '../apps/profiles/profile_app',

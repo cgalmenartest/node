@@ -7,13 +7,14 @@ define([
 	'base_controller',
 	'project_item_view',
 	'task_list_controller',
+	'event_list_controller',
 	'comment_list_controller',
 	'comment_form_view',
 	'modal_component',
 	'tag_form_view',
 	'autocomplete'
 ], function ($, _, async, Backbone, Popovers, BaseController, ProjectItemView,
-	TaskListController, CommentListController, CommentFormView,
+	TaskListController, EventListController, CommentListController, CommentFormView,
 	ModalComponent, TagFormView, autocomplete) {
 
 	Application.Project = {};
@@ -98,6 +99,9 @@ define([
 			if (this.taskListController) this.taskListController.cleanup();
 			this.taskListController = new TaskListController({ projectId: this.model.id });
 
+			if (this.eventListController) this.eventListController.cleanup();
+			this.eventListController = new EventListController({ projectId: this.model.id })
+
 			if (this.commentListController) this.commentListController.cleanup();
 			this.commentListController = new CommentListController({ projectId: this.model.id })
 		},
@@ -139,7 +143,7 @@ define([
 			if (!_.isUndefined(this.modalComponent)) {
 				if (this.projectEditFormView) this.projectEditForm();
 				this.projectEditFormView = new ProjectEditFormView({
-					el: ".modal-body",
+					el: ".modal-template",
 					model: self.model
 				}).render();
 			}
