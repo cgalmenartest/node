@@ -33,6 +33,10 @@
         {
           name: 'name'
         }
+      ],
+      include: [
+        'name',
+        'type'
       ]
     },
     'wikipedia': {

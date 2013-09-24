@@ -39,6 +39,12 @@ module.exports = {
           for (var j = 0; j < config.fields.length; j++) {
             result[config.fields[j].name] = models[i][config.fields[j].name];
           }
+          // Make sure all of the included fields are added
+          if (config.include) {
+            for (var j = 0; j < config.include.length; j++) {
+              result[config.include[j]] = models[i][config.include[j]];
+            }
+          }
           results.push( result );
         }
         return done(err);
