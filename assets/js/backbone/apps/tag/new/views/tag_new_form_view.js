@@ -23,16 +23,23 @@ define([
     post: function (e) {
       if (e.preventDefault()) e.preventDefault();
       var data;
+      var self = this;
 
       data = {
-        type: '',
-        name: ''
+        type: $(e.currentTarget).find("#tag-form-type").val(),
+        name: $(e.currentTarget).find("#tag-form-name").val()
       }
+      console.log(data);
 
-      // Add the type
+      $.ajax({
+        url: '/tag/add',
+        type: 'POST',
+        data: data
+      }).done(function (result) {
+        // Pass the tag back
+        self.options.model.trigger("project:tag:new", result);
+      });
 
-      // Pass the tag back
-      //this.collection.trigger("project:save", data);
     },
 
     cleanup: function () {

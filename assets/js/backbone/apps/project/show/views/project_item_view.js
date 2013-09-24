@@ -40,9 +40,18 @@ define([
     },
 
     initializeTags: function() {
+      var formatSelection = function (object, container) {
+        return object.name;
+      };
+      var formatResult = function (object, container, query) {
+        return object.name;
+      };
+
       $("#input-tags").select2({
         placeholder: 'Add tags',
         multiple: true,
+        formatResult: formatResult,
+        formatSelection: formatSelection,
         ajax: {
           url: '/ac/tag',
           dataType: 'json',
@@ -50,9 +59,19 @@ define([
             return { q: term };
           },
           results: function (data) {
-            return { results: data }
+            return { results: data };
           }
         }
+      });
+
+      this.listenTo(this.model, "project:tag:new", function (data) {
+        // Destory modal
+        $(".modal-backdrop").hide();
+        $(".modal").modal('hide');
+        // Add tag into the data list
+        var s2data = $("#input-tags").select2("data");
+        s2data.push(data);
+        $("#input-tags").select2("data", s2data);
       });
     },
 
