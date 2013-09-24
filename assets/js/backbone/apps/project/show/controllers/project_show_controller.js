@@ -8,8 +8,9 @@ define([
 	'task_list_controller',
 	'comment_list_controller',
 	'comment_form_view',
-	'autocomplete'
-], function ($, _, Backbone, Popovers, BaseController, ProjectItemView, TaskListController, CommentListController, CommentFormView, autocomplete) {
+	'autocomplete',
+	'event_list_controller'
+], function ($, _, Backbone, Popovers, BaseController, ProjectItemView, TaskListController, CommentListController, CommentFormView, autocomplete, EventListController) {
 
 	Application.Project = {};
 
@@ -91,6 +92,9 @@ define([
 		initializeItemViewControllers: function () {
 			if (this.taskListController) this.taskListController.cleanup();
 			this.taskListController = new TaskListController({ projectId: this.model.id });
+
+			if (this.eventListController) this.eventListController.cleanup();
+			this.eventListController = new EventListController({ projectId: this.model.id })
 
 			if (this.commentListController) this.commentListController.cleanup();
 			this.commentListController = new CommentListController({ projectId: this.model.id })
