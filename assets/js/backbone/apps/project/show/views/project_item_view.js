@@ -4,8 +4,10 @@ define([
   'jquery_select2',
   'underscore',
   'backbone',
-  'text!project_show_template'
-], function ($, dropzone, select2, _, Backbone, ProjectShowTemplate) {
+  'tag_config',
+  'text!project_show_template',
+  'text!project_tag_template'
+], function ($, dropzone, select2, _, Backbone, TagConfig, ProjectShowTemplate, ProjectTagTemplate) {
   'use strict';
 
   var ProjectShowView = Backbone.View.extend({
@@ -13,8 +15,10 @@ define([
     el: $("#container"),
 
     render: function () {
+      console.log(TagConfig);
+      console.log(TagConfig.tags);
       var compiledTemplate,
-          data = { data: this.model.toJSON() };
+          data = { data: this.model.toJSON(), tags: TagConfig.tags };
 
       compiledTemplate = _.template(ProjectShowTemplate, data);
       this.$el.html(compiledTemplate);
@@ -40,6 +44,26 @@ define([
     },
 
     initializeTags: function() {
+      // Load tags for the view
+      var self = this;
+
+      var renderTag = function(tag) {
+        var templData = { data: self.model.toJSON(), tags: TagConfig.tags, tag: tag };
+        var compiledTemplate = _.template(ProjectTagTemplate, templData);
+        var tagDom = $("." + tag.tag.type).children(".tags");
+        tagDom.append(compiledTemplate);
+      };
+
+      $.ajax({
+        url: '/tag/findAllByProjectId/' + this.model.id
+      }).done(function (data) {
+        for (var i = 0; i < data.length; i++) {
+          // Render tags onto page
+          renderTag(data[i]);
+        }
+      });
+
+      // Initialize Select2 for Administrative Functions
       var formatSelection = function (object, container) {
         return object.name;
       };
@@ -64,6 +88,7 @@ define([
         }
       });
 
+      // New tags added in to the DB via the modal
       this.listenTo(this.model, "project:tag:new", function (data) {
         // Destory modal
         $(".modal-backdrop").hide();
@@ -72,6 +97,14 @@ define([
         var s2data = $("#input-tags").select2("data");
         s2data.push(data);
         $("#input-tags").select2("data", s2data);
+      });
+
+      // Tags saved using the select2 dialog
+      this.listenTo(this.model, "project:tag:save", function (data) {
+        for (var i = 0; i < data.length; i++) {
+          renderTag(data[i]);
+        }
+        $("#input-tags").select2("val", "");
       });
     },
 

@@ -78,48 +78,13 @@
     </div>
     <% } %>
 
-    <div class="skills">
-      <h4><i class="icon-atom"></i> Skills</h4>
+    <% for (var i = 0; i < tags.length; i++) { %>
+    <div class="<%- tags[i].class %>" id="<%- tags[i].id %>">
+      <h4><i class="<%- tags[i].icon %>"></i> <%- tags[i].plural %></h4>
       <ul class="tags">
-        <li>community building
-          <% if (data.isOwner) { %>
-          <span class="tag-delete glyphicon glyphicon-remove" data-id="tag-id"></span>
-          <% } %>
-        </li>
-        <li>node.js</li>
-        <li>human-centered design</li>
-        <li>web design</li>
-        <li>databases</li>
       </ul>
     </div>
-
-    <div class="topics">
-      <h4><i class="icon-briefcase"></i> Topics</h4>
-      <ul class="tags">
-        <li>collaboration</li>
-        <li>innovation</li>
-        <li>networking</li>
-        <li>knowledge sharing</li>
-        <li>crowdsourcing</li>
-      </ul>
-    </div>
-
-    <div class="agencies">
-      <h4><i class="icon-library"></i> Agencies</h4>
-      <ul class="tags">
-        <li>Office of Science and Technology Policy</li>
-        <li>Department of State</li>
-        <li>General Services Administration</li>
-      </ul>
-    </div>
-
-    <div class="locations">
-      <h4><span class="glyphicon glyphicon-map-marker"></span> Location</h4>
-      <ul class="tags">
-        <li>Washington, DC</li>
-        <li>San Francisco, CA</li>
-      </ul>
-    </div>
+    <% } %>
 
     <!-- BEGIN EVENTS -->
     <div class="list-box">

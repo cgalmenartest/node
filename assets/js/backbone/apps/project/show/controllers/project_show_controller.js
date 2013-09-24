@@ -1,6 +1,7 @@
 define([
 	'jquery',
 	'underscore',
+	'async',
 	'backbone',
 	'popovers',
 	'base_controller',
@@ -11,7 +12,7 @@ define([
 	'modal_component',
 	'tag_form_view',
 	'autocomplete'
-], function ($, _, Backbone, Popovers, BaseController, ProjectItemView,
+], function ($, _, async, Backbone, Popovers, BaseController, ProjectItemView,
 	TaskListController, CommentListController, CommentFormView,
 	ModalComponent, TagFormView, autocomplete) {
 
@@ -148,7 +149,6 @@ define([
 			if (e.preventDefault()) e.preventDefault();
 			var self = this;
 			var state  = $(e.currentTarget).val();
-			console.log(state);
 			$("#project-admin-state").button('loading');
 			this.model.trigger("project:update:state", state);
 		},
@@ -199,10 +199,8 @@ define([
 			if (e.preventDefault()) e.preventDefault();
 			var self = this;
 
-			console.log(this);
 			// Pop up dialog box to create tag,
 			// then put tag into the select box
-      if (this.modalComponent) this.modalComponent;
       this.modalComponent = new ModalComponent({
         el: "#container",
         id: "createTag",
@@ -210,7 +208,6 @@ define([
       }).render();
 
       if (!_.isUndefined(this.modalComponent)) {
-        if (this.tagFormView) this.tagFormView();
         this.tagFormView = new TagFormView({
           el: ".modal-template",
           model: self.model
@@ -223,7 +220,41 @@ define([
 			// Cycle through tags in select box
 			// and call create on each one, then
 			// render
-			console.log(e);
+			$("#tag-save").addClass('disabled');
+			var self = this;
+			var data = $("#input-tags").select2('data');
+			var result = [];
+
+			var processTag = function(tag, done) {
+				var tagMap = {
+					tagId: tag.id,
+					projectId: self.model.id
+				};
+				$.ajax({
+					url: '/tag',
+					type: 'POST',
+					data: tagMap
+				}).done(function (data) {
+					result.push(data);
+					done();
+				});
+			};
+
+			async.each(data, processTag, function (err) {
+				for (var i = 0; i < result.length; i++) {
+					for (var j = 0; j < data.length; i++) {
+						if (result[i].tagId == data[j].id) {
+							result[i].tag = data[j];
+							break;
+						}
+					}
+				}
+				console.log('done!');
+				console.log(result);
+				$("#tag-save").removeClass('disabled');
+				self.model.trigger("project:tag:save", result);
+			});
+
 		},
 
 		tagDelete: function (e) {

@@ -43,11 +43,11 @@ h6 {
 /**
  * TAGS
  */
-.skills > ul > li {
+.skill > ul > li {
   background-color: #FFCB32;
 }
 
-.topics > ul > li {
+.topic > ul > li {
   background-color: #FFE084;
 }
 
