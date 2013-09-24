@@ -221,11 +221,12 @@ define([
 		},
 
 		tagSave: function (e) {
+			if (e.preventDefault()) e.preventDefault();
+			var self = this;
 			// Cycle through tags in select box
 			// and call create on each one, then
 			// render
 			$("#tag-save").addClass('disabled');
-			var self = this;
 			var data = $("#input-tags").select2('data');
 			var result = [];
 
@@ -262,9 +263,16 @@ define([
 		},
 
 		tagDelete: function (e) {
+			if (e.preventDefault()) e.preventDefault();
+			var self = this;
 			// Get the data-id of the currentTarget
 			// and then call HTTP DELETE on that tag id
-			console.log(e);
+			$.ajax({
+				url: '/tag/' + $(e.currentTarget).data('id'),
+				type: 'DELETE',
+			}).done(function (data) {
+				self.model.trigger("project:tag:delete", e);
+			});
 		},
 
 		delete: function (e) {

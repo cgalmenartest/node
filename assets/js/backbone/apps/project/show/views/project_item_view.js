@@ -106,6 +106,10 @@ define([
         }
         $("#input-tags").select2("val", "");
       });
+
+      this.listenTo(this.model, "project:tag:delete", function (e) {
+        $(e.currentTarget).parent('li').remove();
+      });
     },
 
     initializeFileUpload: function () {
