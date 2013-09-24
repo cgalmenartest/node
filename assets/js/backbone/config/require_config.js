@@ -63,6 +63,11 @@ require.config({
     'project_edit_form_template': '../apps/project/edit/templates/project_edit_form_template.html',
     'project_edit_form_view'    : '../apps/project/edit/views/project_edit_form_view',
 
+    // ----------
+    //= Tags
+    // ----------
+    'tag_form_view'             : '../apps/tag/new/views/tag_new_form_view',
+    'tag_form_template'         : '../apps/tag/new/templates/tag_new_form_template.html',
 
     // ----------
     //= Tasks

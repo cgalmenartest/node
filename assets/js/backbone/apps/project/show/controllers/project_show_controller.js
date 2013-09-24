@@ -8,8 +8,12 @@ define([
 	'task_list_controller',
 	'comment_list_controller',
 	'comment_form_view',
+	'modal_component',
+	'tag_form_view',
 	'autocomplete'
-], function ($, _, Backbone, Popovers, BaseController, ProjectItemView, TaskListController, CommentListController, CommentFormView, autocomplete) {
+], function ($, _, Backbone, Popovers, BaseController, ProjectItemView,
+	TaskListController, CommentListController, CommentFormView,
+	ModalComponent, TagFormView, autocomplete) {
 
 	Application.Project = {};
 
@@ -192,9 +196,27 @@ define([
 		},
 
 		tagCreate: function (e) {
+			if (e.preventDefault()) e.preventDefault();
+			var self = this;
+
+			console.log(this);
 			// Pop up dialog box to create tag,
 			// then put tag into the select box
-			console.log(e);
+      if (this.modalComponent) this.modalComponent;
+      this.modalComponent = new ModalComponent({
+        el: "#container",
+        id: "createTag",
+        modalTitle: "Create Tag"
+      }).render();
+
+      if (!_.isUndefined(this.modalComponent)) {
+        if (this.tagFormView) this.tagFormView();
+        this.tagFormView = new TagFormView({
+          el: ".modal-template",
+          model: self.model
+        });
+        this.tagFormView.render();
+      }
 		},
 
 		tagSave: function (e) {

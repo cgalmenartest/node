@@ -97,7 +97,7 @@ define([
       if (!_.isUndefined(this.modalComponent)) {
         if (this.projectFormView) this.projectFormView();
         this.projectFormView = new ProjectFormView({
-          el: ".modal-body",
+          el: ".modal-template",
           collection: self.collection
         }).render();  
       }

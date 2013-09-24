@@ -267,7 +267,7 @@ body > .popover {
 }
 
 .tag-delete {
-	/* TODO: make mouse pointer */
+	cursor: pointer;
 }
 
 .select-tags-buttons {
