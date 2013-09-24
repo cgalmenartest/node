@@ -13,6 +13,8 @@ module.exports = {
 
   findAllByProjectId: function (req, res) {
     Tag.findByProjectId(req.params.id, function (err, tags) {
+      if (err) { return res.send(400, { message: "Error looking up tags"}); }
+      if (!tags || (tags.length == 0)) { return res.send([]); }
       var entities = {};
       var tagIds = [];
 
