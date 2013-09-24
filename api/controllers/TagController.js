@@ -29,7 +29,7 @@ module.exports = {
 
       // Get all the tag ids
       for (var i = 0; i < tags.length; i++) {
-        tagIds.push(tags[i].id);
+        tagIds.push(tags[i].tagId);
       }
 
       // Get the tag entities for each id
@@ -37,9 +37,9 @@ module.exports = {
         if (err) { return res.send(400, { message: "Error looking up tags"}); }
         // Attach the tag entity to the tag
         for (var i = 0; i < tags.length; i++) {
-          tags[i].tag = entities[tags[i].id];
-          return res.send(tags);
+          tags[i].tag = entities[tags[i].tagId];
         }
+        return res.send(tags);
       });
     });
   },
