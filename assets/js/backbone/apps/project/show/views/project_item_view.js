@@ -47,6 +47,11 @@ define([
       // Load tags for the view
       var self = this;
 
+      var tagIcon = {}
+      for (var i = 0; i < TagConfig.tags.length; i++) {
+        tagIcon[TagConfig.tags[i].type] = TagConfig.tags[i].icon;
+      }
+
       var renderTag = function(tag) {
         var templData = { data: self.model.toJSON(), tags: TagConfig.tags, tag: tag };
         var compiledTemplate = _.template(ProjectTagTemplate, templData);
@@ -64,18 +69,15 @@ define([
       });
 
       // Initialize Select2 for Administrative Functions
-      var formatSelection = function (object, container) {
-        return object.name;
-      };
       var formatResult = function (object, container, query) {
-        return object.name;
+        return '<i class="' + tagIcon[object.type] + '"></i> ' + object.name;
       };
 
       $("#input-tags").select2({
         placeholder: 'Add tags',
         multiple: true,
         formatResult: formatResult,
-        formatSelection: formatSelection,
+        formatSelection: formatResult,
         ajax: {
           url: '/ac/tag',
           dataType: 'json',
