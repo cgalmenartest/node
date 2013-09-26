@@ -9,10 +9,12 @@ require.config({
     'text'                      : '../../vendor/text',
     'jquery'                    : '../../vendor/jquery',
     'jquery_timeago'            : '../../vendor/jquery.timeago',
+    'jquery_select2'            : '../../vendor/select2/select2',
     'dropzone'                  : '../../vendor/dropzone-amd-module',
     'underscore'                : '../../vendor/underscore',
     'backbone'                  : '../../vendor/backbone',
     'bootstrap'                 : '../../vendor/bootstrap',
+    'async'                     : '../../vendor/async/lib/async',
 
     // ---------
     //= Mixins
@@ -54,6 +56,7 @@ require.config({
     'projects_show_controller'  : '../apps/project/show/controllers/project_show_controller',
     'project_item_view'         : '../apps/project/show/views/project_item_view',
     'project_show_template'     : '../apps/project/show/templates/project_item_view_template.html',
+    'project_tag_template'      : '../apps/project/show/templates/project_tag_item_template.html',
     'project_list_template'     : '../apps/project/list/templates/project_collection_view_template.html',
     'project_model'             : '../entities/projects/project_model',
     'projects_collection'       : '../entities/projects/projects_collection',
@@ -62,6 +65,12 @@ require.config({
     'project_edit_form_template': '../apps/project/edit/templates/project_edit_form_template.html',
     'project_edit_form_view'    : '../apps/project/edit/views/project_edit_form_view',
 
+    // ----------
+    //= Tags
+    // ----------
+    'tag_config'                : '../components/tag',
+    'tag_form_view'             : '../apps/tag/new/views/tag_new_form_view',
+    'tag_form_template'         : '../apps/tag/new/templates/tag_new_form_template.html',
 
     // ----------
     //= Tasks
@@ -111,6 +120,14 @@ require.config({
     'modal_component'           : '../components/modal',
     'modal_template'            : '../components/modal_template.html',
     'autocomplete'              : '../mixins/autocomplete'
+  },
+
+  shim: {
+    // Select2 is not an AMD module
+    'jquery_select2': {
+      deps: ['jquery'],
+      exports: 'select2'
+    }
   }
 
 });

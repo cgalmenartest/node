@@ -1,30 +1,35 @@
 <form id="task-form" class="form-horizontal" style="display: block;">
-  <fieldset>
-    <div class="form-group">
-      <label for="task-title" class="col-lg-2 control-label">Title</label>
-      <div class="col-lg-10">
-        <input id="task-title" class="form-control" type="text">
+  <div class="modal-body">
+    <fieldset>
+      <div class="form-group">
+        <label for="task-title" class="col-lg-2 control-label">Title</label>
+        <div class="col-lg-10">
+          <input id="task-title" class="form-control" type="text">
+        </div>
       </div>
-    </div>
-    <div class="form-group">
-      <label for="task-description" class="col-lg-2 control-label">Description</label>
-      <div class="col-lg-10">
-        <input id="task-description" class="form-control" type="text">
+      <div class="form-group">
+        <label for="task-description" class="col-lg-2 control-label">Description</label>
+        <div class="col-lg-10">
+          <input id="task-description" class="form-control" type="text">
+        </div>
       </div>
-    </div>
-    <div class="form-group">
-      <label for="task-estimated-time" class="col-lg-2 control-label">Estimated Time</label>
-      <div class="col-lg-10">
-        <input id="task-estimated-time" class="form-control" type="text">
+      <div class="form-group">
+        <label for="task-estimated-time" class="col-lg-2 control-label">Estimated Time</label>
+        <div class="col-lg-10">
+          <input id="task-estimated-time" class="form-control" type="text">
+        </div>
       </div>
-    </div>
-    <div class="form-group">
-      <label for="task-deadline" class="col-lg-2 control-label">Deadline</label>
-      <div class="col-lg-10">
-        <input id="task-deadline" class="form-control" type="text">
-        <br/>
-        <button class="btn btn-primary" type="submit">Add Task</button>
+      <div class="form-group">
+        <label for="task-deadline" class="col-lg-2 control-label">Deadline</label>
+        <div class="col-lg-10">
+          <input id="task-deadline" class="form-control" type="text">
+          <br/>
+        </div>
       </div>
-    </div>
-  </fieldset>
+    </fieldset>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-c0" data-dismiss="modal">Cancel</button>
+    <input type="submit" class="btn btn-c3" value="Add Task"/>
+  </div>
 </form>

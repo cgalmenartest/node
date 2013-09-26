@@ -4,7 +4,7 @@
  * @module		:: Controller
  * @description	:: Auto-complete service
  */
-
+var _ = require('underscore');
 var async = require('async');
 
 var runSearch = function(type, q, cb) {
@@ -30,6 +30,32 @@ var runSearch = function(type, q, cb) {
   });
 
 }
+
+/*
+
+TODO:
+
+UNFORTUNATELY This doesn't work because the sails variable is not defined
+until after the module is exported.  Could directly import the settings file
+with require.
+
+var acControllerImpl = {};
+var acControllerKeys = _.keys(sails.config.sources.autocomplete);
+
+// Programatically generate the endpoints based on the
+// autocomplete sources defined in the config
+for (var i = 0; i < acControllerKeys.length; i++) {
+  acControllerImpl[acControllerKeys[i]] = function (req, res) {
+    if (!req.param('q')) { return res.send([]); }
+    runSearch(acControllerKeys[i], req.param('q'), function (err, results) {
+      if (err) { return res.send(400, { message: 'Error performing search' }); }
+      return res.send(results);
+    });
+  }
+}
+
+module.exports = acControllerImpl;
+*/
 
 module.exports = {
 
@@ -57,9 +83,9 @@ module.exports = {
     });
   },
 
-  test: function (req, res) {
+  tag: function (req, res) {
     if (!req.param('q')) { return res.send([]); }
-    runSearch('test', req.param('q'), function (err, results) {
+    runSearch('tag', req.param('q'), function (err, results) {
       if (err) { return res.send(400, { message: 'Error performing search' }); }
       return res.send(results);
     });

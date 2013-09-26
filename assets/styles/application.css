@@ -266,6 +266,14 @@ body > .popover {
 	margin-bottom: 0;
 }
 
+.tag-delete {
+	cursor: pointer;
+}
+
+.select-tags-buttons {
+	margin-top: 10px;
+}
+
 ul.tags {
 	list-style: none;
 	padding: 0;

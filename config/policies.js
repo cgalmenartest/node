@@ -59,10 +59,6 @@ module.exports.policies = {
     'unlike': ['authenticated', 'requireUserId', 'addUserId', 'requireId']
   },
 
-  TaskController : {
-    'findAllByProjectId': ['authenticated', 'addUserId', 'project']
-  },
-
   EventController : {
     'create': ['authenticated', 'addUserId', 'eventUuid'],
     'findAllByProjectId': ['authenticated', 'addUserId', 'requireId', 'project'],
@@ -70,6 +66,24 @@ module.exports.policies = {
     'cancel': ['authenticated', 'requireUserId', 'addUserId', 'requireId'],
     'rsvp': ['authenticated', 'requireUserId', 'addUserId'],
     'ical': ['authenticated', 'addUserId', 'project']
+  },
+
+  TagController : {
+    '*': ['authenticated'],
+    'find': false,
+    'create': ['authenticated', 'requireUserId', 'projectId'],
+    'destroy': ['authenticated', 'requireUserId', 'requireId'],
+    'add': ['authenticated', 'requireUserId'],
+    'findAllByProjectId': ['authenticated', 'requireId', 'project']
+  },
+
+  TagEntityController : {
+    // Purely for administrative functions
+    '*': 'admin'
+  },
+
+  TaskController : {
+    'findAllByProjectId': ['authenticated', 'addUserId', 'project']
   }
 
   /*

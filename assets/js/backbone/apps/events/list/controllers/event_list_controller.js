@@ -77,7 +77,7 @@ define([
       if (!_.isUndefined(this.modalComponent)) {
         if (this.eventFormView) this.eventFormView;
         this.eventFormView = new EventFormView({
-          el: ".modal-body",
+          el: ".modal-template",
           projectId: this.options.projectId,
           collection: this.collection
         }).render();  

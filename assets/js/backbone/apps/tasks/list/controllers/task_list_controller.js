@@ -71,7 +71,7 @@ define([
       if (!_.isUndefined(this.modalComponent)) {
         if (this.taskFormView) this.taskFormView;
         this.taskFormView = new TaskFormView({
-          el: ".modal-body",
+          el: ".modal-template",
           projectId: this.options.projectId
         }).render();  
       }

@@ -6,6 +6,7 @@
  */
 
 var _ = require('underscore');
+var async = require('async');
 var icalendar = require('icalendar');
 var projUtils = require('../services/projectUtils');
 
