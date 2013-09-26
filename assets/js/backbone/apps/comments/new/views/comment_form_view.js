@@ -3,8 +3,9 @@ define([
   'underscore',
   'backbone',
   'comment_collection',
-  'text!comment_form_template'
-], function ($, _, Backbone, CommentCollection, CommentFormTemplate) {
+  'text!comment_form_template',
+  'comment_list_view'
+], function ($, _, Backbone, CommentCollection, CommentFormTemplate, CommentListView) {
   'use strict'; 
 
   var CommentFormView = Backbone.View.extend({
@@ -54,8 +55,19 @@ define([
         parentId: parentId,
         comment: this.comment + "||" + this.wikiLink
       }
-
+      var self = this
       this.collection.trigger("comment:save", data);
+      this.listenToOnce(this.collection, "comment:save:success", function () {
+          self.collection.fetch({
+          url: '/comment/findAllByProjectId/' + self.options.projectId,
+          success: function (collection) {
+            self.commentListView = new CommentListView({
+              el: ".comment-list-wrapper",
+              collection: collection
+            }).render();
+          }
+        })
+      })
     },
 
     cleanup: function () {
