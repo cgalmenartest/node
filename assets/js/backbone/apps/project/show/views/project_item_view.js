@@ -6,13 +6,26 @@ define([
   'backbone',
   'tag_config',
   'text!project_show_template',
-  'text!project_tag_template'
-], function ($, dropzone, select2, _, Backbone, TagConfig, ProjectShowTemplate, ProjectTagTemplate) {
+  'text!project_tag_template',
+  'project_edit_form_view'
+], function ($, dropzone, select2, _, Backbone, TagConfig, ProjectShowTemplate, ProjectTagTemplate, ProjectEditFormView) {
   'use strict';
 
   var ProjectShowView = Backbone.View.extend({
 
     el: $("#container"),
+
+    events: {
+      'click #editProject': 'editProject'
+    },
+
+    editProject: function () {
+      $("#container").children().remove()
+      new ProjectEditFormView({
+        el: "#container",
+        model: this.model
+      }).render();
+    },
 
     render: function () {
       console.log(TagConfig);

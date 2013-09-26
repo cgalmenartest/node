@@ -1,7 +1,8 @@
 define([
   'underscore',
   'backbone',
-  'text!project_edit_form_template'
+  'text!project_edit_form_template',
+  'text!project_tag_template'
 ], function (_, Backbone, ProjectEditFormTemplate) {
 
   var ProjectEditFormView = Backbone.View.extend({
@@ -10,11 +11,13 @@ define([
       'submit #project-edit-form': 'edit'
     },
 
+    el: "#container",
+
     render: function () {
       var self = this;
 
       var data = {
-        model: self.model
+        data: self.model
       }
 
       var compiledTemplate = _.template(ProjectEditFormTemplate, data);
