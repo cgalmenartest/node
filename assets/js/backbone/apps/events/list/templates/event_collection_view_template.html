@@ -4,19 +4,24 @@
  <a href="#addEvent" class="btn btn-c0 btn-xs list-add add-event" data-toggle="modal">Add Event</a>
 </h2>
 
-<div class="event first sidebar-c1">
-  <div class="event-title sidebar-c1-highlight">Presidential Innovation Fellows Demo Day</div>
+<% featured_event = events[0] %>
+
+
+<div class="event first sidebar-c1" id="<%= featured_event.id %>">
+  
+  <div class="event-title sidebar-c1-highlight"><%= featured_event.title %></div>
+  
   <div class="event-description">
-    The next demo day will be a chance to see Innovation Toolkit in action.  Please attend to ask questions, provide feedback, and help make Innovation Toolkit better.  Below are the ...
-    <a href="#">MORE</a>
+    <%= featured_event.description %>
   </div>
+
   <div class="event-item sidebar-c1-highlight">
     <div class="event-icon">
       <i class="icon-calendar"></i>
     </div>
     <div class="event-wrapper">
-      <div class="event-day"> October 10, 2013</div>
-      <div class="event-time">8:00pm - 10:00pm</div>
+      <div class="event-day"><%= featured_event.start %> - <%= featured_event.end %></div>
+      <div class="event-time">time not set</div>
     </div>
   </div>
 
@@ -26,13 +31,7 @@
     </div>
     <div class="event-wrapper">
       <div class="event-location">
-        General Services Administration
-      </div>
-      <div class="event-location">
-        1800 F Street NW
-      </div>
-      <div class="event-location">
-        Washington, DC
+        <%= featured_event.location %>
       </div>
     </div>
   </div>
@@ -43,10 +42,10 @@
     </div>
     <div class="event-wrapper">
       <div class="event-rsvp">
-        <button class="btn btn-c1 btn-sm">RSVP</button>
+        <button class="btn btn-c1 btn-sm featured-rsvp">RSVP</button>
       </div>
     </div>
-    <div class="event-people pull-right"><i class="icon-male"></i> 43 people going</div>
+    <div class="event-people pull-right"><i class="icon-male"></i><%= featured_event.rsvps.length %> people going</div>
   </div>
   <div class="event-people-bar">
     <div class="project-people-div" data-userid="1">
@@ -73,7 +72,9 @@
 <div class="list-box">
 <h2 class="sidebar-c1-light">Upcoming Events</h2>
 
-<% _.each(events, function (event) { %>
+
+<% events.shift(); 
+  _.each(events, function (event) { %>
   <div class="event sidebar-c1-light sidebar-c1-bar" id="<%= event.id %>">
       
       <div class="event-title">
@@ -115,7 +116,11 @@
           <i class="icon-male"></i>
         </div>
         <div class="event-wrapper event-people">
-          18 people going
+          <% if (event.rsvp.length == 1) { %>
+            1 person going
+          <% } else { %>
+            <%= event.rsvps.length %> people going
+          <% } %>
         </div>
       </div>
 

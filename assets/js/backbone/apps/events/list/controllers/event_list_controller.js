@@ -15,6 +15,8 @@ define([
     events: {
       'click .add-event'    : 'add',
       'click .rsvp'         : 'rsvp',
+      'click .featured-rsvp': 'featuredRSVP',
+      'click .remove-featured-rsvp': 'removeFeaturedRSVP',
       'click .remove-rsvp'  : 'removeRSVP'
     },
 
@@ -97,6 +99,37 @@ define([
 
     },
 
+    featuredRSVP: function (e) {
+      if (e.preventDefault()) e.preventDefault()
+      var id = parseInt($(e.currentTarget).parent().parent().parent().parent().attr('id'))
+    var self = this;
+
+      $.ajax({
+        url: '/event/attend/' + id,
+        success: function (data) {
+          $(e.currentTarget).attr('disabled', true)
+          $("<button class='remove-featured-rsvp'>x</button>").insertAfter(e.currentTarget)
+          self.trigger("event:save:success")
+        }
+      })
+    },
+
+    removeFeaturedRSVP: function (e) {
+      if (e.preventDefault()) e.preventDefault()
+
+      var id = parseInt($(e.currentTarget).parent().parent().parent().parent().attr("id"))
+
+      $.ajax({
+        url: '/event/cancel/' + id,
+        success: function (data) {
+          $(e.currentTarget).remove()
+          $("#" + id).find('.featured-rsvp').attr("disabled", false)
+          var t = parseInt($("#" + id).find('.event-people').text()) - 1
+          $("#"+id).find('.event-people').text(t+' people going')
+        }
+      })
+    },
+
     removeRSVP: function (e) {
       if (e.preventDefault()) e.preventDefault()
 
@@ -107,6 +140,7 @@ define([
         success: function (data) {
           $(e.currentTarget).remove()
           $("#" + id).find('.rsvp').attr("disabled", false)
+
         }
       })
     }
