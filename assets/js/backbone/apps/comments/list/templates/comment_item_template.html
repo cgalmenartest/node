@@ -31,7 +31,7 @@
     <% } %>
 
     <% if (!comment.topic) { _.each(comment.children, function (childComment) { %>
-    <ul id="comment-children-<%- comment.id %>">
+    <ul id="comment-list-<%- comment.id %>">
     </ul>
     <% }); } %>
 

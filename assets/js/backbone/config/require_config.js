@@ -108,6 +108,8 @@ require.config({
     // ----------
     'comment_list_controller'   : '../apps/comments/list/controllers/comment_list_controller',
     'comment_list_template'     : '../apps/comments/list/templates/comment_list_template.html',
+    'comment_item_template'     : '../apps/comments/list/templates/comment_item_template.html',
+    'comment_wrapper_template'  : '../apps/comments/list/templates/comment_wrapper_template.html',
     'comment_list_view'         : '../apps/comments/list/views/comment_list_view',
     'comment_collection'        : '../entities/comments/comment_collection',
     'comment_model'             : '../entities/comments/comment_model',
