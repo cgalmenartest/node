@@ -4,8 +4,17 @@
  <a href="#addEvent" class="btn btn-c0 btn-xs list-add add-event" data-toggle="modal">Add Event</a>
 </h2>
 
-<% featured_event = events[0] %>
+<% if (events.length == 0) { %>
 
+<div class="event sidebar-c1-light sidebar-c1-bar" id="<%= event.id %>">
+  <div class="event-title">
+    No upcoming events.
+  </div>
+</div>
+
+<% } else { %>
+
+<% featured_event = events[0] %>
 
 <div class="event first sidebar-c1" id="<%= featured_event.id %>">
   
@@ -146,6 +155,8 @@
   </div> <!-- /event -->
 
 <% }); %>
+
+<% } %>
 
 
 <!-- <div class="event sidebar-c1-light sidebar-c1-bar">
