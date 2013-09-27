@@ -20,9 +20,8 @@ define([
     },
 
     editProject: function () {
-      $("#container").children().remove()
       new ProjectEditFormView({
-        el: "#container",
+        el: ".main-section",
         model: this.model
       }).render();
     },

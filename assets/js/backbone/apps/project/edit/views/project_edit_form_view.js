@@ -11,7 +11,7 @@ define([
       'submit #project-edit-form': 'edit'
     },
 
-    el: "#container",
+    el: ".main-section",
 
     render: function () {
       var self = this;
@@ -22,6 +22,8 @@ define([
 
       var compiledTemplate = _.template(ProjectEditFormTemplate, data);
       this.$el.html(compiledTemplate);
+
+      $("#project-edit-form-description").popover({ trigger: 'hover', placement: 'right', title: "Text Limit", content: "Limit of 500 characters" })
     },
 
     edit: function (e) {
