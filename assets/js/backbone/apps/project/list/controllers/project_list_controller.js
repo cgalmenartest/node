@@ -34,8 +34,7 @@ define([
 			this.collection.trigger("projects:fetch");
 
 			this.listenTo(this.collection, "project:save:success", function () {
-				$(".modal-backdrop").hide();
-      	$(".modal").modal('hide');
+				window.location.reload()
       	self.renderProjectCollectionView();
 			})
 		},
