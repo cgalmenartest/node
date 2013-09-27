@@ -98,15 +98,17 @@
 
   </div>
 
-<div class="main-section">
   <div class="col-lg-8">
     <!-- RIGHT MAIN BAR -->
+    <div class="main-section">
 
-    <h1><%= data.title %></h1>
+      <h1><%= data.title %></h1>
 
-    <div class="project-description">
-      <%= data.description %>
-    </div>
+      <div class="project-description">
+        <%= data.description %>
+      </div>
+
+    </div> <!-- /main-section -->
 
     <h4>Project Status</h4>
     <div class="project-status c2">
@@ -125,13 +127,8 @@
         <% } %>
       <% } %>
     </div>
-</div>
-    <h4>Discussion
-      <button class="btn btn-c3 btn-sm file-add">Add Topic</button>
-    </h4>
-    <div class="project-comments">
-      <div class="comment-list-wrapper"></div>
-      <div class="comment-form-wrapper"></div>
+
+    <div class="comment-list-wrapper">
     </div>
 
     <h4>Attachments

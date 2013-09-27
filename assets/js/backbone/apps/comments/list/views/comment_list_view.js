@@ -4,8 +4,10 @@ define([
   'jquery_timeago',
   'backbone',
   'text!comment_list_template',
+  'text!comment_item_template',
+  'text!comment_wrapper_template',
   'popovers'
-], function ($, _, TimeAgo, Backbone, CommentListTemplate, Popovers) {
+], function ($, _, TimeAgo, Backbone, CommentListTemplate, CommentItemTemplate, CommentWrapperTemplate, Popovers) {
 
   var CommentListView = Backbone.View.extend({
 
@@ -55,6 +57,31 @@ define([
 
       var compiledTemplate = this.template(collection);
       this.$el.html(compiledTemplate);
+
+      var itemTemplate =  _.template(CommentItemTemplate);
+      var wrapperTemplate = _.template(CommentWrapperTemplate);
+
+      var renderComment = function(comment) {
+        if (comment.topic) {
+          var wrapper = wrapperTemplate({ comment: comment });
+          $(".project-comments").append(wrapper);
+        }
+
+        var parent = comment.parentId;
+        if (!parent) { parent = comment.id; }
+        var item = itemTemplate({ comment: comment });
+        $("#comment-list-" + parent).append(item);
+
+        if (comment.comments) {
+          for (i in comment.comments) {
+            renderComment(comment.comments[i]);
+          }
+        }
+      }
+
+      for (i in comments) {
+        renderComment(comments[i]);
+      }
 
       $("time.timeago").timeago();
       popoverPeopleInit(".project-people-div");
