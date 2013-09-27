@@ -10,7 +10,7 @@ define([
 
   var CommentFormView = Backbone.View.extend({
 
-    el: ".comment-form-wrapper",
+    // el: ".comment-form-wrapper",
 
     events: {
       "submit #comment-form": "post",
@@ -37,16 +37,16 @@ define([
       if ($(e.currentTarget).find(".comment-content").val() !== "") {
         this.comment = $(e.currentTarget).find(".comment-content").text();
       } else {
-        this.comment = $(".comment-content:first-child").text();
+        this.comment = $(e.currentTarget).find(".comment-content:first-child").text();
       }
 
-      if ($(".comment-content:first-child").children("a").attr("href") !== undefined)
-        this.wikiLink = _.escape($(".comment-content:first-child").children("a").attr("href"))
+      if ($(e.currentTarget).find(".comment-content:first-child").children("a").attr("href") !== undefined)
+        this.wikiLink = _.escape($(e.currentTarget).find(".comment-content:first-child").children("a").attr("href"))
 
       var projectId   = this.options.projectId,
           parentId;
 
-      if (this.options) {
+      if (this.options.parentId) {
         parentId = parseInt(this.options.parentId);
       }
 

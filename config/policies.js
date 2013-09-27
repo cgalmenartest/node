@@ -60,7 +60,7 @@ module.exports.policies = {
   },
 
   EventController : {
-    'create': ['authenticated', 'addUserId', 'eventUuid'],
+    'create': ['authenticated', 'requireUserId', 'addUserId', 'eventUuid'],
     'findAllByProjectId': ['authenticated', 'addUserId', 'requireId', 'project'],
     'attend': ['authenticated', 'requireUserId', 'addUserId', 'requireId'],
     'cancel': ['authenticated', 'requireUserId', 'addUserId', 'requireId'],
@@ -74,6 +74,13 @@ module.exports.policies = {
     'create': ['authenticated', 'requireUserId', 'projectId'],
     'destroy': ['authenticated', 'requireUserId', 'requireId'],
     'add': ['authenticated', 'requireUserId'],
+    'findAllByProjectId': ['authenticated', 'requireId', 'project']
+  },
+
+  CommentController : {
+    'find': false,
+    'create': ['authenticated', 'requireUserId', 'addUserId'],
+    'destroy': ['authenticated', 'requireUserId', 'requireId'],
     'findAllByProjectId': ['authenticated', 'requireId', 'project']
   },
 

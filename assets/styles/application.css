@@ -63,6 +63,14 @@
 	color: #FFFFFF;
 }
 
+.white a {
+	color: #FFFFFF;
+}
+
+.white .comment-created-at {
+	color: #FFFFFF;
+}
+
 /*****************
 =  HOMEPAGE 
 ******************/
@@ -568,6 +576,8 @@ ul.comment-list {
 .comment-item {
 	overflow: hidden;
 	display: inline-table;
+	background: #eee;
+	margin-top: 10px;
 }
 
 .comment-image {
