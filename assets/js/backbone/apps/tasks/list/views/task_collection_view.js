@@ -22,8 +22,11 @@ define([
 			this.compiledTemplate = _.template(TaskListTemplate, tasksJSON);
 			this.$el.html(this.compiledTemplate);
 
-			// Allow chaining.
 			return this;
+		},
+
+		cleanup: function () {
+			$(this.el).children().remove();
 		}
 
 	});
