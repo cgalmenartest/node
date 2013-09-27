@@ -10,7 +10,7 @@ define([
 		initializeControllerSafely: function (appModuleRenderState, controllerToRender) {
 			if (appModuleRenderState === true) {
 				if (this.controller) {
-					this.controller.initialize();
+					this.controller.cleanup();
 				} else {
 					this.controller = new controllerToRender();
 				}

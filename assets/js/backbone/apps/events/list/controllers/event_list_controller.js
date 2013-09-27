@@ -143,6 +143,10 @@ define([
 
         }
       })
+    },
+
+    cleanup: function () {
+      $(this.el).children().remove()
     }
 
   });

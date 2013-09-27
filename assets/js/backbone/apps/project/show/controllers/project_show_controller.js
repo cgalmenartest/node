@@ -290,7 +290,7 @@ define([
 		//= Utility Methods
 		// ---------------------
 		cleanup: function() {
-		  $(this.el).remove();
+		  $(this.el).children().remove();
 		}
 
 	});
