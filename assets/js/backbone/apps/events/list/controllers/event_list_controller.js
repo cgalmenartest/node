@@ -2,11 +2,12 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'popovers',
   'events_collection',
   'event_collection_view',
   'modal_component',
   'event_form_view'
-], function ($, _, Backbone, EventsCollection, EventCollectionView, ModalComponent, EventFormView) {
+], function ($, _, Backbone, Popovers, EventsCollection, EventCollectionView, ModalComponent, EventFormView) {
 
   Application.Controller.EventList = Backbone.View.extend({
 
@@ -17,7 +18,9 @@ define([
       'click .rsvp'         : 'rsvp',
       'click .featured-rsvp': 'featuredRSVP',
       'click .remove-featured-rsvp': 'removeFeaturedRSVP',
-      'click .remove-rsvp'  : 'removeRSVP'
+      'click .remove-rsvp'  : 'removeRSVP',
+      "mouseenter .project-people-div" : popoverPeopleOn,
+      "mouseleave .project-people-div" : popoverPeopleOff
     },
 
     initialize: function (settings) {
@@ -29,6 +32,7 @@ define([
         $(".modal").modal('hide')
         this.requestEventsCollectionData()
       });
+
 
     },
 

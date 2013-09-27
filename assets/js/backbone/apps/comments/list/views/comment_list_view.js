@@ -3,8 +3,9 @@ define([
   'underscore',
   'jquery_timeago',
   'backbone',
-  'text!comment_list_template'
-], function ($, _, TimeAgo, Backbone, CommentListTemplate) {
+  'text!comment_list_template',
+  'popovers'
+], function ($, _, TimeAgo, Backbone, CommentListTemplate, Popovers) {
 
   var CommentListView = Backbone.View.extend({
 
@@ -56,6 +57,7 @@ define([
       this.$el.html(compiledTemplate);
 
       $("time.timeago").timeago();
+      popoverPeopleInit(".project-people-div");
     }
 
   });
