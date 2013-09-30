@@ -72,7 +72,11 @@ module.exports = {
       { where: { projectId: tag.projectId, taskId: tag.taskId, tagId: tag.tagId }},
       function (err, existingTag) {
         if (err) { return res.send(400, { message: 'Error looking up tag' }); }
-        if (existingTag) { return res.send(existingTag); }
+        // Let the UI know that the tag existed and so wasn't created
+        if (existingTag) {
+          existingTag.existing = true;
+          return res.send(existingTag);
+        }
         // Create tag if it doesn't exist
         Tag.create(tag, function (err, tag) {
           if (err) { return res.send(400, { message: 'Error creating tag' }); }

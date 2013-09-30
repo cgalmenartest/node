@@ -247,15 +247,13 @@ define([
 
 			async.each(data, processTag, function (err) {
 				for (var i = 0; i < result.length; i++) {
-					for (var j = 0; j < data.length; i++) {
+					for (var j = 0; j < data.length; j++) {
 						if (result[i].tagId == data[j].id) {
 							result[i].tag = data[j];
 							break;
 						}
 					}
 				}
-				console.log('done!');
-				console.log(result);
 				$("#tag-save").removeClass('disabled');
 				self.model.trigger("project:tag:save", result);
 			});

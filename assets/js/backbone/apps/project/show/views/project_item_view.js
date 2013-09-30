@@ -116,7 +116,9 @@ define([
       // Tags saved using the select2 dialog
       this.listenTo(this.model, "project:tag:save", function (data) {
         for (var i = 0; i < data.length; i++) {
-          renderTag(data[i]);
+          if (!data[i].existing) {
+            renderTag(data[i]);
+          }
         }
         $("#input-tags").select2("val", "");
       });
