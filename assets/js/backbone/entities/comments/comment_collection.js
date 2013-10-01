@@ -4,6 +4,7 @@ define([
   'comment_model',
   'comment_list_controller'
 ], function (_, Backbone, CommentModel, CommentListContro) {
+  'use strict';
 
   var CommentCollection = Backbone.Collection.extend({
 

@@ -6,7 +6,6 @@ define([
   'text!comment_form_template',
   'comment_list_view'
 ], function ($, _, Backbone, CommentCollection, CommentFormTemplate, CommentListView) {
-  'use strict'; 
 
   var CommentFormView = Backbone.View.extend({
 

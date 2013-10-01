@@ -1,4 +1,5 @@
 define([
+	'jquery',
 	'underscore',
 	'backbone',
 	'base_app_module',

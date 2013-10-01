@@ -2,7 +2,6 @@ define([
 	'underscore',
 	'backbone'
 ], function (_, Backbone) {
-	'use strict';
 
 	var ProfileModel = Backbone.Model.extend({
 

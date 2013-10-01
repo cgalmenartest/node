@@ -6,7 +6,6 @@ define([
     'projects_collection',
     'text!project_form_template'
 ], function ($, Bootstrap, _, Backbone, ProjectsCollection, ProjectFormTemplate) {
-  'use strict';
 
   var ProjectFormView = Backbone.View.extend({
     

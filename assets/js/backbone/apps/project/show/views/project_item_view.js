@@ -9,7 +9,6 @@ define([
   'text!project_tag_template',
   'project_edit_form_view'
 ], function ($, dropzone, select2, _, Backbone, TagConfig, ProjectShowTemplate, ProjectTagTemplate, ProjectEditFormView) {
-  'use strict';
 
   var ProjectShowView = Backbone.View.extend({
 

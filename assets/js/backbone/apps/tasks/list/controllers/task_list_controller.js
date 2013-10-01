@@ -8,7 +8,6 @@ define([
   'task_form_view',
   'modal_component'
 ], function ($, _, Backbone, Bootstrap, TasksCollection, TaskCollectionView, TaskFormView, ModalComponent) {
-  'use strict';
 
   Application.Controller.TaskList = Backbone.View.extend({
 

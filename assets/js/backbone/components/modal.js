@@ -6,11 +6,12 @@
 // to trigger from as per bootstrap BP.
 
 define([
+  'jquery',
 	'underscore',
 	'backbone',
 	'base_component',
   'text!modal_template'
-], function (_, Backbone, BaseComponent, ModalTemplate) {
+], function ($, _, Backbone, BaseComponent, ModalTemplate) {
 
 	Application.Component.Modal = BaseComponent.extend({
 

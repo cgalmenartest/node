@@ -6,7 +6,6 @@ define([
     'events_collection',
     'text!event_form_template'
 ], function ($, Bootstrap, _, Backbone, EventsCollection, EventFormTemplate) {
-  'use strict';
 
   var EventFormView = Backbone.View.extend({
 

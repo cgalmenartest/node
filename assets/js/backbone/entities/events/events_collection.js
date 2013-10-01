@@ -3,7 +3,6 @@ define([
   'backbone',
   'event_model'
 ], function (_, Backbone, EventModel) {
-  'use strict';
 
   var EventCollection = Backbone.Collection.extend({
     

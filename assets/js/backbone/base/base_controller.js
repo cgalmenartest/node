@@ -1,9 +1,10 @@
 // Base Controller
 
 define([
+	'jquery',
 	'underscore',
 	'backbone'
-], function (_, Backbone) {
+], function ($, _, Backbone) {
 
 	Application.Controller.BaseController = Backbone.View.extend({
 		

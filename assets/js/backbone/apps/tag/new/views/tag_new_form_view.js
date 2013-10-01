@@ -5,7 +5,6 @@ define([
     'backbone',
     'text!tag_form_template'
 ], function ($, Bootstrap, _, Backbone, TagFormTemplate) {
-  'use strict';
 
   var TagFormView = Backbone.View.extend({
 

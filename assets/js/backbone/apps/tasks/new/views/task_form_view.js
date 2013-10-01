@@ -6,7 +6,6 @@ define([
     'tasks_collection',
     'text!task_form_template'
 ], function ($, Bootstrap, _, Backbone, TasksCollection, TaskFormTemplate) {
-	'use strict';
 
 	var TaskFormView = Backbone.View.extend({
 
