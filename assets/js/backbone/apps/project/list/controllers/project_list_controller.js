@@ -1,4 +1,5 @@
 define([
+	'jquery',
 	'underscore',
 	'backbone',
 	'bootstrap',
@@ -12,7 +13,7 @@ define([
 	'modal_component',
 	'project_edit_form_view'
 ], function (
-	_, Backbone, Bootstrap, Utilities, BaseController, 
+	$, _, Backbone, Bootstrap, Utilities, BaseController,
 	ProjectsCollection, ProjectsCollectionView, ProjectShowController, 
 	ProjectFormView, ProjectApp, ModalComponent, ProjectEditFormView) {
 	
