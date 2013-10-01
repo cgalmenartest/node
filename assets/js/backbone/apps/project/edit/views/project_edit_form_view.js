@@ -1,9 +1,10 @@
 define([
+  'jquery',
   'underscore',
   'backbone',
   'text!project_edit_form_template',
   'text!project_tag_template'
-], function (_, Backbone, ProjectEditFormTemplate) {
+], function ($, _, Backbone, ProjectEditFormTemplate) {
 
   var ProjectEditFormView = Backbone.View.extend({
 
