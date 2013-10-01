@@ -58,9 +58,11 @@ module.exports = {
   adapters: {
     'default': process.env.ADAPTER_DEFAULT || 'postgresql',
     postgresql: {
+      host        : 'localhost',
       user        : 'midas',
       password    : 'midas',
-      database    : 'midas'
+      database    : 'midas',
+      softDelete  : true
     }
   },
 
