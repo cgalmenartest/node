@@ -10,6 +10,7 @@ require.config({
     //= Vendor
     // ----------
     'text'                      : '../../vendor/text',
+    'jquery'                    : '../../vendor/jquery.js',
     'jquery_timeago'            : '../../vendor/jquery.timeago',
     'jquery_select2'            : '../../vendor/select2/select2',
     'dropzone'                  : '../../vendor/dropzone-amd-module',
