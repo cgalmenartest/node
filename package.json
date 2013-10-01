@@ -1,7 +1,7 @@
 {
     "name": "midas",
     "private": true,
-    "version": "0.0.4",
+    "version": "0.0.6",
     "description": "Crowdsourcing Platform and Collaboration Tool",
     "dependencies": {
         "sails": "0.9.4",
