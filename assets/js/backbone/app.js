@@ -1,12 +1,3 @@
-requirejs.onError = function (err) {
-    console.log(err.requireType);
-    if (err.requireType === 'timeout') {
-        console.log('modules: ' + err.requireModules);
-    }
-
-    throw err;
-};
-
 // Set and 'cache' global Application object.
 window.Application = window.Application || {};
 
