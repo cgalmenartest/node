@@ -1,7 +1,10 @@
 [submodule "assets/js/vendor/select2"]
 	path = assets/js/vendor/select2
-	url = https://github.com/ivaynberg/select2.git
+	url = git://github.com/ivaynberg/select2.git
 [submodule "assets/js/vendor/async"]
 	path = assets/js/vendor/async
-	url = https://github.com/caolan/async.git
+	url = git://github.com/caolan/async.git
+[submodule "public/vendor/requirejs"]
+	path = public/vendor/requirejs
+	url = git://github.com/jrburke/requirejs.git
 
