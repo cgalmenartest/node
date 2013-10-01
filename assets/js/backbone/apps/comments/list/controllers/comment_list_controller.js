@@ -1,12 +1,11 @@
 define([
-  'jquery',
   'underscore',
   'backbone',
   'popovers',
   'comment_collection',
   'comment_list_view',
   'comment_form_view'
-], function ($, _, Backbone, Popovers, CommentCollection, CommentListView, CommentFormView) {
+], function (_, Backbone, Popovers, CommentCollection, CommentListView, CommentFormView) {
 
   Application.Controller.Comment = Backbone.View.extend({
 

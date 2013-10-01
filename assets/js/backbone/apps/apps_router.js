@@ -1,11 +1,10 @@
 define([
-  'jquery',
   'underscore',
   'backbone',
   'marketing_app',
   'projects_app',
   'profile_app'
-], function ($, _, Backbone, MarketingApp, ProjectApp, ProfileApp) {
+], function (_, Backbone, MarketingApp, ProjectApp, ProfileApp) {
 
   var AppRouter = Backbone.Router.extend({
 

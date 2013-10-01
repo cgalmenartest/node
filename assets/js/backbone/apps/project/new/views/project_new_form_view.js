@@ -1,11 +1,10 @@
 define([
-    'jquery',
     'bootstrap',
     'underscore',
     'backbone',
     'projects_collection',
     'text!project_form_template'
-], function ($, Bootstrap, _, Backbone, ProjectsCollection, ProjectFormTemplate) {
+], function (Bootstrap, _, Backbone, ProjectsCollection, ProjectFormTemplate) {
 
   var ProjectFormView = Backbone.View.extend({
     

@@ -1,11 +1,10 @@
 define([
-	'jquery',
 	'underscore',
 	'backbone',
 	'base_controller',
 	'profile_model',
 	'profile_show_view'
-], function ($, _, Backbone, BaseController, ProfileModel, ProfileView) {
+], function (_, Backbone, BaseController, ProfileModel, ProfileView) {
 	
 	Application.Controller.Profile = BaseController.extend({
 

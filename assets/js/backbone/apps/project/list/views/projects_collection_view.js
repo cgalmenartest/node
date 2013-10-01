@@ -1,9 +1,8 @@
 define([
-	'jquery',
 	'underscore',
 	'backbone',
 	'text!project_list_template'
-], function ($, _, Backbone, ProjectListTemplate) {
+], function (_, Backbone, ProjectListTemplate) {
 
 	var ProjectsCollectionView = Backbone.View.extend({
 

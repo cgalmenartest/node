@@ -1,8 +1,7 @@
 define([
-  'jquery',
   'underscore',
   'backbone',
-], function ($, _, Backbone) {
+], function (_, Backbone) {
 
   Application.BaseView = Backbone.View.extend({
 

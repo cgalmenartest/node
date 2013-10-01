@@ -1,5 +1,4 @@
 define([
-  'jquery',
   'underscore',
   'backbone',
   'popovers',
@@ -7,7 +6,7 @@ define([
   'event_collection_view',
   'modal_component',
   'event_form_view'
-], function ($, _, Backbone, Popovers, EventsCollection, EventCollectionView, ModalComponent, EventFormView) {
+], function (_, Backbone, Popovers, EventsCollection, EventCollectionView, ModalComponent, EventFormView) {
 
   Application.Controller.EventList = Backbone.View.extend({
 

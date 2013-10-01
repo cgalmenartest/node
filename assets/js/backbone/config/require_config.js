@@ -1,4 +1,7 @@
 require.config({
+
+  // Specify the amount of seconds before a
+  // load timeout for high latency connections or err.type == 'timeout'
   waitSeconds: 200,
 
   paths: {
@@ -7,7 +10,6 @@ require.config({
     //= Vendor
     // ----------
     'text'                      : '../../vendor/text',
-    'jquery'                    : '../../vendor/jquery',
     'jquery_timeago'            : '../../vendor/jquery.timeago',
     'jquery_select2'            : '../../vendor/select2/select2',
     'dropzone'                  : '../../vendor/dropzone-amd-module',
@@ -127,7 +129,6 @@ require.config({
   shim: {
     // Select2 is not an AMD module
     'jquery_select2': {
-      deps: ['jquery'],
       exports: 'select2'
     }
   }

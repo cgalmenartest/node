@@ -1,9 +1,8 @@
 define([
-	'jquery',
 	'underscore',
 	'backbone',
 	'text!task_list_template'
-], function ($, _, Backbone, TaskListTemplate) {
+], function (_, Backbone, TaskListTemplate) {
 
 	var TasksCollectionView = Backbone.View.extend({
 

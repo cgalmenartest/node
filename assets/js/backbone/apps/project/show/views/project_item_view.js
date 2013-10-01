@@ -1,5 +1,4 @@
 define([
-  'jquery',
   'dropzone',
   'jquery_select2',
   'underscore',
@@ -8,7 +7,7 @@ define([
   'text!project_show_template',
   'text!project_tag_template',
   'project_edit_form_view'
-], function ($, dropzone, select2, _, Backbone, TagConfig, ProjectShowTemplate, ProjectTagTemplate, ProjectEditFormView) {
+], function (dropzone, select2, _, Backbone, TagConfig, ProjectShowTemplate, ProjectTagTemplate, ProjectEditFormView) {
 
   var ProjectShowView = Backbone.View.extend({
 

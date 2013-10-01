@@ -1,11 +1,10 @@
 define([
-  'jquery',
   'underscore',
   'backbone',
   'comment_collection',
   'text!comment_form_template',
   'comment_list_view'
-], function ($, _, Backbone, CommentCollection, CommentFormTemplate, CommentListView) {
+], function (_, Backbone, CommentCollection, CommentFormTemplate, CommentListView) {
 
   var CommentFormView = Backbone.View.extend({
 
