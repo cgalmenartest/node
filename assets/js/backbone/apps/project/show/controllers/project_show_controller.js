@@ -1,4 +1,5 @@
 define([
+	'jquery',
 	'underscore',
 	'async',
 	'backbone',
@@ -12,8 +13,7 @@ define([
 	'modal_component',
 	'tag_form_view',
 	'autocomplete'
-], function (
-	_, async, Backbone, Popovers, BaseController, ProjectItemView,
+], function ($, _, async, Backbone, Popovers, BaseController, ProjectItemView,
 	TaskListController, EventListController, CommentListController, CommentFormView,
 	ModalComponent, TagFormView, autocomplete) {
 

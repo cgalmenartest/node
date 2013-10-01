@@ -1,10 +1,11 @@
 define([
+    'jquery',
     'bootstrap',
     'underscore',
     'backbone',
     'events_collection',
     'text!event_form_template'
-], function (Bootstrap, _, Backbone, EventsCollection, EventFormTemplate) {
+], function ($, Bootstrap, _, Backbone, EventsCollection, EventFormTemplate) {
 
   var EventFormView = Backbone.View.extend({
 

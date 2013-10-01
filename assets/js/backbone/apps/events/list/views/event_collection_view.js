@@ -1,8 +1,9 @@
 define([
+  'jquery',
   'underscore',
   'backbone',
   'text!event_list_template'
-], function (_, Backbone, EventListTemplate) {
+], function ($, _, Backbone, EventListTemplate) {
 
   var EventCollectionView = Backbone.View.extend({
 

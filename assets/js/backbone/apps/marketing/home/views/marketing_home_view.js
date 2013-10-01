@@ -1,8 +1,9 @@
 define([
+  'jquery',
   'underscore',
   'backbone',
   'text!marketing_home_template'
-], function (_, Backbone, MarketingHomeTemplate) {
+], function ($, _, Backbone, MarketingHomeTemplate) {
     
   Application.Views = {};
 

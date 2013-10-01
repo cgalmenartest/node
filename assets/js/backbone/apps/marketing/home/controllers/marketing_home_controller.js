@@ -1,9 +1,10 @@
 define([
+	'jquery',
 	'underscore',
 	'backbone',
 	'base_controller',
 	'marketing_home_view'
-], function (_, Backbone, BaseController, MarketingHomeView) {
+], function ($, _, Backbone, BaseController, MarketingHomeView) {
 
 	Application.Controller = {};
 	

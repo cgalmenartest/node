@@ -1,8 +1,9 @@
 define([
+  'jquery',
   'underscore',
   'backbone',
   'profile_show_controller'
-], function (_, Backbone, ProfileController) {
+], function ($, _, Backbone, ProfileController) {
 
   var ProfileRouter = Backbone.Router.extend({
 

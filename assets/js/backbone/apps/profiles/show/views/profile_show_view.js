@@ -1,9 +1,10 @@
 define([
+  'jquery',
   'dropzone',
   'underscore',
   'backbone',
   'text!profile_show_template'
-], function (dropzone, _, Backbone, ProfileTemplate) {
+], function ($, dropzone, _, Backbone, ProfileTemplate) {
 
   var ProfileShowView = Backbone.View.extend({
 

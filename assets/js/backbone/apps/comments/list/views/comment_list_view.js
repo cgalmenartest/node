@@ -1,4 +1,5 @@
 define([
+  'jquery',
   'underscore',
   'jquery_timeago',
   'backbone',
@@ -6,7 +7,7 @@ define([
   'text!comment_item_template',
   'text!comment_wrapper_template',
   'popovers'
-], function (_, TimeAgo, Backbone, CommentListTemplate, CommentItemTemplate, CommentWrapperTemplate, Popovers) {
+], function ($, _, TimeAgo, Backbone, CommentListTemplate, CommentItemTemplate, CommentWrapperTemplate, Popovers) {
 
   var CommentListView = Backbone.View.extend({
 

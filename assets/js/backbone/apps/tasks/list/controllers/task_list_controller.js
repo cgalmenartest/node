@@ -1,4 +1,5 @@
 define([
+  'jquery',
   'underscore',
   'backbone',
   'bootstrap',
@@ -6,7 +7,7 @@ define([
   'task_collection_view',
   'task_form_view',
   'modal_component'
-], function (_, Backbone, Bootstrap, TasksCollection, TaskCollectionView, TaskFormView, ModalComponent) {
+], function ($, _, Backbone, Bootstrap, TasksCollection, TaskCollectionView, TaskFormView, ModalComponent) {
 
   Application.Controller.TaskList = Backbone.View.extend({
 

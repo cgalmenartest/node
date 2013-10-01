@@ -1,8 +1,9 @@
 define([
+  'jquery',
   'underscore',
   'backbone',
   'project_list_controller'
-], function (_, Backbone, ProjectListController) {
+], function ($, _, Backbone, ProjectListController) {
 
   var ProjectRouter = Backbone.Router.extend({
 
