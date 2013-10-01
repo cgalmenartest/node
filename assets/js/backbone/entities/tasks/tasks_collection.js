@@ -33,6 +33,7 @@ define([
         });
 
         entities.request.trigger("tasks:fetch", projectId);
+        this.trigger("tasks:render")
       });
     }
     

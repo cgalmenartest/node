@@ -24,8 +24,7 @@ define([
       comment = new CommentModel({ 
         parentId  : data['parentId'],
         value     : data['comment'],
-        projectId : data['projectId'],
-        wikiLink  : data['wikiLink']
+        projectId : data['projectId']
       })
       
       self.add(comment);

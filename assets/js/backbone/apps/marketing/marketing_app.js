@@ -8,8 +8,14 @@ define([
 	Application.AppModule.Marketing = BaseAppModule.extend({
 
 		initialize: function () {
+			$("#container").children().remove()
 			this.rendered = true;
 			this.initializeControllerSafely(this.rendered, MarketingHomeController)
+		},
+
+		cleanup: function () {
+			$(this.el).children().remove();
+			this.undelegateEvents()
 		}
 
 	});

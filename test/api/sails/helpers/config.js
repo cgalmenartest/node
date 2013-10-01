@@ -13,5 +13,19 @@ module.exports = {
   'project': {
     'title': 'Project Title',
     'description': 'Project Description'
-  }
+  },
+  'tags': [
+    {
+      'type': 'skill',
+      'name': 'Tag1'
+    },
+    {
+      'type': 'skill',
+      'name': 'Tag2'
+    },
+    {
+      'type': 'office',
+      'name': 'Tag3'
+    }    
+  ]
 };

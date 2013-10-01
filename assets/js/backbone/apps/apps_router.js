@@ -14,7 +14,12 @@ define([
     },
 
     initializeMarketingApp: function () {
-      this.homeApp ? this.homeApp.initialize() : this.homeApp = new MarketingApp();
+      if (this.homeApp)
+        this.homeApp.cleanup();
+      
+      this.homeApp = new MarketingApp({
+        el: "#container"
+      });
     }
   });
 
@@ -28,7 +33,7 @@ define([
     profile = ProfileApp.initialize();
     project = ProjectApp.initialize();
 
-    Backbone.history.start({pushState: false});
+    Backbone.history.start({ pushState: false });
 
     $(".nav li").on("click", function () {
       $(".nav li").removeClass("active");

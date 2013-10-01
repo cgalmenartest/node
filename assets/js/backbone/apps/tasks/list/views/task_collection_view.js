@@ -20,12 +20,13 @@ define([
 			}
 
 			this.compiledTemplate = _.template(TaskListTemplate, tasksJSON);
-			console.log(this.$el);
-			//$(this.el).html(this.compiledTemplate);
 			this.$el.html(this.compiledTemplate);
 
-			// Allow chaining.
 			return this;
+		},
+
+		cleanup: function () {
+			$(this.el).children().remove();
 		}
 
 	});

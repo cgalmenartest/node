@@ -10,15 +10,14 @@ define([
 	Application.Controller.Marketing = BaseController.extend({
 
 		initialize: function () {
-			this.initializeHomeView();
+			this.initializeHomeView()
 		},
 
 		initializeHomeView: function () {
-			this.marketingHomeView ? 
-				this.marketingHomeView.render() :
-				this.marketingHomeView = new MarketingHomeView({
-					el: "#container"
-				}).render();
+			if (this.marketingHomeView) this.marketingHomeView.cleanup()
+			this.marketingHomeView = new MarketingHomeView({
+				el: "#container"
+			}).render();
 		}
 	
 	});

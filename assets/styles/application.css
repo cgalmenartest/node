@@ -63,6 +63,14 @@
 	color: #FFFFFF;
 }
 
+.white a {
+	color: #FFFFFF;
+}
+
+.white .comment-created-at {
+	color: #FFFFFF;
+}
+
 /*****************
 =  HOMEPAGE 
 ******************/
@@ -264,6 +272,14 @@ body > .popover {
 #project-admin-bar #file-upload-progress-container {
 	margin-top: 10px;
 	margin-bottom: 0;
+}
+
+.tag-delete {
+	cursor: pointer;
+}
+
+.select-tags-buttons {
+	margin-top: 10px;
 }
 
 ul.tags {
@@ -560,6 +576,8 @@ ul.comment-list {
 .comment-item {
 	overflow: hidden;
 	display: inline-table;
+	background: #eee;
+	margin-top: 10px;
 }
 
 .comment-image {

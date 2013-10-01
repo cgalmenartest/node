@@ -62,182 +62,34 @@
       </div>
     </div>
 
-    <div class="skills">
-      <h4><i class="icon-atom"></i> Skills</h4>
-      <ul class="tags">
-        <li>community building</li>
-        <li>node.js</li>
-        <li>human-centered design</li>
-        <li>web design</li>
-        <li>databases</li>
-      </ul>
+    <% if (data.isOwner) { %>
+    <div class="row">
+      <div class="col-lg-12 select-tags">
+        <input type="hidden" id="input-tags" style="width: 100%"/>
+      </div>
     </div>
+    <div class="row">
+      <div class="col-lg-12 select-tags-buttons">
+        <div class="pull-right">
+          <a href="#createTag" id="tag-create" class="btn btn-sm btn-c0" data-toggle="modal">Create Tag</a>
+          <button id="tag-save" class="btn btn-sm btn-c3">Save Tags</button>
+        </div>
+      </div>
+    </div>
+    <% } %>
 
-    <div class="topics">
-      <h4><i class="icon-briefcase"></i> Topics</h4>
+    <% for (var i = 0; i < tags.length; i++) { %>
+    <div class="<%- tags[i].class %>" id="<%- tags[i].id %>">
+      <h4><i class="<%- tags[i].icon %>"></i> <%- tags[i].plural %></h4>
       <ul class="tags">
-        <li>collaboration</li>
-        <li>innovation</li>
-        <li>networking</li>
-        <li>knowledge sharing</li>
-        <li>crowdsourcing</li>
+        <li class="tag-empty" id="<%- tags[i].class %>-empty">None</li>
       </ul>
     </div>
-
-    <div class="agencies">
-      <h4><i class="icon-library"></i> Agencies</h4>
-      <ul class="tags">
-        <li>Office of Science and Technology Policy</li>
-        <li>Department of State</li>
-        <li>General Services Administration</li>
-      </ul>
-    </div>
-
-    <div class="locations">
-      <h4><span class="glyphicon glyphicon-map-marker"></span> Location</h4>
-      <ul class="tags">
-        <li>Washington, DC</li>
-        <li>San Francisco, CA</li>
-      </ul>
-    </div>
+    <% } %>
 
     <!-- BEGIN EVENTS -->
-    <div class="list-box">
+    <div class="list-box" id="event-list-wrapper">
 
-      <h2 class="sidebar-c1 sidebar-c1-highlight">
-        Next Event
-        <a href="/event/ical/<%= data.id %>" class="btn btn-c1 btn-xs list-add"><span class="glyphicon glyphicon-calendar"></span> iCal</a>
-        <button class="btn btn-c0 btn-xs list-add" data-toggle="modal">Add Event</button>
-      </h2>
-
-      <div class="event first sidebar-c1">
-        <div class="event-title sidebar-c1-highlight">Presidential Innovation Fellows Demo Day</div>
-        <div class="event-description">
-          The next demo day will be a chance to see Innovation Toolkit in action.  Please attend to ask questions, provide feedback, and help make Innovation Toolkit better.  Below are the ...
-          <a href="#">MORE</a>
-        </div>
-        <div class="event-item sidebar-c1-highlight">
-          <div class="event-icon">
-            <i class="icon-calendar"></i>
-          </div>
-          <div class="event-wrapper">
-            <div class="event-day"> October 10, 2013</div>
-            <div class="event-time">8:00pm - 10:00pm</div>
-          </div>
-        </div>
-
-        <div class="event-item sidebar-c1-highlight">
-          <div class="event-icon">
-            <span class="glyphicon glyphicon-map-marker"></span>
-          </div>
-          <div class="event-wrapper">
-            <div class="event-location">
-              General Services Administration
-            </div>
-            <div class="event-location">
-              1800 F Street NW
-            </div>
-            <div class="event-location">
-              Washington, DC
-            </div>
-          </div>
-        </div>
-
-        <div class="event-item sidebar-c1-highlight">
-          <div class="event-icon">
-            <i class="icon-ok-sign"></i>
-          </div>
-          <div class="event-wrapper">
-            <div class="event-rsvp">
-              <button class="btn btn-c1 btn-sm">RSVP</button>
-            </div>
-          </div>
-          <div class="event-people pull-right"><i class="icon-male"></i> 43 people going</div>
-        </div>
-        <div class="event-people-bar">
-          <div class="project-people-div" data-userid="1">
-            <img src="/user/photo/1" class="project-people"/>
-          </div>
-          <div class="project-people-div" data-userid="2">
-            <img src="/user/photo/2" class="project-people"/>
-          </div>
-          <div class="project-people-div" data-userid="3">
-            <img src="/user/photo/3" class="project-people"/>
-          </div>
-          <div class="project-people-div" data-userid="4">
-            <img src="/user/photo/4" class="project-people"/>
-          </div>
-          <div class="project-people-div" data-userid="5">
-            <img src="/user/photo/5" class="project-people"/>
-          </div>
-          <div class="project-people-div" data-userid="6">
-            <img src="/user/photo/6" class="project-people"/>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="list-box">
-      <h2 class="sidebar-c1-light">Upcoming Events</h2>
-      <div class="event sidebar-c1-light sidebar-c1-bar">
-        <div class="event-title">
-          Project Kickoff Meeting
-        </div>
-
-        <div class="event-description">
-          Please join us for a project kickoff meeting, where we’ll discuss the primary objectives, project milestones, and develop an ... <a href="#">MORE</a>
-        </div>
-
-        <div class="row">
-          <div class="col-lg-6">
-            <div class="event-item">
-              <div class="event-icon">
-                <i class="icon-calendar"></i>
-              </div>
-              <div class="event-wrapper">
-                October 24, 2013<br/>
-                10:00am - 2:00pm
-              </div>
-            </div>
-
-          </div>
-          <div class="col-lg-6">
-            <div class="event-item">
-              <div class="event-icon">
-                <span class="glyphicon glyphicon-map-marker"></span>
-              </div>
-              <div class="event-wrapper">
-                1800 F Street NW<br/>
-                Washington, DC
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-lg-6">
-            <div class="event-item">
-              <div class="event-icon">
-                <i class="icon-male"></i>
-              </div>
-              <div class="event-wrapper event-people">
-                18 people going
-              </div>
-            </div>
-
-          </div>
-          <div class="col-lg-6">
-            <div class="event-item">
-              <div class="event-icon">
-                <i class="icon-ok-sign"></i>
-              </div>
-              <div class="event-wrapper">
-                <button class="btn btn-c1 btn-xs">RSVP</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
     </div>
     <!-- END EVENTS -->
 
@@ -249,12 +101,15 @@
 
   <div class="col-lg-8">
     <!-- RIGHT MAIN BAR -->
+    <div class="main-section">
 
-    <h1><%= data.title %></h1>
+      <h1><%= data.title %></h1>
 
-    <div class="project-description">
-      <%= data.description %>
-    </div>
+      <div class="project-description">
+        <%= data.description %>
+      </div>
+
+    </div> <!-- /main-section -->
 
     <h4>Project Status</h4>
     <div class="project-status c2">
@@ -274,12 +129,7 @@
       <% } %>
     </div>
 
-    <h4>Discussion
-      <button class="btn btn-c3 btn-sm file-add">Add Topic</button>
-    </h4>
-    <div class="project-comments">
-      <div class="comment-list-wrapper"></div>
-      <div class="comment-form-wrapper"></div>
+    <div class="comment-list-wrapper">
     </div>
 
     <h4>Attachments

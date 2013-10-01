@@ -9,10 +9,12 @@ require.config({
     'text'                      : '../../vendor/text',
     'jquery'                    : '../../vendor/jquery',
     'jquery_timeago'            : '../../vendor/jquery.timeago',
+    'jquery_select2'            : '../../vendor/select2/select2',
     'dropzone'                  : '../../vendor/dropzone-amd-module',
     'underscore'                : '../../vendor/underscore',
     'backbone'                  : '../../vendor/backbone',
     'bootstrap'                 : '../../vendor/bootstrap',
+    'async'                     : '../../vendor/async/lib/async',
 
     // ---------
     //= Mixins
@@ -54,6 +56,7 @@ require.config({
     'projects_show_controller'  : '../apps/project/show/controllers/project_show_controller',
     'project_item_view'         : '../apps/project/show/views/project_item_view',
     'project_show_template'     : '../apps/project/show/templates/project_item_view_template.html',
+    'project_tag_template'      : '../apps/project/show/templates/project_tag_item_template.html',
     'project_list_template'     : '../apps/project/list/templates/project_collection_view_template.html',
     'project_model'             : '../entities/projects/project_model',
     'projects_collection'       : '../entities/projects/projects_collection',
@@ -62,6 +65,12 @@ require.config({
     'project_edit_form_template': '../apps/project/edit/templates/project_edit_form_template.html',
     'project_edit_form_view'    : '../apps/project/edit/views/project_edit_form_view',
 
+    // ----------
+    //= Tags
+    // ----------
+    'tag_config'                : '../components/tag',
+    'tag_form_view'             : '../apps/tag/new/views/tag_new_form_view',
+    'tag_form_template'         : '../apps/tag/new/templates/tag_new_form_template.html',
 
     // ----------
     //= Tasks
@@ -73,6 +82,17 @@ require.config({
     'task_list_controller'      : '../apps/tasks/list/controllers/task_list_controller',
     'task_collection_view'      : '../apps/tasks/list/views/task_collection_view',
     'task_form_view'            : '../apps/tasks/new/views/task_form_view',
+
+    // ----------
+    //= Events
+    // ----------
+    'event_list_template'        : '../apps/events/list/templates/event_collection_view_template.html',
+    'event_form_template'        : '../apps/events/new/templates/event_form_template.html',
+    'events_collection'          : '../entities/events/events_collection', 
+    'event_model'                : '../entities/events/event_model',
+    'event_list_controller'      : '../apps/events/list/controllers/event_list_controller',
+    'event_collection_view'      : '../apps/events/list/views/event_collection_view',
+    'event_form_view'            : '../apps/events/new/views/event_form_view',
 
     // ----------
     //= PROFILE
@@ -88,6 +108,8 @@ require.config({
     // ----------
     'comment_list_controller'   : '../apps/comments/list/controllers/comment_list_controller',
     'comment_list_template'     : '../apps/comments/list/templates/comment_list_template.html',
+    'comment_item_template'     : '../apps/comments/list/templates/comment_item_template.html',
+    'comment_wrapper_template'  : '../apps/comments/list/templates/comment_wrapper_template.html',
     'comment_list_view'         : '../apps/comments/list/views/comment_list_view',
     'comment_collection'        : '../entities/comments/comment_collection',
     'comment_model'             : '../entities/comments/comment_model',
@@ -100,6 +122,14 @@ require.config({
     'modal_component'           : '../components/modal',
     'modal_template'            : '../components/modal_template.html',
     'autocomplete'              : '../mixins/autocomplete'
+  },
+
+  shim: {
+    // Select2 is not an AMD module
+    'jquery_select2': {
+      deps: ['jquery'],
+      exports: 'select2'
+    }
   }
 
 });
