@@ -4,7 +4,7 @@ define([
 	'backbone',
 	'base_app_module',
 	'marketing_home_controller'
-], function (_, Backbone, BaseAppModule, MarketingHomeController) {
+], function ($, _, Backbone, BaseAppModule, MarketingHomeController) {
 
 	Application.AppModule.Marketing = BaseAppModule.extend({
 
