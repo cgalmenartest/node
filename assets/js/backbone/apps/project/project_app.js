@@ -12,6 +12,7 @@ define([
     },
 
     list: function () {
+      $("#container").children().remove();
       if (this.projectListController) {
         this.projectListController.initialize();
       } else {

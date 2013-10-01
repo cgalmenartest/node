@@ -34,8 +34,7 @@ define([
 			this.collection.trigger("projects:fetch");
 
 			this.listenTo(this.collection, "project:save:success", function () {
-				$(".modal-backdrop").hide();
-      	$(".modal").modal('hide');
+				window.location.reload()
       	self.renderProjectCollectionView();
 			})
 		},
@@ -60,13 +59,14 @@ define([
 		},
 
 		renderProjectCollectionView: function (collection) {
-			this.projectCollectionView ?	
-				this.projectCollectionView.render() :
-				this.projectCollectionView = new ProjectsCollectionView({
-					el: "#container",
-					onRender: true,
-					collection: collection
-				}).render();
+			if (this.projectCollectionView)
+				$("#container").children().remove();
+
+			this.projectCollectionView = new ProjectsCollectionView({
+				el: "#container",
+				onRender: true,
+				collection: collection
+			}).render();
 		},
 
 		// -----------------------
@@ -96,7 +96,7 @@ define([
       if (!_.isUndefined(this.modalComponent)) {
         if (this.projectFormView) this.projectFormView();
         this.projectFormView = new ProjectFormView({
-          el: ".modal-body",
+          el: ".modal-template",
           collection: self.collection
         }).render();  
       }

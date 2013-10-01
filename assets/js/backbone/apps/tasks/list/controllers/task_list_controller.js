@@ -20,9 +20,14 @@ define([
 
     initialize: function (settings) {
       this.options = _.extend(settings, this.defaults);
+      var self = this;
 
       this.fireUpTasksCollection();
       this.requestTasksCollectionData();
+
+      this.collection.on("tasks:render", function () {
+        self.requestTasksCollectionData()
+      })
     },
 
     fireUpTasksCollection: function () {
@@ -39,27 +44,33 @@ define([
       this.collection.fetch({
         url: '/task/findAllByProjectId/' + parseInt(this.options.projectId),
         success: function (collection) {
-          self.renderTaskCollectionView(collection)
+          self.tasks = collection;
+          self.renderTaskCollectionView()
         }
       });
     },
 
-    renderTaskCollectionView: function (collection) {
+    renderTaskCollectionView: function () {
+      var self = this;
+
       $(".modal-backdrop").hide();
       $(".modal").modal('hide');
-        
+      $("body").removeClass("modal-open")
+
       if (this.taskCollectionView) {
         this.taskCollectionView.cleanup();
       }
       this.taskCollectionView = new TaskCollectionView({
         el: "#task-list-wrapper",
         onRender: true,
-        collection: collection
+        collection: self.tasks
       });
 
     },
 
     add: function (e) {
+      var self = this;
+
       if (e.preventDefault()) e.preventDefault();
 
       if (this.modalComponent) this.modalComponent;
@@ -72,8 +83,9 @@ define([
       if (!_.isUndefined(this.modalComponent)) {
         if (this.taskFormView) this.taskFormView;
         this.taskFormView = new TaskFormView({
-          el: ".modal-body",
-          projectId: this.options.projectId
+          el: ".modal-template",
+          projectId: this.options.projectId,
+          tasks: self.tasks
         }).render();  
       }
       

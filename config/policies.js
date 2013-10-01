@@ -59,17 +59,38 @@ module.exports.policies = {
     'unlike': ['authenticated', 'requireUserId', 'addUserId', 'requireId']
   },
 
-  TaskController : {
-    'findAllByProjectId': ['authenticated', 'addUserId', 'project']
-  },
-
   EventController : {
-    'create': ['authenticated', 'addUserId', 'eventUuid'],
+    'create': ['authenticated', 'requireUserId', 'addUserId', 'eventUuid'],
     'findAllByProjectId': ['authenticated', 'addUserId', 'requireId', 'project'],
     'attend': ['authenticated', 'requireUserId', 'addUserId', 'requireId'],
     'cancel': ['authenticated', 'requireUserId', 'addUserId', 'requireId'],
     'rsvp': ['authenticated', 'requireUserId', 'addUserId'],
     'ical': ['authenticated', 'addUserId', 'project']
+  },
+
+  TagController : {
+    '*': ['authenticated'],
+    'find': false,
+    'create': ['authenticated', 'requireUserId', 'projectId'],
+    'destroy': ['authenticated', 'requireUserId', 'requireId'],
+    'add': ['authenticated', 'requireUserId'],
+    'findAllByProjectId': ['authenticated', 'requireId', 'project']
+  },
+
+  CommentController : {
+    'find': false,
+    'create': ['authenticated', 'requireUserId', 'addUserId'],
+    'destroy': ['authenticated', 'requireUserId', 'requireId'],
+    'findAllByProjectId': ['authenticated', 'requireId', 'project']
+  },
+
+  TagEntityController : {
+    // Purely for administrative functions
+    '*': 'admin'
+  },
+
+  TaskController : {
+    'findAllByProjectId': ['authenticated', 'addUserId', 'project']
   }
 
   /*

@@ -29,8 +29,7 @@ Lift sails from the main directory.
 This project uses forked repositories and libaries, which you will
 need to `npm link` in order for everything to function properly.
 
-- [sails-postgresql](https://github.com/Innovation-Toolkit/sails-postgresql). Forked to provide soft deletes and support binary objects.
-- [sails](https://github.com/balderdashy/sails). Use the master branch rather than 0.9.3. May not be necessary once Balderdash releases a new version.
+- [sails-postgresql](https://github.com/Innovation-Toolkit/sails-postgresql). Forked to provide soft deletes and support binary objects.  `git clone https://github.com/Innovation-Toolkit/sails-postgresql.git`
 
 ## Development
 
