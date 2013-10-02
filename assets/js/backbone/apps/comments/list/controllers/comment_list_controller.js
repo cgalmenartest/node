@@ -8,14 +8,16 @@ define([
   'comment_form_view'
 ], function ($, _, Backbone, Popovers, CommentCollection, CommentListView, CommentFormView) {
 
+  var popovers = new Popovers();
+
   Application.Controller.Comment = Backbone.View.extend({
 
     el: ".comment-list-wrapper",
 
     events: {
       "click .reply-to": "reply",
-      "mouseenter .comment-user-link" : popoverPeopleOn,
-      "mouseleave .comment-user-link" : popoverPeopleOff
+      "mouseenter .comment-user-link" : popovers.popoverPeopleOn,
+      "mouseleave .comment-user-link" : popovers.popoverPeopleOff
     },
 
     initialize: function () {
@@ -78,7 +80,6 @@ define([
         collection: collection
       }).render();
 
-      popoverPeopleInit(".comment-user-link");
       var self = this;
       rendering.trigger("renderForm")
       rendering.once("renderForm", function () {
@@ -93,6 +94,8 @@ define([
             });
           }
         }
+        popovers.popoverPeopleInit(".comment-user-link");
+        popovers.popoverPeopleInit(".project-people-div");
       })
       
     },

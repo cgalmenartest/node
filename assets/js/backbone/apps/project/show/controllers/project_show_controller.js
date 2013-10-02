@@ -17,6 +17,8 @@ define([
 	TaskListController, EventListController, CommentListController, CommentFormView,
 	ModalComponent, TagFormView, autocomplete) {
 
+	var popovers = new Popovers();
+
 	Application.Project = {};
 
 	Application.Project.ShowController = BaseController.extend({
@@ -35,9 +37,9 @@ define([
 			"click #tag-save"       : "tagSave",
 			"click .tag-delete"     : "tagDelete",
 			"change #project-state" : "updateState",
-			"mouseenter .project-people-div" : popoverPeopleOn,
-			"mouseleave .project-people-div" : popoverPeopleOff,
-			"click .project-people-div" : popoverPeopleOn,
+			"mouseenter .project-people-div" : popovers.popoverPeopleOn,
+			"mouseleave .project-people-div" : popovers.popoverPeopleOff,
+			"click .project-people-div" : popovers.popoverPeopleOn,
 			"keyup .comment-content": "search"
 		},
 
@@ -126,7 +128,7 @@ define([
 		},
 
 		initializeUI: function() {
-			popoverPeopleInit(".project-people-div");
+			popovers.popoverPeopleInit(".project-people-div");
 		},
 
 		edit: function (e) {

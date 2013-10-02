@@ -9,6 +9,8 @@ define([
   'event_form_view'
 ], function ($, _, Backbone, Popovers, EventsCollection, EventCollectionView, ModalComponent, EventFormView) {
 
+  var popovers = new Popovers();
+
   Application.Controller.EventList = Backbone.View.extend({
 
     el: "#event-list-wrapper",
@@ -19,8 +21,8 @@ define([
       'click .featured-rsvp': 'featuredRSVP',
       'click .remove-featured-rsvp': 'removeFeaturedRSVP',
       'click .remove-rsvp'  : 'removeRSVP',
-      "mouseenter .project-people-div" : popoverPeopleOn,
-      "mouseleave .project-people-div" : popoverPeopleOff
+      "mouseenter .project-people-div" : popovers.popoverPeopleOn,
+      "mouseleave .project-people-div" : popovers.popoverPeopleOff
     },
 
     initialize: function (settings) {
@@ -65,7 +67,9 @@ define([
         el: "#event-list-wrapper",
         onRender: true,
         collection: collection
-      })
+      });
+
+      popovers.popoverPeopleInit(".project-people-div");
     },
 
     add: function (e) {
