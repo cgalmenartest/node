@@ -8,39 +8,64 @@
 var _ = require('underscore');
 var async = require('async');
 var projUtils = require('../services/utils/project');
+var taskUtils = require('../services/utils/task');
+
+/**
+ * Gets all the tags given a particular
+ * where clause, allowing flexibly fetching
+ * tags for different parts of the application,
+ * such as projects, tasks, or people.
+ *
+ * Example: commentAssemble({ projectId: id }, function (err, comments) { });
+ */
+var tagAssemble = function (where, done) {
+  Tag.find()
+  .where(where)
+  .exec(function (err, tags) {
+    if (err) { return done(err, null); }
+    if (!tags || (tags.length == 0)) { return done(null, []); }
+    var entities = {};
+    var tagIds = [];
+
+    // Helper function for async to look up each tag entitiy
+    var getTags = function (tagId, next) {
+      if (entities[tagId]) { return next(); }
+      TagEntity.findOne(tagId, function (err, t) {
+        entities[tagId] = t;
+        next(err);
+      });
+    }
+
+    // Get all the tag ids
+    for (var i = 0; i < tags.length; i++) {
+      tagIds.push(tags[i].tagId);
+    }
+
+    // Get the tag entities for each id
+    async.each(tagIds, getTags, function(err) {
+      if (err) { return done(err, null); }
+      // Attach the tag entity to the tag
+      for (var i = 0; i < tags.length; i++) {
+        tags[i].tag = entities[tags[i].tagId];
+      }
+      return done(null, tags);
+    });
+  });
+};
 
 module.exports = {
 
-  findAllByProjectId: function (req, res) {
-    Tag.findByProjectId(req.params.id, function (err, tags) {
+  findAllByTaskId: function (req, res) {
+    tagAssemble({ taskId: req.params.id }, function (err, tags) {
       if (err) { return res.send(400, { message: "Error looking up tags"}); }
-      if (!tags || (tags.length == 0)) { return res.send([]); }
-      var entities = {};
-      var tagIds = [];
+      return res.send(tags);
+    });
+  },
 
-      // Helper function for async to look up each tag entitiy
-      var getTags = function (tagId, done) {
-        if (entities[tagId]) { return done(); }
-        TagEntity.findOne(tagId, function (err, t) {
-          entities[tagId] = t;
-          done(err);
-        });
-      }
-
-      // Get all the tag ids
-      for (var i = 0; i < tags.length; i++) {
-        tagIds.push(tags[i].tagId);
-      }
-
-      // Get the tag entities for each id
-      async.each(tagIds, getTags, function(err) {
-        if (err) { return res.send(400, { message: "Error looking up tags"}); }
-        // Attach the tag entity to the tag
-        for (var i = 0; i < tags.length; i++) {
-          tags[i].tag = entities[tags[i].tagId];
-        }
-        return res.send(tags);
-      });
+  findAllByProjectId: function (req, res) {
+    tagAssemble({ projectId: req.params.id }, function (err, tags) {
+      if (err) { return res.send(400, { message: "Error looking up tags"}); }
+      return res.send(tags);
     });
   },
 
@@ -93,14 +118,19 @@ module.exports = {
       if (err) { return res.send(400, { message: 'Error looking up tag' }); }
       if (!tag) { return res.send(404, { message: 'Tag not found'}); }
       // check if this user is authorized
-      projUtils.authorized(tag.projectId, req.user[0].id, function (err, proj) {
+      var checkAuthorization = function (err, item) {
         if (err) { return res.send(400, { message: err }); }
         if (!err && !proj) { return res.send(403, { message: 'Not authorized.'}); }
         tag.destroy(function (err) {
           if (err) { return res.send(400, { message: 'Error destroying tag mapping' }); }
           return res.send(tag);
         });
-      });
+      }
+      if (tag.projectId) {
+        projUtils.authorized(tag.projectId, req.user[0].id, checkAuthorization)
+      } else {
+        taskUtils.authorized(tag.taskId, req.user[0].id, checkAuthorization)
+      }
     });
   }
 

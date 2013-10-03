@@ -81,14 +81,16 @@ module.exports.policies = {
     'update': false,
     'destroy': ['authenticated', 'requireUserId', 'requireId'],
     'add': ['authenticated', 'requireUserId'],
-    'findAllByProjectId': ['authenticated', 'requireId', 'project']
+    'findAllByProjectId': ['authenticated', 'requireId', 'project'],
+    'findAllByTaskId': ['authenticated', 'requireId', 'task']
   },
 
   CommentController : {
     'find': false,
     'create': ['authenticated', 'requireUserId', 'addUserId'],
     'destroy': ['authenticated', 'requireUserId', 'requireId'],
-    'findAllByProjectId': ['authenticated', 'requireId', 'project']
+    'findAllByProjectId': ['authenticated', 'requireId', 'project'],
+    'findAllByTaskId': ['authenticated', 'requireId', 'task']
   },
 
   TagEntityController : {
