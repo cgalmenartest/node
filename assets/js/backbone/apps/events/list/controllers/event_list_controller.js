@@ -15,10 +15,8 @@ define([
 
     events: {
       'click .add-event'    : 'add',
-      'click .rsvp'         : 'rsvp',
-      'click .featured-rsvp': 'featuredRSVP',
-      'click .remove-featured-rsvp': 'removeFeaturedRSVP',
-      'click .remove-rsvp'  : 'removeRSVP',
+      'click .rsvp'         : 'toggleRSVP',
+      'click .featured-rsvp': 'toggleFeaturedRSVP',
       "mouseenter .project-people-div" : popoverPeopleOn,
       "mouseleave .project-people-div" : popoverPeopleOff
     },
@@ -88,66 +86,61 @@ define([
       }
     },
 
-    rsvp: function (e) {
+    toggleRSVP: function (e) {
       if (e.preventDefault()) e.preventDefault()
 
       var id = parseInt($(e.currentTarget).parent().parent().parent().parent().parent().attr("id"))
 
-      $.ajax({
-        url: '/event/attend/' + id,
-        success: function (data) {
-          $(e.currentTarget).attr('disabled', true)
-          $("<button class='remove-rsvp'>x</button>").insertAfter(e.currentTarget)
-        }
-      })
-
+      if ($(".rsvp").hasClass("data-event-flag-true") === false) {
+        $(".rsvp").removeClass("data-event-flag-false");
+        $(".rsvp").addClass("data-event-flag-true");
+        $.ajax({
+          url: '/event/attend/' + id,
+          success: function (data) {
+            $(e.currentTarget).text("I'm going.");
+          }
+        });
+      } else {
+        $(".rsvp").removeClass("data-event-flag-true");
+        $(".rsvp").addClass("data-event-flag-false");
+        $.ajax({
+          url: '/event/cancel/' + id,
+          success: function (data) {
+            $(e.currentTarget).text("RSVP")
+          }
+        })
+      }
     },
 
-    featuredRSVP: function (e) {
-      if (e.preventDefault()) e.preventDefault()
-      var id = parseInt($(e.currentTarget).parent().parent().parent().parent().attr('id'))
-    var self = this;
-
-      $.ajax({
-        url: '/event/attend/' + id,
-        success: function (data) {
-          $(e.currentTarget).attr('disabled', true)
-          $("<button class='remove-featured-rsvp'>x</button>").insertAfter(e.currentTarget)
-          self.trigger("event:save:success")
-        }
-      })
-    },
-
-    removeFeaturedRSVP: function (e) {
+    toggleFeaturedRSVP: function (e) {
       if (e.preventDefault()) e.preventDefault()
 
       var id = parseInt($(e.currentTarget).parent().parent().parent().parent().attr("id"))
 
-      $.ajax({
-        url: '/event/cancel/' + id,
-        success: function (data) {
-          $(e.currentTarget).remove()
-          $("#" + id).find('.featured-rsvp').attr("disabled", false)
-          var t = parseInt($("#" + id).find('.event-people').text()) - 1
-          $("#"+id).find('.event-people').text(t+' people going')
-        }
-      })
+      if ($(".featured-rsvp").hasClass("data-event-flag-false")) {
+        $(".featured-rsvp").removeClass("data-event-flag-false");
+        $(".featured-rsvp").addClass("data-event-flag-true");
+
+        $.ajax({
+          url: '/event/attend/' + id,
+          success: function (data) {
+            $(e.currentTarget).text("I'm going.");
+            $(e.currentTarget).attr("data-event-flag", true);
+          }
+        });
+      } else {
+        $(".featured-rsvp").removeClass("data-event-flag-true");
+        $(".featured-rsvp").addClass("data-event-flag-false");
+        $.ajax({
+          url: '/event/cancel/' + id,
+          success: function (data) {
+            $(e.currentTarget).text("RSVP")
+            $(e.currentTarget).attr("data-event-flag", false)
+          }
+        })
+      }
     },
 
-    removeRSVP: function (e) {
-      if (e.preventDefault()) e.preventDefault()
-
-      var id = parseInt($(e.currentTarget).parent().parent().parent().parent().parent().attr("id"))
-
-      $.ajax({
-        url: '/event/cancel/' + id,
-        success: function (data) {
-          $(e.currentTarget).remove()
-          $("#" + id).find('.rsvp').attr("disabled", false)
-
-        }
-      })
-    },
 
     cleanup: function () {
       $(this.el).children().remove()

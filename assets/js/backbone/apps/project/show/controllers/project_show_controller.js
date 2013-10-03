@@ -215,8 +215,7 @@ define([
         this.tagFormView = new TagFormView({
           el: ".modal-template",
           model: self.model
-        });
-        this.tagFormView.render();
+        }).render();
       }
 		},
 

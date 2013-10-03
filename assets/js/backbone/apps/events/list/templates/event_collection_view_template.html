@@ -51,7 +51,11 @@
     </div>
     <div class="event-wrapper">
       <div class="event-rsvp">
-        <button class="btn btn-c1 btn-sm featured-rsvp">RSVP</button>
+          <% if (featured_event.rsvp) { %>
+            <button class="btn btn-c1 btn-sm featured-rsvp data-event-flag-true">I'm going</button>
+          <% } else { %>
+            <button class="btn btn-c1 btn-sm featured-rsvp data-event-flag-false">RSVP</button>
+          <% } %>
       </div>
     </div>
     <div class="event-people pull-right"><i class="icon-male"></i><%= featured_event.rsvps.length %> people going</div>
@@ -130,12 +134,11 @@
           <i class="icon-ok-sign"></i>
         </div>
         <div class="event-wrapper">
-          <% if (event.rsvp) { %>
-            <button class="btn btn-c1 btn-xs rsvp" disabled="true">RSVP</button>
-            <button class="remove-rsvp">x</button>
-          <% } else { %>
-            <button class="btn btn-c1 btn-xs rsvp">RSVP</button>
-          <% } %>
+            <% if (event.rsvp) { %>
+              <button class="btn btn-c1 btn-xs rsvp data-event-flag-true">I'm going</button>
+            <% } else { %>
+              <button class="btn btn-c1 btn-xs rsvp data-event-flag-false">RSVP</button>
+            <% } %>
         </div>
       </div>
     </div>
