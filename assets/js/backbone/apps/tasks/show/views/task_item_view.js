@@ -2,8 +2,9 @@ define([
   'bootstrap',
   'popover',
   'underscore',
-  'backbone'
-], function (Bootstrap, Popover, _, Backbone) {
+  'backbone',
+  'text!task_show_template'
+], function (Bootstrap, Popover, _, Backbone, TaskShowTemplate) {
 
   var TaskItemView = Backbone.View.extend({
 
@@ -11,6 +12,9 @@ define([
     // Aka item view.
 
     render: function () {
+      var compiledTemplate = _.extend(TaskShowTemplate, this.model.toJSON())
+      $(this.el).html(compiledTemplate)
+
       return this;
     }
 
