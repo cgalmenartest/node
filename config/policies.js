@@ -60,8 +60,8 @@ module.exports.policies = {
     'count': ['authenticated', 'requireId', 'project'],
     'like': ['authenticated', 'requireUserId', 'addUserId', 'requireId'],
     'unlike': ['authenticated', 'requireUserId', 'addUserId', 'requireId'],
+    'create': ['authenticated', 'requireUserId', 'addUserId'],
     'destroy': false,
-    'create': false,
     'update': false
   },
 

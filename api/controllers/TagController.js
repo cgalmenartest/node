@@ -120,7 +120,7 @@ module.exports = {
       // check if this user is authorized
       var checkAuthorization = function (err, item) {
         if (err) { return res.send(400, { message: err }); }
-        if (!err && !proj) { return res.send(403, { message: 'Not authorized.'}); }
+        if (!err && !item) { return res.send(403, { message: 'Not authorized.'}); }
         tag.destroy(function (err) {
           if (err) { return res.send(400, { message: 'Error destroying tag mapping' }); }
           return res.send(tag);
