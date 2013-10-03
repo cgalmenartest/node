@@ -49,7 +49,8 @@ module.exports.policies = {
   },
 
   ProjectController : {
-    '*': ['authenticated', 'addUserId', 'project']
+    '*': ['authenticated', 'addUserId', 'project'],
+    'find': ['authenticated', 'requireId', 'project']
   },
 
   LikeController : {
@@ -90,6 +91,7 @@ module.exports.policies = {
   },
 
   TaskController : {
+    'find': ['authenticated', 'requireId', 'task'],
     'findAllByProjectId': ['authenticated', 'addUserId', 'project']
   }
 
