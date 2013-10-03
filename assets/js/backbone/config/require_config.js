@@ -82,6 +82,9 @@ require.config({
     'task_list_controller'      : '../apps/tasks/list/controllers/task_list_controller',
     'task_collection_view'      : '../apps/tasks/list/views/task_collection_view',
     'task_form_view'            : '../apps/tasks/new/views/task_form_view',
+    'task_item_view'            : '../apps/tasks/show/views/task_item_view',
+    'task_show_template'        : '../apps/tasks/task_show_item_template.html',
+    'task_show_controller'      : '../apps/tasks/task_show_controller',
 
     // ----------
     //= Events

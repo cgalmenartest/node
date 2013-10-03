@@ -1,35 +1,54 @@
-<form id="task-form" class="form-horizontal" style="display: block;">
+<form id="task-form" class="form-inline" style="display: block;">
   <div class="modal-body">
     <fieldset>
+
       <div class="form-group">
-        <label for="task-title" class="col-lg-2 control-label">Title</label>
-        <div class="col-lg-10">
-          <input id="task-title" class="form-control" type="text">
-        </div>
+        I need
+          <input type="text" placeholder="someone" class="task-person-type form-control" />
+        with
+          <input type="text" placeholder="expertise" class="task-expertise-type form-control">
+        in
+          <input type="text" placeholder="enter topic(s)" class="task-topic-type form-control">
       </div>
-      <div class="form-group">
-        <label for="task-description" class="col-lg-2 control-label">Description</label>
-        <div class="col-lg-10">
-          <input id="task-description" class="form-control" type="text">
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="task-estimated-time" class="col-lg-2 control-label">Estimated Time</label>
-        <div class="col-lg-10">
-          <input id="task-estimated-time" class="form-control" type="text">
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="task-deadline" class="col-lg-2 control-label">Deadline</label>
-        <div class="col-lg-10">
-          <input id="task-deadline" class="form-control" type="text">
-          <br/>
-        </div>
-      </div>
+
+      It will require
+        <input type="text" placeholder="any available" class="task-time-type form-control">
+      time over the next
+        <input type="text" placeholder="1-3 days" class="task-time-required form-control">
+
     </fieldset>
+
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-c0" data-dismiss="modal">Cancel</button>
     <input type="submit" class="btn btn-c3" value="Add Task"/>
   </div>
 </form>
+
+<!-- Commented out for reference as we evolve madlibs
+<div class="form-group">
+  <label for="task-title" class="col-lg-2 control-label">Title</label>
+  <div class="col-lg-10">
+    <input id="task-title" class="form-control" type="text">
+  </div>
+</div>
+<div class="form-group">
+  <label for="task-description" class="col-lg-2 control-label">Description</label>
+  <div class="col-lg-10">
+    <input id="task-description" class="form-control" type="text">
+  </div>
+</div>
+<div class="form-group">
+  <label for="task-estimated-time" class="col-lg-2 control-label">Estimated Time</label>
+  <div class="col-lg-10">
+    <input id="task-estimated-time" class="form-control" type="text">
+  </div>
+</div>
+<div class="form-group">
+  <label for="task-deadline" class="col-lg-2 control-label">Deadline</label>
+  <div class="col-lg-10">
+    <input id="task-deadline" class="form-control" type="text">
+    <br/>
+  </div>
+</div>
+-->
