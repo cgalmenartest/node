@@ -2,9 +2,11 @@
   <div class="row">
     <div class="col-lg-12 form-group">
       <!-- RIGHT MAIN BAR -->
-      <input id="project-edit-form-title" class="form-control input-lg" type="text" />
+      <input id="project-edit-form-title" class="form-control input-lg" value="<%= data.attributes.title %>" type="text" />
 
-      <textarea maxlength="500" rows="10" class="form-control" id="project-edit-form-description"></textarea>
+      <textarea maxlength="500" rows="10" class="form-control" id="project-edit-form-description">
+        <%= data.attributes.description %>
+      </textarea>
 
       <div class="clearfix"></div>
       <input type="submit">
