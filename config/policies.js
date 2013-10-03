@@ -100,7 +100,10 @@ module.exports.policies = {
 
   TaskController : {
     'find': ['authenticated', 'requireId', 'task'],
-    'findAllByProjectId': ['authenticated', 'addUserId', 'project']
+    'findAllByProjectId': ['authenticated', 'requireId', 'project'],
+    'create': ['authenticated', 'requireUserId', 'addUserId', 'projectId'],
+    'update': ['authenticated', 'requireUserId', 'taskId'],
+    'destroy': ['authenticated', 'requireUserId', 'requireId', 'task']
   }
 
   /*

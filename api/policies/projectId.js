@@ -1,5 +1,6 @@
 /**
-* Get the project referenced in :id and check if access is allowed
+* Get the project referenced in projectId of the request body
+* and check if access is allowed
 */
 var util = require('../services/utils/project')
 
