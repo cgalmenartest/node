@@ -67,6 +67,7 @@ module.exports.policies = {
 
   EventController : {
     'create': ['authenticated', 'requireUserId', 'addUserId', 'projectId', 'eventUuid'],
+    'update': ['authenticated', 'requireUserId', 'projectId'],
     'findAllByProjectId': ['authenticated', 'addUserId', 'requireId', 'project'],
     'attend': ['authenticated', 'requireUserId', 'addUserId', 'requireId'],
     'cancel': ['authenticated', 'requireUserId', 'addUserId', 'requireId'],
@@ -77,7 +78,7 @@ module.exports.policies = {
   TagController : {
     '*': ['authenticated'],
     'find': false,
-    'create': ['authenticated', 'requireUserId', 'projectId'],
+    'create': ['authenticated', 'requireUserId', 'projectId', 'taskId'],
     'update': false,
     'destroy': ['authenticated', 'requireUserId', 'requireId'],
     'add': ['authenticated', 'requireUserId'],
@@ -87,7 +88,8 @@ module.exports.policies = {
 
   CommentController : {
     'find': false,
-    'create': ['authenticated', 'requireUserId', 'addUserId'],
+    'create': ['authenticated', 'requireUserId', 'addUserId', 'projectId', 'taskId'],
+    'update': ['authenticated', 'requireUserId', 'projectId', 'taskId'],
     'destroy': ['authenticated', 'requireUserId', 'requireId'],
     'findAllByProjectId': ['authenticated', 'requireId', 'project'],
     'findAllByTaskId': ['authenticated', 'requireId', 'task']
@@ -102,7 +104,7 @@ module.exports.policies = {
     'find': ['authenticated', 'requireId', 'task'],
     'findAllByProjectId': ['authenticated', 'requireId', 'project'],
     'create': ['authenticated', 'requireUserId', 'addUserId', 'projectId'],
-    'update': ['authenticated', 'requireUserId', 'taskId'],
+    'update': ['authenticated', 'requireUserId', 'projectId', 'taskId'],
     'destroy': ['authenticated', 'requireUserId', 'requireId', 'task']
   }
 
