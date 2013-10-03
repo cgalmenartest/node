@@ -50,18 +50,23 @@ module.exports.policies = {
 
   ProjectController : {
     '*': ['authenticated', 'addUserId', 'project'],
-    'find': ['authenticated', 'requireId', 'project']
+    'find': ['authenticated', 'requireId', 'project'],
+    'update': ['authenticated', 'requireUserId', 'projectId'],
+    'destroy': ['authenticated', 'requireUserId', 'requireId', 'project']
   },
 
   LikeController : {
     '*': ['authenticated', 'addUserId', 'project'],
     'count': ['authenticated', 'requireId', 'project'],
     'like': ['authenticated', 'requireUserId', 'addUserId', 'requireId'],
-    'unlike': ['authenticated', 'requireUserId', 'addUserId', 'requireId']
+    'unlike': ['authenticated', 'requireUserId', 'addUserId', 'requireId'],
+    'destroy': false,
+    'create': false,
+    'update': false
   },
 
   EventController : {
-    'create': ['authenticated', 'requireUserId', 'addUserId', 'eventUuid'],
+    'create': ['authenticated', 'requireUserId', 'addUserId', 'projectId', 'eventUuid'],
     'findAllByProjectId': ['authenticated', 'addUserId', 'requireId', 'project'],
     'attend': ['authenticated', 'requireUserId', 'addUserId', 'requireId'],
     'cancel': ['authenticated', 'requireUserId', 'addUserId', 'requireId'],
@@ -73,6 +78,7 @@ module.exports.policies = {
     '*': ['authenticated'],
     'find': false,
     'create': ['authenticated', 'requireUserId', 'projectId'],
+    'update': false,
     'destroy': ['authenticated', 'requireUserId', 'requireId'],
     'add': ['authenticated', 'requireUserId'],
     'findAllByProjectId': ['authenticated', 'requireId', 'project']
