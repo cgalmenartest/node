@@ -16,6 +16,7 @@ define([
 
     events: {
       "click .reply-to"               : "reply",
+      "click [data-topic='true']"     : "toggleTopic",
       "mouseenter .comment-user-link" : popoverPeopleOn,
       "mouseleave .comment-user-link" : popoverPeopleOff
     },
@@ -113,27 +114,22 @@ define([
 
       });
 
+      this.initializeCommentUIAdditions();
+    },
+
+    initializeCommentUIAdditions: function () {
       popoverPeopleInit(".comment-user-link");
+    },
 
-      rendering.trigger("renderForm")
-      rendering.once("renderForm", function () {
-        var comments = self.commentCollection.toJSON()[0].comments;
-        for (var i = 0; i < comments.length; i++) {
-          if (comments[i].topic === true) {
-            var view = new CommentFormView({
-              el: '#comment-topic-' + comments[i].id,
-              projectId: self.options.projectId,
-              parentId: comments[i].id,
-              collection: collection
-            });
-          }
-        }
-      })
-
+    toggleTopic: function (e) {
+      if (e.preventDefault()) e.preventDefault();
+      // The next() is the adjacent DOM element, and that will always be
+      // the list of comments that directly follows the topic (not child-literal of topic though).
+      $(e.currentTarget).next().slideToggle();
     },
 
     reply: function (e) {
-      if (e.preventDefault()) e.preventDefault();
+      // TBD.
     },
 
     cleanup: function () {

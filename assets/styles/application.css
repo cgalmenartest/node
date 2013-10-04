@@ -1,5 +1,5 @@
 /*****************
-=  GLOBAL 
+=  GLOBAL
 ******************/
 /*
 #container {
@@ -18,9 +18,9 @@
 }
 
 .search-result-row {
-	min-width: 200px; 
-	height: 40px; 
-	background: #eee; 
+	min-width: 200px;
+	height: 40px;
+	background: #eee;
 	border-bottom: 1px #000 solid;
 }
 
@@ -72,14 +72,14 @@
 }
 
 /*****************
-=  HOMEPAGE 
+=  HOMEPAGE
 ******************/
 #home .hreo-title {
     text-align: center;
 }
 
 /*****************
-=  PROJECTS 
+=  PROJECTS
 ******************/
 
 #projects {
@@ -537,6 +537,11 @@ ul.tags > li {
 /*****************
 =  COMMENTS
 ******************/
+
+li[data-topic='true'] {
+	cursor: pointer;
+	cursor: hand;
+}
 
 ul.comment-list > li {
 	list-style: none;
