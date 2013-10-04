@@ -14,11 +14,10 @@ define([
     el: "#event-list-wrapper",
 
     events: {
-      'click .add-event'    : 'add',
-      'click .rsvp'         : 'toggleRSVP',
-      'click .featured-rsvp': 'toggleFeaturedRSVP',
-      "mouseenter .project-people-div" : popoverPeopleOn,
-      "mouseleave .project-people-div" : popoverPeopleOff
+      'click .add-event'                : 'add',
+      'click .rsvp'                     : 'toggleRSVP',
+      "mouseenter .project-people-div"  : popoverPeopleOn,
+      "mouseleave .project-people-div"  : popoverPeopleOff
     },
 
     initialize: function (settings) {
@@ -54,7 +53,7 @@ define([
     },
 
     renderEventCollectionView: function (collection) {
-      
+
       if (this.eventCollectionView) {
         this.eventCollectionView.cleanup()
       }
@@ -74,7 +73,7 @@ define([
         el: "#container",
         id: "addEvent",
         modalTitle: 'Add Event'
-      }).render();  
+      }).render();
 
       if (!_.isUndefined(this.modalComponent)) {
         if (this.eventFormView) this.eventFormView;
@@ -82,13 +81,14 @@ define([
           el: ".modal-template",
           projectId: this.options.projectId,
           collection: this.collection
-        }).render();  
+        }).render();
       }
     },
 
     toggleRSVP: function (e) {
       if (e.preventDefault()) e.preventDefault()
 
+      // Move this to a more semantic method
       var id = parseInt($(e.currentTarget).parent().parent().parent().parent().parent().attr("id"))
 
       if ($(".rsvp").hasClass("data-event-flag-true") === false) {
@@ -111,36 +111,6 @@ define([
         })
       }
     },
-
-    toggleFeaturedRSVP: function (e) {
-      if (e.preventDefault()) e.preventDefault()
-
-      var id = parseInt($(e.currentTarget).parent().parent().parent().parent().attr("id"))
-
-      if ($(".featured-rsvp").hasClass("data-event-flag-false")) {
-        $(".featured-rsvp").removeClass("data-event-flag-false");
-        $(".featured-rsvp").addClass("data-event-flag-true");
-
-        $.ajax({
-          url: '/event/attend/' + id,
-          success: function (data) {
-            $(e.currentTarget).text("I'm going.");
-            $(e.currentTarget).attr("data-event-flag", true);
-          }
-        });
-      } else {
-        $(".featured-rsvp").removeClass("data-event-flag-true");
-        $(".featured-rsvp").addClass("data-event-flag-false");
-        $.ajax({
-          url: '/event/cancel/' + id,
-          success: function (data) {
-            $(e.currentTarget).text("RSVP")
-            $(e.currentTarget).attr("data-event-flag", false)
-          }
-        })
-      }
-    },
-
 
     cleanup: function () {
       $(this.el).children().remove()
