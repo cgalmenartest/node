@@ -7,16 +7,26 @@ define([
   var CommentItemView = Backbone.View.extend({
 
     render: function () {
-      var comment = {
-        comment: this.model
+      // TEMP: Check if there is no link coming back to unmarshal
+      // This cleans up the front-end presentation until we fully implement
+      // marshalling and un-marshalling.
+      var data, compiledTemplate,
+          valueArray              = this.model.value.split("||"),
+          lastStringInValueArray  = $.trim(valueArray[valueArray.length - 1]);
+
+      if (lastStringInValueArray === 'undefined') {
+        valueArray.pop(lastStringInValueArray)
+        this.model['value'] = valueArray.join()
       }
 
-      var compiledTemplate = _.template(CommentItemTemplate, comment)
-      this.$el.append(compiledTemplate)
+      data = { comment: this.model };
+
+      compiledTemplate = _.template(CommentItemTemplate, data);
+      this.$el.append(compiledTemplate);
     },
 
     cleanup: function () {
-      $(this.el).children().remove()
+      $(this.el).children().remove();
     }
 
   });
