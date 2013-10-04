@@ -34,54 +34,54 @@ define([
     },
 
     render: function () {
-      var i,
-          value,
-          wikiLink,
-          comments    = this.collection.toJSON()[0].comments
-          collection  = this.collection.toJSON()[0];
+      // var i,
+      //     value,
+      //     wikiLink,
+      //     comments    = this.collection.toJSON()[0].comments
+      //     collection  = this.collection.toJSON()[0];
 
-      for (i in comments) {
-        value     = comments[i].value.split("||")[0];
-        wikiLink  = comments[i].value.split("||")[1];
+      // for (i in comments) {
+      //   value     = comments[i].value.split("||")[0];
+      //   wikiLink  = comments[i].value.split("||")[1];
 
-        comments[i]['value'] = value;
-        comments[i]['wikiLink'] = wikiLink;
-        for (j in comments[i].comments) {
-          value     = comments[i].comments[j].value.split("||")[0];
-          wikiLink  = comments[i].comments[j].value.split("||")[1];
+      //   comments[i]['value'] = value;
+      //   comments[i]['wikiLink'] = wikiLink;
+      //   for (j in comments[i].comments) {
+      //     value     = comments[i].comments[j].value.split("||")[0];
+      //     wikiLink  = comments[i].comments[j].value.split("||")[1];
 
-          comments[i].comments[j]['value'] = value;
-          comments[i].comments[j]['wikiLink'] = wikiLink;
-        }
-      }
+      //     comments[i].comments[j]['value'] = value;
+      //     comments[i].comments[j]['wikiLink'] = wikiLink;
+      //   }
+      // }
 
-      var compiledTemplate = this.template(collection);
-      this.$el.html(compiledTemplate);
+      // var compiledTemplate = this.template(collection);
+      // this.$el.html(compiledTemplate);
 
-      var itemTemplate =  _.template(CommentItemTemplate);
-      var wrapperTemplate = _.template(CommentWrapperTemplate);
+      // var itemTemplate =  _.template(CommentItemTemplate);
+      // var wrapperTemplate = _.template(CommentWrapperTemplate);
 
-      var renderComment = function(comment) {
-        if (comment.topic) {
-          var wrapper = wrapperTemplate({ comment: comment });
-          $(".project-comments").append(wrapper);
-        }
+      // var renderComment = function(comment) {
+      //   if (comment.topic) {
+      //     var wrapper = wrapperTemplate({ comment: comment });
+      //     $(".project-comments").append(wrapper);
+      //   }
 
-        var parent = comment.parentId;
-        if (!parent) { parent = comment.id; }
-        var item = itemTemplate({ comment: comment });
-        $("#comment-list-" + parent).append(item);
+      //   var parent = comment.parentId;
+      //   if (!parent) { parent = comment.id; }
+      //   var item = itemTemplate({ comment: comment });
+      //   $("#comment-list-" + parent).append(item);
 
-        if (comment.comments) {
-          for (i in comment.comments) {
-            renderComment(comment.comments[i]);
-          }
-        }
-      }
+      //   if (comment.comments) {
+      //     for (i in comment.comments) {
+      //       renderComment(comment.comments[i]);
+      //     }
+      //   }
+      // }
 
-      for (i in comments) {
-        renderComment(comments[i]);
-      }
+      // for (i in comments) {
+      //   renderComment(comments[i]);
+      // }
 
       $("time.timeago").timeago();
       popoverPeopleInit(".project-people-div");

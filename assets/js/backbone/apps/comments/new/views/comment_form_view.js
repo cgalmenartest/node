@@ -26,7 +26,7 @@ define([
           template  = _.template(CommentFormTemplate, data);
 
       this.$el.html(template);
-      
+
       return this;
     },
 
@@ -54,19 +54,15 @@ define([
         parentId: parentId,
         comment: this.comment + "||" + this.wikiLink
       }
+
       var self = this
       this.collection.trigger("comment:save", data);
       this.listenToOnce(this.collection, "comment:save:success", function () {
-          self.collection.fetch({
-          url: '/comment/findAllByProjectId/' + self.options.projectId,
-          success: function (collection) {
-            self.commentListView = new CommentListView({
-              el: ".comment-list-wrapper",
-              collection: collection
-            }).render();
-          }
+          // self.comment = new CommentItemView({
+          //   el: ".comment",
+          //   comment: data.comment
+          // }).render();
         })
-      })
     },
 
     cleanup: function () {

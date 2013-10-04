@@ -15,6 +15,7 @@ define([
 
       this.listenTo(this, "comment:save", function (data) {
         self.addAndSave(data);
+        console.log("werd")
       });
 
     },
@@ -22,18 +23,19 @@ define([
     addAndSave: function (data) {
       var self = this, comment;
 
-      comment = new CommentModel({ 
+      comment = new CommentModel({
         parentId  : data['parentId'],
         value     : data['comment'],
         projectId : data['projectId']
       })
-      
+
       self.add(comment);
 
       self.models.forEach(function (model) {
         model.save();
       });
 
+      console.log("WHY IS IT SAVING AUTOMATICALLY")
       self.trigger("comment:save:success");
     }
   });

@@ -24,7 +24,7 @@ define([
 		el: "#container",
 
 		// Set the model to null, before it is fetched from the server.
-		// This allows us to clear out the previous data from the list_view, 
+		// This allows us to clear out the previous data from the list_view,
 		// and get ready for the new data for the project show view.
 		model: null,
 
@@ -44,15 +44,15 @@ define([
 		// The initialize method is mainly used for event bindings (for effeciency)
 		initialize: function () {
 			var self = this;
-			
-			this.model.trigger("project:model:fetch", this.model.id);	
+
+			this.model.trigger("project:model:fetch", this.model.id);
 			this.listenTo(this.model, "project:model:fetch:success", function (model) {
 				this.model = model;
 				self.initializeItemView();
 			});
 
 			rendering.on("project:show:rendered", function () {
-				self.initializeItemViewControllers();	
+				self.initializeItemViewControllers();
 				self.initializeHandlers();
 				self.initializeLikes();
 				self.initializeUI();
@@ -63,16 +63,16 @@ define([
 		search: function () {
 			$(".comment-content").midasAutocomplete({
 				backboneEvents: true,
-				// If we are using backbone here, then a lot of these 
+				// If we are using backbone here, then a lot of these
 				// misc. AJAX options we are passing are unecessary.  So we should somehow
-				// manage that in an elegant way.  
+				// manage that in an elegant way.
 				backbone: false,
 				apiEndpoint: '/ac/inline',
 				// the query param expects one api endpoint IE:
 				// /nested/endpoint?QUERYPARAM=$(".search").val()
-				// So it is not something that you can chain params onto.  
+				// So it is not something that you can chain params onto.
 				// It expects you to send the data back as input data through that query param
-				// one character at a time.  
+				// one character at a time.
 				queryParam: 'q',
 				type: 'POST',
 				contentType: 'json',
@@ -102,7 +102,7 @@ define([
 			if (this.eventListController) this.eventListController.cleanup();
 			this.eventListController = new EventListController({ projectId: this.model.id })
 
-			if (this.commentListController) this.commentListController.cleanup();
+			if (this.commentListController) this.commentListController.initialize();
 			this.commentListController = new CommentListController({ projectId: this.model.id })
 		},
 

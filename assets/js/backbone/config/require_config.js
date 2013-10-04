@@ -77,7 +77,7 @@ require.config({
     // ----------
     'task_list_template'        : '../apps/tasks/list/templates/task_collection_view_template.html',
     'task_form_template'        : '../apps/tasks/new/templates/task_form_template.html',
-    'tasks_collection'          : '../entities/tasks/tasks_collection', 
+    'tasks_collection'          : '../entities/tasks/tasks_collection',
     'task_model'                : '../entities/tasks/task_model',
     'task_list_controller'      : '../apps/tasks/list/controllers/task_list_controller',
     'task_collection_view'      : '../apps/tasks/list/views/task_collection_view',
@@ -91,7 +91,7 @@ require.config({
     // ----------
     'event_list_template'        : '../apps/events/list/templates/event_collection_view_template.html',
     'event_form_template'        : '../apps/events/new/templates/event_form_template.html',
-    'events_collection'          : '../entities/events/events_collection', 
+    'events_collection'          : '../entities/events/events_collection',
     'event_model'                : '../entities/events/event_model',
     'event_list_controller'      : '../apps/events/list/controllers/event_list_controller',
     'event_collection_view'      : '../apps/events/list/views/event_collection_view',
@@ -105,7 +105,7 @@ require.config({
     'profile_show_view'         : '../apps/profiles/show/views/profile_show_view',
     'profile_show_controller'   : '../apps/profiles/show/controllers/profile_show_controller',
     'profile_show_template'     : '../apps/profiles/show/templates/profile_show_template.html',
-    
+
     // ----------
     //= Comments
     // ----------
@@ -118,7 +118,10 @@ require.config({
     'comment_model'             : '../entities/comments/comment_model',
     'comment_form_view'         : '../apps/comments/new/views/comment_form_view',
     'comment_form_template'     : '../apps/comments/new/templates/comment_form_template.html',
-    
+    'comment_item_view'         : '../apps/comments/list/views/comment_item_view',
+    'topic_view'                : '../apps/comments/list/views/topic_view',
+    'topic_template'            : '../apps/comments/list/templates/topic_template.html',
+
     // ----------
     //= Components
     // ----------
