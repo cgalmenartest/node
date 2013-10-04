@@ -2,8 +2,9 @@ define([
   'underscore',
   'backbone',
   'text!topic_template',
-  'comment_item_view'
-], function (_, Backbone, TopicTemplate, CommentItemView) {
+  'comment_item_view',
+  'comment_form_view'
+], function (_, Backbone, TopicTemplate, CommentItemView, CommentFormView) {
 
   var TopicView = Backbone.View.extend({
 
@@ -29,6 +30,15 @@ define([
           el: ".comment-list-" + self.model.id,
           model: comment
         }).render();
+
+      });
+
+      // Place the commentForm at the bottom of the list of comments for that topic.
+      self.commentForm = new CommentFormView({
+        el: '.comment-list-' + self.model.id,
+        projectId: self.options.projectId,
+        parentId: self.model.id,
+        collection: self.options.collection
       });
 
     },

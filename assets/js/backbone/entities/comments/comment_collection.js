@@ -15,7 +15,6 @@ define([
 
       this.listenTo(this, "comment:save", function (data) {
         self.addAndSave(data);
-        console.log("werd")
       });
 
     },
@@ -35,7 +34,6 @@ define([
         model.save();
       });
 
-      console.log("WHY IS IT SAVING AUTOMATICALLY")
       self.trigger("comment:save:success");
     }
   });

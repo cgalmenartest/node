@@ -25,7 +25,7 @@ define([
       var data      = {},
           template  = _.template(CommentFormTemplate, data);
 
-      this.$el.html(template);
+      this.$el.append(template);
 
       return this;
     },

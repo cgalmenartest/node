@@ -69,10 +69,6 @@ define([
           self.commentCollection.fetch({
             url: '/comment/findAllByProjectId/' + self.options.projectId,
             success: function (collection) {
-              console.log(collection.models[0].attributes.comments)
-              // For each of the models coming back from the server (topic)
-              // iterate over them and render the item view for that topic.
-
 
                 // var comment = new CommentItemView({
                 //   el: ".comment-item",
@@ -100,7 +96,9 @@ define([
           // console.log("Comment's with children:");
           self.topic = new TopicView({
             el: ".comment-list-wrapper",
-            model: comment
+            model: comment,
+            projectId: self.options.projectId,
+            collection: collection
           }).render();
 
         } else if (!comment.topic && comment.parentId === null) {
@@ -115,13 +113,8 @@ define([
 
       });
 
-      // this.commentListView = new CommentListView({
-      //   el: ".comment-list-wrapper",
-      //   collection: collection
-      // }).render();
-
       popoverPeopleInit(".comment-user-link");
-      var self = this;
+
       rendering.trigger("renderForm")
       rendering.once("renderForm", function () {
         var comments = self.commentCollection.toJSON()[0].comments;
