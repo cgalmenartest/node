@@ -7,7 +7,7 @@
 var _ = require('underscore');
 var async = require('async');
 
-var runSearch = function(type, q, cb) {
+var runSearch = function(type, q, params, cb) {
   var results = [];
 
   var callSource = function(source, done) {
@@ -16,7 +16,7 @@ var runSearch = function(type, q, cb) {
     // Find the source actor that can perform the query
     var actor = sails.services.sources[src.type];
     // Run the query and add the results
-    actor.query(q, src, function(err, r) {
+    actor.query(q, params, src, function(err, r) {
       if (!err) {
         results = results.concat(r || []);
       }
@@ -61,7 +61,7 @@ module.exports = {
 
   search: function (req, res) {
     if (!req.param('q')) { return res.send([]); }
-    runSearch('search', req.param('q'), function (err, results) {
+    runSearch('search', req.param('q'), req.query, function (err, results) {
       if (err) { return res.send(400, { message: 'Error performing search' }); }
       return res.send(results);
     });
@@ -69,7 +69,7 @@ module.exports = {
 
   attachments: function (req, res) {
     if (!req.param('q')) { return res.send([]); }
-    runSearch('attachments', req.param('q'), function (err, results) {
+    runSearch('attachments', req.param('q'), req.query, function (err, results) {
       if (err) { return res.send(400, { message: 'Error performing search' }); }
       return res.send(results);
     });
@@ -77,7 +77,7 @@ module.exports = {
 
   inline: function (req, res) {
     if (!req.param('q')) { return res.send([]); }
-    runSearch('inline', req.param('q'), function (err, results) {
+    runSearch('inline', req.param('q'), req.query, function (err, results) {
       if (err) { return res.send(400, { message: 'Error performing search' }); }
       return res.send(results);
     });
@@ -85,7 +85,7 @@ module.exports = {
 
   tag: function (req, res) {
     if (!req.param('q')) { return res.send([]); }
-    runSearch('tag', req.param('q'), function (err, results) {
+    runSearch('tag', req.param('q'), req.query, function (err, results) {
       if (err) { return res.send(400, { message: 'Error performing search' }); }
       return res.send(results);
     });

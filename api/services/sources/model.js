@@ -14,7 +14,7 @@ module.exports = {
    *  - target : the model to be queried
    *  - fields : the fields in order to be queried
    */
-  query: function (term, config, cb) {
+  query: function (term, params, config, cb) {
     var model = sails.models[config.target.toLowerCase()];
     var results = [];
 
@@ -25,6 +25,17 @@ module.exports = {
       where.where.like[field['name']] = term;
       // Extend with configuration options
       _.extend(where.where, field.where || {});
+      // Check if there's any extra parameters
+      if (config.params && params) {
+        for (var i = 0; i < config.params.length; i++) {
+          if (_.has(params, config.params[i])) {
+            // if the parameter is in the config, add it to the where clause
+            var paramWhere = {}
+            paramWhere[config.params[i]] = params[config.params[i]]
+            _.extend(where.where, paramWhere);
+          }
+        }
+      }
       // Query the model for matching entries
       model.find(where, function (err, models) {
         for (var i = 0; i < models.length; i++) {
