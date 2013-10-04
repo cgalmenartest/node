@@ -15,6 +15,7 @@ define([
     el: ".comment-list-wrapper",
 
     events: {
+      "click .new-topic"              : "newTopic",
       "click .reply-to"               : "reply",
       "click [data-topic='true']"     : "toggleTopic",
       "mouseenter .comment-user-link" : popoverPeopleOn,
@@ -43,6 +44,7 @@ define([
       this.commentCollection.fetch({
         url: '/comment/findAllByProjectId/' + this.options.projectId,
         success: function (collection) {
+          self.collection = collection;
           self.renderView(collection);
         }
       });
@@ -91,7 +93,7 @@ define([
 
       _.each(collection.models[0].attributes.comments, function (comment) {
 
-        if (comment.comments && comment.comments.length !== 0) {
+        if (comment.topic === true && comment.comments) {
 
           // Render the topic view and then in that view spew out all of its children.
           // console.log("Comment's with children:");
@@ -130,6 +132,18 @@ define([
 
     reply: function (e) {
       // TBD.
+    },
+
+    newTopic: function (e) {
+      if (e.preventDefault()) e.preventDefault();
+
+      self.topicForm = new CommentFormView({
+        el: '.comment-list-wrapper',
+        projectId: this.options.projectId,
+        collection: this.collection,
+        topic: true
+      });
+
     },
 
     cleanup: function () {

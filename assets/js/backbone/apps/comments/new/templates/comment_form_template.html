@@ -1,9 +1,9 @@
-
 <form id="comment-form" action="" class="form-inline" role="form">
   <div class="input-group">
     <div class="comment comment-content form-control input-sm" contentEditable="true"></div>
     <span class="input-group-btn">
-      <input class="btn btn-c3 btn-sm" type="submit" value="Add Comment">
+      <% topic %>
+      <input class="btn btn-c3 btn-sm" type="submit" value="<% if (form.topic) { %> Add Topic! <% } else { %> Add Comment <% } %>">
     </span>
   </div>
   <div class="search-result-wrapper"></div>

@@ -1,3 +1,8 @@
+// This is the comment, and topic form.
+// We know what to do based on a flag being passed into this view
+// via the controller.  That flag is:
+// this.options.topic = true
+
 define([
   'jquery',
   'underscore',
@@ -22,10 +27,14 @@ define([
     },
 
     render: function () {
-      var data      = {},
+      var data = { form: this.options },
           template  = _.template(CommentFormTemplate, data);
 
-      this.$el.append(template);
+      if (this.options.topic) {
+        this.$el.prepend(template).append("<div class='clearfix'></div>");
+      } else {
+        this.$el.append(template)
+      }
 
       return this;
     },
@@ -49,10 +58,21 @@ define([
         parentId = parseInt(this.options.parentId);
       }
 
-      var data = {
-        projectId: projectId,
-        parentId: parentId,
-        comment: this.comment + "||" + this.wikiLink
+      var data;
+
+      if (this.options.topic) {
+        data = {
+          projectId : projectId,
+          comment   : this.comment + "||" + this.wikiLink,
+          topic     : true
+        }
+      } else {
+        data = {
+          projectId : projectId,
+          parentId  : parentId,
+          comment   : this.comment + "||" + this.wikiLink,
+          topic     : false
+        }
       }
 
       var self = this

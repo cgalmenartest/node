@@ -1,3 +1,4 @@
+
 define([
 	'jquery',
 	'underscore',
@@ -29,16 +30,16 @@ define([
 		model: null,
 
 		events: {
-			"click .edit-project"   : "edit",
-			"click #like-button"    : "like",
-			"click #tag-create"     : "tagCreate",
-			"click #tag-save"       : "tagSave",
-			"click .tag-delete"     : "tagDelete",
-			"change #project-state" : "updateState",
-			"mouseenter .project-people-div" : popoverPeopleOn,
-			"mouseleave .project-people-div" : popoverPeopleOff,
-			"click .project-people-div" : popoverPeopleOn,
-			"keyup .comment-content": "search"
+			"click .edit-project"   					: "edit",
+			"click #like-button"    					: "like",
+			"keyup .comment-content"					: "search",
+			"click #tag-save"       					: "tagSave",
+			"click #tag-create"     					: "tagCreate",
+			"click .tag-delete"     					: "tagDelete",
+			"change #project-state" 					: "updateState",
+			"mouseenter .project-people-div" 	: popoverPeopleOn,
+			"mouseleave .project-people-div" 	: popoverPeopleOff,
+			"click .project-people-div" 			: popoverPeopleOn
 		},
 
 		// The initialize method is mainly used for event bindings (for effeciency)
