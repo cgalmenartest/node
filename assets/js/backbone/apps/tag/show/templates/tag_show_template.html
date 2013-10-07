@@ -1,0 +1,24 @@
+<% if (data.isOwner) { %>
+<div class="row">
+  <div class="col-lg-12 select-tags">
+    <input type="hidden" id="input-tags" style="width: 100%"/>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-12 select-tags-buttons">
+    <div class="pull-right">
+      <a href="#createTag" id="tag-create" class="btn btn-sm btn-c0" data-toggle="modal">Create Tag</a>
+      <button id="tag-save" class="btn btn-sm btn-c3">Save Tags</button>
+    </div>
+  </div>
+</div>
+<% } %>
+
+<% for (var i = 0; i < tags.length; i++) { %>
+<div class="<%- tags[i].class %>" id="<%- tags[i].id %>">
+  <h4><i class="<%- tags[i].icon %>"></i> <%- tags[i].plural %></h4>
+  <ul class="tags">
+    <li class="tag-empty" id="<%- tags[i].class %>-empty">None</li>
+  </ul>
+</div>
+<% } %>

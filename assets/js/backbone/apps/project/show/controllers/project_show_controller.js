@@ -11,11 +11,10 @@ define([
 	'comment_list_controller',
 	'comment_form_view',
 	'modal_component',
-	'tag_form_view',
 	'autocomplete'
 ], function ($, _, async, Backbone, Popovers, BaseController, ProjectItemView,
 	TaskListController, EventListController, CommentListController, CommentFormView,
-	ModalComponent, TagFormView, autocomplete) {
+	ModalComponent, autocomplete) {
 
 	var popovers = new Popovers();
 
@@ -33,9 +32,6 @@ define([
 		events: {
 			"click .edit-project"   : "edit",
 			"click #like-button"    : "like",
-			"click #tag-create"     : "tagCreate",
-			"click #tag-save"       : "tagSave",
-			"click .tag-delete"     : "tagDelete",
 			"change #project-state" : "updateState",
 			"mouseenter .project-people-div" : popovers.popoverPeopleOn,
 			"mouseleave .project-people-div" : popovers.popoverPeopleOff,
@@ -199,80 +195,6 @@ define([
 					// response should be null (empty)
 				});
 			}
-		},
-
-		tagCreate: function (e) {
-			if (e.preventDefault()) e.preventDefault();
-			var self = this;
-
-			// Pop up dialog box to create tag,
-			// then put tag into the select box
-      this.modalComponent = new ModalComponent({
-        el: "#container",
-        id: "createTag",
-        modalTitle: "Create Tag"
-      }).render();
-
-      if (!_.isUndefined(this.modalComponent)) {
-        this.tagFormView = new TagFormView({
-          el: ".modal-template",
-          model: self.model
-        });
-        this.tagFormView.render();
-      }
-		},
-
-		tagSave: function (e) {
-			if (e.preventDefault()) e.preventDefault();
-			var self = this;
-			// Cycle through tags in select box
-			// and call create on each one, then
-			// render
-			$("#tag-save").addClass('disabled');
-			var data = $("#input-tags").select2('data');
-			var result = [];
-
-			var processTag = function(tag, done) {
-				var tagMap = {
-					tagId: tag.id,
-					projectId: self.model.id
-				};
-				$.ajax({
-					url: '/tag',
-					type: 'POST',
-					data: tagMap
-				}).done(function (data) {
-					result.push(data);
-					done();
-				});
-			};
-
-			async.each(data, processTag, function (err) {
-				for (var i = 0; i < result.length; i++) {
-					for (var j = 0; j < data.length; j++) {
-						if (result[i].tagId == data[j].id) {
-							result[i].tag = data[j];
-							break;
-						}
-					}
-				}
-				$("#tag-save").removeClass('disabled');
-				self.model.trigger("project:tag:save", result);
-			});
-
-		},
-
-		tagDelete: function (e) {
-			if (e.preventDefault()) e.preventDefault();
-			var self = this;
-			// Get the data-id of the currentTarget
-			// and then call HTTP DELETE on that tag id
-			$.ajax({
-				url: '/tag/' + $(e.currentTarget).data('id'),
-				type: 'DELETE',
-			}).done(function (data) {
-				self.model.trigger("project:tag:delete", e);
-			});
 		},
 
 		delete: function (e) {
