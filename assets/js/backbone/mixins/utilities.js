@@ -1,3 +1,8 @@
+// Input:
+// @collection [ARRAY] Backbone collection.
+// @modelId [INTEGER] Backbone Model.cid
+
+// Return: [OBJECT] Model instance looked up from modelId within collection.
 var getCurrentModelFromId = function (collection, modelId) {
 	var i = 0;
 			id = parseInt(modelId)
@@ -12,6 +17,11 @@ var getCurrentModelFromId = function (collection, modelId) {
 	}
 }
 
+// Input:
+// @collection [ARRAY] Backbone collection.
+// @attr [STRING] Value, to be found.
+
+// Return: [OBJECT] Model instance that is corollary to the found @attr value.
 var getCurrentModelFromFormAttributes = function (collection, attr) {
 	var	j,
 			i = 0,
@@ -37,8 +47,12 @@ var getCurrentModelFromFormAttributes = function (collection, attr) {
 	}
 }
 
-// In: field you want to focus on for unmarshaling, and split type for marshalling (Eg: ||, -, etc)
-// Out: cleaned model value string if that value has an undefined in it.
+// Input:
+// @model [OBJECT* instance] Model instance.
+// @field [OBJECT property] Field you want to focus on for unmarshaling.
+// @splitType [STRING] Split type for marshalling (Eg: ||, -, etc)
+
+// Return: Cleaned @field [OBJECT property].
 var cleanStringFromUndefined = function (model, field, splitType) {
   var data, compiledTemplate,
       valueArray              = field.split(splitType),
