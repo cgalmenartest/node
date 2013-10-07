@@ -13,13 +13,13 @@ define([
     initialize: function () {
       var self = this;
 
-      this.listenTo(this, "comment:save", function (data) {
-        self.addAndSave(data);
+      this.listenTo(this, "comment:save", function (data, currentTarget) {
+        self.addAndSave(data, currentTarget);
       });
 
     },
 
-    addAndSave: function (data) {
+    addAndSave: function (data, currentTarget) {
       var self = this, comment;
 
       comment = new CommentModel({
@@ -32,10 +32,15 @@ define([
       self.add(comment);
 
       self.models.forEach(function (model) {
-        model.save();
-      });
+        if (model.attributes.value === data['comment']) {
+          model.save(null, {
+            success: function (modelInstance, response) {
+              self.trigger("comment:save:success", modelInstance, response, currentTarget);
+            }
+          });
+        }
+      })
 
-      self.trigger("comment:save:success");
     }
   });
 

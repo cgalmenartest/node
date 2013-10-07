@@ -75,14 +75,8 @@ define([
         }
       }
 
-      var self = this;
-      this.collection.trigger("comment:save", data);
-      this.listenToOnce(this.collection, "comment:save:success", function (data) {
-          self.comment = new CommentItemView({
-            el: ".comment",
-            model: data.comment
-          }).render();
-        })
+      var currentTarget = e.currentTarget;
+      this.collection.trigger("comment:save", data, currentTarget);
     },
 
     cleanup: function () {

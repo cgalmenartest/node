@@ -27,8 +27,20 @@ define([
 
       this.initializeCommentCollection();
       this.initializeListeners();
-      this.listenToOnce(this.commentCollection, "comment:save:success", function () {
-        self.initializeCommentCollection()
+
+      // Populating the DOM after a comment was created.
+      this.listenToOnce(this.commentCollection, "comment:save:success", function (modelInstance, modelJson, currentTarget) {
+
+        modelJson['user'] = window.cache.currentUser;
+
+        if (self.comment) self.comment.cleanup();
+        self.comment = new CommentItemView({
+          el: $(currentTarget).parent(),
+          model: modelJson
+        }).render();
+
+        // Clear out the current div
+        $(currentTarget).find("div[contentEditable=true]").text("");
       })
     },
 
