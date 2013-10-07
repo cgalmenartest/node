@@ -75,13 +75,13 @@ define([
         }
       }
 
-      var self = this
+      var self = this;
       this.collection.trigger("comment:save", data);
-      this.listenToOnce(this.collection, "comment:save:success", function () {
-          // self.comment = new CommentItemView({
-          //   el: ".comment",
-          //   comment: data.comment
-          // }).render();
+      this.listenToOnce(this.collection, "comment:save:success", function (data) {
+          self.comment = new CommentItemView({
+            el: ".comment",
+            model: data.comment
+          }).render();
         })
     },
 

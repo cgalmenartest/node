@@ -1,27 +1,19 @@
 define([
   'underscore',
   'backbone',
-  'text!comment_item_template'
-], function (_, Backbone, CommentItemTemplate) {
+  'text!comment_item_template',
+  'utilities'
+], function (_, Backbone, CommentItemTemplate, utilities) {
 
   var CommentItemView = Backbone.View.extend({
 
     render: function () {
-      // TEMP: Check if there is no link coming back to unmarshal
-      // This cleans up the front-end presentation until we fully implement
-      // marshalling and un-marshalling.
-      var data, compiledTemplate,
-          valueArray              = this.model.value.split("||"),
-          lastStringInValueArray  = $.trim(valueArray[valueArray.length - 1]);
+      // Clean string out from undefineds in the marshalling process.
+      cleanStringFromUndefined(this.model, this.model.value, "||")
 
-      if (lastStringInValueArray === 'undefined') {
-        valueArray.pop(lastStringInValueArray)
-        this.model['value'] = valueArray.join()
-      }
+      var data = { comment: this.model },
+          compiledTemplate = _.template(CommentItemTemplate, data);
 
-      data = { comment: this.model };
-
-      compiledTemplate = _.template(CommentItemTemplate, data);
       this.$el.append(compiledTemplate);
     },
 

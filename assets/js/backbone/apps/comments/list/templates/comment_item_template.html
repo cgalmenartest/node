@@ -30,9 +30,10 @@
     <a href="#" class="reply-to" data-comment-id="<%- comment.id %>">Reply</a>
     <% } %>
 
+    <!-- If the comment is not a topic, try and display its children (comment replies) -->
     <% if (!comment.topic) { _.each(comment.children, function (childComment) { %>
-    <ul id="comment-list-<%- comment.id %>">
-    </ul>
+      <ul id="comment-list-<%- comment.id %>">
+      </ul>
     <% }); } %>
 
     </ul>

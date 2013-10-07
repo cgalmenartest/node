@@ -3,12 +3,16 @@ define([
   'backbone',
   'text!topic_template',
   'comment_item_view',
-  'comment_form_view'
-], function (_, Backbone, TopicTemplate, CommentItemView, CommentFormView) {
+  'comment_form_view',
+  'utilities'
+], function (_, Backbone, TopicTemplate, CommentItemView, CommentFormView, utilities) {
 
   var TopicView = Backbone.View.extend({
 
     render: function () {
+      // Clean string out from undefineds in the marshalling process.
+      cleanStringFromUndefined(this.model.value, "||")
+
       var data = { topic: this.model },
           compiledTemplate = _.template(TopicTemplate, data);
 
@@ -26,7 +30,7 @@ define([
         if (self.comment) self.comment.cleanup()
 
         self.comment = new CommentItemView({
-          // this is set to the current topic we are building a list of comments underneath of.
+          // this is set to the current topic.  We are building a list of comments underneath of.
           el: ".comment-list-" + self.model.id,
           model: comment
         }).render();
