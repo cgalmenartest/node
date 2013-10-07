@@ -19,9 +19,15 @@ define([
       "click .tag-delete"     : "delete"
     },
 
-    initialize: function( options ) {
+    initialize: function (options) {
       this.options = options;
       this.model = options.model;
+      this.target = options.target;
+      this.tags = [];
+      // Figure out which tags apply
+      for (var i = 0; i < TagConfig[this.target].length; i++) {
+        this.tags.push(TagConfig.tags[TagConfig[this.target][i]]);
+      }
     },
 
     initializeTags: function() {
@@ -30,13 +36,13 @@ define([
 
       var tagIcon = {};
       var tagClass = {};
-      for (var i = 0; i < TagConfig.tags.length; i++) {
-        tagIcon[TagConfig.tags[i].type] = TagConfig.tags[i].icon;
-        tagClass[TagConfig.tags[i].type] = TagConfig.tags[i]['class'];
+      for (var i = 0; i < this.tags.length; i++) {
+        tagIcon[this.tags[i].type] = this.tags[i].icon;
+        tagClass[this.tags[i].type] = this.tags[i]['class'];
       }
 
-      var renderTag = function(tag) {
-        var templData = { data: self.model.toJSON(), tags: TagConfig.tags, tag: tag };
+      var renderTag = function (tag) {
+        var templData = { data: self.model.toJSON(), tags: this.tags, tag: tag };
         var compiledTemplate = _.template(TagTemplate, templData);
         var tagDom = $("." + tag.tag.type).children(".tags");
         tagDom.append(compiledTemplate);
@@ -66,7 +72,10 @@ define([
           url: '/ac/tag',
           dataType: 'json',
           data: function (term) {
-            return { q: term };
+            return {
+              type: TagConfig[self.target].join(),
+              q: term
+            };
           },
           results: function (data) {
             return { results: data };
@@ -75,7 +84,7 @@ define([
       });
 
       // New tags added in to the DB via the modal
-      this.listenTo(this.model, this.options.target + ":tag:new", function (data) {
+      this.listenTo(this.model, this.target + ":tag:new", function (data) {
         // Destory modal
         $(".modal-backdrop").hide();
         $(".modal").modal('hide');
@@ -86,7 +95,7 @@ define([
       });
 
       // Tags saved using the select2 dialog
-      this.listenTo(this.model, this.options.target + ":tag:save", function (data) {
+      this.listenTo(this.model, this.target + ":tag:save", function (data) {
         for (var i = 0; i < data.length; i++) {
           if (!data[i].existing) {
             renderTag(data[i]);
@@ -95,7 +104,7 @@ define([
         $("#input-tags").select2("val", "");
       });
 
-      this.listenTo(this.model, this.options.target + ":tag:delete", function (e) {
+      this.listenTo(this.model, this.target + ":tag:delete", function (e) {
         if ($(e.currentTarget).parent('li').siblings().length == 1) {
           $(e.currentTarget).parent('li').siblings('.tag-empty').show();
         }
@@ -106,7 +115,7 @@ define([
     render: function () {
       var data = {
         data: this.model.toJSON(),
-        tags: TagConfig.tags
+        tags: this.tags
       };
       var template = _.template(TagShowTemplate, data);
       this.$el.html(template);
@@ -129,7 +138,9 @@ define([
       if (!_.isUndefined(this.modalComponent)) {
         this.tagFormView = new TagFormView({
           el: ".modal-template",
-          model: self.model
+          model: self.model,
+          tags: self.tags,
+          target: self.target
         });
         this.tagFormView.render();
       }

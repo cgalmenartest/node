@@ -4,8 +4,9 @@
  * in the order of the array.
  */
 define({
-  tags: [
-    {
+  // This defines all of the tag elements for use in the app
+  tags: {
+    skill: {
       'icon': 'icon-atom',
       'class': 'skill',
       'id': 'skill',
@@ -13,7 +14,7 @@ define({
       'name': 'Skill',
       'plural': 'Skills'
     },
-    {
+    topic: {
       'icon': 'icon-briefcase',
       'class': 'topic',
       'id': 'topic',
@@ -21,7 +22,7 @@ define({
       'name': 'Topic',
       'plural': 'Topics'
     },
-    {
+    agency: {
       'icon': 'icon-library',
       'class': 'agency',
       'id': 'agency',
@@ -29,7 +30,7 @@ define({
       'name': 'Agency',
       'plural': 'Agencies'
     },
-    {
+    location: {
       'icon': 'icon-map-marker',
       'class': 'location',
       'id': 'location',
@@ -37,5 +38,7 @@ define({
       'name': 'Location',
       'plural': 'Locations'
     }
-  ]
+  },
+  // This defines the part of the app and which tags apply
+  project: ['skill', 'topic', 'agency', 'location']
 });

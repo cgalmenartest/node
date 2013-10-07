@@ -31,7 +31,14 @@ module.exports = {
           if (_.has(params, config.params[i])) {
             // if the parameter is in the config, add it to the where clause
             var paramWhere = {}
-            paramWhere[config.params[i]] = params[config.params[i]]
+            var paramValue = params[config.params[i]];
+            // check if the value is actually a list, and if so,
+            // split it into a list so the where clause is
+            // executed as an 'IN' sql-like clause
+            if (paramValue.indexOf(',') != -1) {
+              paramValue = paramValue.split(',');
+            }
+            paramWhere[config.params[i]] = paramValue;
             _.extend(where.where, paramWhere);
           }
         }
