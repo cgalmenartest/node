@@ -140,6 +140,14 @@ module.exports = function (grunt) {
     //   },
     //   production: {
     //     // overwrite default config above
+    //     compile: {
+    //      options: {
+    //        name: "assets/js/backbone/app",
+    //        baseUrl: "assets/js/backbone",
+    //        mainConfigFile: "assets/js/backbone/config/require_config",
+    //        out: "static/app.min.js"
+    //      }
+    //     }
     //     options: {
     //       out: ""
     //     }
@@ -152,6 +160,9 @@ module.exports = function (grunt) {
     //     }
     //   }
     // },
+    //
+    // grunt.loadNpmTasks('grunt-contrib-requirejs');
+    // grunt.registerTask('default', ['requirejs'])
 
     pkg: grunt.file.readJSON('package.json'),
 
