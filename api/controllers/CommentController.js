@@ -22,7 +22,7 @@ var commentAssemble = function (where, done) {
   .where(where)
   .exec(function (err, topics) {
     if (err) return done(err, null);
-    if (!topics || (topics.length == 0)) { return res.send({ comments: [] }); }
+    if (!topics || (topics.length == 0)) { return done(null, []); }
     // create an array indexed by topics to insert comments
     var userIds = [];
     var topicArray = {};
