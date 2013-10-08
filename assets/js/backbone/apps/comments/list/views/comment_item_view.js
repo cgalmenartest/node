@@ -1,9 +1,11 @@
 define([
+  'jquery',
   'underscore',
   'backbone',
+  'jquery_timeago',
   'text!comment_item_template',
   'utilities'
-], function (_, Backbone, CommentItemTemplate, utilities) {
+], function ($, _, Backbone, TimeAgo, CommentItemTemplate, utilities) {
 
   var CommentItemView = Backbone.View.extend({
 
@@ -15,6 +17,7 @@ define([
           compiledTemplate = _.template(CommentItemTemplate, data);
 
       this.$el.append(compiledTemplate);
+      $("time.timeago").timeago();
     },
 
     cleanup: function () {

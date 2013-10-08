@@ -1,11 +1,13 @@
 define([
+  'jquery',
   'underscore',
   'backbone',
+  'jquery_timeago',
   'text!topic_template',
   'comment_item_view',
   'comment_form_view',
   'utilities'
-], function (_, Backbone, TopicTemplate, CommentItemView, CommentFormView, utilities) {
+], function ($, _, Backbone, TimeAgo, TopicTemplate, CommentItemView, CommentFormView, utilities) {
 
   var TopicView = Backbone.View.extend({
 
@@ -19,6 +21,8 @@ define([
       this.$el.append(compiledTemplate);
 
       this.iterateThroughCommentsForTopicAndRenderWithinParent();
+
+      $("time.timeago").timeago();
 
       return this;
     },

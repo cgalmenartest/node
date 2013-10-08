@@ -82,7 +82,7 @@ define([
       //   renderComment(comments[i]);
       // }
 
-      $("time.timeago").timeago();
+      // $("time.timeago").timeago();
     }
 
   });
