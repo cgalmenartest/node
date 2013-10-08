@@ -15,8 +15,8 @@
       </a>
     </span>
 
-    <% if (comment.wikiLink !== "undefined") { %>
-      <span class="comment-content"><a target="_blank" href="<%- _.unescape(comment.wikiLink) %>"><%- comment.value %></a></span>
+    <% if (comment.link) { %>
+      <span class="comment-content"><a target="_blank" href="<%- _.unescape(comment.link) %>"><%- comment.value %></a></span>
     <% } else { %>
       <span class="comment-content"><%- comment.value %></span>
     <% } %>
