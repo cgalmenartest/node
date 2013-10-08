@@ -44,7 +44,7 @@ module.exports = {
     if (req.user) { userId = req.user[0].id; }
     Event.find()
     .where({ projectId: req.params.id })
-    .where({ end: { '>': new Date().toUTCString() }})
+    .where({ end: { '>': new Date().toISOString() }})
     .sort('start')
     .exec(function (err, events) {
       if (err) return res.send(400, { message: 'Error looking up events.'});
