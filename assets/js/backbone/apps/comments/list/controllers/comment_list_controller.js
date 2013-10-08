@@ -134,7 +134,7 @@ define([
     },
 
     initializeCommentUIAdditions: function () {
-      popoverPeopleInit(".comment-user-link");
+      popovers.popoverPeopleInit(".comment-user-link");
     },
 
     toggleTopic: function (e) {
