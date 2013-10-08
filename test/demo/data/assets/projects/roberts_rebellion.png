@@ -1,0 +1,1671 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=1200">
+<meta name="generator" content="MediaWiki 1.19.7" />
+<meta name="keywords" content="Game of Thrones Wiki,gameofthrones,Robert's Rebellion,The Kingsroad,Winter is Coming (episode),Cripples, Bastards and Broken Things,Garden of Bones,Lord Snow,Greyjoy Rebellion,Westeros,Viserys,Daenerys Targaryen,House Baratheon" />
+<meta name="description" content=" Robert's Rebellion was a civil war amongst the Great Houses of Westeros that took place..." />
+<meta name="google-site-verification" content="8Dzg4Ou0Xll46XcC8Q-KjmXduCFdfmabhr5wbyNIwms" />
+<link rel="canonical" href="http://gameofthrones.wikia.com/wiki/Robert%27s_Rebellion" />
+<link rel="image_src" href="http://images2.wikia.nocookie.net/__cb62332/gameofthrones/images/thumb/8/86/Robert%27s_Rebellion.png/100px-315%2C1052%2C0%2C736-Robert%27s_Rebellion.png" />
+<link rel="alternate" type="application/x-wiki" title="Edit" href="/wiki/Robert%27s_Rebellion?action=edit" />
+<link rel="edit" title="Edit" href="/wiki/Robert%27s_Rebellion?action=edit" />
+<link rel="apple-touch-icon" href="http://images.wikia.com/gameofthrones/images/b/bc/Wiki.png" />
+<link rel="shortcut icon" href="http://images2.wikia.nocookie.net/__cb62332/gameofthrones/images/6/64/Favicon.ico" />
+<link rel="search" type="application/opensearchdescription+xml" href="/opensearch_desc.php" title="Game of Thrones Wiki (en)" />
+<link rel="EditURI" type="application/rsd+xml" href="http://gameofthrones.wikia.com/api.php?action=rsd" />
+<link rel="copyright" href="http://www.wikia.com/Licensing" />
+<link rel="alternate" type="application/atom+xml" title="Game of Thrones Wiki Atom feed" href="/wiki/Special:RecentChanges?feed=atom" />
+<title>Robert's Rebellion - Game of Thrones Wiki</title>
+
+<!-- SASS-generated CSS file -->
+<link rel="stylesheet" href="http://slot1.images2.wikia.nocookie.net/__am/62330/sass/background-align%3Dcenter%26background-fixed%3Dfalse%26background-image%3Dhttp%253A%252F%252Fimages4.wikia.nocookie.net%252F__cb38%252Fgameofthrones%252Fimages%252F5%252F50%252FWiki-background%26background-image-height%3D1836%26background-image-width%3D1530%26background-tiled%3Dtrue%26color-body%3D%2523000%26color-buttons%3D%25236c93b1%26color-header%3D%25233a5766%26color-links%3D%25236699ff%26color-page%3D%2523474646%26page-opacity%3D100%26widthType%3D3/skins/oasis/css/oasis.scss">
+
+<!-- CSS injected by extensions -->
+<link rel="stylesheet" href="http://gameofthrones.wikia.com/__load/-/cb%3D62330%26debug%3Dfalse%26lang%3Den%26only%3Dstyles%26skin%3Doasis/ext.wikihiero" /><link rel="stylesheet" href="http://slot1.images2.wikia.nocookie.net/__am/62330/sass/background-align%3Dcenter%26background-fixed%3Dfalse%26background-image%3Dhttp%253A%252F%252Fimages4.wikia.nocookie.net%252F__cb38%252Fgameofthrones%252Fimages%252F5%252F50%252FWiki-background%26background-image-height%3D1836%26background-image-width%3D1530%26background-tiled%3Dtrue%26color-body%3D%2523000%26color-buttons%3D%25236c93b1%26color-header%3D%25233a5766%26color-links%3D%25236699ff%26color-page%3D%2523474646%26page-opacity%3D100%26widthType%3D3/extensions/wikia/RelatedVideos/css/RelatedVideos.scss" /><link rel="stylesheet" href="http://gameofthrones.wikia.com/__load/-/cb%3D62330%26debug%3Dfalse%26lang%3Den%26only%3Dstyles%26skin%3Doasis/site" /><style>			/* Add a pretty logo to Facebook links */
+			.mw-fblink {
+				background: url(http://static.ak.fbcdn.net/images/icons/favicon.gif) top left no-repeat !important;
+				padding-left: 17px !important;
+			}</style><style>a:lang(ar),a:lang(ckb),a:lang(fa),a:lang(kk-arab),a:lang(mzn),a:lang(ps),a:lang(ur){text-decoration:none}a.new,#quickbar a.new{color:#ba0000}
+
+/* cache key: gameofthrones:resourceloader:filter:minify-css:7:c88e2bcd56513749bec09a7e29cb3ffa */</style>
+
+
+<script>
+window.onerror=function(m,u,l){
+var q='//jserrorslog.wikia.com/',i=new Image();
+if(Math.random()<0.01){
+	try{var d=[m,u,l];
+		try{d.push(document.cookie.match(/server.([A-Z]*).cache/)[1])}catch(e){}
+		i.src=q+'l?'+JSON.stringify(d)
+	}catch(e){i.src=q+'e?'+e}
+}return!1}
+</script>
+
+<script>
+var Wikia={},
+wgJqueryUrl=["http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"],
+wgMessages={"categoryselect-button-save":"Save","categoryselect-category-add":"Add category...","categoryselect-category-edit":"Edit category","categoryselect-category-remove":"Remove category","categoryselect-error-category-name-length":"The maximum length for a category name has been reached.","categoryselect-error-duplicate-category-name":"Category \"$1\" already exists.","categoryselect-error-empty-category-name":"Please provide a category name.","categoryselect-modal-category-name":"Provide the name of the category:","categoryselect-modal-category-sortkey":"Optionally, you may alphabetize this page on the \"$1\" category page under the name:","categoryselect-tooltip-add":"Press the Enter or Return key when done.","wikiarelatedpages-heading":"Read more","chat-join-the-chat":"Join the Chat","chat-start-a-chat":"Start a Chat","chat-user-menu-message-wall":"Message Wall","chat-user-menu-talk-page":"Talk Page","chat-user-menu-contribs":"Contributions","chat-live2":"Live! Chat","chat-edit-count":"$1 edits","chat-member-since":"Member since $1"},
+wgJSMessagesCB="62330.0.63331",
+JSSnippetsStack=[],
+adslots2=[],
+wgLoadAdsInHead=false,
+wgAdsInHeadGroup=0,
+wgAdsShowableOnPage=true,
+wgShowAds=true,
+wgAdDriverUseFullGpt=true,
+wgAdDriverUseNewGptZones=true,
+wgAdVideoTargeting=false,
+wgAdDriverStartLiftiumOnLoad=false,
+adDriverLastDARTCallNoAds=[],
+cityShort="ent",
+adDriver2ForcedStatus=[],
+wgWikiDirectedAtChildren=false,
+wikiaPageType="article",
+wikiaPageIsHub=false,
+cscoreCat="Entertainment",
+wgEnableKruxTargeting=true,
+wgKruxCategoryId="Hi0kPhMT",
+wgAfterContentAndJS=[],
+wgWikiFactoryTagIds=[100056,100057,100058,100059,100397],
+wgWikiFactoryTagNames=["wow","t9","skyscraper","skyscrapperwow","en"],
+wgCdnRootUrl="http://slot1.images.wikia.nocookie.net",
+wgDBname="gameofthrones",
+wgCityId="130814",
+wgMedusaSlot="slot1",
+wgContentLanguage="en",
+wgUserName=null,
+wgArticleId=2097,
+wgCategories=["Wars","History","Robert\'s Rebellion"],
+wgPageName="Robert\'s_Rebellion",
+skin="oasis",
+_gaq=[],
+wgIsGASpecialWiki=true,
+wgStyleVersion="62330";
+</script><script>window.mw||(mw={fk:1,loader:{state:function(s){preMwLdrStA=window.preMwLdrStA||[];preMwLdrStA.push(s)}}});</script>
+<script>var wgNow = new Date();</script>
+<!-- Wikia Beacon Tracking -->
+<noscript><img src="http://a.wikia-beacon.com/__track/view?c=130814&amp;lc=en&amp;lid=75&amp;x=gameofthrones&amp;y=c2&amp;u=0&amp;ip=159.142.0.110&amp;a=2097&amp;s=oasis&amp;n=0&amp;nojs=1" width="1" height="1" border="0" alt="" /></noscript>
+<script>
+(function() {
+	var result = RegExp("wikia_beacon_id=([A-Za-z0-9_-]{10})").exec(document.cookie);
+	if(result) {
+		window.beacon_id = result[1];
+	} else {
+		// something went terribly wrong
+	}
+
+	var utma = RegExp("__utma=([0-9\.]+)").exec(document.cookie);
+	var utmb = RegExp("__utmb=([0-9\.]+)").exec(document.cookie);
+
+	var trackUrl = "http://a.wikia-beacon.com/__track/view?c=130814&amp;lc=en&amp;lid=75&amp;x=gameofthrones&amp;y=c2&amp;u=0&amp;ip=159.142.0.110&amp;a=2097&amp;s=oasis&amp;n=0" + ((typeof document.referrer != "undefined") ? "&amp;r=" + escape(document.referrer) : "") + "&amp;cb=" + (new Date).valueOf() + (window.beacon_id ? "&amp;beacon=" + window.beacon_id : "") + (utma && utma[1] ? "&amp;utma=" + utma[1] : "") + (utmb && utmb[1] ? "&amp;utmb=" + utmb[1] : "");
+	document.write('<'+'script type="text/javascript" src="' + trackUrl + '"><'+'/script>');
+})();
+</script><script src="http://gameofthrones.wikia.com/__load/-/cb%3D62330%26debug%3Dfalse%26lang%3Den%26only%3Dscripts%26skin%3Doasis/wikia.ext.abtesting"></script>
+<script src="http://slot1.images1.wikia.nocookie.net/__load/-/cb%3D62330%26debug%3Dfalse%26lang%3Den%26only%3Dscripts%26skin%3Doasis/amd|wikia.tracker.stub|wikia.cookies,geo,window"></script>
+<script>/*<![CDATA[*/window.mw.fk&&delete mw;/*]]>*/</script>
+<script type="text/javascript" src="http://slot1.images.wikia.nocookie.net/__am/62330/groups/-/abtesting,oasis_blocking,analytics_gas_js"></script>
+<!-- Make IE recognize HTML5 tags. -->
+<!--[if IE]>
+	<script>/*@cc_on'abbr article aside audio canvas details figcaption figure footer header hgroup mark menu meter nav output progress section summary time video'.replace(/\w+/g,function(n){document.createElement(n)})@*/</script>
+<![endif]-->
+
+
+
+	<meta property="fb:app_id" content="112328095453510" prefix="fb: http://www.facebook.com/2008/fbml" />
+	<meta property="og:type" content="article" />
+	<meta property="og:site_name" content="Game of Thrones Wiki" />
+	<meta property="og:title" content="Robert's Rebellion" />
+	<meta property="og:image" content="http://images3.wikia.nocookie.net/__cb20130416034524/gameofthrones/images/thumb/8/86/Robert%27s_Rebellion.png/500px-Robert%27s_Rebellion.png" />
+	<meta property="og:description" content=" Robert's Rebellion was a civil war amongst the Great Houses of Westeros that took place..." />
+	<meta property="og:url" content="http://gameofthrones.wikia.com/wiki/Robert%27s_Rebellion" />
+<meta name="apple-itunes-app" content="app-id=623705389">
+</head>
+<body class="mediawiki ltr ns-0 ns-subject page-Robert_s_Rebellion  TOC_hide wikia-grid wikinav2 skin-oasis oasis-oasis oasis-dark-theme">
+
+
+<!-- Begin comScore Tag -->
+<script type="text/javascript">
+var _comscore = _comscore || [];
+_comscore.push({ c1: "2", c2: "6177433",
+	options: {
+		url_append: "comscorekw=wikiacsid_entertainment"
+	}
+});
+
+(function() {
+	var s = document.createElement("script"), el = document.getElementsByTagName("script")[0]; s.async = true;
+	s.src = (document.location.protocol == "https:" ? "https://sb" : "http://b") + ".scorecardresearch.com/beacon.js";
+	el.parentNode.insertBefore(s, el);
+})();
+</script>
+<noscript>
+<img src="http://b.scorecardresearch.com/p?c1=2&amp;c2=6177433&amp;c3=&amp;c4=&amp;c5=&amp;c6=&amp;c7=http%3A%2F%2Fgameofthrones.wikia.com%2Fwiki%2FRobert%2527s_Rebellion%3Ffile%3DRobert%252527s_Rebellion.png%26comscorekw%3Dwikiacsid_entertainment&amp;c15=&amp;cv=2.0&amp;cj=1" />
+</noscript>
+<!-- End comScore Tag -->
+<!-- Start for QuantServe, page_view -->
+<script type="text/javascript">
+  var _qevents = _qevents || [];
+
+  (function() {
+   var elem = document.createElement('script');
+
+   elem.src = (document.location.protocol == "https:" ? "https://secure" : "http://edge") + ".quantserve.com/quant.js";
+   elem.async = true;
+   elem.type = "text/javascript";
+   var scpt = document.getElementsByTagName('script')[0];
+   scpt.parentNode.insertBefore(elem, scpt);  
+  })();
+</script>
+<script type="text/javascript">
+var quantcastLabels = "";
+if (window.cityShort) {
+	quantcastLabels += cityShort;
+	if (window.wgDartCustomKeyValues) {
+		var keyValues = wgDartCustomKeyValues.split(';');
+		for (var i=0; i<keyValues.length; i++) {
+			var keyValue = keyValues[i].split('=');
+			if (keyValue.length >= 2) {
+				quantcastLabels += ',' + cityShort + '.' + keyValue[1];
+			}
+		}
+	}
+}
+_qevents.push( { qacct:"p-8bG6eLqkH6Avk", labels:quantcastLabels } );
+</script>
+<noscript>
+<div style="display: none;"><img src="//pixel.quantserve.com/pixel/p-8bG6eLqkH6Avk.gif" height="1" width="1" alt="Quantcast"/></div>
+</noscript>
+<!-- Unsupported language for AnalyticsProviderIVW -->
+<!-- Start for AmazonDirectTargetedBuy, page_view -->
+		<script>
+			require(['wikia.geo'], function (geo) {
+				if (geo.getCountryCode() === 'US') {
+					var aax_src='3006';
+					var aax_url = encodeURIComponent(document.location);
+					try { aax_url = encodeURIComponent("" + window.top.location); } catch(e) {}
+					var s = document.createElement('script');
+					s.type = 'text/javascript';
+					s.async = true;
+					s.src = '//aax-us-east.amazon-adsystem.com/e/dtb/bid?src=' + aax_src + '&u=' + aax_url + "&cb=" + Math.round(Math.random()*10000000);
+					var insertLoc = document.getElementsByTagName('script')[0];
+					insertLoc.parentNode.insertBefore(s, insertLoc);
+				}
+			});
+		</script><h1>Wikia</h1>
+<div class="skiplinkcontainer">
+<a class="skiplink" rel="nofollow" href="#WikiaArticle">Skip to Content</a>
+<a class="skiplink wikinav" rel="nofollow" href="#WikiHeader">Skip to Wiki Navigation</a>
+<a class="skiplink sitenav" rel="nofollow" href="#GlobalNavigation">Skip to Site Navigation</a>
+</div>
+
+<div id="ad-skin" class="wikia-ad noprint"></div>
+
+<header id="WikiaHeader" class="WikiaHeader">
+	<div class="wikia-header-mask">
+		<div class="page-width-container">
+						<nav>
+								<h1>Wikia Navigation</h1>
+								<ul>
+					<li class="WikiaLogo">
+						<a href="http://www.wikia.com/Wikia" rel="nofollow"><img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" class="sprite logo" height="23" width="91" alt="Wikia"></a>
+					</li>
+					<li class="start-a-wiki">
+						<a href="http://www.wikia.com/Special:CreateNewWiki" class="wikia-button">Start a wiki</a>
+					</li>
+					<li>
+						<ul id="GlobalNavigation" class="GlobalNavigation" data-hash="f0955adce07a030d6e6fb7cffd74b856">
+																																			<li class="topNav Video_Games video-games-vertical-color" data-index="1">
+											<a href="http://www.wikia.com/Video_Games">Video Games<img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" class="chevron" height="0" width="0"></a>
+											<ul class="subnav"></ul>
+										</li>
+																												<li class="topNav Entertainment entertainment-vertical-color" data-index="26">
+											<a href="http://www.wikia.com/Entertainment">Entertainment<img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" class="chevron" height="0" width="0"></a>
+											<ul class="subnav"></ul>
+										</li>
+																												<li class="topNav Lifestyle lifestyle-vertical-color" data-index="51">
+											<a href="http://www.wikia.com/Lifestyle">Lifestyle<img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" class="chevron" height="0" width="0"></a>
+											<ul class="subnav"></ul>
+										</li>
+																					</ul>
+					</li>
+									</ul>
+			</nav>
+			<ul id="AccountNavigation" class="AccountNavigation">
+
+	
+	
+	<li>
+		<a data-id="login" href="/wiki/Special:UserLogin?returnto=Robert&#039;s_Rebellion&amp;returntoquery=file%3DRobert%252527s_Rebellion.png" rel="nofollow" class="ajaxLogin" accesskey="o">Log in<img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" class="chevron" width="0" height="0" /></a>		<div id="UserLoginDropdown" class="UserLoginDropdown subnav">
+
+<form action="/wiki/Special:UserLogin" method="post" class="WikiaForm">
+	<fieldset>
+		
+					<div class="input-group error general-errors">
+				<div class="error-msg"></div>
+			</div>
+		
+		
+									
+									<input type="hidden" name="loginToken" value="">
+											
+									<input type="hidden" name="returnto" value="Robert's_Rebellion">
+											
+									<input type="hidden" name="returntoquery" value="file=Robert%2527s_Rebellion.png">
+											
+															<div class="input-group required">
+					
+													<label>Username</label>
+						
+						
+																					<input type="text" name="username" tabindex="1">
+							
+						
+						
+											</div>
+					
+											
+															<div class="input-group password-input required">
+					
+													<label>Password</label>
+						
+						
+														<input type="password" class="password-input" name="password" tabindex="2">
+							
+						
+						
+											</div>
+					
+											
+															<div class="input-group">
+					
+						
+						
+														<a href="#" class="forgot-password" tabindex="0">Forgot your password?</a>							
+						
+						
+											</div>
+					
+											
+															<div class="input-group keep-logged-in">
+					
+						
+													<label>
+						
+														<input type="checkbox" class="keep-logged-in" name="keeploggedin" value="1" tabindex="3">
+								
+						
+													Stay logged in</label>
+						
+											</div>
+					
+											
+															<div class="input-group login-button">
+					
+						
+						
+														<input type="submit" class="login-button" value="Log in" tabindex="4">
+							
+						
+						
+											</div>
+					
+										</fieldset>
+
+	</form>
+	<div class="sso-login">
+		<div class="sso-login-divider">
+			<span>Or</span>
+		</div>
+
+					<a href="#" class="wikia-button wikia-button-facebook sso-login-facebook"  data-id="facebook" rel="tooltip" title="Click the button to log in with Facebook" tabindex="5" ><img alt="" class="sprite facebook" height="14" src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" width="15" /> Connect</a>
+	</div></div>
+	</li>
+	<li>
+		<a data-id="register" href="/wiki/Special:UserSignup?returnto=Robert&#039;s_Rebellion&amp;returntoquery=file%3DRobert%252527s_Rebellion.png" rel="nofollow" class="ajaxRegister">Sign up</a>	</li>
+
+	
+</ul>
+					</div>
+	</div>
+</header>
+<div class="WikiaTopAds" id="WikiaTopAds">
+<div class="WikiaTopAdsInner">
+
+
+<!-- BEGIN SLOTNAME: TOP_LEADERBOARD -->
+<div id="TOP_LEADERBOARD" class="wikia-ad noprint default-height">
+	<script>
+		window.adslots2.push(["TOP_LEADERBOARD",null,"AdEngine2"]);
+	</script>
+</div>
+<!-- END SLOTNAME: TOP_LEADERBOARD -->
+
+
+<!-- BEGIN SLOTNAME: TOP_BUTTON_WIDE -->
+<div id="TOP_BUTTON_WIDE" class="wikia-ad noprint default-height">
+	<script>
+		window.adslots2.push(["TOP_BUTTON_WIDE",null,"AdEngine2"]);
+	</script>
+</div>
+<!-- END SLOTNAME: TOP_BUTTON_WIDE -->
+
+
+</div>
+
+
+<!-- BEGIN SLOTNAME: INVISIBLE_SKIN -->
+<div id="INVISIBLE_SKIN" class="wikia-ad noprint default-height">
+	<script>
+		window.adslots2.push(["INVISIBLE_SKIN",null,"AdEngine2"]);
+	</script>
+</div>
+<!-- END SLOTNAME: INVISIBLE_SKIN -->
+
+
+</div>
+
+
+<section id="WikiaPage" class="WikiaPage V2 WikiaGrid">
+	<div id="WikiaPageBackground" class="WikiaPageBackground"></div>
+	<div class="WikiaPageContentWrapper">
+		<header id="WikiHeader" class="WikiHeader">
+	<h1 class="wordmark medium graphic ">
+	<a accesskey="z" href="/wiki/Game_of_Thrones_Wiki">
+					<img src="http://images1.wikia.nocookie.net/__cb38/gameofthrones/images/8/89/Wiki-wordmark.png" alt="Game of Thrones Wiki"  width="250" height="65" >
+			</a>
+</h1>
+        <nav class="WikiNav">
+    	        <h1>Game of Thrones Wiki Navigation</h1>
+        		<ul class="nav">
+																				<li class="nav-item marked">
+						<a href="#">On the Wiki</a>
+
+													<ul class="subnav-2 accent firstChild">
+																										<li class="subnav-2-item">
+										<a class="subnav-2a" href="/wiki/Special:WikiActivity" data-canonical="wikiactivity">Wiki Activity</a>
+
+																			</li>
+																										<li class="subnav-2-item">
+										<a class="subnav-2a" href="/wiki/Special:Random" data-canonical="random">Random page</a>
+
+																			</li>
+																										<li class="subnav-2-item">
+										<a class="subnav-2a" href="/wiki/Special:Videos" data-canonical="videos">Videos</a>
+
+																			</li>
+																										<li class="subnav-2-item">
+										<a class="subnav-2a" href="/wiki/Special:NewFiles" data-canonical="newfiles">Photos</a>
+
+																			</li>
+																										<li class="subnav-2-item">
+										<a class="subnav-2a" href="/wiki/Special:Chat" data-canonical="chat">Chat</a>
+
+																			</li>
+																							</ul>
+											</li>
+																												<li class="nav-item">
+						<a href="/wiki/Category:Episodes">Episodes</a>
+
+													<ul class="subnav-2 accent">
+																										<li class="subnav-2-item">
+										<a class="subnav-2a" href="/wiki/Category:Season_1_Episodes">Season 1<img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" class="chevron"></a>
+
+																					<ul class="subnav-3 subnav">
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Winter_is_Coming">Winter is Coming</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/A_Golden_Crown">A Golden Crown</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/The_Wolf_and_the_Lion">The Wolf and the Lion</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Lord_Snow">Lord Snow</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Baelor">Baelor</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/You_Win_or_You_Die">You Win or You Die</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Fire_and_Blood">Fire and Blood</a>
+													</li>
+																							</ul>
+																			</li>
+																										<li class="subnav-2-item">
+										<a class="subnav-2a" href="/wiki/Overview_Season_1">Season 1 Overview<img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" class="chevron"></a>
+
+																					<ul class="subnav-3 subnav">
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Season_1_refresher_guide">Season 1 refresher guide</a>
+													</li>
+																							</ul>
+																			</li>
+																										<li class="subnav-2-item">
+										<a class="subnav-2a" href="/wiki/Category:Season_2_Episodes">Season 2<img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" class="chevron"></a>
+
+																					<ul class="subnav-3 subnav">
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Valar_Morghulis">Valar Morghulis</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Blackwater">Blackwater</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/A_Man_Without_Honor">A Man Without Honor</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/The_Prince_of_Winterfell">The Prince of Winterfell</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Garden_of_Bones">Garden of Bones</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/The_Old_Gods_and_the_New">The Old Gods and the New</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/The_North_Remembers">The North Remembers</a>
+													</li>
+																							</ul>
+																			</li>
+																										<li class="subnav-2-item">
+										<a class="subnav-2a" href="/wiki/Overview_Season_2">Season 2 Overview</a>
+
+																			</li>
+																										<li class="subnav-2-item">
+										<a class="subnav-2a" href="/wiki/Category:Season_3_Episodes">Season 3<img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" class="chevron"></a>
+
+																					<ul class="subnav-3 subnav">
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Walk_of_Punishment">Walk of Punishment</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Dark_Wings,_Dark_Words">Dark Wings, Dark Words</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/And_Now_His_Watch_is_Ended">And Now His Watch is Ended</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Kissed_by_Fire">Kissed by Fire</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/The_Rains_of_Castamere_(episode)">The Rains of Castamere (episode)</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/The_Bear_and_the_Maiden_Fair_(episode)">The Bear and the Maiden Fair (episode)</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Mhysa">Mhysa</a>
+													</li>
+																							</ul>
+																			</li>
+																							</ul>
+											</li>
+																				<li class="nav-item">
+						<a href="/wiki/Category:Characters">Characters</a>
+
+													<ul class="subnav-2 accent">
+																										<li class="subnav-2-item">
+										<a class="subnav-2a" href="/wiki/Category:Characters">All characters<img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" class="chevron"></a>
+
+																					<ul class="subnav-3 subnav">
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Daenerys_Targaryen">Daenerys Targaryen</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Eddard_Stark">Eddard Stark</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Tyrion_Lannister">Tyrion Lannister</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Joffrey_Baratheon">Joffrey Baratheon</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Arya_Stark">Arya Stark</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Jon_Snow">Jon Snow</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Cersei_Lannister">Cersei Lannister</a>
+													</li>
+																							</ul>
+																			</li>
+																										<li class="subnav-2-item">
+										<a class="subnav-2a" href="/wiki/Category:Status:_Alive">Characters, alive<img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" class="chevron"></a>
+
+																					<ul class="subnav-3 subnav">
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Daenerys_Targaryen">Daenerys Targaryen</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Tyrion_Lannister">Tyrion Lannister</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Joffrey_Baratheon">Joffrey Baratheon</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Arya_Stark">Arya Stark</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Jon_Snow">Jon Snow</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Cersei_Lannister">Cersei Lannister</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Jaime_Lannister">Jaime Lannister</a>
+													</li>
+																							</ul>
+																			</li>
+																										<li class="subnav-2-item">
+										<a class="subnav-2a" href="/wiki/Category:Status:_Dead">Characters, dead<img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" class="chevron"></a>
+
+																					<ul class="subnav-3 subnav">
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Eddard_Stark">Eddard Stark</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Drogo">Drogo</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Robb_Stark">Robb Stark</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Robert_Baratheon">Robert Baratheon</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Renly_Baratheon">Renly Baratheon</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Viserys_Targaryen">Viserys Targaryen</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Aerys_II_Targaryen">Aerys II Targaryen</a>
+													</li>
+																							</ul>
+																			</li>
+																										<li class="subnav-2-item">
+										<a class="subnav-2a" href="/wiki/Category:Status:_Uncertain">Characters, status uncertain<img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" class="chevron"></a>
+
+																					<ul class="subnav-3 subnav">
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Benjen_Stark">Benjen Stark</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Syrio_Forel">Syrio Forel</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Jhiqui">Jhiqui</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Tysha">Tysha</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Grenn">Grenn</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Daisy">Daisy</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Eddison_Tollett">Eddison Tollett</a>
+													</li>
+																							</ul>
+																			</li>
+																							</ul>
+											</li>
+																				<li class="nav-item">
+						<a href="/wiki/Category:Actor">Actors</a>
+
+													<ul class="subnav-2 accent">
+																										<li class="subnav-2-item">
+										<a class="subnav-2a" href="/wiki/Category:Actor">All actors<img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" class="chevron"></a>
+
+																					<ul class="subnav-3 subnav">
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Emilia_Clarke">Emilia Clarke</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Sophie_Turner">Sophie Turner</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Tamzin_Merchant">Tamzin Merchant</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Jack_Gleeson">Jack Gleeson</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Maisie_Williams">Maisie Williams</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Jason_Momoa">Jason Momoa</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Oona_Chaplin">Oona Chaplin</a>
+													</li>
+																							</ul>
+																			</li>
+																										<li class="subnav-2-item">
+										<a class="subnav-2a" href="/wiki/Category:Status:_Active">Actors, active<img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" class="chevron"></a>
+
+																					<ul class="subnav-3 subnav">
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Emilia_Clarke">Emilia Clarke</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Sophie_Turner">Sophie Turner</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Jack_Gleeson">Jack Gleeson</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Maisie_Williams">Maisie Williams</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Sibel_Kekilli">Sibel Kekilli</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Lena_Headey">Lena Headey</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Peter_Dinklage">Peter Dinklage</a>
+													</li>
+																							</ul>
+																			</li>
+																										<li class="subnav-2-item">
+										<a class="subnav-2a" href="/wiki/Category:Status:_Not_hired">Actors, not hired<img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" class="chevron"></a>
+
+																					<ul class="subnav-3 subnav">
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Tamzin_Merchant">Tamzin Merchant</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Jennifer_Ehle">Jennifer Ehle</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Jamie_Campbell_Bower">Jamie Campbell Bower</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Ian_McNeice">Ian McNeice</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Richard_Ridings">Richard Ridings</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Liam_Burke">Liam Burke</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Derek_Halligan">Derek Halligan</a>
+													</li>
+																							</ul>
+																			</li>
+																										<li class="subnav-2-item">
+										<a class="subnav-2a" href="/wiki/Category:Status:_Role_ended">Actors, role ended<img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" class="chevron"></a>
+
+																					<ul class="subnav-3 subnav">
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Jason_Momoa">Jason Momoa</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Oona_Chaplin">Oona Chaplin</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Esme_Bianco">Esme Bianco</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Sean_Bean">Sean Bean</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Conan_Stevens">Conan Stevens</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Amrita_Acharia">Amrita Acharia</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Michelle_Fairley">Michelle Fairley</a>
+													</li>
+																							</ul>
+																			</li>
+																							</ul>
+											</li>
+																				<li class="nav-item">
+						<a href="/wiki/Game_of_Thrones_Wiki:Community_Portal">Community</a>
+
+													<ul class="subnav-2 accent">
+																										<li class="subnav-2-item">
+										<a class="subnav-2a" href="/wiki/Game_of_Thrones_Wiki:Community_Portal">Basic information</a>
+
+																			</li>
+																										<li class="subnav-2-item">
+										<a class="subnav-2a" href="/wiki/Forum:Watercooler">Community forum</a>
+
+																			</li>
+																										<li class="subnav-2-item">
+										<a class="subnav-2a" href="/wiki/Forum:Help_desk">Help desk</a>
+
+																			</li>
+																										<li class="subnav-2-item">
+										<a class="subnav-2a" href="/wiki/Category:Help">Help pages<img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" class="chevron"></a>
+
+																					<ul class="subnav-3 subnav">
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Forum:Index">Index</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Forum:Help_desk">Help desk</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Overview_categories">Overview categories</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Instruction:_Images">Instruction: Images</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Category:Help_desk">Help desk</a>
+													</li>
+																																						<li class="subnav-3-item">
+														<a class="subnav-3a" href="/wiki/Template_talk:Welcome">Welcome</a>
+													</li>
+																							</ul>
+																			</li>
+																										<li class="subnav-2-item">
+										<a class="subnav-2a" href="/wiki/Policies_and_guidelines">Policies, Parent Filter</a>
+
+																			</li>
+																										<li class="subnav-2-item">
+										<a class="subnav-2a" href="/wiki/Affiliates">Affiliates</a>
+
+																			</li>
+																							</ul>
+											</li>
+										</ul>
+
+<div class="navbackground">
+	<div></div>
+	<img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" class="chevron">
+</div>    </nav>
+    <div class="buttons">
+		<nav class="wikia-menu-button contribute secondary combined" >
+	<img alt="" class="sprite contribute" height="16" src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" width="22" /> Contribute
+	<span class="drop">
+		<img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" class="chevron">
+	</span>
+	<ul class="WikiaMenuElement">
+		<li>
+			<a href="/wiki/Robert%27s_Rebellion?action=edit"  data-id="edit"  >Edit this Page</a>
+		</li>
+		<li>
+			<a href="/wiki/Special:WikiaVideoAdd"  data-id="wikiavideoadd"  >Add a Video</a>
+		</li>
+		<li>
+			<a href="/wiki/Special:Upload"  data-id="upload"  >Add a Photo</a>
+		</li>
+		<li>
+			<a href="/wiki/Special:CreatePage"  data-id="createpage"   class="createpage">Add a Page</a>
+		</li>
+		<li>
+			<a href="/wiki/Special:WikiActivity"  accesskey="g" data-id="wikiactivity"  >Wiki Activity</a>
+		</li>
+	</ul>
+</nav>
+					<a href="#" class="wikia-button share-button secondary"  data-id="shareButton"> Share<span class="share-dot"></span><span class="share-pixel"></span></a>
+    </div>
+
+    <div class="hiddenLinks">
+		<a href="/wiki/Special:Watchlist" title="Special:Watchlist" accesskey="l">Watchlist</a>		<a href="/wiki/Special:Random" title="Special:Random" accesskey="x">Random page</a>		<a href="/wiki/Special:RecentChanges" title="Special:RecentChanges" accesskey="r">Recent changes</a>    </div>
+</header>
+
+
+		
+		
+		
+		
+		<article id="WikiaMainContent" class="WikiaMainContent grid-4">
+			<div id="WikiaMainContentContainer" class="WikiaMainContentContainer">
+				<header id="WikiaPageHeader" class="WikiaPageHeader">
+    <h1>Robert's Rebellion</h1>
+
+	<nav class="wikia-menu-button" >
+	<a accesskey="e"  href="/wiki/Robert%27s_Rebellion?action=edit" data-id="edit" id="ca-edit">
+		<img alt="" class="sprite edit-pencil" height="16" src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" width="22" /> Edit	</a>
+
+	<span class="drop">
+		<img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" class="chevron">
+	</span>
+	<ul class="WikiaMenuElement">
+		<li>
+			<a href="/wiki/Robert%27s_Rebellion?action=history"  accesskey="h" data-id="history"   id="ca-history">History</a>
+		</li>
+	</ul>
+</nav>
+			<a accesskey="t" href="/wiki/Talk:Robert%27s_Rebellion" class="wikia-button comments secondary talk" rel="nofollow" data-id="comment"> Talk<span class="commentsbubble">2</span></a>
+        <div class="tally">
+			<em>1,865</em><span>pages on<br /> this wiki</span>        </div>
+		</header>
+
+
+				
+				<div id="WikiaArticle" class="WikiaArticle">
+					
+					<div class="home-top-right-ads">
+										</div>
+
+					
+					<div id="mw-content-text" lang="en" dir="ltr" class="mw-content-ltr"><table id="War" class="infobox hidable" style="border-width: 0px; padding: 0px; width: auto;">
+<tr>
+<td>
+<table class="infoboxtable hidable-content" cellspacing="0" cellpadding="4" style="border-width: 0px; width:300px;">
+
+<tr>
+<td class="infoboxlabel" style=""> Previous
+</td><td class="infoboxcell" style="">
+<p><a href="/wiki/Reyne_Rebellion" title="Reyne Rebellion">Reyne Rebellion</a>
+</p>
+</td></tr>
+
+<tr>
+<td class="infoboxlabel" style=""> Next
+</td><td class="infoboxcell" style="">
+<p><a href="/wiki/Greyjoy_Rebellion" title="Greyjoy Rebellion">Greyjoy Rebellion</a>
+</p>
+</td></tr>
+<tr>
+<th class="infoboxheading" colspan="2" style="background: #696969;"> Robert's Rebellion
+</th></tr>
+<tr>
+<td class="infoboximage" colspan="2" style="background: #74682B4"> <a href="http://images1.wikia.nocookie.net/__cb20130416034524/gameofthrones/images/8/86/Robert%27s_Rebellion.png" class="image"><img alt="Robert&#39;s Rebellion" src="http://images1.wikia.nocookie.net/__cb20130416034524/gameofthrones/images/thumb/8/86/Robert%27s_Rebellion.png/300px-Robert%27s_Rebellion.png" width="300" height="162" data-image-name="Robert&#39;s Rebellion.png" data-image-key="Robert%27s_Rebellion.png" /></a>
+</td></tr>
+<tr>
+<td class="infoboxlabel" style=""> Beginning
+</td><td class="infoboxcell" style="">
+<p>282 AL
+</p>
+</td></tr>
+<tr>
+<td class="infoboxlabel" style=""> End
+</td><td class="infoboxcell" style="">
+<p>283 AL
+</p>
+</td></tr>
+<tr>
+<td class="infoboxlabel" style=""> Place:
+</td><td class="infoboxcell" style="">
+<p><a href="/wiki/Westeros" title="Westeros">Westeros</a>
+</p>
+</td></tr>
+<tr>
+<td class="infoboxlabel" style=""> Outcome:
+</td><td class="infoboxcell" style="">
+<ul><li>Fall of <a href="/wiki/House_Targaryen" title="House Targaryen">House Targaryen</a>
+</li><li>Ascendency of Robert Baratheon to the Iron Throne
+</li><li>Exile of the last Targaryen heirs: <a href="/wiki/Viserys" title="Viserys" class="mw-redirect">Viserys</a> and <a href="/wiki/Daenerys_Targaryen" title="Daenerys Targaryen">Daenerys Targaryen</a>
+</li></ul>
+</td></tr>
+<tr>
+<td colspan="2" style="margin:0; padding:0">
+<table class="infoboxtable hidable-content" cellspacing="0" cellpadding="4" style="border-width: 0px; width:100%">
+
+<tr>
+<th class="infoboxsubheading" colspan="5" style="background: #696969"> <b>Combatants</b>
+</th></tr>
+<tr>
+<td class="infoboxcell" colspan="2" style="width:50%; vertical-align:top;">
+<p><a href="/wiki/House_Baratheon" title="House Baratheon">House Baratheon</a>
+</p>
+<ul><li><a href="/wiki/House_Arryn" title="House Arryn">House Arryn</a>
+</li><li><a href="/wiki/House_Stark" title="House Stark">House Stark</a>
+</li><li><a href="/wiki/House_Tully" title="House Tully">House Tully</a>
+</li><li><a href="/wiki/House_Lannister" title="House Lannister">House Lannister</a> (post-Trident)
+</li><li><a href="/wiki/House_Frey" title="House Frey">House Frey</a> (post-Trident)
+</li></ul>
+</td><td class="infoboxcell" colspan="2" style="width:50%; border-left:1px solid #999999; vertical-align:top;">
+<p><a href="/wiki/House_Targaryen" title="House Targaryen">House Targaryen</a>
+</p>
+<ul><li><a href="/wiki/House_Tyrell" title="House Tyrell">House Tyrell</a>
+</li><li><a href="/wiki/House_Martell" title="House Martell">House Martell</a>
+</li><li><a href="/wiki/Alchemists%27_Guild" title="Alchemists' Guild">Alchemists' Guild</a>
+</li><li>Loyalist Riverlords (early stages)
+</li><li>Loyalist Stormlords (early stages)
+</li></ul>
+<p><br />
+</p>
+</td></tr>
+<tr>
+<th class="infoboxsubheading" colspan="5" style="background: #696969"> <b>Leaders</b>
+</th></tr>
+<tr>
+<td class="infoboxcell" colspan="2" style="width:50%; vertical-align:top;">
+<p>Lord <a href="/wiki/Robert_Baratheon" title="Robert Baratheon">Robert Baratheon</a>
+</p>
+<ul><li>Lord <a href="/wiki/Jon_Arryn" title="Jon Arryn">Jon Arryn</a>
+</li><li>Lord <a href="/wiki/Eddard_Stark" title="Eddard Stark">Eddard Stark</a>
+</li><li>Lord <a href="/wiki/Hoster_Tully" title="Hoster Tully">Hoster Tully</a>
+</li><li>Lord <a href="/wiki/Tywin_Lannister" title="Tywin Lannister">Tywin Lannister</a> (late stage)
+</li></ul>
+</td><td class="infoboxcell" colspan="2" style="width:50%; border-left:1px solid #999999; vertical-align:top;">
+<p><a href="/wiki/Aerys_II_Targaryen" title="Aerys II Targaryen">King Aerys II Targaryen</a>†
+</p>
+<ul><li>Prince <a href="/wiki/Rhaegar_Targaryen" title="Rhaegar Targaryen">Rhaegar Targaryen</a>†
+</li><li>Lord <a href="/wiki/Mace_Tyrell" title="Mace Tyrell">Mace Tyrell</a>
+</li><li>Lord <a href="/wiki/Randyll_Tarly" title="Randyll Tarly">Randyll Tarly</a>
+</li><li>Ser <a href="/wiki/Barristan_Selmy" title="Barristan Selmy">Barristan Selmy</a>
+</li><li><a href="/wiki/Wisdom" title="Wisdom">Wisdom</a> <a href="/wiki/Rossart" title="Rossart">Rossart</a>, <a href="/wiki/Hand_of_the_King" title="Hand of the King">Hand of the King</a>
+</li></ul>
+<p><br />
+</p>
+</td></tr>
+</table>
+</td></tr>
+<tr>
+<th class="infoboxsubheading" colspan="4" style="background: #696969"> <b>Battles</b>
+</th></tr>
+<tr>
+<td colspan="2" class="infoboxcell" style="">
+<ul><li><a href="/wiki/Battle_of_Summerhall" title="Battle of Summerhall">Battle of Summerhall</a>
+</li><li> <a href="/wiki/Battle_of_Ashford" title="Battle of Ashford">Battle of Ashford</a>
+</li><li> <a href="/wiki/Battle_of_the_Bells" title="Battle of the Bells">Battle of the Bells</a>
+</li><li><a href="/wiki/Battle_of_the_Trident" title="Battle of the Trident">Battle of the Trident</a>
+</li><li><a href="/wiki/Sack_of_King%27s_Landing" title="Sack of King's Landing">Sack of King's Landing</a>
+</li><li><a href="/wiki/Siege_of_Storm%27s_End" title="Siege of Storm's End">Siege of Storm's End</a>
+</li></ul>
+</td></tr>
+</table>
+</td></tr></table>
+<p><b>Robert's Rebellion</b> was a civil war amongst the <a href="/wiki/Great_Houses" title="Great Houses" class="mw-redirect">Great Houses</a> of <a href="/wiki/Westeros" title="Westeros">Westeros</a> that took place approximately seventeen years before the TV series began, and lasted about one year.<sup id="cite_ref-0" class="reference"><a href="#cite_note-0">[1]</a></sup> It displaced the royal <a href="/wiki/House_Targaryen" title="House Targaryen">House Targaryen</a> and saw most of its members wiped out, with only two survivors who fled into exile across the sea. <a href="/wiki/House_Baratheon" title="House Baratheon">House Baratheon</a> became the new royal house after the war's conclusion.
+</p>
+<table id="toc" class="toc"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a rel="nofollow" href="#History"><span class="tocnumber">1</span> <span class="toctext">History</span></a>
+<ul>
+<li class="toclevel-2 tocsection-2"><a rel="nofollow" href="#Background"><span class="tocnumber">1.1</span> <span class="toctext">Background</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-3"><a rel="nofollow" href="#In_the_books"><span class="tocnumber">2</span> <span class="toctext">In the books</span></a></li>
+<li class="toclevel-1 tocsection-4"><a rel="nofollow" href="#See_also"><span class="tocnumber">3</span> <span class="toctext">See also</span></a></li>
+<li class="toclevel-1 tocsection-5"><a rel="nofollow" href="#References"><span class="tocnumber">4</span> <span class="toctext">References</span></a></li>
+</ul>
+</td></tr></table>
+<h2><span class="mw-headline" id="History">History</span><span class="editsection"><a href="/wiki/Robert%27s_Rebellion?action=edit&amp;section=1" title="Edit History section"><img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" class="sprite edit-pencil" />Edit</a></span></h2>
+<h3><span class="mw-headline" id="Background">Background</span><span class="editsection"><a href="/wiki/Robert%27s_Rebellion?action=edit&amp;section=2" title="Edit Background section"><img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" class="sprite edit-pencil" />Edit</a></span></h3>
+<figure class="thumb tright thumbinner" style="width:202px;"><a href="http://images3.wikia.nocookie.net/__cb20130730063652/gameofthrones/images/9/92/Robert%27s_Rebellion_Title_Sequence.png" class="image"><img alt="Robert&#39;s Rebellion Title Sequence" src="http://images2.wikia.nocookie.net/__cb20130730063652/gameofthrones/images/thumb/9/92/Robert%27s_Rebellion_Title_Sequence.png/200px-Robert%27s_Rebellion_Title_Sequence.png" width="200" height="109" class="thumbimage" data-image-name="Robert&#39;s Rebellion Title Sequence.png" data-image-key="Robert%27s_Rebellion_Title_Sequence.png" /></a><a href="/wiki/File:Robert%27s_Rebellion_Title_Sequence.png" class="internal sprite details magnify" title="View photo details"></a><figcaption class="thumbcaption">The title sequence artistically depicts the Targaryen dragon falling to the Baratheon stag, Stark direwolf, and Lannister lion.<div class="picture-attribution"><img src="http://images3.wikia.nocookie.net/__cb2/messaging/images/thumb/1/19/Avatar.jpg/20px-Avatar.jpg" width="16" height="16" class="avatar" alt="Tyriondapho" />Added by <a href="/wiki/User:Tyriondapho">Tyriondapho</a></div></figcaption></figure>
+<p><a href="/wiki/Aerys_II_Targaryen" title="Aerys II Targaryen">Aerys Targaryen</a>, the Second of His Name, was the <a href="/wiki/King_of_the_Andals_and_the_First_Men" title="King of the Andals and the First Men">King of the Seven Kingdoms</a> and the last member of <a href="/wiki/House_Targaryen" title="House Targaryen">House Targaryen</a> to sit the <a href="/wiki/Iron_Throne" title="Iron Throne">Iron Throne</a>. Nicknamed the Mad King, his reign became increasingly erratic and murderous. As a result, tensions between House Targaryen and several other Great Houses began to rise. A final round of blood-letting, unleashed when his son Prince <a href="/wiki/Rhaegar_Targaryen" title="Rhaegar Targaryen">Rhaegar</a> kidnapped <a href="/wiki/Lyanna_Stark" title="Lyanna Stark">Lyanna Stark</a> of <a href="/wiki/Winterfell" title="Winterfell">Winterfell</a>, saw many Houses in the realm rebel against his rule.<sup id="cite_ref-Rebellion_viewers_guide_1-0" class="reference"><a href="#cite_note-Rebellion_viewers_guide-1">[2]</a></sup><sup id="cite_ref-Rhaegar_viewers_guide_2-0" class="reference"><a href="#cite_note-Rhaegar_viewers_guide-2">[3]</a></sup>
+</p><p>Lyanna was a prominent noblewoman as the daughter of <a href="/wiki/Rickard_Stark" title="Rickard Stark">Rickard Stark</a>, <a href="/wiki/Lord_Paramount_of_the_North" title="Lord Paramount of the North">Lord Paramount of the North</a>. She was also betrothed to <a href="/wiki/Robert_Baratheon" title="Robert Baratheon">Robert Baratheon</a>. Robert served Aerys as the <a href="/wiki/Lord_Paramount_of_the_Stormlands" title="Lord Paramount of the Stormlands">Lord Paramount of the Stormlands</a> prior to the abduction. <a href="/wiki/House_Stark" title="House Stark">House Stark</a> and <a href="/wiki/House_Baratheon" title="House Baratheon">House Baratheon</a> were the first to protest Rhaegar's actions.<sup id="cite_ref-E1_3-0" class="reference"><a href="#cite_note-E1-3">[4]</a></sup><sup id="cite_ref-4" class="reference"><a href="#cite_note-4">[5]</a></sup> <a href="/wiki/Brandon_Stark_(Son_of_Rickard)" title="Brandon Stark (Son of Rickard)">Brandon Stark</a> demanded justice from Aerys in person. Aerys had him arrested for treason and then offered to ransom him to his father Rickard. Aerys summoned Rickard to court and when he arrived publicly executed both father and son.<sup id="cite_ref-5" class="reference"><a href="#cite_note-5">[6]</a></sup><sup id="cite_ref-6" class="reference"><a href="#cite_note-6">[7]</a></sup> The brutal murder of Brandon and Rickard engendered much sympathy for the rebels and many houses joined their cause.<sup id="cite_ref-Rebellion_viewers_guide_1-1" class="reference"><a href="#cite_note-Rebellion_viewers_guide-1">[2]</a></sup>
+</p><p><a href="/wiki/Jon_Arryn" title="Jon Arryn">Jon Arryn</a> was a natural ally to the rebels. He was the <a href="/wiki/Defender_of_the_Vale" title="Defender of the Vale">Defender of the Vale</a> and a respected nobleman. Both Rickard's second son <a href="/wiki/Eddard_Stark" title="Eddard Stark">Eddard Stark</a> and Robert fostered with him as children and became close friends.<sup id="cite_ref-Jon_Arryn_viewers_guide_7-0" class="reference"><a href="#cite_note-Jon_Arryn_viewers_guide-7">[8]</a></sup> When Aerys demanded that Eddard be turned over to the King's justice, Lord Jon rebelled, calling his banners to war. The rebels forged an alliance with <a href="/wiki/House_Tully" title="House Tully">House Tully</a> through marriage, with Eddard married to <a href="/wiki/Catelyn_Tully" title="Catelyn Tully" class="mw-redirect">Catelyn Tully</a> and the then-elderly Jon to the young <a href="/wiki/Lysa_Tully" title="Lysa Tully" class="mw-redirect">Lysa Tully</a>.<sup id="cite_ref-E1_3-1" class="reference"><a href="#cite_note-E1-3">[4]</a></sup><sup id="cite_ref-Jon_Arryn_viewers_guide_7-1" class="reference"><a href="#cite_note-Jon_Arryn_viewers_guide-7">[8]</a></sup>
+</p><p><a href="/wiki/Stannis_Baratheon" title="Stannis Baratheon">Stannis Baratheon</a> fought for his elder brother Robert during the war. Aerys used his allies in <a href="/wiki/House_Tyrell" title="House Tyrell">House Tyrell</a> to besiege Stannis at <a href="/wiki/Storm%27s_End" title="Storm's End">Storm's End</a> for much of the war. Stannis's force was rescued from starvation by the smuggler <a href="/wiki/Davos_Seaworth" title="Davos Seaworth">Davos Seaworth</a>, who brought a ship full of onions into the castle.<sup id="cite_ref-8" class="reference"><a href="#cite_note-8">[9]</a></sup><sup id="cite_ref-9" class="reference"><a href="#cite_note-9">[10]</a></sup>
+</p><p>Rhaegar was killed during the fighting at the <a href="/wiki/Battle_of_the_Trident" title="Battle of the Trident">Battle of the Trident</a>. Robert slew Rhaegar personally.<sup id="cite_ref-E1_3-2" class="reference"><a href="#cite_note-E1-3">[4]</a></sup> The site of his death is now called the <a href="/wiki/Ruby_Ford" title="Ruby Ford">Ruby Ford</a> because it is believed to be scattered with rubies from his armor.<sup id="cite_ref-10" class="reference"><a href="#cite_note-10">[11]</a></sup>
+</p><p>Rhaegar's wife <a href="/wiki/Elia_Targaryen" title="Elia Targaryen">Elia</a> of <a href="/wiki/House_Martell" title="House Martell">House Martell</a> was kept in King's Landing by Aerys to ensure the Martell's loyalty during the conflict.<sup id="cite_ref-Elia_viewers_guide_11-0" class="reference"><a href="#cite_note-Elia_viewers_guide-11">[12]</a></sup> Aerys was betrayed by his allies in <a href="/wiki/House_Lannister" title="House Lannister">House Lannister</a>.<sup id="cite_ref-Rebellion_viewers_guide_1-2" class="reference"><a href="#cite_note-Rebellion_viewers_guide-1">[2]</a></sup> He was slain by his Kingsguard Ser <a href="/wiki/Jaime_Lannister" title="Jaime Lannister">Jaime Lannister</a>. His final words were "Burn them all."<sup id="cite_ref-12" class="reference"><a href="#cite_note-12">[13]</a></sup> The gates of <a href="/wiki/King%27s_Landing" title="King's Landing">King's Landing</a> were opened to the Lannister armies and they <a href="/wiki/Sack_of_King%27s_Landing" title="Sack of King's Landing">sacked the city</a>. Elia was raped and murdered by Ser <a href="/wiki/Gregor_Clegane" title="Gregor Clegane">Gregor Clegane</a> during the <a href="/wiki/Sack_of_King%27s_Landing" title="Sack of King's Landing">Sack of King's Landing</a>. Both of her children were also killed.<sup id="cite_ref-Elia_viewers_guide_11-1" class="reference"><a href="#cite_note-Elia_viewers_guide-11">[12]</a></sup>
+</p><p>Robert claimed the <a href="/wiki/Iron_Throne" title="Iron Throne">Iron Throne</a> because he started the war and killed Prince Rhaegar personally.<sup id="cite_ref-Rhaegar_viewers_guide_2-1" class="reference"><a href="#cite_note-Rhaegar_viewers_guide-2">[3]</a></sup> Robert also had the best claim to the throne as a result of being related to the Targaryens of old through his mother's side.<sup id="cite_ref-E1_3-3" class="reference"><a href="#cite_note-E1-3">[4]</a></sup> The other leaders of the rebels both refused the throne. Robert was devastated by Lyanna's death but married <a href="/wiki/Cersei_Lannister" title="Cersei Lannister">Cersei Lannister</a> in thanks for her father joining his cause late in the conflict and delivering the capital of <a href="/wiki/King%27s_Landing" title="King's Landing">King's Landing</a> to him.<sup id="cite_ref-13" class="reference"><a href="#cite_note-13">[14]</a></sup> Tywin remained the <a href="/wiki/Lord_Paramount_of_the_Westerlands" title="Lord Paramount of the Westerlands">Lord Paramount of the Westerlands</a>. He named Jon Arryn as his <a href="/wiki/Hand_of_the_King" title="Hand of the King">Hand</a> while Eddard took his father's role as <a href="/wiki/Warden_of_the_North" title="Warden of the North" class="mw-redirect">Warden of the North</a>.<sup id="cite_ref-E1_3-4" class="reference"><a href="#cite_note-E1-3">[4]</a></sup> House Tyrell, House Martell and House Greyjoy swore fealty to Robert to retain their pre-war positions maintaining the Seven Kingdoms under their new royal house.
+</p><p>Queen <a href="/wiki/Rhaella_Targaryen" title="Rhaella Targaryen">Rhaella</a> fled to the Targaryen's ancestral seat on the island of <a href="/wiki/Dragonstone" title="Dragonstone" class="mw-redirect">Dragonstone</a>. She was accompanied by her son <a href="/wiki/Viserys_Targaryen" title="Viserys Targaryen">Viserys Targaryen</a> and was pregnant. Rhaella died soon after giving birth to <a href="/wiki/Daenerys_Targaryen" title="Daenerys Targaryen">Daenerys Targaryen</a>. The children were taken into exile in the <a href="/wiki/Free_Cities" title="Free Cities">Free Cities</a>, by loyal retainers.<sup id="cite_ref-Viserys_viewers_guide_14-0" class="reference"><a href="#cite_note-Viserys_viewers_guide-14">[15]</a></sup><sup id="cite_ref-Rhaella_viewers_guide_15-0" class="reference"><a href="#cite_note-Rhaella_viewers_guide-15">[16]</a></sup> Stannis went on to conquer <a href="/wiki/Dragonstone" title="Dragonstone" class="mw-redirect">Dragonstone</a> and was made <a href="/wiki/Lord_of_Dragonstone" title="Lord of Dragonstone">Lord of Dragonstone</a>.<sup id="cite_ref-Stannis_viewers_guide_16-0" class="reference"><a href="#cite_note-Stannis_viewers_guide-16">[17]</a></sup>
+</p>
+<h2><span class="mw-headline" id="In_the_books">In the books</span><span class="editsection"><a href="/wiki/Robert%27s_Rebellion?action=edit&amp;section=3" title="Edit In the books section"><img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" class="sprite edit-pencil" />Edit</a></span></h2>
+<p>In the <i><a href="/wiki/A_Song_of_Ice_and_Fire" title="A Song of Ice and Fire">A Song of Ice and Fire</a></i> novels, this civil war took place between sixteen and fourteen years before the beginning of the novels. In the books the conflict is also called the <b>War of the Usurper</b> by Targaryen loyalists.
+</p><p>The war was sparked when Prince <a href="/wiki/Rhaegar_Targaryen" title="Rhaegar Targaryen">Rhaegar Targaryen</a> kidnapped <a href="/wiki/Lyanna_Stark" title="Lyanna Stark">Lyanna Stark</a>. When <a href="/wiki/Rickard_Stark" title="Rickard Stark">Lyanna's father</a> and <a href="/wiki/Brandon_Stark_(the_elder)" title="Brandon Stark (the elder)" class="mw-redirect">eldest brother</a> protested this act to King <a href="/wiki/Aerys_II_Targaryen" title="Aerys II Targaryen">Aerys II Targaryen</a>, the Mad King had them both killed in front of the entire Royal Court. Aerys then called for the heads of Lyanna's betrothed, <a href="/wiki/Robert_Baratheon" title="Robert Baratheon">Robert Baratheon</a>, and her second brother <a href="/wiki/Eddard_Stark" title="Eddard Stark">Eddard Stark</a>, who were under the care of <a href="/wiki/Jon_Arryn" title="Jon Arryn">Jon Arryn</a>. Lord Arryn raised his banners in rebellion against these unjust acts and sent Robert and Eddard back to their lands to rally their men.
+</p><p><a href="/wiki/House_Tully" title="House Tully">House Tully</a> joined Robert's side after Eddard and Jon married <a href="/wiki/Catelyn_Stark" title="Catelyn Stark">Catelyn</a> and <a href="/wiki/Lysa_Arryn" title="Lysa Arryn">Lysa</a> Tully, respectively, whilst <a href="/wiki/House_Tyrell" title="House Tyrell">House Tyrell</a> and <a href="/wiki/House_Martell" title="House Martell">House Martell</a> supported the Targaryens. While House Tully did support Robert, the always fractious lords of the Riverlands were heavily divided in the war, and many stayed loyal to the Targaryens. <a href="/wiki/House_Lannister" title="House Lannister">House Lannister</a> sat out most of the war, only entering - on Robert's side - after Robert killed Rhaegar and his victory was a foregone conclusion. It is never stated which side <a href="/wiki/House_Greyjoy" title="House Greyjoy">House Greyjoy</a> was on, but it is possible that they did not fight at all and remained neutral, saving their strength for their failed attempt to secede outright from the realm a few years later in the <a href="/wiki/Greyjoy_Rebellion" title="Greyjoy Rebellion">Greyjoy Rebellion</a>.
+</p><p>The rebellion climaxed with the <a href="/wiki/Battle_of_the_Trident" title="Battle of the Trident">Battle of the Trident</a>, when the rebel armies destroyed the royalist host and killed Prince Rhaegar. Lannister forces, apparently having decided to support the king, arrived at <a href="/wiki/King%27s_Landing" title="King's Landing">King's Landing</a> to help defend the capital, but then turned on the Targaryens, brutally sacking the city and killing King <a href="/wiki/Aerys_II" title="Aerys II" class="mw-redirect">Aerys II</a> and Rhaegar's children. Aerys' other heirs, <a href="/wiki/Viserys_Targaryen" title="Viserys Targaryen">Viserys</a> and <a href="/wiki/Daenerys" title="Daenerys" class="mw-redirect">Daenerys Targaryen</a>, were spirited to safety across the sea by Targaryen loyalists before the garrison of Dragonstone (where the two children were being kept for their safety) could hand them over to Robert Baratheon . House Tyrell, whose main force had been held up in a lengthy siege at <a href="/wiki/Storm%27s_End" title="Storm's End">Storm's End</a>, proclaimed loyalty to Robert soon after the sacking of King's Landing when Eddard Stark arrived with an army to relieve the siege.
+</p><p>In the aftermath of the war it was discovered that Lyanna Stark had died, so Robert married <a href="/wiki/Cersei_Lannister" title="Cersei Lannister">Cersei Lannister</a> in thanks for her father delivering him victory and to secure an alliance between the two houses.
+</p><p><a href="/wiki/Elia_Martell" title="Elia Martell" class="mw-redirect">Elia Martell</a>'s brutal murder by the Lannisters during the Sack of King's Landing earned them the lasting enmity of the Martells. As a result of Elia's unnecessary and easily avoidable murder, Dorne became a hotbed of pro-Targaryen sentiment and it took lengthy negotiations on the part of Jon Arryn for them to grudgingly swear fealty to Robert.
+</p>
+<h2><span class="mw-headline" id="See_also">See also</span><span class="editsection"><a href="/wiki/Robert%27s_Rebellion?action=edit&amp;section=4" title="Edit See also section"><img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" class="sprite edit-pencil" />Edit</a></span></h2>
+<ul><li> <a rel="nofollow" class="external text" href="http://awoiaf.westeros.org/index.php/Robert%27s_Rebellion">Robert's Rebellion at A Wiki of Ice and Fire</a> (MAJOR spoilers from the books)
+</li></ul>
+<h2><span class="mw-headline" id="References">References</span><span class="editsection"><a href="/wiki/Robert%27s_Rebellion?action=edit&amp;section=5" title="Edit References section"><img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" class="sprite edit-pencil" />Edit</a></span></h2>
+<div class="references-small" style="-moz-column-count:2; -webkit-column-count:2; column-count:2;">
+<ol class="references"><li id="cite_note-0"><a href="#cite_ref-0">↑</a> <span class="reference-text">"<a href="/wiki/The_Kingsroad" title="The Kingsroad">The Kingsroad</a>"</span>
+</li>
+<li id="cite_note-Rebellion_viewers_guide-1">↑ <sup><a href="#cite_ref-Rebellion_viewers_guide_1-0">2.0</a></sup> <sup><a href="#cite_ref-Rebellion_viewers_guide_1-1">2.1</a></sup> <sup><a href="#cite_ref-Rebellion_viewers_guide_1-2">2.2</a></sup> <span class="reference-text"><a rel="nofollow" class="external text" href="http://viewers-guide.hbo.com/game-of-thrones/season2/#!/guide/appendix/roberts-rebellion/">HBO viewers guide, appendices, Robert's Rebellion entry</a></span>
+</li>
+<li id="cite_note-Rhaegar_viewers_guide-2">↑ <sup><a href="#cite_ref-Rhaegar_viewers_guide_2-0">3.0</a></sup> <sup><a href="#cite_ref-Rhaegar_viewers_guide_2-1">3.1</a></sup> <span class="reference-text"><a rel="nofollow" class="external text" href="http://viewers-guide.hbo.com/game-ofthrones/season2/#!/guide/houses/targaryen/rhaegar-targaryen/">HBO viewers guide, season 2 guide to houses, House Targaryen - Rhaegar Targaryen entry</a></span>
+</li>
+<li id="cite_note-E1-3">↑ <sup><a href="#cite_ref-E1_3-0">4.0</a></sup> <sup><a href="#cite_ref-E1_3-1">4.1</a></sup> <sup><a href="#cite_ref-E1_3-2">4.2</a></sup> <sup><a href="#cite_ref-E1_3-3">4.3</a></sup> <sup><a href="#cite_ref-E1_3-4">4.4</a></sup> <span class="reference-text">"<a href="/wiki/Winter_is_Coming_(episode)" title="Winter is Coming (episode)" class="mw-redirect">Winter is Coming</a>"</span>
+</li>
+<li id="cite_note-4"><a href="#cite_ref-4">↑</a> <span class="reference-text"><a rel="nofollow" class="external text" href="http://viewers-guide.hbo.com/game-of-thrones/season2/#!/guide/houses/jbaratheon/robert-baratheon/">HBO viewers guide, season 2 guide to houses, House Baratheon of King's Landing - Robert Baratheon entry</a></span>
+</li>
+<li id="cite_note-5"><a href="#cite_ref-5">↑</a> <span class="reference-text"><a rel="nofollow" class="external text" href="http://viewers-guide.hbo.com/game-of-thrones/season2/#!/guide/houses/targaryen/aerys-ii-targaryen/">HBO viewers guide, season 2 guide to houses, House Targaryen - Aerys II Targaryen entry</a></span>
+</li>
+<li id="cite_note-6"><a href="#cite_ref-6">↑</a> <span class="reference-text">"<a href="/wiki/Cripples,_Bastards_and_Broken_Things" title="Cripples, Bastards and Broken Things">Cripples, Bastards and Broken Things</a>"</span>
+</li>
+<li id="cite_note-Jon_Arryn_viewers_guide-7">↑ <sup><a href="#cite_ref-Jon_Arryn_viewers_guide_7-0">8.0</a></sup> <sup><a href="#cite_ref-Jon_Arryn_viewers_guide_7-1">8.1</a></sup> <span class="reference-text"><a rel="nofollow" class="external text" href="http://viewers-guide.hbo.com/game-of-thrones/season2/#!/guide/houses/arryn/jon-arryn/">HBO viewers guide, season 2 guide to houses, House Arryn - Jon Arryn entry</a></span>
+</li>
+<li id="cite_note-8"><a href="#cite_ref-8">↑</a> <span class="reference-text">"<a href="/wiki/Garden_of_Bones" title="Garden of Bones">Garden of Bones</a>"</span>
+</li>
+<li id="cite_note-9"><a href="#cite_ref-9">↑</a> <span class="reference-text"><a rel="nofollow" class="external text" href="http://viewers-guide.hbo.com/game-of-thrones/season2/#!/guide/houses/sbaratheon/davos-seaworth/">HBO viewers guide, season 2 guide to houses, House Baratheon of Dragonstone - Davos Seaworth entry</a></span>
+</li>
+<li id="cite_note-10"><a href="#cite_ref-10">↑</a> <span class="reference-text">"<a href="/wiki/The_Kingsroad" title="The Kingsroad">The Kingsroad</a>"</span>
+</li>
+<li id="cite_note-Elia_viewers_guide-11">↑ <sup><a href="#cite_ref-Elia_viewers_guide_11-0">12.0</a></sup> <sup><a href="#cite_ref-Elia_viewers_guide_11-1">12.1</a></sup> <span class="reference-text"><a rel="nofollow" class="external text" href="http://viewers-guide.hbo.com/game-ofthrones/season2/#!/guide/houses/targaryen/elia-targaryen/">HBO viewers guide, season 2 guide to houses, House Targaryen - Elia Targaryen entry</a></span>
+</li>
+<li id="cite_note-12"><a href="#cite_ref-12">↑</a> <span class="reference-text">"<a href="/wiki/Lord_Snow" title="Lord Snow">Lord Snow</a>"</span>
+</li>
+<li id="cite_note-13"><a href="#cite_ref-13">↑</a> <span class="reference-text">"<a href="/wiki/Lord_Snow" title="Lord Snow">Lord Snow</a>"</span>
+</li>
+<li id="cite_note-Viserys_viewers_guide-14"><a href="#cite_ref-Viserys_viewers_guide_14-0">↑</a> <span class="reference-text"><a rel="nofollow" class="external text" href="http://viewers-guide.hbo.com/game-ofthrones/season2/#!/guide/houses/targaryen/viserys-targaryen/">HBO viewers guide, season 2 guide to houses, House Targaryen - Viserys Targaryen entry</a></span>
+</li>
+<li id="cite_note-Rhaella_viewers_guide-15"><a href="#cite_ref-Rhaella_viewers_guide_15-0">↑</a> <span class="reference-text"><a rel="nofollow" class="external text" href="http://viewers-guide.hbo.com/game-ofthrones/season2/#!/guide/houses/targaryen/rhaella-targaryen/">HBO viewers guide, season 2 guide to houses, House Targaryen - Rhaella Targaryen entry</a></span>
+</li>
+<li id="cite_note-Stannis_viewers_guide-16"><a href="#cite_ref-Stannis_viewers_guide_16-0">↑</a> <span class="reference-text"><a rel="nofollow" class="external text" href="http://viewers-guide.hbo.com/game-of-thrones/season2/#!/guide/houses/sbaratheon/stannis-baratheon">HBO viewers guide, season 2 guide to houses, House Baratheon of Dragonstone - Stannis Baratheon entry</a></span>
+</li></ol></div>
+<table class="nowraplinks navbox collapsible autocollapse" cellspacing="0" style="width: 100%;">
+<tr>
+<th colspan="2" class="navbox-title"> <div style="padding-right:0em"><div style="float:left; text-align:left; width:6em;"><div class="noprint plainlinksneverexpand" style="background-color:transparent; padding:0; white-space:nowrap; font-weight:normal; font-size:xx-small;&#160;;"><a href="/wiki/Template:RobertsRebellion" title="Template:RobertsRebellion"><span title="View this template" style=";">v</span></a>&#160;<span style="font-size: 80%;">•</span>&#160;<span class="plainlinks"><a  class="text" href="http://gameofthrones.wikia.com/wiki/Template_talk:RobertsRebellion"><span style=";" title="Discussion about this template">d</span></a></span>&#160;<span style="font-size: 80%;">•</span>&#160;<a  class="text" href="http://gameofthrones.wikia.com/wiki/Template:RobertsRebellion?action=edit"><span style=";" title="You can edit this template. Please use the preview button before saving.">e</span></a></div></div><div style="text-align:centre"><span style=""><strong class="selflink">Robert's Rebellion</strong></span></div></div>
+</th></tr>
+<tr>
+<td colspan="2" class="navbox-list" style="">
+<center><a href="/wiki/Battle_of_Summerhall" title="Battle of Summerhall">Summerhall</a> <b>·</b> <a href="/wiki/Battle_of_Ashford" title="Battle of Ashford">Ashford</a> <b>·</b> <a href="/wiki/Battle_of_the_Bells" title="Battle of the Bells">The Bells</a> <b>·</b> <a href="/wiki/Battle_of_the_Trident" title="Battle of the Trident">The Trident</a> <b>·</b> <a href="/wiki/Sack_of_King%27s_Landing" title="Sack of King's Landing">King's Landing</a> <b>·</b> <a href="/wiki/Siege_of_Storm%27s_End" title="Siege of Storm's End">Storm's End</a> 
+</td></tr></table></center>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 890/1000000
+Post‐expand include size: 12533/2097152 bytes
+Template argument size: 3010/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key gameofthrones:pcache:idhash:2097-0!*!0!!en!2!* and timestamp 20130928092514 -->
+<noscript><link rel="stylesheet" href="http://slot1.images.wikia.nocookie.net/__cb62330/common/extensions/wikia/ImageLazyLoad/css/ImageLazyLoadNoScript.css" /></noscript><noscript><link rel="stylesheet" href="http://slot1.images.wikia.nocookie.net/__cb62330/common/extensions/wikia/TOCimprovements/TOCNoScript.css" /></noscript></div><div class="printfooter">
+Retrieved from "<a href="http://gameofthrones.wikia.com/wiki/Robert%27s_Rebellion?oldid=104785">http://gameofthrones.wikia.com/wiki/Robert%27s_Rebellion?oldid=104785</a>"</div>
+
+				</div>
+
+															<nav class="WikiaArticleCategories CategorySelect articlePage userCanEdit" id="WikiaArticleCategories">
+	<div class="container">
+		<div class="special-categories"><a href="/wiki/Special:Categories" title="Special:Categories" class="categoriesLink" rel="nofollow">Categories</a>:</div>
+		<ul class="categories">
+				<li class="category normal" data-name="Wars" data-namespace="" data-outertag="" data-sortkey="" data-type="normal">
+	<span class="name"><a href="/wiki/Category:Wars" title="Category:Wars">Wars</a></span>
+	<ul class="toolbar">
+		<li class="tool editCategory"><img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" class="sprite-small edit" title=""></li>
+		<li class="tool removeCategory"><img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" class="sprite-small delete" title=""></li>
+	</ul>
+</li>	<li class="category normal" data-name="History" data-namespace="" data-outertag="" data-sortkey="" data-type="normal">
+	<span class="name"><a href="/wiki/Category:History" title="Category:History">History</a></span>
+	<ul class="toolbar">
+		<li class="tool editCategory"><img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" class="sprite-small edit" title=""></li>
+		<li class="tool removeCategory"><img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" class="sprite-small delete" title=""></li>
+	</ul>
+</li>	<li class="category normal" data-name="Robert&#039;s Rebellion" data-namespace="" data-outertag="" data-sortkey="" data-type="normal">
+	<span class="name"><a href="/wiki/Category:Robert%27s_Rebellion" title="Category:Robert's Rebellion">Robert's Rebellion</a></span>
+	<ul class="toolbar">
+		<li class="tool editCategory"><img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" class="sprite-small edit" title=""></li>
+		<li class="tool removeCategory"><img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" class="sprite-small delete" title=""></li>
+	</ul>
+</li>							<li class="last">
+					<button class="wikia-button secondary add" id="CategorySelectAdd" type="button">Add category</button>
+					<input autocomplete="off" class="input" id="CategorySelectInput" name="CategorySelectInput" placeholder="Add category..." type="text">				</li>
+					</ul>
+	</div>
+			<div class="toolbar">
+			<button class="wikia-button secondary cancel" id="CategorySelectCancel" type="button">Cancel</button>
+			<button class="wikia-button save" id="CategorySelectSave" type="button" disabled="disabled">Save</button>
+		</div>
+	</nav>									
+				
+									<div id="WikiaArticleFooter" class="WikiaArticleFooter">
+						<!-- RelatedPages -->					</div>
+				
+				<div id="WikiaArticleBottomAd" class="noprint">
+					
+<!-- BEGIN SLOTNAME: PREFOOTER_LEFT_BOXAD -->
+<div id="PREFOOTER_LEFT_BOXAD" class="wikia-ad noprint default-height">
+	<script>
+		window.adslots2.push(["PREFOOTER_LEFT_BOXAD",null,"AdEngine2"]);
+	</script>
+</div>
+<!-- END SLOTNAME: PREFOOTER_LEFT_BOXAD -->
+
+					
+<!-- BEGIN SLOTNAME: PREFOOTER_RIGHT_BOXAD -->
+<div id="PREFOOTER_RIGHT_BOXAD" class="wikia-ad noprint default-height">
+	<script>
+		window.adslots2.push(["PREFOOTER_RIGHT_BOXAD",null,"AdEngine2"]);
+	</script>
+</div>
+<!-- END SLOTNAME: PREFOOTER_RIGHT_BOXAD -->
+
+				</div>
+			</div>
+		</article><!-- WikiaMainContent -->
+
+					<div id="WikiaRail" class="WikiaRail grid-2">
+
+	
+<form id="WikiaSearch" class="WikiaSearch" action="http://gameofthrones.wikia.com/wiki/Special:Search" method="get">
+	<input type="text" name="search" placeholder="Search this wiki" autocomplete="off" accesskey="f" value="">
+	<input type="hidden" name="fulltext" value="Search">
+			<input type="hidden" name="ns0" value="1">
+			<input type="hidden" name="ns14" value="1">
+		<input type="submit">
+	<button class="wikia-button"><img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" class="sprite search" height="17" width="21"></button>
+</form>
+
+<!-- BEGIN SLOTNAME: TOP_RIGHT_BOXAD -->
+<div id="TOP_RIGHT_BOXAD" class="wikia-ad noprint default-height">
+	<script>
+		window.adslots2.push(["TOP_RIGHT_BOXAD",null,"AdEngine2"]);
+	</script>
+</div>
+	<div class="SelfServeUrl">Advertisement | <a href="http://mediakit.wikia.com/wiki/Media_Kit_Wiki">Your ad here</a></div>
+<!-- END SLOTNAME: TOP_RIGHT_BOXAD -->
+
+<section class="RelatedVideosModule module">
+	
+<div class="RelatedVideos RelatedVideosHidden noprint" id="RelatedVideosRL" data-count="2">
+	<h1>Videos</h1>
+	<div class="deleteConfirmTitle messageHolder">Remove video</div>
+	<div class="deleteConfirm messageHolder">
+		<span>Are you sure you want to remove this video from the Videos list?</span>
+		<label>
+			<input type="checkbox" name="delete-from-wiki" value="1">
+			Also delete this video from the wiki		</lable>
+	</div>
+	<div class="removingProcess messageHolder">Please wait wile we are removing the video</div>
+	<div class="errorWhileLoading messageHolder">Error occurred while loading data. Please recheck your connection and refesh the page.</div>
+	<div class="RVHeader">
+		<div class="tally">
+			<em>239</em>
+			<span class="fixedwidth">Videos on this wiki</span>
+		</div>
+				<a class="button addVideo" href="#" rel="tooltip" title="Add a video to this wiki"><img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" class="sprite addRelatedVideo" /> Add a video</a>
+			</div>
+	<div class="RVBody">
+		<div class="wrapper">
+			<div class="container">
+				<div class="group"><div class="item" data-total-count="239">
+	
+	<a href="/wiki/File:Game_Of_Thrones_Season_3_Episode_8_Preview" data-external="0" data-ref="File:Game_Of_Thrones_Season_3_Episode_8_Preview" class="video image lightbox" style="overlay:hidden;height:84px;margin-bottom:6px;padding-top:3px;"><div class="timer">00:36</div><div class="Wikia-video-play-button" style="line-height:84px;width:150px;"><img class="sprite play small" src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" /></div><img alt="" src="http://images1.wikia.nocookie.net/__cb20130517154156/gameofthrones/images/thumb/8/80/Game_Of_Thrones_Season_3_Episode_8_Preview/150px-Game_Of_Thrones_Season_3_Episode_8_Preview.jpg" width="150" height="84" data-video-name="Game Of Thrones Season 3 Episode 8 Preview" data-video-key="Game_Of_Thrones_Season_3_Episode_8_Preview" data-src="http://images1.wikia.nocookie.net/__cb20130517154156/gameofthrones/images/thumb/8/80/Game_Of_Thrones_Season_3_Episode_8_Preview/150px-Game_Of_Thrones_Season_3_Episode_8_Preview.jpg" class="Wikia-video-thumb" /></a>
+	
+	<div class="description">
+		
+			<a class="lightbox lightbox-link-to-open" href="http://gameofthrones.wikia.com/wiki/File:Game_Of_Thrones_Season_3_Episode_8_Preview" data-ref="File:Game_Of_Thrones_Season_3_Episode_8_Preview" data-external="0" data-video-name="Game Of Thrones Season 3 Episode 8 Preview" data-video-key="Game_Of_Thrones_Season_3_Episode_8_Preview">
+				Game Of Thrones Season 3 Episode 8 Preview
+			</a>
+			<span class="video-views">33,981 views</span>
+		
+	</div>
+</div><div class="item" data-total-count="239">
+	
+	<a href="/wiki/File:Game_Of_Thrones_Season_3_Trailer_-_Extended_Version" data-external="0" data-ref="File:Game_Of_Thrones_Season_3_Trailer_-_Extended_Version" class="video image lightbox" style="overlay:hidden;height:84px;margin-bottom:6px;padding-top:3px;"><div class="timer">01:21</div><div class="Wikia-video-play-button" style="line-height:84px;width:150px;"><img class="sprite play small" src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" /></div><img alt="" src="http://images2.wikia.nocookie.net/__cb20130303141711/gameofthrones/images/thumb/c/c7/Game_Of_Thrones_Season_3_Trailer_-_Extended_Version/150px-Game_Of_Thrones_Season_3_Trailer_-_Extended_Version.jpg" width="150" height="84" data-video-name="Game Of Thrones Season 3 Trailer - Extended Version" data-video-key="Game_Of_Thrones_Season_3_Trailer_-_Extended_Version" data-src="http://images2.wikia.nocookie.net/__cb20130303141711/gameofthrones/images/thumb/c/c7/Game_Of_Thrones_Season_3_Trailer_-_Extended_Version/150px-Game_Of_Thrones_Season_3_Trailer_-_Extended_Version.jpg" class="Wikia-video-thumb" /></a>
+	
+	<div class="description">
+		
+			<a class="lightbox lightbox-link-to-open" href="http://gameofthrones.wikia.com/wiki/File:Game_Of_Thrones_Season_3_Trailer_-_Extended_Version" data-ref="File:Game_Of_Thrones_Season_3_Trailer_-_Extended_Version" data-external="0" data-video-name="Game Of Thrones Season 3 Trailer - Extended Version" data-video-key="Game_Of_Thrones_Season_3_Trailer_-_Extended_Version">
+				Game Of Thrones Season 3 Trailer - Extended V&#8230;
+			</a>
+			<span class="video-views">106,090 views</span>
+		
+	</div>
+</div><div class="item" data-total-count="239">
+	
+	<a href="/wiki/File:Game_Of_Thrones_Season_3_Episode_10_Preview" data-external="0" data-ref="File:Game_Of_Thrones_Season_3_Episode_10_Preview" class="video image lightbox" style="overlay:hidden;height:84px;margin-bottom:6px;padding-top:3px;"><div class="timer">00:41</div><div class="Wikia-video-play-button" style="line-height:84px;width:150px;"><img class="sprite play small" src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" /></div><img alt="" src="http://images2.wikia.nocookie.net/__cb20130605202625/gameofthrones/images/thumb/1/11/Game_Of_Thrones_Season_3_Episode_10_Preview/150px-Game_Of_Thrones_Season_3_Episode_10_Preview.jpg" width="150" height="84" data-video-name="Game Of Thrones Season 3 Episode 10 Preview" data-video-key="Game_Of_Thrones_Season_3_Episode_10_Preview" data-src="http://images2.wikia.nocookie.net/__cb20130605202625/gameofthrones/images/thumb/1/11/Game_Of_Thrones_Season_3_Episode_10_Preview/150px-Game_Of_Thrones_Season_3_Episode_10_Preview.jpg" class="Wikia-video-thumb" /></a>
+	
+	<div class="description">
+		
+			<a class="lightbox lightbox-link-to-open" href="http://gameofthrones.wikia.com/wiki/File:Game_Of_Thrones_Season_3_Episode_10_Preview" data-ref="File:Game_Of_Thrones_Season_3_Episode_10_Preview" data-external="0" data-video-name="Game Of Thrones Season 3 Episode 10 Preview" data-video-key="Game_Of_Thrones_Season_3_Episode_10_Preview">
+				Game Of Thrones Season 3 Episode 10 Preview
+			</a>
+			<span class="video-views">38,593 views</span>
+		
+	</div>
+</div></div><div class="group"><div class="item" data-total-count="239">
+	
+	<a href="/wiki/File:Game_Of_Thrones_Season_3_Episode_9_Preview" data-external="0" data-ref="File:Game_Of_Thrones_Season_3_Episode_9_Preview" class="video image lightbox" style="overlay:hidden;height:84px;margin-bottom:6px;padding-top:3px;"><div class="timer">00:36</div><div class="Wikia-video-play-button" style="line-height:84px;width:150px;"><img class="sprite play small" src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" /></div><img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" width="150" height="84" data-video-name="Game Of Thrones Season 3 Episode 9 Preview" data-video-key="Game_Of_Thrones_Season_3_Episode_9_Preview" data-src="http://images3.wikia.nocookie.net/__cb20130520042121/gameofthrones/images/thumb/8/8e/Game_Of_Thrones_Season_3_Episode_9_Preview/150px-Game_Of_Thrones_Season_3_Episode_9_Preview.jpg" class="Wikia-video-thumb lzy lzyPlcHld" onload="if(typeof ImgLzy==&quot;object&quot;){ImgLzy.load(this)}" /><noscript><img src="http://images3.wikia.nocookie.net/__cb20130520042121/gameofthrones/images/thumb/8/8e/Game_Of_Thrones_Season_3_Episode_9_Preview/150px-Game_Of_Thrones_Season_3_Episode_9_Preview.jpg" width="150" height="84" data-video-name="Game Of Thrones Season 3 Episode 9 Preview" data-video-key="Game_Of_Thrones_Season_3_Episode_9_Preview" data-src="http://images3.wikia.nocookie.net/__cb20130520042121/gameofthrones/images/thumb/8/8e/Game_Of_Thrones_Season_3_Episode_9_Preview/150px-Game_Of_Thrones_Season_3_Episode_9_Preview.jpg" class="Wikia-video-thumb" /></noscript></a>
+	
+	<div class="description">
+		
+			<a class="lightbox lightbox-link-to-open" href="http://gameofthrones.wikia.com/wiki/File:Game_Of_Thrones_Season_3_Episode_9_Preview" data-ref="File:Game_Of_Thrones_Season_3_Episode_9_Preview" data-external="0" data-video-name="Game Of Thrones Season 3 Episode 9 Preview" data-video-key="Game_Of_Thrones_Season_3_Episode_9_Preview">
+				Game Of Thrones Season 3 Episode 9 Preview
+			</a>
+			<span class="video-views">32,822 views</span>
+		
+	</div>
+</div></div><script type="text/javascript"> window.RelatedVideosIds = [{"key":"Game_Of_Thrones_Season_3_Episode_8_Preview","title":"Game Of Thrones Season 3 Episode 8 Preview","thumb":"http:\/\/images1.wikia.nocookie.net\/__cb20130517154156\/gameofthrones\/images\/thumb\/8\/80\/Game_Of_Thrones_Season_3_Episode_8_Preview\/150px-Game_Of_Thrones_Season_3_Episode_8_Preview.jpg"},{"key":"Game_Of_Thrones_Season_3_Trailer_-_Extended_Version","title":"Game Of Thrones Season 3 Trailer - Extended Version","thumb":"http:\/\/images2.wikia.nocookie.net\/__cb20130303141711\/gameofthrones\/images\/thumb\/c\/c7\/Game_Of_Thrones_Season_3_Trailer_-_Extended_Version\/150px-Game_Of_Thrones_Season_3_Trailer_-_Extended_Version.jpg"},{"key":"Game_Of_Thrones_Season_3_Episode_10_Preview","title":"Game Of Thrones Season 3 Episode 10 Preview","thumb":"http:\/\/images2.wikia.nocookie.net\/__cb20130605202625\/gameofthrones\/images\/thumb\/1\/11\/Game_Of_Thrones_Season_3_Episode_10_Preview\/150px-Game_Of_Thrones_Season_3_Episode_10_Preview.jpg"},{"key":"Game_Of_Thrones_Season_3_Episode_9_Preview","title":"Game Of Thrones Season 3 Episode 9 Preview","thumb":"http:\/\/images3.wikia.nocookie.net\/__cb20130520042121\/gameofthrones\/images\/thumb\/8\/8e\/Game_Of_Thrones_Season_3_Episode_9_Preview\/150px-Game_Of_Thrones_Season_3_Episode_9_Preview.jpg"}]</script>			</div>
+		</div>
+		<div class="novideos" style="display: none">Be the first to add a video</div>
+		<div class="paginationbar">
+			<div class="scrollleft" >
+				<img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" class="chevron" />
+			</div>
+			<div class="left scrollright">
+				<img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" class="chevron" />
+			</div>
+			<div class="pagecount">
+				<span class="page">1</span> of <span class="maxcount">2</span>			</div>
+		</div>
+
+		<div class="seemore">
+			<a href="/wiki/Special:Videos" class="more">
+				See all videos &gt;
+			</a>
+		</div>
+		<div class="seeMorePlaceholder">
+			<a href="/wiki/Special:Videos" class="see-more-videos-placeholder">See all videos</a>
+		</div>
+	</div>
+</div>
+</section><section class="LatestPhotosModule module" id="LatestPhotosModule">
+	<h1 class="tight">Photos</h1>
+	<a href="/wiki/Special:Upload" title="Add a photo to this wiki" class="wikia-button upphotos" rel="tooltip"><img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" height="0" width="0" class="sprite photo" /> Add a Photo</a>	<div class="tally counter">
+		<em>3,412</em><span class="fixedwidth">photos on this wiki</span>	</div>
+
+			<a href="#" class="previous"><img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" class="latest-images-left" height="0" width="0"></a>
+		<a href="#" class="next"><img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" class="latest-images-right" height="0" width="0"></a>
+	<div class="carousel-container">
+		<div>
+			<ul class="carousel">
+	
+		<li class="thumbs"><a class="image" href="/wiki/File:BronnPromo.jpg">
+						<img class="thumbimage" data-image-name="BronnPromo.jpg" data-image-key="BronnPromo.jpg" height="82" width="82" src="http://images2.wikia.nocookie.net/__cb62324/gameofthrones/images/thumb/a/ac/BronnPromo.jpg/82px-117%2C585%2C0%2C467-BronnPromo.jpg" />
+		</a>
+
+		<span class="thumbcaption">
+			by <a href="/wiki/User:Gonzalo84" title="User:Gonzalo84">Gonzalo84</a><br/>
+			<time class="timeago" datetime="2013-10-08T02:20:08Z">2013-10-08T02:20:08Z</time><br/>
+
+					</span>
+		</li>
+	
+		<li class="thumbs"><a class="image" href="/wiki/File:JoffreyMhysa.jpg">
+						<img class="thumbimage" data-image-name="JoffreyMhysa.jpg" data-image-key="JoffreyMhysa.jpg" height="82" width="82" src="http://images2.wikia.nocookie.net/__cb62324/gameofthrones/images/thumb/e/ed/JoffreyMhysa.jpg/82px-0%2C2832%2C0%2C2832-JoffreyMhysa.jpg" />
+		</a>
+
+		<span class="thumbcaption">
+			by <a href="/wiki/User:Gonzalo84" title="User:Gonzalo84">Gonzalo84</a><br/>
+			<time class="timeago" datetime="2013-10-08T02:14:56Z">2013-10-08T02:14:56Z</time><br/>
+
+					</span>
+		</li>
+	
+		<li class="thumbs"><a class="image" href="/wiki/File:Joff.jpg">
+						<img class="thumbimage" data-image-name="Joff.jpg" data-image-key="Joff.jpg" height="82" width="82" src="http://images3.wikia.nocookie.net/__cb62324/gameofthrones/images/thumb/5/50/Joff.jpg/82px-0%2C1400%2C0%2C1400-Joff.jpg" />
+		</a>
+
+		<span class="thumbcaption">
+			by <a href="/wiki/User:Gonzalo84" title="User:Gonzalo84">Gonzalo84</a><br/>
+			<time class="timeago" datetime="2013-10-08T02:13:07Z">2013-10-08T02:13:07Z</time><br/>
+
+						Posted in			<a href="/wiki/Joffrey_Baratheon" title="Joffrey Baratheon" class="wikia-gallery-item-posted">Joffrey Baratheon</a>				</span>
+		</li>
+	
+		<li class="thumbs"><a class="image" href="/wiki/File:SmallCouncil_WoP.jpg">
+						<img class="thumbimage" data-image-name="SmallCouncil+WoP.jpg" data-image-key="SmallCouncil_WoP.jpg" height="82" width="82" src='data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D' data-src="http://images1.wikia.nocookie.net/__cb62324/gameofthrones/images/thumb/b/b8/SmallCouncil_WoP.jpg/82px-654%2C3250%2C0%2C2595-SmallCouncil_WoP.jpg" />
+		</a>
+
+		<span class="thumbcaption">
+			by <a href="/wiki/User:Gonzalo84" title="User:Gonzalo84">Gonzalo84</a><br/>
+			<time class="timeago" datetime="2013-10-05T19:06:57Z">2013-10-05T19:06:57Z</time><br/>
+
+						Posted in			<a href="/wiki/Pycelle" title="Pycelle" class="wikia-gallery-item-posted">Pycelle</a>				</span>
+		</li>
+	
+		<li class="thumbs"><a class="image" href="/wiki/File:PycelleSecondSons.jpg">
+						<img class="thumbimage" data-image-name="PycelleSecondSons.jpg" data-image-key="PycelleSecondSons.jpg" height="82" width="82" src='data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D' data-src="http://images3.wikia.nocookie.net/__cb62324/gameofthrones/images/thumb/c/c9/PycelleSecondSons.jpg/82px-0%2C2816%2C0%2C2816-PycelleSecondSons.jpg" />
+		</a>
+
+		<span class="thumbcaption">
+			by <a href="/wiki/User:Gonzalo84" title="User:Gonzalo84">Gonzalo84</a><br/>
+			<time class="timeago" datetime="2013-10-05T19:05:13Z">2013-10-05T19:05:13Z</time><br/>
+
+						Posted in			<a href="/wiki/Pycelle" title="Pycelle" class="wikia-gallery-item-posted">Pycelle</a>				</span>
+		</li>
+	
+		<li class="thumbs"><a class="image" href="/wiki/File:DaarioArmor.jpg">
+						<img class="thumbimage" data-image-name="DaarioArmor.jpg" data-image-key="DaarioArmor.jpg" height="82" width="82" src='data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D' data-src="http://images2.wikia.nocookie.net/__cb62324/gameofthrones/images/thumb/3/3a/DaarioArmor.jpg/82px-0%2C3319%2C0%2C3319-DaarioArmor.jpg" />
+		</a>
+
+		<span class="thumbcaption">
+			by <a href="/wiki/User:Gonzalo84" title="User:Gonzalo84">Gonzalo84</a><br/>
+			<time class="timeago" datetime="2013-10-05T18:02:34Z">2013-10-05T18:02:34Z</time><br/>
+
+						Posted in			<a href="/wiki/Daario_Naharis" title="Daario Naharis" class="wikia-gallery-item-posted">Daario Naharis</a>				</span>
+		</li>
+	
+		<li class="thumbs"><a class="image" href="/wiki/File:Iron_throne.jpg">
+						<img class="thumbimage" data-image-name="Iron+throne.jpg" data-image-key="Iron_throne.jpg" height="82" width="82" src='data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D' data-src="http://images4.wikia.nocookie.net/__cb62324/gameofthrones/images/thumb/c/c8/Iron_throne.jpg/82px-0%2C2832%2C0%2C2832-Iron_throne.jpg" />
+		</a>
+
+		<span class="thumbcaption">
+			by <a href="/wiki/User:Gonzalo84" title="User:Gonzalo84">Gonzalo84</a><br/>
+			<time class="timeago" datetime="2013-10-05T17:57:55Z">2013-10-05T17:57:55Z</time><br/>
+
+						Posted in			<a href="/wiki/Iron_Throne" title="Iron Throne" class="wikia-gallery-item-posted">Iron Throne</a>				</span>
+		</li>
+	
+		<li class="thumbs"><a class="image" href="/wiki/File:WalderFreyedWedding.jpg">
+						<img class="thumbimage" data-image-name="WalderFreyedWedding.jpg" data-image-key="WalderFreyedWedding.jpg" height="82" width="82" src='data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D' data-src="http://images1.wikia.nocookie.net/__cb62324/gameofthrones/images/thumb/3/35/WalderFreyedWedding.jpg/82px-713%2C3546%2C0%2C2832-WalderFreyedWedding.jpg" />
+		</a>
+
+		<span class="thumbcaption">
+			by <a href="/wiki/User:Gonzalo84" title="User:Gonzalo84">Gonzalo84</a><br/>
+			<time class="timeago" datetime="2013-10-04T02:01:12Z">2013-10-04T02:01:12Z</time><br/>
+
+						Posted in			<a href="/wiki/Walder_Frey" title="Walder Frey" class="wikia-gallery-item-posted">Walder Frey</a>				</span>
+		</li>
+	
+		<li class="thumbs"><a class="image" href="/wiki/File:RattleshirtWarband.png">
+						<img class="thumbimage" data-image-name="RattleshirtWarband.png" data-image-key="RattleshirtWarband.png" height="82" width="82" src='data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D' data-src="http://images2.wikia.nocookie.net/__cb62324/gameofthrones/images/thumb/9/91/RattleshirtWarband.png/82px-162%2C801%2C0%2C638-RattleshirtWarband.png" />
+		</a>
+
+		<span class="thumbcaption">
+			by <a href="/wiki/User:Gonzalo84" title="User:Gonzalo84">Gonzalo84</a><br/>
+			<time class="timeago" datetime="2013-10-04T01:04:24Z">2013-10-04T01:04:24Z</time><br/>
+
+						Posted in			<a href="/wiki/Lord_of_Bones" title="Lord of Bones" class="wikia-gallery-item-posted">Lord of Bones</a>				</span>
+		</li>
+	
+		<li class="thumbs"><a class="image" href="/wiki/File:RattleshirtPromo.png">
+						<img class="thumbimage" data-image-name="RattleshirtPromo.png" data-image-key="RattleshirtPromo.png" height="82" width="82" src='data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D' data-src="http://images1.wikia.nocookie.net/__cb62324/gameofthrones/images/thumb/a/a8/RattleshirtPromo.png/82px-162%2C801%2C0%2C638-RattleshirtPromo.png" />
+		</a>
+
+		<span class="thumbcaption">
+			by <a href="/wiki/User:Gonzalo84" title="User:Gonzalo84">Gonzalo84</a><br/>
+			<time class="timeago" datetime="2013-10-04T01:03:36Z">2013-10-04T01:03:36Z</time><br/>
+
+						Posted in			<a href="/wiki/Lord_of_Bones" title="Lord of Bones" class="wikia-gallery-item-posted">Lord of Bones</a>				</span>
+		</li>
+	
+		<li class="thumbs"><a class="image" href="/wiki/File:Catelyn_Stark_S3.jpg">
+						<img class="thumbimage" data-image-name="Catelyn+Stark+S3.jpg" data-image-key="Catelyn_Stark_S3.jpg" height="82" width="82" src='data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D' data-src="http://images2.wikia.nocookie.net/__cb62324/gameofthrones/images/thumb/1/1b/Catelyn_Stark_S3.jpg/82px-0%2C499%2C0%2C499-Catelyn_Stark_S3.jpg" />
+		</a>
+
+		<span class="thumbcaption">
+			by <a href="/wiki/User:Gonzalo84" title="User:Gonzalo84">Gonzalo84</a><br/>
+			<time class="timeago" datetime="2013-10-04T00:56:14Z">2013-10-04T00:56:14Z</time><br/>
+
+						Posted in			<a href="/wiki/Catelyn_Stark" title="Catelyn Stark" class="wikia-gallery-item-posted">Catelyn Stark</a>,&nbsp;<a href="/wiki/File:Catelyn_Stark_S3.jpg#filelinks" class="wikia-gallery-item-more">more...</a>				</span>
+		</li>
+				<li class="see-all">
+			<a href="/wiki/Special:NewFiles" title="Special:NewFiles">See all photos</a>		</li>
+				</ul>
+		</div>
+	</div>
+	<a href="/wiki/Special:NewFiles" title="Special:NewFiles" class="more">See all photos ></a>
+
+</section>
+
+<!-- BEGIN SLOTNAME: MIDDLE_RIGHT_BOXAD -->
+<div id="MIDDLE_RIGHT_BOXAD" class="wikia-ad noprint default-height">
+	<script>
+		window.adslots2.push(["MIDDLE_RIGHT_BOXAD",null,"AdEngine2"]);
+	</script>
+</div>
+<!-- END SLOTNAME: MIDDLE_RIGHT_BOXAD -->
+
+<section class="WikiaActivityModule module" id="WikiaRecentActivity">
+	<h1 class="activity-heading">Recent Wiki Activity</h1>
+	<ul>
+		<li>
+			<img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" class="sprite edit" height="20" width="20">
+			<em><a href="/wiki/Rickon_Stark">Rickon Stark</a></em>
+			<div class="edited-by">edited by <a href="/wiki/User:Andykatib">Andykatib</a> 10 hours ago</div>
+		</li>
+		<li>
+			<img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" class="sprite edit" height="20" width="20">
+			<em><a href="/wiki/Guest_right">Guest right</a></em>
+			<div class="edited-by">edited by <a href="/wiki/Special:Contributions/109.66.7.175">A Wikia contributor</a> 14 hours ago</div>
+		</li>
+		<li>
+			<img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" class="sprite edit" height="20" width="20">
+			<em><a href="/wiki/Bronn">Bronn</a></em>
+			<div class="edited-by">edited by <a href="/wiki/User:Gonzalo84">Gonzalo84</a> 16 hours ago</div>
+		</li>
+		<li>
+			<img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" class="sprite edit" height="20" width="20">
+			<em><a href="/wiki/Joffrey_Baratheon">Joffrey Baratheon</a></em>
+			<div class="edited-by">edited by <a href="/wiki/User:Gonzalo84">Gonzalo84</a> 16 hours ago</div>
+		</li>
+	</ul>
+
+			<a href="/wiki/Special:WikiActivity" title="Special:WikiActivity" class="more">See more ></a>	</section>
+<section class="ChatModule module ChatModuleUninitialized">
+	<div class="chat-contents">
+		<h1 class="chat-headline">
+			<span class="chat-live" data-msg-id="chat-live2"> </span>
+			<span class="chat-total"> </span>
+		</h1>
+		<p class="chat-name"> </p>
+		<div class="chat-join">
+			<button onclick="ChatEntryPoint.onClickChatButton('/wiki/Special:Chat')"> </button>
+		</div>
+		<div class="chat-whos-here">
+			<span class="arrow-left"><img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" /></span>
+			<span class="arrow-right"><img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" /></span>
+			<div class="carousel-container">
+				<div>
+					<ul class="carousel">
+						<li class="chatter">
+							<img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" data-user-attr="data-src" data-user-prop="avatarUrl" class="avatar" width="32" height="32" />
+							<div class="UserStatsMenu">
+								<div class="info">
+									<img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" data-user-attr="data-src" data-user-prop="avatarUrl" class="avatar" width="24" height="24" />
+									<ul>
+										<li class="username" data-user-prop="username"> </li>
+										<li class="edits" data-msg-id="chat-edit-count" data-user-attr="data-msg-param" data-user-prop="editCount"> </li>
+										<li class="since" data-msg-id="chat-member-since" data-user-attr="data-msg-param" data-user-prop="since"> </li>
+									</ul>
+								</div>
+								<div class="actions">
+									<ul class="regular-actions">
+										<li class="profilepage talk-page">
+											<a data-user-attr="href" data-user-prop="profileUrl">
+												<span class="icon">&nbsp;</span>
+												<span class="label" data-msg-id="chat-user-menu-talk-page"></span>
+											</a>
+										</li>
+										<li class="contribs">
+											<a data-user-attr="href" data-user-prop="contribsUrl">
+												<span class="icon">&nbsp;</span>
+												<span class="label" data-msg-id="chat-user-menu-contribs"> </span>
+											</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</li>
+					</ul>
+					<img src="" class="avatar currentUser" width="32" height="32" />
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- BEGIN SLOTNAME: LEFT_SKYSCRAPER_2 -->
+<div id="LEFT_SKYSCRAPER_2" class="wikia-ad noprint default-height">
+	<script>
+		window.adslots2.push(["LEFT_SKYSCRAPER_2",null,"AdEngine2"]);
+	</script>
+</div>
+<!-- END SLOTNAME: LEFT_SKYSCRAPER_2 -->
+
+	<div id="WikiaAdInContentPlaceHolder"></div>
+
+</div>
+		
+		<footer id="WikiaFooter" class="WikiaFooter notoolbar">
+	
+<!-- BEGIN SLOTNAME: LEFT_SKYSCRAPER_3 -->
+<div id="LEFT_SKYSCRAPER_3" class="wikia-ad noprint default-height">
+	<script>
+		window.adslots2.push(["LEFT_SKYSCRAPER_3",null,"AdEngine2"]);
+	</script>
+</div>
+<!-- END SLOTNAME: LEFT_SKYSCRAPER_3 -->
+
+	
+	<section>
+	<div class="header-container">
+		<h1>Around Wikia's network</h1>
+		<a id="WikiaRandomWiki" href="http://community.wikia.com/wiki/Special:RandomWiki/130814" class="wikia-button">Random Wiki</a>
+	</div>
+	<script type='text/javascript'>
+		wgAfterContentAndJS.push(function() {
+			window.OpenXSPC = {};
+			window.OpenXSPC[ 'fillElem_SPOTLIGHT_FOOTER' ] = function() {
+				var output = window.OA_output || [];
+				( 14 in output ) && $( '#SPOTLIGHT_FOOTER_1' ).html( output[ 14 ] );
+				( 15 in output ) && $( '#SPOTLIGHT_FOOTER_2' ).html( output[ 15 ] );
+				( 16 in output ) && $( '#SPOTLIGHT_FOOTER_3' ).html( output[ 16 ] );
+			};
+		});
+	</script>
+	<ul id="SPOTLIGHT_FOOTER" class="LazyLoadAd SPOTLIGHT_FOOTER">
+		<li class="WikiaSpotlight item-1" id="SPOTLIGHT_FOOTER_1"></li>
+		<li class="WikiaSpotlight item-2" id="SPOTLIGHT_FOOTER_2"></li>
+		<li class="WikiaSpotlight item-3" id="SPOTLIGHT_FOOTER_3"></li>
+	</ul>
+</section>
+</footer>
+				<footer class="CorporateFooter">
+	<nav>
+		<h1>Wikia Inc Navigation</h1>
+		<div class="WikiaHubBranding HubBrandingBlackBackground">
+			<div class="wordmark">
+				<img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" class="sprite logo3">
+			</div>
+						    <div class="hub"><a class="hub3" href="http://www.wikia.com/Entertainment">[ Entertainment ]</a></div>
+					</div>
+		<ul>
+			<li>
+							<a href="http://www.wikia.com/About"><span>About</span></a>
+						</li>
+				<li>
+							<a href="http://www.community.wikia.com"><span>Community Central</span></a>
+						</li>
+				<li>
+							<a href="http://www.wikia.com/Careers">Careers</a>
+						</li>
+				<li>
+							<a href="http://www.wikia.com/Advertising">Advertise</a>
+						</li>
+				<li>
+							<a href="http://api.wikia.com/"><span>API</span></a>
+						</li>
+				<li>
+							<a href="/wiki/Special:Contact">Contact Wikia</a>
+						</li>
+				<li>
+							<a href="http://www.wikia.com/Terms_of_Use">Terms of Use<span style="color: #ff0000"> (Updated)</span></a>
+						</li>
+				<li>
+							<a href="http://www.wikia.com/Privacy_Policy">Privacy Policy</a>
+						</li>
+				<li>
+			Content is available under <a href="http://www.wikia.com/Licensing" title="homepage:Licensing">CC-BY-SA</a>.			</li>
+			</ul>
+	</nav>
+</footer>
+	</div>
+</section><!--WikiaPage-->
+
+			<div id="WikiaBarWrapper" class="WikiaBarWrapper hidden">
+				<div class="wikia-bar wikia-bar-anon">
+			<a href="#" class="arrow" data-tooltip="Collapse" data-tooltipshow="Show"></a>
+			<div class="ad">
+		<div id="WIKIA_BAR_BOXAD_1" class="noprint" style="width: 300px; position: relative;"></div>
+</div>
+<div
+	class="message"
+	data-messagetooltip="Click here for more information!"
+	data-wikiabarcontent="[{&quot;text&quot;:&quot;ASK THE MASTERS OF ANIME YOUR QUESTIONS!&quot;,&quot;href&quot;:&quot;http:\/\/animanga.wikia.com\/wiki\/User_blog:Gcheung28\/Ask_the_Masters_of_Animanga_Your_Questions&quot;},{&quot;text&quot;:&quot;Which were your FAVORITE episodes of The Clone Wars?&quot;,&quot;href&quot;:&quot;http:\/\/clonewars.wikia.com\/wiki\/User_blog:Gcheung28\/Star_Wars:_Clone_Wars_-_Top_Season_5_Episodes&quot;},{&quot;text&quot;:&quot;Meet the Clone Wars characters of Season 5&quot;,&quot;href&quot;:&quot;http:\/\/clonewars.wikia.com\/wiki\/User_blog:Mhadick\/Star_Wars:_Clone_Wars_-_Characters_of_Season_5&quot;},{&quot;text&quot;:&quot;Which were your FAVORITE episodes of The Clone Wars?&quot;,&quot;href&quot;:&quot;http:\/\/clonewars.wikia.com\/wiki\/User_blog:Gcheung28\/Star_Wars:_Clone_Wars_-_Top_Season_5_Episodes&quot;},{&quot;text&quot;:&quot;Meet the Clone Wars characters of Season 5&quot;,&quot;href&quot;:&quot;http:\/\/clonewars.wikia.com\/wiki\/User_blog:Mhadick\/Star_Wars:_Clone_Wars_-_Characters_of_Season_5&quot;}]"
+></div>
+	<a class="wikiabar-button" href="http://www.wikia.com/Entertainment" data-index="0">
+		<img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" class="icon cup" />
+		<span>Entertainment</span>
+	</a>
+	<a class="wikiabar-button" href="http://www.wikia.com/Video_Games" data-index="1">
+		<img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" class="icon cup" />
+		<span>Video Games</span>
+	</a>
+	<a class="wikiabar-button" href="http://www.wikia.com/Lifestyle" data-index="2">
+		<img src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D" class="icon cup" />
+		<span>Lifestyle</span>
+	</a>
+		</div>
+			</div>
+	<div class="WikiaBarCollapseWrapper">
+		<a href="#" class="wikia-bar-collapse" data-tooltip="Collapse"></a>
+	</div>
+
+
+<!-- BEGIN SLOTNAME: GPT_FLUSH -->
+<div id="GPT_FLUSH" class="wikia-ad noprint default-height">
+	<script>
+		window.adslots2.push(["GPT_FLUSH",null,"AdEngine2"]);
+	</script>
+</div>
+<!-- END SLOTNAME: GPT_FLUSH -->
+
+
+<!-- BEGIN SLOTNAME: INVISIBLE_1 -->
+<div id="INVISIBLE_1" class="wikia-ad noprint default-height">
+	<script>
+		window.adslots2.push(["INVISIBLE_1",null,"AdEngine2"]);
+	</script>
+</div>
+<!-- END SLOTNAME: INVISIBLE_1 -->
+
+
+<!-- BEGIN SLOTNAME: INVISIBLE_2 -->
+<div id="INVISIBLE_2" class="wikia-ad noprint default-height">
+	<script>
+		window.adslots2.push(["INVISIBLE_2",null,"AdEngine2"]);
+	</script>
+</div>
+<!-- END SLOTNAME: INVISIBLE_2 -->
+
+
+	<!--[if lt IE 8]>
+		<script src="http://slot1.images.wikia.nocookie.net/__cb62330/common/resources/wikia/libraries/json2/json2.js"></script>
+	<![endif]-->
+
+	<!--[if lt IE 9]>
+		<script src="http://slot1.images.wikia.nocookie.net/__cb62330/common/resources/wikia/libraries/html5/html5.min.js"></script>
+	<![endif]-->
+
+	<!-- Combined JS files and head scripts -->
+	
+<!-- Liftium options -->
+<script>LiftiumOptions = {"pubid":999,"baseUrl":"\/__varnish_liftium\/","kv_wgDBname":"gameofthrones","kv_article_id":2097,"kv_wpage":"Robert%27s_Rebellion","kv_Hub":"Entertainment","kv_skin":"oasis","kv_user_lang":"en","kv_cont_lang":"en","kv_isMainPage":false,"kv_page_type":"article","geoUrl":"http:\/\/geoiplookup.wikia.com\/","kv_domain":"gameofthrones.wikia.com","hasMoreCalls":true,"isCalledAfterOnload":true,"maxLoadDelay":6000};
+</script>
+<script src="http://gameofthrones.wikia.com/__load/-/cb%3D62330%26debug%3Dfalse%26lang%3Den%26only%3Dscripts%26skin%3Doasis/startup"></script>
+<script>if(window.mw){
+mw.config.set({"wgCanonicalNamespace":"","wgCanonicalSpecialPageName":false,"wgNamespaceNumber":0,"wgPageName":"Robert\'s_Rebellion","wgTitle":"Robert\'s Rebellion","wgCurRevisionId":104785,"wgArticleId":2097,"wgIsArticle":true,"wgAction":"view","wgUserName":null,"wgUserGroups":["*"],"wgCategories":["Wars","History","Robert\'s Rebellion"],"wgBreakFrames":false,"wgPageContentLanguage":"en","wgSeparatorTransformTable":["",""],"wgDigitTransformTable":["",""],"wgRelevantPageName":"Robert\'s_Rebellion","wgRestrictionEdit":[],"wgRestrictionMove":[],"wgSearchNamespaces":[0,14],"wgTimeAgoi18n":{"year":"a year ago","years":"%d years ago","month":"a month ago","months":"%d months ago","day":"a day ago","days":"%d days ago","hour":"an hour ago","hours":"%d hours ago","minute":"a minute ago","minutes":"%d minutes ago","seconds":"a minute ago","year-from-now":"\x26lt;timeago-year-from-now\x26gt;","years-from-now":"\x26lt;timeago-year-from-now\x26gt;","month-from-now":"a month from now","months-from-now":"%d months from now","day-from-now":"a day from now","days-from-now":"%d days from now","hour-from-now":"an hour from now","hours-from-now":"%d hours from now","minute-from-now":"a minute from now","minutes-from-now":"%d minutes from now","second-from-now":"a minute from now","seconds-from-now":"a minute from now"},"sassParams":{"background-align":"center","background-fixed":"false","background-image":"http://images4.wikia.nocookie.net/__cb38/gameofthrones/images/5/50/Wiki-background","background-image-height":"1836","background-image-width":"1530","background-tiled":"true","color-body":"#000","color-buttons":"#6c93b1","color-header":"#3a5766","color-links":"#6699ff","color-page":"#474646","page-opacity":"100","widthType":3},"wgAssetsManagerQuery":"/__am/%4$d/%1$s/%3$s/%2$s","wgCdnRootUrl":"http://slot1.images.wikia.nocookie.net","wgEnableAdsInContent":1,"wgEnableOpenXSPC":true,"wgAdDriverCookieLifetime":1,"wgHighValueCountries":{"AU":3,"BR":3,"BE":3,"DE":3,"CA":3,"FI":3,"FR":3,"GB":3,"NL":3,"NO":3,"SE":3,"DK":3,"ES":3,"UK":3,"US":3,"IT":3,"SA":3,"RU":3,"CZ":3,"GR":3,"HU":3,"PT":3,"PL":3,"TR":3,"UA":6},"wgAdDriverUseExpiryStorage":true,"wgEnableOutboundScreenExt":true,"wgCatId":3,"wgParentCatId":0,"wgBlankImgUrl":"data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D","wgMainpage":"Game of Thrones Wiki","wgIsContentNamespace":true,"themename":"oasis","wgExtensionsPath":"http://slot1.images.wikia.nocookie.net/__cb62330/common/extensions","wgResourceBasePath":"http://slot1.images.wikia.nocookie.net/__cb62330/common","wgSitename":"Game of Thrones Wiki","wgMWrevId":false,"wgRevisionId":104785,"wgCookieDomain":".wikia.com","wgCookiePath":"/","wgEnableWikiaPhotoGalleryExt":true,"wgOasisGrid":true,"wgEnableUserLoginExt":true,"wgEnableLightboxExt":true,"wgShowAdModalInterstitialTimes":3,"wgEnableWikiaFollowedPages":true,"wgFollowedPagesPagerLimit":15,"wgFollowedPagesPagerLimitAjax":600,"wgWikiaChatUsers":"","wgWikiaChatWindowFeatures":"width=600,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=no,resizable=yes","wgEnableWikiaBarExt":true,"wgEnableWikiaBarAds":true,"wgWikiaBarMainLanguages":["en","de","es","fr"],"wgOasisResponsive":false,"WikiaEnableNewCreatepage":true,"ContentNamespacesText":[""],"wgCategoryTreePageCategoryOptions":"{\"mode\":0,\"hideprefix\":20,\"showcount\":true,\"namespaces\":false}","fbAppId":"112328095453510","fbScript":"http://connect.facebook.net/en_US/all.js","fbUseMarkup":true,"fbLogo":true,"fbLogoutURL":"/wiki/Special:UserLogout?returnto=Robert%27s_Rebellion","fbReturnToTitle":"Robert\'s_Rebellion","fbScriptLangCode":"en_US","wgCategorySelect":{"defaultNamespace":"Category","defaultNamespaces":"Category","defaultSeparator":":","defaultSortKey":"Robert\'s Rebellion"}});
+}</script><script>if(window.mw){
+mw.loader.implement("user.options",function($){mw.user.options.set({"ccmeonemails":0,"cols":80,"date":"default","diffonly":0,"disablemail":0,"disablesuggest":0,"editfont":"default","editondblclick":0,"editsection":1,"editsectiononrightclick":0,"enotifminoredits":1,"enotifrevealaddr":0,"enotifusertalkpages":1,"enotifwatchlistpages":1,"extendwatchlist":0,"externaldiff":0,"externaleditor":0,"fancysig":0,"forceeditsummary":0,"gender":"unknown","hideminor":0,"hidepatrolled":0,"highlightbroken":1,"imagesize":1,"justify":0,"math":0,"minordefault":0,"newpageshidepatrolled":0,"nocache":0,"noconvertlink":0,"norollbackdiff":0,"numberheadings":0,"previewonfirst":0,"previewontop":1,"quickbar":5,"rcdays":7,"rclimit":50,"rememberpassword":0,"rows":25,"searchlimit":20,"showhiddencats":0,"showjumplinks":1,"shownumberswatching":1,"showtoc":1,"showtoolbar":1,"skin":"oasis","stubthreshold":0,"thumbsize":2,"underline":2,"uselivepreview":0,"usenewrc":1,"watchcreations":1,"watchdefault":1,"watchdeletion":1,
+"watchlistdays":3,"watchlisthideanons":0,"watchlisthidebots":0,"watchlisthideliu":0,"watchlisthideminor":0,"watchlisthideown":0,"watchlisthidepatrolled":0,"watchmoves":0,"wllimit":250,"htmlemails":1,"watchlistdigest":1,"enablerichtext":1,"founderemails-joins-130814":0,"founderemails-edits-130814":0,"founderemails-views-digest-130814":0,"founderemails-complete-digest-130814":0,"variant":"en","language":"en","searchNs0":true,"searchNs1":false,"searchNs2":false,"searchNs3":false,"searchNs4":false,"searchNs5":false,"searchNs6":false,"searchNs7":false,"searchNs8":false,"searchNs9":false,"searchNs10":false,"searchNs11":false,"searchNs12":false,"searchNs13":false,"searchNs14":true,"searchNs15":false,"searchNs110":false,"searchNs111":false,"searchNs500":false,"searchNs501":false,"searchNs502":false,"searchNs503":false,"searchNs1000":false,"searchNs1010":false,"searchNs1020":false,"searchNs1100":false,"searchNs1200":false,"searchNs1201":false,"searchNs1202":false,"userlandingpage":1});;},{},{})
+;mw.loader.implement("user.tokens",function($){mw.user.tokens.set({"editToken":"+\\","watchToken":false});;},{},{});
+
+/* cache key: gameofthrones:resourceloader:filter:minify-js:7:2d6b68633d3a941a0e3f7809663b52d5 */
+}</script>
+<script>if(window.mw){
+mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.legacy.ajax","amd.shared","mediawiki.user","mediawiki.page.ready","mediawiki.legacy.mwsuggest"]);
+}</script>	<meta property="fb:app_id" content="112328095453510" prefix="fb: http://www.facebook.com/2008/fbml" />
+	<meta property="og:type" content="article" />
+	<meta property="og:site_name" content="Game of Thrones Wiki" />
+	<meta property="og:title" content="Robert's Rebellion" />
+	<meta property="og:image" content="http://images3.wikia.nocookie.net/__cb20130416034524/gameofthrones/images/thumb/8/86/Robert%27s_Rebellion.png/500px-Robert%27s_Rebellion.png" />
+	<meta property="og:description" content=" Robert's Rebellion was a civil war amongst the Great Houses of Westeros that took place..." />
+	<meta property="og:url" content="http://gameofthrones.wikia.com/wiki/Robert%27s_Rebellion" />
+<script type="text/javascript">
+	var wsl_assets = {"oasis_shared_js":["http:\/\/slot1.images.wikia.nocookie.net\/__am\/62330\/groups\/-\/oasis_shared_core_js,adengine2_js,oasis_shared_js,oasis_anon_js"],"oasis_nojquery_shared_js":["http:\/\/slot1.images1.wikia.nocookie.net\/__am\/62330\/group\/-\/oasis_nojquery_shared_js_anon"],"references":["http:\/\/slot1.images3.wikia.nocookie.net\/__am\/62330\/group\/-\/relatedpages_js","http:\/\/slot1.images3.wikia.nocookie.net\/__am\/62330\/group\/-\/relatedvideos_js","\/wikia.php?controller=JSMessages&method=getMessages&format=html&packages=ConfirmModal%2CImagePlaceholder%2COasis-generic%2CVideoEmbedTool&uselang=en&cb=62330.0.63331","http:\/\/slot1.images3.wikia.nocookie.net\/__am\/62330\/one\/minify%3D1\/skins\/oasis\/js\/GlobalHeader.js"]};
+	var toload = wsl_assets.oasis_shared_js.concat(wsl_assets.references);
+
+	(function(){ wsl.loadScript(toload); })();
+</script>
+<script type="text/javascript">/*<![CDATA[*/ Wikia.LazyQueue.makeQueue(wgAfterContentAndJS, function(fn) {fn();}); wgAfterContentAndJS.start(); /*]]>*/</script>
+
+
+<script src="http://gameofthrones.wikia.com/__load/-/cb%3D62330%26debug%3Dfalse%26lang%3Den%26only%3Dscripts%26skin%3Doasis/site"></script>
+<script>if (JSSnippetsStack.length) $.getScript('http://slot1.images3.wikia.nocookie.net/__am/62330/one/minify%3D1/extensions/wikia/JSSnippets/js/JSSnippets.js');</script><!-- Facebook integration -->
+<div id="fb-root"></div>
+</body>
+
+<!-- Served by ap-s50 in 0.374 secs. -->
+
+</html>
