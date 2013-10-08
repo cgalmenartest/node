@@ -1,7 +1,7 @@
 /**
 * Get the project referenced in :id and check if access is allowed
 */
-var util = require('../services/projectUtils')
+var util = require('../services/utils/project')
 
 module.exports = function project (req, res, next) {
   if (req.route.params.id) {

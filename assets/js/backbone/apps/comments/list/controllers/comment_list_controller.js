@@ -10,6 +10,8 @@ define([
   'topic_view'
 ], function ($, _, Backbone, Popovers, CommentCollection, CommentListView, CommentFormView, CommentItemView, TopicView) {
 
+  var popovers = new Popovers();
+
   Application.Controller.Comment = Backbone.View.extend({
 
     el: ".comment-list-wrapper",
@@ -18,8 +20,8 @@ define([
       "click .new-topic"              : "newTopic",
       "click .reply-to"               : "reply",
       "click [data-topic='true']"     : "toggleTopic",
-      "mouseenter .comment-user-link" : popoverPeopleOn,
-      "mouseleave .comment-user-link" : popoverPeopleOff
+      "mouseenter .comment-user-link" : popovers.popoverPeopleOn,
+      "mouseleave .comment-user-link" : popovers.popoverPeopleOff
     },
 
     initialize: function () {

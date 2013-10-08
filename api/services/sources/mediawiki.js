@@ -12,7 +12,7 @@ module.exports = {
    * requires in the configuration:
    *  - apiUrl : the URL of the mediawiki api
    */
-  query: function (term, config, cb) {
+  query: function (term, params, config, cb) {
     var url = config.apiUrl + term;
     var results = [];
     request.get(url, function(err, response, body) {

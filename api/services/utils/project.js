@@ -2,7 +2,7 @@
  * Determine if a user has access to project
  * Callback: function(err, proj)
  * If both err and proj are null, then project
- * was found by access is denied.
+ * was found but access is denied.
  */
 var authorized = function (id, userId, cb) {
   Project.findOneById(id, function (err, proj) {

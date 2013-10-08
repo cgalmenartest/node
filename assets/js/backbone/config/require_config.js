@@ -56,7 +56,6 @@ require.config({
     'projects_show_controller'  : '../apps/project/show/controllers/project_show_controller',
     'project_item_view'         : '../apps/project/show/views/project_item_view',
     'project_show_template'     : '../apps/project/show/templates/project_item_view_template.html',
-    'project_tag_template'      : '../apps/project/show/templates/project_tag_item_template.html',
     'project_list_template'     : '../apps/project/list/templates/project_collection_view_template.html',
     'project_model'             : '../entities/projects/project_model',
     'projects_collection'       : '../entities/projects/projects_collection',
@@ -69,6 +68,9 @@ require.config({
     //= Tags
     // ----------
     'tag_config'                : '../components/tag',
+    'tag_show_view'             : '../apps/tag/show/views/tag_show_view',
+    'tag_show_template'         : '../apps/tag/show/templates/tag_show_template.html',
+    'tag_item_template'         : '../apps/tag/show/templates/tag_item_template.html',
     'tag_form_view'             : '../apps/tag/new/views/tag_new_form_view',
     'tag_form_template'         : '../apps/tag/new/templates/tag_new_form_template.html',
 
