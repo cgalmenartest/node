@@ -11,7 +11,7 @@ define([
 
     render: function () {
       // Clean string out from undefineds in the marshalling process.
-      cleanStringFromUndefined(this.model.value, "||")
+      cleanStringFromUndefined(this.model, this.model.value, "||")
 
       var data = { topic: this.model },
           compiledTemplate = _.template(TopicTemplate, data);
