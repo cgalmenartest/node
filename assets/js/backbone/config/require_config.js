@@ -50,15 +50,15 @@ require.config({
     // ----------
     //= Projects
     // ----------
-    'projects_app'              : '../apps/project/project_app',
+    'project_app'               : '../apps/project/project_app',
     'project_list_controller'   : '../apps/project/list/controllers/project_list_controller',
-    'projects_collection_view'  : '../apps/project/list/views/projects_collection_view',
-    'projects_show_controller'  : '../apps/project/show/controllers/project_show_controller',
+    'project_collection_view'   : '../apps/project/list/views/projects_collection_view',
+    'project_show_controller'   : '../apps/project/show/controllers/project_show_controller',
     'project_item_view'         : '../apps/project/show/views/project_item_view',
     'project_show_template'     : '../apps/project/show/templates/project_item_view_template.html',
     'project_list_template'     : '../apps/project/list/templates/project_collection_view_template.html',
     'project_model'             : '../entities/projects/project_model',
-    'projects_collection'       : '../entities/projects/projects_collection',
+    'project_collection'        : '../entities/projects/projects_collection',
     'project_form_view'         : '../apps/project/new/views/project_new_form_view',
     'project_form_template'     : '../apps/project/new/templates/project_new_form_template.html',
     'project_edit_form_template': '../apps/project/edit/templates/project_edit_form_template.html',

@@ -3,7 +3,7 @@ define([
   'underscore',
   'backbone',
   'marketing_app',
-  'projects_app',
+  'project_app',
   'profile_app'
 ], function ($, _, Backbone, MarketingApp, ProjectApp, ProfileApp) {
 

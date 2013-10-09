@@ -31,11 +31,11 @@ define([
       compiledTemplate = _.template(ProjectShowTemplate, data);
       this.$el.html(compiledTemplate);
 
-      rendering.trigger("project:show:rendered");
-
       this.initializeFileUpload();
       this.initializeTags();
       this.updatePhoto();
+
+      rendering.trigger("project:show:rendered");
 
       return this;
     },

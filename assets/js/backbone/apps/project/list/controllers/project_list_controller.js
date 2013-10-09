@@ -5,11 +5,11 @@ define([
 	'bootstrap',
 	'utilities',
 	'base_controller',
-	'projects_collection',
-	'projects_collection_view',
-	'projects_show_controller',
+	'project_collection',
+	'project_collection_view',
+	'project_show_controller',
 	'project_form_view',
-	'projects_app',
+	'project_app',
 	'modal_component',
 	'project_edit_form_view'
 ], function (
@@ -28,8 +28,9 @@ define([
 			"click .delete-project"	: "delete"
 		},
 
-		initialize: function () {
+		initialize: function ( options ) {
 			var self = this;
+			this.options = options;
 			this.fireUpProjectsCollection();
 			this.bindToProjectFetchListeners();
 			this.collection.trigger("projects:fetch");
@@ -75,12 +76,7 @@ define([
 		// -----------------------
 		show: function (e) {
 			if (e.preventDefault()) e.preventDefault();
-
-			var attr 	= $(e.currentTarget).closest(".project-title").children(".project").text(),
-					model = getCurrentModelFromFormAttributes(this.collection, attr);
-
-			if (this.projectShowController) this.projectShowController.cleanup();
-			this.projectShowController = new ProjectShowController({ model: model })
+			Backbone.history.navigate('projects/' + $(e.currentTarget).data('project-id'), { trigger: true });
 		},
 
 		add: function (e) {
