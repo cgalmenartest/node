@@ -7,6 +7,9 @@
     margin: 0 auto;
 }
 */
+.clear {
+	clear: both;
+}
 
 .search-result-row:hover {
 	background: #ccc;
@@ -537,6 +540,10 @@ ul.tags > li {
 /*****************
 =  COMMENTS
 ******************/
+
+.comment-list-wrapper > h4 {
+	float: left;
+}
 
 li[data-topic='true'] {
 	cursor: pointer;
