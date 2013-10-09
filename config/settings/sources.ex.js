@@ -34,6 +34,9 @@
           name: 'name'
         }
       ],
+      params: [
+        'type'
+      ],
       include: [
         'name',
         'type'

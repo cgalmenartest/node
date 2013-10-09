@@ -1,17 +1,19 @@
 define([
+  'jquery',
   'underscore',
   'backbone',
+  'jquery_timeago',
   'text!topic_template',
   'comment_item_view',
   'comment_form_view',
   'utilities'
-], function (_, Backbone, TopicTemplate, CommentItemView, CommentFormView, utilities) {
+], function ($, _, Backbone, TimeAgo, TopicTemplate, CommentItemView, CommentFormView, utilities) {
 
   var TopicView = Backbone.View.extend({
 
     render: function () {
       // Clean string out from undefineds in the marshalling process.
-      cleanStringFromUndefined(this.model.value, "||")
+      cleanStringFromUndefined(this.model, this.model.value, "||")
 
       var data = { topic: this.model },
           compiledTemplate = _.template(TopicTemplate, data);
@@ -19,6 +21,8 @@ define([
       this.$el.append(compiledTemplate);
 
       this.iterateThroughCommentsForTopicAndRenderWithinParent();
+
+      $("time.timeago").timeago();
 
       return this;
     },

@@ -24,8 +24,8 @@ define([
       var data;
 
       data = {
-        title       : $(".project-title", this.el).val(),
-        description : $(".project-description", this.el).val()
+        title       : $(".project-title-form", this.el).val(),
+        description : $(".project-description-form", this.el).val()
       }
 
       this.collection.trigger("project:save", data);

@@ -82,6 +82,8 @@ module.exports = {
                 return res.send(user);
               });
             });
+          } else {
+            res.send(user);
           }
         });
       }

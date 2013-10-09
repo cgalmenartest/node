@@ -5,9 +5,8 @@ define([
   'backbone',
   'text!comment_list_template',
   'text!comment_item_template',
-  'text!comment_wrapper_template',
-  'popovers'
-], function ($, _, TimeAgo, Backbone, CommentListTemplate, CommentItemTemplate, CommentWrapperTemplate, Popovers) {
+  'text!comment_wrapper_template'
+], function ($, _, TimeAgo, Backbone, CommentListTemplate, CommentItemTemplate, CommentWrapperTemplate) {
 
   var CommentListView = Backbone.View.extend({
 
@@ -83,8 +82,7 @@ define([
       //   renderComment(comments[i]);
       // }
 
-      $("time.timeago").timeago();
-      popoverPeopleInit(".project-people-div");
+      // $("time.timeago").timeago();
     }
 
   });

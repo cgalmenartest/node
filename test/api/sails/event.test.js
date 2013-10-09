@@ -30,13 +30,14 @@ describe('event:', function() {
     var testEvent = {
       title: 'Test Event',
       description: 'Test Description',
-      end: new Date(),
+      start: new Date(),
       location: 'San Francisco, CA',
     }
 
     before(function (done) {
-      testEvent.start = new Date(testEvent.end);
-      testEvent.start.setHours(testEvent.end.getHours() - 1);
+      testEvent.end = new Date(testEvent.start);
+      testEvent.start.setHours(testEvent.start.getHours() + 1);
+      testEvent.end.setHours(testEvent.end.getHours() + 2);
       request = utils.init();
       utils.login(request, function (err) {
         done(err);
@@ -171,6 +172,7 @@ describe('event:', function() {
       request.get({ url: conf.url + '/event/' + draftEvent.id },
                   function (err, response, body) {
         if (err) { return done(err); }
+        assert.equal(response.statusCode, 200);
         var b = JSON.parse(body);
         // check that the values passed in are the same as those passed back
         assert.equal(draftEvent.title, b.title);
@@ -192,6 +194,7 @@ describe('event:', function() {
       request.get({ url: conf.url + '/event/findAllByProjectId/' + draftProject.id },
                   function (err, response, body) {
         if (err) { return done(err); }
+        assert.equal(response.statusCode, 200);
         var b = JSON.parse(body);
         assert.equal(b.events.length, 1);
         var ev = b.events[0];

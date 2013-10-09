@@ -4,10 +4,9 @@
       <div class="form-group">
         <label for="tag-form-type">Tag Type</label>
         <select id="tag-form-type" name="tag-form-type" class="form-control">
-          <option value="skill">Skill</option>
-          <option value="topic">Topic</option>
-          <option value="agency">Agency</option>
-          <option value="location">Location</option>
+          <% for (var i = 0; i < tags.length; i++) { %>
+          <option value="<%- tags[i].type %>"><%- tags[i].name %></option>
+          <% } %>
         </select>
       </div>
       <div class="form-group">

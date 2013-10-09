@@ -8,7 +8,7 @@
 var _ = require('underscore');
 var async = require('async');
 var icalendar = require('icalendar');
-var projUtils = require('../services/projectUtils');
+var projUtils = require('../services/utils/project');
 
 module.exports = {
 
@@ -42,7 +42,11 @@ module.exports = {
   findAllByProjectId: function (req, res) {
     userId = null;
     if (req.user) { userId = req.user[0].id; }
-    Event.findByProjectId(req.params.id, function (err, events) {
+    Event.find()
+    .where({ projectId: req.params.id })
+    .where({ end: { '>': new Date().toISOString() }})
+    .sort('start')
+    .exec(function (err, events) {
       if (err) return res.send(400, { message: 'Error looking up events.'});
       // helper function to take an event and check the RSVP state
       var checkRsvp = function (ev, done) {
