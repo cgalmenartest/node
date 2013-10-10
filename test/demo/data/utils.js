@@ -53,14 +53,30 @@ module.exports = {
     form.append('file', fs.createReadStream(path.join(__dirname, filename)));
   },
 
-  createProject: function(request, public, cb) {
-    if (!public) {
-      conf.project.state = 'draft';
-    } else {
-      conf.project.state = 'public';
-    }
+  proj_create: function(request, proj, cb) {
     request.post({ url: conf.url + '/project',
-                   body: JSON.stringify(conf.project)
+                   body: JSON.stringify(proj)
+                 }, function(err, response, body) {
+      if (err) { return cb(err, null); }
+      var b = JSON.parse(body);
+      cb(null, b);
+    });
+  },
+
+  proj_put: function(request, proj, cb) {
+    var r = request.put({
+      url: conf.url + '/project',
+      body: JSON.stringify(proj)
+    }, function(err, response, body) {
+      if (err) { return cb(err, null); }
+      var b = JSON.parse(body);
+      cb(null, b);
+    });
+  },
+
+  comment_create: function(request, comment, cb) {
+    request.post({ url: conf.url + '/comment',
+                   body: JSON.stringify(comment)
                  }, function(err, response, body) {
       if (err) { return cb(err, null); }
       var b = JSON.parse(body);
