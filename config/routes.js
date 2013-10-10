@@ -40,6 +40,20 @@ module.exports.routes = {
   '/auth/logout': {
     controller: 'AuthController',
     action: 'logout'
+  },
+
+  // These routes are for backbone push state to work
+  '/projects': {
+    view: 'main/index'
+  },
+  '/projects/:unknownRoute': {
+    view: 'main/index'
+  },
+  '/profile': {
+    view: 'main/index'
+  },
+  '/profile/:unknownRoute': {
+    view: 'main/index'
   }
 
   /*
