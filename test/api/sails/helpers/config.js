@@ -1,7 +1,7 @@
 module.exports = {
   'username': 'foo',
   'password': 'bar',
-  'url': 'http://localhost:1337',
+  'url': 'http://localhost:1337/api',
   'sails': {
       log: {
         level: 'error'
