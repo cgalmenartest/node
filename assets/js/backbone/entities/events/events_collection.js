@@ -42,7 +42,7 @@ define([
         self.trigger("event:save:success")
       });
     }
-    
+
   });
 
   return EventCollection;

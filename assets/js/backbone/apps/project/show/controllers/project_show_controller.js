@@ -4,6 +4,7 @@ define([
 	'underscore',
 	'async',
 	'backbone',
+	'utilities',
 	'popovers',
 	'base_controller',
 	'project_item_view',
@@ -13,7 +14,7 @@ define([
 	'comment_form_view',
 	'modal_component',
 	'autocomplete'
-], function ($, _, async, Backbone, Popovers, BaseController, ProjectItemView,
+], function ($, _, async, Backbone, utils, Popovers, BaseController, ProjectItemView,
 	TaskListController, EventListController, CommentListController, CommentFormView,
 	ModalComponent, autocomplete) {
 
@@ -53,7 +54,7 @@ define([
 				self.initializeItemView();
 			});
 
-			rendering.on("project:show:rendered", function () {
+			this.model.on("project:show:rendered", function () {
 				self.initializeItemViewControllers();
 				self.initializeHandlers();
 				self.initializeLikes();
@@ -98,13 +99,10 @@ define([
 		},
 
 		initializeItemViewControllers: function () {
-			if (this.taskListController) this.taskListController.cleanup();
 			this.taskListController = new TaskListController({ projectId: this.model.id });
 
-			if (this.eventListController) this.eventListController.cleanup();
 			this.eventListController = new EventListController({ projectId: this.model.id })
 
-			if (this.commentListController) this.commentListController.initialize();
 			this.commentListController = new CommentListController({ projectId: this.model.id })
 		},
 
@@ -216,7 +214,12 @@ define([
 		//= Utility Methods
 		// ---------------------
 		cleanup: function() {
-		  $(this.el).children().remove();
+			console.log('project_show cleanup initiated');
+			if (this.taskListController) this.taskListController.cleanup();
+			if (this.eventListController) this.eventListController.cleanup();
+			if (this.commentListController) this.commentListController.cleanup();
+			if (this.projectShowItemView) this.projectShowItemView.cleanup();
+			removeView(this);
 		}
 
 	});

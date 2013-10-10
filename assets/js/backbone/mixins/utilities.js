@@ -47,12 +47,14 @@ var getCurrentModelFromFormAttributes = function (collection, attr) {
 	}
 }
 
-// Input:
-// @model [OBJECT* instance] Model instance.
-// @field [OBJECT property] Field you want to focus on for unmarshaling.
-// @splitType [STRING] Split type for marshalling (Eg: ||, -, etc)
-
-// Return: Cleaned @field [OBJECT property].
+/**
+ * Input:
+ * @model [OBJECT* instance] Model instance.
+ * @field [OBJECT property] Field you want to focus on for unmarshaling.
+ * @splitType [STRING] Split type for marshalling (Eg: ||, -, etc)
+ *
+ * Return: Nothing; Cleaned @field [OBJECT property] stored in model.value
+ */
 var cleanStringFromUndefined = function (model, field, splitType) {
   var data, compiledTemplate,
       valueArray              = field.split(splitType),
@@ -62,4 +64,26 @@ var cleanStringFromUndefined = function (model, field, splitType) {
     valueArray.pop(lastStringInValueArray)
     model.value = valueArray.join()
   }
+}
+
+/**
+ * Completely remove a backbone view and all of its
+ * references.  This is needed to destroy the view
+ * and all of its listeners, in order to start
+ * fresh again and render a new view with a new
+ * model.
+ *
+ * Input:
+ * @view the view to be removed, typically called with removeView(this);
+ *
+ * Return:
+ * nothing
+ */
+var removeView = function (view) {
+  // view.$el.removeData().unbind();
+  // view.remove();
+  // Backbone.View.prototype.remove.call(view);
+  view.undelegateEvents();
+  //view.model.undelegateEvents();
+  view.$el.html("");
 }

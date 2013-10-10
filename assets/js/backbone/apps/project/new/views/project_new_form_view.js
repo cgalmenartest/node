@@ -32,7 +32,7 @@ define([
     },
 
     cleanup: function () {
-      $(this.el).remove();
+      this.$el.remove();
     }
 
   });

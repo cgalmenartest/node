@@ -4,10 +4,11 @@ define([
   'jquery_select2',
   'underscore',
   'backbone',
+  'utilities',
   'text!project_show_template',
   'tag_show_view',
   'project_edit_form_view'
-], function ($, dropzone, select2, _, Backbone, ProjectShowTemplate, TagShowView, ProjectEditFormView) {
+], function ($, dropzone, select2, _, Backbone, utils, ProjectShowTemplate, TagShowView, ProjectEditFormView) {
 
   var ProjectShowView = Backbone.View.extend({
 
@@ -35,7 +36,7 @@ define([
       this.initializeTags();
       this.updatePhoto();
 
-      rendering.trigger("project:show:rendered");
+      this.model.trigger("project:show:rendered");
 
       return this;
     },
@@ -94,8 +95,7 @@ define([
 
       
     cleanup: function () {
-      $(this.el).children().remove();
-      this.undelegateEvents()
+      removeView(this);
     },
   });
 

@@ -2,12 +2,13 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'utilities',
   'popovers',
   'events_collection',
   'event_collection_view',
   'modal_component',
   'event_form_view'
-], function ($, _, Backbone, Popovers, EventsCollection, EventCollectionView, ModalComponent, EventFormView) {
+], function ($, _, Backbone, utils, Popovers, EventsCollection, EventCollectionView, ModalComponent, EventFormView) {
 
   var popovers = new Popovers();
 
@@ -117,7 +118,8 @@ define([
     },
 
     cleanup: function () {
-      $(this.el).children().remove()
+      if (this.eventCollectionView) this.eventCollectionView.cleanup();
+      removeView(this);
     }
 
   });
