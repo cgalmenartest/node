@@ -32,7 +32,7 @@ define([
           data.company = 'General Services Administration';
           data.title = 'Presidential Innovation Fellow';
           popover.options.title = 'done';
-          popover.options.content = '<img align="left" src="/user/photo/' + data.id + '" class="project-people-popover"/><div class="popover-person"><div class="title">' + data.name + '</div>' + data.title + '<br/>' + data.company + '</div>';
+          popover.options.content = '<img align="left" src="/api/user/photo/' + data.id + '" class="project-people-popover"/><div class="popover-person"><div class="title">' + data.name + '</div>' + data.title + '<br/>' + data.company + '</div>';
           popover.setContent();
           popover.$tip.addClass(popover.options.placement);
         });
