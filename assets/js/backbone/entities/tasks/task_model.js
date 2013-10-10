@@ -11,7 +11,7 @@ define([
       description : null
     },
 
-    urlRoot: '/task',
+    urlRoot: '/api/task',
 
     initialize: function () {
       this.initializeTaskSave();

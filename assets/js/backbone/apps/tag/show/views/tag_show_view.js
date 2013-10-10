@@ -69,7 +69,7 @@ define([
         formatResult: formatResult,
         formatSelection: formatResult,
         ajax: {
-          url: '/ac/tag',
+          url: '/api/ac/tag',
           dataType: 'json',
           data: function (term) {
             return {
@@ -162,7 +162,7 @@ define([
           projectId: self.model.id
         };
         $.ajax({
-          url: '/tag',
+          url: '/api/tag',
           type: 'POST',
           data: tagMap
         }).done(function (data) {
@@ -192,7 +192,7 @@ define([
       // Get the data-id of the currentTarget
       // and then call HTTP DELETE on that tag id
       $.ajax({
-        url: '/tag/' + $(e.currentTarget).data('id'),
+        url: '/api/tag/' + $(e.currentTarget).data('id'),
         type: 'DELETE',
       }).done(function (data) {
         self.model.trigger(self.options.target + ":tag:delete", e);

@@ -14,7 +14,7 @@ define([
       }
     },
 
-    url: '/event', 
+    url: '/api/event',
 
     initialize: function () {
       this.initializeSaveListeners();

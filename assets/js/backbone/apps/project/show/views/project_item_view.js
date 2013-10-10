@@ -44,7 +44,7 @@ define([
       this.listenTo(this.model, "project:updated:photo:success", function (data) {
         var model = data.toJSON(), url;
         if (model.coverId) {
-          url = '/file/get/' + model.coverId;
+          url = '/api/file/get/' + model.coverId;
           $("#project-header").css('background-image', "url(" + url + ")");
         }
         $('#file-upload-progress-container').hide();
@@ -56,7 +56,7 @@ define([
         model: this.model,
         el: '.tag-wrapper',
         target: 'project',
-        url: '/tag/findAllByProjectId/'
+        url: '/api/tag/findAllByProjectId/'
       });
       this.tagView.render();
     },
@@ -65,7 +65,7 @@ define([
       var self = this;
 
       var myDropzone = new dropzone("#fileupload", {
-        url: "/file/create",
+        url: "/api/file/create",
       });
 
       myDropzone.on("addedfile", function(file) {

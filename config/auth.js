@@ -166,7 +166,7 @@ passport.use('oauth2', new OAuth2Strategy({
     tokenURL: 'http://localhost:3000/oauth/token',
     clientID: 'abc123',
     clientSecret: 'ssh-secret',
-    callbackURL: 'http://localhost:1337/auth/oauth2/callback'
+    callbackURL: 'http://localhost:1337/api/auth/oauth2/callback'
   },
   function(accessToken, refreshToken, profile, done) {
     // fetch user profile
@@ -199,7 +199,7 @@ passport.use('myusa', new MyUSAStrategy({
     passReqToCallback: true,
     clientID: authSettings.auth.myusa.clientId,
     clientSecret: authSettings.auth.myusa.clientSecret,
-    callbackURL: 'http://localhost/auth/myusa/callback',
+    callbackURL: 'http://localhost/api/auth/myusa/callback',
     // Initially use staging.my.usa.gov until app approved for production
     authorizationURL: 'https://staging.my.usa.gov/oauth/authorize',
     tokenURL: 'https://staging.my.usa.gov/oauth/authorize',
@@ -229,7 +229,7 @@ passport.use('linkedin', new LinkedInStrategy({
     profileFields: ['id', 'first-name', 'last-name', 'formatted-name', 'email-address', 'headline', 'picture-url'],
     consumerKey: process.env.LINKEDIN_CLIENT_ID  || 'CLIENT_ID',
     consumerSecret: process.env.LINKEDIN_CLIENT_SECRET || 'CLIENT_SECRET',
-    callbackURL: 'http://localhost/auth/linkedin/callback',
+    callbackURL: 'http://localhost/api/auth/linkedin/callback',
   },
   function(req, accessToken, refreshToken, profile, done) {
     profile.photoUrl = profile._json.pictureUrl;

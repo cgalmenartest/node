@@ -5,7 +5,7 @@ define([
 
   var CommentModel = Backbone.Model.extend({
 
-    urlRoot: '/comment',
+    urlRoot: '/api/comment',
 
     initialize: function () {
       this.saveComment();

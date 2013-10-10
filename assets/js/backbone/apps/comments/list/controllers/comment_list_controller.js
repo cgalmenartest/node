@@ -44,7 +44,7 @@ define([
       else { this.commentCollection = new CommentCollection(); }
 
       this.commentCollection.fetch({
-        url: '/comment/findAllByProjectId/' + this.options.projectId,
+        url: '/api/comment/findAllByProjectId/' + this.options.projectId,
         success: function (collection) {
           self.collection = collection;
           self.renderView(collection);
@@ -65,14 +65,14 @@ define([
         // TODO: DM: Fix this to add to the collection appropriately,
         // and fetch/re-render as needed.  This is a hack to get it to work
         $.ajax({
-          url: '/comment',
+          url: '/api/comment',
           type: 'POST',
           contentType: 'application/json',
           processData: false,
           data: JSON.stringify(data)
         }).done(function (result) {
           self.commentCollection.fetch({
-            url: '/comment/findAllByProjectId/' + self.options.projectId,
+            url: '/api/comment/findAllByProjectId/' + self.options.projectId,
             success: function (collection) {
 
                 // var comment = new CommentItemView({

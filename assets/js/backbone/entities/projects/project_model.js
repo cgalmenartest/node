@@ -33,7 +33,7 @@ define([
       });
     },
 
-    urlRoot: '/project',
+    urlRoot: '/api/project',
     
     get: function (id) {
       var self = this;

@@ -46,7 +46,7 @@ define([
     requestEventsCollectionData: function () {
       var self = this;
       this.collection.fetch({
-        url: '/event/findAllByProjectId/' + parseInt(this.options.projectId),
+        url: '/api/event/findAllByProjectId/' + parseInt(this.options.projectId),
         success: function (collection) {
           self.renderEventCollectionView(collection)
           collection = self.collection
@@ -99,7 +99,7 @@ define([
         $(".rsvp").removeClass("data-event-flag-false");
         $(".rsvp").addClass("data-event-flag-true");
         $.ajax({
-          url: '/event/attend/' + id,
+          url: '/api/event/attend/' + id,
           success: function (data) {
             $(e.currentTarget).text("I'm going.");
           }
@@ -108,7 +108,7 @@ define([
         $(".rsvp").removeClass("data-event-flag-true");
         $(".rsvp").addClass("data-event-flag-false");
         $.ajax({
-          url: '/event/cancel/' + id,
+          url: '/api/event/cancel/' + id,
           success: function (data) {
             $(e.currentTarget).text("RSVP")
           }

@@ -69,7 +69,7 @@ define([
 				// misc. AJAX options we are passing are unecessary.  So we should somehow
 				// manage that in an elegant way.
 				backbone: false,
-				apiEndpoint: '/ac/inline',
+				apiEndpoint: '/api/ac/inline',
 				// the query param expects one api endpoint IE:
 				// /nested/endpoint?QUERYPARAM=$(".search").val()
 				// So it is not something that you can chain params onto.
@@ -175,7 +175,7 @@ define([
 					$("#like-text").text($("#like-text").data('plural'));
 				}
 				$.ajax({
-					url: '/like/like/' + this.model.attributes.id
+					url: '/api/like/like/' + this.model.attributes.id
 				}).done( function (data) {
 					// liked!
 					// response should be the like object
@@ -193,7 +193,7 @@ define([
 					$("#like-text").text($("#like-text").data('plural'));
 				}
 				$.ajax({
-					url: '/like/unlike/' + this.model.attributes.id
+					url: '/api/like/unlike/' + this.model.attributes.id
 				}).done( function (data) {
 					// un-liked!
 					// response should be null (empty)

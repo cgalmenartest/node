@@ -66,7 +66,7 @@
             <li class="divider-vertical navbar-text"></li>
             <% if (req.user) { %>
               <li class="profile dropdown"><a href="#user" id="navbar-profile" role="button" class="dropdown-toggle" data-toggle="dropdown">
-                <img src="/user/photo/<%- req.user[0].id %>" class="navbar-people"/> <%- req.user[0].name %></a>
+                <img src="/api/user/photo/<%- req.user[0].id %>" class="navbar-people"/> <%- req.user[0].name %></a>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="navbar-profile">
                   <li role="presentation"><a role="menuitem" tabindex="-1" href="#user">Profile</a></li>
                   <li role="presentation" class="divider"></li>

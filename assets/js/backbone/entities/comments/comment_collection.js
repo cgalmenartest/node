@@ -8,6 +8,8 @@ define([
 
   var CommentCollection = Backbone.Collection.extend({
 
+    urlRoot: '/api/comment',
+
     model: CommentModel,
 
     initialize: function () {

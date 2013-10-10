@@ -41,7 +41,7 @@ define([
       var self = this;
 
       this.collection.fetch({
-        url: '/task/findAllByProjectId/' + parseInt(this.options.projectId),
+        url: '/api/task/findAllByProjectId/' + parseInt(this.options.projectId),
         success: function (collection) {
           self.tasks = collection;
           self.renderTaskCollectionView()
