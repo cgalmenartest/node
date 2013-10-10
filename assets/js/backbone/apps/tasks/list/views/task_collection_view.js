@@ -2,8 +2,9 @@ define([
 	'jquery',
 	'underscore',
 	'backbone',
+	'utilities',
 	'text!task_list_template'
-], function ($, _, Backbone, TaskListTemplate) {
+], function ($, _, Backbone, utils, TaskListTemplate) {
 
 	var TasksCollectionView = Backbone.View.extend({
 
@@ -26,7 +27,7 @@ define([
 		},
 
 		cleanup: function () {
-			$(this.el).children().remove();
+			removeView(this);
 		}
 
 	});

@@ -2,12 +2,13 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'utilities',
   'bootstrap',
   'tasks_collection',
   'task_collection_view',
   'task_form_view',
   'modal_component'
-], function ($, _, Backbone, Bootstrap, TasksCollection, TaskCollectionView, TaskFormView, ModalComponent) {
+], function ($, _, Backbone, utils, Bootstrap, TasksCollection, TaskCollectionView, TaskFormView, ModalComponent) {
 
   Application.Controller.TaskList = Backbone.View.extend({
 
@@ -41,7 +42,7 @@ define([
       var self = this;
 
       this.collection.fetch({
-        url: '/task/findAllByProjectId/' + parseInt(this.options.projectId),
+        url: '/api/task/findAllByProjectId/' + parseInt(this.options.projectId),
         success: function (collection) {
           self.tasks = collection;
           self.renderTaskCollectionView()
@@ -91,7 +92,8 @@ define([
     },
 
     cleanup: function () {
-      $(this.el).remove();
+      if (this.taskCollectionView) this.taskCollectionView.cleanup();
+      removeView(this);
     }
 
   });

@@ -5,7 +5,7 @@ define([
 
 	var ProfileModel = Backbone.Model.extend({
 
-		urlRoot: '/user/index',
+		urlRoot: '/api/user',
 
 		initialize: function () {
 			this.initializeProfileSave();

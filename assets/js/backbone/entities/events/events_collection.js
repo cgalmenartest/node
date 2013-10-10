@@ -14,7 +14,7 @@ define([
       }
     },
 
-    url: '/event', 
+    url: '/api/event',
 
     initialize: function () {
       this.initializeSaveListeners();
@@ -42,7 +42,7 @@ define([
         self.trigger("event:save:success")
       });
     }
-    
+
   });
 
   return EventCollection;

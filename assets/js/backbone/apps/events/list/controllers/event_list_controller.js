@@ -2,12 +2,13 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'utilities',
   'popovers',
   'events_collection',
   'event_collection_view',
   'modal_component',
   'event_form_view'
-], function ($, _, Backbone, Popovers, EventsCollection, EventCollectionView, ModalComponent, EventFormView) {
+], function ($, _, Backbone, utils, Popovers, EventsCollection, EventCollectionView, ModalComponent, EventFormView) {
 
   var popovers = new Popovers();
 
@@ -46,7 +47,7 @@ define([
     requestEventsCollectionData: function () {
       var self = this;
       this.collection.fetch({
-        url: '/event/findAllByProjectId/' + parseInt(this.options.projectId),
+        url: '/api/event/findAllByProjectId/' + parseInt(this.options.projectId),
         success: function (collection) {
           self.renderEventCollectionView(collection)
           collection = self.collection
@@ -99,7 +100,7 @@ define([
         $(".rsvp").removeClass("data-event-flag-false");
         $(".rsvp").addClass("data-event-flag-true");
         $.ajax({
-          url: '/event/attend/' + id,
+          url: '/api/event/attend/' + id,
           success: function (data) {
             $(e.currentTarget).text("I'm going.");
           }
@@ -108,7 +109,7 @@ define([
         $(".rsvp").removeClass("data-event-flag-true");
         $(".rsvp").addClass("data-event-flag-false");
         $.ajax({
-          url: '/event/cancel/' + id,
+          url: '/api/event/cancel/' + id,
           success: function (data) {
             $(e.currentTarget).text("RSVP")
           }
@@ -117,7 +118,8 @@ define([
     },
 
     cleanup: function () {
-      $(this.el).children().remove()
+      if (this.eventCollectionView) this.eventCollectionView.cleanup();
+      removeView(this);
     }
 
   });

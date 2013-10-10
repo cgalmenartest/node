@@ -8,7 +8,7 @@ define([
   var ProfileRouter = Backbone.Router.extend({
 
     routes: {
-      'user': 'profile'
+      'profile': 'profile'
     },
 
     profile: function () {

@@ -8,7 +8,7 @@ define([
   
     model: ProjectModel,
 
-    url: '/project/findAll',
+    url: '/api/project/findAll',
 
     parse: function (response) {
       return response.projects;

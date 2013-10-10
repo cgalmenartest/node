@@ -15,7 +15,7 @@ define([
       }
     },
 
-    url: '/task', 
+    url: '/api/task',
 
     initialize: function () {
       this.initializeSaveListeners();

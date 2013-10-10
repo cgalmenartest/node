@@ -38,7 +38,7 @@ define([
       }
 
       $.ajax({
-        url: '/tag/add',
+        url: '/api/tag/add',
         type: 'POST',
         data: data
       }).done(function (result) {

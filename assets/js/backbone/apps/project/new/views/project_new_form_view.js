@@ -3,7 +3,7 @@ define([
     'bootstrap',
     'underscore',
     'backbone',
-    'projects_collection',
+    'project_collection',
     'text!project_form_template'
 ], function ($, Bootstrap, _, Backbone, ProjectsCollection, ProjectFormTemplate) {
 
@@ -32,7 +32,7 @@ define([
     },
 
     cleanup: function () {
-      $(this.el).remove();
+      this.$el.remove();
     }
 
   });

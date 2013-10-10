@@ -4,6 +4,7 @@ define([
 	'underscore',
 	'async',
 	'backbone',
+	'utilities',
 	'popovers',
 	'base_controller',
 	'project_item_view',
@@ -13,7 +14,7 @@ define([
 	'comment_form_view',
 	'modal_component',
 	'autocomplete'
-], function ($, _, async, Backbone, Popovers, BaseController, ProjectItemView,
+], function ($, _, async, Backbone, utils, Popovers, BaseController, ProjectItemView,
 	TaskListController, EventListController, CommentListController, CommentFormView,
 	ModalComponent, autocomplete) {
 
@@ -53,7 +54,7 @@ define([
 				self.initializeItemView();
 			});
 
-			rendering.on("project:show:rendered", function () {
+			this.model.on("project:show:rendered", function () {
 				self.initializeItemViewControllers();
 				self.initializeHandlers();
 				self.initializeLikes();
@@ -69,7 +70,7 @@ define([
 				// misc. AJAX options we are passing are unecessary.  So we should somehow
 				// manage that in an elegant way.
 				backbone: false,
-				apiEndpoint: '/ac/inline',
+				apiEndpoint: '/api/ac/inline',
 				// the query param expects one api endpoint IE:
 				// /nested/endpoint?QUERYPARAM=$(".search").val()
 				// So it is not something that you can chain params onto.
@@ -98,13 +99,10 @@ define([
 		},
 
 		initializeItemViewControllers: function () {
-			if (this.taskListController) this.taskListController.cleanup();
 			this.taskListController = new TaskListController({ projectId: this.model.id });
 
-			if (this.eventListController) this.eventListController.cleanup();
 			this.eventListController = new EventListController({ projectId: this.model.id })
 
-			if (this.commentListController) this.commentListController.initialize();
 			this.commentListController = new CommentListController({ projectId: this.model.id })
 		},
 
@@ -175,7 +173,7 @@ define([
 					$("#like-text").text($("#like-text").data('plural'));
 				}
 				$.ajax({
-					url: '/like/like/' + this.model.attributes.id
+					url: '/api/like/like/' + this.model.attributes.id
 				}).done( function (data) {
 					// liked!
 					// response should be the like object
@@ -193,7 +191,7 @@ define([
 					$("#like-text").text($("#like-text").data('plural'));
 				}
 				$.ajax({
-					url: '/like/unlike/' + this.model.attributes.id
+					url: '/api/like/unlike/' + this.model.attributes.id
 				}).done( function (data) {
 					// un-liked!
 					// response should be null (empty)
@@ -216,7 +214,12 @@ define([
 		//= Utility Methods
 		// ---------------------
 		cleanup: function() {
-		  $(this.el).children().remove();
+			console.log('project_show cleanup initiated');
+			if (this.taskListController) this.taskListController.cleanup();
+			if (this.eventListController) this.eventListController.cleanup();
+			if (this.commentListController) this.commentListController.cleanup();
+			if (this.projectShowItemView) this.projectShowItemView.cleanup();
+			removeView(this);
 		}
 
 	});

@@ -28,7 +28,7 @@ define([
       target.popover('show');
       // Only load data if the popover hasn't previously been loaded
       if (popover.options.title == 'load') {
-        $.ajax({ url: '/user/info/' + target.data('userid') }).done(function(data) {
+        $.ajax({ url: '/api/user/info/' + target.data('userid') }).done(function(data) {
           data.company = 'General Services Administration';
           data.title = 'Presidential Innovation Fellow';
           popover.options.title = 'done';

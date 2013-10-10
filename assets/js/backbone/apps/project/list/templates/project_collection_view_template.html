@@ -12,13 +12,13 @@
         <li data-project-id="<%- project.id %>" class="project-box c3-border">
             
             <% if (project.coverId) { %>
-            <div class="project-background-image c3-border" style="background-image: url(/file/get/<%= project.coverId %>)">
+            <div class="project-background-image c3-border" style="background-image: url(/api/file/get/<%= project.coverId %>)">
             <% } else { %>
             <div class="project-background-image c3-border project-background-image-default">
             <% } %>
             </div>
             <div class="project-title">
-                <a href="" class="project c3">
+                <a href="" data-project-id="<%- project.id %>" class="project c3">
                     <%- project.title %>
                 </a>
             </div>

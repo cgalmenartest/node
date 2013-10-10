@@ -11,7 +11,7 @@ rendering       = {}
 
 // Cache user
 $.ajax({
-  url: '/user',
+  url: '/api/user',
   type: 'GET',
   success: function (data) {
     window.cache = {

@@ -5,7 +5,7 @@ define([
 
   var EventModel = Backbone.Model.extend({
 
-    urlRoot: '/event'
+    urlRoot: '/api/event'
 
   });
 

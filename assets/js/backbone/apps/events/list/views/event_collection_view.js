@@ -2,8 +2,9 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'utilities',
   'text!event_list_template'
-], function ($, _, Backbone, EventListTemplate) {
+], function ($, _, Backbone, utils, EventListTemplate) {
 
   var EventCollectionView = Backbone.View.extend({
 
@@ -26,7 +27,7 @@ define([
     },
 
     cleanup: function () {
-      $(this.el).children().remove()
+      removeView(this);
     }
 
   });

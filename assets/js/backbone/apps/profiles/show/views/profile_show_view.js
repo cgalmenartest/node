@@ -30,7 +30,7 @@ define([
       var _this = this;
 
       var myDropzone = new dropzone("#fileupload", {
-        url: "/file/create",
+        url: "/api/file/create",
       });
 
       myDropzone.on("addedfile", function(file) {
@@ -60,7 +60,7 @@ define([
 
     updatePhoto: function () {
       this.model.on("profile:updatedPhoto", function (data) {
-        var url = '/user/photo/' + data.get("id");
+        var url = '/api/user/photo/' + data.get("id");
         $("#profile-photo").attr("src",url);
         $('#file-upload-progress-container').hide();
       });

@@ -33,16 +33,16 @@ define([
       });
     },
 
-    urlRoot: '/project',
+    urlRoot: '/api/project',
     
     get: function (id) {
       var self = this;
-
-      this.fetch({ id: id,
+      this.set({ id: id });
+      this.fetch({
         success: function (data) {
           self.trigger("project:model:fetch:success", data);
         }
-      })
+      });
     },
 
     update: function (data) {

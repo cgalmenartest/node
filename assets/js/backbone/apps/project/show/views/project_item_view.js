@@ -4,10 +4,11 @@ define([
   'jquery_select2',
   'underscore',
   'backbone',
+  'utilities',
   'text!project_show_template',
   'tag_show_view',
   'project_edit_form_view'
-], function ($, dropzone, select2, _, Backbone, ProjectShowTemplate, TagShowView, ProjectEditFormView) {
+], function ($, dropzone, select2, _, Backbone, utils, ProjectShowTemplate, TagShowView, ProjectEditFormView) {
 
   var ProjectShowView = Backbone.View.extend({
 
@@ -31,11 +32,11 @@ define([
       compiledTemplate = _.template(ProjectShowTemplate, data);
       this.$el.html(compiledTemplate);
 
-      rendering.trigger("project:show:rendered");
-
       this.initializeFileUpload();
       this.initializeTags();
       this.updatePhoto();
+
+      this.model.trigger("project:show:rendered");
 
       return this;
     },
@@ -44,7 +45,7 @@ define([
       this.listenTo(this.model, "project:updated:photo:success", function (data) {
         var model = data.toJSON(), url;
         if (model.coverId) {
-          url = '/file/get/' + model.coverId;
+          url = '/api/file/get/' + model.coverId;
           $("#project-header").css('background-image', "url(" + url + ")");
         }
         $('#file-upload-progress-container').hide();
@@ -56,7 +57,7 @@ define([
         model: this.model,
         el: '.tag-wrapper',
         target: 'project',
-        url: '/tag/findAllByProjectId/'
+        url: '/api/tag/findAllByProjectId/'
       });
       this.tagView.render();
     },
@@ -65,7 +66,7 @@ define([
       var self = this;
 
       var myDropzone = new dropzone("#fileupload", {
-        url: "/file/create",
+        url: "/api/file/create",
       });
 
       myDropzone.on("addedfile", function(file) {
@@ -94,8 +95,7 @@ define([
 
       
     cleanup: function () {
-      $(this.el).children().remove();
-      this.undelegateEvents()
+      removeView(this);
     },
   });
 

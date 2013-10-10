@@ -3,7 +3,7 @@ define([
   'underscore',
   'backbone',
   'marketing_app',
-  'projects_app',
+  'project_app',
   'profile_app'
 ], function ($, _, Backbone, MarketingApp, ProjectApp, ProfileApp) {
 
@@ -33,7 +33,7 @@ define([
     profile = ProfileApp.initialize();
     project = ProjectApp.initialize();
 
-    Backbone.history.start({ pushState: false });
+    Backbone.history.start({ pushState: true });
 
     $(".nav li").on("click", function () {
       $(".nav li").removeClass("active");

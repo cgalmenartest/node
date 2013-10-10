@@ -33,11 +33,11 @@ define([
       var data = {
         title       : $("#event-title").val(),
         description : $("#event-description").val(),
-        start       : $("#event-start").val(),
-        end         : $("#event-end").val(),
+        start       : new Date($("#event-start").val()).toISOString(),
+        end         : new Date($("#event-end").val()).toISOString(),
         location    : $("#event-location").val(),
         projectId   : this.options.projectId
-      }
+      };
 
       this.collection.trigger("event:save", data);
     },
