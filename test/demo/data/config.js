@@ -68,7 +68,18 @@ module.exports = {
           ]
         }
       ],
-      events: [],
+      events: [
+        {
+          title: 'Battle of Summerhall',
+          description: 'Attack Lords Grandison, Cafferen, and Fell before they attack first.  Plan is to capture his son, Silveraxe.',
+          location: 'Targaryen castle, Summerhall, Westeros'
+        },
+        {
+          title: 'Sack of King\'s Landing',
+          description: 'Assemble Lannister forces to sack the city in Robert\'s name.  Watch out for Tywin\'s son Jamie; he\'s the hand of King Aerys.',
+          location: 'King\'s Landing, Westeros'
+        }
+      ],
       tasks: []
     }
   ]

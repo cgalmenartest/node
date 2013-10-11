@@ -53,9 +53,9 @@ module.exports = {
     form.append('file', fs.createReadStream(path.join(__dirname, filename)));
   },
 
-  proj_create: function(request, proj, cb) {
-    request.post({ url: conf.url + '/project',
-                   body: JSON.stringify(proj)
+  post: function (request, url, obj, cb) {
+    request.post({ url: url,
+                   body: JSON.stringify(obj)
                  }, function(err, response, body) {
       if (err) { return cb(err, null); }
       var b = JSON.parse(body);
@@ -63,14 +63,12 @@ module.exports = {
     });
   },
 
+  proj_create: function(request, proj, cb) {
+    this.post(request, conf.url + '/project', proj, cb);
+  },
+
   projowner_create: function(request, proj, cb) {
-    request.post({ url: conf.url + '/projectowner',
-                   body: JSON.stringify(proj)
-                 }, function(err, response, body) {
-      if (err) { return cb(err, null); }
-      var b = JSON.parse(body);
-      cb(null, b);
-    });
+    this.post(request, conf.url + '/projectowner', proj, cb);
   },
 
   proj_put: function(request, proj, cb) {
@@ -85,13 +83,11 @@ module.exports = {
   },
 
   comment_create: function(request, comment, cb) {
-    request.post({ url: conf.url + '/comment',
-                   body: JSON.stringify(comment)
-                 }, function(err, response, body) {
-      if (err) { return cb(err, null); }
-      var b = JSON.parse(body);
-      cb(null, b);
-    });
+    this.post(request, conf.url + '/comment', comment, cb);
+  },
+
+  event_create: function(request, ev, cb) {
+    this.post(request, conf.url + '/event', ev, cb);
   }
 
 };

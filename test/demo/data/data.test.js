@@ -85,7 +85,7 @@ describe('demo:', function() {
       var startComments = function (proj, done) {
         if (!proj.comments) return done();
         createComments(proj.comments, null, done);
-      }
+      };
 
       var startOwners = function (proj, done) {
         var createOwner = function (owner, done) {
@@ -93,17 +93,44 @@ describe('demo:', function() {
             projectId: proj.id,
             userId: conf.users[owner].id
           };
-          utils.projowner_create(request, pOwner, done);
+          utils.projowner_create(request, pOwner, function (err, ownerObj) {
+            owner.obj = ownerObj;
+            owner.id = ownerObj.id;
+            done(err);
+          });
         };
         if (!proj.owners) return done();
         async.each(proj.owners, createOwner, done);
+      };
+
+      var startEvents = function (proj, done) {
+        var now = new Date();
+        var createEvent = function (ev, done) {
+          ev.projectId = proj.id;
+          ev.start = new Date(now.valueOf());
+          ev.start.setDate(now.getDate() + Math.ceil(Math.random()*30));
+          ev.start.setMinutes(0);
+          ev.start.setSeconds(0);
+          ev.start.setMilliseconds(0);
+          ev.end = new Date(ev.start.getTime());
+          ev.end.setHours(ev.start.getHours() + 1);
+          ev.start = ev.start.toISOString();
+          ev.end = ev.end.toISOString();
+          console.log(ev);
+          utils.event_create(request, ev, function (err, eventObj) {
+            ev.obj = eventObj;
+            ev.id = eventObj.id;
+            done(err);
+          });
+        };
+        async.each(proj.events, createEvent, done);
       }
 
       var start = function (fn, done) {
         fn(proj, done);
-      }
+      };
 
-      var order = [startCover, startOwners, startComments];
+      var order = [startCover, startOwners, startComments, startEvents];
 
       // start processing each project
       var user = conf.users[proj.owner];
