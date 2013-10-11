@@ -92,5 +92,33 @@ module.exports = {
 
   task_create: function(request, task, cb) {
     this.post(request, conf.url + '/task', task, cb);
+  },
+
+  tag_find: function(request, name, type, cb) {
+    var url = conf.url + '/ac/tag?q=' + name;
+    if (type) {
+      url = url + '&type=' + type;
+    }
+    var r = request.get({
+      url: url
+    }, function(err, response, body) {
+      if (err) { return cb(err, null); }
+      var b = JSON.parse(body);
+      for (i in b) {
+        if (b[i].name.toLowerCase() == name.toLowerCase()) {
+          return cb(null, b[i]);
+        }
+      }
+      cb(null, null);
+    });
+  },
+
+  tag_add: function(request, tag, cb) {
+    this.post(request, conf.url + '/tag/add', tag, cb);
+  },
+
+  tag_create: function(request, tag, cb) {
+    this.post(request, conf.url + '/tag', tag, cb);
   }
+
 };

@@ -34,7 +34,30 @@ describe('demo:', function() {
 
     async.eachSeries(_.values(conf.users), process, function (err) {
       done(err);
-    })
+    });
+  });
+
+  it('tags', function (done) {
+    var process = function (tag, done) {
+      utils.tag_find(request, tag.name, tag.type, function (err, t) {
+        if (err) return done(err);
+        // if tag exists, just update it with the tag id
+        if (t) {
+          tag.obj = t;
+          tag.id = t.id;
+          return done(err);
+        }
+        utils.tag_add(request, tag, function (err, t) {
+          tag.obj = t;
+          tag.id = t.id;
+          return done(err);
+        });
+      });
+    };
+
+    async.eachSeries(_.values(conf.tags), process, function (err) {
+      done(err);
+    });
   });
 
   it('projects', function (done) {
@@ -154,14 +177,30 @@ describe('demo:', function() {
           if (err) return done(err);
           async.each(proj.tasks, createTask, done);
         });
+      };
 
+      var startTags = function (tag, done) {
+        var request = utils.init();
+        var createTag = function (tag, done) {
+          var t = {
+            tagId: conf.tags[tag].id,
+            projectId: proj.id
+          };
+          utils.tag_create(request, t, function (err, tagObj) {
+            done(err);
+          });
+        };
+        utils.login(request, user.username, user.password, function (err) {
+          if (err) return done(err);
+          async.each(proj.tags, createTag, done);
+        });
       };
 
       var start = function (fn, done) {
         fn(proj, done);
       };
 
-      var order = [startCover, startOwners, startComments, startEvents, startTasks];
+      var order = [startCover, startOwners, startComments, startEvents, startTasks, startTags];
 
       // start processing each project
       utils.login(request, user.username, user.password, function (err) {

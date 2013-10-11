@@ -32,6 +32,52 @@ module.exports = {
       photo: 'assets/users/ned.jpg'
     },
   },
+  tags: {
+    'fight': {
+      type: 'skill',
+      name: 'Fighting'
+    },
+    'kidnap': {
+      type: 'skill',
+      name: 'Kidnapping'
+    },
+    'usurp': {
+      type: 'skill',
+      name: 'Usurping'
+    },
+    'rebel': {
+      type: 'topic',
+      name: 'Rebellion'
+    },
+    'battle': {
+      type: 'topic',
+      name: 'Battles'
+    },
+    'stark': {
+      type: 'agency',
+      name: 'House Stark'
+    },
+    'lannister': {
+      type: 'agency',
+      name: 'House Lannister'
+    },
+    'baratheon': {
+      type: 'agency',
+      name: 'House Baratheon'
+    },
+    'tully': {
+      type: 'agency',
+      name: 'House Tully'
+    },
+    'targaryen': {
+      type: 'agency',
+      name: 'House Targaryen'
+    },
+    'westeros': {
+      type: 'location',
+      name: 'Westeros'
+    }
+  },
   projects: [
     {
       state: 'public',
@@ -40,6 +86,7 @@ module.exports = {
       cover: 'assets/projects/roberts_rebellion.png',
       owner: 'ned',
       owners: ['arya'],
+      tags: ['fight', 'kidnap', 'usurp', 'rebel', 'battle', 'stark', 'lannister', 'baratheon', 'tully', 'westeros'],
       comments: [
         {
           topic: true,
