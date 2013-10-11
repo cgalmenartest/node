@@ -138,13 +138,30 @@ describe('demo:', function() {
           if (err) return done(err);
           async.each(proj.events, createEvent, done);
         });
-      }
+      };
+
+      var startTasks = function (proj, done) {
+        var request = utils.init();
+        var createTask = function (task, done) {
+          task.projectId = proj.id;
+          utils.task_create(request, task, function (err, taskObj) {
+            task.obj = taskObj;
+            task.id = taskObj.id;
+            done(err);
+          });
+        }
+        utils.login(request, user.username, user.password, function (err) {
+          if (err) return done(err);
+          async.each(proj.tasks, createTask, done);
+        });
+
+      };
 
       var start = function (fn, done) {
         fn(proj, done);
       };
 
-      var order = [startCover, startOwners, startComments, startEvents];
+      var order = [startCover, startOwners, startComments, startEvents, startTasks];
 
       // start processing each project
       utils.login(request, user.username, user.password, function (err) {

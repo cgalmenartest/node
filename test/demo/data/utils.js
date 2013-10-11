@@ -88,6 +88,9 @@ module.exports = {
 
   event_create: function(request, ev, cb) {
     this.post(request, conf.url + '/event', ev, cb);
-  }
+  },
 
+  task_create: function(request, task, cb) {
+    this.post(request, conf.url + '/task', task, cb);
+  }
 };

@@ -80,7 +80,13 @@ module.exports = {
           location: 'King\'s Landing, Westeros'
         }
       ],
-      tasks: []
+      tasks: [
+        {
+          state: 'public',
+          title: 'Kidnap the Targaryen heirs',
+          description: 'Viserys and Daenerys are at Dragonstone.  To keep the Targaryens from regaining the Iron Throne, the child heirs must be captured and returned to King\'s landing.'
+        }
+      ]
     }
   ]
 };
