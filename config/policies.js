@@ -55,6 +55,12 @@ module.exports.policies = {
     'destroy': ['authenticated', 'requireUserId', 'requireId', 'project']
   },
 
+  ProjectOwnerController : {
+    '*': false,
+    'create': ['authenticated', 'requireUserId', 'projectId'],
+    'destroy': ['authenticated', 'requireUserId', 'requireId']
+  },
+
   LikeController : {
     '*': ['authenticated', 'addUserId', 'project'],
     'count': ['authenticated', 'requireId', 'project'],
