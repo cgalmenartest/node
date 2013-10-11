@@ -39,9 +39,12 @@ describe('demo:', function() {
 
   it('projects', function (done) {
     var process = function (proj, done) {
+      var user = conf.users[proj.owner];
 
       // sub-functions to create comments
       var createComments = function (comments, parentId, done) {
+        var request = utils.init();
+
         var processComment = function (comment, done) {
           var user = conf.users[comment['user']];
           utils.login(request , user.username, user.password, function (err) {
@@ -70,14 +73,18 @@ describe('demo:', function() {
       };
 
       var startCover = function (proj, done) {
+        var request = utils.init();
         if (!proj.cover) return done();
-        utils.file_create(request, proj.cover, function (err, fileObj) {
+        utils.login(request, user.username, user.password, function (err) {
           if (err) return done(err);
-          proj.coverId = fileObj.id;
-          utils.proj_put(request, proj, function (err, projObj) {
+          utils.file_create(request, proj.cover, function (err, fileObj) {
             if (err) return done(err);
-            proj.obj = projObj;
-            done(err);
+            proj.coverId = fileObj.id;
+            utils.proj_put(request, proj, function (err, projObj) {
+              if (err) return done(err);
+              proj.obj = projObj;
+              done(err);
+            });
           });
         });
       };
@@ -88,6 +95,7 @@ describe('demo:', function() {
       };
 
       var startOwners = function (proj, done) {
+        var request = utils.init();
         var createOwner = function (owner, done) {
           var pOwner = {
             projectId: proj.id,
@@ -100,10 +108,14 @@ describe('demo:', function() {
           });
         };
         if (!proj.owners) return done();
-        async.each(proj.owners, createOwner, done);
+        utils.login(request, user.username, user.password, function (err) {
+          if (err) return done(err);
+          async.each(proj.owners, createOwner, done);
+        });
       };
 
       var startEvents = function (proj, done) {
+        var request = utils.init();
         var now = new Date();
         var createEvent = function (ev, done) {
           ev.projectId = proj.id;
@@ -116,14 +128,16 @@ describe('demo:', function() {
           ev.end.setHours(ev.start.getHours() + 1);
           ev.start = ev.start.toISOString();
           ev.end = ev.end.toISOString();
-          console.log(ev);
           utils.event_create(request, ev, function (err, eventObj) {
             ev.obj = eventObj;
             ev.id = eventObj.id;
             done(err);
           });
         };
-        async.each(proj.events, createEvent, done);
+        utils.login(request, user.username, user.password, function (err) {
+          if (err) return done(err);
+          async.each(proj.events, createEvent, done);
+        });
       }
 
       var start = function (fn, done) {
@@ -133,14 +147,13 @@ describe('demo:', function() {
       var order = [startCover, startOwners, startComments, startEvents];
 
       // start processing each project
-      var user = conf.users[proj.owner];
       utils.login(request, user.username, user.password, function (err) {
         if (err) return done(err);
         utils.proj_create(request, proj, function (err, projObj) {
           proj.obj = projObj;
           proj.id = projObj.id;
           // Process each of the sub functions
-          async.eachSeries(order, start, function (err) {
+          async.each(order, start, function (err) {
             done(err);
           });
         });
