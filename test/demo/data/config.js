@@ -39,7 +39,7 @@ module.exports = {
       description: 'Robert\'s Rebellion was a civil war amongst the Great Houses of Westeros that took place approximately seventeen years before the TV series began, and lasted about one year. It displaced the royal House Targaryen and saw most of its members wiped out, with only two survivors who fled into exile across the sea. House Baratheon became the new royal house after the war\'s conclusion.',
       cover: 'assets/projects/roberts_rebellion.png',
       owner: 'ned',
-      owners: [],
+      owners: ['arya'],
       comments: [
         {
           topic: true,
@@ -60,6 +60,10 @@ module.exports = {
             {
               user: 'arya',
               value: 'He\'s just stupid. He likes to polish helmets and beat on swords with hammers.'
+            },
+            {
+              user: 'tyrion',
+              value: 'I much like my head. I don\'t want to see it removed just yet.'
             }
           ]
         }

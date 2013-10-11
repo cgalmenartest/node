@@ -63,6 +63,16 @@ module.exports = {
     });
   },
 
+  projowner_create: function(request, proj, cb) {
+    request.post({ url: conf.url + '/projectowner',
+                   body: JSON.stringify(proj)
+                 }, function(err, response, body) {
+      if (err) { return cb(err, null); }
+      var b = JSON.parse(body);
+      cb(null, b);
+    });
+  },
+
   proj_put: function(request, proj, cb) {
     var r = request.put({
       url: conf.url + '/project',

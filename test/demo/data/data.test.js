@@ -87,6 +87,24 @@ describe('demo:', function() {
         createComments(proj.comments, null, done);
       }
 
+      var startOwners = function (proj, done) {
+        var createOwner = function (owner, done) {
+          var pOwner = {
+            projectId: proj.id,
+            userId: conf.users[owner].id
+          };
+          utils.projowner_create(request, pOwner, done);
+        };
+        if (!proj.owners) return done();
+        async.each(proj.owners, createOwner, done);
+      }
+
+      var start = function (fn, done) {
+        fn(proj, done);
+      }
+
+      var order = [startCover, startOwners, startComments];
+
       // start processing each project
       var user = conf.users[proj.owner];
       utils.login(request, user.username, user.password, function (err) {
@@ -94,11 +112,9 @@ describe('demo:', function() {
         utils.proj_create(request, proj, function (err, projObj) {
           proj.obj = projObj;
           proj.id = projObj.id;
-          startCover(proj, function (err) {
-            if (err) return done(err);
-            startComments(proj, function (err) {
-              done(err);
-            });
+          // Process each of the sub functions
+          async.eachSeries(order, start, function (err) {
+            done(err);
           });
         });
       });
