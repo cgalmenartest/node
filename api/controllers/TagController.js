@@ -73,9 +73,13 @@ module.exports = {
   add: function (req, res) {
     if (req.route.method != 'post') { return res.send(400, { message: 'Unsupported operation.' } ); }
     var tag = _.extend(req.body || {}, req.params);
-    TagEntity.findOne({where: { name: tag.name, type: tag.type }}, function (err, existingTag) {
+    TagEntity.find({ where: { type: tag.type, like: { name: tag.name }}}, function (err, existingTags) {
       if (err) { return res.send(400, { message: 'Error looking up tag' }); }
-      if (existingTag) { return res.send(existingTag); }
+      // check if an existing tag matches
+      if (existingTags && existingTags.length > 0) {
+       return res.send(existingTags[0]);
+      }
+      // if not, create the tag
       TagEntity.create(tag, function (err, tag) {
         if (err) { return res.send(400, { message: 'Error creating tag' }); }
         return res.send(tag);
