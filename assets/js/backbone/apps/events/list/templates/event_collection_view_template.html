@@ -71,7 +71,7 @@
         <% _.each(event.rsvps, function (person) { %>
 
           <div class="project-people-div" data-userid="<%= person %>">
-            <img src="/user/photo/<%= person %>" class="project-people"/>
+            <img src="/api/user/photo/<%= person %>" class="project-people"/>
           </div>
 
         <% }); %>
