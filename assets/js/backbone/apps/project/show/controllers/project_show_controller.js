@@ -214,7 +214,6 @@ define([
 		//= Utility Methods
 		// ---------------------
 		cleanup: function() {
-			console.log('project_show cleanup initiated');
 			if (this.taskListController) this.taskListController.cleanup();
 			if (this.eventListController) this.eventListController.cleanup();
 			if (this.commentListController) this.commentListController.cleanup();
