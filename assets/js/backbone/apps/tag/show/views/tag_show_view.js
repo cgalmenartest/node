@@ -1,15 +1,17 @@
 define([
-    'jquery',
-    'bootstrap',
-    'underscore',
-    'backbone',
-    'async',
-    'modal_component',
-    'tag_config',
-    'tag_form_view',
-    'text!tag_item_template',
-    'text!tag_show_template'
-], function ($, Bootstrap, _, Backbone, async, ModalComponent, TagConfig, TagFormView, TagTemplate, TagShowTemplate) {
+  'jquery',
+  'bootstrap',
+  'underscore',
+  'backbone',
+  'utilities',
+  'async',
+  'modal_component',
+  'tag_config',
+  'tag_form_view',
+  'text!tag_item_template',
+  'text!tag_show_template'
+], function ($, Bootstrap, _, Backbone, utils, async, ModalComponent,
+  TagConfig, TagFormView, TagTemplate, TagShowTemplate) {
 
   var TagShowView = Backbone.View.extend({
 
@@ -136,6 +138,9 @@ define([
       }).render();
 
       if (!_.isUndefined(this.modalComponent)) {
+        if (this.tagFormView) {
+          this.tagFormView.cleanup();
+        }
         this.tagFormView = new TagFormView({
           el: ".modal-template",
           model: self.model,
@@ -200,7 +205,8 @@ define([
     },
 
     cleanup: function () {
-      $(this.el).remove();
+      if (this.tagFormView) { this.tagFormView.cleanup(); }
+      removeView(this);
     }
 
   });

@@ -1,10 +1,11 @@
 define([
-    'jquery',
-    'bootstrap',
-    'underscore',
-    'backbone',
-    'text!tag_form_template'
-], function ($, Bootstrap, _, Backbone, TagFormTemplate) {
+  'jquery',
+  'bootstrap',
+  'underscore',
+  'backbone',
+  'utilities',
+  'text!tag_form_template'
+], function ($, Bootstrap, _, Backbone, utils, TagFormTemplate) {
 
   var TagFormView = Backbone.View.extend({
 
@@ -49,7 +50,7 @@ define([
     },
 
     cleanup: function () {
-      $(this.el).remove();
+      removeView(this);
     }
 
   });
