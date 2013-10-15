@@ -38,7 +38,8 @@ define([
         $('.dz-preview').hide();
       });
 
-      myDropzone.on("sending", function(file) {
+      myDropzone.on("sending", function(file, xhr, formData) {
+        formData.append('type', 'image_square');
         $('#file-upload-progress-container').show();
       });
 
