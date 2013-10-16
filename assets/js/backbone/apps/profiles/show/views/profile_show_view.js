@@ -30,7 +30,7 @@ define([
       var _this = this;
 
       var myDropzone = new dropzone("#fileupload", {
-        url: "/api/file/create",
+        url: "/api/file/create"
       });
 
       myDropzone.on("addedfile", function(file) {

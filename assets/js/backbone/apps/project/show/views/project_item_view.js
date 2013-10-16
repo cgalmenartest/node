@@ -67,6 +67,7 @@ define([
 
       var myDropzone = new dropzone("#fileupload", {
         url: "/api/file/create",
+        clickable: ['#fileupload', '#fileupload-icon']
       });
 
       myDropzone.on("addedfile", function(file) {
