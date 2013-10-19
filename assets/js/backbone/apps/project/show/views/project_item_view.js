@@ -93,7 +93,7 @@ define([
       myDropzone.on("thumbnail", function(file) { });
     },
 
-      
+
     cleanup: function () {
       removeView(this);
     },

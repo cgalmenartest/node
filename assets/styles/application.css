@@ -246,7 +246,9 @@ body > .popover {
 	font-size: 16px;
 	font-weight: bold;
 }
-
+.topic {
+	clear: both;
+}
 .project-admin {
 	text-align: right;
 	padding-left: 15px;
