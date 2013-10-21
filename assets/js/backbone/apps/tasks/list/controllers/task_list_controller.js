@@ -7,15 +7,17 @@ define([
   'tasks_collection',
   'task_collection_view',
   'task_form_view',
-  'modal_component'
-], function ($, _, Backbone, utils, Bootstrap, TasksCollection, TaskCollectionView, TaskFormView, ModalComponent) {
+  'modal_component',
+  'wizard'
+], function ($, _, Backbone, Utilities, Bootstrap, TasksCollection, TaskCollectionView, TaskFormView, ModalComponent, wizard) {
 
   Application.Controller.TaskList = Backbone.View.extend({
 
     el: "#task-list-wrapper",
 
     events: {
-      'click .add-task': 'add'
+      'click .add-task': 'add',
+      'click .wizard' : 'wizard'
     },
 
     initialize: function (settings) {
@@ -78,7 +80,7 @@ define([
         el: "#task-list-wrapper",
         id: "addTask",
         modalTitle: 'Add Task'
-      }).render();  
+      }).render();
 
       if (!_.isUndefined(this.modalComponent)) {
         if (this.taskFormView) this.taskFormView;
@@ -86,9 +88,8 @@ define([
           el: ".modal-template",
           projectId: this.options.projectId,
           tasks: self.tasks
-        }).render();  
+        }).render();
       }
-      
     },
 
     cleanup: function () {
