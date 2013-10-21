@@ -7,9 +7,8 @@ define([
   'tasks_collection',
   'task_collection_view',
   'task_form_view',
-  'modal_component',
-  'wizard'
-], function ($, _, Backbone, Utilities, Bootstrap, TasksCollection, TaskCollectionView, TaskFormView, ModalComponent, wizard) {
+  'modal_component'
+], function ($, _, Backbone, Utilities, Bootstrap, TasksCollection, TaskCollectionView, TaskFormView, ModalComponent) {
 
   Application.Controller.TaskList = Backbone.View.extend({
 
