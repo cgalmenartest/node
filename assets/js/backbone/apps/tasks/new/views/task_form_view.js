@@ -5,8 +5,7 @@ define([
     'backbone',
     'tasks_collection',
     'text!task_form_template',
-    'wizard'
-], function ($, Bootstrap, _, Backbone, TasksCollection, TaskFormTemplate, wizard) {
+], function ($, Bootstrap, _, Backbone, TasksCollection, TaskFormTemplate) {
 
 	var TaskFormView = Backbone.View.extend({
 
