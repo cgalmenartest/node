@@ -14,8 +14,10 @@ define([
 		template: _.template(TaskFormTemplate),
 
 		events: {
-      "click .progress"    : "moveWizardForward",
-			"submit #task-form" : "post"
+      "submit #task-form"     : "post",
+      "click .wizard-forward" : "moveWizardForward",
+      "click .wizard-back"    : "moveWizardBack",
+      "click .add-topic"      : "addTopic"
 		},
 
 		initialize: function () {
@@ -25,25 +27,18 @@ define([
 
 		render: function () {
 			this.$el.html(this.template)
+      // On rendering event make sure to hide all sections
+      // that are not the current section.
       $("section:not(.current)").hide();
 		},
 
-    // This method is contains a re-usable way to move forward
-    // over and over regardless of location based on the idea of setting and
-    // removing current to next in an adjacent manner.
-    moveWizardForward: function (e) {
+    addTopic: function (e) {
       if (e.preventDefault()) e.preventDefault();
-      var next    = $(".current").next();
-          current = $(".current");
+      var topicForm     = $("#single-topic-form"),
+          newTopicForm  = topicForm.html(),
+          topicWrapper  = $(".work-topics");
 
-      if (!_.isUndefined(next.html())) {
-        current.children().hide();
-        current.removeClass("current");
-        next.addClass("current");
-        next.show();
-      } else {
-        return;
-      }
+      topicWrapper.append(newTopicForm);
     },
 
     post: function (e) {
