@@ -166,6 +166,7 @@ div.project-title {
 	padding: 17px;
 	background-color: #E5E5E5;
 	margin-bottom: 25px;
+	position: relative;
 }
 
 #project-header {
@@ -272,9 +273,15 @@ body > .popover {
 	position: relative;
 }
 
-#project-admin-bar #file-upload-progress-container {
+#file-upload-progress-container {
 	margin-top: 10px;
 	margin-bottom: 0;
+}
+
+#fileupload {
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
 }
 
 .tag-delete {

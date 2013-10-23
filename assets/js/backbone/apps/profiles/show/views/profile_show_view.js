@@ -30,7 +30,8 @@ define([
       var _this = this;
 
       var myDropzone = new dropzone("#fileupload", {
-        url: "/api/file/create"
+        url: "/api/file/create",
+        clickable: ['#fileupload', '#fileupload-icon']
       });
 
       myDropzone.on("addedfile", function(file) {
@@ -62,7 +63,7 @@ define([
     updatePhoto: function () {
       this.model.on("profile:updatedPhoto", function (data) {
         var url = '/api/user/photo/' + data.get("id");
-        $("#profile-photo").attr("src",url);
+        $("#project-header").css('background-image', "url(" + url + ")");
         $('#file-upload-progress-container').hide();
       });
     },

@@ -51,6 +51,7 @@ module.exports = {
   },
   
   create: function(req, res) {
+    sails.log.debug('CREATE FILE!');
     // Create only accepts post
     if (req.route.method != 'post') { return res.send(400, {message:'Unsupported operation.'}) }
     // If a file wasn't included, abort.
@@ -68,12 +69,17 @@ module.exports = {
       }
       // if the type of the file should be a square image
       // resize the image before storing it.
-      sails.log.debug('params', req.params);
-      if (req.param('type') == 'image_square') {
+      if (req.params['type'] == 'image_square') {
         gm(f.data, 'photo.jpg')
         .size(function (err, size) {
           if (size.width == size.height) {
-            return res.send(f.data);
+            sails.log.debug('Create File:', f);
+            File.create(f, function(err, newFile) {
+              if (err || !newFile) { return res.send(400, {message:'Error storing file.'}) }
+              delete newFile['data'];
+              return res.send(newFile);
+            });
+            return;
           }
           var newSize = Math.min(size.width, size.height);
           gm(f.data, 'photo.jpg')

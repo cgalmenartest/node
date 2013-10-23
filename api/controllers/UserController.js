@@ -20,6 +20,8 @@ module.exports = {
           name: user.name,
           username: user.username,
           photoId: user.photoId,
+          likeCount: 0,
+          isOwner: false,
           createdAt: user.createdAt
         }
         return res.send(cleanUser);
@@ -45,6 +47,8 @@ module.exports = {
         // Look up the user's email addresses
         UserEmail.findByUserId(req.user[0].id, function (err, emails) {
           if (err) { return res.send(400, {message:'Error looking up user email addresses'}); }
+          user.isOwner = true;
+          user.likeCount = 0;
           user.emails = [];
           if (emails) { user.emails = emails; }
           sails.log.debug('User Get:', user);

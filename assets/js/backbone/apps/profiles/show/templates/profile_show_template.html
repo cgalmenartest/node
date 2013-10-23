@@ -1,75 +1,130 @@
-<div class="page-header">
-  <h1 id="profile-header"><% if (name) { %><%- name %><% } else { %><%- username %><% } %></h1>
-</div>
-
 <div class="row">
+
   <% if (isAdmin) { %>
   <div class="alert alert-info">You are an administrator.</div>
   <% } %>
 
+  <div class="col-lg-4 project-sidebar">
+    <!-- LEFT SIDEBAR -->
+    <div class="row like-content">
+      <div class="col-lg-12">
+        <a href="#" id="like-button">
+          <i id="like-button-icon" class="icon icon-star-empty icon-large gold"></i>
+        </a>
+        <span class="like-number" id="like-number"><%- likeCount %></span>
+        <span class="like-plural" id="like-text" data-plural="likes" data-singular="like">likes</span>
+
+        <div class="pull-right like-buttons">
+          <% if (!isOwner) { %>
+          <button class="btn btn-c4"><i class="icon icon-envelope-alt"></i> Email</button>
+          <% } %>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-header-wrapper">
+      <div id="project-header" style="background-image:url('/api/user/photo/<%- id %>');">
+        <div id="fileupload" class="btn btn-primary"><i class="icon-camera icon-large" title="Change Cover Photo" id="fileupload-icon"></i></div><br/>
+      </div>
+      <div id="file-upload-progress-container" style="display: none;" class="progress progress-striped active">
+        <div id="file-upload-progress" class="progress-bar" style="width: 0"></div>
+      </div>
+    </div>
+
+    <div class="tag-wrapper">
+    </div>
+
+  </div>
+
   <div class="col-lg-8">
-    <form class="form-horizontal" role="form" id="profile-form">
-      <div class="form-group">
-        <label for="name" class="col-lg-3 control-label">Full Name</label>
+    <!-- RIGHT MAIN BAR -->
+    <div class="main-section">
+
+      <h1><% if (name) { %><%- name %><% } else { %><%- username %><% } %></h1>
+
+      <div class="row">
+        <div class="col-lg-3">
+          Username:
+        </div>
         <div class="col-lg-9">
-          <input type="text" class="form-control" id="name" name="name" placeholder="Your Full Name" value="<% if (name) { %><%- name %><% } %>"/>
+          <% if (username) { %><%- username %><% } %>
         </div>
       </div>
-      <div class="form-group">
-        <label for="username" class="col-lg-3 control-label">Username</label>
-        <div class="col-lg-9">
-          <input type="text" class="form-control" id="username" name="username" placeholder="username" value="<% if (username) { %><%- username %><% } %>"/>
+
+      <div class="row">
+        <div class="col-lg-3">
+          Emails:
         </div>
-      </div>
-      <div class="form-group">
-        <label for="primaryEmail" class="col-lg-3 control-label">Primary Email</label>
         <div class="col-lg-9">
           <% for (var e = 0; e < emails.length; e++) { %>
-            <div class="radio">
-              <label>
-                <input type="radio" name="primaryEmail" id="email-<%- emails[e].id %>" value="<%- emails[e].email %>" <% if (emails[e].isPrimary) { %>checked<% } %>>
-                <a href="#" class="email-remove" id="email-remove-<%- emails[e].id %>"><span class="glyphicon glyphicon-trash"></a> <%- emails[e].email %>
-              </label>
-            </div>
+            <% if (emails[e].isPrimary) { %>x<% } %>
+            <%- emails[e].email %>
           <% } %>
-          <a href="#" class="btn btn-default btn-xs" disabled="disabled">Add Email Address</a>
         </div>
       </div>
-      <div class="form-group">
-        <label for="services" class="col-lg-3 control-label">Services</label>
+
+      <div class="row">
+        <div class="col-lg-3">
+          Services:
+        </div>
         <div class="col-lg-9">
-          <% if (_.contains(auths, 'linkedin')) { %>
-            <button class="btn btn-success btn-xs" disabled="disabled"><span class="glyphicon glyphicon-ok" alt="Connected"></span></button>
-            <a href="#" class="btn btn-default btn-xs removeAuth" id="linkedin"><span class="glyphicon glyphicon-remove"></span></a>
-          <% } else { %>
-            <button class="btn btn-danger btn-xs" disabled="disabled"><span class="glyphicon glyphicon-remove" alt="Disconnected"></span></button>
-            <a href="/api/auth/linkedin" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-plus"></span></a>
-          <% } %>
+          <% if (_.contains(auths, 'linkedin')) { %>x<% } %>
           <i class="icon icon-linkedin-sign" alt="LinkedIn"></i> LinkedIn
         </div>
       </div>
-      <div class="form-group">
-        <div class="col-lg-offset-3 col-lg-9">
-          <button id="submit" type="submit" class="btn btn-primary" disabled="disabled" data-loading-text="<i class='icon-spinner icon-spin'></i> Saving..." data-success-text="Saved!" data-fail-text="Save Failed.">Save Changes</button>
+
+<!--
+      <form class="form-horizontal" role="form" id="profile-form">
+      <h1><% if (name) { %><%- name %><% } else { %><%- username %><% } %></h1>
+
+        <div class="form-group">
+          <label for="name" class="col-lg-3 control-label">Full Name</label>
+          <div class="col-lg-9">
+            <input type="text" class="form-control" id="name" name="name" placeholder="Your Full Name" value="<% if (name) { %><%- name %><% } %>"/>
+          </div>
         </div>
-      </div>
-    </form>
+        <div class="form-group">
+          <label for="username" class="col-lg-3 control-label">Username</label>
+          <div class="col-lg-9">
+            <input type="text" class="form-control" id="username" name="username" placeholder="username" value="<% if (username) { %><%- username %><% } %>"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="primaryEmail" class="col-lg-3 control-label">Primary Email</label>
+          <div class="col-lg-9">
+            <% for (var e = 0; e < emails.length; e++) { %>
+              <div class="radio">
+                <label>
+                  <input type="radio" name="primaryEmail" id="email-<%- emails[e].id %>" value="<%- emails[e].email %>" <% if (emails[e].isPrimary) { %>checked<% } %>>
+                  <a href="#" class="email-remove" id="email-remove-<%- emails[e].id %>"><span class="glyphicon glyphicon-trash"></a> <%- emails[e].email %>
+                </label>
+              </div>
+            <% } %>
+            <a href="#" class="btn btn-default btn-xs" disabled="disabled">Add Email Address</a>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="services" class="col-lg-3 control-label">Services</label>
+          <div class="col-lg-9">
+            <% if (_.contains(auths, 'linkedin')) { %>
+              <button class="btn btn-success btn-xs" disabled="disabled"><span class="glyphicon glyphicon-ok" alt="Connected"></span></button>
+              <a href="#" class="btn btn-default btn-xs removeAuth" id="linkedin"><span class="glyphicon glyphicon-remove"></span></a>
+            <% } else { %>
+              <button class="btn btn-danger btn-xs" disabled="disabled"><span class="glyphicon glyphicon-remove" alt="Disconnected"></span></button>
+              <a href="/api/auth/linkedin" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-plus"></span></a>
+            <% } %>
+            <i class="icon icon-linkedin-sign" alt="LinkedIn"></i> LinkedIn
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-lg-offset-3 col-lg-9">
+            <button id="submit" type="submit" class="btn btn-primary" disabled="disabled" data-loading-text="<i class='icon-spinner icon-spin'></i> Saving..." data-success-text="Saved!" data-fail-text="Save Failed.">Save Changes</button>
+          </div>
+        </div>
+      </form>
+-->
 
-</div>
-
-<div class="col-lg-4">
-  <% if (photoId) { %>
-    <img src="/api/file/get/<%- photoId %>" alt="" id="profile-photo" style="max-width: 150px; max-height: 150px;" />
-  <% } else { %>
-    <img id="profile-photo" src="/api/user/photo/<%- id %>" style="max-width: 150px; max-height: 150px;" />
-  <% } %>
-
-  <br />
-
-  <div id="fileupload" style="margin-top: 10px;" class="btn btn-primary">Change Photo</div><br/>
-  <div id="file-upload-progress-container" style="margin-top: 10px; display: none;" class="progress progress-striped active">
-  <div id="file-upload-progress" class="progress-bar" style="width: 0"></div>
-</div>
+    </div> <!-- /main-section -->
 
   </div>
 </div>
