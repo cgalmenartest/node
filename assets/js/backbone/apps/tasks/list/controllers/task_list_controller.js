@@ -58,20 +58,17 @@ define([
       $(".modal").modal('hide');
       $("body").removeClass("modal-open")
 
-      if (this.taskCollectionView) {
-        this.taskCollectionView.cleanup();
-      }
+      if (this.taskCollectionView) this.taskCollectionView.cleanup();
       this.taskCollectionView = new TaskCollectionView({
         el: "#task-list-wrapper",
         onRender: true,
         collection: self.tasks
       });
-
     },
 
     add: function (e) {
-      var self = this;
       if (e.preventDefault()) e.preventDefault();
+      var self = this;
 
       if (this.modalWizardComponent) this.modalWizardComponent;
       this.modalWizardComponent = new ModalWizardComponent({

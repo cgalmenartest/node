@@ -14,10 +14,7 @@ define([
 		template: _.template(TaskFormTemplate),
 
 		events: {
-      "submit #task-form"     : "post",
-      "click .wizard-forward" : "moveWizardForward",
-      "click .wizard-back"    : "moveWizardBack",
-      "click .add-topic"      : "addTopic"
+      "submit #task-form"     : "post"
 		},
 
 		initialize: function () {
@@ -32,26 +29,44 @@ define([
       $("section:not(.current)").hide();
 		},
 
-    addTopic: function (e) {
-      if (e.preventDefault()) e.preventDefault();
-      var topicForm     = $("#single-topic-form"),
-          newTopicForm  = topicForm.html(),
-          topicWrapper  = $(".work-topics");
-
-      topicWrapper.append(newTopicForm);
-    },
-
     post: function (e) {
       if (e.preventDefault()) e.preventDefault();
 
-      var title, description, projectId;
+      var taskData = {
+        title                   = $("#task-title").val(),
+        projectId               = this.options.projectId,
+        description             = $("#task-description").val()
+      }
 
-      title       = $("#task-title").val();
-      projectId   = this.options.projectId;
-      description = $("#task-description").val();
+      var tagData = {
+        topics                  = $("#task-topics").val(),
+        skills                  = $("#task-skills").val(),
+        teamSize                = $("#task-team-size").val(),
+        typeOfTimeRequired      = $("#task-type-of-time-required").val(),
+        classNetAccessRequired  = $("#task-classnet-access").val()
+      }
 
-      this.tasks.trigger("task:save", title, projectId, description);
+      this.tasks.trigger("task:save", taskData);
+
+      // Save taskData and tagData seperately, as they relate, but perhaps
+      // do so in Collection.
+      //
+      // If we do so in collection we can save the the tags with the taskId.
+      // as that is when we are initializing the new model for tasks.
+      // $.ajax({
+      //   url: '/api/tag/add',
+      //   type: 'POST',
+      //   data: tagData,
+      //   success: function (result) {
+      //     this.tasks.model.trigger("task:tag:new", result);
+      //   }
+      // })
+
     },
+
+    cleanup: function () {
+      removeView(this);
+    }
 
 	});
 

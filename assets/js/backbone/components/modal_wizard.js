@@ -56,10 +56,14 @@ define([
     // the first you want to always start on (re)render.
     moveWizardForward: function (e) {
       if (e.preventDefault()) e.preventDefault();
-      var next    = $(".current").next();
-          current = $(".current")
 
-      if (!_.isUndefined(next.html())) {
+      // Store $(".current") in cache to reduce query times for DOM lookup
+      // on future children and adjacent element to the current el.
+      var current   = $(".current");
+          next      = current.next(),
+          nextHtml  = next.html();
+
+      if (!_.isUndefined(nextHtml)) {
         current.children().hide();
         current.removeClass("current");
         next.addClass("current");
@@ -72,10 +76,11 @@ define([
     moveWizardBack: function (e) {
       if (e.preventDefault()) e.preventDefault();
 
-      var current = $(".current"),
-          prev    = $(".current").prev();
+      var current   = $(".current"),
+          prev      = current.prev(),
+          prevHtml  = prev.html();
 
-      if (!_.isUndefined(prev.html())) {
+      if (!_.isUndefined(prevHtml)) {
         current.children().hide();
         current.removeClass("current");
         prev.addClass("current");
