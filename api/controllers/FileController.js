@@ -69,7 +69,7 @@ module.exports = {
       }
       // if the type of the file should be a square image
       // resize the image before storing it.
-      if (req.params['type'] == 'image_square') {
+      if (req.param('type') == 'image_square') {
         gm(f.data, 'photo.jpg')
         .size(function (err, size) {
           if (size.width == size.height) {
