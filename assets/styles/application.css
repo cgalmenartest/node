@@ -75,10 +75,15 @@
 }
 
 /*****************
-=  HOMEPAGE
+=  PROFILES
 ******************/
-#home .hreo-title {
-    text-align: center;
+
+.profile-jobtitle {
+	font-weight: bold;
+}
+
+.profile-company {
+	font-weight: bold;
 }
 
 /*****************

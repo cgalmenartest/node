@@ -91,6 +91,7 @@ module.exports.policies = {
     'add': ['authenticated', 'requireUserId'],
     'findAllByProjectId': ['authenticated', 'requireId', 'project'],
     'findAllByTaskId': ['authenticated', 'requireId', 'task']
+    //'findAllByUserId': not needed because authenticated is default
   },
 
   CommentController : {

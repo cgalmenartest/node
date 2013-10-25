@@ -1,5 +1,5 @@
 <li><%- tag.tag.name %>
-<% if (data.isOwner) { %>
+<% if (data.isOwner && edit) { %>
 <span class="tag-delete glyphicon glyphicon-remove" data-id="<%- tag.id %>"></span>
 <% } %>
 </li>

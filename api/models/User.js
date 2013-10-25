@@ -15,6 +15,12 @@ module.exports = {
     // Core attributes about a user
     name: 'STRING',
 
+    // Professional Title
+    title: 'STRING',
+
+    // Biography
+    bio: 'STRING',
+
     // User's profile photo
     // If photoId is not null, the URL to the file is /file/get/:id
     photoId: 'INTEGER',

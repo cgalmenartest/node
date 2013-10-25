@@ -12,7 +12,8 @@ module.exports = {
 
     projectId: 'INTEGER',
     taskId: 'INTEGER',
-    tagId: 'INTEGER'
+    tagId: 'INTEGER',
+    userId: 'INTEGER'
 
   }
 

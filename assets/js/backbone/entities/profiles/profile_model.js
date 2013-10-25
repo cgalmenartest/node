@@ -47,10 +47,11 @@ define([
 			this.listenTo(this, "profile:save", function (form) {
 				_this.save({
 					name: form['name'],
-					username: form['username']
+					username: form['username'],
+					title: form['title'],
+					bio: form['bio']
 				}, {
 				success: function (data) {
-					console.log(data);
 					_this.trigger("profile:save:success", data);
 				},
 				error: function (data) {
@@ -67,7 +68,6 @@ define([
 					auths: auths
 				}, {
 				success: function (data) {
-					console.log(data);
 					_this.trigger("profile:removeAuth:success", data, id);
 				},
 				error: function (data) {

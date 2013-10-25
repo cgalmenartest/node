@@ -25,6 +25,8 @@ define([
       this.options = options;
       this.model = options.model;
       this.target = options.target;
+      this.targetId = options.targetId;
+      this.edit = options.edit;
       this.tags = [];
       // Figure out which tags apply
       for (var i = 0; i < TagConfig[this.target].length; i++) {
@@ -44,7 +46,7 @@ define([
       }
 
       var renderTag = function (tag) {
-        var templData = { data: self.model.toJSON(), tags: this.tags, tag: tag };
+        var templData = { data: self.model.toJSON(), tags: self.tags, tag: tag, edit: self.edit };
         var compiledTemplate = _.template(TagTemplate, templData);
         var tagDom = $("." + tag.tag.type).children(".tags");
         tagDom.append(compiledTemplate);
@@ -117,7 +119,8 @@ define([
     render: function () {
       var data = {
         data: this.model.toJSON(),
-        tags: this.tags
+        tags: this.tags,
+        edit: this.edit
       };
       var template = _.template(TagShowTemplate, data);
       this.$el.html(template);
@@ -163,9 +166,11 @@ define([
 
       var processTag = function(tag, done) {
         var tagMap = {
-          tagId: tag.id,
-          projectId: self.model.id
+          tagId: tag.id
         };
+        if (self.targetId) {
+          tagMap[self.targetId] = self.model.id;
+        }
         $.ajax({
           url: '/api/tag',
           type: 'POST',
