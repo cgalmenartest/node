@@ -242,7 +242,8 @@ div.project-title {
 body > .popover {
 	width: 350px;
 	max-width: 350px;
-	height: 80px;
+	min-height: 100px;
+	max-height: 200px;
 }
 
 .popover-person {

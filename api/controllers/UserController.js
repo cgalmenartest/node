@@ -92,6 +92,12 @@ module.exports = {
             delete tags[i].updatedAt;
             delete tags[i].deletedAt;
             delete tags[i].userId;
+            if (tags[i].tag.type == 'location') {
+              cleanUser.location = tags[i].tag.name;
+            }
+            if (tags[i].tag.type == 'agency') {
+              cleanUser.agency = tags[i].tag.name;
+            }
           }
           cleanUser.tags = tags;
           return res.send(cleanUser);

@@ -3,8 +3,9 @@ define([
   'underscore',
   'backbone',
   'base_component',
-  'bootstrap'
-], function ($, _, Backbone, BaseComponent, Bootstrap) {
+  'bootstrap',
+  'text!popover_profile'
+], function ($, _, Backbone, BaseComponent, Bootstrap, PopoverProfile) {
 
   Application.Component.Popovers = BaseComponent.extend({
 
@@ -22,6 +23,7 @@ define([
     },
 
     popoverPeopleOn: function (e) {
+
       if (e.preventDefault()) e.preventDefault();
       var target = $(e.currentTarget);
       var popover = target.data('bs.popover');
@@ -29,10 +31,9 @@ define([
       // Only load data if the popover hasn't previously been loaded
       if (popover.options.title == 'load') {
         $.ajax({ url: '/api/user/info/' + target.data('userid') }).done(function(data) {
-          data.company = 'General Services Administration';
-          data.title = 'Presidential Innovation Fellow';
+          var template = _.template(PopoverProfile, {data: data});
           popover.options.title = 'done';
-          popover.options.content = '<img align="left" src="/api/user/photo/' + data.id + '" class="project-people-popover"/><div class="popover-person"><div class="title">' + data.name + '</div>' + data.title + '<br/>' + data.company + '</div>';
+          popover.options.content = template;
           popover.setContent();
           popover.$tip.addClass(popover.options.placement);
         });
