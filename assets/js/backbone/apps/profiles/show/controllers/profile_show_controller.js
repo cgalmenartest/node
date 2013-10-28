@@ -20,6 +20,7 @@ define([
     },
 
     initialize: function (options) {
+      this.id = options.id;
       this.routeId = options.id;
       this.data = options.data;
       this.initializeProfileModelInstance();
@@ -30,7 +31,7 @@ define([
 
       if (this.model) this.model.remove();
       this.model = new ProfileModel();
-      this.model.trigger("profile:fetch");
+      this.model.trigger("profile:fetch", this.id);
       this.listenTo(this.model, "profile:fetch:success", function (model) {
         // @instance
         self.model = model;

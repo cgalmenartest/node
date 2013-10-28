@@ -29,7 +29,7 @@ var commentAssemble = function (where, done) {
     for (var i = 0; i < topics.length; i++) {
       topics[i].comments = [];
       topicArray[topics[i].id] = topics[i];
-      userIds.push(topics[i].userId);
+      if (_.indexOf(userIds, topics[i].userId) == -1) { userIds.push(topics[i].userId); }
     }
 
     Comment.find()
@@ -40,9 +40,11 @@ var commentAssemble = function (where, done) {
       var newArray = {};
       var users = {};
       // Create an associative array to attach children
-      for (var i = 0; i < comments.length; i++) {
-        if (!_.has(userIds, comments[i].userId)) { userIds.push(comments[i].userId); }
+      sails.log.debug(comments);
+      for (var i in comments) {
+        if (_.indexOf(userIds, comments[i].userId) == -1) { userIds.push(comments[i].userId); }
       }
+      sails.log.debug(userIds);
 
       var getId = function (id, next) {
         User.findOneById(id, function (err, user) {
@@ -53,6 +55,7 @@ var commentAssemble = function (where, done) {
       };
 
       async.each(userIds, getId, function (err) {
+        sails.log.debug(users);
         if (err) return done(err, null);
         // Attach userIds to topics
         for (var i = 0; i < topics.length; i++) {
@@ -65,6 +68,8 @@ var commentAssemble = function (where, done) {
         }
         // Find children and attach them to their parent
         for (var i = 0; i < comments.length; i++) {
+          sails.log.debug(comments[i]);
+          sails.log.debug(users[comments[i].userId]);
           comments[i].user = { username: users[comments[i].userId].username, name: users[comments[i].userId].name }
           if (comments[i].parentId) {
             var parent = newArray[comments[i].parentId]

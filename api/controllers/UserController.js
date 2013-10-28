@@ -8,6 +8,60 @@ var async = require('async');
 var _ = require('underscore');
 var tagUtils = require('../services/utils/tag');
 
+/**
+ * Gets all the information about a user.
+ *
+ * @param userId: the id of the user to query
+ * @param reqId: the requester's id
+ */
+var getUser = function (userId, reqId, cb) {
+  User.findOneById(userId, function (err, user) {
+    if (err) { return cb(err, null); }
+    tagUtils.assemble({ userId: userId }, function (err, tags) {
+      if (err) { return cb(err, null); }
+      for (i in tags) {
+        delete tags[i].projectId;
+        delete tags[i].taskId;
+        delete tags[i].updatedAt;
+        delete tags[i].deletedAt;
+        delete tags[i].userId;
+      }
+      user.tags = tags;
+      Like.countByTargetId(userId, function (err, likes) {
+        if (err) { return cb(err, null); }
+        user.likeCount = likes;
+        user.like = false;
+        user.isOwner = false;
+        Like.findOne({ where: { userId: reqId, targetId: userId }}, function (err, like) {
+          if (err) { return cb(err, null); }
+          if (like) { user.like = true; }
+          sails.log.debug('User Get:', user);
+          // stop here if the requester id is not the same as the user id
+          if (userId != reqId) {
+            return cb(null, user);
+          }
+          // Look up which providers the user has authorized
+          UserAuth.findByUserId(userId, function (err, auths) {
+            if (err) { return cb(err, null); }
+            user.auths = [];
+            for (var i = 0; i < auths.length; i++) {
+              user.auths.push(auths[i].provider);
+            }
+            // Look up the user's email addresses
+            UserEmail.findByUserId(userId, function (err, emails) {
+              if (err) { return cb(err, null); }
+              user.isOwner = true;
+              user.emails = [];
+              if (emails) { user.emails = emails; }
+              return cb(null, user);
+            });
+          });
+        });
+      });
+    });
+  });
+};
+
 var update = function (req, res) {
   var user = req.user[0];
   var params = _.extend(req.body || {}, req.params);
@@ -65,91 +119,37 @@ module.exports = {
   },
 
   info: function (req, res) {
-    if (req.route.params.id) {
-      User.findOneById(req.route.params.id, function (err, user) {
-        if (err) { return res.send(400, {message:'Error looking up user.'}); }
-        if (!user) { return res.send(404, { message: 'User not found.'}); }
-        sails.log.debug('User Get:', user);
-        var cleanUser = {
-          id: user.id,
-          name: user.name,
-          username: user.username,
-          photoId: user.photoId,
-          title: user.title,
-          bio: user.bio,
-          likeCount: 0,
-          isOwner: false,
-          createdAt: user.createdAt
-        }
-        if (req.user && (req.route.params.id == req.user[0].id)) {
-          cleanUser.isOwner = true;
-        }
-        tagUtils.assemble({ userId: req.route.params.id }, function (err, tags) {
-          if (err) { return res.send(400, { message: "Error looking up tags."}); }
-          for (i in tags) {
-            delete tags[i].projectId;
-            delete tags[i].taskId;
-            delete tags[i].updatedAt;
-            delete tags[i].deletedAt;
-            delete tags[i].userId;
-            if (tags[i].tag.type == 'location') {
-              cleanUser.location = tags[i].tag.name;
-            }
-            if (tags[i].tag.type == 'agency') {
-              cleanUser.agency = tags[i].tag.name;
-            }
-          }
-          cleanUser.tags = tags;
-          return res.send(cleanUser);
-        });
-      });
+    var reqId = null;
+    if (req.user) {
+      reqId = req.user[0].id;
     }
+    getUser(req.route.params.id, reqId, function (err, user) {
+      // prune out any info you don't want to be public here.
+      if (err) { return res.send(400, { message: err }); }
+      sails.log.debug('User Get:', user);
+      res.send(user);
+    });
   },
 
-  index: function(req, res) {
+  find: function(req, res) {
     // If the user is not logged in, return null object
     if (!req.user) {
       return res.send(403, null);
     }
-    // Get information about the currently logged in user
-    if (req.route.method === 'get') {
-      // Look up which providers the user has authorized
-      UserAuth.findByUserId(req.user[0].id, function (err, auths) {
-        if (err) { return res.send(400, {message:'Error looking up user authorizations.'}); }
-        var user = req.user[0];
-        user.auths = [];
-        for (var i = 0; i < auths.length; i++) {
-          user.auths.push(auths[i].provider);
-        }
-        // Look up the user's email addresses
-        UserEmail.findByUserId(req.user[0].id, function (err, emails) {
-          if (err) { return res.send(400, {message:'Error looking up user email addresses.'}); }
-          user.isOwner = true;
-          user.likeCount = 0;
-          user.emails = [];
-          if (emails) { user.emails = emails; }
-          tagUtils.assemble({ userId: req.user[0].id }, function (err, tags) {
-            if (err) { return res.send(400, { message: "Error looking up tags."}); }
-            for (i in tags) {
-              delete tags[i].projectId;
-              delete tags[i].taskId;
-              delete tags[i].updatedAt;
-              delete tags[i].deletedAt;
-              delete tags[i].userId;
-            }
-            user.tags = tags;
-            sails.log.debug('User Get:', user);
-            return res.send(user);
-          });
-        });
-      });
+    var reqId = null;
+    var userId = req.user[0].id;
+    if (req.user) {
+      reqId = req.user[0].id;
     }
-    // Update information about the currently logged in user
-    else if (req.route.method === 'put') {
-      return update(req, res);
-    } else {
-      return res.send(400, {message:'Invalid Operation.'});
+    if (req.route.params.id) {
+      userId = req.route.params.id;
     }
+    getUser(userId, reqId, function (err, user) {
+      // this will only be shown to logged in users.
+      if (err) { return res.send(400, { message: err }); }
+      sails.log.debug('User Get:', user);
+      res.send(user);
+    });
   },
 
   update: function (req, res) {

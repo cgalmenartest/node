@@ -15,6 +15,7 @@ define([
       "click #profile-save"        : "profileSave",
       "click #profile-edit"        : "profileEdit",
       "click #profile-cancel"      : "profileCancel",
+      "click #like-button"         : "like",
       "keyup #name, #username, #title, #bio" : "fieldModified",
       "keyup #username"            : "checkUsername",
       "click #username-button"     : "clickUsername",
@@ -51,6 +52,7 @@ define([
       this.initializeFileUpload();
       this.initializeForm();
       this.initializeSelect2();
+      this.initializeLikes();
       this.initializeTags();
       this.updatePhoto();
 
@@ -188,6 +190,19 @@ define([
         $("#profile-save, #submit").removeClass("btn-success");
         $("#profile-save, #submit").addClass("btn-primary");
       });
+    },
+
+    initializeLikes: function() {
+      $("#like-number").text(this.model.attributes.likeCount);
+      if (parseInt(this.model.attributes.likeCount) === 1) {
+        $("#like-text").text($("#like-text").data('singular'));
+      } else {
+        $("#like-text").text($("#like-text").data('plural'));
+      }
+      if (this.model.attributes.like) {
+        $("#like-button-icon").removeClass('icon-star-empty');
+        $("#like-button-icon").addClass('icon-star');
+      }
     },
 
     initializeSelect2: function () {
@@ -334,6 +349,47 @@ define([
       e.preventDefault();
     },
 
+    like: function (e) {
+      e.preventDefault();
+      var self = this;
+      var child = $(e.currentTarget).children("#like-button-icon");
+      var likenumber = $("#like-number");
+      // Not yet liked, initiate like
+      if (child.hasClass('icon-star-empty')) {
+        child.removeClass('icon-star-empty');
+        child.addClass('icon-star');
+        likenumber.text(parseInt(likenumber.text()) + 1);
+        if (parseInt(likenumber.text()) === 1) {
+          $("#like-text").text($("#like-text").data('singular'));
+        } else {
+          $("#like-text").text($("#like-text").data('plural'));
+        }
+        $.ajax({
+          url: '/api/like/likeu/' + self.model.attributes.id
+        }).done( function (data) {
+          // liked!
+          // response should be the like object
+          // console.log(data.id);
+        });
+      }
+      // Liked, initiate unlike
+      else {
+        child.removeClass('icon-star');
+        child.addClass('icon-star-empty');
+        likenumber.text(parseInt(likenumber.text()) - 1);
+        if (parseInt(likenumber.text()) === 1) {
+          $("#like-text").text($("#like-text").data('singular'));
+        } else {
+          $("#like-text").text($("#like-text").data('plural'));
+        }
+        $.ajax({
+          url: '/api/like/unlikeu/' + self.model.attributes.id
+        }).done( function (data) {
+          // un-liked!
+          // response should be null (empty)
+        });
+      }
+    },
     cleanup: function () {
       removeView(this);
     },

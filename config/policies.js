@@ -30,13 +30,11 @@ module.exports.policies = {
   // Limit user controller view to just the /user endpoint
   UserController : {
     '*': false,
-    'index': true,
     'photo': true,
-    'info': ['authenticated', 'requireUserId', 'addUserId', 'requireId'],
+    'info': ['authenticated', 'requireId'],
     'update': ['authenticated', 'requireUserId', 'requireId'],
     'username': ['authenticated', 'requireUserId', 'requireId'],
-    'find': 'admin',
-    'findAll': 'admin'
+    'find': ['authenticated', 'requireUserId']
   },
 
   // Disable the index blueprints for FileController due to security concerns

@@ -21,7 +21,6 @@ define([
         this.profileController.cleanup();
       }
       this.profileController = new ProfileController({ id: id, data: this.data });
-
     }
   });
 
