@@ -96,8 +96,13 @@
 
         <div class="form-group">
           <label for="username" class="col-lg-3 control-label">Username</label>
-          <div class="col-lg-9">
+          <div class="col-lg-9 input-group">
             <input type="text" class="form-control" id="username" name="username" placeholder="username" value="<% if (data.username) { %><%- data.username %><% } %>"/>
+            <span class="input-group-btn">
+              <a href="#" class="btn btn-success" id="username-button">
+                <i id="username-check" class="icon-ok"></i>
+              </a>
+            </span>
           </div>
         </div>
         <div class="form-group">

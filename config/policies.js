@@ -34,6 +34,7 @@ module.exports.policies = {
     'photo': true,
     'info': ['authenticated', 'requireUserId', 'addUserId', 'requireId'],
     'update': ['authenticated', 'requireUserId', 'requireId'],
+    'username': ['authenticated', 'requireUserId', 'requireId'],
     'find': 'admin',
     'findAll': 'admin'
   },
