@@ -24,8 +24,8 @@ describe('user:', function() {
       if (err) { return done(err); }
       // Successful login or creation should result in a 302 redirect
       assert(response.statusCode === 302);
-      // Should be redirected to /#projects
-      assert(body.indexOf('/#projects') !== -1);
+      // Should be redirected to /projects
+      assert(body.indexOf('/projects') !== -1);
       done();
     });
   });
