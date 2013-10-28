@@ -15,7 +15,7 @@ define([
       "click #profile-save"        : "profileSave",
       "click #profile-edit"        : "profileEdit",
       "click #profile-cancel"      : "profileCancel",
-      "keyup #name, #username, #title" : "fieldModified",
+      "keyup #name, #username, #title, #bio" : "fieldModified",
       "click .addEmail"            : "addEmail",
       "click .removeAuth"          : "removeAuth"
     },
