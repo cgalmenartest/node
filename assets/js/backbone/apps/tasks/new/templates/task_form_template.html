@@ -1,9 +1,10 @@
 <form id="task-form" class="form-inline" style="display: block;">
   <fieldset>
-    <section id="section-1" class="progress current" style="height: 100%;">
+    <section id="section-1" class="current" style="height: 100%;">
+
       <div class="form-group">
         <label>I need
-          <select id="volunteer-quantity">
+          <select id="people">
             <option value="anyone">anyone</option>
             <option value="1 person">1 person</option>
             <option value="2 - 5 people">2 - 5 people</option>
@@ -12,48 +13,49 @@
           </select>
         </label>
 
-        <label class="work-topics-label">to work on an opportunity about these topics:</label>
-        <div class="work-topics">
-          <!-- Topic forms get filled in here. -->
+        <label class="work-topics-label">to work on an opportunity about these topics:
+          <div>
+            <input type="hidden" id="topics" name="topic" style="width: 100%" multiple="true" />
+          </div>
+        </label>
 
+    </section>
+
+    <section id="section-2" class="task-creation-section">
+
+        <div class="form-group">
+          <label for="skills" class="col-lg-3 control-label">these
+            <div>
+              <input type="hidden" id="skills" name="skills" multiple="true" style="width: 100%"/>
+            </div>
+          </label>
         </div>
 
-        <a href="#addTopic" class="add-topic">Add Topic</a>
-        <!-- This get's cloned on click of #addTopic, and set up in an item by item
-        basis as per each click -->
-        <div id="single-topic-form" class="hidden">
-          <input type="text" />
-          <select name="" id="">
-            <option value="none">none</option>
-            <option value="advanced">advanced</option>
-            <option value="moderate">moderate</option>
-          </select>
-          <input type="submit">
-        <div class="clearfix"></div>
+        <div class="form-group">
+          <label for="skills-required" class="col-lg-3">are
+            <div>
+              <select id="skills-required" name="skills-required" style="width: 100%;">
+                <option value="required">required</option>
+                <option value="not-required">not required</option>
+              </select>
+            </div>
+          </label>
         </div>
 
+    </section>
 
-
+    <section id="section-3">
       <div class="form-group">
         <label>It will require</label>
-          <select>
+          <select id="time-required">
               <option value="part-time">part-time</option>
               <option value="full-time">full-time</option>
               <option value="any available">any available</option>
             </select>
-        Classnet access <select><option value="is">is</option><option value="is not">is not</option></select> required.
       </div>
 
-      <div class="form-group">
-        <label>It will require</label>
-          <select>
-              <option value="part-time">part-time</option>
-              <option value="full-time">full-time</option>
-              <option value="any available">any available</option>
-            </select>
-
         <label>time over the next</label>
-          <select>
+          <select id="length">
             <option value="day">day</option>
             <option value="1-3 days">1-3 days</option>
             <option value="week">week</option>
@@ -61,13 +63,13 @@
             <option value="few months">few months</option>
           </select>
 
-        Classnet access <select><option value="is">is</option><option value="is not">is not</option></select> required.
-      </div>
-    </section>
+      </section>
 
-    <section id="section-2" class="task-creation-section">
+
+    <section id="section-4">
+
       <label>This opportunity should take</label>
-      <select>
+      <select id="time-estimate">
         <option value="< 1 hour">less than 1 hour</option>
         <option value="1 - 3 hours">1 - 3 hours</option>
         <option value="4 - 8 hours">4 - 8 hours</option>
@@ -77,21 +79,30 @@
       </select>
       <label>hours to complete.</label>
 
-      <label>The volunteer(s) must be located at</label>
-      <select>
+    </section>
+
+    <section id="section-5">
+      <label>The volunteer(s) must be located at
+      <select id="task-location">
         <option value="any location">any location</option>
-        <option value="a specific location">a specific location</option>
-      </select> to complete this task.
+        <option class="specific-location" value="a specific location">a specific location</option>
+      </select> to complete this task.</label>
 
-      The volunteer must be located in <input type="text" placeholder="exact location" /> to complete this task.
+      <div class="el-specific-location" style="display: none;">
+        <hr />
+
+        <label for="input-specific-location">Enter that location here:</label>
+        <input type="text" id="input-specific-location" style="width: 100%;" />
+      </div>
+
     </section>
 
-    <section class="section-3">
-      <input type="text" placeholder="What problem are you trying to solve?" />
-      <br />
-      <textarea>Please describe the project details, including goals, expected outcomes and deliverables."</textarea>
+    <section id="section-6">
+       <input type="text" placeholder="What problem are you trying to solve?" style="width: 100%" />
+        <br />
+        <textarea style="width: 100%;">
+          Please describe the project details, including goals, expected outcomes and deliverables."
+        </textarea>
     </section>
-
-
   </fieldset>
 </form>

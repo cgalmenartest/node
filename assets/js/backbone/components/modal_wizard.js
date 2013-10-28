@@ -56,6 +56,7 @@ define([
     // the first you want to always start on (re)render.
     moveWizardForward: function (e) {
       if (e.preventDefault()) e.preventDefault();
+      var self = this;
 
       // Store $(".current") in cache to reduce query times for DOM lookup
       // on future children and adjacent element to the current el.
@@ -68,9 +69,13 @@ define([
         current.removeClass("current");
         next.addClass("current");
         next.show();
-      } else {
-        return;
+      } else if (_.isUndefined(nextHtml)) {
+        console.log("And here we switch the the button logic to now ready for submit.")
       }
+    },
+
+    updateButtonForSubmit: function (self) {
+      $(e.currentTarget).text("Submit");
     },
 
     moveWizardBack: function (e) {

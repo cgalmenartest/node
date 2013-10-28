@@ -18,7 +18,7 @@ define([
     render: function () {
       var template = _.template(ProfileTemplate, this.model.toJSON());
       this.$el.html(template);
-      
+
       this.initializeFileUpload();
       this.initializeForm();
       this.updatePhoto();
@@ -68,7 +68,7 @@ define([
 
     initializeForm: function() {
       var _this = this;
-      
+
       this.listenTo(_this.model, "profile:save:success", function (data) {
         $("#submit").button('success');
         // Bootstrap .button() has execution order issue since it

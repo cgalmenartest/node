@@ -7,9 +7,9 @@ define([
   'tasks_collection',
   'task_collection_view',
   'task_form_view',
-  'modal_wizard_component'
-], function ($, _, Backbone, Utilities, Bootstrap, TasksCollection, TaskCollectionView, TaskFormView, ModalWizardComponent) {
-
+  'modal_wizard_component',
+  'task_model'
+], function ($, _, Backbone, Utilities, Bootstrap, TasksCollection, TaskCollectionView, TaskFormView, ModalWizardComponent, TaskModel) {
   Application.Controller.TaskList = Backbone.View.extend({
 
     el: "#task-list-wrapper",
@@ -23,7 +23,8 @@ define([
       this.options = _.extend(settings, this.defaults);
       var self = this;
 
-      this.fireUpTasksCollection();
+      this.initializeTaskCollectionInstance();
+      this.initializeTaskModelInstance();
       this.requestTasksCollectionData();
 
       this.collection.on("tasks:render", function () {
@@ -31,7 +32,14 @@ define([
       })
     },
 
-    fireUpTasksCollection: function () {
+    initializeTaskModelInstance: function () {
+      if (this.taskModel) {
+        this.taskModel.remove();
+      }
+      this.taskModel = new TaskModel();
+    },
+
+    initializeTaskCollectionInstance: function () {
       if (this.collection) {
         this.collection.initialize();
       } else {
@@ -82,9 +90,11 @@ define([
         this.taskFormView = new TaskFormView({
           el: ".modal-body",
           projectId: this.options.projectId,
+          model: self.taskModel,
           tasks: self.tasks
         }).render();
       }
+
     },
 
     cleanup: function () {
