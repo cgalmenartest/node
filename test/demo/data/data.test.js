@@ -26,7 +26,7 @@ describe('demo:', function() {
             console.log('user created:', userObj.name);
             user.obj = userObj;
             user.id = userObj.id;
-            done(err);
+            return done(err);
           });
         });
       });
@@ -56,7 +56,40 @@ describe('demo:', function() {
     };
 
     async.eachSeries(_.values(conf.tags), process, function (err) {
-      done(err);
+      return done(err);
+    });
+  });
+
+  it('user tags', function (done) {
+    var entities = ['location', 'agency'];
+    var process = function (user, done) {
+      var processE = function (entity, done) {
+        var request = utils.init();
+        var createTag = function (tag, done) {
+          utils.tag_create(request, tag, function (err, tagObj) {
+            return done(err);
+          });
+          return;
+        };
+        if (user[entity]) {
+          utils.login(request, user.username, user.password, function (err) {
+            if (err) return done(err);
+            var tagEntity = conf.tags[user[entity]];
+            createTag({ tagId: tagEntity.id }, done);
+          });
+          return;
+        }
+        else {
+          return done();
+        }
+      };
+
+      async.eachSeries(entities, processE, function (err) {
+        return done(err);
+      });
+    };
+    async.eachSeries(_.values(conf.users), process, function (err) {
+      return done(err);
     });
   });
 
