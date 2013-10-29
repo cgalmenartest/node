@@ -2,6 +2,6 @@
 <div class="popover-person">
   <div class="title"><%- data.name %></div>
   <% if (data.title) { %><i class="icon-briefcase"></i> <%- data.title %><br/><% } %>
-  <% if (data.agency) { %><i class="icon-library"></i> <%- data.agency %><br/><% } %>
-  <% if (data.location) { %><span class="glyphicon glyphicon-map-marker"></span> <%- data.location %><br/><% } %>
+  <% if (data.agency) { %><i class="icon-library"></i> <%- data.agency.tag.name %><br/><% } %>
+  <% if (data.location) { %><span class="glyphicon glyphicon-map-marker"></span> <%- data.location.tag.name %><br/><% } %>
 </div>

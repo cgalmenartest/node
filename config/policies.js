@@ -37,6 +37,15 @@ module.exports.policies = {
     'find': ['authenticated', 'requireUserId']
   },
 
+  UserEmailController : {
+    '*': ['authenticated', 'requireUserId'],
+    'find': ['authenticated', 'requireUserId', 'requireId', 'userEmailIdMatch'],
+    'findAllByUserId': ['authenticated', 'requireUserId', 'requireId', 'user'],
+    'create': ['authenticated', 'requireUserId', 'addUserId'],
+    'update': ['authenticated', 'requireUserId', 'requireId', 'userEmailIdMatch'],
+    'destroy': ['authenticated', 'requireUserId', 'requireId', 'userEmailIdMatch'],
+  },
+
   // Disable the index blueprints for FileController due to security concerns
   FileController : {
     'index': false,
@@ -65,7 +74,9 @@ module.exports.policies = {
     '*': ['authenticated', 'addUserId', 'project'],
     'count': ['authenticated', 'requireId', 'project'],
     'like': ['authenticated', 'requireUserId', 'addUserId', 'requireId'],
+    'likeu': ['authenticated', 'requireUserId', 'addUserId', 'requireId'],
     'unlike': ['authenticated', 'requireUserId', 'addUserId', 'requireId'],
+    'unlikeu': ['authenticated', 'requireUserId', 'addUserId', 'requireId'],
     'create': ['authenticated', 'requireUserId', 'addUserId'],
     'destroy': false,
     'update': false

@@ -5,8 +5,12 @@ define([
   'underscore',
   'backbone',
   'tag_show_view',
-  'text!profile_show_template'
-], function ($, async, dropzone, _, Backbone, TagShowView, ProfileTemplate) {
+  'text!profile_show_template',
+  'text!profile_email_template',
+  'modal_component',
+  'profile_email_view'
+], function ($, async, dropzone, _, Backbone,
+  TagShowView, ProfileTemplate, EmailTemplate, ModalComponent, EmailFormView) {
 
   var ProfileShowView = Backbone.View.extend({
 
@@ -19,7 +23,8 @@ define([
       "keyup #name, #username, #title, #bio" : "fieldModified",
       "keyup #username"            : "checkUsername",
       "click #username-button"     : "clickUsername",
-      "click .addEmail"            : "addEmail",
+      "click #add-email"           : "addEmail",
+      "click .email-remove"        : "removeEmail",
       "click .removeAuth"          : "removeAuth"
     },
 
@@ -44,8 +49,6 @@ define([
         edit: this.edit,
         saved: this.saved
       }
-      data.data.agency = this.model.agency;
-      data.data.location = this.data.location;
       var template = _.template(ProfileTemplate, data);
       this.$el.html(template);
       
@@ -54,6 +57,7 @@ define([
       this.initializeSelect2();
       this.initializeLikes();
       this.initializeTags();
+      this.initializeEmail();
       this.updatePhoto();
 
       return this;
@@ -214,8 +218,7 @@ define([
         return object.name;
       };
 
-      var company = this.model.agency;
-      var location = this.model.location;
+      var modelJson = this.model.toJSON();
       $("#company").select2({
         placeholder: 'Select an Agency',
         formatResult: formatResult,
@@ -235,8 +238,8 @@ define([
           }
         }
       });
-      if (company) {
-        $("#company").select2('data', company);
+      if (modelJson.agency) {
+        $("#company").select2('data', modelJson.agency.tag);
       }
       $("#company").on('change', function (e) {
         self.model.trigger("profile:input:changed", e);
@@ -261,11 +264,33 @@ define([
           }
         }
       });
-      if (location) {
-        $("#location").select2('data', location);
+      if (modelJson.location) {
+        $("#location").select2('data', modelJson.location.tag);
       }
       $("#location").on('change', function (e) {
         self.model.trigger("profile:input:changed", e);
+      });
+    },
+
+    initializeEmail: function () {
+      var modelJson = this.model.toJSON();
+      if (this.edit) {
+        for (var i in modelJson.emails) {
+          var template = _.template(EmailTemplate, { email: modelJson.emails[i] });
+          $("#profile-emails").append(template);
+        }
+      }
+      // New tags added in to the DB via the modal
+      this.model.listenTo(this.model, "profile:email:new", function (data) {
+        // Destory modal
+        $(".modal").modal('hide');
+        // Add tag into the data list
+        var template = _.template(EmailTemplate, { email: data });
+        $("#profile-emails").append(template);
+      });
+
+      this.listenTo(this.model, "profile:email:delete", function (e) {
+        $(e.currentTarget).parents('div.radio').remove();
       });
     },
 
@@ -316,9 +341,44 @@ define([
     },
 
     addEmail: function (e) {
-      e.preventDefault();
-      // Not yet implemented
-      console.log("Not implemented.");
+      if (e.preventDefault) e.preventDefault();
+      var self = this;
+
+      // Pop up dialog box to create tag,
+      // then put tag into the select box
+      if (_.isUndefined(this.emailModalComponent)) {
+        this.emailModalComponent = new ModalComponent({
+          el: "#container",
+          id: "addEmail",
+          modalTitle: "Add Email Address"
+        }).render();
+      }
+
+      if (!_.isUndefined(this.emailModalComponent)) {
+        if (this.emailFormView) {
+          this.emailFormView.cleanup();
+        }
+        this.emailFormView = new EmailFormView({
+          el: "#addEmail .modal-template",
+          model: self.model,
+          target: 'profile'
+        });
+        this.emailFormView.render();
+      }
+    },
+
+    removeEmail: function (e) {
+      if (e.preventDefault) e.preventDefault();
+      var self = this;
+      // Get the data-id of the currentTarget
+      // and then call HTTP DELETE on that tag id
+      $.ajax({
+        url: '/api/useremail/' + $(e.currentTarget).data('id'),
+        type: 'DELETE',
+      }).done(function (data) {
+        self.model.trigger("profile:email:delete", e);
+      });
+
     },
 
     checkUsername: function (e) {

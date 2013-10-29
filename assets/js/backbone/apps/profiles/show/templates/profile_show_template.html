@@ -5,7 +5,7 @@
   <% } %>
 
   <% if (saved) { %>
-  <div class="alert alert-info">Your profile has been successfully updated.</div>
+  <div class="alert alert-success">Your profile has been successfully updated.</div>
   <% } %>
 
   <div class="col-lg-4 project-sidebar">
@@ -13,7 +13,7 @@
     <div class="row like-content">
       <div class="col-lg-12">
 
-        <% if (!data.isOwner && !edit) { %>
+        <% if (!edit) { %>
         <a href="#" id="like-button">
           <i id="like-button-icon" class="icon icon-star-empty icon-large gold"></i>
         </a>
@@ -108,15 +108,9 @@
         <div class="form-group">
           <label for="primaryEmail" class="col-lg-3 control-label">Primary Email</label>
           <div class="col-lg-9">
-            <% for (var e = 0; e < data.emails.length; e++) { %>
-              <div class="radio">
-                <label>
-                  <input type="radio" name="primaryEmail" id="email-<%- data.emails[e].id %>" value="<%- emails[e].email %>" <% if (emails[e].isPrimary) { %>checked<% } %>>
-                  <a href="#" class="email-remove" id="email-remove-<%- data.emails[e].id %>"><span class="glyphicon glyphicon-trash"></a> <%- data.emails[e].email %>
-                </label>
-              </div>
-            <% } %>
-            <a href="#" class="btn btn-default btn-xs" disabled="disabled">Add Email Address</a>
+            <div id="profile-emails">
+            </div>
+            <a href="#addEmail" class="btn btn-default btn-xs" id="add-email" data-toggle="modal">Add Email Address</a>
           </div>
         </div>
         <div class="form-group">
@@ -144,9 +138,9 @@
 
       <h1><% if (data.name) { %><%- data.name %><% } else { %><%- data.username %><% } %></h1>
 
-      <span class="profile-jobtitle"><% if (data.title) { %><%- data.title %><% } %></span>
-      <% if (data.title && data.agency) { %>at<% } %>
-      <span class="profile-company"><% if (data.agency) { %><%- data.agency.name %><% } %></span>
+      <div class="profile-jobtitle"><% if (data.title) { %><i class="icon-briefcase"></i> <%- data.title %><% } %></div>
+      <div class="profile-company"><% if (data.agency) { %><i class="icon-library"></i> <%- data.agency.tag.name %><% } %></div>
+      <div class="profile-location"><% if (data.location) { %><span class="glyphicon glyphicon-map-marker"></span> <%- data.location.tag.name %><% } %></div>
 
       <h2>Bio</h2>
 
@@ -175,7 +169,10 @@
         <div class="col-lg-9">
           <% for (var e = 0; e < data.emails.length; e++) { %>
             <% if (data.emails[e].isPrimary) { %>x<% } %>
-            <%- data.emails[e].email %>
+            <%- data.emails[e].email %><br/>
+          <% } %>
+          <% if (data.emails.length == 0) { %>
+          No email addresses
           <% } %>
         </div>
       </div>
@@ -185,8 +182,8 @@
           Services:
         </div>
         <div class="col-lg-9">
-          <% if (_.contains(data.auths, 'linkedin')) { %>x<% } %>
-          <i class="icon icon-linkedin-sign" alt="LinkedIn"></i> LinkedIn
+          <i class="icon icon-linkedin-sign" alt="LinkedIn"></i> LinkedIn -
+          <% if (_.contains(data.auths, 'linkedin')) { %>Connected<% } else { %>Not Connected<% } %>
         </div>
       </div>
 
