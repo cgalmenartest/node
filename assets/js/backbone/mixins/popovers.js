@@ -19,12 +19,21 @@ define([
           container: 'body',
           content: '<div class="popover-spinner"><div class="loading">Fetching Information</div><i class="icon-spinner icon-spin"></i></div>',
           template: '<div class="popover"><div class="arrow"></div><h3 class="popover-title" style="display:none; visibility:hidden"></h3><div class="popover-content"></div></div>'
+        }).on("mouseleave", function () {
+          var _this = this;
+          var timeoutFn = function () {
+            if (!$(".popover:hover").length) {
+                $(_this).popover("hide")
+            } else {
+              setTimeout(timeoutFn, 100);
+            }
+          };
+          setTimeout(timeoutFn, 100);
         });
     },
 
     popoverPeopleOn: function (e) {
-
-      if (e.preventDefault()) e.preventDefault();
+      if (e.preventDefault) e.preventDefault();
       var target = $(e.currentTarget);
       var popover = target.data('bs.popover');
       target.popover('show');
@@ -38,12 +47,6 @@ define([
           popover.$tip.addClass(popover.options.placement);
         });
       }
-    },
-
-    popoverPeopleOff: function (e) {
-      if (e.preventDefault()) e.preventDefault();
-      var target = $(e.currentTarget);
-      target.popover('hide');
     }
   });
 

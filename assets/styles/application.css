@@ -244,6 +244,7 @@ body > .popover {
 	max-width: 350px;
 	min-height: 100px;
 	max-height: 200px;
+	margin-bottom: 20px;
 }
 
 .popover-person {

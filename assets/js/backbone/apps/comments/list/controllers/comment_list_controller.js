@@ -20,8 +20,7 @@ define([
       "click .new-topic"              : "newTopic",
       "click .reply-to"               : "reply",
       "click [data-topic='true']"     : "toggleTopic",
-      "mouseenter .comment-user-link" : popovers.popoverPeopleOn,
-      "mouseleave .comment-user-link" : popovers.popoverPeopleOff
+      "mouseenter .comment-user-link" : popovers.popoverPeopleOn
     },
 
     initialize: function () {
