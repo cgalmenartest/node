@@ -57,6 +57,7 @@
     'search': ['project'],
     'inline': ['profile', 'project', 'wikipedia'],
     'tag': ['tag'],
-    'attachments': ['profile', 'wikipedia']
+    'attachments': ['profile', 'wikipedia'],
+    'profile': ['profile']
   }
 };
