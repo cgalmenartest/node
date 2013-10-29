@@ -31,7 +31,9 @@ define([
 
       if (this.model) this.model.remove();
       this.model = new ProfileModel();
-      this.model.trigger("profile:fetch", this.id);
+      var fetchId = null;
+      if (this.id && this.id != 'edit') { fetchId = this.id; }
+      this.model.trigger("profile:fetch", fetchId);
       this.listenTo(this.model, "profile:fetch:success", function (model) {
         // @instance
         self.model = model;

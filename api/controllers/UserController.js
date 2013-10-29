@@ -161,11 +161,11 @@ module.exports = {
       User.findOneById(req.route.params.id, function (err, user) {
         if (err || !user) { return res.redirect('/images/default-user-icon-profile.png'); }
         if (user.photoId) {
-          return res.redirect('/api/file/get/' + user.photoId);
+          return res.redirect(307, '/api/file/get/' + user.photoId);
         } else if (user.photoUrl) {
-          return res.redirect(user.photoUrl);
+          return res.redirect(307, user.photoUrl);
         } else {
-          return res.redirect('/images/default-user-icon-profile.png');
+          return res.redirect(307, '/images/default-user-icon-profile.png');
         }
       });
     }

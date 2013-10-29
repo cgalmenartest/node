@@ -105,9 +105,12 @@ define([
 
     updatePhoto: function () {
       this.model.on("profile:updatedPhoto", function (data) {
-        var url = '/api/user/photo/' + data.get("id");
-        $("#project-header").css('background-image', "url(" + url + ")");
-        $('#file-upload-progress-container').hide();
+        var url = '/api/user/photo/' + data.attributes.id;
+        // force the new image to be loaded
+        $.get(url, function (data) {
+          $("#project-header").css('background-image', "url('" + url + "')");
+          $('#file-upload-progress-container').hide();
+        });
       });
     },
 
