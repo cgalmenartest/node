@@ -57,7 +57,14 @@ module.exports = {
         if (err) { return res.send(400, { message: 'Error looking up likes.' }); }
         var result = [];
         for (var i = 0; i < likes.length; i++) {
-          result.push({ id: likes[i].id, projectId: likes[i].projectId });
+          var l = { id: likes[i].id }
+          if (likes[i].projectId) {
+            l.projectId = likes[i].projectId;
+          }
+          if (likes[i].targetId) {
+            l.targetId = likes[i].targetId;
+          }
+          result.push(l);
         }
         return res.send(result);
       });
@@ -124,7 +131,7 @@ module.exports = {
    * Syntax: Call /like/unlikeu/:userId where :id is the userId
    */
   unlikeu: function (req, res) {
-    var l = { targetid: req.params.id, userId: req.user[0].id };
+    var l = { targetId: req.params.id, userId: req.user[0].id };
     unlike(l, function (err) {
       if (err) { return res.send(400, { message: 'Error destroying like.' }); }
       return res.send(null);

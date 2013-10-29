@@ -54,15 +54,29 @@ describe('like:', function() {
       });
     });
 
+    it('likeu', function (done) {
+      request.get({ url: conf.url + '/like/likeu/' + draftProject.userId },
+        function (err, response, body) {
+          if (err) { return done(err); }
+          assert.equal(response.statusCode, 200);
+          var b = JSON.parse(body);
+          // check that the values passed in are the same as those passed back
+          assert.equal(b.userId, draftProject.userId);
+          assert.equal(b.targetId, draftProject.userId);
+          assert(b.id);
+          done();
+      });
+    });
+
     it('find: no parameter', function (done) {
       request.get({ url: conf.url + '/like' }, function (err, response, body) {
         if (err) { return done(err); }
         assert.equal(response.statusCode, 200);
         var b = JSON.parse(body);
-        assert.equal(b.length, 2);
+        assert.equal(b.length, 3);
         for (var i = 0; i < b.length; i++) {
           assert(b[i].id);
-          assert(b[i].projectId);
+          assert(b[i].projectId || b[i].targetId);
         }
         done();
       });
@@ -87,6 +101,24 @@ describe('like:', function() {
           assert.equal(response.statusCode, 200);
           // Check if it is unliked.
           request.get({ url: conf.url + '/like/find/' + draftProject.id },
+            function (err, response, body) {
+              if (err) { return done(err); }
+              assert.equal(response.statusCode, 200);
+              var b = JSON.parse(body);
+              assert(!b);
+              done();
+          });
+      });
+    });
+
+    it('unlikeu', function (done) {
+      // Unlike
+      request.get({ url: conf.url + '/like/unlikeu/' + draftProject.userId },
+        function (err, response, body) {
+          if (err) { return done(err); }
+          assert.equal(response.statusCode, 200);
+          // Check if it is unliked.
+          request.get({ url: conf.url + '/like/find/' + draftProject.userId + '?type=user' },
             function (err, response, body) {
               if (err) { return done(err); }
               assert.equal(response.statusCode, 200);
