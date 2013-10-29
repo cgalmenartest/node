@@ -26,6 +26,16 @@
         }
       ]
     },
+    'user': {
+      type: 'model',
+      target: 'User',
+      fields: [
+        {
+          name: 'name',
+          limit: 10
+        }
+      ]
+    },
     'tag': {
       type: 'model',
       target: 'TagEntity',
@@ -58,6 +68,6 @@
     'inline': ['profile', 'project', 'wikipedia'],
     'tag': ['tag'],
     'attachments': ['profile', 'wikipedia'],
-    'profile': ['profile']
+    'user': ['user']
   }
 };
