@@ -11,9 +11,8 @@ describe('user:', function() {
   it('not logged in', function(done) {
     request(conf.url + '/user', function(err, response, body) {
       if (err) { return done(err); }
-      // Not logged in users should get a 403 and no content
+      // Not logged in users should get a 403
       assert(response.statusCode === 403);
-      assert.equal(body, "");
       done();
     });
   });
@@ -32,13 +31,12 @@ describe('user:', function() {
   it('logout', function(done) {
     request(conf.url + '/auth/logout', function(err, response, body) {
       if (err) { return done(err); }
-      // Not logged in users should get a 403 and no content
+      // Not logged in users should get a 403
       assert(response.statusCode === 302);
       request(conf.url + '/user', function(err, response, body) {
         if (err) { return done(err); }
-        // Not logged in users should get a 403 and no content
+        // Not logged in users should get a 403
         assert(response.statusCode === 403);
-        assert.equal(body, "");
         done();
       });
     });
@@ -53,9 +51,8 @@ describe('user:', function() {
       // Check if the user is logged in
       request(conf.url + '/user', function(err, response, body) {
         if (err) { return done(err); }
-        // Not logged in users should get a 403 and no content
+        // Not logged in users should get a 403
         assert(response.statusCode === 403);
-        assert.equal(body, "");
         done();
       });
     });

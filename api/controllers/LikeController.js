@@ -40,7 +40,7 @@ module.exports = {
       var where = {
         userId: req.user[0].id
       };
-      if (req.param.get('type') == 'user') {
+      if (req.param('type') == 'user') {
         where.targetId = req.params.id;
       } else {
         where.projectId = req.params.id;
