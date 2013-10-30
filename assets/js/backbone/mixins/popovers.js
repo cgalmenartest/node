@@ -22,7 +22,7 @@ define([
     },
 
     popoverPeopleOn: function (e) {
-      if (e.preventDefault()) e.preventDefault();
+      if (e.preventDefault) e.preventDefault();
       var target = $(e.currentTarget);
       var popover = target.data('bs.popover');
       target.popover('show');
@@ -40,7 +40,7 @@ define([
     },
 
     popoverPeopleOff: function (e) {
-      if (e.preventDefault()) e.preventDefault();
+      if (e.preventDefault) e.preventDefault();
       var target = $(e.currentTarget);
       target.popover('hide');
     }

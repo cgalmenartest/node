@@ -38,7 +38,7 @@ define([
         success: function (model) {
           self.trigger("task:save:success", self.task.id);
         }
-      })
+      });
       // self.add(self.task);
       // self.models.forEach(function (_model) {
       //   _model.save();
