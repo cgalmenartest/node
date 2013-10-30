@@ -3,24 +3,44 @@ define([
 	'underscore',
 	'backbone',
 	'utilities',
+	'async',
 	'text!task_list_template'
-], function ($, _, Backbone, utils, TaskListTemplate) {
+], function ($, _, Backbone, utils, async, TaskListTemplate) {
 
 	var TasksCollectionView = Backbone.View.extend({
 
 		el: "#task-list-wrapper",
 
 		initialize: function () {
-			this.render();
+			this.requestTagData();
+		},
+
+		requestTagData: function () {
+			var self = this;
+
+			this.tasksJson = {
+				tasks: this.options.collection.toJSON()
+			};
+
+			var requestTagData = function (task, done) {
+				$.ajax({
+					url: '/api/tag/findAllByTaskId/' + task.id,
+					async: false,
+					success: function (tags) {
+						task['tags'] = tags;
+						done();
+					}
+				});
+			}
+
+			async.each(this.tasksJson.tasks, requestTagData, function () {
+				self.render();
+			});
+
 		},
 
 		render: function () {
-			
-			var tasksJSON = {
-				tasks: this.options.collection.toJSON()
-			}
-
-			this.compiledTemplate = _.template(TaskListTemplate, tasksJSON);
+			this.compiledTemplate = _.template(TaskListTemplate, this.tasksJson);
 			this.$el.html(this.compiledTemplate);
 
 			return this;
