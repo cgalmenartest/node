@@ -32,7 +32,7 @@ describe('init:', function() {
 
     utils.login(request, conf.user.username, conf.user.password, function (err) {
       if (err) return done(err);
-      async.eachSeries(_.values(conf.tags), process, function (err) {
+      async.eachSeries(conf.tags, process, function (err) {
         done(err);
       });
     });

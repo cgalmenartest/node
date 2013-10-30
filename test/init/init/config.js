@@ -3,16 +3,16 @@ module.exports = {
     username: 'initialize',
     password: 'initialize'
   },
-  tags: {
-    'pt': {
+  tags: [
+    {
       type: 'time-required',
       name: 'Part Time'
     },
-    'ft': {
+    {
       type: 'time-required',
       name: 'Full Time'
     },
-    '20%': {
+    {
       type: 'time-required',
       name: '20% Time'
     }
