@@ -107,9 +107,9 @@ define([
         }
       }
 
+      self.commentViews = [];
+      self.commentForms = [];
       _.each(data.comments, function (comment) {
-        self.commentViews = [];
-        self.commentForms = [];
         self.renderComment(self, comment, collection);
       });
 
