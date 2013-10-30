@@ -26,7 +26,7 @@ var commentAssemble = function (where, done) {
 
     var userIds = [];
     for (var i = 0; i < comments.length; i++) {
-      if (!_.has(userIds, comments[i].userId)) { userIds.push(comments[i].userId); }
+      if (_.indexOf(userIds, comments[i].userId) == -1) { userIds.push(comments[i].userId); }
     }
 
     var users = {};
