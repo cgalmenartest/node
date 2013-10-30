@@ -55,7 +55,7 @@ define([
     // by section layout inside the modal, with a 'current' class on
     // the first you want to always start on (re)render.
     moveWizardForward: function (e) {
-      if (e.preventDefault()) e.preventDefault();
+      if (e.preventDefault) e.preventDefault();
       var self = this;
 
       // Store $(".current") in cache to reduce query times for DOM lookup
@@ -79,7 +79,7 @@ define([
     },
 
     moveWizardBack: function (e) {
-      if (e.preventDefault()) e.preventDefault();
+      if (e.preventDefault) e.preventDefault();
 
       var current   = $(".current"),
           prev      = current.prev(),
