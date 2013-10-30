@@ -16,5 +16,5 @@ module.exports = {
       type: 'time-required',
       name: '20% Time'
     }
-  },
+  ],
 };
