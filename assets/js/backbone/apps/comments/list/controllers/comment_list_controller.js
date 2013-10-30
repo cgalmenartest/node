@@ -198,7 +198,7 @@ define([
         if (this.commentForms[i]) { this.commentForms[i].cleanup(); }
       }
       for (var i in this.commentViews.reverse()) {
-        if (this.commentForms[i]) { this.commentViews[i].cleanup(); }
+        if (this.commentViews[i]) { this.commentViews[i].cleanup(); }
       }
       if (this.topicForm) {
         this.topicForm.cleanup();
