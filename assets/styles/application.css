@@ -614,3 +614,8 @@ ul.comment-list {
 	width: 100%;
 	vertical-align: top;
 }
+
+/* modal styles */
+#addTask .modal-dialog {
+	width: 790px;
+}
