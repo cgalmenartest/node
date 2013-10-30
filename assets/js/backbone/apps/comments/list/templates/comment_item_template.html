@@ -1,43 +1,30 @@
-<li class="comment-item <% if (comment.topic) { %>c3-bg white <% } %>clearfix">
+<li class="comment-item <% if (topic) { %>topic<% }%> clearfix">
+
   <div class="comment-image">
-    <img src="/api/user/photo/<%- comment.userId %>" class="comment-image"/>
+    <img src="/user/photo/<%= userId %>" class="comment-image" />
   </div>
 
   <div class="comment-inner">
-
-    <span class="user-username" data-userid="<%- comment.userId %>">
-      <a href="#" class="comment-user-link" data-userid="<%- comment.userId %>">
-        <% if (comment.user.name) { %>
-          <%- comment.user.name %>
+    <span class="user-username" data-userid="<%- userId %>">
+      <a href="#" class="comment-user-link" data-userid="<%- userId %>">
+        <% if (user.name) { %>
+          <%- user.name %>
         <% } else { %>
-          <%- comment.user.username %>
+          <%- user.username %>
         <% } %>
       </a>
     </span>
 
-    <% if (comment.link) { %>
-      <span class="comment-content"><a target="_blank" href="<%- _.unescape(comment.link) %>"><%- comment.value %></a></span>
-    <% } else { %>
-      <span class="comment-content"><%- comment.value %></span>
-    <% } %>
-    <br/>
-    <% if (comment.topic) { %>
-    Started at
-    <% } %>
-    <time class="timeago comment-created-at" datetime="<%- comment.createdAt %>"><%- comment.createdAt %></time>
-    <% if (!comment.topic) { %>
-    -
-    <a href="#" class="reply-to" data-comment-id="<%- comment.id %>">Reply</a>
+    <%= value %>
+
+    <time class="timeago comment-created-at" datetime="<%- createdAt %>"><%- createdAt %></time>
+
+    <% if (depth <= 1) { %>
+      <a href="#reply-to-comment" class="reply-to-<%= id %>" data-depth="<%= depth %>">Reply</a>
     <% } %>
 
-    <!-- If the comment is not a topic, try and display its children (comment replies) -->
-    <% if (!comment.topic) { _.each(comment.children, function (childComment) { %>
-      <ul id="comment-list-<%- comment.id %>">
-      </ul>
-    <% }); } %>
+  <ul id="comment-list-<%= id %>"></ul>
 
-    </ul>
-
-  </div> <!-- /comment-inner -->
-
+    <div class="comment-form hidden" id="comment-form-<%= id %>"></div>
+  </div>
 </li>

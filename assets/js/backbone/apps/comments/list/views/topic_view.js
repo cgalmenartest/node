@@ -43,7 +43,7 @@ define([
 
       // Place the commentForm at the bottom of the list of comments for that topic.
       self.commentForm = new CommentFormView({
-        el: '.comment-list-' + self.model.id,
+        el: '#comment-list-' + self.model.id,
         projectId: self.options.projectId,
         parentId: self.model.id,
         collection: self.options.collection

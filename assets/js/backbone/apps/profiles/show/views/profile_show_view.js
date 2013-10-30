@@ -51,7 +51,7 @@ define([
       }
       var template = _.template(ProfileTemplate, data);
       this.$el.html(template);
-      
+
       this.initializeFileUpload();
       this.initializeForm();
       this.initializeSelect2();

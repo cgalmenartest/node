@@ -30,3 +30,50 @@
 <!-- $el/container for this topic's comments -->
 <ul class="comment-list-<%- topic.id %>">
 </ul>
+
+
+
+
+<li class="comment-item <% if (comment.topic) { %>c3-bg white <% } %>clearfix">
+  <div class="comment-image">
+    <img src="/user/photo/<%- comment.userId %>" class="comment-image"/>
+  </div>
+
+  <div class="comment-inner">
+
+    <span class="user-username" data-userid="<%- comment.userId %>">
+      <a href="#" class="comment-user-link" data-userid="<%- comment.userId %>">
+        <% if (comment.user.name) { %>
+          <%- comment.user.name %>
+        <% } else { %>
+          <%- comment.user.username %>
+        <% } %>
+      </a>
+    </span>
+
+    <% if (comment.wikiLink !== "undefined") { %>
+      <span class="comment-content"><a target="_blank" href="<%- _.unescape(comment.wikiLink) %>"><%- comment.value %></a></span>
+    <% } else { %>
+      <span class="comment-content"><%- comment.value %></span>
+    <% } %>
+    <br/>
+    <% if (comment.topic) { %>
+    Started at
+    <% } %>
+    <time class="timeago comment-created-at" datetime="<%- comment.createdAt %>"><%- comment.createdAt %></time>
+    <% if (!comment.topic) { %>
+    -
+    <a href="#" class="reply-to" data-comment-id="<%- comment.id %>">Reply</a>
+    <% } %>
+
+    <!-- If the comment is not a topic, try and display its children (comment replies) -->
+    <% if (!comment.topic) { _.each(comment.children, function (childComment) { %>
+      <ul id="comment-list-<%- comment.id %>">
+      </ul>
+    <% }); } %>
+
+    </ul>
+
+  </div> <!-- /comment-inner -->
+
+</li>

@@ -133,6 +133,8 @@ require.config({
     // ----------
     'modal_component'           : '../components/modal',
     'modal_template'            : '../components/modal_template.html',
+    'modal_wizard_component'    : '../components/modal_wizard',
+    'modal_wizard_template'     : '../components/modal_wizard_template.html',
     'autocomplete'              : '../mixins/autocomplete'
   },
 
