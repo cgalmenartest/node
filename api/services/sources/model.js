@@ -19,10 +19,17 @@ module.exports = {
     var results = [];
 
     var doIt = function (field, done) {
-      // Set up the where clause
-      var where = { where: { like: { } }, limit: field.limit || 10 };
-      // Add the search term to find the field
-      where.where.like[field['name']] = term;
+      var where = { where: {} }
+      // If this is a query to get everthing, start by checking that
+      if (!((_.isUndefined(params['list']) == false) && config.list)) {
+        if (!term) {
+          return done();
+        }
+        // Set up the where clause
+        var where = { where: { like: { } }, limit: field.limit || 10 };
+        // Add the search term to find the field
+        where.where.like[field['name']] = term;
+      }
       // Extend with configuration options
       _.extend(where.where, field.where || {});
       // Check if there's any extra parameters

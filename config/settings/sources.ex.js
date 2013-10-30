@@ -29,6 +29,7 @@
     'tag': {
       type: 'model',
       target: 'TagEntity',
+      list: true,
       fields: [
         {
           name: 'name'
