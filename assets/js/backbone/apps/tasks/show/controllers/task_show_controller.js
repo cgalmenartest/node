@@ -1,9 +1,8 @@
 define([
   'bootstrap',
-  'popover',
   'underscore',
   'backbone'
-], function (Bootstrap, Popover, _, Backbone) {
+], function (Bootstrap, _, Backbone) {
 
   var Application.Controller.TaskShowController = Backbone.View.extend({
 

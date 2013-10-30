@@ -8,19 +8,19 @@ define([
 ], function ($, Bootstrap, _, Backbone, ProjectsCollection, ProjectFormTemplate) {
 
   var ProjectFormView = Backbone.View.extend({
-    
+
     template: _.template(ProjectFormTemplate),
 
     events: {
       "submit #project-form" : "post"
     },
-    
+
     render: function () {
-      this.$el.html(this.template)  
+      this.$el.html(this.template)
     },
 
     post: function (e) {
-      if (e.preventDefault()) e.preventDefault();
+      if (e.preventDefault) e.preventDefault();
       var data;
 
       data = {

@@ -15,8 +15,9 @@ define([
     el: "#task-list-wrapper",
 
     events: {
-      'click .add-task': 'add',
-      'click .wizard' : 'wizard'
+      'click .add-task' : 'add',
+      'click .show-task': 'show',
+      'click .wizard'   : 'wizard'
     },
 
     initialize: function (settings) {
@@ -75,7 +76,7 @@ define([
     },
 
     add: function (e) {
-      if (e.preventDefault()) e.preventDefault();
+      if (e.preventDefault) e.preventDefault();
       var self = this;
 
       if (this.modalWizardComponent) this.modalWizardComponent;
@@ -95,6 +96,14 @@ define([
         }).render();
       }
 
+    },
+
+    show: function (e) {
+      if (e.preventDefault) e.preventDefault();
+      var projectId = parseInt($(e.currentTarget).parent().parent().parent().attr('data-project-id')),
+          taskId    = parseInt($(e.currentTarget).parent().parent().attr('data-id'));
+
+      Backbone.history.navigate('projects/' + projectId + '/tasks/' + taskId, { trigger: true });
     },
 
     cleanup: function () {

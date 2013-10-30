@@ -331,7 +331,7 @@ define([
     },
 
     removeAuth: function (e) {
-      e.preventDefault();
+      if (e.preventDefault) e.preventDefault();
       var node = $(e.target);
       // walk up the tree until we get to the marked node
       while (!(node.hasClass("removeAuth"))) {

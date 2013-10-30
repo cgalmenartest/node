@@ -13,8 +13,6 @@ define([
 
 		el: "#task-list-wrapper",
 
-		template: _.template(TaskFormTemplate),
-
 		events: {
       "submit #task-form"     : "post",
       "change #task-location" : "locationChange"
@@ -23,15 +21,74 @@ define([
 		initialize: function () {
 			this.options = _.extend(this.options, this.defaults);
       this.tasks = this.options.tasks;
+      this.initializeSelect2Data();
 		},
 
+    initializeSelect2Data: function () {
+      var self = this;
+
+      $.ajax({
+        url: '/api/ac/tag?type=skills-required&list',
+        type: 'GET',
+        async: false,
+        success: function (list) {
+          self.skillRequired = list
+        }
+      });
+
+      $.ajax({
+        url: '/api/ac/tag?type=time-required&list',
+        type: 'GET',
+        async: false,
+        success: function (list) {
+          self.timeRequired = list;
+        }
+      });
+
+      $.ajax({
+        url: '/api/ac/tag?type=people&list',
+        type: 'GET',
+        async: false,
+        success: function (list) {
+          self.people = list;
+        }
+      });
+
+      $.ajax({
+        url: '/api/ac/tag?type=length&list',
+        type: 'GET',
+        async: false,
+        success: function (list) {
+          self.dutyLength = list;
+        }
+      });
+
+      $.ajax({
+        url: '/api/ac/tag?type=time-estimate&list',
+        type: 'GET',
+        async: false,
+        success: function (list) {
+          self.timeEstimate = list;
+        }
+      });
+
+      this.tagSources = {
+        people         : this.people,
+        length         : this.dutyLength,
+        timeEstimate   : this.timeEstimate,
+        timeRequired   : this.timeRequired,
+        skillsRequired : this.skillRequired
+      }
+    },
+
 		render: function () {
-			this.$el.html(this.template);
-      // On rendering event make sure to hide all sections
-      // that are not the current section.
-      $("section:not(.current)").hide();
+      var template = _.template(TaskFormTemplate, this.tagSources)
+			this.$el.html(template);
       this.initializeSelect2();
-      this.initializeTags();
+
+      // Important: Hide all non-currently opened sections of wizard.
+      // TODO: Move this to the modalWizard js.
+      $("section:not(.current)").hide();
 		},
 
     post: function (e) {
@@ -51,10 +108,9 @@ define([
         $("#people").select2('data'),
         $("#time-required").select2('data'),
         $("#length").select2('data'),
-        $("#time-estimate").select2('data'),
-        $("#task-location").select2('data'),
+        // $("#time-estimate").select2('data'),
+        // $("#task-location").select2('data'),
         $("#input-specific-location").val(),
-        $("#task-classnet-access").select2('data')
       ];
 
       this.tasks.trigger("task:save", taskData);
@@ -118,7 +174,6 @@ define([
             };
           },
           results: function (data) {
-            console.log(data);
             return { results: data }
           }
         }
@@ -140,55 +195,72 @@ define([
             };
           },
           results: function (data) {
-            console.log(data);
             return { results: data }
           }
         }
       });
-
 
       // ------------------------------ //
       // PRE-DEFINED SELECT MENUS BELOW //
       // ------------------------------ //
       $("#skills-required").select2({
         placeholder: "required/not-required",
-        width: '130px'
+        width: '200px'
       });
 
       $("#time-required").select2({
+        placeholder: 'time-required',
         width: '130px'
       });
 
       $("#people").select2({
-        width: '130px'
+        placeholder: 'people',
+        width: '150px'
       });
 
       $("#length").select2({
+        placeholder: 'length',
         width: '130px'
       });
 
       $("#time-estimate").select2({
-        width: '200px'
+        placeholder: 'time-estimate',
+        width: '130px'
       });
 
-      $("#task-location").select2();
+      $("#task-location").select2({
+        placeholder: 'length',
+        width: '130px'
+      });
+
+      // $("#skills-required").select2({
+      //   placeholder: "required/not-required",
+      //   width: '130px'
+      // });
+
+      // $("#time-required").select2({
+      //   width: '130px'
+      // });
+
+      // $("#people").select2({
+      //   width: '130px'
+      // });
+
+      // $("#length").select2({
+      //   width: '130px'
+      // });
+
+      // $("#time-estimate").select2({
+      //   width: '200px'
+      // });
+
+      // $("#task-location").select2();
     },
 
     locationChange: function (e) {
       if (_.isEqual(e.currentTarget.value, "a specific location")) {
         $(".el-specific-location").show();
       }
-    },
-
-    initializeTags: function () {
-      var self = this;
-      this.tagView = new TagShowView({
-        model: self.model,
-        el: ".tag-wrapper",
-        target: "task",
-        url: '/api/tag/findAllByTaskId/'
-      });
-      this.tagView.render();
     },
 
     cleanup: function () {

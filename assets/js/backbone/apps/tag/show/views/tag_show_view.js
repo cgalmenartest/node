@@ -156,7 +156,7 @@ define([
     },
 
     save: function (e) {
-      if (e.preventDefault()) e.preventDefault();
+      if (e.preventDefault) e.preventDefault();
       var self = this;
       // Cycle through tags in select box
       // and call create on each one, then

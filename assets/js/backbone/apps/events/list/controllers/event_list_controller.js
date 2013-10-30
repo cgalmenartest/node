@@ -70,7 +70,7 @@ define([
     },
 
     add: function (e) {
-      if (e.preventDefault()) e.preventDefault();
+      if (e.preventDefault) e.preventDefault();
 
       if (this.modalComponent) this.modalComponent;
       this.modalComponent = new ModalComponent({
@@ -90,7 +90,7 @@ define([
     },
 
     toggleRSVP: function (e) {
-      if (e.preventDefault()) e.preventDefault()
+      if (e.preventDefault) e.preventDefault()
 
       // Move this to a more semantic method
       var id = parseInt($(e.currentTarget).parent().parent().parent().parent().parent().attr("id"))

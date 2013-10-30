@@ -87,3 +87,7 @@ var removeView = function (view) {
   //view.model.undelegateEvents();
   view.$el.html("");
 }
+
+var clearContainer = function () {
+  $("#container").children().remove();
+}

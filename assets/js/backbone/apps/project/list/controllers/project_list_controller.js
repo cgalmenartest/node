@@ -14,9 +14,9 @@ define([
 	'project_edit_form_view'
 ], function (
 	$, _, Backbone, Bootstrap, Utilities, BaseController,
-	ProjectsCollection, ProjectsCollectionView, ProjectShowController, 
+	ProjectsCollection, ProjectsCollectionView, ProjectShowController,
 	ProjectFormView, ProjectApp, ModalComponent, ProjectEditFormView) {
-	
+
 	Application.Project.ListController = BaseController.extend({
 
 		el: "#container",
@@ -75,12 +75,12 @@ define([
 		//= BEGIN CLASS METHODS
 		// -----------------------
 		show: function (e) {
-			if (e.preventDefault()) e.preventDefault();
+			if (e.preventDefault) e.preventDefault();
 			Backbone.history.navigate('projects/' + $(e.currentTarget).data('project-id'), { trigger: true });
 		},
 
 		add: function (e) {
-			if (e.preventDefault()) e.preventDefault();
+			if (e.preventDefault) e.preventDefault();
 			var self = this;
 
       if (this.modalComponent) this.modalComponent;
@@ -88,14 +88,14 @@ define([
         el: "#container",
         id: "addProject",
         modalTitle: "Add Project"
-      }).render();  
+      }).render();
 
       if (!_.isUndefined(this.modalComponent)) {
         if (this.projectFormView) this.projectFormView();
         this.projectFormView = new ProjectFormView({
           el: ".modal-template",
           collection: self.collection
-        }).render();  
+        }).render();
       }
 
 		},

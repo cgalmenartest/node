@@ -10,7 +10,7 @@ define([
   var EventFormView = Backbone.View.extend({
 
     el: "#event-list-wrapper",
-    
+
     template: _.template(EventFormTemplate),
 
     events: {
@@ -22,13 +22,13 @@ define([
 
       this.initializePosteventSaveEventListeners();
     },
-    
+
     render: function () {
       this.$el.html(this.template)
     },
 
     post: function (e) {
-      if (e.preventDefault()) e.preventDefault();
+      if (e.preventDefault) e.preventDefault();
 
       var data = {
         title       : $("#event-title").val(),
