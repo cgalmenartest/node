@@ -97,7 +97,7 @@ define([
     },
 
     save: function (e) {
-      if (e.preventDefault()) e.preventDefault();
+      if (e.preventDefault) e.preventDefault();
       $("#submit").button('loading');
       setTimeout(function() { $("#submit").attr("disabled", "disabled") }, 0);
       var data = {
@@ -109,7 +109,7 @@ define([
     },
 
     removeAuth: function (e) {
-      if (e.preventDefault()) e.preventDefault();
+      if (e.preventDefault) e.preventDefault();
       var node = $(e.target);
       // walk up the tree until we get to the marked node
       while (!(node.hasClass("removeAuth"))) {
@@ -119,7 +119,7 @@ define([
     },
 
     addEmail: function (e) {
-      if (e.preventDefault()) e.preventDefault();
+      if (e.preventDefault) e.preventDefault();
       // Not yet implemented
       console.log("Not implemented.");
     },

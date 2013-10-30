@@ -40,7 +40,7 @@ define([
     },
 
     post: function (e) {
-      if (e.preventDefault()) e.preventDefault();
+      if (e.preventDefault) e.preventDefault();
 
       if ($(e.currentTarget).find(".comment-content").val() !== "") {
         this.comment = $(e.currentTarget).find(".comment-content").text();

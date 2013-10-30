@@ -29,7 +29,7 @@ define([
     },
 
     post: function (e) {
-      if (e.preventDefault()) e.preventDefault();
+      if (e.preventDefault) e.preventDefault();
       var data;
       var self = this;
 

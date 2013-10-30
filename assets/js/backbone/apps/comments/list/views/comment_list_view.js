@@ -22,7 +22,7 @@ define([
     },
 
     newTopic: function(e) {
-      if (e.preventDefault()) e.preventDefault();
+      if (e.preventDefault) e.preventDefault();
       var value;
       if ($(e.currentTarget).find(".comment-content").val() !== "") {
         value = $(e.currentTarget).find(".comment-content").text();

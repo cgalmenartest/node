@@ -126,7 +126,7 @@ define([
     },
 
     create: function (e) {
-      if (e.preventDefault()) e.preventDefault();
+      if (e.preventDefault) e.preventDefault();
       var self = this;
 
       // Pop up dialog box to create tag,
@@ -152,7 +152,7 @@ define([
     },
 
     save: function (e) {
-      if (e.preventDefault()) e.preventDefault();
+      if (e.preventDefault) e.preventDefault();
       var self = this;
       // Cycle through tags in select box
       // and call create on each one, then
@@ -192,7 +192,7 @@ define([
     },
 
     delete: function (e) {
-      if (e.preventDefault()) e.preventDefault();
+      if (e.preventDefault) e.preventDefault();
       var self = this;
       // Get the data-id of the currentTarget
       // and then call HTTP DELETE on that tag id

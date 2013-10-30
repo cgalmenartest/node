@@ -150,14 +150,14 @@ define([
     },
 
     toggleTopic: function (e) {
-      if (e.preventDefault()) e.preventDefault();
+      if (e.preventDefault) e.preventDefault();
       // The next() is the adjacent DOM element, and that will always be
       // the list of comments that directly follows the topic (not child-literal of topic though).
       $(e.currentTarget).next().slideToggle();
     },
 
     reply: function (e) {
-      if (e.preventDefault()) e.preventDefault();
+      if (e.preventDefault) e.preventDefault();
       // The comment form is adjacent, not a child of the current target.
       if ($("." + e.currentTarget.className + " ~ .comment-form").attr("data-clicked") === "true") {
         $("." + e.currentTarget.className + " ~ .comment-form").addClass("hidden").attr("data-clicked", false);
@@ -167,7 +167,7 @@ define([
     },
 
     newTopic: function (e) {
-      if (e.preventDefault()) e.preventDefault();
+      if (e.preventDefault) e.preventDefault();
 
       self.topicForm = new CommentFormView({
         el: '.comment-list-wrapper',

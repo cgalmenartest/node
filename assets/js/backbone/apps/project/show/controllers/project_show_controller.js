@@ -130,7 +130,7 @@ define([
 		},
 
 		edit: function (e) {
-			if (e.preventDefault()) e.preventDefault();
+			if (e.preventDefault) e.preventDefault();
 			var self = this;
 
 			if (this.modalComponent) this.modalComponent;
@@ -150,7 +150,7 @@ define([
 		},
 
 		updateState: function (e) {
-			if (e.preventDefault()) e.preventDefault();
+			if (e.preventDefault) e.preventDefault();
 			var self = this;
 			var state  = $(e.currentTarget).val();
 			$("#project-admin-state").button('loading');
@@ -158,7 +158,7 @@ define([
 		},
 
 		like: function (e) {
-			if (e.preventDefault()) e.preventDefault();
+			if (e.preventDefault) e.preventDefault();
 			var self = this;
 			var child = $(e.currentTarget).children("#like-button-icon");
 			var likenumber = $("#like-number");
@@ -200,7 +200,7 @@ define([
 		},
 
 		delete: function (e) {
-			if (e.preventDefault()) e.preventDefault();
+			if (e.preventDefault) e.preventDefault();
 			var model, title;
 
 			attr = $(e.currentTarget).closest(".project-title").children(".project").text();
