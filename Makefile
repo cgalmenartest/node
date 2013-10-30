@@ -34,3 +34,9 @@ demo:
 		--reporter $(REPORTER) \
 		$(MOCHA_OPTS) \
 		--recursive test/demo
+
+init:
+	@NODE_ENV=test ./node_modules/.bin/mocha \
+		--reporter $(REPORTER) \
+		$(MOCHA_OPTS) \
+		--recursive test/init
