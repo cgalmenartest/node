@@ -17,11 +17,10 @@ define([
     el: ".comment-list-wrapper",
 
     events: {
-      "click .new-topic"                  : "newTopic",
-      "click [data-topic='true']"         : "toggleTopic",
-      "mouseenter .comment-user-link"     : popovers.popoverPeopleOn,
-      "mouseleave .comment-user-link"     : popovers.popoverPeopleOff,
-      "click a[href='#reply-to-comment']" : "reply"
+      "click .new-topic"              : "newTopic",
+      "click .reply-to"               : "reply",
+      "click [data-topic='true']"     : "toggleTopic",
+      "mouseenter .comment-user-link" : popovers.popoverPeopleOn
     },
 
     initialize: function () {

@@ -40,5 +40,6 @@ define({
     }
   },
   // This defines the part of the app and which tags apply
-  project: ['skill', 'topic', 'agency', 'location']
+  project: ['skill', 'topic', 'agency', 'location'],
+  profile: ['skill', 'topic']
 });

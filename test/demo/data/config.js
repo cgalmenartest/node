@@ -5,6 +5,9 @@ module.exports = {
       name: 'Tyrion Lannister',
       username: 'tyrion',
       password: 'tyrion',
+      title: 'The Imp',
+      agency: 'lannister',
+      location: 'kl',
       photo: 'assets/users/tyrion.jpg'
     },
     'arya': {
@@ -12,7 +15,8 @@ module.exports = {
       username: 'arya',
       password: 'arya',
       title: 'Youngest daughter of Eddard Stark',
-      company: 'House Stark',
+      agency: 'stark',
+      location: 'winterfell',
       photo: 'assets/users/arya.jpg'
     },
     'danny': {
@@ -20,7 +24,8 @@ module.exports = {
       username: 'danny',
       password: 'danny',
       title: 'Mother of Dragons',
-      company: 'House Targaryen',
+      agency: 'targaryen',
+      location: 'astapor',
       photo: 'assets/users/danny.jpg'
     },
     'ned': {
@@ -28,7 +33,8 @@ module.exports = {
       username: 'ned',
       password: 'ned',
       title: 'Lord of Winterfell and Warden of the North',
-      company: 'House Stark',
+      agency: 'stark',
+      location: 'kl',
       photo: 'assets/users/ned.jpg'
     },
   },
@@ -76,6 +82,18 @@ module.exports = {
     'westeros': {
       type: 'location',
       name: 'Westeros'
+    },
+    'winterfell': {
+      type: 'location',
+      name: 'Winterfell'
+    },
+    'kl': {
+      type: 'location',
+      name: 'King\'s Landing'
+    },
+    'astapor': {
+      type: 'location',
+      name: 'Astapor'
     }
   },
   projects: [
@@ -111,6 +129,10 @@ module.exports = {
             {
               user: 'tyrion',
               value: 'I much like my head. I don\'t want to see it removed just yet.'
+            },
+            {
+              user: 'danny',
+              value: 'I don\'t like your head. And stop your family from trying to kill me.'
             }
           ]
         }

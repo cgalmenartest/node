@@ -7,15 +7,20 @@ define([
 
   var ProfileRouter = Backbone.Router.extend({
 
+    // data to be passed back and forth between the
+    // profile controller, views, and the router
+    data: { saved: false },
+
     routes: {
-      'profile': 'profile'
+      'profile(/)'            : 'profile',
+      'profile/:id(/)'        : 'profile'
     },
 
-    profile: function () {
+    profile: function (id) {
       if (this.profileController) {
         this.profileController.cleanup();
       }
-      this.profileController = new ProfileController();
+      this.profileController = new ProfileController({ id: id, data: this.data });
     }
   });
 

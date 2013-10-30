@@ -21,6 +21,7 @@ require.config({
     // ---------
     'utilities'                 : '../../backbone/mixins/utilities',
     'popovers'                  : '../../backbone/mixins/popovers',
+    'popover_profile'           : '../../backbone/mixins/templates/popover_profile.html',
 
     // ---------
     //= Core App

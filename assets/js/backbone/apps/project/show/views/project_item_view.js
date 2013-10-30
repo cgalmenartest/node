@@ -57,6 +57,8 @@ define([
         model: this.model,
         el: '.tag-wrapper',
         target: 'project',
+        targetId: 'projectId',
+        edit: true,
         url: '/api/tag/findAllByProjectId/'
       });
       this.tagView.render();
@@ -67,6 +69,7 @@ define([
 
       var myDropzone = new dropzone("#fileupload", {
         url: "/api/file/create",
+        clickable: ['#fileupload', '#fileupload-icon']
       });
 
       myDropzone.on("addedfile", function(file) {
@@ -92,7 +95,6 @@ define([
 
       myDropzone.on("thumbnail", function(file) { });
     },
-
 
     cleanup: function () {
       removeView(this);

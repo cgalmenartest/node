@@ -1,75 +1,208 @@
-<div class="page-header">
-  <h1 id="profile-header"><% if (name) { %><%- name %><% } else { %><%- username %><% } %></h1>
-</div>
-
 <div class="row">
-  <% if (isAdmin) { %>
+
+  <% if (data.isAdmin) { %>
   <div class="alert alert-info">You are an administrator.</div>
   <% } %>
 
-  <div class="col-lg-8">
-    <form class="form-horizontal" role="form" id="profile-form">
-      <div class="form-group">
-        <label for="name" class="col-lg-3 control-label">Full Name</label>
-        <div class="col-lg-9">
-          <input type="text" class="form-control" id="name" name="name" placeholder="Your Full Name" value="<% if (name) { %><%- name %><% } %>"/>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="username" class="col-lg-3 control-label">Username</label>
-        <div class="col-lg-9">
-          <input type="text" class="form-control" id="username" name="username" placeholder="username" value="<% if (username) { %><%- username %><% } %>"/>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="primaryEmail" class="col-lg-3 control-label">Primary Email</label>
-        <div class="col-lg-9">
-          <% for (var e = 0; e < emails.length; e++) { %>
-            <div class="radio">
-              <label>
-                <input type="radio" name="primaryEmail" id="email-<%- emails[e].id %>" value="<%- emails[e].email %>" <% if (emails[e].isPrimary) { %>checked<% } %>>
-                <a href="#" class="email-remove" id="email-remove-<%- emails[e].id %>"><span class="glyphicon glyphicon-trash"></a> <%- emails[e].email %>
-              </label>
-            </div>
-          <% } %>
-          <a href="#" class="btn btn-default btn-xs" disabled="disabled">Add Email Address</a>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="services" class="col-lg-3 control-label">Services</label>
-        <div class="col-lg-9">
-          <% if (_.contains(auths, 'linkedin')) { %>
-            <button class="btn btn-success btn-xs" disabled="disabled"><span class="glyphicon glyphicon-ok" alt="Connected"></span></button>
-            <a href="#" class="btn btn-default btn-xs removeAuth" id="linkedin"><span class="glyphicon glyphicon-remove"></span></a>
+  <% if (saved) { %>
+  <div class="alert alert-info">Your profile has been successfully updated.</div>
+  <% } %>
+
+  <div class="col-lg-4 project-sidebar">
+    <!-- LEFT SIDEBAR -->
+    <div class="row like-content">
+      <div class="col-lg-12">
+
+        <% if (!data.isOwner && !edit) { %>
+        <a href="#" id="like-button">
+          <i id="like-button-icon" class="icon icon-star-empty icon-large gold"></i>
+        </a>
+        <span class="like-number" id="like-number"><%- data.likeCount %></span>
+        <span class="like-plural" id="like-text" data-plural="followers" data-singular="follower">followers</span>
+        <% } %>
+
+        <div class="pull-right like-buttons">
+          <% if (data.isOwner) { %>
+            <% if (edit) { %>
+            <a href="#" class="btn btn-c0" id="profile-cancel">Cancel</a>
+            <a href="#" class="btn btn-primary" id="profile-save" disabled="disabled">Save Changes</a>
+            <% } else { %>
+            <a href="#" class="btn btn-c4" id="profile-edit">Edit Profile</a>
+            <% } %>
           <% } else { %>
-            <button class="btn btn-danger btn-xs" disabled="disabled"><span class="glyphicon glyphicon-remove" alt="Disconnected"></span></button>
-            <a href="/api/auth/linkedin" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-plus"></span></a>
+          <button class="btn btn-c4" id="email"><i class="icon icon-envelope-alt"></i> Email</button>
           <% } %>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-header-wrapper">
+      <div id="project-header" style="background-image:url('/api/user/photo/<%- data.id %>');">
+        <div id="fileupload" class="btn btn-primary" <% if (!(data.isOwner && edit)) { %>style="display:none;"<% } %>><i class="icon-camera icon-large" title="Change Cover Photo" id="fileupload-icon"></i></div>
+      </div>
+      <div id="file-upload-progress-container" style="display: none;" class="progress progress-striped active">
+        <div id="file-upload-progress" class="progress-bar" style="width: 0"></div>
+      </div>
+    </div>
+
+    <div class="tag-wrapper">
+    </div>
+
+  </div>
+
+  <div class="col-lg-8">
+    <!-- RIGHT MAIN BAR -->
+    <div class="main-section">
+      <% if (edit) { %> <!-- in edit mode -->
+
+      <form class="form-horizontal" role="form" id="profile-form">
+        <h1>
+          <div class="form-group">
+            <input type="text" class="form-control input-lg" id="name" name="name" placeholder="Your Full Name" value="<% if (data.name) { %><%- data.name %><% } %>"/>
+          </div>
+        </h1>
+
+        <h2> Bio </h2>
+
+        <div class="form-group">
+          <label for="title" class="col-lg-3 control-label">Title</label>
+          <div class="col-lg-9">
+            <input type="text" class="form-control" id="title" name="title" placeholder="Title" value="<% if (data.title) { %><%- data.title %><% } %>"/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="company" class="col-lg-3 control-label">Agency</label>
+          <div class="col-lg-9">
+            <input type="hidden" id="company" name="company" style="width: 100%"/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="location" class="col-lg-3 control-label">Location</label>
+          <div class="col-lg-9">
+            <input type="hidden" id="location" name="location" style="width: 100%"/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="bio" class="col-lg-3 control-label">A brief public biography</label>
+          <div class="col-lg-9">
+            <textarea class="form-control" name="bio" id="bio" rows="5"><% if (data.bio) { %><%- data.bio %><% } %></textarea>
+          </div>
+        </div>
+
+        <h2> Account Information </h2>
+
+        <div class="form-group">
+          <label for="username" class="col-lg-3 control-label">Username</label>
+          <div class="col-lg-9 input-group">
+            <input type="text" class="form-control" id="username" name="username" placeholder="username" value="<% if (data.username) { %><%- data.username %><% } %>"/>
+            <span class="input-group-btn">
+              <a href="#" class="btn btn-success" id="username-button">
+                <i id="username-check" class="icon-ok"></i>
+              </a>
+            </span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="primaryEmail" class="col-lg-3 control-label">Primary Email</label>
+          <div class="col-lg-9">
+            <% for (var e = 0; e < data.emails.length; e++) { %>
+              <div class="radio">
+                <label>
+                  <input type="radio" name="primaryEmail" id="email-<%- data.emails[e].id %>" value="<%- emails[e].email %>" <% if (emails[e].isPrimary) { %>checked<% } %>>
+                  <a href="#" class="email-remove" id="email-remove-<%- data.emails[e].id %>"><span class="glyphicon glyphicon-trash"></a> <%- data.emails[e].email %>
+                </label>
+              </div>
+            <% } %>
+            <a href="#" class="btn btn-default btn-xs" disabled="disabled">Add Email Address</a>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="services" class="col-lg-3 control-label">Services</label>
+          <div class="col-lg-9">
+            <% if (_.contains(data.auths, 'linkedin')) { %>
+              <button class="btn btn-success btn-xs" disabled="disabled"><span class="glyphicon glyphicon-ok" alt="Connected"></span></button>
+              <a href="#" class="btn btn-default btn-xs removeAuth" id="linkedin"><span class="glyphicon glyphicon-remove"></span></a>
+            <% } else { %>
+              <button class="btn btn-danger btn-xs" disabled="disabled"><span class="glyphicon glyphicon-remove" alt="Disconnected"></span></button>
+              <a href="/api/auth/linkedin" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-plus"></span></a>
+            <% } %>
+            <i class="icon icon-linkedin-sign" alt="LinkedIn"></i> LinkedIn
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-lg-offset-3 col-lg-9">
+            <button id="submit" type="submit" class="btn btn-primary" disabled="disabled" data-loading-text="<i class='icon-spinner icon-spin'></i> Saving..." data-success-text="Saved!" data-fail-text="Save Failed.">Save Changes</button>
+          </div>
+        </div>
+
+      </form>
+
+      <% } else { %> <!-- not in edit mode -->
+
+      <h1><% if (data.name) { %><%- data.name %><% } else { %><%- data.username %><% } %></h1>
+
+      <span class="profile-jobtitle"><% if (data.title) { %><%- data.title %><% } %></span>
+      <% if (data.title && data.agency) { %>at<% } %>
+      <span class="profile-company"><% if (data.agency) { %><%- data.agency.name %><% } %></span>
+
+      <h2>Bio</h2>
+
+      <div class="profile-bio">
+        <% if (data.bio) { %><%- data.bio %><% } else { %>This person doesn't have a bio yet.<% } %>
+
+      </div>
+
+      <% if (data.isOwner) { %>
+
+      <h2>Account Information</h2>
+
+      <div class="row">
+        <div class="col-lg-3">
+          Username:
+        </div>
+        <div class="col-lg-9">
+          <% if (data.username) { %><%- data.username %><% } %>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-3">
+          Emails:
+        </div>
+        <div class="col-lg-9">
+          <% for (var e = 0; e < data.emails.length; e++) { %>
+            <% if (data.emails[e].isPrimary) { %>x<% } %>
+            <%- data.emails[e].email %>
+          <% } %>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-3">
+          Services:
+        </div>
+        <div class="col-lg-9">
+          <% if (_.contains(data.auths, 'linkedin')) { %>x<% } %>
           <i class="icon icon-linkedin-sign" alt="LinkedIn"></i> LinkedIn
         </div>
       </div>
-      <div class="form-group">
-        <div class="col-lg-offset-3 col-lg-9">
-          <button id="submit" type="submit" class="btn btn-primary" disabled="disabled" data-loading-text="<i class='icon-spinner icon-spin'></i> Saving..." data-success-text="Saved!" data-fail-text="Save Failed.">Save Changes</button>
-        </div>
-      </div>
-    </form>
 
-</div>
+      <% } %>
 
-<div class="col-lg-4">
-  <% if (photoId) { %>
-    <img src="/api/file/get/<%- photoId %>" alt="" id="profile-photo" style="max-width: 150px; max-height: 150px;" />
-  <% } else { %>
-    <img id="profile-photo" src="/api/user/photo/<%- id %>" style="max-width: 150px; max-height: 150px;" />
-  <% } %>
+      <h2>Projects</h2>
 
-  <br />
+      Insert information here about projects that this user owns
 
-  <div id="fileupload" style="margin-top: 10px;" class="btn btn-primary">Change Photo</div><br/>
-  <div id="file-upload-progress-container" style="margin-top: 10px; display: none;" class="progress progress-striped active">
-  <div id="file-upload-progress" class="progress-bar" style="width: 0"></div>
-</div>
+      <h2>Opportunities</h2>
+
+      Insert information here about opportunities that the user is working on
+
+      <% } %> <!-- /edit check -->
+
+    </div> <!-- /main-section -->
 
   </div>
 </div>

@@ -5,6 +5,27 @@
  * @description	:: Contains logic for handling requests.
  */
 
+var like = function (l, cb) {
+  Like.findOne({ where: l }, function (err, existing) {
+    if (err) { return cb(err, null); }
+    if (existing) { return cb(null, existing); }
+    Like.create(l, function (err, newLike) {
+      if (err) { return cb(err, null); }
+      return cb(null, newLike);
+    });
+  });
+};
+
+var unlike = function (l, cb) {
+  Like.findOne({ where: l}, function (err, newLike) {
+    if (err) { return cb(err); }
+    if (!newLike) { return cb(null); }
+    newLike.destroy(function(err) {
+      return cb(err);
+    });
+  });
+};
+
 module.exports = {
 
   /**
@@ -16,11 +37,18 @@ module.exports = {
     if (!req.user) { return res.send(403, { message: 'Not authorized' }); }
     // :id specified, look up projectId
     if (req.params.id) {
-      Like.findOne({ where: { projectId: req.params.id, userId: req.user[0].id } },
-        function (err, like) {
-          if (err) { return res.send(400, { message: 'Error looking up likes.' }); }
-          if (like) { return res.send(true); }
-          return res.send(false);
+      var where = {
+        userId: req.user[0].id
+      };
+      if (req.param('type') == 'user') {
+        where.targetId = req.params.id;
+      } else {
+        where.projectId = req.params.id;
+      }
+      Like.findOne({ where: where }, function (err, like) {
+        if (err) { return res.send(400, { message: 'Error looking up likes.' }); }
+        if (like) { return res.send(true); }
+        return res.send(false);
       });
     }
     // Otherwise look up all the likes for this user.
@@ -29,7 +57,14 @@ module.exports = {
         if (err) { return res.send(400, { message: 'Error looking up likes.' }); }
         var result = [];
         for (var i = 0; i < likes.length; i++) {
-          result.push({ id: likes[i].id, projectId: likes[i].projectId });
+          var l = { id: likes[i].id }
+          if (likes[i].projectId) {
+            l.projectId = likes[i].projectId;
+          }
+          if (likes[i].targetId) {
+            l.targetId = likes[i].targetId;
+          }
+          result.push(l);
         }
         return res.send(result);
       });
@@ -47,18 +82,35 @@ module.exports = {
   },
 
   /**
+   * Get the number of likes for a target user
+   */
+  countu: function (req, res) {
+    Like.countByTargetId( req.params.id, function (err, likes) {
+      return res.send({ userId: req.params.id, count: likes });
+    });
+  },
+
+  /**
    * Helper function so you don't have to call create
    * Syntax: /like/like/:projectId where :id is the projectId
    */
   like: function (req, res) {
-    var like = { projectId: req.params.id, userId: req.user[0].id };
-    Like.findOne({ where: like}, function (err, existing) {
+    var l = { projectId: req.params.id, userId: req.user[0].id };
+    like(l, function (err, like) {
       if (err) { return res.send(400, { message: 'Error creating like.' }); }
-      if (existing) { return res.send(existing); }
-      Like.create(like, function (err, like) {
-        if (err) { return res.send(400, { message: 'Error creating like.' }); }
-        return res.send(like);
-      });
+      return res.send(like);
+    });
+  },
+
+  /**
+   * Helper function so you don't have to call create
+   * Syntax: /like/likeu/:userId where :id is the userId
+   */
+  likeu: function (req, res) {
+    var l = { targetId: req.params.id, userId: req.user[0].id };
+    like(l, function (err, like) {
+      if (err) { return res.send(400, { message: 'Error creating like.' }); }
+      return res.send(like);
     });
   },
 
@@ -67,14 +119,22 @@ module.exports = {
    * Syntax: Call /like/unlike/:projectId where :id is the projectId
    */
   unlike: function (req, res) {
-    Like.findOne({ where: { projectId: req.params.id, userId: req.user[0].id }}, function (err, like) {
-      if (err) { return res.send(400, { message: 'Error finding like.' }); }
-      if (!like) { return res.send(null); }
-      like.destroy(function(err) {
-        if (err) { return res.send(400, { message: 'Error destroying like.' }); }
-        return res.send(null);
-      });
+    var l = { projectId: req.params.id, userId: req.user[0].id };
+    unlike(l, function (err) {
+      if (err) { return res.send(400, { message: 'Error destroying like.' }); }
+      return res.send(null);
+    });
+  },
+
+  /**
+   * Helper function so you don't have to call destroy
+   * Syntax: Call /like/unlikeu/:userId where :id is the userId
+   */
+  unlikeu: function (req, res) {
+    var l = { targetId: req.params.id, userId: req.user[0].id };
+    unlike(l, function (err) {
+      if (err) { return res.send(400, { message: 'Error destroying like.' }); }
+      return res.send(null);
     });
   }
-
 };

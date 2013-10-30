@@ -25,8 +25,11 @@ var commentAssemble = function (where, done) {
     if (err) return done(err, null);
 
     var userIds = [];
-    for (var i = 0; i < comments.length; i++) {
-      if (!_.has(userIds, comments[i].userId)) { userIds.push(comments[i].userId); }
+    var topicArray = {};
+    for (var i = 0; i < topics.length; i++) {
+      topics[i].comments = [];
+      topicArray[topics[i].id] = topics[i];
+      if (_.indexOf(userIds, topics[i].userId) == -1) { userIds.push(topics[i].userId); }
     }
 
     var users = {};
@@ -40,11 +43,61 @@ var commentAssemble = function (where, done) {
 
     async.each(userIds, getId, function (err) {
       if (err) return done(err, null);
-      // Attach userIds to topics
-      for (var i = 0; i < comments.length; i++) {
-        comments[i].user = { username: users[comments[i].userId].username, name: users[comments[i].userId].name }
+      var newArray = {};
+      var users = {};
+      // Create an associative array to attach children
+      sails.log.debug(comments);
+      for (var i in comments) {
+        if (_.indexOf(userIds, comments[i].userId) == -1) { userIds.push(comments[i].userId); }
       }
-      return done(null, comments);
+      sails.log.debug(userIds);
+
+      var getId = function (id, next) {
+        User.findOneById(id, function (err, user) {
+          if (err) { return next(err); }
+          users[id] = user;
+          next();
+        });
+      };
+
+      async.each(userIds, getId, function (err) {
+        sails.log.debug(users);
+        if (err) return done(err, null);
+        // Attach userIds to topics
+        for (var i = 0; i < topics.length; i++) {
+          topics[i].user = { username: users[topics[i].userId].username, name: users[topics[i].userId].name }
+        }
+        for (var i = 0; i < comments.length; i++) {
+          if (_.has(topicArray, comments[i].parentId)) {
+            newArray[comments[i].id] = comments[i];
+          }
+        }
+        // Find children and attach them to their parent
+        for (var i = 0; i < comments.length; i++) {
+          sails.log.debug(comments[i]);
+          sails.log.debug(users[comments[i].userId]);
+          comments[i].user = { username: users[comments[i].userId].username, name: users[comments[i].userId].name }
+          if (comments[i].parentId) {
+            var parent = newArray[comments[i].parentId]
+            // check that the parent is another comment and not a topic
+            if (parent) {
+              if (!parent.children) {
+                parent.children = [];
+              }
+              parent.children.push(comments[i]);
+            } else {
+            }
+          }
+        }
+
+        var commentsNested = _.values(newArray);
+        // Find comments and attach to their topic
+        for (var i = 0; i < commentsNested.length; i++) {
+          topicArray[commentsNested[i].parentId].comments.push(commentsNested[i]);
+        }
+        // Only return the array, not the associative array
+        return done(null, _.values(topicArray));
+      });
     });
   });
 };

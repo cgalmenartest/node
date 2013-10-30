@@ -40,8 +40,6 @@ define([
 			"click .tag-delete"     					: "tagDelete",
 			"change #project-state" 					: "updateState",
 			"mouseenter .project-people-div" 	: popovers.popoverPeopleOn,
-			"mouseleave .project-people-div" 	: popovers.popoverPeopleOff,
-			"click .project-people-div" 			: popovers.popoverPeopleOn
 		},
 
 		// The initialize method is mainly used for event bindings (for effeciency)

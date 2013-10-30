@@ -19,8 +19,7 @@ define([
     events: {
       'click .add-event'                : 'add',
       'click .rsvp'                     : 'toggleRSVP',
-      "mouseenter .project-people-div"  : popovers.popoverPeopleOn,
-      "mouseleave .project-people-div"  : popovers.popoverPeopleOff
+      "mouseenter .project-people-div"  : popovers.popoverPeopleOn
     },
 
     initialize: function (settings) {

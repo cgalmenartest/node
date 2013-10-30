@@ -19,6 +19,7 @@
         "node-uuid": "1.4.x",
         "bcrypt": "0.7.7",
         "request": "2.x",
+        "gm": "~1.13.1",
         "sails-postgresql": "~0.9.4"
     },
     "devDependencies": {

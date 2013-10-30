@@ -8,7 +8,6 @@
       <div class="row">
         <div class="col-lg-9 project-admin nopadding">
             <button id="editProject" class="btn btn-c4">Edit</button>
-            <span id="fileupload" class="btn btn-c4"><i class="icon-camera icon-large" title="Change Cover Photo"></i></span>
         </div>
         <div class="col-lg-2 nopadding">
         <form class="form-inline" role="form">
@@ -33,7 +32,9 @@
     </div>
   </div>
 </div>
-<% } else { %><div id="fileupload" style="display: none;"></div><% } %>
+<% } else { %>
+<span id="fileupload" class="btn btn-c4" style="display: none;"><i class="icon-camera icon-large" title="Change Cover Photo" id="fileupload-icon"></i></span>
+<% } %>
 
 <div class="row">
   <div class="col-lg-4 project-sidebar">
@@ -59,6 +60,7 @@
       <% } else { %>
       <div id="project-header">
       <% } %>
+      <span id="fileupload" class="btn btn-c4" <% if (!data.isOwner) { %>style="display: none;"<% } %>><i class="icon-camera icon-large" title="Change Cover Photo" id="fileupload-icon"></i></span>
       </div>
     </div>
 

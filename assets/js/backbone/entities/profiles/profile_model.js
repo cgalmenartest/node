@@ -15,17 +15,22 @@ define([
 		initializeProfileGet: function () {
 			var self = this;
 
-			this.listenTo(this, "profile:fetch", function () {
-				self.fetch({
-					success: function (data) {
-						self.trigger("profile:fetch:success", data);
-					},
-					error: function (data) {
-						console.log(data);
-					}
-				});
+			this.listenTo(this, "profile:fetch", function (id) {
+				self.get(id);
 			});
 		},
+
+    get: function (id) {
+      var self = this;
+      if (id) {
+	      this.set({ id: id });
+      }
+      this.fetch({
+        success: function (data) {
+          self.trigger("profile:fetch:success", data);
+        }
+      });
+    },
 
 		initializeProfileSave: function () {
 			var _this = this;
@@ -47,10 +52,11 @@ define([
 			this.listenTo(this, "profile:save", function (form) {
 				_this.save({
 					name: form['name'],
-					username: form['username']
+					username: form['username'],
+					title: form['title'],
+					bio: form['bio']
 				}, {
 				success: function (data) {
-					console.log(data);
 					_this.trigger("profile:save:success", data);
 				},
 				error: function (data) {
@@ -67,7 +73,6 @@ define([
 					auths: auths
 				}, {
 				success: function (data) {
-					console.log(data);
 					_this.trigger("profile:removeAuth:success", data, id);
 				},
 				error: function (data) {

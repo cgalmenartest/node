@@ -30,11 +30,11 @@ module.exports.policies = {
   // Limit user controller view to just the /user endpoint
   UserController : {
     '*': false,
-    'index': true,
     'photo': true,
-    'info': ['authenticated', 'requireUserId', 'addUserId', 'requireId'],
-    'find': 'admin',
-    'findAll': 'admin'
+    'info': ['authenticated', 'requireId'],
+    'update': ['authenticated', 'requireUserId', 'requireId'],
+    'username': ['authenticated', 'requireUserId', 'requireId'],
+    'find': ['authenticated', 'requireUserId']
   },
 
   // Disable the index blueprints for FileController due to security concerns
@@ -90,6 +90,7 @@ module.exports.policies = {
     'add': ['authenticated', 'requireUserId'],
     'findAllByProjectId': ['authenticated', 'requireId', 'project'],
     'findAllByTaskId': ['authenticated', 'requireId', 'task']
+    //'findAllByUserId': not needed because authenticated is default
   },
 
   CommentController : {

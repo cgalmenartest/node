@@ -15,7 +15,7 @@ function authenticate(req, res, strategy) {
   if (req.user) {
     passport.authorize(strategy, function(err, user, info)
     {
-      res.redirect('/#user');
+      res.redirect('/profile/edit');
     })(req, res);
   } else {
     passport.authenticate(strategy, function(err, user, info)
@@ -36,7 +36,7 @@ function authenticate(req, res, strategy) {
           return;
         }
 
-        res.redirect('/#projects');
+        res.redirect('/projects');
         return;
       });
     })(req, res);
@@ -85,7 +85,7 @@ module.exports = {
   logout: function (req,res) {
     // logout and redirect back to the app
     req.logout();
-    res.redirect('/#projects');
+    res.redirect('/projects');
   }
 
 };

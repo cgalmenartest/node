@@ -75,10 +75,15 @@
 }
 
 /*****************
-=  HOMEPAGE
+=  PROFILES
 ******************/
-#home .hreo-title {
-    text-align: center;
+
+.profile-jobtitle {
+	font-weight: bold;
+}
+
+.profile-company {
+	font-weight: bold;
 }
 
 /*****************
@@ -166,6 +171,7 @@ div.project-title {
 	padding: 17px;
 	background-color: #E5E5E5;
 	margin-bottom: 25px;
+	position: relative;
 }
 
 #project-header {
@@ -236,7 +242,9 @@ div.project-title {
 body > .popover {
 	width: 350px;
 	max-width: 350px;
-	height: 80px;
+	min-height: 100px;
+	max-height: 200px;
+	margin-bottom: 20px;
 }
 
 .popover-person {
@@ -274,9 +282,15 @@ body > .popover {
 	position: relative;
 }
 
-#project-admin-bar #file-upload-progress-container {
+#file-upload-progress-container {
 	margin-top: 10px;
 	margin-bottom: 0;
+}
+
+#fileupload {
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
 }
 
 .tag-delete {
