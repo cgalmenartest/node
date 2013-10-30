@@ -7,18 +7,18 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'utilities',
   'comment_collection',
   'text!comment_form_template',
   'comment_list_view'
-], function ($, _, Backbone, CommentCollection, CommentFormTemplate, CommentListView) {
+], function ($, _, Backbone, utils, CommentCollection, CommentFormTemplate, CommentListView) {
 
   var CommentFormView = Backbone.View.extend({
 
     // el: ".comment-form-wrapper",
 
     events: {
-      "submit #comment-form": "post",
-      "click #comment": "add"
+      "submit .comment-submit": "post"
     },
 
     initialize: function (options) {
@@ -40,7 +40,7 @@ define([
     },
 
     post: function (e) {
-      if (e.preventDefault()) e.preventDefault();
+      if (e.preventDefault) e.preventDefault();
 
       if ($(e.currentTarget).find(".comment-content").val() !== "") {
         this.comment = $(e.currentTarget).find(".comment-content").text();
@@ -58,21 +58,16 @@ define([
         parentId = parseInt(this.options.parentId);
       }
 
-      var data;
+      var data = {
+        projectId : projectId,
+        comment   : this.comment,
+        topic     : false
+      };
 
       if (this.options.topic) {
-        data = {
-          projectId : projectId,
-          comment   : this.comment + "||" + this.wikiLink,
-          topic     : true
-        }
+        data.topic = true;
       } else {
-        data = {
-          projectId : projectId,
-          parentId  : parentId,
-          comment   : this.comment + "||" + this.wikiLink,
-          topic     : false
-        }
+        data.parentId = parentId;
       }
 
       var currentTarget = e.currentTarget;
@@ -80,7 +75,7 @@ define([
     },
 
     cleanup: function () {
-      $(this.el).remove()
+      removeView(this);
     }
 
   });

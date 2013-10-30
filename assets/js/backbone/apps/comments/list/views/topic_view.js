@@ -52,7 +52,7 @@ define([
     },
 
     cleanup: function () {
-      $(this.el).children().remove();
+      removeView(this);
     }
 
   });

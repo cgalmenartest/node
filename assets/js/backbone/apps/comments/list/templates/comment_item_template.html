@@ -1,30 +1,40 @@
-<li class="comment-item <% if (topic) { %>topic<% }%> clearfix">
+<li class="comment-item clearfix">
 
-  <div class="comment-image">
-    <img src="/user/photo/<%= userId %>" class="comment-image" />
-  </div>
+  <div class="comment-content">
+    <div class="comment-image">
+      <div class="project-people-div" data-userid="<%- userId %>">
+        <img src="/api/user/photo/<%= userId %>" alt="<%- user.name %>" class="project-people" />
+      </div>
+    </div>
 
-  <div class="comment-inner">
-    <span class="user-username" data-userid="<%- userId %>">
-      <a href="#" class="comment-user-link" data-userid="<%- userId %>">
-        <% if (user.name) { %>
-          <%- user.name %>
-        <% } else { %>
-          <%- user.username %>
+    <div class="comment-inner <% if (topic) { %>topic<% }%>">
+      <span class="user-username" data-userid="<%- userId %>">
+        <a href="#" class="comment-user-link" data-userid="<%- userId %>">
+          <% if (user.name) { %>
+            <%- user.name %>
+          <% } else { %>
+            <%- user.username %>
+          <% } %>
+        </a>
+      </span>
+
+      <%= value %>
+
+      <div class="comment-metadata">
+        <time class="timeago comment-created-at" datetime="<%- createdAt %>"><%- createdAt %></time>
+        <% if (depth == 1)  { %>
+        &bull;
+        <a href="#reply-to-comment" class="reply-to-<%= id %>" data-depth="<%= depth %>">Reply</a>
         <% } %>
-      </a>
-    </span>
-
-    <%= value %>
-
-    <time class="timeago comment-created-at" datetime="<%- createdAt %>"><%- createdAt %></time>
-
-    <% if (depth <= 1) { %>
-      <a href="#reply-to-comment" class="reply-to-<%= id %>" data-depth="<%= depth %>">Reply</a>
-    <% } %>
-
-  <ul id="comment-list-<%= id %>"></ul>
-
-    <div class="comment-form hidden" id="comment-form-<%= id %>"></div>
+      </div>
+    </div>
   </div>
+
+  <div class="comment-sublist-wrapper">
+
+    <ul id="comment-list-<%= id %>"></ul>
+  </div>
+
+  <div class="comment-form" <% if (depth == 1) { %>style="display: none;"<% } %> id="comment-form-<%= id %>"></div>
+
 </li>

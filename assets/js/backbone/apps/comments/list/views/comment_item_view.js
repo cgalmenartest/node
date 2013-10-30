@@ -3,22 +3,15 @@ define([
   'underscore',
   'backbone',
   'jquery_timeago',
-  'text!comment_item_template',
   'utilities',
-  'text!comment_list_template'
-], function ($, _, Backbone, TimeAgo, CommentItemTemplate, utilities, CommentListTemplate) {
+  'text!comment_item_template',
+], function ($, _, Backbone, TimeAgo, utilities, CommentItemTemplate) {
 
   var CommentItemView = Backbone.View.extend({
 
     render: function () {
       // Clean string out from undefineds in the marshalling process.
       cleanStringFromUndefined(this.model, this.model.value, "||");
-
-      // Buggy, refactor:
-      // if (this.model.value.indexOf('||') != -1) {
-      //   data['comment']['link'] = this.model.value.split('||')[1];
-      //   data['comment']['value'] = this.model.value.split('||')[0];
-      // }
 
       if (this.model.topic) {
         compiledTemplate = _.template(CommentItemTemplate, this.model);
@@ -35,7 +28,7 @@ define([
     },
 
     cleanup: function () {
-      $(this.el).children().remove();
+      removeView(this);
     }
 
   });
