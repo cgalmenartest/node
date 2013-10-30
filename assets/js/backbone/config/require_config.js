@@ -125,8 +125,6 @@ require.config({
     'comment_form_view'         : '../apps/comments/new/views/comment_form_view',
     'comment_form_template'     : '../apps/comments/new/templates/comment_form_template.html',
     'comment_item_view'         : '../apps/comments/list/views/comment_item_view',
-    'topic_view'                : '../apps/comments/list/views/topic_view',
-    'topic_template'            : '../apps/comments/list/templates/topic_template.html',
 
     // ----------
     //= Components
