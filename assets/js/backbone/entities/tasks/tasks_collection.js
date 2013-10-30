@@ -34,12 +34,17 @@ define([
         description: data['description']
       });
 
-      self.add(self.task);
-      self.models.forEach(function (_model) {
-        _model.save();
-      });
+      self.task.save(null,{
+        success: function (model) {
+          self.trigger("task:save:success", self.task.id);
+        }
+      })
+      // self.add(self.task);
+      // self.models.forEach(function (_model) {
+      //   _model.save();
+      // });
 
-      entities.request.trigger("tasks:fetch", projectId);
+      entities.request.trigger("tasks:fetch", data['projectId']);
       this.trigger("tasks:render")
     }
 

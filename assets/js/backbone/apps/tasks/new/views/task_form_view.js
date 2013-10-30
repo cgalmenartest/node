@@ -3,10 +3,11 @@ define([
     'bootstrap',
     'underscore',
     'backbone',
+    'async',
     'tasks_collection',
     'text!task_form_template',
     'tag_show_view'
-], function ($, Bootstrap, _, Backbone, TasksCollection, TaskFormTemplate, TagShowView) {
+], function ($, Bootstrap, _, Backbone, async, TasksCollection, TaskFormTemplate, TagShowView) {
 
 	var TaskFormView = Backbone.View.extend({
 
@@ -35,6 +36,7 @@ define([
 
     post: function (e) {
       if (e.preventDefault) e.preventDefault();
+      var self = this;
 
       var taskData = {
         title       : $("#task-title").val(),
@@ -42,29 +44,50 @@ define([
         description : $("#task-description").val()
       };
 
-      var tagData = {
-        topics                 : $("#task-topics").val(),
-        skills                 : $("#task-skills").val(),
-        teamSize               : $("#task-team-size").val(),
-        typeOfTimeRequired     : $("#task-type-of-time-required").val(),
-        classNetAccessRequired : $("#task-classnet-access").val()
-      };
+      var tags = [
+        $("#topics").select2('data'),
+        $("#skills").select2('data'),
+        $("#skills-required").select2('data'),
+        $("#people").select2('data'),
+        $("#time-required").select2('data'),
+        $("#length").select2('data'),
+        $("#time-estimate").select2('data'),
+        $("#task-location").select2('data'),
+        $("#input-specific-location").val(),
+        $("#task-classnet-access").select2('data')
+      ];
 
       this.tasks.trigger("task:save", taskData);
 
-      // Save taskData and tagData seperately, as they relate, but perhaps
-      // do so in Collection.
-      //
-      // If we do so in collection we can save the the tags with the taskId.
-      // as that is when we are initializing the new model for tasks.
-      // $.ajax({
-      //   url: '/api/tag/add',
-      //   type: 'POST',
-      //   data: tagData,
-      //   success: function (result) {
-      //     this.tasks.model.trigger("task:tag:new", result);
-      //   }
-      // })
+      this.listenTo(this.tasks, "task:save:success", function (taskId) {
+
+        var addTag = function (tag, done) {
+          if (!tag || !tag.id) return done();
+          if (tag.tagId) return done();
+
+          var tagMap = {
+            taskId: taskId,
+            tagId: tag.id
+          }
+
+          $.ajax({
+            url: '/api/tag',
+            type: 'POST',
+            data: tagMap,
+            success: function (data) {
+              done();
+            },
+            error: function (err) {
+              throw new Error("error");
+            }
+          });
+        }
+
+        async.each(tags, addTag, function (err) {
+          return self.model.trigger("task:tags:save:success", err);
+        });
+
+      });
 
     },
 
@@ -75,7 +98,6 @@ define([
       var formatResult = function (obj, container, query) {
         return obj.name;
       };
-
 
       // ------------------------------ //
       //  DROP DOWNS REQUIRING A FETCH  //
