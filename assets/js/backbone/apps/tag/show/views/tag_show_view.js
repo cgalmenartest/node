@@ -90,7 +90,6 @@ define([
       // New tags added in to the DB via the modal
       this.listenTo(this.model, this.target + ":tag:new", function (data) {
         // Destory modal
-        $(".modal-backdrop").hide();
         $(".modal").modal('hide');
         // Add tag into the data list
         var s2data = $("#input-tags").select2("data");
@@ -129,23 +128,25 @@ define([
     },
 
     create: function (e) {
-      if (e.preventDefault()) e.preventDefault();
+      if (e.preventDefault) e.preventDefault();
       var self = this;
 
       // Pop up dialog box to create tag,
       // then put tag into the select box
-      this.modalComponent = new ModalComponent({
-        el: "#container",
-        id: "createTag",
-        modalTitle: "Create Tag"
-      }).render();
+      if (_.isUndefined(this.modalComponent)) {
+        this.modalComponent = new ModalComponent({
+          el: "#container",
+          id: "createTag",
+          modalTitle: "Create Tag"
+        }).render();
+      }
 
       if (!_.isUndefined(this.modalComponent)) {
         if (this.tagFormView) {
           this.tagFormView.cleanup();
         }
         this.tagFormView = new TagFormView({
-          el: ".modal-template",
+          el: "#createTag .modal-template",
           model: self.model,
           tags: self.tags,
           target: self.target
@@ -197,7 +198,7 @@ define([
     },
 
     delete: function (e) {
-      if (e.preventDefault()) e.preventDefault();
+      if (e.preventDefault) e.preventDefault();
       var self = this;
       // Get the data-id of the currentTarget
       // and then call HTTP DELETE on that tag id

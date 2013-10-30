@@ -16,6 +16,7 @@ var tagUtils = require('../services/utils/tag');
  */
 var getUser = function (userId, reqId, cb) {
   User.findOneById(userId, function (err, user) {
+    delete user.deletedAt;
     if (err) { return cb(err, null); }
     tagUtils.assemble({ userId: userId }, function (err, tags) {
       if (err) { return cb(err, null); }
@@ -25,7 +26,16 @@ var getUser = function (userId, reqId, cb) {
         delete tags[i].updatedAt;
         delete tags[i].deletedAt;
         delete tags[i].userId;
-      }
+        delete tags[i].tag.createdAt;
+        delete tags[i].tag.updatedAt;
+        delete tags[i].tag.deletedAt;
+        if (tags[i].tag.type == 'agency') {
+          user.agency = tags[i];
+        }
+        if (tags[i].tag.type == 'location') {
+          user.location = tags[i];
+        }
+       }
       user.tags = tags;
       Like.countByTargetId(userId, function (err, likes) {
         if (err) { return cb(err, null); }
@@ -170,4 +180,5 @@ module.exports = {
       });
     }
   }
+
 };

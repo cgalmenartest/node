@@ -32,7 +32,7 @@ module.exports = {
 
   user_put: function (request, user, cb) {
     var r = request.put({
-      url: conf.url + '/user',
+      url: conf.url + '/user/' + user.id,
       body: JSON.stringify(user)
     }, function(err, response, body) {
       if (err) { return cb(err, null); }
