@@ -4,7 +4,7 @@
  * If both err and task are null, then task
  * was found but access is denied.
  */
-var project = require('./project');
+var util = require('./project');
 
 var authorized = function (id, userId, cb) {
   Task.findOneById(id, function (err, task) {
