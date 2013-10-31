@@ -2,7 +2,7 @@ define([
   'underscore',
   'backbone',
 ], function (_, Backbone) {
-  
+
   var ProjectModel = Backbone.Model.extend({
 
     defaults: {
@@ -34,7 +34,7 @@ define([
     },
 
     urlRoot: '/api/project',
-    
+
     get: function (id) {
       var self = this;
       this.set({ id: id });
@@ -48,7 +48,7 @@ define([
     update: function (data) {
       var self = this;
 
-      this.save({ 
+      this.save({
         title: data['title'],
         description: data['description']
       }, { success: function (returnModel) {

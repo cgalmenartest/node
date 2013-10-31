@@ -99,6 +99,21 @@
     <img src="/images/mockups/status-mockup.gif" style="margin-bottom: 20px"/>
 
     <h4>Project Participants</h4>
+
+    <form action class="" role="form">
+
+
+      <div class="input-group">
+        <div class="participant-form form-control input-sm select2-input" id="participant-text" contenteditable="true"></div>
+        <span class="input-group-btn">
+          <input class="btn btn-c3 btn-sm" id="participant-save" type="submit" value=" Add Participant ">
+        </span>
+      </div>
+
+    </form>
+
+
+
     <div class="project-contributors">
       <% if (data.owners) { %>
         <% for (var i = 0; i < data.owners.length; i++) { %>

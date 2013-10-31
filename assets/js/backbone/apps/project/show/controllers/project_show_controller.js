@@ -35,6 +35,8 @@ define([
 			"click .edit-project"   					: "edit",
 			"click #like-button"    					: "like",
 			"keyup .comment-content"					: "search",
+			"keyup .participant-form"					: "userSearch",
+			"click #participant-save"					: "addParticipant",
 			"click #tag-save"       					: "tagSave",
 			"click #tag-create"     					: "tagCreate",
 			"click .tag-delete"     					: "tagDelete",
@@ -57,7 +59,10 @@ define([
 				self.initializeHandlers();
 				self.initializeLikes();
 				self.initializeUI();
+				// self.initializeSelect2();
 			});
+
+
 
 		},
 
@@ -69,6 +74,34 @@ define([
 				// manage that in an elegant way.
 				backbone: false,
 				apiEndpoint: '/api/ac/inline',
+				// the query param expects one api endpoint IE:
+				// /nested/endpoint?QUERYPARAM=$(".search").val()
+				// So it is not something that you can chain params onto.
+				// It expects you to send the data back as input data through that query param
+				// one character at a time.
+				queryParam: 'q',
+				type: 'POST',
+				contentType: 'json',
+
+				// The plugin will accept any trigger key'd in here, and then
+				// use that to start the search process.  if it doesn't exist it will not search.
+				trigger: "@",
+				searchResultsClass: ".search-result-wrapper",
+
+				success: function (data) {
+
+				}
+			});
+		},
+
+		userSearch: function () {
+			$(".participant-form").midasAutocomplete({
+				backboneEvents: true,
+				// If we are using backbone here, then a lot of these
+				// misc. AJAX options we are passing are unecessary.  So we should somehow
+				// manage that in an elegant way.
+				backbone: false,
+				apiEndpoint: '/api/ac/user',
 				// the query param expects one api endpoint IE:
 				// /nested/endpoint?QUERYPARAM=$(".search").val()
 				// So it is not something that you can chain params onto.
@@ -127,6 +160,50 @@ define([
 			popovers.popoverPeopleInit(".project-people-div");
 		},
 
+
+
+
+
+		// initializeSelect2: function () {
+  //     var self = this;
+  //     var formatResult = function (object, container, query) {
+  //       return object.name;
+  //     };
+
+  //     var modelJson = this.model.toJSON();
+  //     $("#participant-text").select2({
+  //       placeholder: 'Select a Participant',
+  //       formatResult: formatResult,
+  //       formatSelection: formatResult,
+  //       minimumInputLength: 1,
+  //       ajax: {
+  //         url: '/api/ac/user',
+  //         dataType: 'json',
+  //         data: function (term) {
+  //           return {
+  //             q: term
+  //           };
+  //         },
+  //         results: function (data) {
+  //           return { results: data };
+  //         }
+  //       }
+  //     });
+
+  //     $("#participant-text").on('change', function (e) {
+  //       self.model.trigger("project:input:changed", e);
+  //     });
+
+  //   },
+
+
+
+
+
+
+
+
+
 		edit: function (e) {
 			if (e.preventDefault) e.preventDefault();
 			var self = this;
@@ -154,6 +231,31 @@ define([
 			$("#project-admin-state").button('loading');
 			this.model.trigger("project:update:state", state);
 		},
+
+		getParticipants: function(e){
+
+
+
+
+		}
+
+		addParticipant: function(e){
+		if (e.preventDefault) e.preventDefault();
+		var self = this;
+		var participants = {};
+
+
+
+
+		this.model.trigger("project:update:participants", participants);
+
+		},
+
+		removeParticipant: function(e){
+
+
+		},
+
 
 		like: function (e) {
 			if (e.preventDefault) e.preventDefault();
