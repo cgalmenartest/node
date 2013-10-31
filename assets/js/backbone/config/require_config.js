@@ -111,6 +111,8 @@ require.config({
     'profile_email_template'    : '../apps/profiles/show/templates/profile_email_template.html',
     'profile_email_view'        : '../apps/profiles/email/views/profile_email_view',
     'profile_email_form_template': '../apps/profiles/email/templates/profile_email_form.html',
+    'profile_activity_template' : '../apps/profiles/show/templates/profile_activity_template.html',
+    'profile_activity_view'     : '../apps/profiles/show/views/profile_activity_view',
 
     // ----------
     //= Comments
