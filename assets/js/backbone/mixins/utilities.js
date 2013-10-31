@@ -91,3 +91,8 @@ var removeView = function (view) {
 var clearContainer = function () {
   $("#container").children().remove();
 }
+
+var initializePageTransition = function () {
+  $("#container").append('<div id="ui_loader"><img src="/images/ajax-loader.gif" class="ajax_loader"/></div>');
+  $(window).scrollTop($(window).scrollTop());
+}

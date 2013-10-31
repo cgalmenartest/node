@@ -13,7 +13,7 @@ define([
     el: "#container",
 
     render: function () {
-      var compiledTemplate = _.extend(TaskShowTemplate)
+      var compiledTemplate = _.template(TaskShowTemplate, this.model.toJSON())
       $(this.el).html(compiledTemplate)
 
       return this;
