@@ -630,3 +630,14 @@ ul.comment-list > li {
 #addTask .modal-dialog {
 	width: 790px;
 }
+
+input#task-title {
+	margin-bottom: 10px;
+	border: 1px #ccc solid;
+	padding: 5px;
+}
+
+textarea#task-description {
+	border: 1px #ccc solid;
+	padding: 5px;
+}

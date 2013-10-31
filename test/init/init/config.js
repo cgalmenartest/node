@@ -36,11 +36,11 @@ module.exports = {
     // ------------
     {
       type: 'skills-required',
-      name: 'Skills Required'
+      name: 'Required'
     },
     {
       type: 'skills-required',
-      name: 'Skills Not Required'
+      name: 'Not Required'
     },
     // ------------
     {
@@ -52,7 +52,7 @@ module.exports = {
       name: '1 - 3 Days'
     },
     {
-      type: 'duty-length',
+      type: 'length',
       name: '1 Week'
     },
     {
@@ -62,6 +62,32 @@ module.exports = {
     {
       type: 'length',
       name: 'A Few Months'
-    }
+    },
+    // -------------
+    {
+      type: 'time-estimates',
+      name: 'Less than 1 hour'
+    },
+    {
+      type: 'time-estimates',
+      name: '1 - 3 hours'
+    },
+    {
+      type: 'time-estimates',
+      name: '4 - 8 hours'
+    },
+    {
+      type: 'time-estimates',
+      name: '9 - 24 hours'
+    },
+    {
+      type: 'time-estimates',
+      name: '25 - 40 hours'
+    },
+    {
+      type: 'time-estimates',
+      name: 'longer than 40 hours'
+    },
+
   ]
 };

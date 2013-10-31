@@ -64,6 +64,13 @@ define([
           next      = current.next(),
           nextHtml  = next.html();
 
+      if (_.isEqual(current.next().children("input[type='submit']").length, 0)) {
+        // no-op
+      } else {
+        $("button.wizard-forward").hide();
+        current.next().children("input[type='submit']").css("float", "right").css("margin-top", "10px");
+      };
+
       if (!_.isUndefined(nextHtml)) {
         current.children().hide();
         current.removeClass("current");
@@ -71,7 +78,8 @@ define([
         next.show();
       } else if (_.isUndefined(nextHtml)) {
         console.log("And here we switch the the button logic to now ready for submit.")
-      }
+      };
+
     },
 
     updateButtonForSubmit: function (self) {

@@ -25,60 +25,35 @@ define([
 		},
 
     initializeSelect2Data: function () {
-      var self = this;
+      var self = this,
+          types = ["skills-required", "time-required", "people", "length", "time-estimates"];
 
-      $.ajax({
-        url: '/api/ac/tag?type=skills-required&list',
-        type: 'GET',
-        async: false,
-        success: function (list) {
-          self.skillRequired = list
-        }
-      });
+      this.tagSources = {};
 
-      $.ajax({
-        url: '/api/ac/tag?type=time-required&list',
-        type: 'GET',
-        async: false,
-        success: function (list) {
-          self.timeRequired = list;
-        }
-      });
-
-      $.ajax({
-        url: '/api/ac/tag?type=people&list',
-        type: 'GET',
-        async: false,
-        success: function (list) {
-          self.people = list;
-        }
-      });
-
-      $.ajax({
-        url: '/api/ac/tag?type=length&list',
-        type: 'GET',
-        async: false,
-        success: function (list) {
-          self.dutyLength = list;
-        }
-      });
-
-      $.ajax({
-        url: '/api/ac/tag?type=time-estimate&list',
-        type: 'GET',
-        async: false,
-        success: function (list) {
-          self.timeEstimate = list;
-        }
-      });
-
-      this.tagSources = {
-        people         : this.people,
-        length         : this.dutyLength,
-        timeEstimate   : this.timeEstimate,
-        timeRequired   : this.timeRequired,
-        skillsRequired : this.skillRequired
+      var requestAllTagsByType = function (type) {
+        $.ajax({
+          url: '/api/ac/tag?type=' + type + '&list',
+          type: 'GET',
+          async: false,
+          success: function (data) {
+            // Dynamically take the hyphen delimited type (if more than 1 word) and
+            // camelize it like the template expects.  Then create an associative
+            // array based on that for the pointer to the list itself to be iterated through
+            // on the front-end.
+            var typeArray = type.split("-");
+            if (typeArray.length > 1) {
+              typeArray[typeArray.length - 1] = typeArray[typeArray.length - 1].charAt(0).toUpperCase() + typeArray[typeArray.length - 1].substr(1).toLowerCase();
+              self.tagSources[typeArray.join("")] = data;
+            } else {
+              self.tagSources[type] = data;
+            }
+          }
+        });
       }
+
+      async.each(types, requestAllTagsByType, function (err) {
+        self.render();
+      });
     },
 
 		render: function () {

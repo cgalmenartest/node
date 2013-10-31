@@ -21,27 +21,37 @@
 
       <br /> <br />
 
+        <div class="form-group">
+          <label for="skills-required" class="col-lg-3">the following skills are
+            <select id="skills-required" name="skills-required" style="width: 100%;">
+              <% _.each(skillsRequired, function(requirement) { %>
+                <option value="<%= requirement.id %>"><%= requirement.name %></option>
+              <% }); %>
+            </select>
+          </label>
+        </div>
+
       <div class="form-group">
-        <label for="skills" class="col-lg-3 control-label">these
+        <label for="skills" class="col-lg-3 control-label">to complete this opportunity:
           <input type="hidden" id="skills" name="skills" multiple="true" style="width: 100%"/>
         </label>
       </div>
 
-      <div class="form-group">
-        <label for="skills-required" class="col-lg-3">are
-          <select id="skills-required" name="skills-required" style="width: 100%;">
-            <% _.each(skillsRequired, function(requirement) { %>
-              <option value="<%= requirement.id %>"><%= requirement.name %></option>
-            <% }); %>
-          </select>
-        </label>
-      </div>
+
 
     </section>
 
     <section id="section-2">
       <div class="form-group">
+
         <label>It will require</label>
+        <select id="time-estimate">
+          <% _.each(timeEstimates, function (timeEstimate) { %>
+            <option value="<%= timeEstimate.id %>"><%= timeEstimate.name %></option>
+          <% }); %>
+        </select>
+
+        <label>hours of</label>
           <select id="time-required">
             <% _.each(timeRequired, function (time) { %>
               <option value="<%= time.id %>"><%= time.name %></option>
@@ -49,23 +59,14 @@
           </select>
       </div>
 
-        <label>time over the next</label>
+        <label>work, and must be completed within</label>
           <select id="length">
             <% _.each(length, function (item) { %>
               <option value="<%= item.id %>"><%= item.name %></option>
             <% }) %>
           </select>
 
-      <label>This opportunity should take</label>
-      <select id="time-estimate">
-        <option value="< 1 hour">less than 1 hour</option>
-        <option value="1 - 3 hours">1 - 3 hours</option>
-        <option value="4 - 8 hours">4 - 8 hours</option>
-        <option value="9 - 24 hours">9 - 24 hours</option>
-        <option value="25 - 40 hours">25 - 40 hours</option>
-        <option value="longer than 40 hous">longer than 40 hours</option>
-      </select>
-      <label>hours to complete.</label>
+      <br /><br />
 
       <label>The volunteer(s) must be located at
       <select id="task-location">
@@ -88,7 +89,7 @@
         <textarea id="task-description" style="width: 100%;" placeholder="Please describe the project details, including goals, expected outcomes and deliverables.">
         </textarea>
 
-      <input type="submit">
+      <input type="submit" class="btn btn-primary">
 
     </section>
 
