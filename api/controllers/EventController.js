@@ -165,6 +165,14 @@ module.exports = {
         // set status
         ical.addComponent(ev);
       }
+      var filename = '';
+      if (req.params.id) {
+        filename = 'project' + req.params.id + '.ical';
+      }
+      else {
+        filename = req.user[0].username + '.ical';
+      }
+      res.setHeader('Content-Disposition', 'attachment; filename="' + filename + '"');
       res.type('text/calendar');
       res.send(ical.toString());
     };
