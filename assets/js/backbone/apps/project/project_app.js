@@ -4,14 +4,17 @@ define([
   'backbone',
   'project_model',
   'project_list_controller',
-  'project_show_controller'
-], function ($, _, Backbone, ProjectModel, ProjectListController, ProjectShowController) {
+  'project_show_controller',
+  'utilities',
+  'task_item_view'
+], function ($, _, Backbone, ProjectModel, ProjectListController, ProjectShowController, utilities, TaskItemView) {
 
   var ProjectRouter = Backbone.Router.extend({
 
     routes: {
       'projects(/)'			: 'list',
-      'projects/:id(/)' : 'show'
+      'projects/:id(/)' : 'show',
+      'projects/:id/tasks/:id(/)': 'showTask'
     },
 
     list: function () {
@@ -32,11 +35,17 @@ define([
       self.projectShowController = new ProjectShowController({ model: model, router: this });
     },
 
+    showTask: function (id) {
+      clearContainer();
+      if (this.taskItemView) this.taskItemView.cleanup();
+      this.taskItemView = new TaskItemView().render();
+    }
+
   });
 
   var initialize = function () {
     var router = new ProjectRouter();
-  } 
+  }
 
   return {
     initialize: initialize

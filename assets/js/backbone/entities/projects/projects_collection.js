@@ -3,9 +3,9 @@ define([
   'backbone',
   'project_model'
 ], function (_, Backbone, ProjectModel) {
-  
+
   var ProjectsCollection = Backbone.Collection.extend({
-  
+
     model: ProjectModel,
 
     url: '/api/project/findAll',
@@ -25,11 +25,11 @@ define([
     addAndSave: function (data) {
       var project, self = this;
 
-      project = new ProjectModel({ 
-        title: data['title'], 
-        description: data['description'] 
+      project = new ProjectModel({
+        title: data['title'],
+        description: data['description']
       })
-      
+
       self.add(project);
 
       self.models.forEach(function (model) {

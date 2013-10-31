@@ -86,8 +86,8 @@ require.config({
     'task_collection_view'      : '../apps/tasks/list/views/task_collection_view',
     'task_form_view'            : '../apps/tasks/new/views/task_form_view',
     'task_item_view'            : '../apps/tasks/show/views/task_item_view',
-    'task_show_template'        : '../apps/tasks/task_show_item_template.html',
-    'task_show_controller'      : '../apps/tasks/task_show_controller',
+    'task_show_template'        : '../apps/tasks/show/templates/task_show_item_template.html',
+    'task_show_controller'      : '../apps/tasks/show/controllers/task_show_controller',
 
     // ----------
     //= Events
@@ -125,14 +125,14 @@ require.config({
     'comment_form_view'         : '../apps/comments/new/views/comment_form_view',
     'comment_form_template'     : '../apps/comments/new/templates/comment_form_template.html',
     'comment_item_view'         : '../apps/comments/list/views/comment_item_view',
-    'topic_view'                : '../apps/comments/list/views/topic_view',
-    'topic_template'            : '../apps/comments/list/templates/topic_template.html',
 
     // ----------
     //= Components
     // ----------
     'modal_component'           : '../components/modal',
     'modal_template'            : '../components/modal_template.html',
+    'modal_wizard_component'    : '../components/modal_wizard',
+    'modal_wizard_template'     : '../components/modal_wizard_template.html',
     'autocomplete'              : '../mixins/autocomplete'
   },
 

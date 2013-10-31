@@ -51,7 +51,7 @@ define([
       }
       var template = _.template(ProfileTemplate, data);
       this.$el.html(template);
-      
+
       this.initializeFileUpload();
       this.initializeForm();
       this.initializeSelect2();
@@ -331,7 +331,7 @@ define([
     },
 
     removeAuth: function (e) {
-      e.preventDefault();
+      if (e.preventDefault) e.preventDefault();
       var node = $(e.target);
       // walk up the tree until we get to the marked node
       while (!(node.hasClass("removeAuth"))) {

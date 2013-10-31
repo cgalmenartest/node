@@ -248,9 +248,7 @@ body > .popover {
 	font-size: 16px;
 	font-weight: bold;
 }
-.topic {
-	clear: both;
-}
+
 .project-admin {
 	text-align: right;
 	padding-left: 15px;
@@ -551,8 +549,9 @@ ul.tags > li {
 =  COMMENTS
 ******************/
 
-.comment-list-wrapper > h4 {
-	float: left;
+.topic {
+	clear: both;
+	/*background-color: #f0f0f0;*/
 }
 
 li[data-topic='true'] {
@@ -563,22 +562,25 @@ li[data-topic='true'] {
 ul.comment-list > li {
 	list-style: none;
 	position: relative;
+
 }
 
-.comment-list-wrapper {
+.comment-sublist-wrapper {
+	margin-left: 40px;
 }
 
-ul.comment-list {
-	width: 100%;
+.comment-list-wrapper ul {
 	margin: 0;
 	padding: 0;
+	padding-top: 10px;
 	list-style-type: none;
-	font-size: 13px;
 }
 
-.comment-form-wrapper {
-	margin-top: 10px;
+.comment-form {
+	margin-left: 40px;
+	margin-bottom: 10px;
 }
+
 
 .add-comment-button {
 	float: right;
@@ -586,6 +588,10 @@ ul.comment-list {
 
 .user-username {
 	font-weight: bold;
+}
+
+.comment-metadata {
+	font-size: 10px;
 }
 
 .comment-created-at {
@@ -596,20 +602,17 @@ ul.comment-list {
 }
 
 .comment-item {
+	width: 100%;
 	overflow: hidden;
 	display: inline-table;
-	background: #eee;
-	margin-top: 10px;
+	border-top: 1px solid #eee;
+	padding-top: 10px;
 }
 
 .comment-image {
 	float: left;
-	margin: 2px;
 	display: table-cell;
 	vertical-align: top;
-}
-
-.comment-image {
 	max-height: 40px;
 	max-width: 40px;
 	height: 40px;
@@ -621,4 +624,20 @@ ul.comment-list {
 	display: table-cell;
 	width: 100%;
 	vertical-align: top;
+}
+
+/* modal styles */
+#addTask .modal-dialog {
+	width: 790px;
+}
+
+input#task-title {
+	margin-bottom: 10px;
+	border: 1px #ccc solid;
+	padding: 5px;
+}
+
+textarea#task-description {
+	border: 1px #ccc solid;
+	padding: 5px;
 }

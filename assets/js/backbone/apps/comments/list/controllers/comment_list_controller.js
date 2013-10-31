@@ -6,9 +6,8 @@ define([
   'comment_collection',
   'comment_list_view',
   'comment_form_view',
-  'comment_item_view',
-  'comment_form_view'
-], function ($, _, Backbone, Popovers, CommentCollection, CommentListView, CommentFormView, CommentItemView, CommentFormView) {
+  'comment_item_view'
+], function ($, _, Backbone, Popovers, CommentCollection, CommentListView, CommentFormView, CommentItemView) {
 
   var popovers = new Popovers();
 
@@ -17,14 +16,15 @@ define([
     el: ".comment-list-wrapper",
 
     events: {
-      "click .new-topic"              : "newTopic",
-      "click .reply-to"               : "reply",
-      "click [data-topic='true']"     : "toggleTopic",
-      "mouseenter .comment-user-link" : popovers.popoverPeopleOn
+      "click .new-topic"                  : "newTopic",
+      "click [data-topic='true']"         : "toggleTopic",
+      "mouseenter .comment-user-link"     : popovers.popoverPeopleOn,
+      "click a[href='#reply-to-comment']" : "reply"
     },
 
-    initialize: function () {
+    initialize: function (options) {
       var self = this;
+      this.options = options;
 
       this.initializeCommentCollection();
       this.initializeListeners();
@@ -94,7 +94,7 @@ define([
 
       var data = {
         comments: collection.toJSON()[0].comments
-      }
+      };
 
       var depth = {};
       for (var i = 0; i < data.comments.length; i += 1) {
@@ -107,95 +107,103 @@ define([
         }
       }
 
+      self.commentViews = [];
+      self.commentForms = [];
       _.each(data.comments, function (comment) {
-
-        // Render the topic view and then in that view spew out all of its children.
-        // console.log("Comment's with children:");
-        if (comment.topic) {
-          self.comment = new CommentItemView({
-            el: "#comment-list-null",
-            model: comment,
-            projectId: self.options.projectId,
-            collection: collection
-          }).render();
-        } else {
-          self.comment = new CommentItemView({
-            el: "#comment-list-" + comment.parentId,
-            model: comment,
-            projectId: self.options.projectId,
-            collection: collection
-          }).render();
-
-          if (comment.depth <= 1) {
-            // Place the commentForm at the bottom of the list of comments for that topic.
-            self.commentForm = new CommentFormView({
-              el: '#comment-form-' + comment.id,
-              projectId: comment.projectId,
-              parentId: comment.id,
-              collection: self.collection
-            });
-          } else {
-
-          }
-        }
-
+        self.renderComment(self, comment, collection);
       });
 
       this.initializeCommentUIAdditions();
     },
 
+    renderComment: function (self, comment, collection) {
+      // Render the topic view and then in that view spew out all of its children.
+      // console.log("Comment's with children:");
+      var commentIV = new CommentItemView({
+        el: "#comment-list-" + (comment.topic ? 'null' : comment.parentId),
+        model: comment,
+        projectId: comment.projectId,
+        collection: collection
+      }).render();
+      self.commentViews.push(commentIV);
+      if (comment.depth <= 1) {
+        // Place the commentForm at the bottom of the list of comments for that topic.
+        var commentFV = new CommentFormView({
+          el: '#comment-form-' + comment.id,
+          projectId: comment.projectId,
+          parentId: comment.id,
+          collection: collection,
+          depth: comment['depth']
+        });
+        self.commentForms.push(commentFV);
+      }
+    },
+
     initializeCommentUIAdditions: function () {
       popovers.popoverPeopleInit(".comment-user-link");
+      popovers.popoverPeopleInit(".project-people-div");
     },
 
     toggleTopic: function (e) {
-      if (e.preventDefault()) e.preventDefault();
+      if (e.preventDefault) e.preventDefault();
       // The next() is the adjacent DOM element, and that will always be
       // the list of comments that directly follows the topic (not child-literal of topic though).
       $(e.currentTarget).next().slideToggle();
     },
 
     reply: function (e) {
-      if (e.preventDefault()) e.preventDefault();
+      if (e.preventDefault) e.preventDefault();
       // The comment form is adjacent, not a child of the current target.
-      if ($("." + e.currentTarget.className + " ~ .comment-form").attr("data-clicked") === "true") {
-        $("." + e.currentTarget.className + " ~ .comment-form").addClass("hidden").attr("data-clicked", false);
+      // so find the li container, and then the form inside
+      var target = $($($(e.currentTarget).parents('li.comment-item')[0]).children('.comment-form')[0]);
+      if (target.data('clicked') == 'true') {
+        target.hide();
+        target.data('clicked', 'false');
       } else {
-        $("." + e.currentTarget.className + " ~ .comment-form").removeClass("hidden").attr("data-clicked", true);
+        target.show();
+        target.data('clicked', 'true');
       }
     },
 
     newTopic: function (e) {
-      if (e.preventDefault()) e.preventDefault();
+      var self = this;
+      if (e.preventDefault) e.preventDefault();
 
+      if (self.topicForm) {
+        self.topicForm.cleanup();
+      }
       self.topicForm = new CommentFormView({
-        el: '.comment-list-wrapper',
+        el: '.topic-form-wrapper',
         projectId: this.options.projectId,
         collection: this.collection,
-        topic: true
+        topic: true,
+        depth: -1
       });
     },
 
     addNewCommentToDom: function (modelJson, currentTarget) {
+      var self = this;
       modelJson['user'] = window.cache.currentUser;
 
-      if (modelJson.depth === undefined) {
-        modelJson['depth'] += parseInt($(currentTarget).parent().prev().prev().attr("data-depth"));
-      }
-
-      if (self.comment) self.comment.cleanup();
-      self.comment = new CommentItemView({
-        el: $(currentTarget).parent(),
-        model: modelJson
-      }).render();
+      modelJson['depth'] = $(currentTarget).data('depth') + 1;
+      self.renderComment(self, modelJson, self.collection);
+      self.initializeCommentUIAdditions();
 
       // Clear out the current div
       $(currentTarget).find("div[contentEditable=true]").text("");
     },
 
     cleanup: function () {
-      this.remove();
-      this.undelegateEvents()
+      for (var i in this.commentForms.reverse()) {
+        if (this.commentForms[i]) { this.commentForms[i].cleanup(); }
+      }
+      for (var i in this.commentViews.reverse()) {
+        if (this.commentViews[i]) { this.commentViews[i].cleanup(); }
+      }
+      if (this.topicForm) {
+        this.topicForm.cleanup();
+      }
+      removeView(this);
     }
 
   });

@@ -74,7 +74,7 @@
     <!-- END EVENTS -->
 
     <!-- BEGIN TASKS -->
-    <div class="list-box" id="task-list-wrapper">
+    <div class="list-box" id="task-list-wrapper" data-project-id="<%= data.id %>">
     </div>
 
   </div>
@@ -112,9 +112,10 @@
     <hr />
 
     <div class="comment-list-wrapper" style="clear: both;">
-      <h4>Discussions</h4>
+      <h4>Discussions
       <button class="btn btn-c3 btn-sm file-add new-topic" id="project-topic-new">New Topic</button>
-
+      </h4>
+      <div class="topic-form-wrapper"></div>
       <ul id="comment-list-null">
 
 

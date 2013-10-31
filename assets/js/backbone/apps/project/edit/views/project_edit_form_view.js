@@ -27,8 +27,8 @@ define([
     },
 
     edit: function (e) {
-      if (e.preventDefault()) e.preventDefault();
-      
+      if (e.preventDefault) e.preventDefault();
+
       var data = {
         title: $("#project-edit-form-title").val(),
         description: $("#project-edit-form-description").val()
