@@ -93,6 +93,6 @@ var clearContainer = function () {
 }
 
 var initializePageTransition = function () {
-  $("#container").append('<div id="ui_loader"><img src="/images/ajax-loader.gif" class="ajax_loader"/></div>');
+  $("#container").append('<div id="ui-loader"><img src="/images/ajax-loader.gif" class="ajax-loader"/></div>');
   $(window).scrollTop($(window).scrollTop());
 }

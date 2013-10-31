@@ -1,12 +1,6 @@
 /*****************
 =  GLOBAL
 ******************/
-/*
-#container {
-    width: 960px;
-    margin: 0 auto;
-}
-*/
 .clear {
 	clear: both;
 }
@@ -28,9 +22,27 @@
 }
 
 /*****************
+=  GLOBAL HELPERS
+******************/
+#ui-loader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+}
+
+.ajax-loader {
+		position: relative;
+		top: 150px;
+    margin: 0 auto;
+    display: block;
+}
+
+/*****************
 =  NAVBAR
 ******************/
-
 .navbar .nav .navbar-title-small {
 	font-size: 14px;
 	font-weight: bold;
@@ -83,7 +95,6 @@
 /*****************
 =  PROJECTS
 ******************/
-
 #projects {
 	display: inline-block !important;
 }
@@ -401,39 +412,8 @@ ul.tags > li {
 }
 
 /*****************
-=  TASKS
-******************/
-.task {
-	font-size: 13px;
-}
-.task-title {
-	font-size: 16px;
-	font-weight: bold;
-}
-
-.task-description {
-	margin-top: 10px;
-}
-
-.task-heading {
-	margin-top: 10px;
-	font-weight: bold;
-	font-size: 15px;
-}
-
-.task-view {
-	margin-top: 10px;
-}
-
-#task-list-wrapper {
-	margin-top: 20px;
-}
-
-
-/*****************
 =  EVENTS
 ******************/
-
 .event, .task {
 	width: 100%;
 	padding: 15px;
@@ -527,7 +507,6 @@ ul.tags > li {
 /*****************
 =  FILES
 ******************/
-
 .file-tag {
 	padding: 3px;
 	font-size: 10px;
@@ -548,7 +527,6 @@ ul.tags > li {
 /*****************
 =  COMMENTS
 ******************/
-
 .topic {
 	clear: both;
 	/*background-color: #f0f0f0;*/
@@ -626,7 +604,35 @@ ul.comment-list > li {
 	vertical-align: top;
 }
 
-/* modal styles */
+/*****************
+=  TASKS
+******************/
+.task {
+	font-size: 13px;
+}
+.task-title {
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.task-description {
+	margin-top: 10px;
+}
+
+.task-heading {
+	margin-top: 10px;
+	font-weight: bold;
+	font-size: 15px;
+}
+
+.task-view {
+	margin-top: 10px;
+}
+
+#task-list-wrapper {
+	margin-top: 20px;
+}
+
 #addTask .modal-dialog {
 	width: 790px;
 }
@@ -651,20 +657,4 @@ textarea#task-description {
 	background: #eee;
 	border-radius: 5px;
 	margin: 5px;
-}
-
-#ui_loader {
-    position:absolute;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    z-index:1000;
-}
-
-.ajax_loader {
-		position: relative;
-		top: 150px;
-    margin: 0 auto;
-    display: block;
 }
