@@ -88,11 +88,55 @@ var removeView = function (view) {
   view.$el.html("");
 }
 
+/**
+ * Clear out any el.
+ * @params {[The non-jquery mapped el for the view instance]}
+ * Return: Nothing.
+ */
+var clearEl = function (el) {
+  $(el).children().remove();
+}
+
+/**
+ * Clear out our global container for full page transitions.
+ * @params None
+ * @return Nothing
+ */
 var clearContainer = function () {
   $("#container").children().remove();
 }
 
-var initializePageTransition = function () {
-  $("#container").append('<div id="ui-loader"><img src="/images/ajax-loader.gif" class="ajax-loader"/></div>');
+/**
+ * This helps alleviate a common bug with ajax based
+ * page transitions. That is sometimes when the page pushes itself off the screen
+ * and allows a browser default background to show, after which scrolling
+ * up is required.  It is a somewhat rare bug, but useful to have this function
+ * if you need it.
+ *
+ * Return:
+ * nothing
+ */
+var scrollTop = function () {
   $(window).scrollTop($(window).scrollTop());
+}
+
+/**
+ * Add a method to the global Function object called "addSpinner",
+ * which allows us to call the chained method "addSpinner" from any function
+ * within the application.  Especially useful with render methods.
+ * @param  {[Backbone View Instance]} self
+ *
+ * Return:
+ * Attaches the spinner to the $el of the backbone view instance passed in, before that
+ * view can actually set its $el, thereby dynamically allowing a spinner to exist with little effort.
+ */
+var addSpinnerToFunctionPrototype = function (self) {
+  if (self) {
+    Function.prototype.addSpinner = function () {
+      self.$el.append("<i class='icon-spin icon-spinner'></i>")
+    }
+  } else {
+    throw new Error("Pass in a Backbone View class");
+  }
+
 }

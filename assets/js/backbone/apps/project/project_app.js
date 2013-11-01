@@ -29,7 +29,6 @@ define([
 
     show: function (id) {
       clearContainer();
-      initializePageTransition();
 
       var model = new ProjectModel();
       model.set({ id: id });
@@ -40,7 +39,7 @@ define([
 
     showTask: function (noop, taskId) {
       clearContainer();
-      initializePageTransition();
+      scrollTop();
 
       var self = this,
           model = new TaskModel();
@@ -58,7 +57,7 @@ define([
           });
 
           if (self.taskItemView) self.taskItemView.cleanup();
-          self.taskItemView = new TaskItemView({ model: taskModel, router: self }).render();
+          self.taskItemView = new TaskItemView({ model: taskModel, router: self });
         }
       });
     }
