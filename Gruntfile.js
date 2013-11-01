@@ -15,6 +15,7 @@
  */
 
 module.exports = function (grunt) {
+  grunt.loadNpmTasks('grunt-contrib-requirejs');
 
   /**
    * CSS files to inject in order
@@ -129,40 +130,18 @@ module.exports = function (grunt) {
   grunt.loadTasks(depsPath + '/grunt-contrib-cssmin/tasks');
   grunt.loadTasks(depsPath + '/grunt-contrib-less/tasks');
 
-  // Project configuration.
   grunt.initConfig({
 
-    // requirejs: {
-    //   // global config
-    //   options: {
-    //     baseUrl: "",
-    //     mainConfigFile: "",
-    //   },
-    //   production: {
-    //     // overwrite default config above
-    //     compile: {
-    //      options: {
-    //        name: "assets/js/backbone/app",
-    //        baseUrl: "assets/js/backbone",
-    //        mainConfigFile: "assets/js/backbone/config/require_config",
-    //        out: "static/app.min.js"
-    //      }
-    //     }
-    //     options: {
-    //       out: ""
-    //     }
-    //   },
-    //   development: {
-    //     // overwrites the default config above
-    //     options: {
-    //       out: "",
-    //       optimize: none // no minification
-    //     }
-    //   }
-    // },
-    //
-    // grunt.loadNpmTasks('grunt-contrib-requirejs');
-    // grunt.registerTask('default', ['requirejs'])
+    requirejs: {
+      compile: {
+        options: {
+          name: 'app',
+          baseUrl: "assets/js/backbone/app",
+          mainConfigFile: "assets/js/backbone/config/require_config.js",
+          out: "assets/js/prod/midas.js"
+        }
+      }
+    },
 
     pkg: grunt.file.readJSON('package.json'),
 
