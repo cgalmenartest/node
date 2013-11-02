@@ -26,6 +26,7 @@ define([
 
   var initialize = function () {
     var router = new ProfileRouter();
+    return router;
   } 
 
   return {

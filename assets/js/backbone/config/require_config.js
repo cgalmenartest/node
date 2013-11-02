@@ -27,6 +27,7 @@ require.config({
     //= Core App
     // ---------
     'app'                       : '../app',
+    'app-run'                   : '../app-run',
 
     // ---------
     //= Multi-tenant Router
@@ -145,11 +146,4 @@ require.config({
     }
   }
 
-});
-
-define([
-  'underscore',
-  'app'
-], function (Application) {
-  new Application();
 });

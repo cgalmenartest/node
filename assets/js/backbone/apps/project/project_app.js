@@ -66,6 +66,7 @@ define([
 
   var initialize = function () {
     var router = new ProjectRouter();
+    return router;
   }
 
   return {
