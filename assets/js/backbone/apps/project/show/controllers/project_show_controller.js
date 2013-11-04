@@ -35,8 +35,9 @@ define([
 			"click .edit-project"   					: "edit",
 			"click #like-button"    					: "like",
 			"keyup .comment-content"					: "search",
-			"keyup .participant-form"					: "userSearch",
-			"click #participant-save"					: "addParticipant",
+			"click #test_button"						: "testButton",
+			//"keyup .participant-form"					: "userSearch",
+			"click #participant-save"					: "addParticipants",
 			"click #tag-save"       					: "tagSave",
 			"click #tag-create"     					: "tagCreate",
 			"click .tag-delete"     					: "tagDelete",
@@ -47,6 +48,7 @@ define([
 		// The initialize method is mainly used for event bindings (for effeciency)
 		initialize: function () {
 			var self = this;
+			this.participants = [];
 
 			this.model.trigger("project:model:fetch", this.model.id);
 			this.listenTo(this.model, "project:model:fetch:success", function (model) {
@@ -59,7 +61,7 @@ define([
 				self.initializeHandlers();
 				self.initializeLikes();
 				self.initializeUI();
-				// self.initializeSelect2();
+				self.initializeParticipantSelect2();
 			});
 
 
@@ -94,33 +96,6 @@ define([
 			});
 		},
 
-		userSearch: function () {
-			$(".participant-form").midasAutocomplete({
-				backboneEvents: true,
-				// If we are using backbone here, then a lot of these
-				// misc. AJAX options we are passing are unecessary.  So we should somehow
-				// manage that in an elegant way.
-				backbone: false,
-				apiEndpoint: '/api/ac/user',
-				// the query param expects one api endpoint IE:
-				// /nested/endpoint?QUERYPARAM=$(".search").val()
-				// So it is not something that you can chain params onto.
-				// It expects you to send the data back as input data through that query param
-				// one character at a time.
-				queryParam: 'q',
-				type: 'POST',
-				contentType: 'json',
-
-				// The plugin will accept any trigger key'd in here, and then
-				// use that to start the search process.  if it doesn't exist it will not search.
-				trigger: "@",
-				searchResultsClass: ".search-result-wrapper",
-
-				success: function (data) {
-
-				}
-			});
-		},
 
 		initializeItemView: function () {
 			var self = this;
@@ -164,41 +139,43 @@ define([
 
 
 
-		// initializeSelect2: function () {
-  //     var self = this;
-  //     var formatResult = function (object, container, query) {
-  //       return object.name;
-  //     };
+  	initializeParticipantSelect2: function () {
+    	var self = this;
+      	var formatResult = function (object, container, query) {
+        	return object.name;
+      	};
 
-  //     var modelJson = this.model.toJSON();
-  //     $("#participant-text").select2({
-  //       placeholder: 'Select a Participant',
-  //       formatResult: formatResult,
-  //       formatSelection: formatResult,
-  //       minimumInputLength: 1,
-  //       ajax: {
-  //         url: '/api/ac/user',
-  //         dataType: 'json',
-  //         data: function (term) {
-  //           return {
-  //             q: term
-  //           };
-  //         },
-  //         results: function (data) {
-  //           return { results: data };
-  //         }
-  //       }
-  //     });
+		var modelJson = this.model.toJSON();
+		$("#participants").select2({
+		    placeholder: 'Select a Participant',
+		    multiple: true,
+		    formatResult: formatResult,
+		    formatSelection: formatResult,
+		    minimumInputLength: 1,
+		    ajax: {
+		      	url: '/api/ac/user',
+		      	dataType: 'json',
+		      	data: function (term) {
+		        	return {
+		         		q: term
+		        	};
+		      	},
+		      	results: function (data) {
+		        	return { results: data };
+		    	}
+	    	}
+	  	});
+		// if (modelJson.agency) {
+  //       	$("#company").select2('data', modelJson.agency.tag);
+  //     	}
+	  	$("#participants").on('change', function (e) {
+	    	self.model.trigger("project:input:changed", e);
+		});
 
-  //     $("#participant-text").on('change', function (e) {
-  //       self.model.trigger("project:input:changed", e);
-  //     });
+		//var s2data = $("#participants").select2("data");
 
-  //   },
-
-
-
-
+	  	///$("#test_button").on('click', function(e){if (e.preventDefault) e.preventDefault();alert(data);});
+    },
 
 
 
@@ -237,24 +214,21 @@ define([
 
 
 
-		}
+		},
 
-		addParticipant: function(e){
+		addParticipants: function(e){
 		if (e.preventDefault) e.preventDefault();
 		var self = this;
 		var participants = {};
 
-
-
+		if (e.preventDefault) e.preventDefault();
+    	var s2data = $("#participants").select2("data");
+    	console.log(s2data);
 
 		this.model.trigger("project:update:participants", participants);
 
 		},
 
-		removeParticipant: function(e){
-
-
-		},
 
 
 		like: function (e) {
