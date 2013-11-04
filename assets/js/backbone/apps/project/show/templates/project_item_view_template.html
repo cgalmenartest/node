@@ -103,12 +103,15 @@
     <form action class="" role="form">
 
 
-      <div class="input-group">
-        <div class="participant-form form-control input-sm select2-input" id="participant-text" contenteditable="true"></div>
-        <span class="input-group-btn">
-          <input class="btn btn-c3 btn-sm" id="participant-save" type="submit" value=" Add Participant ">
-        </span>
+      <div class="form-group">
+      <label for="participants" class="col-lg-3 control-label">Participants</label>
+        <!--<div class="participant-form form-control input-sm select2-input" id="participant-text" contenteditable="true"></div>-->
+        <div class="col-lg-9">
+          <input style="width: 100%" id="participants" name="participants" type="hidden" value=" Add Participant " />
+          <input id="participant-save" name="participant-save" type="submit" value="Save" />
+        </div>
       </div>
+
 
     </form>
 
