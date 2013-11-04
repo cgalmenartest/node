@@ -35,7 +35,7 @@ define([
 			"click .edit-project"   					: "edit",
 			"click #like-button"    					: "like",
 			"keyup .comment-content"					: "search",
-			"click #test_button"						: "testButton",
+			"click #participant-form-toggle"			: "toggleParticipants",
 			//"keyup .participant-form"					: "userSearch",
 			"click #participant-save"					: "addParticipants",
 			"click #tag-save"       					: "tagSave",
@@ -171,7 +171,9 @@ define([
 	  	$("#participants").on('change', function (e) {
 	    	self.model.trigger("project:input:changed", e);
 		});
-
+	  	$('#project-participants-form').hide();
+	  	$('#project-participants-show').show();
+	  	$('#participant-form-toggle').show();
 		//var s2data = $("#participants").select2("data");
 
 	  	///$("#test_button").on('click', function(e){if (e.preventDefault) e.preventDefault();alert(data);});
@@ -209,6 +211,13 @@ define([
 			this.model.trigger("project:update:state", state);
 		},
 
+		toggleParticipants : function(e){
+			$('#project-participants-form').toggle(400);
+			$('#project-participants-show').toggle(400);
+			$('#participant-form-toggle').toggle(400);
+
+		},
+
 		getParticipants: function(e){
 
 
@@ -224,7 +233,7 @@ define([
 		if (e.preventDefault) e.preventDefault();
     	var s2data = $("#participants").select2("data");
     	console.log(s2data);
-
+    	self.toggleParticipants();
 		this.model.trigger("project:update:participants", participants);
 
 		},

@@ -98,26 +98,30 @@
     </div>
     <img src="/images/mockups/status-mockup.gif" style="margin-bottom: 20px"/>
 
-    <h4>Project Participants</h4>
+    <h4>Project Participants
+    <button class="btn btn-c3 btn-sm file-add" id="participant-form-toggle" name="participant-form-toggle" >Edit Participants</button>
+    </h4>
 
-    <form action class="" role="form">
+
+    <div id="project-participants-form">
+      <form action class="" role="form">
 
 
-      <div class="form-group">
-      <label for="participants" class="col-lg-3 control-label">Participants</label>
-        <!--<div class="participant-form form-control input-sm select2-input" id="participant-text" contenteditable="true"></div>-->
-        <div class="col-lg-9">
-          <input style="width: 100%" id="participants" name="participants" type="hidden" value=" Add Participant " />
-          <input id="participant-save" name="participant-save" type="submit" value="Save" />
+        <div class="form-group">
+        <label for="participants" class="col-lg-3 control-label">Participants</label>
+          <!--<div class="participant-form form-control input-sm select2-input" id="participant-text" contenteditable="true"></div>-->
+          <div class="col-lg-9">
+            <input style="width: 100%" id="participants" name="participants" type="hidden" value=" Add Participant " />
+            <button id="participant-save" name="participant-save" class="btn btn-c3 btn-sm">Save</button>
+          </div>
         </div>
-      </div>
 
 
-    </form>
+      </form>
+    </div>
 
 
-
-    <div class="project-contributors">
+    <div id="project-participants-show">
       <% if (data.owners) { %>
         <% for (var i = 0; i < data.owners.length; i++) { %>
         <div class="project-people-div" data-userid="<%= data.owners[i].userId %>">
@@ -125,6 +129,14 @@
         </div>
         <% } %>
       <% } %>
+      <% if (data.participants) { %>
+        <% for (var i = 0; i < data.participants.length; i++) { %>
+        <div class="project-people-div" data-userid="<%= data.participants[i].userId %>">
+          <img src="/api/user/photo/<%= data.participants[i].userId %>" class="project-people"/>
+        </div>
+        <% } %>
+      <% } %>
+
     </div>
 
     <hr />
