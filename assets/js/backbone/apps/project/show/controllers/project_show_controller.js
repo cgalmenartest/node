@@ -67,7 +67,7 @@ define([
 			});
 
 
-			console.log(self);
+			console.log(self.model);
 		},
 
 		search: function () {
@@ -149,7 +149,7 @@ define([
 
 		var modelJson = this.model.toJSON();
 		$("#participants").select2({
-		    placeholder: 'Select a Participant',
+		    placeholder: 'Select Participants',
 		    multiple: true,
 		    formatResult: formatResult,
 		    formatSelection: formatResult,
@@ -168,13 +168,17 @@ define([
 	    	}
 	  	});
 
+			var owners = [];
+
+			_.each(this.model.attributes.owners, self.recreateUserFromID);
+
 		//$("#participants").select2('data', [{field:"name", id:1,name:"Dan Kottke", target:"user", value: "Dan Kottke"}]);
 
-		$("#participants").select2("data",this.model.attributes.participants);
+		//$("#participants").select2("data",this.model.attributes.owners);
 
-    	$("#participants").on('change', function (e) {
-	    	self.model.trigger("project:input:changed", e);
-		});
+   //  	$("#participants").on('change', function (e) {
+   //  		self.model.trigger("project:input:changed", e);
+			// });
 	  	$('#project-participants-form').hide();
 	  	$('#project-participants-show').show();
 	  	$('#participant-edit').show();
@@ -200,6 +204,12 @@ define([
 
     // },
 
+    recreateUserFromID : function(id){
+
+
+
+
+    },
 
 
 
