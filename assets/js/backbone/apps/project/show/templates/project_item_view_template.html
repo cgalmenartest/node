@@ -99,11 +99,12 @@
     <img src="/images/mockups/status-mockup.gif" style="margin-bottom: 20px"/>
 
     <h4>Project Participants
-    <button class="btn btn-c3 btn-sm file-add" id="participant-form-toggle" name="participant-form-toggle" >Edit Participants</button>
+    <button class="btn btn-c3 btn-sm file-add participant-form-toggle" id="participant-edit" name="participant-edit" >Edit Participants</button>
+    <button id="participant-save" name="participant-save" class="btn btn-c3 btn-sm file-add participant-form-toggle">Save</button>
     </h4>
 
 
-    <div id="project-participants-form">
+    <div id="project-participants-form" class="participant-form-toggle">
       <form action class="" role="form">
 
 
@@ -112,7 +113,7 @@
           <!--<div class="participant-form form-control input-sm select2-input" id="participant-text" contenteditable="true"></div>-->
           <div class="col-lg-9">
             <input style="width: 100%" id="participants" name="participants" type="hidden" value=" Add Participant " />
-            <button id="participant-save" name="participant-save" class="btn btn-c3 btn-sm">Save</button>
+
           </div>
         </div>
 
@@ -121,7 +122,7 @@
     </div>
 
 
-    <div id="project-participants-show">
+    <div id="project-participants-show" class="participant-form-toggle">
       <% if (data.owners) { %>
         <% for (var i = 0; i < data.owners.length; i++) { %>
         <div class="project-people-div" data-userid="<%= data.owners[i].userId %>">

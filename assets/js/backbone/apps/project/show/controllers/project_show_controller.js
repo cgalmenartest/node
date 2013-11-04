@@ -35,7 +35,7 @@ define([
 			"click .edit-project"   					: "edit",
 			"click #like-button"    					: "like",
 			"keyup .comment-content"					: "search",
-			"click #participant-form-toggle"			: "toggleParticipants",
+			"click button.participant-form-toggle"		: "toggleParticipants",
 			//"keyup .participant-form"					: "userSearch",
 			"click #participant-save"					: "addParticipants",
 			"click #tag-save"       					: "tagSave",
@@ -62,10 +62,12 @@ define([
 				self.initializeLikes();
 				self.initializeUI();
 				self.initializeParticipantSelect2();
+				//self.InitializeParticipants();
+
 			});
 
 
-
+			console.log(self);
 		},
 
 		search: function () {
@@ -165,19 +167,38 @@ define([
 		    	}
 	    	}
 	  	});
-		// if (modelJson.agency) {
-  //       	$("#company").select2('data', modelJson.agency.tag);
-  //     	}
-	  	$("#participants").on('change', function (e) {
+
+		//$("#participants").select2('data', [{field:"name", id:1,name:"Dan Kottke", target:"user", value: "Dan Kottke"}]);
+
+		$("#participants").select2("data",this.model.attributes.participants);
+
+    	$("#participants").on('change', function (e) {
 	    	self.model.trigger("project:input:changed", e);
 		});
 	  	$('#project-participants-form').hide();
 	  	$('#project-participants-show').show();
-	  	$('#participant-form-toggle').show();
+	  	$('#participant-edit').show();
+	  	$('#participant-save').hide();
+
+
+
+
+		// if (modelJson.agency) {
+  //       	$("#company").select2('data', modelJson.agency.tag);
+  //     	}
+
 		//var s2data = $("#participants").select2("data");
 
 	  	///$("#test_button").on('click', function(e){if (e.preventDefault) e.preventDefault();alert(data);});
     },
+
+    // InitializeParticipants : function(e){
+
+    // 	var self = this;
+
+
+
+    // },
 
 
 
@@ -212,10 +233,7 @@ define([
 		},
 
 		toggleParticipants : function(e){
-			$('#project-participants-form').toggle(400);
-			$('#project-participants-show').toggle(400);
-			$('#participant-form-toggle').toggle(400);
-
+			$('.participant-form-toggle').toggle(400);
 		},
 
 		getParticipants: function(e){
@@ -233,7 +251,7 @@ define([
 		if (e.preventDefault) e.preventDefault();
     	var s2data = $("#participants").select2("data");
     	console.log(s2data);
-    	self.toggleParticipants();
+    	//self.toggleParticipants();
 		this.model.trigger("project:update:participants", participants);
 
 		},
