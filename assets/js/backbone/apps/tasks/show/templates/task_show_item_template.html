@@ -1,2 +1,45 @@
-<!-- This gets rendered inside of #container -->
-<h1>Task Show View</h1>
+<div class="row">
+  <div class="col-lg-12">
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-4 project-sidebar">
+    <!-- LEFT SIDEBAR -->
+    <div class="row like-content">
+      <div class="col-lg-12">
+        <a href="#" id="like-button">
+          <i id="like-button-icon" class="icon icon-star-empty icon-large gold"></i>
+        </a>
+
+        <div class="pull-right like-buttons">
+          <button class="btn btn-c4"><i class="icon icon-envelope-alt"></i> Email</button>
+          <button class="btn btn-c3"><i class="icon icon-twitter"></i> Tweet</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-header-wrapper">
+    </div>
+
+    <div class="tag-wrapper">
+      <strong>Tags:</strong>
+      <% _.each(tags, function (tag) { %>
+        <div class="task-tag"><%= tag.tag.name %></div>
+      <% }) %>
+    </div>
+  </div>
+
+  <div class="col-lg-8">
+    <!-- RIGHT MAIN BAR -->
+    <div class="main-section">
+
+      <h1><%= title %></h1>
+
+      <div class="project-description">
+        <%= description %>
+      </div>
+
+    </div> <!-- /main-section -->
+  </div>
+</div>

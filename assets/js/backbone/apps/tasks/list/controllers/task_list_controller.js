@@ -103,7 +103,7 @@ define([
       var projectId = parseInt($(e.currentTarget).parent().parent().parent().attr('data-project-id')),
           taskId    = parseInt($(e.currentTarget).parent().parent().attr('data-id'));
 
-      Backbone.history.navigate('projects/' + projectId + '/tasks/' + taskId, { trigger: true });
+      Backbone.history.navigate('projects/' + projectId + '/tasks/' + taskId, { trigger: true }, taskId);
     },
 
     cleanup: function () {
