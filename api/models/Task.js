@@ -5,10 +5,10 @@
 module.exports = {
 
   attributes: {
-    // Current state of the task (active, closed, etc)
+    // Current state of the task
     state: {
         type: 'STRING',
-        defaultsTo: 'draft'
+        defaultsTo: 'public'
     },
     // user id of the task owner
     userId: 'INTEGER',
