@@ -55,7 +55,6 @@ define([
     },
 
     renderEventCollectionView: function (collection) {
-
       if (this.eventCollectionView) {
         this.eventCollectionView.cleanup()
       }
@@ -63,7 +62,8 @@ define([
       this.eventCollectionView = new EventCollectionView({
         el: "#event-list-wrapper",
         onRender: true,
-        collection: collection
+        collection: collection,
+        projectId: this.options.projectId
       });
 
       popovers.popoverPeopleInit(".project-people-div");
