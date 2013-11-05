@@ -20,17 +20,17 @@ define([
 
       this.initializeSelect2Data();
 
-      _.each(this.model.toJSON().tags, function (tag) {
-        if (tag.tag.type === 'people') {
-          self.data['people'] = tag.tag;
-        } else if (tag.tag.type === 'length') {
-          self.data['length'] = tag.tag;
-        } else if (tag.tag.type === 'skills-required') {
-          self.data['skillsRequired'] = tag.tag;
-        } else if (tag.tag.type === 'time-required') {
-          self.data['timeRequired'] = tag.tag;
-        }
-      });
+      // _.each(this.model.toJSON().tags, function (tag) {
+      //   if (tag.tag.type === 'people') {
+      //     self.data['people'] = tag.tag;
+      //   } else if (tag.tag.type === 'length') {
+      //     self.data['length'] = tag.tag;
+      //   } else if (tag.tag.type === 'skills-required') {
+      //     self.data['skillsRequired'] = tag.tag;
+      //   } else if (tag.tag.type === 'time-required') {
+      //     self.data['timeRequired'] = tag.tag;
+      //   }
+      // });
 
       this.data['model'] = this.model.toJSON();
 
