@@ -65,6 +65,15 @@ define([
           next      = current.next(),
           nextHtml  = next.html();
 
+      var nextWizardStep = {
+        exists: function () {
+          return !_.isUndefined(nextHtml)
+        },
+        doesNotExist: function () {
+          return _.isUndefined(nextHtml)
+        }
+      }
+
       if (_.isEqual(current.next().children("input[type='submit']").length, 0)) {
         // no-op
       } else {
@@ -72,22 +81,11 @@ define([
         current.next().children("input[type='submit']").css("float", "right").css("margin-top", "10px");
       };
 
-      if (nextWizardStep().exists()) {
+      if (nextWizardStep.exists()) {
         hideCurrentAndInitializeNextWizardStep();
-      } else if (!nextWizardStepExists().doesNotExist()) {
+      } else if (nextWizardStepExists.doesNotExist()) {
         console.log("And here we switch the the button logic to now ready for submit.")
       };
-
-      function nextWizardStep() {
-        return {
-          exists: function () {
-            return !_.isUndefined(nextHtml)
-          },
-          doesNotExist: function () {
-            return _.isUndefined(nextHtml)
-          }
-        }
-      }
 
       function hideCurrentAndInitializeNextWizardStep () {
         current.hide();
