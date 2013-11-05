@@ -310,6 +310,13 @@ ul.tags > li {
 ******************/
 .list-box {
 	margin: 0;
+	max-height: 450px;
+	overflow: hidden;
+}
+
+.list-scroll {
+	overflow-y: scroll;
+	max-height: 414px;
 }
 
 .list-box > h2 {
@@ -408,7 +415,7 @@ ul.tags > li {
 	width: 37px;
 	padding-right: 10px;
 	padding-left: 10px;
-	display: inline-table;
+	display: table-cell;
 }
 
 .event > .event-title {
@@ -590,9 +597,12 @@ ul.comment-list > li {
 .task {
 	font-size: 13px;
 }
+
 .task-title {
-	font-size: 16px;
+	font-size: 14px;
 	font-weight: bold;
+	line-height: 1.1em;
+	margin-bottom: 10px;
 }
 
 .task-description {
@@ -607,10 +617,6 @@ ul.comment-list > li {
 
 .task-view {
 	margin-top: 10px;
-}
-
-#task-list-wrapper {
-	margin-top: 20px;
 }
 
 #addTask .modal-dialog {

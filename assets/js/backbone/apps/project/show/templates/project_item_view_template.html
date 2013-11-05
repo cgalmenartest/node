@@ -67,14 +67,49 @@
     <div class="tag-wrapper">
     </div>
 
-    <!-- BEGIN EVENTS -->
-    <div class="list-box" id="event-list-wrapper">
+    <hr>
 
-    </div>
-    <!-- END EVENTS -->
-
-    <!-- BEGIN TASKS -->
-    <div class="list-box" id="task-list-wrapper" data-project-id="<%= data.id %>">
+    <h4 class="clearfix">Attachments
+      <button class="btn btn-c3 btn-sm file-add">Add File</button>
+    </h4>
+    <div class="file-list">
+      <table class="table table-hover table-condensed">
+        <tbody>
+          <tr>
+            <td>
+              <span class="file-tag c3-bg white">wikipedia</span>
+            </td>
+            <td>
+              <a href="http://en.wikipedia.org/wiki/Presidential_Innovation_Fellows">Presidential Innovation Fellows</a>
+            </td>
+            <td class="file-uploader">
+              <a href="#">Joe Polastre</a>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span class="file-tag c1-bg white">project</span>
+            </td>
+            <td>
+              <a href="#">GSA Open Opportunities</a>
+            </td>
+            <td class="file-uploader">
+              <a href="#">Dain Miller</a>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span class="file-tag c0-bg white">file</span>
+            </td>
+            <td>
+              <a href="#">innovation_styleguide.v1.1.ai</a>
+            </td>
+            <td class="file-uploader">
+              <a href="#">Joe Polastre</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
   </div>
@@ -109,10 +144,25 @@
       <% } %>
     </div>
 
-    <hr />
+    <div class="row">
+      <div class="col-lg-6">
+        <!-- BEGIN TASKS -->
+        <div class="list-box" id="task-list-wrapper" data-project-id="<%= data.id %>">
+        </div>
+        <!-- END TASKS -->
+      </div>
+      <div class="col-lg-6">
+        <!-- BEGIN EVENTS -->
+        <div class="list-box" id="event-list-wrapper">
+        </div>
+        <!-- END EVENTS -->
+      </div>
+    </div>
+
+    <hr>
 
     <div class="comment-list-wrapper" style="clear: both;">
-      <h4>Discussions
+      <h4>Discussion
       <button class="btn btn-c3 btn-sm file-add new-topic" id="project-topic-new">New Topic</button>
       </h4>
       <div class="topic-form-wrapper"></div>
@@ -122,49 +172,9 @@
       </ul>
     </div>
 
-    <hr class="clear" />
-
-    <h4 class="clearfix">Attachments
-      <button class="btn btn-c3 btn-sm file-add">Add File</button>
-    </h4>
-    <div class="file-list">
-      <table class="table table-hover table-condensed">
-        <tbody>
-          <tr>
-            <td>
-              <span class="file-tag c3-bg white">wikipedia</span>
-            </td>
-            <td>
-              <a href="http://en.wikipedia.org/wiki/Presidential_Innovation_Fellows">Presidential Innovation Fellows</a>
-            </td>
-            <td class="file-uploader">
-              added by <a href="#">Joe Polastre</a>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <span class="file-tag c1-bg white">project</span>
-            </td>
-            <td>
-              <a href="#">GSA Open Opportunities</a>
-            </td>
-            <td class="file-uploader">
-              added by <a href="#">Dain Miller</a>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <span class="file-tag c0-bg white">file</span>
-            </td>
-            <td>
-              <a href="#">innovation_styleguide.v1.1.ai</a>
-            </td>
-            <td class="file-uploader">
-              added by <a href="#">Joe Polastre</a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <!-- add a space at the bottom of the page until we figure out what goes here -->
+    <div style="height: 50px;">
     </div>
+
   </div>
 </div>

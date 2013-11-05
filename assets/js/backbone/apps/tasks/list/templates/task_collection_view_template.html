@@ -3,6 +3,14 @@
   <a href="#addTask" class="btn btn-c0 btn-xs list-add add-task" data-toggle="modal">Add Opportunity</a>
 </h2>
 
+<div class="list-scroll">
+<% if (tasks.length == 0) { %>
+  <div class="task sidebar-c3-light sidebar-c3-bar" data-id="null">
+    <div class="task-title">
+      No current opportunities.
+    </div>
+  </div>
+<% } %>
 <% _.each(tasks, function(task) { %>
   <div class="task sidebar-c3-light sidebar-c3-bar" data-id="<%= task.id %>">
     <div class="task-title">
@@ -30,3 +38,4 @@
     </div>
   </div>
 <% }) %>
+</div>
