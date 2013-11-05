@@ -72,14 +72,29 @@ define([
         current.next().children("input[type='submit']").css("float", "right").css("margin-top", "10px");
       };
 
-      if (!_.isUndefined(nextHtml)) {
-        current.children().hide();
+      if (nextWizardStep().exists()) {
+        hideCurrentAndInitializeNextWizardStep();
+      } else if (!nextWizardStepExists().doesNotExist()) {
+        console.log("And here we switch the the button logic to now ready for submit.")
+      };
+
+      function nextWizardStep() {
+        return {
+          exists: function () {
+            return !_.isUndefined(nextHtml)
+          },
+          doesNotExist: function () {
+            return _.isUndefined(nextHtml)
+          }
+        }
+      }
+
+      function hideCurrentAndInitializeNextWizardStep () {
+        current.hide();
         current.removeClass("current");
         next.addClass("current");
         next.show();
-      } else if (_.isUndefined(nextHtml)) {
-        console.log("And here we switch the the button logic to now ready for submit.")
-      };
+      }
 
     },
 
