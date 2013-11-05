@@ -32,7 +32,7 @@
                         <%- project.taskCount %>
                     </div>
                     <div class="project-list-count-text c3">
-                        task<% if (project.taskCount == 1) { %>s<% } %>
+                        task<% if (project.taskCount != 1) { %>s<% } %>
                     </div>
                 </div>
                 <div class="project-list-counts-col">
@@ -40,7 +40,7 @@
                         <%- project.commentCount %>
                     </div>
                     <div class="project-list-count-text c0">
-                        comment<% if (project.commentCount == 1) { %>s<% } %>
+                        comment<% if (project.commentCount != 1) { %>s<% } %>
                     </div>
                 </div>
                 <div class="project-list-counts-col">
@@ -48,7 +48,7 @@
                         <%- project.ownerCount %>
                     </div>
                     <div class="project-list-count-text c2  ">
-                        <% if (project.ownerCount == 1) { %>people<% } else { %>person<% } %>
+                        <% if (project.ownerCount != 1) { %>people<% } else { %>person<% } %>
                     </div>
                 </div>
             </div>
