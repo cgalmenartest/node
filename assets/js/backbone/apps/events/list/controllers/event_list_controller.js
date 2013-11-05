@@ -31,8 +31,6 @@ define([
         $(".modal").modal('hide')
         this.requestEventsCollectionData()
       });
-
-
     },
 
     fireUpEventsCollection: function () {
