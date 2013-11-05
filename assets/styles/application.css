@@ -605,10 +605,6 @@ ul.comment-list > li {
 	margin-bottom: 10px;
 }
 
-.task-description {
-	margin-top: 10px;
-}
-
 .task-heading {
 	margin-top: 10px;
 	font-weight: bold;
@@ -643,4 +639,10 @@ textarea#task-description {
 	background: #eee;
 	border-radius: 5px;
 	margin: 5px;
+}
+
+.task-show-description {
+	font-size: 18px;
+	margin-bottom: 20px;
+	line-height: 1.5em;
 }

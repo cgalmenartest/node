@@ -100,8 +100,8 @@ define([
 
     show: function (e) {
       if (e.preventDefault) e.preventDefault();
-      var projectId = parseInt($(e.currentTarget).parent().parent().parent().attr('data-project-id')),
-          taskId    = parseInt($(e.currentTarget).parent().parent().attr('data-id'));
+      var projectId = $(e.currentTarget).data('projectid'),
+          taskId    = $(e.currentTarget).data('id');
 
       Backbone.history.navigate('projects/' + projectId + '/tasks/' + taskId, { trigger: true }, taskId);
     },
