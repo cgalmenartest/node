@@ -3,9 +3,10 @@ define([
   'popovers',
   'underscore',
   'backbone',
+  'async',
   'base_view',
   'text!task_show_template'
-], function (Bootstrap, Popovers, _, Backbone, BaseView, TaskShowTemplate) {
+], function (Bootstrap, Popovers, _, Backbone, async, BaseView, TaskShowTemplate) {
 
   var TaskItemView = BaseView.extend({
 
@@ -14,9 +15,26 @@ define([
     el: "#container",
 
     render: function () {
+      var self  = this;
+      this.data = {};
+
       this.initializeSelect2Data();
 
-      var compiledTemplate = _.template(TaskShowTemplate, this.model.toJSON());
+      _.each(this.model.toJSON().tags, function (tag) {
+        if (tag.tag.type === 'people') {
+          self.data['people'] = tag.tag;
+        } else if (tag.tag.type === 'length') {
+          self.data['length'] = tag.tag;
+        } else if (tag.tag.type === 'skills-required') {
+          self.data['skillsRequired'] = tag.tag;
+        } else if (tag.tag.type === 'time-required') {
+          self.data['timeRequired'] = tag.tag;
+        }
+      });
+
+      this.data['model'] = this.model.toJSON();
+
+      var compiledTemplate = _.template(TaskShowTemplate, this.data);
       $(this.el).html(compiledTemplate)
 
       var tags = [
