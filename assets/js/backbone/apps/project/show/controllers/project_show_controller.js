@@ -8,13 +8,14 @@ define([
 	'popovers',
 	'base_controller',
 	'project_item_view',
+	'projectowner_show_view',
 	'task_list_controller',
 	'event_list_controller',
 	'comment_list_controller',
 	'comment_form_view',
 	'modal_component',
 	'autocomplete'
-], function ($, _, async, Backbone, utils, Popovers, BaseController, ProjectItemView,
+], function ($, _, async, Backbone, utils, Popovers, BaseController, ProjectItemView, ProjectownerShowView,
 	TaskListController, EventListController, CommentListController, CommentFormView,
 	ModalComponent, autocomplete) {
 
@@ -35,11 +36,6 @@ define([
 			"click .edit-project"   					: "edit",
 			"click #like-button"    					: "like",
 			"keyup .comment-content"					: "search",
-			"click button.owner-form-toggle"			: "toggleOwners",
-			//"click button.participant-form-toggle"		: "toggleParticipants",
-			//"keyup .participant-form"					: "userSearch",
-			"click #owner-save"							: "saveOwners",
-			//"click #participant-save"					: "addParticipants",
 			"click #tag-save"       					: "tagSave",
 			"click #tag-create"     					: "tagCreate",
 			"click .tag-delete"     					: "tagDelete",
@@ -56,6 +52,7 @@ define([
 			this.listenTo(this.model, "project:model:fetch:success", function (model) {
 				this.model = model;
 				self.initializeItemView();
+				self.initializeOwners();
 			});
 
 			this.model.on("project:show:rendered", function () {
@@ -63,9 +60,7 @@ define([
 				self.initializeHandlers();
 				self.initializeLikes();
 				self.initializeUI();
-				//self.initializeParticipantSelect2();
-				self.initializeOwnerSelect2();
-				//self.InitializeParticipants();
+
 
 			});
 			// console.log(cache.currentUser);
@@ -109,6 +104,16 @@ define([
 			this.projectShowItemView  = new ProjectItemView({ model: this.model }).render();
 		},
 
+
+		initializeOwners : function(){
+			var self = this;
+
+			if (this.projectownerShowView) this.projectownerShowView.cleanup();
+			console.log(this.projectownerShowView = new ProjectownerShowView({ model: this.model }));
+			this.projectownerShowView = new ProjectownerShowView({ model: this.model }).render();
+
+		},
+
 		initializeItemViewControllers: function () {
 			this.taskListController = new TaskListController({ projectId: this.model.id });
 
@@ -139,63 +144,6 @@ define([
 		initializeUI: function() {
 			popovers.popoverPeopleInit(".project-people-div");
 		},
-
-
-	initializeOwnerSelect2: function () {
-    	var self = this;
-      	var formatResult = function (object, container, query) {
-        	return object.name;
-      	};
-
-		var modelJson = this.model.toJSON();
-		//console.log(modelJson);
-		$("#owners").select2({
-		    placeholder: 'Select Project Owners',
-		    multiple: true,
-		    formatResult: formatResult,
-		    formatSelection: formatResult,
-		    minimumInputLength: 1,
-		    ajax: {
-		      	url: '/api/ac/user',
-		      	dataType: 'json',
-		      	data: function (term) {
-		        	return {
-		         		q: term
-		        	};
-		      	},
-		      	results: function (data) {
-		        	return { results: data };
-		    	}
-	    	}
-	  	});
-
-			// var owners = [];
-
-			// _.each(this.model.attributes.owners, self.recreateUserFromID);
-
-		//$("#participants").select2('data', [{field:"name", id:1,name:"Dan Kottke", target:"user", value: "Dan Kottke"}]);
-
-		//$("#owners").select2("data",this.model.attributes.owners);
-
-   //  	$("#participants").on('change', function (e) {
-   //  		self.model.trigger("project:input:changed", e);
-			// });
-	  	$('#project-owners-form').hide();
-	  	$('#project-owners-show').show();
-	  	$('#owner-edit').show();
-	  	$('#owner-save').hide();
-
-
-
-
-		// if (modelJson.agency) {
-  //       	$("#company").select2('data', modelJson.agency.tag);
-  //     	}
-
-		//var s2data = $("#participants").select2("data");
-
-	  	///$("#test_button").on('click', function(e){if (e.preventDefault) e.preventDefault();alert(data);});
-    },
 
 
 
@@ -229,64 +177,6 @@ define([
 			$("#project-admin-state").button('loading');
 			this.model.trigger("project:update:state", state);
 		},
-
-		toggleOwners : function(e){
-			$('.owner-form-toggle').toggle(400);
-		},
-
-
-
-		saveOwners : function(e){
-			if (e.preventDefault) e.preventDefault();
-			var self = this;
-			var oldOwners = this.model.attributes.owners || [];
-			var s2data = $("#owners").select2("data")  || [];
-			var oldOwnerIds = _.map(oldOwners, function(owner){ return owner.userId }) || [];
-			var s2OwnerIds = _.map(s2data, function(owner){ return owner.id }) || [];
-
-			var newOwnerIds = _.difference(s2OwnerIds, oldOwnerIds) || [];
-			var removeOwnerIds = _.difference(oldOwnerIds, s2OwnerIds) || [];
-			//makes it so you can't remove yourself as owner. Can debate this point later.
-			removeOwnerIds = _.filter(removeOwnerIds, function(userId){ return !(cache.currentUser.id === userId); }, this)  || [];
-
-
-			var removeOwners = _.filter(oldOwners, function(owner){ return _.indexOf( removeOwnerIds, owner.userId) >= 0 ? true : false; } , this)  || [];
-			var removePOIds = _.map( removeOwners, function(owner){ return owner.id } )  || [];
-			_.each(newOwnerIds, this.createOwner, self);
-			_.each(removePOIds, this.removeOwner, self);
-
-		},
-
-		createOwner : function(ownerID){
-			var self = this;
-			//var ownerID = owner.id;
-			//var owners = this.model.owners || [];
-			$.ajax({
-					url: '/api/projectowner/',
-					type: 'POST',
-					data: {
-						projectId: self.model.attributes.id,
-						userId: ownerID
-					},
-					success : function(data){
-
-						//newOwners.push(data);
-						// this.model.set('owners',owners)
-
-					}
-
-				}).done(function (result) {
-				});
-		},
-
-		removeOwner: function (pOID) {
-				var self = this;
-				$.ajax({
-				url: '/api/projectowner/' + pOID,
-				type: 'DELETE',
-				}).done(function (data) {
-				});
-			},
 
 
 
@@ -351,6 +241,7 @@ define([
 			if (this.eventListController) this.eventListController.cleanup();
 			if (this.commentListController) this.commentListController.cleanup();
 			if (this.projectShowItemView) this.projectShowItemView.cleanup();
+			if (this.projectownerShowView) this.projectownerShowView.cleanup();
 			removeView(this);
 		}
 
