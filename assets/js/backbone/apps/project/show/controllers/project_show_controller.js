@@ -35,9 +35,11 @@ define([
 			"click .edit-project"   					: "edit",
 			"click #like-button"    					: "like",
 			"keyup .comment-content"					: "search",
-			"click button.participant-form-toggle"		: "toggleParticipants",
+			"click button.owner-form-toggle"			: "toggleOwners",
+			//"click button.participant-form-toggle"		: "toggleParticipants",
 			//"keyup .participant-form"					: "userSearch",
-			"click #participant-save"					: "addParticipants",
+			"click #owner-save"							: "saveOwners",
+			//"click #participant-save"					: "addParticipants",
 			"click #tag-save"       					: "tagSave",
 			"click #tag-create"     					: "tagCreate",
 			"click .tag-delete"     					: "tagDelete",
@@ -48,7 +50,7 @@ define([
 		// The initialize method is mainly used for event bindings (for effeciency)
 		initialize: function () {
 			var self = this;
-			this.participants = [];
+			//this.participants = [];
 
 			this.model.trigger("project:model:fetch", this.model.id);
 			this.listenTo(this.model, "project:model:fetch:success", function (model) {
@@ -61,13 +63,14 @@ define([
 				self.initializeHandlers();
 				self.initializeLikes();
 				self.initializeUI();
-				self.initializeParticipantSelect2();
+				//self.initializeParticipantSelect2();
+				self.initializeOwnerSelect2();
 				//self.InitializeParticipants();
 
 			});
 
 
-			console.log(self.model);
+			//console.log(self.model);
 		},
 
 		search: function () {
@@ -138,18 +141,16 @@ define([
 		},
 
 
-
-
-
-  	initializeParticipantSelect2: function () {
+	initializeOwnerSelect2: function () {
     	var self = this;
       	var formatResult = function (object, container, query) {
         	return object.name;
       	};
 
 		var modelJson = this.model.toJSON();
-		$("#participants").select2({
-		    placeholder: 'Select Participants',
+		//console.log(modelJson);
+		$("#owners").select2({
+		    placeholder: 'Select Project Owners',
 		    multiple: true,
 		    formatResult: formatResult,
 		    formatSelection: formatResult,
@@ -168,21 +169,21 @@ define([
 	    	}
 	  	});
 
-			var owners = [];
+			// var owners = [];
 
-			_.each(this.model.attributes.owners, self.recreateUserFromID);
+			// _.each(this.model.attributes.owners, self.recreateUserFromID);
 
 		//$("#participants").select2('data', [{field:"name", id:1,name:"Dan Kottke", target:"user", value: "Dan Kottke"}]);
 
-		//$("#participants").select2("data",this.model.attributes.owners);
+		$("#owners").select2("data",this.model.attributes.owners);
 
    //  	$("#participants").on('change', function (e) {
    //  		self.model.trigger("project:input:changed", e);
 			// });
-	  	$('#project-participants-form').hide();
-	  	$('#project-participants-show').show();
-	  	$('#participant-edit').show();
-	  	$('#participant-save').hide();
+	  	$('#project-owners-form').hide();
+	  	$('#project-owners-show').show();
+	  	$('#owner-edit').show();
+	  	$('#owner-save').hide();
 
 
 
@@ -196,6 +197,63 @@ define([
 	  	///$("#test_button").on('click', function(e){if (e.preventDefault) e.preventDefault();alert(data);});
     },
 
+
+  // 	initializeParticipantSelect2: function () {
+  //   	var self = this;
+  //     	var formatResult = function (object, container, query) {
+  //       	return object.name;
+  //     	};
+
+		// var modelJson = this.model.toJSON();
+		// //console.log(modelJson);
+		// $("#participants").select2({
+		//     placeholder: 'Select Participants',
+		//     multiple: true,
+		//     formatResult: formatResult,
+		//     formatSelection: formatResult,
+		//     minimumInputLength: 1,
+		//     ajax: {
+		//       	url: '/api/ac/user',
+		//       	dataType: 'json',
+		//       	data: function (term) {
+		//         	return {
+		//          		q: term
+		//         	};
+		//       	},
+		//       	results: function (data) {
+		//         	return { results: data };
+		//     	}
+	 //    	}
+	 //  	});
+
+		// 	// var owners = [];
+
+		// 	// _.each(this.model.attributes.owners, self.recreateUserFromID);
+
+		// //$("#participants").select2('data', [{field:"name", id:1,name:"Dan Kottke", target:"user", value: "Dan Kottke"}]);
+
+		// $("#participants").select2("data",this.model.attributes.participants);
+
+  //  //  	$("#participants").on('change', function (e) {
+  //  //  		self.model.trigger("project:input:changed", e);
+		// 	// });
+	 //  	$('#project-participants-form').hide();
+	 //  	$('#project-participants-show').show();
+	 //  	$('#participant-edit').show();
+	 //  	$('#participant-save').hide();
+
+
+
+
+		// // if (modelJson.agency) {
+  // //       	$("#company").select2('data', modelJson.agency.tag);
+  // //     	}
+
+		// //var s2data = $("#participants").select2("data");
+
+	 //  	///$("#test_button").on('click', function(e){if (e.preventDefault) e.preventDefault();alert(data);});
+  //   },
+
     // InitializeParticipants : function(e){
 
     // 	var self = this;
@@ -204,12 +262,12 @@ define([
 
     // },
 
-    recreateUserFromID : function(id){
+    // recreateUserFromID : function(id){
 
 
 
 
-    },
+    // },
 
 
 
@@ -242,29 +300,121 @@ define([
 			this.model.trigger("project:update:state", state);
 		},
 
-		toggleParticipants : function(e){
-			$('.participant-form-toggle').toggle(400);
+		toggleOwners : function(e){
+			$('.owner-form-toggle').toggle(400);
 		},
 
-		getParticipants: function(e){
+		// toggleParticipants : function(e){
+		// 	$('.participant-form-toggle').toggle(400);
+		// },
+
+		// getParticipants: function(e){
+		// },
 
 
-
-
-		},
-
-		addParticipants: function(e){
+		saveOwners : function(e){
 		if (e.preventDefault) e.preventDefault();
 		var self = this;
-		var participants = {};
+		var oldOwners = this.model.owners || [];
+		var s2data = $("#owners").select2("data");
+		var newOwners = [];
+		var removedOwners = [];
+    	//this.model.set('owners', []);
+    	//here
+    	//_.each(oldOwners, )
 
-		if (e.preventDefault) e.preventDefault();
-    	var s2data = $("#participants").select2("data");
-    	console.log(s2data);
-    	//self.toggleParticipants();
-		this.model.trigger("project:update:participants", participants);
+    	_.each(newOwners, this.createOwner, self);
+    	_.each(removedOwners, this.removeOwner, self);
+
+    	this.model.set('owners', newOwners)
+
+    	//console.log(s2data);
+		//this.model.trigger("project:update:participants", participants);
 
 		},
+
+		createOwner : function(owner){
+			//console.log(owner);
+			var ownerID = owner.id;
+			//var owners = this.model.owners || [];
+			$.ajax({
+	    		url: 'api/projectowner/',
+	    		type: 'POST',
+	            data: {
+	            	projectId: this.model.attributes.id,
+
+	            	userId: ownerID
+	            },
+	         	async: true,
+	         	success : function(data){
+	         		newOwners.push(data);
+	         		// this.model.set('owners',owners)
+
+	         	}
+
+	    	}).done(function (result) {
+	        	// Pass the owner back
+	        	//self.options.model.trigger(self.target + ":email:new", result);
+	      	});
+		},
+
+		removeOwner: function (e) {
+	      if (e.preventDefault) e.preventDefault();
+	      var self = this;
+	      // Get the data-id of the currentTarget
+	      // and then call HTTP DELETE on that tag id
+	      $.ajax({
+	        url: '/api/projectowner/' + $(e.currentTarget).data('id'),
+	        type: 'DELETE',
+	      }).done(function (data) {
+	        //self.model.trigger("profile:email:delete", e);
+	      });
+
+	    },
+
+
+		// addParticipants: function(e){
+		// if (e.preventDefault) e.preventDefault();
+		// var self = this;
+		// //var participants = {};
+
+  //   	var s2data = $("#participants").select2("data");
+
+  //   	//self.toggleParticipants();
+
+  //   	// this.model.set('participants', s2data);
+  //   	// _.each(s2data, createOwner, self);
+
+
+  //   	console.log(s2data);
+		// //this.model.trigger("project:update:participants", participants);
+
+		// },
+
+		// createParticipant : function(participant){
+
+		// 	var participantID = participant.id;
+		// 	$.ajax({
+	 //    		url: 'api/projectParticipant/create',
+	 //    		type: 'POST',
+	 //            data: {
+	 //            	projectId: this.model.attributes.id,
+	 //            	userId: participantID
+	 //            },
+	 //         	async: true,
+		// 		success: function (data) {
+
+		// 			console.log(data);
+		// 			// var typeArray = type.split("-");
+		// 			// if (typeArray.length > 1) {
+		// 			//   typeArray[typeArray.length - 1] = typeArray[typeArray.length - 1].charAt(0).toUpperCase() + typeArray[typeArray.length - 1].substr(1).toLowerCase();
+		// 			//   self.tagSources[typeArray.join("")] = data;
+		// 			// } else {
+		// 			//   self.tagSources[type] = data;
+		// 			// }
+		// 		}
+	 //    	});
+		// },
 
 
 
