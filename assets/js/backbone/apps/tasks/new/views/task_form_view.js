@@ -200,14 +200,14 @@ define([
 
       $("#time-estimate").select2({
         placeholder: 'time-estimate',
-        width: '130px'
+        width: '200px'
       });
 
       $("#task-location").select2({
         placeholder: 'length',
         width: '130px'
       });
-
+      //
       // $("#skills-required").select2({
       //   placeholder: "required/not-required",
       //   width: '130px'
@@ -235,6 +235,8 @@ define([
     locationChange: function (e) {
       if (_.isEqual(e.currentTarget.value, "a specific location")) {
         $(".el-specific-location").show();
+      } else if (!_.isEqual(e.currentTarget.value, "a specific location")) {
+        $(".el-specific-location").hide();
       }
     },
 
