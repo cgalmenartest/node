@@ -4,10 +4,11 @@ define([
     'underscore',
     'backbone',
     'async',
+    'utilities',
     'tasks_collection',
     'text!task_form_template',
     'tag_show_view'
-], function ($, Bootstrap, _, Backbone, async, TasksCollection, TaskFormTemplate, TagShowView) {
+], function ($, Bootstrap, _, Backbone, async, utilities, TasksCollection, TaskFormTemplate, TagShowView) {
 
 	var TaskFormView = Backbone.View.extend({
 
@@ -207,7 +208,7 @@ define([
         placeholder: 'length',
         width: '130px'
       });
-      //
+
       // $("#skills-required").select2({
       //   placeholder: "required/not-required",
       //   width: '130px'

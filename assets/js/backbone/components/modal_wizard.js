@@ -19,9 +19,10 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'utilities',
   'base_component',
   'text!modal_wizard_template'
-], function ($, _, Backbone, BaseComponent, ModalWizardTemplate) {
+], function ($, _, Backbone, utilities, BaseComponent, ModalWizardTemplate) {
 
   Application.Component.ModalWizard = BaseComponent.extend({
 
@@ -115,6 +116,10 @@ define([
       } else {
         return;
       }
+    },
+
+    cleanup: function () {
+      $(this.el).children(".modal").remove();
     }
   });
 

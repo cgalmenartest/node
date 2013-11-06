@@ -6,9 +6,9 @@ define([
   'project_list_controller',
   'project_show_controller',
   'utilities',
-  'task_item_view',
+  'task_show_controller',
   'task_model'
-], function ($, _, Backbone, ProjectModel, ProjectListController, ProjectShowController, utilities, TaskItemView, TaskModel) {
+], function ($, _, Backbone, ProjectModel, ProjectListController, ProjectShowController, utilities, TaskShowController, TaskModel) {
 
   var ProjectRouter = Backbone.Router.extend({
 
@@ -56,8 +56,8 @@ define([
             }
           });
 
-          if (self.taskItemView) self.taskItemView.cleanup();
-          self.taskItemView = new TaskItemView({ model: taskModel, router: self });
+          if (self.taskShowController) self.taskShowController.cleanup();
+          self.taskShowController = new TaskShowController({ model: taskModel, router: self });
         }
       });
     }

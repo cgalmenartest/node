@@ -590,12 +590,33 @@ ul.comment-list > li {
 .task {
 	font-size: 13px;
 }
+
+.current {
+	height: 100%;
+}
+
+#task-form {
+	display: block;
+}
+
 .task-title {
 	font-size: 16px;
 	font-weight: bold;
 }
 
 .task-description {
+	margin-top: 10px;
+}
+
+#skills,
+#skills-required,
+#input-specific-location,
+#topics,
+#task-title {
+	width: 100%;
+}
+
+#topics {
 	margin-top: 10px;
 }
 

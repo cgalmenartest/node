@@ -1,13 +1,12 @@
-<form id="task-form" class="form-inline" style="display: block;" action="">
+<form id="task-form" class="form-inline" action="/api/task">
 
-
-  <section id="section-1" class="current" style="height: 100%;">
-      <input type="text" id="task-title" placeholder="What problem are you trying to solve?" style="width: 100%" />
+  <section id="section-1" class="current">
+      <input type="text" id="task-title" placeholder="What problem are you trying to solve?" />
       <br />
-      <textarea id="task-description" style="width: 100%;" placeholder="Please describe the project details, including goals, expected outcomes and deliverables."></textarea>
+      <textarea id="task-description" placeholder="Please describe the project details, including goals, expected outcomes and deliverables."></textarea>
   </section>
 
-  <section id="section-2" class="" style="height: 100%;">
+  <section id="section-2">
     I need
     <select id="people">
       <% _.each(people, function (person) { %>
@@ -16,10 +15,10 @@
     </select>
 
     to work on an opportunity about these topics:
-    <input type="hidden" id="topics" name="topic" style="width: 100%; margin-top: 10px;" />
+    <input type="hidden" id="topics" name="topic" />
   </section>
 
-  <section id="section-3" class="" style="height: 100%;">
+  <section id="section-3">
     It will require
     <select id="time-estimate">
       <% _.each(timeEstimates, function (timeEstimate) { %>
@@ -54,14 +53,14 @@
       <hr />
 
       <label for="input-specific-location">Enter that location here:</label>
-      <input type="text" id="input-specific-location" style="width: 100%;" />
+      <input type="text" id="input-specific-location" />
     </div>
   </section>
 
   <section class="section-4">
     <div class="form-group">
       <label for="skills-required">the following skills are
-        <select id="skills-required" name="skills-required" style="width: 100%;">
+        <select id="skills-required" name="skills-required">
           <% _.each(skillsRequired, function(requirement) { %>
             <option value="<%= requirement.id %>"><%= requirement.name %></option>
           <% }); %>
@@ -71,7 +70,7 @@
 
     <div class="form-group">
       <label for="skills" class="control-label">to complete this opportunity:
-        <input type="hidden" id="skills" name="skills" style="width: 100%"/>
+        <input type="hidden" id="skills" name="skills" />
       </label>
     </div>
     <input type="submit" class="btn btn-primary">

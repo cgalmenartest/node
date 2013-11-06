@@ -5,17 +5,44 @@
 define([
   'bootstrap',
   'underscore',
-  'backbone'
-], function (Bootstrap, _, Backbone) {
+  'backbone',
+  'comment_list_controller',
+  'task_item_view'
+], function (Bootstrap, _, Backbone, CommentListController, TaskItemView) {
 
-  var Application.Controller.TaskShowController = Backbone.View.extend({
+  var TaskShowController = Backbone.View.extend({
+
+    el: "#container",
 
     initialize: function () {
-      this.initializeTags();
-    }
+      this.initializeTaskItemView();
+      this.initializeChildren();
+    },
 
+    initializeChildren: function () {
+      if (this.commentListController) this.commentListController.cleanup();
+      this.commentListController = new CommentListController({
+        task: true,
+        taskId: this.model.id
+      });
+    },
+
+    initializeTaskItemView: function () {
+      var self = this;
+
+      if (this.taskItemView) this.taskItemView.cleanup();
+      this.taskItemView = new TaskItemView({
+        model: self.model,
+        router: self.router
+      })
+    },
+
+    cleanup: function () {
+      this.commentListController.cleanup();
+      this.$el.children().remove();
+    }
 
   });
 
-  return Application.Controller.TaskShowController;
+  return TaskShowController;
 })

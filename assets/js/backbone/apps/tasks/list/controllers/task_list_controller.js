@@ -79,7 +79,7 @@ define([
       if (e.preventDefault) e.preventDefault();
       var self = this;
 
-      if (this.modalWizardComponent) this.modalWizardComponent;
+      if (this.modalWizardComponent) this.modalWizardComponent.cleanup();
       this.modalWizardComponent = new ModalWizardComponent({
         el: "#task-list-wrapper",
         id: "addTask",
@@ -87,7 +87,7 @@ define([
       }).render();
 
       if (!_.isUndefined(this.modalWizardComponent)) {
-        if (this.taskFormView) this.taskFormView;
+        if (this.taskFormView) this.taskFormView.cleanup();
         this.taskFormView = new TaskFormView({
           el: ".modal-body",
           projectId: this.options.projectId,
