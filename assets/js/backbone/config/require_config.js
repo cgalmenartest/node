@@ -56,6 +56,8 @@ require.config({
     'project_collection_view'   : '../apps/project/list/views/projects_collection_view',
     'project_show_controller'   : '../apps/project/show/controllers/project_show_controller',
     'project_item_view'         : '../apps/project/show/views/project_item_view',
+    'projectowner_show_view'    : '../apps/projectowner/show/views/projectowner_show_view',
+    'projectowner_show_template': '../apps/projectowner/show/templates/projectowner_show_template.html',
     'project_show_template'     : '../apps/project/show/templates/project_item_view_template.html',
     'project_list_template'     : '../apps/project/list/templates/project_collection_view_template.html',
     'project_model'             : '../entities/projects/project_model',

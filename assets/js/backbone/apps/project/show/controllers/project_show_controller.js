@@ -109,7 +109,7 @@ define([
 			var self = this;
 
 			if (this.projectownerShowView) this.projectownerShowView.cleanup();
-			console.log(this.projectownerShowView = new ProjectownerShowView({ model: this.model }));
+			// console.log(this.projectownerShowView = new ProjectownerShowView({ model: this.model }));
 			this.projectownerShowView = new ProjectownerShowView({ model: this.model }).render();
 
 		},

@@ -12,7 +12,7 @@ define([
 
   var ProjectShowView = Backbone.View.extend({
 
-    el: $("#container"),
+    el: "#container",
 
     events: {
       'click #editProject': 'editProject'
