@@ -31,6 +31,13 @@ define([
       this.listenTo(this, "project:update:state", function (state) {
         self.updateState(state);
       });
+
+      this.listenTo(this, "projectowner:show:changed", function (data) {
+        self.updateOwners(data);
+      });
+
+
+
     },
 
     urlRoot: '/api/project',
@@ -78,6 +85,18 @@ define([
       }, {
         success: function(data) {
           self.trigger("project:update:state:success", data);
+        }
+      });
+    },
+
+    updateOwners: function (data) {
+      var self = this;
+      // console.log(data);
+      this.save({
+        owners: data
+      }, {
+        success: function(data) {
+          self.trigger("project:update:owners:success", data);
         }
       });
     }

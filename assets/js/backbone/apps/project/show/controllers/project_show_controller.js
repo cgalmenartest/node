@@ -46,7 +46,6 @@ define([
 		// The initialize method is mainly used for event bindings (for effeciency)
 		initialize: function () {
 			var self = this;
-			//this.participants = [];
 
 			this.model.trigger("project:model:fetch", this.model.id);
 			this.listenTo(this.model, "project:model:fetch:success", function (model) {
@@ -54,6 +53,12 @@ define([
 				self.initializeItemView();
 				self.initializeOwners();
 			});
+
+			// this.listenTo(this.model, "project:update:owners:success", function (data) {
+			// 	var popovers = new Popovers();
+			// 	popovers.popoverPeopleInit(".project-people-div");
+			// 	$('.project-people-div').on('mouseenter', popovers.popoverPeopleOn);
+			// });
 
 			this.model.on("project:show:rendered", function () {
 				self.initializeItemViewControllers();
@@ -109,7 +114,6 @@ define([
 			var self = this;
 
 			if (this.projectownerShowView) this.projectownerShowView.cleanup();
-			// console.log(this.projectownerShowView = new ProjectownerShowView({ model: this.model }));
 			this.projectownerShowView = new ProjectownerShowView({ model: this.model }).render();
 
 		},
