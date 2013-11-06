@@ -86,7 +86,7 @@ define([
     initializeTags: function () {
       this.tagsView = new TagShowView({
         model: this.model,
-        el: '.tag-wrapper',
+        el: '.project-tags-wrapper',
         target: 'task',
         url: '/api/tag/findAllByTaskId'
       });

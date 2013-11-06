@@ -1,8 +1,3 @@
-   <div class="row">
-  <div class="col-lg-12">
-  </div>
-</div>
-
 <div class="row">
   <div class="col-lg-4 project-sidebar">
     <!-- LEFT SIDEBAR -->
@@ -15,6 +10,7 @@
         <div class="pull-right like-buttons">
           <button class="btn btn-c4"><i class="icon icon-envelope-alt"></i> Email</button>
           <button class="btn btn-c3"><i class="icon icon-twitter"></i> Tweet</button>
+          <button class="btn btn-c3 edit-task"><i class="icon icon-edit"> <strong>Edit</strong></i></button>
         </div>
       </div>
     </div>
@@ -22,13 +18,16 @@
     <div class="project-header-wrapper">
     </div>
 
-    <div class="tag-wrapper">
+    <div class="project-tags-wrapper">
       <strong>Tags:</strong>
       <% _.each(model.tags, function (tag) { %>
         <div class="task-tag"><%= tag.tag.name %></div>
       <% }) %>
     </div>
+    <div class="tag-wrapper"></div>
   </div>
+
+
 
   <div class="col-lg-8">
     <!-- RIGHT MAIN BAR -->
@@ -61,6 +60,50 @@
         <ul id="comment-list-null"></ul>
       </div>
 
+      <hr class="clear" />
+
+      <h4 class="clearfix">Attachments
+        <button class="btn btn-c3 btn-sm file-add">Add File</button>
+      </h4>
+      <div class="file-list">
+        <table class="table table-hover table-condensed">
+          <tbody>
+            <tr>
+              <td>
+                <span class="file-tag c3-bg white">wikipedia</span>
+              </td>
+              <td>
+                <a href="http://en.wikipedia.org/wiki/Presidential_Innovation_Fellows">Presidential Innovation Fellows</a>
+              </td>
+              <td class="file-uploader">
+                added by <a href="#">Joe Polastre</a>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span class="file-tag c1-bg white">project</span>
+              </td>
+              <td>
+                <a href="#">GSA Open Opportunities</a>
+              </td>
+              <td class="file-uploader">
+                added by <a href="#">Dain Miller</a>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span class="file-tag c0-bg white">file</span>
+              </td>
+              <td>
+                <a href="#">innovation_styleguide.v1.1.ai</a>
+              </td>
+              <td class="file-uploader">
+                added by <a href="#">Joe Polastre</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div> <!-- /file-list -->
     </div> <!-- /main-section -->
   </div>
 </div>
