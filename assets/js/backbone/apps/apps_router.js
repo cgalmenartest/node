@@ -11,8 +11,7 @@ define([
   var AppRouter = Backbone.Router.extend({
 
     routes: {
-      '/'             : 'initializeApp',
-      'home'          : 'initializeApp'
+      ''              : 'initializeApp',
     },
 
     initializeApp: function () {
