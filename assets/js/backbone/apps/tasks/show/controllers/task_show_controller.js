@@ -9,8 +9,9 @@ define([
   'base_view',
   'comment_list_controller',
   'task_item_view',
-  'tag_show_view'
-], function (Bootstrap, _, Backbone, BaseView, CommentListController, TaskItemView, TagShowView) {
+  'tag_show_view',
+  'task_edit_form_view'
+], function (Bootstrap, _, Backbone, BaseView, CommentListController, TaskItemView, TagShowView, TaskEditFormView) {
 
   var TaskShowController = BaseView.extend({
 
@@ -61,7 +62,7 @@ define([
 
       if (this.taskEditFormView) this.taskEditFormView.cleanup();
       this.taskEditFormView = new TaskEditFormView({
-        el: '.edit-section',
+        el: '.edit-task-section',
         model: self.model
       }).render();
     },

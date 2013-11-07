@@ -14,25 +14,26 @@ define([
     urlRoot: '/api/task',
 
     initialize: function () {
-      this.initializeTaskSave();
+      this.listenTo(this, "task:save", function (data) {
+        this.save();
+      });
+
+      this.listenTo(this, "task:update", function (data) {
+        this.update(data);
+      });
     },
 
-    initializeTaskSave: function () {
+    update: function (data) {
       var self = this;
 
-      this.listenTo(this, "task:save", function (title, projectId, description) {
-        self.save({
-          title: title, 
-          projectId: projectId, 
-          description: description 
-          }, { 
-          success: function (data) { 
-            self.trigger("task:save:success")
-          }, 
-          error: function (data) { 
-            console.log(data) 
-          }
-        });
+      this.save(self, {
+        taskId      : data['taskId'],
+        projectId   : data['projectId'],
+        title       : data['title'],
+        description : data['description']
+      }, {
+        success: function (data) {
+          console.log(data); }
       });
     }
 
