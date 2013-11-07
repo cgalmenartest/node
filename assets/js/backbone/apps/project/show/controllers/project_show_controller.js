@@ -44,8 +44,14 @@ define([
 		},
 
 		// The initialize method is mainly used for event bindings (for effeciency)
-		initialize: function () {
+		initialize: function (options) {
 			var self = this;
+
+			this.router = options.router;
+			this.id = options.id;
+      this.routeId = options.id;
+      this.data = options.data;
+			// console.log(options);
 
 			this.model.trigger("project:model:fetch", this.model.id);
 			this.listenTo(this.model, "project:model:fetch:success", function (model) {
