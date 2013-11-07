@@ -1,12 +1,11 @@
 <h4>Project Owners
 <button class="btn btn-c3 btn-sm file-add owner-form-toggle" id="owner-edit" name="owner-edit" >Edit Owners</button>
+<button id="owner-cancel" name="owner-cancel" class="btn btn-c3 btn-sm file-add owner-form-toggle">Cancel</button>
 <button id="owner-save" name="owner-save" class="btn btn-c3 btn-sm file-add owner-form-toggle">Save</button>
 </h4>
 
-
 <div id="project-owners-form" class="owner-form-toggle">
   <form action class="" role="form">
-
 
     <div class="form-group">
     <!--<label for="participants" class="col-lg-3 control-label">Participants</label>-->
@@ -26,7 +25,8 @@
   <% if (data.owners) { %>
     <% for (var i = 0; i < data.owners.length; i++) { %>
     <div class="project-people-div" data-userid="<%= data.owners[i].userId %>">
-      <img src="/api/user/photo/<%= data.owners[i].userId %>" class="project-people"/><a href="#" class="delete-projectowner"  id="delete-projectowner-<%= data.owners[i].id %>" data-poid="<%= data.owners[i].id %>">X</a>
+      <img src="/api/user/photo/<%= data.owners[i].userId %>" class="project-people"/>
+      <!--<a href="#" class="delete-projectowner"  id="delete-projectowner-<%= data.owners[i].id %>" data-poid="<%= data.owners[i].id %>">X</a>-->
     </div>
     <% } %>
   <% } %>

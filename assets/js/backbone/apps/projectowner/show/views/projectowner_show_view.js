@@ -25,29 +25,25 @@ define([
     events: {
       "click button.owner-form-toggle"      : "toggleOwners",
       "click #owner-save"                   : "saveOwners",
+      "click #owner-cancel"                 : "initializeOwnerSelect2",
       "click .delete-projectowner"          : "removeOwner"
-
-      //,
-      //"mouseenter .project-people-div"      : popovers.popoverPeopleOn,
     },
 
     // The initialize method is mainly used for event bindings (for effeciency)
     initialize: function () {
       var self = this;
-      // self.initializeUI();
+
+
       this.model.on("projectowner:show:rendered", function () {
         self.initializeOwnerSelect2();
-
-
       });
-
+      //when owner set is updated, re-render and re-init popovers
       this.model.on("project:update:owners:success", function (data) {
 
-        // var popovers = new Popovers();
-        // popovers.popoverPeopleInit(".project-people-div");
-        // $('.project-people-div').on('mouseenter', function(){alert('hi')});
-        // console.log(data);
         self.render( {model: data} );
+        var popovers = new Popovers();
+        popovers.popoverPeopleInit(".project-people-div");
+
       });
 
 
@@ -79,47 +75,77 @@ define([
 
     initializeOwnerSelect2: function () {
       var self = this;
-      var formatResult = function (object, container, query) {
-        return object.name;
-      };
-      self.$("#owners").select2({
-        placeholder: 'Select Project Owners',
-        multiple: true,
-        formatResult: formatResult,
-        formatSelection: formatResult,
-        minimumInputLength: 1,
-        ajax: {
-            url: '/api/ac/user',
-            dataType: 'json',
-            data: function (term) {
-              return {
-                q: term
-              };
-            },
-            results: function (data) {
-              return { results: data };
+      if (this.model.attributes.isOwner){
+        var formatResult = function (object, container, query) {
+          return object.name;
+        };
+        self.$("#owners").select2({
+          placeholder: 'Select Project Owners',
+          multiple: true,
+          formatResult: formatResult,
+          formatSelection: formatResult,
+          minimumInputLength: 1,
+          ajax: {
+              url: '/api/ac/user',
+              dataType: 'json',
+              data: function (term) {
+                return {
+                  q: term
+                };
+              },
+              results: function (data) {
+                return { results: _.filter(data, function(user){  return (user.id !== cache.currentUser.id);  }, self ) };
+            }
           }
-        }
-      });
+        });
 
+        var persistedSearch2Data = [];
+        async.each( self.model.attributes.owners, addOwnerS2Obj, function(){ self.$("#owners").select2('data', persistedSearch2Data);});
+        self.$('#owner-edit').show();
+
+      }
       // self.$("#owners").select2('data', self.model.attributes.owners);
 
       self.$('#project-owners-form').hide();
       self.$('#project-owners-show').show();
-      self.$('#owner-edit').show();
       self.$('#owner-save').hide();
+      self.$('#owner-cancel').hide();
 
+      function addOwnerS2Obj(owner, done){
+
+        $.ajax({
+            url: '/api/user/find/' + owner.userId,
+            type: 'GET',
+            dataType: 'json',
+            success: function(data){
+              if(cache.currentUser.id !== data.id){
+                persistedSearch2Data.push({ id: data.id,
+                                            field: "name",
+                                            name: data.name,
+                                            target: "user",
+                                            value: data.name
+                                          });
+              }
+            }
+        }).done(function(result){
+          done();
+        });
+
+      };
 
     },
 
     toggleOwners : function(e){
+      if (!this.model.attributes.isOwner) return false;
       $('.owner-form-toggle').toggle(400);
     },
 
 
 
+
     saveOwners : function(e){
       if (e.preventDefault) e.preventDefault();
+      if (!this.model.attributes.isOwner) return false;
       var self = this;
 
       var pId = self.model.attributes.id;
@@ -149,7 +175,7 @@ define([
 
                                        // self.model.trigger("projectowner:show:changed", unchangedOwners); });
 
-
+    // console.log(s2data);
 
       // var createTemp = [self, createdPOIds];
       // _.each(newOwnerIds, self.createOwner, createTemp);
