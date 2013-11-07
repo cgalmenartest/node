@@ -11,7 +11,6 @@ define([
     // Initialize and fire up the application.
     initialize: function () {
       var self = this;
-      console.log('init');
       // Cache user
       $.ajax({
         url: '/api/user',
@@ -22,8 +21,6 @@ define([
           }
         }
       });
-
-      console.log('application:initialize');
 
       // Mixin backbone events into our pub sub handler
       _.extend(entities.request, Backbone.Events);

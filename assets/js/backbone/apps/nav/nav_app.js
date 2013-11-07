@@ -8,7 +8,6 @@ define([
   var NavRouter = Backbone.Router.extend({
 
     initialize: function() {
-      console.log('nav::new::init');
       this.view = new NavView({
         el: '.navigation'
       }).render();
@@ -17,7 +16,6 @@ define([
   });
 
   var initialize = function () {
-    console.log('nav::init');
     var router = new NavRouter();
     return router;
   }
