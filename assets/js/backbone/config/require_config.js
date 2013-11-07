@@ -43,6 +43,13 @@ require.config({
     'base_view'                 : '../base/base_view',
 
     // ----------
+    //= Navigation
+    // ----------
+    'nav_app'                   : '../apps/nav/nav_app',
+    'nav_view'                  : '../apps/nav/views/nav_view',
+    'nav_template'              : '../apps/nav/templates/nav_template.html',
+
+    // ----------
     //= Projects
     // ----------
     'project_app'               : '../apps/project/project_app',
