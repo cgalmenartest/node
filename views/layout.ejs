@@ -5,6 +5,28 @@
 
     <!-- Viewport mobile tag for sensible mobile support -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <script type="text/javascript" src="/js/vendor/sails/socket.io.js"></script>
+    <!-- then beef it up with some convenience logic for talking to Sails.js -->
+    <script type="text/javascript" src="/js/vendor/sails/sails.io.js"></script>
+    <!-- listen on socket.io for incoming messages -->
+    <script type="text/javascript" src="/js/vendor/sails/app.js"></script>
+    <!-- There be dragons here (aka, don't remove and put into require.js flow, as that fails 1/5 times) -->
+    <script type="text/javascript" src="/js/vendor/jquery.js"></script>
+
+    <% if (sails.config.environment == 'development') { %>
+    <!-- Entry point for our app -->
+    <script type="text/javascript" src="/js/vendor/require.js"></script>
+    <script>
+      require.config({
+        baseUrl: '/js/backbone/apps'
+      })
+      require(['../config/require_config'], function() {
+        require(['app']);
+      });
+    </script>
+    <% } else { %>
+    <script type="text/javascript" src="/js/prod/midas.js"></script>
+    <% } %>
 
     <link rel="stylesheet" type="text/css" href="/styles/bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="/styles/font-awesome/css/font-awesome.min.css" />
@@ -12,20 +34,6 @@
     <link rel="stylesheet" type="text/css" href="/js/vendor/select2/select2.css" />
     <link rel="stylesheet" type="text/css" href="/styles/application.css" />
     <link rel="stylesheet" type="text/css" href="/styles/innovation-theme.css" />
-
-    <script type="text/javascript" src="/js/vendor/sails/socket.io.js"></script>
-
-    <!-- then beef it up with some convenience logic for talking to Sails.js -->
-    <script type="text/javascript" src="/js/vendor/sails/sails.io.js"></script>
-
-    <!-- listen on socket.io for incoming messages -->
-    <script type="text/javascript" src="/js/vendor/sails/app.js"></script>
-
-    <!-- There be dragons here (aka, don't remove and put into require.js flow, as that fails 1/5 times) -->
-    <script type="text/javascript" src="/js/vendor/jquery.js"></script>
-
-    <!-- Entry point for our app -->
-    <script type="text/javascript" data-main="/js/backbone/config/require_config.js" src="/js/vendor/require.js"></script>
 
   </head>
 

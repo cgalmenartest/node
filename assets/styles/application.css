@@ -1,12 +1,6 @@
 /*****************
 =  GLOBAL
 ******************/
-/*
-#container {
-    width: 960px;
-    margin: 0 auto;
-}
-*/
 .clear {
 	clear: both;
 }
@@ -14,7 +8,6 @@
 .search-result-row:hover {
 	background: #ccc;
 }
-
 
 .seperator {
 	margin: 10px 0 10px 0;
@@ -30,7 +23,6 @@
 /*****************
 =  NAVBAR
 ******************/
-
 .navbar .nav .navbar-title-small {
 	font-size: 14px;
 	font-weight: bold;
@@ -83,7 +75,6 @@
 /*****************
 =  PROJECTS
 ******************/
-
 #projects {
 	display: inline-block !important;
 }
@@ -94,15 +85,31 @@
 
 .project-background-image {
 	width: 100%;
-	height: 40%;
+	height: 120px;
 	background-repeat: no-repeat;
 	background-size: cover;
+	border-bottom-color: #aaa;
 	border-bottom-style: solid;
 	border-bottom-width: 1px;
 }
 
 .project-background-image-default {
 	background: url('http://placehold.it/180x180');
+}
+
+.project-box {
+	width: 240px;
+	height: 320px;
+	overflow: hidden;
+	border: 1px #aaa solid;
+	float: left;
+
+	-webkit-box-shadow: 0 0 4 0 #eee;
+				 -box-shadow: 0 0 0 4p 0 #eee;
+
+	border-radius: 5px;
+	margin-right: 20px;
+	margin-bottom: 10px;
 }
 
 .project-list-description {
@@ -112,6 +119,32 @@
 	font-size: 13px;
 	overflow: hidden;
 	word-wrap: break-word;
+}
+
+.project-list-counts {
+	border-top-style: solid;
+	border-top-width: 1px;
+	border-bottom-color: #aaa;
+	padding-top: 10px;
+	display: inline-table;
+	width: 100%;
+}
+
+.project-list-counts-col {
+	display: table-cell;
+	width: 33%;
+}
+
+.project-list-count {
+	font-size: 20px;
+	line-height: 15px;
+	font-weight: bold;
+	text-align: center;
+}
+
+.project-list-count-text {
+	font-size: 12px;
+	text-align: center;
 }
 
 div.project-title {
@@ -139,21 +172,6 @@ div.project-title {
 
 #project-list li {
 	list-style: none;
-}
-
-.project-box {
-	width: 200px;
-	height: 250px;
-	overflow: hidden;
-	border: 1px #aaa solid;
-	float: left;
-
-	-webkit-box-shadow: 0 0 4 0 #eee;
-				 -box-shadow: 0 0 0 4p 0 #eee;
-
-	border-radius: 5px;
-	margin-right: 20px;
-	margin-bottom: 10px;
 }
 
 /*****************
@@ -319,6 +337,13 @@ ul.tags > li {
 ******************/
 .list-box {
 	margin: 0;
+	max-height: 450px;
+	overflow: hidden;
+}
+
+.list-scroll {
+	overflow-y: scroll;
+	max-height: 414px;
 }
 
 .list-box > h2 {
@@ -401,39 +426,8 @@ ul.tags > li {
 }
 
 /*****************
-=  TASKS
-******************/
-.task {
-	font-size: 13px;
-}
-.task-title {
-	font-size: 16px;
-	font-weight: bold;
-}
-
-.task-description {
-	margin-top: 10px;
-}
-
-.task-heading {
-	margin-top: 10px;
-	font-weight: bold;
-	font-size: 15px;
-}
-
-.task-view {
-	margin-top: 10px;
-}
-
-#task-list-wrapper {
-	margin-top: 20px;
-}
-
-
-/*****************
 =  EVENTS
 ******************/
-
 .event, .task {
 	width: 100%;
 	padding: 15px;
@@ -448,7 +442,7 @@ ul.tags > li {
 	width: 37px;
 	padding-right: 10px;
 	padding-left: 10px;
-	display: inline-table;
+	display: table-cell;
 }
 
 .event > .event-title {
@@ -527,7 +521,6 @@ ul.tags > li {
 /*****************
 =  FILES
 ******************/
-
 .file-tag {
 	padding: 3px;
 	font-size: 10px;
@@ -548,7 +541,6 @@ ul.tags > li {
 /*****************
 =  COMMENTS
 ******************/
-
 .topic {
 	clear: both;
 	/*background-color: #f0f0f0;*/
@@ -626,7 +618,30 @@ ul.comment-list > li {
 	vertical-align: top;
 }
 
-/* modal styles */
+/*****************
+=  TASKS
+******************/
+.task {
+	font-size: 13px;
+}
+
+.task-title {
+	font-size: 14px;
+	font-weight: bold;
+	line-height: 1.1em;
+	margin-bottom: 10px;
+}
+
+.task-heading {
+	margin-top: 10px;
+	font-weight: bold;
+	font-size: 15px;
+}
+
+.task-view {
+	margin-top: 10px;
+}
+
 #addTask .modal-dialog {
 	width: 790px;
 }
@@ -640,4 +655,21 @@ input#task-title {
 textarea#task-description {
 	border: 1px #ccc solid;
 	padding: 5px;
+}
+
+#section-2 {
+	line-height: 30px;
+}
+
+.task-tag {
+	padding: 5px;
+	background: #eee;
+	border-radius: 5px;
+	margin: 5px;
+}
+
+.task-show-description {
+	font-size: 18px;
+	margin-bottom: 20px;
+	line-height: 1.5em;
 }

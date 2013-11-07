@@ -6,15 +6,16 @@ define([
   'project_list_controller',
   'project_show_controller',
   'utilities',
-  'task_item_view'
-], function ($, _, Backbone, ProjectModel, ProjectListController, ProjectShowController, utilities, TaskItemView) {
+  'task_item_view',
+  'task_model'
+], function ($, _, Backbone, ProjectModel, ProjectListController, ProjectShowController, utilities, TaskItemView, TaskModel) {
 
   var ProjectRouter = Backbone.Router.extend({
 
     routes: {
-      'projects(/)'			: 'list',
-      'projects/:id(/)' : 'show',
-      'projects/:id/tasks/:id(/)': 'showTask'
+      'projects(/)'               : 'list',
+      'projects/:id(/)'           : 'show',
+      'projects/:id/tasks/:id(/)' : 'showTask'
     },
 
     list: function () {
@@ -27,24 +28,45 @@ define([
     },
 
     show: function (id) {
-      var self = this;
-      $("#container").children().remove();
+      clearContainer();
+
       var model = new ProjectModel();
       model.set({ id: id });
-      if (self.projectShowController) self.projectShowController.cleanup();
-      self.projectShowController = new ProjectShowController({ model: model, router: this });
+
+      if (this.projectShowController) this.projectShowController.cleanup();
+      this.projectShowController = new ProjectShowController({ model: model, router: this });
     },
 
-    showTask: function (id) {
+    showTask: function (noop, taskId) {
       clearContainer();
-      if (this.taskItemView) this.taskItemView.cleanup();
-      this.taskItemView = new TaskItemView().render();
+      scrollTop();
+
+      var self = this,
+          model = new TaskModel();
+
+      model.fetch({
+        url: '/api/task/' + taskId,
+        success: function (taskModel) {
+
+          $.ajax({
+            url: '/api/tag/findAllByTaskId/' + taskId,
+            async: false,
+            success: function (data) {
+              taskModel.attributes['tags'] = data;
+            }
+          });
+
+          if (self.taskItemView) self.taskItemView.cleanup();
+          self.taskItemView = new TaskItemView({ model: taskModel, router: self });
+        }
+      });
     }
 
   });
 
   var initialize = function () {
     var router = new ProjectRouter();
+    return router;
   }
 
   return {

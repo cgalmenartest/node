@@ -26,6 +26,32 @@
             <div class="project-list-description">
                 <%- project.description %>
             </div>
+            <div class="project-list-counts c3-border">
+                <div class="project-list-counts-col">
+                    <div class="project-list-count c3">
+                        <%- project.taskCount %>
+                    </div>
+                    <div class="project-list-count-text c3">
+                        task<% if (project.taskCount != 1) { %>s<% } %>
+                    </div>
+                </div>
+                <div class="project-list-counts-col">
+                    <div class="project-list-count c0">
+                        <%- project.commentCount %>
+                    </div>
+                    <div class="project-list-count-text c0">
+                        comment<% if (project.commentCount != 1) { %>s<% } %>
+                    </div>
+                </div>
+                <div class="project-list-counts-col">
+                    <div class="project-list-count c2">
+                        <%- project.ownerCount %>
+                    </div>
+                    <div class="project-list-count-text c2  ">
+                        <% if (project.ownerCount != 1) { %>people<% } else { %>person<% } %>
+                    </div>
+                </div>
+            </div>
         </li>
     <% }); %>
 </ul>
