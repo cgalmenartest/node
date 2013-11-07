@@ -80,6 +80,7 @@ require.config({
     // ----------
     //= Tasks
     // ----------
+    'task_app'                  : '../apps/tasks/task_app',
     'task_list_template'        : '../apps/tasks/list/templates/task_collection_view_template.html',
     'task_form_template'        : '../apps/tasks/new/templates/task_form_template.html',
     'tasks_collection'          : '../entities/tasks/tasks_collection',

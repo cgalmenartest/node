@@ -4,22 +4,19 @@ define([
   'backbone',
   'marketing_app',
   'project_app',
+  'task_app',
   'profile_app'
-], function ($, _, Backbone, MarketingApp, ProjectApp, ProfileApp) {
+], function ($, _, Backbone, MarketingApp, ProjectApp, TaskApp, ProfileApp) {
 
   var AppRouter = Backbone.Router.extend({
 
     routes: {
-      'home'          : 'initializeMarketingApp'
+      '/'             : 'initializeApp',
+      'home'          : 'initializeApp'
     },
 
-    initializeMarketingApp: function () {
-      if (this.homeApp)
-        this.homeApp.cleanup();
-      
-      this.homeApp = new MarketingApp({
-        el: "#container"
-      });
+    initializeApp: function () {
+      Backbone.history.navigate('/projects', { trigger: true });
     }
   });
 
@@ -32,6 +29,7 @@ define([
     router  = new AppRouter();    
     profile = ProfileApp.initialize();
     project = ProjectApp.initialize();
+    task = TaskApp.initialize();
 
     Backbone.history.start({ pushState: true });
 
