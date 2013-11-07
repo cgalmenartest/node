@@ -27,7 +27,6 @@ define([
       var self = this;
 
       this.save(self, {
-        taskId      : data['taskId'],
         projectId   : data['projectId'],
         title       : data['title'],
         description : data['description']
