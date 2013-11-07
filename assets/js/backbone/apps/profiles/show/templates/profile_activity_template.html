@@ -24,7 +24,9 @@
               <% } %>
               <a href="<%= target %>s/<%= data[i].id %>" class="activity-link" data-id="<%= data[i].id %>"><%= data[i].title %></a>
             </td>
-            <td><%= data[i].createdAt %></td>
+            <td>
+              <% var created = new Date(data[i].createdAt); %>
+              <%= created.toLocaleDateString() %> <%= created.toLocaleTimeString() %></td>
             <td><%= data[i].likeCount %></td>
           </tr>
         <% } %>

@@ -36,7 +36,6 @@ define([
           data.count[this.options.data[i].state]++
         }
       }
-      console.log(data);
       var template = _.template(ActTemplate, data);
       this.$el.html(template);
 

@@ -113,6 +113,7 @@ define([
 
     initializePAView: function () {
       if (this.projectView) { this.projectView.cleanup(); }
+      if (this.taskView) { this.taskView.cleanup(); }
       $.ajax('/api/user/activities/' + this.model.attributes.id).done(function (data) {
         this.projectView = new PAView({
           model: this.model,
@@ -121,8 +122,15 @@ define([
           data: data.projects
         });
         this.projectView.render();
-      });
+        this.taskView = new PAView({
+          model: this.model,
+          el: '.task-activity-wrapper',
+          target: 'task',
+          data: data.tasks
+        });
+        this.taskView.render();
 
+      });
     },
 
     updatePhoto: function () {
@@ -474,6 +482,7 @@ define([
     cleanup: function () {
       if (this.tagView) { this.tagView.cleanup(); }
       if (this.projectView) { this.projectView.cleanup(); }
+      if (this.taskView) { this.taskView.cleanup(); }
       removeView(this);
     },
 

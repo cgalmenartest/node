@@ -193,9 +193,10 @@ module.exports = {
       for (var i in ownerList) {
         projIds.push(ownerList[i].projectId);
       }
+
       // Grab each of the projects
       async.each(projIds, getProject, function (err) {
-        if (err) { return res.send(400, { message: 'Error looking up projects '}); }
+        if (err) { return res.send(400, { message: 'Error looking up projects.'}); }
         // Then grab the project metadata
         var getMetadata = function(proj, done) {
           projUtils.getMetadata(proj, userId, function (err, newProj) {
@@ -206,8 +207,17 @@ module.exports = {
           });
         };
         async.each(projects, getMetadata, function (err) {
-          if (err) { return res.send(400, { message: 'Error looking up projects '}); }
-          return res.send({ projects: projects });
+          if (err) { return res.send(400, { message: 'Error looking up projects.'}); }
+          // find tasks that user owns
+          Task.find()
+          .where({ userId: reqId })
+          .exec(function (err, tasks) {
+            if (err) { return res.send(400, { message: 'Error looking up tasks.'}); }
+            return res.send({
+              projects: projects,
+              tasks: tasks
+            });
+          });
         })
       });
 
