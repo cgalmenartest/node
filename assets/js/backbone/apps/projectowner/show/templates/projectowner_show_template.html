@@ -1,5 +1,5 @@
 <h4>Project Owners
-<button class="btn btn-c3 btn-sm file-add owner-form-toggle" id="owner-edit" name="owner-edit" >Edit Owners</button>
+<button class="btn btn-c3 btn-sm file-add owner-form-toggle" id="owner-edit" name="owner-edit" >Add Owners</button>
 <button id="owner-cancel" name="owner-cancel" class="btn btn-c3 btn-sm file-add owner-form-toggle">Cancel</button>
 <button id="owner-save" name="owner-save" class="btn btn-c3 btn-sm file-add owner-form-toggle">Save</button>
 </h4>
@@ -26,7 +26,10 @@
     <% for (var i = 0; i < data.owners.length; i++) { %>
     <div class="project-people-div" data-userid="<%= data.owners[i].userId %>">
       <img src="/api/user/photo/<%= data.owners[i].userId %>" class="project-people"/>
-      <!--<a href="#" class="delete-projectowner"  id="delete-projectowner-<%= data.owners[i].id %>" data-poid="<%= data.owners[i].id %>">X</a>-->
+      <% if(data.owners[i].userId !== cache.currentUser.id ) { %>
+      <a href="#" class="delete-projectowner project-owner-delete glyphicon glyphicon-remove"  id="delete-projectowner-<%= data.owners[i].id %>" data-poid="<%= data.owners[i].id %>">
+      </a>
+      <% } %>
     </div>
     <% } %>
   <% } %>

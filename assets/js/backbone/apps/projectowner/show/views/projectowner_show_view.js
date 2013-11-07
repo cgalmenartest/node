@@ -41,9 +41,11 @@ define([
       this.model.on("project:update:owners:success", function (data) {
 
         self.render( {model: data} );
-        var popovers = new Popovers();
-        popovers.popoverPeopleInit(".project-people-div");
-
+        if(typeof popovers === 'undefined')
+        {
+          var popovers = new Popovers();
+          popovers.popoverPeopleInit(".project-people-div");
+        }
       });
 
 
@@ -54,24 +56,13 @@ define([
 
       var compiledTemplate,
           data = { data: this.model.toJSON() };
-          // console.log(data);
       compiledTemplate = _.template(ProjectownerShowTemplate, data);
-      // console.log(compiledTemplate);
       this.$el.html(compiledTemplate);
-      //this.initializeOwnerSelect2();
 
       this.model.trigger("projectowner:show:rendered", data);
 
       return this;
     },
-
-
-
-
-    // initializeUI: function() {
-    //   popovers.popoverPeopleInit(".project-people-div");
-    // },
-
 
     initializeOwnerSelect2: function () {
       var self = this;
@@ -79,8 +70,11 @@ define([
         var formatResult = function (object, container, query) {
           return object.name;
         };
+        var oldOwners = this.model.attributes.owners || [];
+        var oldOwnerIds = _.map(oldOwners, function(owner){ return owner.userId }) || [];
+
         self.$("#owners").select2({
-          placeholder: 'Select Project Owners',
+          placeholder: 'Add Project Owners',
           multiple: true,
           formatResult: formatResult,
           formatSelection: formatResult,
@@ -94,44 +88,23 @@ define([
                 };
               },
               results: function (data) {
-                return { results: _.filter(data, function(user){  return (user.id !== cache.currentUser.id);  }, self ) };
+                return { results: _.filter(data, function(user){  return _.indexOf( oldOwnerIds, user.id) >= 0 ? false : true; }, self ) };
             }
           }
         });
 
-        var persistedSearch2Data = [];
-        async.each( self.model.attributes.owners, addOwnerS2Obj, function(){ self.$("#owners").select2('data', persistedSearch2Data);});
         self.$('#owner-edit').show();
 
       }
-      // self.$("#owners").select2('data', self.model.attributes.owners);
+      else
+      {
+        self.$('#owner-edit').hide();
+      }
 
       self.$('#project-owners-form').hide();
       self.$('#project-owners-show').show();
       self.$('#owner-save').hide();
       self.$('#owner-cancel').hide();
-
-      function addOwnerS2Obj(owner, done){
-
-        $.ajax({
-            url: '/api/user/find/' + owner.userId,
-            type: 'GET',
-            dataType: 'json',
-            success: function(data){
-              if(cache.currentUser.id !== data.id){
-                persistedSearch2Data.push({ id: data.id,
-                                            field: "name",
-                                            name: data.name,
-                                            target: "user",
-                                            value: data.name
-                                          });
-              }
-            }
-        }).done(function(result){
-          done();
-        });
-
-      };
 
     },
 
@@ -152,47 +125,14 @@ define([
 
       var oldOwners = this.model.attributes.owners || [];
       var s2data = $("#owners").select2("data")  || [];
-      var oldOwnerIds = _.map(oldOwners, function(owner){ return owner.userId }) || [];
       var s2OwnerIds = _.map(s2data, function(owner){ return owner.id }) || [];
 
-      var newOwnerIds = _.difference(s2OwnerIds, oldOwnerIds) || [];
+      async.each(s2OwnerIds, createOwner, function(){ self.model.trigger("projectowner:show:changed", oldOwners); });
 
-      var removeOwnerIds = _.difference(oldOwnerIds, s2OwnerIds) || [];
-      //makes it so you can't remove yourself as owner. Can debate this point later.
-      removeOwnerIds = _.filter(removeOwnerIds, function(userId){ return !(cache.currentUser.id === userId); }, this)  || [];
-
-      var removeOwners = _.filter(oldOwners, function(owner){ return _.indexOf( removeOwnerIds, owner.userId) >= 0 ? true : false; } , this)  || [];
-      var unchangedOwners = _.filter(oldOwners, function(owner){ return _.indexOf( removeOwnerIds, owner.userId) >= 0 ? false : true; } , this)  || [];
-
-      var removePOIds = _.map( removeOwners, function(owner){ return owner.id } )  || [];
-
-      // var createdPOIds = [];
-
-      async.each(newOwnerIds, createOwner, function(){
-
-            async.each(removePOIds, removeOwner, function(){ self.model.trigger("projectowner:show:changed", unchangedOwners); });
-      });
-
-                                       // self.model.trigger("projectowner:show:changed", unchangedOwners); });
-
-    // console.log(s2data);
-
-      // var createTemp = [self, createdPOIds];
-      // _.each(newOwnerIds, self.createOwner, createTemp);
-      // _.each(removePOIds, self.removeOwner, self);
-
-      // console.log(createdPOIds);
-      // this.model.set('owners', s2data);
-      // console.log(s2data);
-
-      // var modelData = _.map(s2data, function(owner){ return { id: , userId: owner.id }  });
+      $("#owners").select2("data", []);
 
       function createOwner(ownerID, done){
         var self = this;
-        // var arr = this[1];
-        // var POId;
-        //var ownerID = owner.id;
-        //var owners = this.model.owners || [];
         $.ajax({
             url: '/api/projectowner/',
             type: 'POST',
@@ -202,40 +142,34 @@ define([
             },
             success : function(data){
               var POId = data.id;
-              unchangedOwners.push({ id:POId, userId: ownerID});
-
-              // arr.push(data.id);
-              //newOwners.push(data);
-              // this.model.set('owners',owners)
-
+              oldOwners.push({ id:POId, userId: ownerID});
             }
 
-          }).done(function (result) {
+          }).done(function (data) {
             done();
-            // if(!_.isUndefined(POId)){this[1].push(POId);}
           });
       };
 
-      function removeOwner(pOId, done) {
-        // if (e.preventDefault) e.preventDefault();
-        // var pOId = $(e.currentTarget).data('poid');
-        var self = this;
-        $.ajax({
-        url: '/api/projectowner/' + pOId,
-        type: 'DELETE',
-        }).done(function (data) {
-          done();
-        });
-      };
-
-
-
-
-
-
-
     },
 
+    removeOwner: function(e) {
+      if (e.preventDefault) e.preventDefault();
+      $(e.currentTarget).off("mouseenter");
+      $('.popover').remove();
+      var pOId = $(e.currentTarget).data('poid');
+      var self = this;
+
+      $.ajax({
+        url: '/api/projectowner/' + pOId,
+        type: 'DELETE',
+      }).done(function (data) {
+          // done();
+      });
+
+      var oldOwners = this.model.attributes.owners || [];
+      var unchangedOwners = _.filter(oldOwners, function(owner){ return ( owner.id !== pOId ); } , this)  || [];
+      self.model.trigger("projectowner:show:changed", unchangedOwners);
+    },
 
 
 
