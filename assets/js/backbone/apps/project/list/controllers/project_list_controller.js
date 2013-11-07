@@ -23,6 +23,7 @@ define([
 
 		events: {
 			"click .project"				: "show",
+			"click .project-background-image" : "show",
 			"click .add-project"		: "add",
 			"click .edit-project"		: "edit",
 			"click .delete-project"	: "delete"
@@ -76,7 +77,8 @@ define([
 		// -----------------------
 		show: function (e) {
 			if (e.preventDefault) e.preventDefault();
-			Backbone.history.navigate('projects/' + $(e.currentTarget).data('project-id'), { trigger: true });
+			var id = $($(e.currentTarget).parents('li.project-box')[0]).data('project-id');
+			Backbone.history.navigate('projects/' + id, { trigger: true });
 		},
 
 		add: function (e) {

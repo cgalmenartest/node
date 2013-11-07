@@ -91,6 +91,7 @@
 	border-bottom-color: #aaa;
 	border-bottom-style: solid;
 	border-bottom-width: 1px;
+	cursor: pointer;
 }
 
 .project-background-image-default {
