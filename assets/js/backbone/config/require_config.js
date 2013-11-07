@@ -43,14 +43,6 @@ require.config({
     'base_view'                 : '../base/base_view',
 
     // ----------
-    //= Home
-    // ----------
-    'marketing_app'             : '../apps/marketing/marketing_app',
-    'marketing_home_controller' : '../apps/marketing/home/controllers/marketing_home_controller',
-    'marketing_home_view'       : '../apps/marketing/home/views/marketing_home_view',
-    'marketing_home_template'   : '../apps/marketing/home/templates/marketing_home_template.html',
-
-    // ----------
     //= Projects
     // ----------
     'project_app'               : '../apps/project/project_app',
