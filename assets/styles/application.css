@@ -196,15 +196,23 @@ div.project-title {
 	padding-bottom: 10px;
 }
 
-.project-participants {
+/* project owner styles */
+a.delete-projectowner {
+  position:absolute;
+  right:0px;
 }
-
+.project-people-div{
+  position:relative;
+  padding: 10px;
+}
 .project-people {
 	height: 40px;
 	width: 40px;
 	max-height: 40px;
 	border-radius: 25px;
 }
+/* end */
+
 
 .project-comments {
 	margin-bottom: 20px;
