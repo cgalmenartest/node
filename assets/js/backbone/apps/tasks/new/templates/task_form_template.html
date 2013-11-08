@@ -1,6 +1,12 @@
 <form id="task-form" class="form-inline" style="display: block;">
   <fieldset>
     <section id="section-1" class="current" style="height: 100%;">
+        <input type="text" id="task-title" placeholder="What problem are you trying to solve?" style="width: 100%" />
+        <br />
+        <textarea id="task-description" style="width: 100%;" placeholder="Please describe the project details, including goals, expected outcomes and deliverables."></textarea>
+    </section>
+
+    <section id="section-2">
       <div class="form-inline">
         <div class="form-group">
           <label>I need
@@ -19,29 +25,10 @@
         </div>
       </div>
 
-      <br /> <br />
-
-        <div class="form-group">
-          <label for="skills-required" class="col-lg-3">the following skills are
-            <select id="skills-required" name="skills-required" style="width: 100%;">
-              <% _.each(skillsRequired, function(requirement) { %>
-                <option value="<%= requirement.id %>"><%= requirement.name %></option>
-              <% }); %>
-            </select>
-          </label>
-        </div>
-
-      <div class="form-group">
-        <label for="skills" class="col-lg-3 control-label">to complete this opportunity:
-          <input type="hidden" id="skills" name="skills" multiple="true" style="width: 100%"/>
-        </label>
-      </div>
-
-
-
     </section>
 
-    <section id="section-2">
+    <section id="section-3">
+
       <div class="form-group">
 
         <label>It will require</label>
@@ -59,12 +46,12 @@
           </select>
       </div>
 
-        <label>work, and must be completed within</label>
-          <select id="length">
-            <% _.each(length, function (item) { %>
-              <option value="<%= item.id %>"><%= item.name %></option>
-            <% }) %>
-          </select>
+      <label>work, and must be completed within</label>
+      <select id="length">
+        <% _.each(length, function (item) { %>
+          <option value="<%= item.id %>"><%= item.name %></option>
+        <% }) %>
+      </select>
 
       <br /><br />
 
@@ -80,16 +67,25 @@
         <label for="input-specific-location">Enter that location here:</label>
         <input type="text" id="input-specific-location" style="width: 100%;" />
       </div>
-
     </section>
 
-    <section id="section-3">
-       <input type="text" id="task-title" placeholder="What problem are you trying to solve?" style="width: 100%" />
-        <br />
-        <textarea id="task-description" style="width: 100%;" placeholder="Please describe the project details, including goals, expected outcomes and deliverables."></textarea>
+    <section class="section-4">
+      <div class="form-group">
+        <label for="skills-required">the following skills are
+          <select id="skills-required" name="skills-required" style="width: 100%;">
+            <% _.each(skillsRequired, function(requirement) { %>
+              <option value="<%= requirement.id %>"><%= requirement.name %></option>
+            <% }); %>
+          </select>
+        </label>
+      </div>
 
+      <div class="form-group">
+        <label for="skills" class="control-label">to complete this opportunity:
+          <input type="hidden" id="skills" name="skills" multiple="true" style="width: 100%"/>
+        </label>
+      </div>
       <input type="submit" class="btn btn-primary">
-
     </section>
 
   </fieldset>

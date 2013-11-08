@@ -28,7 +28,8 @@ define([
     template: _.template(ModalWizardTemplate),
 
     events: {
-      "click .wizard-forward": "moveWizardForward"
+      "click .wizard-forward" : "moveWizardForward",
+      "click .wizard-backward": "moveWizardBackward"
     },
 
     intialize: function (options) {
@@ -86,7 +87,7 @@ define([
       $(e.currentTarget).text("Submit");
     },
 
-    moveWizardBack: function (e) {
+    moveWizardBackward: function (e) {
       if (e.preventDefault) e.preventDefault();
 
       var current   = $(".current"),

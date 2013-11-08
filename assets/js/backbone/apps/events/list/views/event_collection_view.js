@@ -15,9 +15,9 @@ define([
     },
 
     render: function () {
-      
       var eventsJSON = {
-        events: this.options.collection.toJSON()
+        events: this.options.collection.toJSON(),
+        projectId: this.options.projectId
       }
 
       this.compiledTemplate = _.template(EventListTemplate, eventsJSON);
