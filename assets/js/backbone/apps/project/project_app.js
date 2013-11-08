@@ -18,6 +18,8 @@ define([
       'projects/:id/tasks/:id(/)' : 'showTask'
     },
 
+    data: { saved: false },
+
     list: function () {
       $("#container").children().remove();
       if (this.projectListController) {
@@ -35,6 +37,7 @@ define([
 
       if (this.projectShowController) this.projectShowController.cleanup();
       this.projectShowController = new ProjectShowController({ model: model, router: this });
+
     },
 
     showTask: function (noop, taskId) {

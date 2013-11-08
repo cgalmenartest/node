@@ -133,16 +133,12 @@
     </div>
     <img src="/images/mockups/status-mockup.gif" style="margin-bottom: 20px"/>
 
-    <h4>Project Participants</h4>
-    <div class="project-contributors">
-      <% if (data.owners) { %>
-        <% for (var i = 0; i < data.owners.length; i++) { %>
-        <div class="project-people-div" data-userid="<%= data.owners[i].userId %>">
-          <img src="/api/user/photo/<%= data.owners[i].userId %>" class="project-people"/>
-        </div>
-        <% } %>
-      <% } %>
+    <hr/>
+
+    <div id="projectowner-wrapper">
     </div>
+
+    <hr/>
 
     <div class="row">
       <div class="col-lg-6">
@@ -160,6 +156,12 @@
     </div>
 
     <hr>
+
+
+
+
+
+
 
     <div class="comment-list-wrapper" style="clear: both;">
       <h4>Discussion

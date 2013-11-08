@@ -7,13 +7,14 @@ define([
 	'popovers',
 	'base_controller',
 	'project_item_view',
+	'projectowner_show_view',
 	'task_list_controller',
 	'event_list_controller',
 	'comment_list_controller',
 	'comment_form_view',
 	'modal_component',
 	'autocomplete'
-], function ($, _, async, Backbone, utils, Popovers, BaseController, ProjectItemView,
+], function ($, _, async, Backbone, utils, Popovers, BaseController, ProjectItemView, ProjectownerShowView,
 	TaskListController, EventListController, CommentListController, CommentFormView,
 	ModalComponent, autocomplete) {
 
@@ -42,22 +43,39 @@ define([
 		},
 
 		// The initialize method is mainly used for event bindings (for effeciency)
-		initialize: function () {
+		initialize: function (options) {
 			var self = this;
+
+			this.router = options.router;
+			this.id = options.id;
+      this.routeId = options.id;
+      this.data = options.data;
+			// console.log(options);
 
 			this.model.trigger("project:model:fetch", this.model.id);
 			this.listenTo(this.model, "project:model:fetch:success", function (model) {
 				this.model = model;
 				self.initializeItemView();
+				self.initializeOwners();
 			});
+
+			// this.listenTo(this.model, "project:update:owners:success", function (data) {
+			// 	var popovers = new Popovers();
+			// 	popovers.popoverPeopleInit(".project-people-div");
+			// 	$('.project-people-div').on('mouseenter', popovers.popoverPeopleOn);
+			// });
 
 			this.model.on("project:show:rendered", function () {
 				self.initializeItemViewControllers();
 				self.initializeHandlers();
 				self.initializeLikes();
 				self.initializeUI();
-			});
 
+
+			});
+			// console.log(cache.currentUser);
+
+			//console.log(self.model);
 		},
 
 		search: function () {
@@ -88,11 +106,21 @@ define([
 			});
 		},
 
+
 		initializeItemView: function () {
 			var self = this;
 
 			if (this.projectShowItemView) this.projectShowItemView.cleanup();
 			this.projectShowItemView  = new ProjectItemView({ model: this.model }).render();
+		},
+
+
+		initializeOwners : function(){
+			var self = this;
+
+			if (this.projectownerShowView) this.projectownerShowView.cleanup();
+			this.projectownerShowView = new ProjectownerShowView({ model: this.model }).render();
+
 		},
 
 		initializeItemViewControllers: function () {
@@ -126,6 +154,11 @@ define([
 			popovers.popoverPeopleInit(".project-people-div");
 		},
 
+
+
+
+
+
 		edit: function (e) {
 			if (e.preventDefault) e.preventDefault();
 			var self = this;
@@ -153,6 +186,8 @@ define([
 			$("#project-admin-state").button('loading');
 			this.model.trigger("project:update:state", state);
 		},
+
+
 
 		like: function (e) {
 			if (e.preventDefault) e.preventDefault();
@@ -215,6 +250,7 @@ define([
 			if (this.eventListController) this.eventListController.cleanup();
 			if (this.commentListController) this.commentListController.cleanup();
 			if (this.projectShowItemView) this.projectShowItemView.cleanup();
+			if (this.projectownerShowView) this.projectownerShowView.cleanup();
 			removeView(this);
 		}
 

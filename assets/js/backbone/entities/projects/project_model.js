@@ -2,7 +2,7 @@ define([
   'underscore',
   'backbone',
 ], function (_, Backbone) {
-  
+
   var ProjectModel = Backbone.Model.extend({
 
     defaults: {
@@ -31,10 +31,17 @@ define([
       this.listenTo(this, "project:update:state", function (state) {
         self.updateState(state);
       });
+
+      this.listenTo(this, "projectowner:show:changed", function (data) {
+        self.updateOwners(data);
+      });
+
+
+
     },
 
     urlRoot: '/api/project',
-    
+
     get: function (id) {
       var self = this;
       this.set({ id: id });
@@ -48,7 +55,7 @@ define([
     update: function (data) {
       var self = this;
 
-      this.save({ 
+      this.save({
         title: data['title'],
         description: data['description']
       }, { success: function (returnModel) {
@@ -78,6 +85,18 @@ define([
       }, {
         success: function(data) {
           self.trigger("project:update:state:success", data);
+        }
+      });
+    },
+
+    updateOwners: function (data) {
+      var self = this;
+      // console.log(data);
+      this.save({
+        owners: data
+      }, {
+        success: function(data) {
+          self.trigger("project:update:owners:success", data);
         }
       });
     }
