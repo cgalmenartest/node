@@ -26,7 +26,7 @@
     <% for (var i = 0; i < data.owners.length; i++) { %>
     <div class="project-people-div" data-userid="<%= data.owners[i].userId %>">
       <img src="/api/user/photo/<%= data.owners[i].userId %>" class="project-people"/>
-      <% if(data.owners[i].userId !== cache.currentUser.id ) { %>
+      <% if((data.owners[i].userId !== cache.currentUser.id) && data.isOwner) { %>
       <a href="#" class="delete-projectowner project-owner-delete glyphicon glyphicon-remove"  id="delete-projectowner-<%= data.owners[i].id %>" data-poid="<%= data.owners[i].id %>">
       </a>
       <% } %>
