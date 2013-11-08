@@ -29,6 +29,10 @@ define([
 					success: function (tags) {
 						task['tags'] = tags;
 						done();
+					},
+					error: function () {
+						task['tags'] = [];
+						done();
 					}
 				});
 			}
