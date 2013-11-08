@@ -43,6 +43,11 @@
 	border-radius: 25px;
 }
 
+.navbar-1line {
+	margin-top: 10px;
+	margin-bottom: 5px;
+}
+
 /*****************
 =  TEXT COLORS
 ******************/
@@ -91,6 +96,7 @@
 	border-bottom-color: #aaa;
 	border-bottom-style: solid;
 	border-bottom-width: 1px;
+	cursor: pointer;
 }
 
 .project-background-image-default {

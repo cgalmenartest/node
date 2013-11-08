@@ -27,6 +27,7 @@
             <a href="#" class="btn btn-c0" id="profile-cancel">Cancel</a>
             <a href="#" class="btn btn-primary" id="profile-save" disabled="disabled">Save Changes</a>
             <% } else { %>
+            <a href="/api/event/ical/" class="btn btn-c1"><span class="glyphicon glyphicon-calendar"></span> iCal</a>
             <a href="#" class="btn btn-c4" id="profile-edit">Edit Profile</a>
             <% } %>
           <% } else { %>
@@ -191,11 +192,13 @@
 
       <h2>Projects</h2>
 
-      Insert information here about projects that this user owns
+      <div class="project-activity-wrapper">
+      </div>
 
       <h2>Opportunities</h2>
 
-      Insert information here about opportunities that the user is working on
+      <div class="task-activity-wrapper">
+      </div>
 
       <% } %> <!-- /edit check -->
 

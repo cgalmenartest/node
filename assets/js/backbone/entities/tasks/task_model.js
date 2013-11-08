@@ -14,6 +14,12 @@ define([
     urlRoot: '/api/task',
 
     initialize: function () {
+      var self = this;
+
+      this.listenTo(this, "task:model:fetch", function (id) {
+        self.get(id);
+      });
+
       this.initializeTaskSave();
     },
 
@@ -34,7 +40,17 @@ define([
           }
         });
       });
-    }
+    },
+
+    get: function (id) {
+      var self = this;
+      this.set({ id: id });
+      this.fetch({
+        success: function (data) {
+          self.trigger("task:model:fetch:success", data);
+        }
+      });
+    },
 
   });
 

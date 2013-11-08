@@ -34,7 +34,8 @@ module.exports.policies = {
     'info': ['authenticated', 'requireId'],
     'update': ['authenticated', 'requireUserId', 'requireId'],
     'username': ['authenticated', 'requireUserId', 'requireId'],
-    'find': ['authenticated', 'requireUserId']
+    'find': ['authenticated', 'requireUserId'],
+    'activities': ['authenticated']
   },
 
   UserEmailController : {

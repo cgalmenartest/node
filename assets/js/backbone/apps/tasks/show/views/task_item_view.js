@@ -14,41 +14,58 @@ define([
     // Aka item view.
     el: "#container",
 
+    initialize: function (options) {
+      var self = this;
+      this.model.trigger("task:model:fetch", this.options.id);
+      this.listenTo(this.model, "task:model:fetch:success", function (model) {
+        self.model = model;
+        self.render();
+      });
+    },
+
     render: function () {
-      var self  = this;
-      this.data = {};
+      var self = this;
 
       this.initializeSelect2Data();
 
-      _.each(this.model.toJSON().tags, function (tag) {
-        if (tag.tag.type === 'people') {
-          self.data['people'] = tag.tag;
-        } else if (tag.tag.type === 'length') {
-          self.data['length'] = tag.tag;
-        } else if (tag.tag.type === 'skills-required') {
-          self.data['skillsRequired'] = tag.tag;
-        } else if (tag.tag.type === 'time-required') {
-          self.data['timeRequired'] = tag.tag;
+      $.ajax({
+        url: '/api/tag/findAllByTaskId/' + self.options.id,
+        async: false,
+        success: function (tagData) {
+          var data = {};
+          self.model.attributes['tags'] = tagData;
+
+          _.each(self.model.toJSON().tags, function (tag) {
+            if (tag.tag.type === 'people') {
+              data['people'] = tag.tag;
+            } else if (tag.tag.type === 'length') {
+              data['length'] = tag.tag;
+            } else if (tag.tag.type === 'skills-required') {
+              data['skillsRequired'] = tag.tag;
+            } else if (tag.tag.type === 'time-required') {
+              data['timeRequired'] = tag.tag;
+            }
+          });
+
+          data['model'] = self.model.toJSON();
+
+          var compiledTemplate = _.template(TaskShowTemplate, data);
+          $(self.el).html(compiledTemplate)
+
+          var tags = [
+            $("#topics").select2('data'),
+            $("#skills").select2('data'),
+            $("#skills-required").select2('data'),
+            $("#people").select2('data'),
+            $("#time-required").select2('data'),
+            $("#length").select2('data'),
+            // $("#time-estimate").select2('data'),
+            // $("#task-location").select2('data'),
+            $("#input-specific-location").val(),
+          ];
+          self.initTaskTags(tags);
         }
       });
-
-      this.data['model'] = this.model.toJSON();
-
-      var compiledTemplate = _.template(TaskShowTemplate, this.data);
-      $(this.el).html(compiledTemplate)
-
-      var tags = [
-        $("#topics").select2('data'),
-        $("#skills").select2('data'),
-        $("#skills-required").select2('data'),
-        $("#people").select2('data'),
-        $("#time-required").select2('data'),
-        $("#length").select2('data'),
-        // $("#time-estimate").select2('data'),
-        // $("#task-location").select2('data'),
-        $("#input-specific-location").val(),
-      ];
-      this.initTaskTags(tags);
     },
 
     initializeSelect2Data: function () {

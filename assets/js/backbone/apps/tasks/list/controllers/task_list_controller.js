@@ -103,7 +103,7 @@ define([
       var projectId = $(e.currentTarget).data('projectid'),
           taskId    = $(e.currentTarget).data('id');
 
-      Backbone.history.navigate('projects/' + projectId + '/tasks/' + taskId, { trigger: true }, taskId);
+      Backbone.history.navigate('tasks/' + taskId, { trigger: true }, taskId);
     },
 
     cleanup: function () {

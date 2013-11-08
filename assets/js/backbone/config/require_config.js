@@ -43,12 +43,11 @@ require.config({
     'base_view'                 : '../base/base_view',
 
     // ----------
-    //= Home
+    //= Navigation
     // ----------
-    'marketing_app'             : '../apps/marketing/marketing_app',
-    'marketing_home_controller' : '../apps/marketing/home/controllers/marketing_home_controller',
-    'marketing_home_view'       : '../apps/marketing/home/views/marketing_home_view',
-    'marketing_home_template'   : '../apps/marketing/home/templates/marketing_home_template.html',
+    'nav_app'                   : '../apps/nav/nav_app',
+    'nav_view'                  : '../apps/nav/views/nav_view',
+    'nav_template'              : '../apps/nav/templates/nav_template.html',
 
     // ----------
     //= Projects
@@ -82,6 +81,7 @@ require.config({
     // ----------
     //= Tasks
     // ----------
+    'task_app'                  : '../apps/tasks/task_app',
     'task_list_template'        : '../apps/tasks/list/templates/task_collection_view_template.html',
     'task_form_template'        : '../apps/tasks/new/templates/task_form_template.html',
     'tasks_collection'          : '../entities/tasks/tasks_collection',
@@ -115,6 +115,8 @@ require.config({
     'profile_email_template'    : '../apps/profiles/show/templates/profile_email_template.html',
     'profile_email_view'        : '../apps/profiles/email/views/profile_email_view',
     'profile_email_form_template': '../apps/profiles/email/templates/profile_email_form.html',
+    'profile_activity_template' : '../apps/profiles/show/templates/profile_activity_template.html',
+    'profile_activity_view'     : '../apps/profiles/show/views/profile_activity_view',
 
     // ----------
     //= Comments
