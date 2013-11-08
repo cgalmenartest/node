@@ -156,15 +156,20 @@ define([
       if (e.preventDefault) e.preventDefault();
       $(e.currentTarget).off("mouseenter");
       $('.popover').remove();
+
       var pOId = $(e.currentTarget).data('poid');
+      var uId = $(e.currentTarget).data('uid');
       var self = this;
 
-      $.ajax({
-        url: '/api/projectowner/' + pOId,
-        type: 'DELETE',
-      }).done(function (data) {
-          // done();
-      });
+      if(typeof cache !== "undefined" && uId !== cache.currentUser.id)
+      {
+        $.ajax({
+          url: '/api/projectowner/' + pOId,
+          type: 'DELETE',
+        }).done(function (data) {
+            // done();
+        });
+      }
 
       var oldOwners = this.model.attributes.owners || [];
       var unchangedOwners = _.filter(oldOwners, function(owner){ return ( owner.id !== pOId ); } , this)  || [];
