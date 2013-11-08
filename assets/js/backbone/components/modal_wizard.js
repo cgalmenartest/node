@@ -30,7 +30,8 @@ define([
 
     events: {
       "click .wizard-forward" : "moveWizardForward",
-      "click .wizard-backward": "moveWizardBackward"
+      "click .wizard-backward": "moveWizardBackward",
+      "click .wizard-submit"  : "submit"
     },
 
     intialize: function (options) {
@@ -75,16 +76,18 @@ define([
         }
       }
 
-      if (_.isEqual(current.next().children("input[type='submit']").length, 0)) {
+      var child = current.next().children()[1]
+      var nextChild = $(child).next().children("input[type='data']")
+      if (_.isEqual(nextChild.length, 0)) {
         // no-op
       } else {
         $("button.wizard-forward").hide();
-        current.next().children("input[type='submit']").css("float", "right").css("margin-top", "10px");
+        $("button.wizard-submit").show();
       };
 
       if (nextWizardStep.exists()) {
         hideCurrentAndInitializeNextWizardStep();
-      } else if (nextWizardStepExists.doesNotExist()) {
+      } else if (nextWizardStep.doesNotExist()) {
         console.log("And here we switch the the button logic to now ready for submit.")
       };
 
@@ -116,6 +119,16 @@ define([
       } else {
         return;
       }
+    },
+
+    // Dumb submit.  Everything is expected via a promise from
+    // from the instantiation of this modal wizard.
+    submit: function (e) {
+      if (e.preventDefault) e.preventDefault();
+      var self = this;
+
+      this.collection.trigger(this.modelName + ":save", this.data);
+
     },
 
     cleanup: function () {

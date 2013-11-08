@@ -83,7 +83,15 @@ define([
       this.modalWizardComponent = new ModalWizardComponent({
         el: "#task-list-wrapper",
         id: "addTask",
-        modalTitle: 'New Opportunity'
+        modalTitle: 'New Opportunity',
+        model: self.taskModel,
+        collection: self.tasks,
+        modelName: 'task',
+        data: {
+          title: $("#task-title").val(),
+          description: $("#task-description").val(),
+          projectId: self.options.projectId
+        }
       }).render();
 
       if (!_.isUndefined(this.modalWizardComponent)) {

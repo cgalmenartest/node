@@ -15,7 +15,7 @@ define([
 		el: "#task-list-wrapper",
 
 		events: {
-      "submit #task-form"     : "post",
+      "click .wizard-submit"  : "post",
       "change #task-location" : "locationChange"
 		},
 
@@ -88,8 +88,6 @@ define([
         // $("#task-location").select2('data'),
         $("#input-specific-location").val(),
       ];
-
-      this.tasks.trigger("task:save", taskData);
 
       this.listenTo(this.tasks, "task:save:success", function (taskId) {
 
