@@ -38,7 +38,8 @@ define([
 			"click #tag-save"       					: "tagSave",
 			"click #tag-create"     					: "tagCreate",
 			"click .tag-delete"     					: "tagDelete",
-			"change #project-state" 					: "updateState",
+			"click #project-close"						: "stateClose",
+			"click #project-reopen"						: "stateReopen",
 			"mouseenter .project-people-div" 	: popovers.popoverPeopleOn,
 		},
 
@@ -59,12 +60,6 @@ define([
 				self.initializeOwners();
 			});
 
-			// this.listenTo(this.model, "project:update:owners:success", function (data) {
-			// 	var popovers = new Popovers();
-			// 	popovers.popoverPeopleInit(".project-people-div");
-			// 	$('.project-people-div').on('mouseenter', popovers.popoverPeopleOn);
-			// });
-
 			this.model.on("project:show:rendered", function () {
 				self.initializeItemViewControllers();
 				self.initializeHandlers();
@@ -73,9 +68,6 @@ define([
 
 
 			});
-			// console.log(cache.currentUser);
-
-			//console.log(self.model);
 		},
 
 		search: function () {
@@ -106,7 +98,6 @@ define([
 			});
 		},
 
-
 		initializeItemView: function () {
 			var self = this;
 
@@ -120,15 +111,12 @@ define([
 
 			if (this.projectownerShowView) this.projectownerShowView.cleanup();
 			this.projectownerShowView = new ProjectownerShowView({ model: this.model }).render();
-
 		},
 
 		initializeItemViewControllers: function () {
 			this.taskListController = new TaskListController({ projectId: this.model.id });
-
-			this.eventListController = new EventListController({ projectId: this.model.id })
-
-			this.commentListController = new CommentListController({ projectId: this.model.id })
+			this.eventListController = new EventListController({ projectId: this.model.id });
+			this.commentListController = new CommentListController({ projectId: this.model.id });
 		},
 
 		initializeLikes: function() {
@@ -146,18 +134,21 @@ define([
 
 		initializeHandlers: function() {
 			this.listenTo(this.model, "project:update:state:success", function (data) {
-				$("#project-admin-state").button('reset');
+				if (data.attributes.state == 'closed') {
+					$("#li-project-close").hide();
+					$("#li-project-reopen").show();
+					$("#alert-closed").show();
+				} else {
+					$("#li-project-close").show();
+					$("#li-project-reopen").hide();
+					$("#alert-closed").hide();
+				}
 			});
 		},
 
 		initializeUI: function() {
 			popovers.popoverPeopleInit(".project-people-div");
 		},
-
-
-
-
-
 
 		edit: function (e) {
 			if (e.preventDefault) e.preventDefault();
@@ -179,15 +170,15 @@ define([
 			}
 		},
 
-		updateState: function (e) {
+		stateClose: function (e) {
 			if (e.preventDefault) e.preventDefault();
-			var self = this;
-			var state  = $(e.currentTarget).val();
-			$("#project-admin-state").button('loading');
-			this.model.trigger("project:update:state", state);
+			this.model.trigger("project:update:state", 'closed');
 		},
 
-
+		stateReopen: function (e) {
+			if (e.preventDefault) e.preventDefault();
+			this.model.trigger("project:update:state", 'public');
+		},
 
 		like: function (e) {
 			if (e.preventDefault) e.preventDefault();

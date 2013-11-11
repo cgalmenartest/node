@@ -1,3 +1,6 @@
+<!-- ALERTS -->
+<div class="alert alert-danger" id="alert-closed" style="<% if (data.state != 'closed') { %>display: none;<% } %>">This project is currently <strong>closed</strong>.  It is no longer active, and no more modifications may be made.</div>
+
 <div class="row">
   <div class="col-lg-4 project-sidebar">
     <!-- LEFT SIDEBAR -->
@@ -131,16 +134,17 @@
               <li>
                 <a href="#" id="editProject"><i class="icon-pencil"></i> <span class="box-icon-text">Edit Project</span></a>
               </li>
-              <% if (data.state != 'closed') { %>
-              <li>
+              <li id="li-project-close" style="<% if (data.state == 'closed') { %>display: none;<% } %>">
                 <a href="#" id="project-close"><i class="icon-remove-sign"></i> <span class="box-icon-text">Close Project</span></a>
+              </li>
+              <li id="li-project-reopen" style="<% if (data.state != 'closed') { %>display: none;<% } %>">
+                <a href="#" id="project-reopen"><i class="icon-share-alt"></i> <span class="box-icon-text">Reopen Project</span></a>
               </li>
               <!--
               <li>
                 <a href="#" id="project-delete"><i class="icon-trash"></i> <span class="box-icon-text">Delete Project</span></a>
               </li>
               -->
-              <% } %>
             </ul>
           </div>
           <% } %>
