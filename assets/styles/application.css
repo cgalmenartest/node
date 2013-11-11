@@ -279,6 +279,10 @@ a.search-tag-remove:hover {
 	text-decoration: none;
 }
 
+.search-clear {
+	margin-top: 10px;
+}
+
 /*****************
 =  PROJECT SHOW
 ******************/

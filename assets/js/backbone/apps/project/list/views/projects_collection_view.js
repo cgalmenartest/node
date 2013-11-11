@@ -13,7 +13,8 @@ define([
 
     events: {
       "submit #search-form"       : "search",
-      "click .search-tag-remove"  : "searchTagRemove"
+      "click .search-tag-remove"  : "searchTagRemove",
+      "click .search-clear"       : "searchClear"
     },
 
     render: function () {
@@ -84,6 +85,7 @@ define([
       var data = $("#search").select2("data");
       if (data.length > 0) {
         $("#search-none").hide();
+        $(".search-clear").show();
       }
       _.each(data, function (d) {
         var found = false;
@@ -144,7 +146,17 @@ define([
       parent.remove();
       if (self.searchTerms.length == 0) {
         $("#search-none").show();
+        $(".search-clear").hide();
       }
+    },
+
+    searchClear: function (e) {
+      if (e.preventDefault) e.preventDefault();
+      this.searchTerms = [];
+      $("#search-projs").children().remove();
+      $("#search-tags").children().remove();
+      $("#search-none").show();
+      $(".search-clear").hide();
     },
 
     cleanup: function() {
