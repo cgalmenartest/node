@@ -58,8 +58,8 @@ define([
       this.save({
         title: data['title'],
         description: data['description']
-      }, { success: function (returnModel) {
-          self.trigger("project:save:success");
+      }, { success: function (data) {
+          self.trigger("project:save:success", data);
         }
       });
     },
