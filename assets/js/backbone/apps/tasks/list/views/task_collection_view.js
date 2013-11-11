@@ -19,7 +19,8 @@ define([
 			var self = this;
 
 			this.tasksJson = {
-				tasks: this.options.collection.toJSON()
+				tasks: this.options.collection.toJSON(),
+				user: window.cache.currentUser
 			};
 
 			var requestTagData = function (task, done) {

@@ -26,8 +26,11 @@ define([
     },
 
     render: function () {
-      var compiledTemplate,
-          data = { data: this.model.toJSON() };
+      var compiledTemplate;
+      var data = {
+        data: this.model.toJSON(),
+        user: window.cache.currentUser
+      };
 
       compiledTemplate = _.template(ProjectShowTemplate, data);
       this.$el.html(compiledTemplate);

@@ -9,6 +9,7 @@ require(['app-run'], function (appr) {
 
 // App
 window.Application      = window.Application || {};
+window.cache            = {};
 
 Application.AppModule   = {};
 Application.Controller  = {};

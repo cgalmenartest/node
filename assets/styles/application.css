@@ -1,6 +1,13 @@
 /*****************
 =  GLOBAL
 ******************/
+body {
+	background-color: #e5e5e5;
+	/*font-family: 'Lato', Helvetica, Arial, sans-serif;*/
+	font-family: 'Roboto', Helvetica, Arial, sans-serif;
+	font-weight: 300;
+}
+
 .clear {
 	clear: both;
 }
@@ -18,6 +25,73 @@
 	height: 40px;
 	background: #eee;
 	border-bottom: 1px #000 solid;
+}
+
+.box {
+	padding: 10px 0;
+	margin-bottom: 10px;
+	background-color: #fff;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	-webkit-box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+	box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+}
+
+.box-main {
+	padding: 10px;
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+.box-pad-lr {
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+.box-pad-t {
+	padding-top: 10px;
+}
+
+.box-icon-text {
+	margin-left: 5px;
+}
+
+.border-none {
+	border: 0;
+}
+
+.border-top {
+	border-top: 1px solid #e5e5e5;
+}
+
+.border-bottom {
+	border-bottom: 1px solid #e5e5e5;
+}
+
+.border-left {
+	border-left: 2px solid #e5e5e5;
+}
+
+.padding-none {
+	padding: 0;
+}
+
+.padding-left-none {
+	padding-left: 0;
+}
+
+.align-right {
+	text-align: right;
+}
+
+/*****************
+=  HEADERS
+******************/
+
+h1, h2, h3, h4, h5, h6 {
+	margin-top: 0;
+	font-family: 'Lato', 'Roboto', Helvetica, Arial, sans-serif;
+	font-weight: 300;
 }
 
 /*****************
@@ -38,6 +112,11 @@
   width: 1px;
 }
 
+#navbar-profile {
+	font-weight: 400;
+	font-size: 18px;
+}
+
 .navbar-people {
 	max-height: 40px;
 	border-radius: 25px;
@@ -46,6 +125,14 @@
 .navbar-1line {
 	margin-top: 10px;
 	margin-bottom: 5px;
+}
+
+.navbar-side {
+	padding: 5px;
+}
+
+.navbar-side > .nav > li > a {
+	padding: 5px 15px;
 }
 
 /*****************
@@ -75,8 +162,6 @@
 =  PROFILES
 ******************/
 
-/* TBD */
-
 /*****************
 =  PROJECTS
 ******************/
@@ -93,9 +178,6 @@
 	height: 120px;
 	background-repeat: no-repeat;
 	background-size: cover;
-	border-bottom-color: #aaa;
-	border-bottom-style: solid;
-	border-bottom-width: 1px;
 	cursor: pointer;
 }
 
@@ -105,15 +187,10 @@
 
 .project-box {
 	width: 240px;
-	height: 320px;
+	height: 307px;
 	overflow: hidden;
-	border: 1px #aaa solid;
 	float: left;
-
-	-webkit-box-shadow: 0 0 4 0 #eee;
-				 -box-shadow: 0 0 0 4p 0 #eee;
-
-	border-radius: 5px;
+	padding-top: 0;
 	margin-right: 20px;
 	margin-bottom: 10px;
 }
@@ -128,9 +205,6 @@
 }
 
 .project-list-counts {
-	border-top-style: solid;
-	border-top-width: 1px;
-	border-bottom-color: #aaa;
 	padding-top: 10px;
 	display: inline-table;
 	width: 100%;
@@ -154,9 +228,9 @@
 }
 
 div.project-title {
-	padding: 10px;
-  font-weight: bold;
-  font-size: 14px;
+	padding: 5px 10px 0;
+  font-weight: 400;
+  font-size: 18px;
 }
 
 .nopadding {
@@ -187,8 +261,6 @@ div.project-title {
 .project-header-wrapper {
 	width: 100%;
 	padding: 17px;
-	background-color: #E5E5E5;
-	margin-bottom: 25px;
 	position: relative;
 }
 
@@ -205,12 +277,6 @@ div.project-title {
 
 .project-description {
 	font-size: 16px;
-	column-count: 2;
-	column-fill: balance;
-	-moz-column-count: 2;
-	-moz-column-fill: balance;
-	-webkit-column-count: 2;
-	-webkit-column-fill: balance;
 	margin-bottom: 20px;
 	line-height: 1.5em;
 }
@@ -323,6 +389,17 @@ body > .popover {
 	right: 10px;
 }
 
+#project-owners-show {
+	margin-top: 10px;
+}
+
+/*****************
+=  TAGS
+******************/
+.tag-title {
+	margin-top: 10px;
+}
+
 .tag-delete {
 	cursor: pointer;
 }
@@ -348,100 +425,34 @@ ul.tags > li {
 	display: inline-block;
 }
 
-.project-sidebar > .locations {
-	margin-bottom: 10px;
-}
-
 /*****************
-=  LISTS
+=  LIKES
 ******************/
-.list-box {
-	margin: 0;
-	max-height: 450px;
-	overflow: hidden;
-}
-
-.list-scroll {
-	overflow-y: scroll;
-	max-height: 414px;
-}
-
-.list-box > h2 {
-	margin-top: 0;
-	margin-bottom: 1px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-	padding-left: 15px;
-	font-weight: normal;
-	font-size: 14px;
-	text-transform: uppercase;
-}
-
-.list-add {
-	float: right;
-	margin-right: 10px;
-	margin-top: -3px;
-	text-transform: none;
-}
-
-.list-title {
-	padding-top: 10px;
-	background: #eee;
-	padding-left: 10px;
-	margin: 0;
-	padding-bottom: 5px;
-}
-
-.list-wrapper > ul > li {
-	list-style: none;
-	margin-top: 10px;
-}
-
-.list-page {
+.like-row {
+	text-align: center;
 	width: 100%;
-	border: 1px #ccc solid;
-	min-height: 435px;
-	max-height: 435px;
-	margin-right: 15px;
-	float: left;
-	-webkit-box-shadow: 0 0 15px #eee;
-					box-shadow: 0px 0px 15px #eee;
-}
-
-.list-ul {
-	padding-right: 5px;
-	padding-left: 5px;
-}
-
-.list-wrapper {
-	float: left;
-	overflow-x: hidden;
-	width: 100%;
-	height: 100%;
-}
-
-.list-wrapper > ul > li {
-	list-style: none;
 }
 
 .like-content {
-	margin-top: 25px;
-	margin-bottom: 15px;
 	font-size: 18px;
-}
-
-.like-buttons {
-	padding-top: 5px;
 }
 
 .like-number {
 	font-size: 32px;
-	font-weight: bold;
+	font-weight: 700;
 }
 
-#like-button {
+.like-buttons {
+	margin-top: 7px;
+}
+
+a.like-button {
 	font-size: 22px;
 	vertical-align: text-bottom;
+	text-decoration: none;
+}
+
+a.like-button:hover {
 	text-decoration: none;
 }
 
@@ -450,92 +461,46 @@ ul.tags > li {
 ******************/
 .event, .task {
 	width: 100%;
-	padding: 15px;
-	padding-left: 11px;
-	font-size: 11px;
-	border-left: 4px solid;
-	margin-bottom: 1px;
-}
-
-.event-icon {
-	font-size: 18px;
-	width: 37px;
-	padding-right: 10px;
-	padding-left: 10px;
-	display: table-cell;
-}
-
-.event > .event-title {
+	padding: 8px;
+	padding-left: 15px;
+	padding-right: 15px;
 	font-size: 14px;
-	font-weight: bold;
-	line-height: 1.1em;
-	margin-bottom: 10px;
-}
-
-.event-wrapper {
-	display: table-cell;
-	vertical-align: top
-}
-
-.event-item {
-	display: inline-table;
-	margin-top: 10px;
-}
-
-.event-people {
-	vertical-align: middle;
-}
-
-.first {
-	font-size: 14px;
-	padding: 15px;
-	border-style: none;
-	margin-bottom: 0;
-}
-
-.first > .event-title {
-	font-size: 16px;
-}
-
-.first > .event-item {
-	margin-top: 15px;
-	display: block;
-}
-
-.first > .event-item > .event-icon {
-	font-size: 24px;
-	padding-right: 12px;
-	padding-left: 12px;
-	display: inline-table;
-}
-
-.first > .event-item > .event-wrapper {
-	display: inline-table;
-}
-
-.first > .event-item > .event-wrapper > .event-day {
-	font-size: 15px;
-	font-weight: bold;
-}
-
-.first > .event-item > .event-wrapper > .event-time {
-	font-size: 10px;
-	padding: 0;
-}
-
-.first > .event-item > .event-wrapper > .event-location {
-	font-size: 12px;
-}
-
-.first > .event-item > .event-people {
-	margin-top: 10px;
-	margin-right: 5px;
-	vertical-align: bottom;
-}
-
-.event-people-bar {
-	margin-top: 15px;
 	margin-bottom: 5px;
+}
+
+.event:hover, .task:hover {
+	background-color: #f0f0f0;
+}
+
+.event-scroll {
+	max-height: 250px;
+	overflow-y: auto;
+}
+
+.event-button {
+	margin-top: 5px;
+	margin-right: 15px;
+}
+
+.event-title {
+	font-size: 16px;
+	font-weight: 400;
+	line-height: 1.8em;
+}
+
+.event-description {
+	padding-bottom: 5px;
+}
+
+.event-tag {
+	font-size: 11px;
+	color: #606060;
+}
+
+.event-icon-center {
+	width: 10px;
+	display: inline-block;
+	text-align: center;
 }
 
 /*****************
@@ -554,7 +519,7 @@ ul.tags > li {
 .file-add {
 	float: right;
 	margin-right: 10px;
-	margin-top: -6px;
+	margin-top: -3px;
 	text-transform: none;
 }
 
@@ -584,7 +549,7 @@ ul.comment-list > li {
 .comment-list-wrapper ul {
 	margin: 0;
 	padding: 0;
-	padding-top: 10px;
+	/*padding-top: 10px;*/
 	list-style-type: none;
 }
 
@@ -593,6 +558,9 @@ ul.comment-list > li {
 	margin-bottom: 10px;
 }
 
+li.border-left {
+	margin-bottom: 5px;
+}
 
 .add-comment-button {
 	float: right;
@@ -604,6 +572,7 @@ ul.comment-list > li {
 
 .comment-metadata {
 	font-size: 10px;
+	padding-top: 3px;
 }
 
 .comment-created-at {
@@ -611,14 +580,15 @@ ul.comment-list > li {
 }
 
 .comment-content {
+	padding-top: 5px;
+	padding-bottom: 5px;
 }
 
 .comment-item {
 	width: 100%;
 	overflow: hidden;
 	display: inline-table;
-	border-top: 1px solid #eee;
-	padding-top: 10px;
+	padding-top: 5px;
 }
 
 .comment-image {
@@ -641,21 +611,30 @@ ul.comment-list > li {
 /*****************
 =  TASKS
 ******************/
-.task {
-	font-size: 13px;
+.task-scroll {
+	max-height: 350px;
+	overflow-y: auto;
 }
 
 .task-title {
-	font-size: 14px;
-	font-weight: bold;
-	line-height: 1.1em;
-	margin-bottom: 10px;
+	font-size: 16px;
+	font-weight: 400;
+	line-height: 1.8em;
 }
 
-.task-heading {
-	margin-top: 10px;
-	font-weight: bold;
-	font-size: 15px;
+.task-description {
+	padding-bottom: 5px;
+}
+
+.task-tags-row {
+	width: 100%;
+	overflow: none;
+	max-height: 28px;
+}
+
+ul.task-tags > li {
+	background-color: #FFCB32;
+	font-size: 10px;
 }
 
 .task-view {
@@ -679,13 +658,6 @@ textarea#task-description {
 
 #section-2 {
 	line-height: 30px;
-}
-
-.task-tag {
-	padding: 5px;
-	background: #eee;
-	border-radius: 5px;
-	margin: 5px;
 }
 
 .task-show-description {

@@ -109,7 +109,7 @@ define([
 
       self.commentViews = [];
       self.commentForms = [];
-      _.each(data.comments, function (comment) {
+      _.each(data.comments, function (comment, i) {
         self.renderComment(self, comment, collection);
       });
 
