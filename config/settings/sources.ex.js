@@ -65,7 +65,7 @@
   // inline is for general text boxes (comments, project, tasks)
   // attachments is for the attachment sidebar
   autocomplete: {
-    'search': ['project'],
+    'search': ['project', 'tag'],
     'inline': ['profile', 'project', 'wikipedia'],
     'tag': ['tag'],
     'attachments': ['profile', 'wikipedia'],

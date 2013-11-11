@@ -84,6 +84,10 @@ body {
 	text-align: right;
 }
 
+.select2-container-multi .select2-choices .select2-search-choice {
+	margin: 5px 0 3px 5px;
+}
+
 /*****************
 =  HEADERS
 ******************/
@@ -135,6 +139,15 @@ h1, h2, h3, h4, h5, h6 {
 	padding: 5px 15px;
 }
 
+ul.nav-search > li {
+	background-color: #eee;
+	border-radius: 5px;
+	padding: 10px 15px;
+	margin-bottom: 3px;
+	position: relative;
+	display: block;
+}
+
 /*****************
 =  TEXT COLORS
 ******************/
@@ -167,10 +180,6 @@ h1, h2, h3, h4, h5, h6 {
 ******************/
 #projects {
 	display: inline-block !important;
-}
-
-.add-project {
-	float: right;
 }
 
 .project-background-image {
@@ -250,8 +259,24 @@ div.project-title {
 	margin: 5px 0 0 8px;
 }
 
+ul#project-list {
+	padding-left: 0;
+}
+
 #project-list li {
 	list-style: none;
+}
+
+.search-row {
+	margin-bottom: 25px;
+}
+
+.add-opportunity {
+	margin-left: 10px;
+}
+
+a.search-tag-remove:hover {
+	text-decoration: none;
 }
 
 /*****************

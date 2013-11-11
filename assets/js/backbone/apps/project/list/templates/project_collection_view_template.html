@@ -1,57 +1,83 @@
 
-<div class="page-header">
-    <h1>Projects
-        <div class="pull-right" style="margin-top: 20px">
-            <a href="#addProject" class="btn btn-c1 add-project" data-toggle="modal">Add Project</a>
-        </div>
-    </h1>
+<div class="row search-row">
+  <div class="col-lg-9">
+    <form id="search-form">
+      <input type="hidden" id="search" style="width: 90%"/>
+      <input type="submit" class="btn btn-c1" value="Search"/>
+    </form>
+  </div>
+  <div class="col-lg-3 align-right padding-none">
+    <a href="#addProject" class="btn btn-c2 add-project" data-toggle="modal" style="<% if (!user) { %>display: none;<% } %>"><i class="icon-plus"></i> Project</a>
+    <a href="#addOpp" class="btn btn-c2 add-opportunity" data-toggle="modal" style="<% if (!user) { %>display: none;<% } %>"><i class="icon-plus"></i> Opportunity</a>
+  </div>
 </div>
+<div class="row">
+  <div class="col-lg-9">
 
-<ul id="project-list">
-    <% _.each(projects, function(project) { %>
+    <ul id="project-list">
+      <% _.each(projects, function(project) { %>
         <li data-project-id="<%- project.id %>" class="box project-box">
-            
-            <% if (project.coverId) { %>
-            <div class="project-background-image border-bottom" style="background-image: url(/api/file/get/<%= project.coverId %>)">
-            <% } else { %>
-            <div class="project-background-image border-bottom project-background-image-default">
-            <% } %>
+          <% if (project.coverId) { %>
+          <div class="project-background-image border-bottom" style="background-image: url(/api/file/get/<%= project.coverId %>)">
+          <% } else { %>
+          <div class="project-background-image border-bottom project-background-image-default">
+          <% } %>
+          </div>
+          <div class="project-title">
+            <a href="" class="project c1">
+              <%- project.title %>
+            </a>
+          </div>
+
+          <div class="project-list-description border-bottom">
+            <%- project.description %>
+          </div>
+          <div class="project-list-counts">
+            <div class="project-list-counts-col">
+              <div class="project-list-count c2">
+                <%- project.taskCount %>
+              </div>
+              <div class="project-list-count-text c2">
+                opp<% if (project.taskCount != 1) { %>s<% } %>
+              </div>
             </div>
-            <div class="project-title">
-                <a href="" class="project c1">
-                    <%- project.title %>
-                </a>
+            <div class="project-list-counts-col">
+              <div class="project-list-count c2">
+                <%- project.commentCount %>
+              </div>
+              <div class="project-list-count-text c2">
+                comment<% if (project.commentCount != 1) { %>s<% } %>
+              </div>
             </div>
-            
-            <div class="project-list-description border-bottom">
-                <%- project.description %>
+            <div class="project-list-counts-col">
+              <div class="project-list-count c2">
+                <%- project.ownerCount %>
+              </div>
+              <div class="project-list-count-text c2  ">
+                <% if (project.ownerCount != 1) { %>people<% } else { %>person<% } %>
+              </div>
             </div>
-            <div class="project-list-counts">
-                <div class="project-list-counts-col">
-                    <div class="project-list-count c2">
-                        <%- project.taskCount %>
-                    </div>
-                    <div class="project-list-count-text c2">
-                        opp<% if (project.taskCount != 1) { %>s<% } %>
-                    </div>
-                </div>
-                <div class="project-list-counts-col">
-                    <div class="project-list-count c2">
-                        <%- project.commentCount %>
-                    </div>
-                    <div class="project-list-count-text c2">
-                        comment<% if (project.commentCount != 1) { %>s<% } %>
-                    </div>
-                </div>
-                <div class="project-list-counts-col">
-                    <div class="project-list-count c2">
-                        <%- project.ownerCount %>
-                    </div>
-                    <div class="project-list-count-text c2  ">
-                        <% if (project.ownerCount != 1) { %>people<% } else { %>person<% } %>
-                    </div>
-                </div>
-            </div>
+          </div>
         </li>
-    <% }); %>
-</ul>
+      <% }); %>
+    </ul>
+  </div>
+  <div class="col-lg-3 box">
+    <div class="box-pad-lr border-bottom">
+      <h2>Search Criteria</h2>
+    </div>
+    <div class="box-pad-t">
+      <div id="search-none" class="box-pad-lr">
+        No criteria specified.
+      </div>
+      <div id="search-projs-wrapper" class="box-pad-lr">
+        <ul id="search-projs" class="nav nav-pills nav-stacked nav-search">
+        </ul>
+      </div>
+      <div class="box-pad-lr">
+        <ul id="search-tags" class="nav nav-pills nav-stacked nav-search">
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

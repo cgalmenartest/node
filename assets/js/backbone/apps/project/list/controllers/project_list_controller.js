@@ -1,89 +1,89 @@
 define([
-	'jquery',
-	'underscore',
-	'backbone',
-	'bootstrap',
-	'utilities',
-	'base_controller',
-	'project_collection',
-	'project_collection_view',
-	'project_show_controller',
-	'project_form_view',
-	'project_app',
-	'modal_component',
-	'project_edit_form_view'
+  'jquery',
+  'underscore',
+  'backbone',
+  'bootstrap',
+  'utilities',
+  'base_controller',
+  'project_collection',
+  'project_collection_view',
+  'project_show_controller',
+  'project_form_view',
+  'project_app',
+  'modal_component',
+  'project_edit_form_view'
 ], function (
-	$, _, Backbone, Bootstrap, Utilities, BaseController,
-	ProjectsCollection, ProjectsCollectionView, ProjectShowController,
-	ProjectFormView, ProjectApp, ModalComponent, ProjectEditFormView) {
+  $, _, Backbone, Bootstrap, utils, BaseController,
+  ProjectsCollection, ProjectsCollectionView, ProjectShowController,
+  ProjectFormView, ProjectApp, ModalComponent, ProjectEditFormView) {
 
-	Application.Project.ListController = BaseController.extend({
+  Application.Project.ListController = BaseController.extend({
 
-		el: "#container",
+    el: "#container",
 
-		events: {
-			"click .project"				: "show",
-			"click .project-background-image" : "show",
-			"click .add-project"		: "add",
-			"click .edit-project"		: "edit",
-			"click .delete-project"	: "delete"
-		},
+    events: {
+      "click .project"        : "show",
+      "click .project-background-image" : "show",
+      "click .add-project"    : "add",
+      "click .add-opportunity": "addOpp",
+      "click .edit-project"   : "edit",
+      "click .delete-project" : "delete"
+    },
 
-		initialize: function ( options ) {
-			var self = this;
-			this.options = options;
-			this.fireUpProjectsCollection();
-			this.bindToProjectFetchListeners();
-			this.collection.trigger("projects:fetch");
+    initialize: function ( options ) {
+      var self = this;
+      this.options = options;
+      this.fireUpProjectsCollection();
+      this.bindToProjectFetchListeners();
+      this.collection.trigger("projects:fetch");
 
-			this.listenTo(this.collection, "project:save:success", function () {
-				window.location.reload()
-      	self.renderProjectCollectionView();
-			})
-		},
+      this.listenTo(this.collection, "project:save:success", function (data) {
+        Backbone.history.navigate('projects/' + data.attributes.id, { trigger: true });
+      })
+    },
 
-		fireUpProjectsCollection: function () {
-			if (this.collection) {
-				this.collection;
-			} else {
-				this.collection = new ProjectsCollection();
-			}
-		},
+    fireUpProjectsCollection: function () {
+      if (this.collection) {
+        this.collection;
+      } else {
+        this.collection = new ProjectsCollection();
+      }
+    },
 
-		bindToProjectFetchListeners: function () {
-			var self = this;
-			this.listenToOnce(this.collection, "projects:fetch", function () {
-				self.collection.fetch({
-					success: function (collection) {
-						self.renderProjectCollectionView(collection);
-					}
-				})
-			})
-		},
+    bindToProjectFetchListeners: function () {
+      var self = this;
+      this.listenToOnce(this.collection, "projects:fetch", function () {
+        self.collection.fetch({
+          success: function (collection) {
+            self.renderProjectCollectionView(collection);
+          }
+        })
+      })
+    },
 
-		renderProjectCollectionView: function (collection) {
-			if (this.projectCollectionView)
-				$("#container").children().remove();
+    renderProjectCollectionView: function (collection) {
+      if (this.projectCollectionView) {
+        this.projectCollectionView.cleanup();
+      }
+      this.projectCollectionView = new ProjectsCollectionView({
+        el: "#container",
+        onRender: true,
+        collection: collection
+      }).render();
+    },
 
-			this.projectCollectionView = new ProjectsCollectionView({
-				el: "#container",
-				onRender: true,
-				collection: collection
-			}).render();
-		},
+    // -----------------------
+    //= BEGIN CLASS METHODS
+    // -----------------------
+    show: function (e) {
+      if (e.preventDefault) e.preventDefault();
+      var id = $($(e.currentTarget).parents('li.project-box')[0]).data('project-id');
+      Backbone.history.navigate('projects/' + id, { trigger: true });
+    },
 
-		// -----------------------
-		//= BEGIN CLASS METHODS
-		// -----------------------
-		show: function (e) {
-			if (e.preventDefault) e.preventDefault();
-			var id = $($(e.currentTarget).parents('li.project-box')[0]).data('project-id');
-			Backbone.history.navigate('projects/' + id, { trigger: true });
-		},
-
-		add: function (e) {
-			if (e.preventDefault) e.preventDefault();
-			var self = this;
+    add: function (e) {
+      if (e.preventDefault) e.preventDefault();
+      var self = this;
 
       if (this.modalComponent) this.modalComponent;
       this.modalComponent = new ModalComponent({
@@ -100,16 +100,22 @@ define([
         }).render();
       }
 
-		},
+    },
 
-		// ---------------------
-		//= UTILITY METHODS
-		// ---------------------
-		cleanup: function() {
-		  $(this.el).remove();
-		}
+    addOpp: function (e) {
+      if (e.preventDefault) e.preventDefault();
+      console.log('Not yet implemented');
+    },
 
-	});
+    // ---------------------
+    //= UTILITY METHODS
+    // ---------------------
+    cleanup: function() {
+      if (this.projectCollectionView) { this.projectCollectionView.cleanup(); }
+      removeView(this);
+    }
 
-	return Application.Project.ListController;
+  });
+
+  return Application.Project.ListController;
 })
