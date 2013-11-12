@@ -6,7 +6,7 @@
  */
 var authorized = function (id, userId, cb) {
   Project.findOneById(id, function (err, proj) {
-    if (err) { return cb('Error finding project.', null); }
+    if (err || !proj) { return cb('Error finding project.', null); }
     // otherwise, check that we have an owner
     ProjectOwner.findByProjectId(proj.id, function(err, owners) {
       if (err) { return cb('Error looking up owners.', null); }
