@@ -6,8 +6,9 @@ define([
   'utilities',
   'tag_config',
   'text!project_list_template',
+  'text!project_list_item',
   'text!project_search_tag'
-], function ($, select2, _, Backbone, utils, TagConfig, ProjectListTemplate, ProjectSearchTag) {
+], function ($, select2, _, Backbone, utils, TagConfig, ProjectListTemplate, ProjectListItem, ProjectSearchTag) {
 
   var ProjectsCollectionView = Backbone.View.extend({
 
@@ -18,18 +19,34 @@ define([
     },
 
     render: function () {
-      var projectsJSON = {
-        projects: this.options.collection.toJSON(),
+      var options = {
         user: window.cache.currentUser
-      }
-
-      this.compiledTemplate = _.template(ProjectListTemplate, projectsJSON)
+      };
+      this.compiledTemplate = _.template(ProjectListTemplate, options)
       this.$el.html(this.compiledTemplate);
 
+      this.renderProjects("#project-list", this.options.collection.toJSON());
       this.initializeSearch();
 
       // Allow chaining.
       return this;
+    },
+
+    renderProjects: function (el, projects) {
+      // clear the target element
+      $(el).children().remove();
+      // hide the search notification
+      $("#project-search-spinner").hide();
+      $(el).show();
+      // render each project
+      for (var p in projects) {
+        var project = {
+          project: projects[p],
+          user: window.cache.currentUser
+        }
+        var compiledTemplate = _.template(ProjectListItem, project);
+        $(el).append(compiledTemplate);
+      }
     },
 
     format: function (self, object, container, query) {
@@ -117,6 +134,39 @@ define([
         }
       });
       $("#search").select2("data","");
+      self.searchExec(self.searchTerms);
+    },
+
+    searchExec: function (terms) {
+      if (!terms || (terms.length == 0)) {
+        // re-render the collection
+        this.renderProjects("#project-list", this.options.collection.toJSON());
+        return;
+      }
+
+      var self = this;
+      // create a search object
+      var data = {
+        projects: [],
+        tags: []
+      };
+      _.each(terms, function (t) {
+        if (t.title) {
+          data.projects.push(t.id);
+        } else {
+          data.tags.push(t.id);
+        }
+      });
+      $.ajax({
+        url: '/api/search',
+        type: 'POST',
+        data: JSON.stringify(data),
+        dataType: 'json',
+        contentType: 'application/json'
+      }).done(function (data) {
+        // render the search results
+        self.renderProjects("#project-list", data);
+      });
     },
 
     searchTagRemove: function (e) {
@@ -148,6 +198,7 @@ define([
         $("#search-none").show();
         $(".search-clear").hide();
       }
+      self.searchExec(self.searchTerms);
     },
 
     searchClear: function (e) {
@@ -157,6 +208,7 @@ define([
       $("#search-tags").children().remove();
       $("#search-none").show();
       $(".search-clear").hide();
+      this.searchExec(self.searchTerms);
     },
 
     cleanup: function() {

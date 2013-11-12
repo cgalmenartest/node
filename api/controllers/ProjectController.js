@@ -25,32 +25,6 @@ module.exports = {
     // allow state to be set with a query parameter
     var state = req.param('state', 'public');
 
-    function addCounts(proj, done) {
-      // Count the number of comments
-      Comment.count()
-      .where({ projectId: proj.id })
-      .exec(function (err, commentCount) {
-        if (err) return done(err);
-        proj.commentCount = commentCount;
-        // Count the number of owners
-        ProjectOwner.count()
-        .where({ projectId: proj.id })
-        .exec(function (err, ownerCount) {
-          if (err) return done(err);
-          proj.ownerCount = ownerCount;
-          // Count the number of tasks
-          Task.count()
-          .where({ projectId: proj.id })
-          .exec(function (err, taskCount) {
-            if (err) return done(err);
-            proj.taskCount = taskCount;
-            done();
-          });
-        });
-      });
-
-    }
-
     function processProjects (err, projects) {
       if (err) return res.send(400, { message: 'Error looking up projects.'});
       // also include projects where you are an owner
@@ -78,7 +52,7 @@ module.exports = {
         Project.find({ 'where': { 'id': myprojIds, 'state': 'draft' }}).done(function (err, myprojects) {
           if (err) return res.send(400, { message: 'Error looking up projects.'});
           var finalprojects = projects.concat(myprojects);
-          async.each(myprojects, addCounts, function (err) {
+          async.each(myprojects, util.addCounts, function (err) {
             if (err) return res.send(400, { message: 'Error looking up project counts.'});
             return res.send({ projects: finalprojects });
           });
@@ -93,7 +67,7 @@ module.exports = {
     else {
       Project.find({ where: { 'state': state }}).done( function (err, projects) {
         if (err) return res.send(400, { message: 'Error looking up projects.'});
-        async.each(projects, addCounts, function (err) {
+        async.each(projects, util.addCounts, function (err) {
           return processProjects(err, projects);
         });
       });

@@ -43,7 +43,33 @@ var getMetadata = function(proj, user, cb) {
   });
 };
 
+var addCounts = function(proj, done) {
+  // Count the number of comments
+  Comment.count()
+  .where({ projectId: proj.id })
+  .exec(function (err, commentCount) {
+    if (err) return done(err);
+    proj.commentCount = commentCount;
+    // Count the number of owners
+    ProjectOwner.count()
+    .where({ projectId: proj.id })
+    .exec(function (err, ownerCount) {
+      if (err) return done(err);
+      proj.ownerCount = ownerCount;
+      // Count the number of tasks
+      Task.count()
+      .where({ projectId: proj.id })
+      .exec(function (err, taskCount) {
+        if (err) return done(err);
+        proj.taskCount = taskCount;
+        done();
+      });
+    });
+  });
+};
+
 module.exports = {
   getMetadata: getMetadata,
-  authorized: authorized
+  authorized: authorized,
+  addCounts: addCounts
 };

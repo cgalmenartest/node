@@ -14,52 +14,10 @@
 <div class="row">
   <div class="col-lg-9">
 
+    <div id="project-search-spinner">
+      <!-- insert spinner here -->
+    </div>
     <ul id="project-list">
-      <% _.each(projects, function(project) { %>
-        <li data-project-id="<%- project.id %>" class="box project-box">
-          <% if (project.coverId) { %>
-          <div class="project-background-image border-bottom" style="background-image: url(/api/file/get/<%= project.coverId %>)">
-          <% } else { %>
-          <div class="project-background-image border-bottom project-background-image-default">
-          <% } %>
-          </div>
-          <div class="project-title">
-            <a href="" class="project c1">
-              <%- project.title %>
-            </a>
-          </div>
-
-          <div class="project-list-description border-bottom">
-            <%- project.description %>
-          </div>
-          <div class="project-list-counts">
-            <div class="project-list-counts-col">
-              <div class="project-list-count c2">
-                <%- project.taskCount %>
-              </div>
-              <div class="project-list-count-text c2">
-                opp<% if (project.taskCount != 1) { %>s<% } %>
-              </div>
-            </div>
-            <div class="project-list-counts-col">
-              <div class="project-list-count c2">
-                <%- project.commentCount %>
-              </div>
-              <div class="project-list-count-text c2">
-                comment<% if (project.commentCount != 1) { %>s<% } %>
-              </div>
-            </div>
-            <div class="project-list-counts-col">
-              <div class="project-list-count c2">
-                <%- project.ownerCount %>
-              </div>
-              <div class="project-list-count-text c2  ">
-                <% if (project.ownerCount != 1) { %>people<% } else { %>person<% } %>
-              </div>
-            </div>
-          </div>
-        </li>
-      <% }); %>
     </ul>
   </div>
   <div class="col-lg-3 box">

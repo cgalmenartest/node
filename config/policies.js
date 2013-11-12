@@ -125,6 +125,10 @@ module.exports.policies = {
     'create': ['authenticated', 'requireUserId', 'addUserId', 'projectId'],
     'update': ['authenticated', 'requireUserId', 'projectId', 'taskId'],
     'destroy': ['authenticated', 'requireUserId', 'requireId', 'task']
+  },
+
+  SearchController : {
+    '*': true
   }
 
   /*

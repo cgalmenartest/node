@@ -61,6 +61,7 @@ require.config({
     'projectowner_show_template': '../apps/projectowner/show/templates/projectowner_show_template.html',
     'project_show_template'     : '../apps/project/show/templates/project_item_view_template.html',
     'project_list_template'     : '../apps/project/list/templates/project_collection_view_template.html',
+    'project_list_item'         : '../apps/project/list/templates/project_list_item.html',
     'project_search_tag'        : '../apps/project/list/templates/project_search_tag.html',
     'project_model'             : '../entities/projects/project_model',
     'project_collection'        : '../entities/projects/projects_collection',
