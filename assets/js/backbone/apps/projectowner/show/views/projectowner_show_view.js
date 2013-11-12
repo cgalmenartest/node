@@ -33,27 +33,21 @@ define([
     initialize: function () {
       var self = this;
 
-
       this.model.on("projectowner:show:rendered", function () {
         self.initializeOwnerSelect2();
       });
       //when owner set is updated, re-render and re-init popovers
       this.model.on("project:update:owners:success", function (data) {
-
-        self.render( {model: data} );
-        if(typeof popovers === 'undefined')
-        {
+        self.render();
+        if (_.isUndefined(popovers)) {
           var popovers = new Popovers();
           popovers.popoverPeopleInit(".project-people-div");
         }
       });
 
-
-
     },
 
     render: function () {
-
       var compiledTemplate,
           data = { data: this.model.toJSON() };
       compiledTemplate = _.template(ProjectownerShowTemplate, data);

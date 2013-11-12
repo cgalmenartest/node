@@ -13,10 +13,8 @@
       <!--<div class="participant-form form-control input-sm select2-input" id="participant-text" contenteditable="true"></div>-->
       <div class="col-lg-9">
         <input style="width: 100%" id="owners" name="owners" type="hidden" value=" Add Owner " />
-
       </div>
     </div>
-
 
   </form>
 </div>
@@ -26,7 +24,7 @@
     <% for (var i = 0; i < data.owners.length; i++) { %>
     <div class="project-people-div" data-userid="<%= data.owners[i].userId %>">
       <img src="/api/user/photo/<%= data.owners[i].userId %>" class="project-people"/>
-      <% if((typeof cache !== "undefined" && data.owners[i].userId !== cache.currentUser.id) && data.isOwner) { %>
+      <% if (data.isOwner && (data.owners[i].userId != cache.currentUser.id)) { %>
       <a href="#" class="delete-projectowner project-owner-delete glyphicon glyphicon-remove"  id="delete-projectowner-<%= data.owners[i].id %>" data-uid="<%= data.owners[i].userId %>" data-poid="<%= data.owners[i].id %>">
       </a>
       <% } %>
