@@ -5,12 +5,12 @@ define([
   'backbone',
   'utilities',
   'tag_config',
-  'text!project_list_template',
-  'text!project_list_item',
-  'text!project_search_tag'
-], function ($, select2, _, Backbone, utils, TagConfig, ProjectListTemplate, ProjectListItem, ProjectSearchTag) {
+  'browse_list_view',
+  'text!browse_main_template',
+  'text!browse_search_tag'
+], function ($, select2, _, Backbone, utils, TagConfig, BrowseListView, BrowseMainTemplate, BrowseSearchTag) {
 
-  var ProjectsCollectionView = Backbone.View.extend({
+  var BrowseMainView = Backbone.View.extend({
 
     events: {
       "submit #search-form"       : "search",
@@ -18,35 +18,21 @@ define([
       "click .search-clear"       : "searchClear"
     },
 
+    initialize: function (options) {
+      this.options = options;
+    },
+
     render: function () {
       var options = {
         user: window.cache.currentUser
       };
-      this.compiledTemplate = _.template(ProjectListTemplate, options)
+      this.compiledTemplate = _.template(BrowseMainTemplate, options)
       this.$el.html(this.compiledTemplate);
 
-      this.renderProjects("#project-list", this.options.collection.toJSON());
       this.initializeSearch();
 
       // Allow chaining.
       return this;
-    },
-
-    renderProjects: function (el, projects) {
-      // clear the target element
-      $(el).children().remove();
-      // hide the search notification
-      $("#project-search-spinner").hide();
-      $(el).show();
-      // render each project
-      for (var p in projects) {
-        var project = {
-          project: projects[p],
-          user: window.cache.currentUser
-        }
-        var compiledTemplate = _.template(ProjectListItem, project);
-        $(el).append(compiledTemplate);
-      }
     },
 
     format: function (self, object, container, query) {
@@ -126,7 +112,7 @@ define([
           data: d,
           format: self.format(self, d)
         };
-        var templ = _.template(ProjectSearchTag, templData);
+        var templ = _.template(BrowseSearchTag, templData);
         if (d.title) {
           $("#search-projs").append(templ);
         } else {
@@ -137,14 +123,27 @@ define([
       self.searchExec(self.searchTerms);
     },
 
+    renderList: function (collection) {
+      // create a new view for the returned data
+      if (this.browseListView) { this.browseListView.cleanup(); }
+      this.browseListView = new BrowseListView({
+        el: '#browse-list',
+        target: this.options.target,
+        collection: collection,
+      }).render();
+      $("#browse-search-spinner").hide();
+      $("#browse-list").show();
+    },
+
     searchExec: function (terms) {
+      var self = this;
+
       if (!terms || (terms.length == 0)) {
         // re-render the collection
-        this.renderProjects("#project-list", this.options.collection.toJSON());
+        self.renderList(this.options.collection.toJSON());
         return;
       }
 
-      var self = this;
       // create a search object
       var data = {
         projects: [],
@@ -165,7 +164,7 @@ define([
         contentType: 'application/json'
       }).done(function (data) {
         // render the search results
-        self.renderProjects("#project-list", data);
+        self.renderList(data);
       });
     },
 
@@ -212,10 +211,11 @@ define([
     },
 
     cleanup: function() {
+      if (self.browseListView) { self.browseListView.cleanup(); }
       removeView(this);
     }
 
   });
 
-  return ProjectsCollectionView;
+  return BrowseMainView;
 });

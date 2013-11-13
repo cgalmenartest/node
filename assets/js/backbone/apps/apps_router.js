@@ -3,10 +3,10 @@ define([
   'underscore',
   'backbone',
   'nav_app',
-  'project_app',
+  'browse_app',
   'task_app',
   'profile_app'
-], function ($, _, Backbone, NavApp, ProjectApp, TaskApp, ProfileApp) {
+], function ($, _, Backbone, NavApp, BrowseApp, TaskApp, ProfileApp) {
 
   var AppRouter = Backbone.Router.extend({
 
@@ -27,8 +27,8 @@ define([
     // by using the profile application as a starting point (very simple, 1 route).
     router  = new AppRouter();    
     nav = NavApp.initialize();
+    browse = BrowseApp.initialize();
     profile = ProfileApp.initialize();
-    project = ProjectApp.initialize();
     task = TaskApp.initialize();
 
     Backbone.history.start({ pushState: true });

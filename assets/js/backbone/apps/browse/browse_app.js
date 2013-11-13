@@ -2,30 +2,30 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'project_model',
-  'project_list_controller',
-  'project_show_controller',
   'utilities',
+  'browse_list_controller',
+  'project_model',
+  'project_show_controller',
   'task_item_view',
   'task_model'
-], function ($, _, Backbone, ProjectModel, ProjectListController, ProjectShowController, utilities, TaskItemView, TaskModel) {
+], function ($, _, Backbone, utils, BrowseListController, ProjectModel, ProjectShowController, TaskItemView, TaskModel) {
 
-  var ProjectRouter = Backbone.Router.extend({
+  var BrowseRouter = Backbone.Router.extend({
 
     routes: {
-      'projects(/)'               : 'list',
+      'projects(/)'               : 'listProjects',
       'projects/:id(/)'           : 'show',
-      'projects/:id/tasks/:id(/)' : 'showTask'
     },
 
     data: { saved: false },
 
-    list: function () {
-      $("#container").children().remove();
-      if (this.projectListController) {
-        this.projectListController.initialize({ router: this });
+    listProjects: function () {
+      if (this.browseListController) {
+        this.browseListController.cleanup();
       } else {
-        this.projectListController = new ProjectListController({ router: this });
+        this.browseListController = new BrowseListController({
+          target: 'projects'
+        });
       }
     },
 
@@ -68,7 +68,7 @@ define([
   });
 
   var initialize = function () {
-    var router = new ProjectRouter();
+    var router = new BrowseRouter();
     return router;
   }
 

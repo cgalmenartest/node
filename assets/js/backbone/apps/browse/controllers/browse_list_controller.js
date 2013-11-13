@@ -5,83 +5,87 @@ define([
   'bootstrap',
   'utilities',
   'base_controller',
+  'browse_main_view',
   'project_collection',
-  'project_collection_view',
-  'project_show_controller',
   'project_form_view',
-  'project_app',
-  'modal_component',
-  'project_edit_form_view'
+  'modal_component'
 ], function (
   $, _, Backbone, Bootstrap, utils, BaseController,
-  ProjectsCollection, ProjectsCollectionView, ProjectShowController,
-  ProjectFormView, ProjectApp, ModalComponent, ProjectEditFormView) {
+  BrowseMainView, ProjectsCollection,
+  ProjectFormView, ModalComponent) {
 
-  Application.Project.ListController = BaseController.extend({
+  Application.Browse = {};
+
+  Application.Browse.ListController = BaseController.extend({
 
     el: "#container",
 
     events: {
-      "click .project"        : "show",
-      "click .project-background-image" : "show",
-      "click .add-project"    : "add",
-      "click .add-opportunity": "addOpp",
-      "click .edit-project"   : "edit",
-      "click .delete-project" : "delete"
+      "click .project"        : "showProject",
+      "click .project-background-image" : "showProject",
+      "click .add-project"    : "addProject",
+      "click .add-opportunity": "addOpp"
     },
 
     initialize: function ( options ) {
       var self = this;
-      this.options = options;
-      this.fireUpProjectsCollection();
-      this.bindToProjectFetchListeners();
-      this.collection.trigger("projects:fetch");
+      this.target = this.options.target;
+      this.fireUpCollection();
+      this.initializeView();
+
+      this.collection.trigger(this.target + ":fetch");
 
       this.listenTo(this.collection, "project:save:success", function (data) {
         Backbone.history.navigate('projects/' + data.attributes.id, { trigger: true });
       })
     },
 
-    fireUpProjectsCollection: function () {
+    initializeView: function () {
+      if (this.browseMainView) {
+        this.browseMainView.cleanup();
+      }
+      this.browseMainView = new BrowseMainView({
+        el: "#container",
+        target: this.target,
+        collection: this.collection
+      }).render();
+    },
+
+    fireUpCollection: function () {
+      var self = this;
       if (this.collection) {
         this.collection;
       } else {
-        this.collection = new ProjectsCollection();
+        if (this.target == 'projects') {
+          this.collection = new ProjectsCollection();
+        }
+        else if (this.target == 'tasks') {
+          this.collection = new TaskCollection();
+        }
+        else {
+          this.collection = new UserCollection();
+        }
       }
-    },
-
-    bindToProjectFetchListeners: function () {
-      var self = this;
-      this.listenToOnce(this.collection, "projects:fetch", function () {
+      this.listenToOnce(this.collection, this.target + ":fetch", function () {
         self.collection.fetch({
           success: function (collection) {
-            self.renderProjectCollectionView(collection);
+            self.collection = collection;
+            self.browseMainView.renderList(self.collection.toJSON());
           }
         })
       })
     },
 
-    renderProjectCollectionView: function (collection) {
-      if (this.projectCollectionView) {
-        this.projectCollectionView.cleanup();
-      }
-      this.projectCollectionView = new ProjectsCollectionView({
-        el: "#container",
-        onRender: true,
-        collection: collection
-      }).render();
-    },
-
     // -----------------------
     //= BEGIN CLASS METHODS
     // -----------------------
-    show: function (e) {
+    showProject: function (e) {
       if (e.preventDefault) e.preventDefault();
       var id = $($(e.currentTarget).parents('li.project-box')[0]).data('project-id');
       Backbone.history.navigate('projects/' + id, { trigger: true });
     },
 
-    add: function (e) {
+    addProject: function (e) {
       if (e.preventDefault) e.preventDefault();
       var self = this;
 
@@ -111,11 +115,11 @@ define([
     //= UTILITY METHODS
     // ---------------------
     cleanup: function() {
-      if (this.projectCollectionView) { this.projectCollectionView.cleanup(); }
+      if (this.browseMainView) { this.browseMainView.cleanup(); }
       removeView(this);
     }
 
   });
 
-  return Application.Project.ListController;
+  return Application.Browse.ListController;
 })

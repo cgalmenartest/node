@@ -50,19 +50,24 @@ require.config({
     'nav_template'              : '../apps/nav/templates/nav_template.html',
 
     // ----------
+    //= Browse
+    // ----------
+    'browse_app'                : '../apps/browse/browse_app',
+    'browse_list_controller'    : '../apps/browse/controllers/browse_list_controller',
+    'browse_main_view'          : '../apps/browse/views/browse_main_view',
+    'browse_list_view'          : '../apps/browse/views/browse_list_view',
+    'browse_main_template'      : '../apps/browse/templates/browse_collection_view_template.html',
+    'browse_search_tag'         : '../apps/browse/templates/browse_search_tag.html',
+    'project_list_item'         : '../apps/browse/templates/project_list_item.html',
+
+    // ----------
     //= Projects
     // ----------
-    'project_app'               : '../apps/project/project_app',
-    'project_list_controller'   : '../apps/project/list/controllers/project_list_controller',
-    'project_collection_view'   : '../apps/project/list/views/projects_collection_view',
     'project_show_controller'   : '../apps/project/show/controllers/project_show_controller',
     'project_item_view'         : '../apps/project/show/views/project_item_view',
     'projectowner_show_view'    : '../apps/projectowner/show/views/projectowner_show_view',
     'projectowner_show_template': '../apps/projectowner/show/templates/projectowner_show_template.html',
     'project_show_template'     : '../apps/project/show/templates/project_item_view_template.html',
-    'project_list_template'     : '../apps/project/list/templates/project_collection_view_template.html',
-    'project_list_item'         : '../apps/project/list/templates/project_list_item.html',
-    'project_search_tag'        : '../apps/project/list/templates/project_search_tag.html',
     'project_model'             : '../entities/projects/project_model',
     'project_collection'        : '../entities/projects/projects_collection',
     'project_form_view'         : '../apps/project/new/views/project_new_form_view',

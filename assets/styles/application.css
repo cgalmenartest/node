@@ -264,11 +264,7 @@ div.project-title {
 	margin: 5px 0 0 8px;
 }
 
-ul#project-list {
-	padding-left: 0;
-}
-
-#project-list li {
+#browse-list li {
 	list-style: none;
 }
 
