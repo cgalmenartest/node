@@ -123,21 +123,21 @@ define([
       if ($(".rsvp").hasClass("data-event-flag-true") === false) {
         $(".rsvp").removeClass("data-event-flag-false");
         $(".rsvp").addClass("data-event-flag-true");
+        $(e.currentTarget).button('going');
+        self.updatePeople(e, true);
         $.ajax({
           url: '/api/event/attend/' + id,
           success: function (data) {
-            $(e.currentTarget).button('going');
-            self.updatePeople(e, true);
           }
         });
       } else {
         $(".rsvp").removeClass("data-event-flag-true");
         $(".rsvp").addClass("data-event-flag-false");
+        $(e.currentTarget).button('rsvp');
+        self.updatePeople(e, false);
         $.ajax({
           url: '/api/event/cancel/' + id,
           success: function (data) {
-            $(e.currentTarget).button('rsvp');
-            self.updatePeople(e, false);
           }
         })
       }
