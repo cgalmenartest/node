@@ -19,6 +19,8 @@ define([
     events: {
       'click .add-event'                : 'add',
       'click .rsvp'                     : 'toggleRSVP',
+      'mouseenter .data-event-flag-true': 'buttonRSVPOn',
+      'mouseleave .data-event-flag-true': 'buttonRSVPOff',
       "mouseenter .project-people-div"  : popovers.popoverPeopleOn
     },
 
@@ -87,19 +89,45 @@ define([
       }
     },
 
+    updatePeople: function (e, inc) {
+      var peopleDiv = $($(e.currentTarget).parents('.event')[0]).find('.event-people')[0];
+      var numDiv = $(peopleDiv).children('.event-people-number');
+      var newNum = parseInt($(numDiv).html());
+      if (inc) {
+        newNum++
+      } else {
+        newNum--;
+      }
+      $(numDiv).html(newNum);
+      var textDiv = $(peopleDiv).children('.event-people-text')[0];
+      if (newNum == 1) {
+        $(textDiv).html($(textDiv).data('singular'));
+      } else {
+        $(textDiv).html($(textDiv).data('plural'));
+      }
+    },
+
+    buttonRSVPOn: function (e) {
+      $(e.currentTarget).button('hover');
+    },
+
+    buttonRSVPOff: function (e) {
+      $(e.currentTarget).button('going');
+    },
+
     toggleRSVP: function (e) {
-      if (e.preventDefault) e.preventDefault()
-
-      // Move this to a more semantic method
-      var id = parseInt($(e.currentTarget).parent().parent().parent().parent().parent().attr("id"))
-
+      var self = this;
+      if (e.preventDefault) e.preventDefault();
+      // get the id from the parent event div
+      var id = $($(e.currentTarget).parents('div.event')[0]).data('id');
       if ($(".rsvp").hasClass("data-event-flag-true") === false) {
         $(".rsvp").removeClass("data-event-flag-false");
         $(".rsvp").addClass("data-event-flag-true");
         $.ajax({
           url: '/api/event/attend/' + id,
           success: function (data) {
-            $(e.currentTarget).text("I'm going.");
+            $(e.currentTarget).button('going');
+            self.updatePeople(e, true);
           }
         });
       } else {
@@ -108,7 +136,8 @@ define([
         $.ajax({
           url: '/api/event/cancel/' + id,
           success: function (data) {
-            $(e.currentTarget).text("RSVP")
+            $(e.currentTarget).button('rsvp');
+            self.updatePeople(e, false);
           }
         })
       }

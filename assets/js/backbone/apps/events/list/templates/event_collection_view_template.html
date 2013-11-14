@@ -23,11 +23,7 @@
   <div class="event border-left" data-id="<%= event.id %>">
     <% if (user) { %>
     <div class="event-button pull-right">
-      <% if (event.rsvp) { %>
-        <button class="btn btn-c2 btn-sm rsvp data-event-flag-true">I'm going.</button>
-      <% } else { %>
-        <button class="btn btn-c2 btn-sm rsvp data-event-flag-false">RSVP</button>
-      <% } %>
+      <button class="btn btn-c2 btn-sm rsvp data-event-flag-<%= event.rsvp %>" data-going-text="<i class='icon-ok'></i> I'm going" data-rsvp-text="RSVP" data-hover-text="Cancel RSVP"><% if (event.rsvp) { %><i class='icon-ok'></i> I'm going<% } else { %>RSVP<% } %></button>
     </div>
     <% } %>
     <div class="event-title">
@@ -61,11 +57,15 @@
     <div class="event-tag">
       <span class="event-icon-center"><i class="icon-male"></i></span>
       <span class="box-icon-text event-people">
-        <% if (event.rsvp.length == 1) { %>
-          1 person going
+        <span class="event-people-number"><%= event.rsvps.length %></span>
+        <span class="event-people-text" data-plural="people" data-singular="person">
+        <% if (event.rsvps.length == 1) { %>
+          person
         <% } else { %>
-          <%= event.rsvps.length %> people going
+          people
         <% } %>
+        </span>
+        going
       </span>
     </div>
   </div>
