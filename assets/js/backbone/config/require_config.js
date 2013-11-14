@@ -114,7 +114,6 @@ require.config({
     // ----------
     //= PROFILE
     // ----------
-    'profile_app'               : '../apps/profiles/profile_app',
     'profile_model'             : '../entities/profiles/profile_model',
     'profile_show_view'         : '../apps/profiles/show/views/profile_show_view',
     'profile_show_controller'   : '../apps/profiles/show/controllers/profile_show_controller',

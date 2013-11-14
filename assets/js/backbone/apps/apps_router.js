@@ -4,9 +4,8 @@ define([
   'backbone',
   'nav_app',
   'browse_app',
-  'task_app',
-  'profile_app'
-], function ($, _, Backbone, NavApp, BrowseApp, TaskApp, ProfileApp) {
+  'task_app'
+], function ($, _, Backbone, NavApp, BrowseApp, TaskApp) {
 
   var AppRouter = Backbone.Router.extend({
 
@@ -20,7 +19,7 @@ define([
   });
 
   var initialize = function () {
-    var router, nav, profile, task, project;
+    var router, nav, browse, task;
 
     // Here we are going to fire up all the routers for our app to listen
     // in on their respective applications.  We are -testing- this functionality
@@ -28,7 +27,6 @@ define([
     router  = new AppRouter();    
     nav = NavApp.initialize();
     browse = BrowseApp.initialize();
-    profile = ProfileApp.initialize();
     task = TaskApp.initialize();
 
     Backbone.history.start({ pushState: true });

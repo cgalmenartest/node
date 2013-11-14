@@ -53,18 +53,17 @@ define([
     },
 
     initializeProfileViewInstance: function () {
-      this.profile ?
-        this.profile.cleanup() :
-        this.profile = new ProfileView({
-          el: this.$el,
-          model: this.model,
-          routeId: this.routeId,
-          data: this.data
-        }).render();
+      if (this.profileView) { this.profileView.cleanup(); }
+      this.profileView = new ProfileView({
+        el: this.$el,
+        model: this.model,
+        routeId: this.routeId,
+        data: this.data
+      }).render();
     },
 
     cleanup: function() {
-      if (this.profile) this.profile.cleanup();
+      if (this.profileView) { this.profileView.cleanup(); }
       removeView(this);
     }
 
