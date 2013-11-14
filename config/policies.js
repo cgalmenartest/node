@@ -34,7 +34,8 @@ module.exports.policies = {
     'info': ['authenticated', 'requireId'],
     'update': ['authenticated', 'requireUserId', 'requireId'],
     'username': ['authenticated', 'requireUserId', 'requireId'],
-    'find': ['authenticated', 'requireUserId']
+    'find': ['authenticated', 'requireUserId'],
+    'activities': ['authenticated']
   },
 
   UserEmailController : {
@@ -119,11 +120,15 @@ module.exports.policies = {
   },
 
   TaskController : {
-    'find': ['authenticated', 'requireId', 'task'],
+    'find': ['authenticated', 'task'],
     'findAllByProjectId': ['authenticated', 'requireId', 'project'],
     'create': ['authenticated', 'requireUserId', 'addUserId', 'projectId'],
     'update': ['authenticated', 'requireUserId', 'projectId', 'taskId'],
     'destroy': ['authenticated', 'requireUserId', 'requireId', 'task']
+  },
+
+  SearchController : {
+    '*': true
   }
 
   /*

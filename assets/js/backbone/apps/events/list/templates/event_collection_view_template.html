@@ -1,220 +1,75 @@
-<h2 class="sidebar-c1 sidebar-c1-highlight">
-  Next Event
-  <a href="/event/ical/<%= event.id %>" class="btn btn-c1 btn-xs list-add"><span class="glyphicon glyphicon-calendar"></span> iCal</a>
- <a href="#addEvent" class="btn btn-c0 btn-xs list-add add-event" data-toggle="modal">Add Event</a>
-</h2>
+<div class="box-pad-lr border-bottom">
+  <h2>
+    Upcoming Events
+    <% if (user) { %>
+    <a href="#addEvent" class="btn btn-c0 btn-sm file-add add-event" data-toggle="modal">Add Event</a>
+    <% } %>
+  </h2>
+</div>
 
-<% if (events.length == 0) { %>
+<div class="task-scroll">
 
-  <div class="event sidebar-c1-light sidebar-c1-bar" id="events-none">
+  <% if (events.length == 0) { %>
+
+  <div class="event border-left" data-id="null">
     <div class="event-title">
-      No upcoming events.
+      No events scheduled.
     </div>
   </div>
 
   <% } else { %>
 
   <% _.each(events, function (event, iterator) { %>
-
-    <!-- First event # Highlighted -->
-    <% if (iterator === 0) { %>
-
-      <div class="event first sidebar-c1" id="<%= event.id %>">
-
-      <div class="event-title sidebar-c1-highlight"><%= event.title %></div>
-
-      <div class="event-description">
-        <%= event.description %>
-      </div>
-
-      <div class="event-item sidebar-c1-highlight">
-        <div class="event-icon">
-          <i class="icon-calendar"></i>
-        </div>
-        <div class="event-wrapper">
-          <div class="event-day"><%= event.start %> - <%= event.end %></div>
-          <div class="event-time">time not set</div>
-        </div>
-      </div>
-
-      <div class="event-item sidebar-c1-highlight">
-        <div class="event-icon">
-          <span class="glyphicon glyphicon-map-marker"></span>
-        </div>
-        <div class="event-wrapper">
-          <div class="event-location">
-            <%= event.location %>
-          </div>
-        </div>
-      </div>
-
-
-        <div class="event-item sidebar-c1-highlight">
-          <div class="event-icon">
-            <i class="icon-ok-sign"></i>
-          </div>
-          <div class="event-wrapper">
-            <div class="event-rsvp">
-              <div class="parent-helper">
-                <% if (event.rsvp) { %>
-                  <button class="btn btn-c1 btn-sm rsvp data-event-flag-true">I'm going.</button>
-                <% } else { %>
-                  <button class="btn btn-c1 btn-sm rsvp data-event-flag-false">RSVP</button>
-                <% } %>
-              </div>
-            </div>
-          </div>
-          <div class="event-people pull-right"><i class="icon-male"></i><%= event.rsvps.length %> people going</div>
-        </div>
-
-      <div class="event-people-bar">
-        <% _.each(event.rsvps, function (person) { %>
-
-          <div class="project-people-div" data-userid="<%= person %>">
-            <img src="/api/user/photo/<%= person %>" class="project-people"/>
-          </div>
-
-        <% }); %>
-      </div>
+  <div class="event border-left" data-id="<%= event.id %>">
+    <% if (user) { %>
+    <div class="event-button pull-right">
+      <button class="btn btn-c2 btn-sm rsvp data-event-flag-<%= event.rsvp %>" data-going-text="<i class='icon-ok'></i> I'm going" data-rsvp-text="RSVP" data-hover-text="Cancel RSVP"><% if (event.rsvp) { %><i class='icon-ok'></i> I'm going<% } else { %>RSVP<% } %></button>
     </div>
-    </div>
-    <div class="list-box">
-    <h2 class="sidebar-c1-light">Upcoming Events</h2>
-
-
-    <% } else { %>
-
-      <div class="event sidebar-c1-light sidebar-c1-bar" id="<%= event.id %>">
-
-        <div class="event-title">
-          <%= event.title %>
-        </div>
-
-        <div class="event-description">
-          <%= event.description %>
-        </div>
-
-        <div class="row">
-          <div class="col-lg-6">
-            <div class="event-item">
-              <div class="event-icon">
-                <i class="icon-calendar"></i>
-              </div>
-              <div class="event-wrapper">
-                <%= event.start %> - <%= event.end %>
-              </div>
-            </div>
-
-          </div>
-
-            <div class="event-item">
-              <div class="event-icon">
-                <span class="glyphicon glyphicon-map-marker"></span>
-              </div>
-              <div class="event-wrapper">
-                <%= event.location %>
-              </div>
-            </div>
-        </div>
-
-        <div class="row">
-          <div class="col-lg-6">
-            <div class="event-item">
-              <div class="event-icon">
-                <i class="icon-male"></i>
-              </div>
-              <div class="event-wrapper event-people">
-                <% if (event.rsvp.length == 1) { %>
-                  1 person going
-                <% } else { %>
-                  <%= event.rsvps.length %> people going
-                <% } %>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-6">
-            <div class="event-item">
-              <div class="event-icon">
-                <i class="icon-ok-sign"></i>
-              </div>
-              <div class="event-wrapper">
-                  <% if (event.rsvp) { %>
-                    <button class="btn btn-c1 btn-xs rsvp data-event-flag-true">I'm going.</button>
-                  <% } else { %>
-                    <button class="btn btn-c1 btn-xs rsvp data-event-flag-false">RSVP</button>
-                  <% } %>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-      </div> <!-- /event -->
     <% } %>
-
+    <div class="event-title">
+      <%- event.title %>
+    </div>
+    <div class="event-description">
+      <%- event.description %>
+    </div>
+    <div class="event-tag">
+      <i class="icon-calendar"></i>
+      <span class="box-icon-text">
+      <!-- day -->
+      <% var st = new Date(event.start); var et = new Date(event.end); %>
+      <%= st.toLocaleDateString() %>
+      <% if (st.toLocaleDateString() != et.toLocaleDateString()) { %>
+      - <%= et.toLocaleDateString() %>
+      <% } %>
+      <!-- time -->
+      <%= st.toLocaleTimeString() %>
+      <% if (st.toLocaleDateString() == et.toLocaleDateString()) { %>
+      - <%= et.toLocaleTimeString() %>
+      <% } %>
+      </span>
+    </div>
+    <div class="event-tag">
+      <span class="glyphicon glyphicon-map-marker"></span>
+      <span class="box-icon-text">
+      <%= event.location %>
+      </span>
+    </div>
+    <div class="event-tag">
+      <span class="event-icon-center"><i class="icon-male"></i></span>
+      <span class="box-icon-text event-people">
+        <span class="event-people-number"><%= event.rsvps.length %></span>
+        <span class="event-people-text" data-plural="people" data-singular="person">
+        <% if (event.rsvps.length == 1) { %>
+          person
+        <% } else { %>
+          people
+        <% } %>
+        </span>
+        going
+      </span>
+    </div>
+  </div>
   <% }); %>
 
-<% } %>
-
-
-<!-- <div class="event sidebar-c1-light sidebar-c1-bar">
-  <div class="event-title">
-    Project Kickoff Meeting
-  </div>
-
-  <div class="event-description">
-    Please join us for a project kickoff meeting, where we’ll discuss the primary objectives, project milestones, and develop an ... <a href="#">MORE</a>
-  </div>
-
-  <div class="row">
-    <div class="col-lg-6">
-      <div class="event-item">
-        <div class="event-icon">
-          <i class="icon-calendar"></i>
-        </div>
-        <div class="event-wrapper">
-          October 24, 2013<br/>
-          10:00am - 2:00pm
-        </div>
-      </div>
-
-    </div>
-    <div class="col-lg-6">
-      <div class="event-item">
-        <div class="event-icon">
-          <span class="glyphicon glyphicon-map-marker"></span>
-        </div>
-        <div class="event-wrapper">
-          1800 F Street NW<br/>
-          Washington, DC
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-lg-6">
-      <div class="event-item">
-        <div class="event-icon">
-          <i class="icon-male"></i>
-        </div>
-        <div class="event-wrapper event-people">
-          18 people going
-        </div>
-      </div>
-
-    </div>
-    <div class="col-lg-6">
-      <div class="event-item">
-        <div class="event-icon">
-          <i class="icon-ok-sign"></i>
-        </div>
-        <div class="event-wrapper">
-          <button class="btn btn-c1 btn-xs">RSVP</button>
-        </div>
-      </div>
-    </div>
-  </div> -->
-
+  <% } %>
 </div>

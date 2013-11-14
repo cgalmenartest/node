@@ -12,7 +12,7 @@ define([
     render: function () {
       // Clean string out from undefineds in the marshalling process.
       cleanStringFromUndefined(this.model, this.model.value, "||");
-
+      this.model.currentUser = window.cache.currentUser;
       if (this.model.topic) {
         compiledTemplate = _.template(CommentItemTemplate, this.model);
         this.$el.append(compiledTemplate);

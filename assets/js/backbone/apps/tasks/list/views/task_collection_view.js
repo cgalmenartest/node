@@ -19,7 +19,8 @@ define([
 			var self = this;
 
 			this.tasksJson = {
-				tasks: this.options.collection.toJSON()
+				tasks: this.options.collection.toJSON(),
+				user: window.cache.currentUser
 			};
 
 			var requestTagData = function (task, done) {
@@ -28,6 +29,10 @@ define([
 					async: false,
 					success: function (tags) {
 						task['tags'] = tags;
+						done();
+					},
+					error: function () {
+						task['tags'] = [];
 						done();
 					}
 				});

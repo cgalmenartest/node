@@ -16,7 +16,7 @@ module.exports = {
     // closed  : Project is closed/completed, but can still be publicly viewed
     state: {
       type: 'STRING',
-      defaultsTo: 'draft'
+      defaultsTo: 'public'
     },
     // Project title
     title           : 'STRING',

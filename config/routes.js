@@ -49,6 +49,12 @@ module.exports.routes = {
   '/projects/:unknownRoute': {
     view: 'main/index'
   },
+  '/tasks': {
+    view: 'main/index'
+  },
+  '/tasks/:unknownRoute': {
+    view: 'main/index'
+  },
   '/profile': {
     view: 'main/index'
   },

@@ -5,6 +5,7 @@
  * was found but access is denied.
  */
 var util = require('./project');
+var tagUtil = require('./tag');
 
 var authorized = function (id, userId, cb) {
   Task.findOneById(id, function (err, task) {
@@ -36,6 +37,14 @@ var authorized = function (id, userId, cb) {
   });
 };
 
+var getTags = function (task, cb) {
+  tagUtil.assemble({ taskId: task.id }, function (err, tags) {
+    task.tags = tags;
+    cb(err);
+  });
+};
+
 module.exports = {
-  authorized: authorized
+  authorized: authorized,
+  getTags: getTags
 };

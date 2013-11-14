@@ -5,83 +5,43 @@
 
     <!-- Viewport mobile tag for sensible mobile support -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <script type="text/javascript" src="/js/vendor/sails/socket.io.js"></script>
+    <!-- then beef it up with some convenience logic for talking to Sails.js -->
+    <script type="text/javascript" src="/js/vendor/sails/sails.io.js"></script>
+    <!-- listen on socket.io for incoming messages -->
+    <script type="text/javascript" src="/js/vendor/sails/app.js"></script>
+    <!-- There be dragons here (aka, don't remove and put into require.js flow, as that fails 1/5 times) -->
+    <script type="text/javascript" src="/js/vendor/jquery.js"></script>
+
+    <% if (sails.config.environment == 'development') { %>
+    <!-- Entry point for our app -->
+    <script type="text/javascript" src="/js/vendor/require.js"></script>
+    <script>
+      require.config({
+        baseUrl: '/js/backbone/apps'
+      })
+      require(['../config/require_config'], function() {
+        require(['app']);
+      });
+    </script>
+    <% } else { %>
+    <script type="text/javascript" src="/js/prod/midas.js"></script>
+    <% } %>
 
     <link rel="stylesheet" type="text/css" href="/styles/bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="/styles/font-awesome/css/font-awesome.min.css" />
     <link rel="stylesheet" type="text/css" href="/styles/font-custom/style.css" />
+    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'/>
+    <link href='http://fonts.googleapis.com/css?family=Roboto:300,400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="/js/vendor/select2/select2.css" />
     <link rel="stylesheet" type="text/css" href="/styles/application.css" />
     <link rel="stylesheet" type="text/css" href="/styles/innovation-theme.css" />
 
-    <script type="text/javascript" src="/js/vendor/sails/socket.io.js"></script>
-
-    <!-- then beef it up with some convenience logic for talking to Sails.js -->
-    <script type="text/javascript" src="/js/vendor/sails/sails.io.js"></script>
-
-    <!-- listen on socket.io for incoming messages -->
-    <script type="text/javascript" src="/js/vendor/sails/app.js"></script>
-
-    <!-- There be dragons here (aka, don't remove and put into require.js flow, as that fails 1/5 times) -->
-    <script type="text/javascript" src="/js/vendor/jquery.js"></script>
-
-    <!-- Entry point for our app -->
-    <script type="text/javascript" data-main="/js/backbone/config/require_config.js" src="/js/vendor/require.js"></script>
 
   </head>
 
   <body>
-    <div class="navbar navbar-default navbar-static-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/">
-            <img src="/images/innovation-logo.png" alt="innovation.gov">
-          </a>
-        </div>
-        <div class="navbar-collapse collapse pull-right">
-          <ul class="nav navbar-nav">
-
-            <li class="people">
-              <a href="/profile">
-                <span class="glyphicon glyphicon-user"></span>
-                <span class="navbar-title-small">Find</span><br/>
-                <span class="navbar-title-big">People</span>
-              </a>
-            </li>
-            <li class="projects">
-              <a href="/projects">
-                <i class="icon-rocket"></i>
-                <span class="navbar-title-small">Browse</span><br/>
-                <span class="navbar-title-big">Projects</span>
-              </a>
-            </li>
-            <li class="knowledge">
-              <a href="/projects">
-                <i class="icon-comments"></i>
-                <span class="navbar-title-small">Share</span><br/>
-                <span class="navbar-title-big">Knowledge</span>
-              </a>
-            </li>
-            <li class="divider-vertical navbar-text"></li>
-            <% if (req.user) { %>
-              <li class="profile dropdown"><a href="/profile" id="navbar-profile" role="button" class="dropdown-toggle" data-toggle="dropdown">
-                <img src="/api/user/photo/<%- req.user[0].id %>" class="navbar-people"/> <%- req.user[0].name %></a>
-                <ul class="dropdown-menu" role="menu" aria-labelledby="navbar-profile">
-                  <li role="presentation"><a role="menuitem" tabindex="-1" href="/profile">Profile</a></li>
-                  <li role="presentation" class="divider"></li>
-                  <li role="presentation"><a role="menuitem" tabindex="-1" href="/auth/logout">Logout</a></li>
-                </ul>
-              </li>
-            <% } else { %>
-              <li class="navbar-text"><a href="/auth"><i class="icon-plus-sign"></i> Sign In</a></li>
-            <% }; %>
-          </ul>
-        </div>
-      </div>
+    <div class="navigation">
     </div>
 
     <%- body %>
