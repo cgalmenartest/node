@@ -9,8 +9,8 @@ define([
   'project_show_controller',
   'profile_show_controller',
   'task_model',
-  'task_item_view'
-], function ($, _, Backbone, utils, NavView, BrowseListController, ProjectModel, ProjectShowController, ProfileShowController, TaskModel, TaskItemView) {
+  'task_show_controller'
+], function ($, _, Backbone, utils, NavView, BrowseListController, ProjectModel, ProjectShowController, ProfileShowController, TaskModel, TaskShowController) {
 
   var BrowseRouter = Backbone.Router.extend({
 
@@ -70,7 +70,8 @@ define([
     showTask: function (id) {
       this.cleanupChildren();
       var model = new TaskModel();
-      this.taskItemView = new TaskItemView({ model: model, router: this, id: id });
+      model.set({ id: id })
+      this.taskShowController ? this.taskShowController.cleanup() : this.taskShowController = new TaskShowController({ model: model, router: this, id: id })
     },
 
     showProfile: function (id) {

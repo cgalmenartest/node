@@ -18,6 +18,10 @@ define([
         this.save();
       });
 
+      this.listenTo(this, "task:model:fetch", function (data) {
+        this.get(data);
+      });
+
       this.listenTo(this, "task:update", function (data) {
         this.update(data);
       });

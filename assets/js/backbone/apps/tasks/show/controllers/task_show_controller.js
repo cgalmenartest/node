@@ -21,9 +21,12 @@ define([
       'click .edit-task': 'edit'
     },
 
-    initialize: function () {
-      this.initializeTaskItemView();
+    initialize: function (options) {
+      this.options = options;
+
       this.initializeChildren();
+      this.initializeTaskItemView();
+
     },
 
     initializeChildren: function () {
@@ -51,8 +54,8 @@ define([
 
       if (this.taskItemView) this.taskItemView.cleanup();
       this.taskItemView = new TaskItemView({
-        model: self.model,
-        router: self.router
+        model: self.options.model,
+        router: self.options.router
       });
     },
 

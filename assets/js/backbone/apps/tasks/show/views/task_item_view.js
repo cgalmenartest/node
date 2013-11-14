@@ -36,17 +36,17 @@ define([
           var data = {};
           self.model.attributes['tags'] = tagData;
 
-          _.each(self.model.toJSON().tags, function (tag) {
-            if (tag.tag.type === 'people') {
-              data['people'] = tag.tag;
-            } else if (tag.tag.type === 'length') {
-              data['length'] = tag.tag;
-            } else if (tag.tag.type === 'skills-required') {
-              data['skillsRequired'] = tag.tag;
-            } else if (tag.tag.type === 'time-required') {
-              data['timeRequired'] = tag.tag;
-            }
-          });
+          // _.each(self.model.toJSON().tags, function (tag) {
+          //   if (tag.tag.type === 'people') {
+          //     data['people'] = tag.tag;
+          //   } else if (tag.tag.type === 'length') {
+          //     data['length'] = tag.tag;
+          //   } else if (tag.tag.type === 'skills-required') {
+          //     data['skillsRequired'] = tag.tag;
+          //   } else if (tag.tag.type === 'time-required') {
+          //     data['timeRequired'] = tag.tag;
+          //   }
+          // });
 
           data['model'] = self.model.toJSON();
 
