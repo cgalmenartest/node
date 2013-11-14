@@ -14,7 +14,8 @@ define([
 
     routes: {
       'projects(/)'               : 'listProjects',
-      'projects/:id(/)'           : 'show',
+      'projects/:id(/)'           : 'showProject',
+      'tasks(/)'                  : 'listTasks'
     },
 
     data: { saved: false },
@@ -22,14 +23,24 @@ define([
     listProjects: function () {
       if (this.browseListController) {
         this.browseListController.cleanup();
-      } else {
-        this.browseListController = new BrowseListController({
-          target: 'projects'
-        });
       }
+      this.browseListController = new BrowseListController({
+        target: 'projects',
+        data: this.data
+      });
     },
 
-    show: function (id) {
+    listTasks: function () {
+      if (this.browseListController) {
+        this.browseListController.cleanup();
+      }
+      this.browseListController = new BrowseListController({
+        target: 'tasks',
+        data: this.data
+      });
+    },
+
+    showProject: function (id) {
       clearContainer();
 
       var model = new ProjectModel();
@@ -38,31 +49,6 @@ define([
       if (this.projectShowController) this.projectShowController.cleanup();
       this.projectShowController = new ProjectShowController({ model: model, router: this });
 
-    },
-
-    showTask: function (noop, taskId) {
-      clearContainer();
-      scrollTop();
-
-      var self = this,
-          model = new TaskModel();
-
-      model.fetch({
-        url: '/api/task/' + taskId,
-        success: function (taskModel) {
-
-          $.ajax({
-            url: '/api/tag/findAllByTaskId/' + taskId,
-            async: false,
-            success: function (data) {
-              taskModel.attributes['tags'] = data;
-            }
-          });
-
-          if (self.taskItemView) self.taskItemView.cleanup();
-          self.taskItemView = new TaskItemView({ model: taskModel, router: self });
-        }
-      });
     }
 
   });

@@ -7,11 +7,12 @@ define([
   'base_controller',
   'browse_main_view',
   'project_collection',
+  'tasks_collection',
   'project_form_view',
   'modal_component'
 ], function (
   $, _, Backbone, Bootstrap, utils, BaseController,
-  BrowseMainView, ProjectsCollection,
+  BrowseMainView, ProjectsCollection, TasksCollection,
   ProjectFormView, ModalComponent) {
 
   Application.Browse = {};
@@ -23,6 +24,7 @@ define([
     events: {
       "click .project"        : "showProject",
       "click .project-background-image" : "showProject",
+      "click .task"           : "showTask",
       "click .add-project"    : "addProject",
       "click .add-opportunity": "addOpp"
     },
@@ -60,10 +62,10 @@ define([
           this.collection = new ProjectsCollection();
         }
         else if (this.target == 'tasks') {
-          this.collection = new TaskCollection();
+          this.collection = new TasksCollection();
         }
         else {
-          this.collection = new UserCollection();
+          this.collection = new ProfilesCollection();
         }
       }
       this.listenToOnce(this.collection, this.target + ":fetch", function () {
@@ -83,6 +85,12 @@ define([
       if (e.preventDefault) e.preventDefault();
       var id = $($(e.currentTarget).parents('li.project-box')[0]).data('project-id');
       Backbone.history.navigate('projects/' + id, { trigger: true });
+    },
+
+    showTask: function (e) {
+      if (e.preventDefault) e.preventDefault();
+      var id = $($(e.currentTarget).parents('li.task-box')[0]).data('task-id');
+      Backbone.history.navigate('tasks/' + id, { trigger: true });
     },
 
     addProject: function (e) {

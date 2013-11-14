@@ -38,8 +38,10 @@ define([
     format: function (self, object, container, query) {
       var name = object.name || object.title;
       var icon = this.tagIcon[object.type];
-      if (object.title) {
+      if (object.target == 'project') {
         icon = 'icon-folder-close-alt';
+      } else if (object.target == 'task') {
+        icon = 'icon-tag';
       }
       return '<i class="' + icon + '"></i> <span class="box-icon-text">' + name + '</span>';
     },
@@ -47,10 +49,16 @@ define([
     initializeSearch: function() {
       var self = this;
       this.searchTerms = [];
-      this.tags = _.values(TagConfig.tags);
+      this.tags = [];
+
+      // figure out which tags apply
+      for (var i = 0; i < TagConfig[this.options.target].length; i++) {
+        this.tags.push(TagConfig.tags[TagConfig[this.options.target][i]]);
+      }
+
+      // extract tag icons and classes
       this.tagIcon = {};
       this.tagClass = {};
-
       for (var i = 0; i < this.tags.length; i++) {
         this.tagIcon[this.tags[i].type] = this.tags[i].icon;
         this.tagClass[this.tags[i].type] = this.tags[i]['class'];
@@ -67,10 +75,11 @@ define([
         formatResult: formatResult,
         formatSelection: formatResult,
         ajax: {
-          url: '/api/ac/search',
+          url: '/api/ac/search/' + self.options.target,
           dataType: 'json',
           data: function (term) {
             return {
+              type: TagConfig[self.options.target].join(),
               q: term
             };
           },
@@ -113,10 +122,10 @@ define([
           format: self.format(self, d)
         };
         var templ = _.template(BrowseSearchTag, templData);
-        if (d.title) {
-          $("#search-projs").append(templ);
-        } else {
+        if (d.target == 'tagentity') {
           $("#search-tags").append(templ);
+        } else {
+          $("#search-projs").append(templ);
         }
       });
       $("#search").select2("data","");
@@ -146,14 +155,15 @@ define([
 
       // create a search object
       var data = {
-        projects: [],
-        tags: []
+        items: [],
+        tags: [],
+        target: self.options.target
       };
       _.each(terms, function (t) {
-        if (t.title) {
-          data.projects.push(t.id);
-        } else {
+        if (t.target == 'tagentity') {
           data.tags.push(t.id);
+        } else {
+          data.items.push(t.id);
         }
       });
       $.ajax({
@@ -211,7 +221,7 @@ define([
     },
 
     cleanup: function() {
-      if (self.browseListView) { self.browseListView.cleanup(); }
+      if (this.browseListView) { this.browseListView.cleanup(); }
       removeView(this);
     }
 

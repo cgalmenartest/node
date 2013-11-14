@@ -12,6 +12,16 @@
         }
       ]
     },
+    'task': {
+      type: 'model',
+      target: 'Task',
+      fields: [
+        {
+          name: 'title',
+          where: { state: 'public' }
+        }
+      ]
+    },
     'profile': {
       type: 'model',
       target: 'User',
@@ -69,6 +79,10 @@
     'inline': ['profile', 'project', 'wikipedia'],
     'tag': ['tag'],
     'attachments': ['profile', 'wikipedia'],
-    'user': ['user']
+    'user': ['user'],
+    // these are sub-ids of search, for powering the browse view
+    'search-projects': ['project', 'tag'],
+    'search-tasks': ['task', 'tag'],
+    'search-profiles': ['user', 'tag']
   }
 };

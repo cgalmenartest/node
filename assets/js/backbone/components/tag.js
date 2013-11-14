@@ -38,9 +38,15 @@ define({
       'name': 'Location',
       'plural': 'Locations'
     }
+    // add task tags here
   },
   // This defines the part of the app and which tags apply
+  // plural names are for searching the collection
+  // singular names are for the individual show views
+  projects: ['skill', 'topic', 'agency', 'location'],
   project: ['skill', 'topic', 'agency', 'location'],
+  profiles: ['skill', 'topic', 'agency', 'location'],
   profile: ['skill', 'topic'],
+  tasks: ['skill', 'topic', 'agency', 'location'],
   task: ['skill', 'topic']
 });

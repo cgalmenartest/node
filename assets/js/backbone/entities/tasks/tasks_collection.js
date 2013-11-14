@@ -11,8 +11,12 @@ define([
 
     parse: function (response) {
       if (response) {
-        return response.tasks;
+        if (response.tasks) {
+          return response.tasks;
+        }
+        return response;
       }
+      return [];
     },
 
     url: '/api/task',
