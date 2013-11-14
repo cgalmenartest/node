@@ -41,6 +41,7 @@ define([
 			"click #project-close"						: "stateClose",
 			"click #project-reopen"						: "stateReopen",
 			"mouseenter .project-people-div" 	: popovers.popoverPeopleOn,
+			"click .project-people-div" 			: popovers.popoverClick
 		},
 
 		// The initialize method is mainly used for event bindings (for effeciency)
