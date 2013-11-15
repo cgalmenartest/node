@@ -738,3 +738,10 @@ textarea#task-description {
 	margin-bottom: 20px;
 	line-height: 1.5em;
 }
+
+/*****************
+=  ATTACHMENTS
+******************/
+.attachment-name {
+	width: 100%;
+}
