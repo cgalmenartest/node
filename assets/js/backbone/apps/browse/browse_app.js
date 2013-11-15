@@ -64,7 +64,7 @@ define([
       this.cleanupChildren();
       var model = new ProjectModel();
       model.set({ id: id });
-      this.projectShowController = new ProjectShowController({ model: model, router: this });
+      this.projectShowController = new ProjectShowController({ model: model, router: this, id: id });
     },
 
     showTask: function (id) {
