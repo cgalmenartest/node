@@ -3,18 +3,24 @@ define([
   'bootstrap',
   'underscore',
   'dropzone',
+  'jquery_timeago',
   'backbone',
   'utilities',
   'async',
+  'popovers',
   'text!attachment_item_template',
   'text!attachment_show_template'
-], function ($, Bootstrap, _, Dropzone, Backbone, utils, async,
-  AITemplate, ASTemplate) {
+], function ($, Bootstrap, _, Dropzone, TimeAgo, Backbone, utils, async,
+  Popovers, AITemplate, ASTemplate) {
+
+  var popovers = new Popovers();
 
   var AttachmentShowView = Backbone.View.extend({
 
     events: {
-      'click .file-delete'      : 'delete'
+      'click .file-delete'                : 'delete',
+      "mouseenter .project-people-div"    : popovers.popoverPeopleOn,
+      "click .project-people-div"         : popovers.popoverClick,
     },
 
     initialize: function (options) {
@@ -33,6 +39,8 @@ define([
           var template = self.renderAttachment(f);
           $(".attachment-tbody").append(template);
         });
+        $("time.timeago").timeago();
+        popovers.popoverPeopleInit(".project-people-div");
       });
     },
 
@@ -107,9 +115,11 @@ define([
     renderNewAttachment: function (file, attachment) {
       attachment.file = file;
       var templ = this.renderAttachment(attachment);
-      // should put this at the top of the list rather than the bottom
       $(".attachment-none").hide();
-      $(".attachment-tbody").append(templ);
+      // put new at the top of the list rather than the bottom
+      $(".attachment-tbody").prepend(templ);
+      $("time.timeago").timeago();
+      popovers.popoverPeopleInit(".project-people-div");
     },
 
     delete: function (e) {

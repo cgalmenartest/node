@@ -742,6 +742,12 @@ textarea#task-description {
 /*****************
 =  ATTACHMENTS
 ******************/
-.attachment-name {
+.table-condensed tbody > tr > td.attachment-name {
 	width: 100%;
+	line-height: 1em;
+}
+
+.attachment-name > .timeago {
+	font-size: 10px;
+	color: #666;
 }

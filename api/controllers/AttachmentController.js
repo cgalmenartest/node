@@ -21,6 +21,7 @@ function findAll (target, req, res) {
   where[target] = req.params.id;
   Attachment.find()
   .where(where)
+  .sort({ createdAt: -1 })
   .exec(function (err, ats) {
     if (err) { return res.send(400, { message: 'Error fetching attachments.' }); }
     async.each(ats, getFile, function (err) {

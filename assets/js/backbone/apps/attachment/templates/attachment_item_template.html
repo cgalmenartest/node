@@ -8,8 +8,13 @@
       <% if (user && ((a.userId == a.userId) || owner)) { %>
       <a href="#" class="file-delete" data-id="<%= a.id %>"><i class="icon-remove"></i></a>
       <% } %>
+      <br/>
+      <time class="timeago" datetime="<%- a.createdAt %>"><%- a.createdAt %></time>
     </a>
   </td>
-  <td class="file-uploader">
+  <td class="file-person">
+    <div class="project-people-div" data-userid="<%- a.userId %>">
+      <img src="/api/user/photo/<%= a.userId %>" class="project-people" />
+    </div>
   </td>
 </tr>
