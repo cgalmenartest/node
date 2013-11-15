@@ -28,7 +28,6 @@ define([
 
       this.initializeSelect2Data();
 
-
       $.ajax({
         url: '/api/tag/findAllByTaskId/' + self.options.id,
         async: false,
@@ -36,17 +35,13 @@ define([
           var data = {};
           self.model.attributes['tags'] = tagData;
 
-          // _.each(self.model.toJSON().tags, function (tag) {
-          //   if (tag.tag.type === 'people') {
-          //     data['people'] = tag.tag;
-          //   } else if (tag.tag.type === 'length') {
-          //     data['length'] = tag.tag;
-          //   } else if (tag.tag.type === 'skills-required') {
-          //     data['skillsRequired'] = tag.tag;
-          //   } else if (tag.tag.type === 'time-required') {
-          //     data['timeRequired'] = tag.tag;
-          //   }
-          // });
+          _.each(self.model.toJSON().tags, function (tag) {
+            _.each(TagConfig.tags, function (config) {
+              if (tag.tag.type === config.type) {
+                data[config.type] = tag.tag
+              }
+            })
+          });
 
           data['model'] = self.model.toJSON();
 
@@ -81,6 +76,8 @@ define([
           type: 'GET',
           async: false,
           success: function (data) {
+
+            console.log(data);
             // Dynamically take the hyphen delimited type (if more than 1 word) and
             // camelize it like the template expects.  Then create an associative
             // array based on that for the pointer to the list itself to be iterated through

@@ -6,6 +6,7 @@
 define({
   // This defines all of the tag elements for use in the app
   tags: {
+
     skill: {
       'icon': 'icon-atom',
       'class': 'skill',
@@ -14,6 +15,7 @@ define({
       'name': 'Skill',
       'plural': 'Skills'
     },
+
     topic: {
       'icon': 'icon-briefcase',
       'class': 'topic',
@@ -22,6 +24,7 @@ define({
       'name': 'Topic',
       'plural': 'Topics'
     },
+
     agency: {
       'icon': 'icon-library',
       'class': 'agency',
@@ -30,6 +33,7 @@ define({
       'name': 'Agency',
       'plural': 'Agencies'
     },
+
     location: {
       'icon': 'icon-map-marker',
       'class': 'location',
@@ -37,16 +41,54 @@ define({
       'type': 'location',
       'name': 'Location',
       'plural': 'Locations'
+    },
+
+    taskSkillsRequired: {
+      id    : 'task-skills-required',
+      type  : 'task-skills-required',
+      name  : 'Skills Required',
+      klass : 'task-skills-required'
+    },
+
+    taskTimeRequired: {
+      id    : 'task-time-required',
+      type  : 'task-time-required',
+      name  : 'Time Required',
+      klass : 'task-time-required'
+    },
+
+    taskPeople: {
+      id    : 'task-people',
+      type  : 'task-people',
+      name  : 'People',
+      klass : 'task-people'
+    },
+
+    taskLength: {
+      id    : 'task-length',
+      type  : 'task-length',
+      name  : 'Length',
+      klass : 'task-length'
+    },
+
+    taskTimeEstimates: {
+      id    : 'task-time-estimates',
+      type  : 'task-time-estimates',
+      name  : 'Time Estimates',
+      klass : 'task-time-estimatesx'
     }
-    // add task tags here
+
   },
+
   // This defines the part of the app and which tags apply
   // plural names are for searching the collection
-  // singular names are for the individual show views
-  projects: ['skill', 'topic', 'agency', 'location'],
-  project: ['skill', 'topic', 'agency', 'location'],
-  profiles: ['skill', 'topic', 'agency', 'location'],
-  profile: ['skill', 'topic'],
-  tasks: ['skill', 'topic', 'agency', 'location'],
-  task: ['skill', 'topic']
+  // singular names are for the individual show views.
+  project   : ['skill', 'topic', 'agency', 'location'],
+  projects  : ['skill', 'topic', 'agency', 'location'],
+
+  profile   : ['skill', 'topic'],
+  profiles  : ['skill', 'topic', 'agency', 'location'],
+
+  task      : ['skill', 'topic', 'taskSkillsRequired', 'taskTimeRequired', 'taskPeople', 'taskLength', 'taskTimeEstimates'],
+  tasks     : ['skill', 'topic', 'agency', 'location', 'taskSkillsRequired', 'taskTimeRequired', 'taskPeople', 'taskLength', 'taskTimeEstimates']
 });

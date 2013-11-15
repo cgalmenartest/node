@@ -42,8 +42,9 @@ define([
 
     get: function (id) {
       var self = this;
-      this.set({ id: id });
-      this.fetch({
+      // this.set({ id: id });
+      this.fetch({ id: id },
+      {
         success: function (data) {
           self.trigger("task:model:fetch:success", data);
         }

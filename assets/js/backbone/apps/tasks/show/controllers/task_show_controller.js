@@ -55,7 +55,8 @@ define([
       if (this.taskItemView) this.taskItemView.cleanup();
       this.taskItemView = new TaskItemView({
         model: self.options.model,
-        router: self.options.router
+        router: self.options.router,
+        id: self.options.id
       });
     },
 
