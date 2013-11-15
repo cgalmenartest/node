@@ -122,9 +122,18 @@ module.exports.policies = {
   TaskController : {
     'find': ['authenticated', 'task'],
     'findAllByProjectId': ['authenticated', 'requireId', 'project'],
-    'create': ['authenticated', 'requireUserId', 'addUserId', 'projectId'],
+    'create': ['authenticated', 'requireUserId', 'addUserId'],
     'update': ['authenticated', 'requireUserId', 'projectId', 'taskId'],
     'destroy': ['authenticated', 'requireUserId', 'requireId', 'task']
+  },
+
+  AttachmentController: {
+    'find': ['authenticated', 'requireId'],
+    'findAllByProjectId': ['authenticated', 'requireId', 'project'],
+    'findAllByTaskId': ['authenticated', 'requireId', 'task'],
+    'create': ['authenticated', 'requireUserId', 'addUserId'],
+    'update': false,
+    'destroy': ['authenticated', 'requireUserId']
   },
 
   SearchController : {
