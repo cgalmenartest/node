@@ -3,6 +3,9 @@
 MOCHA_OPTS= --timeout 60000
 REPORTER = spec
 
+build:
+	grunt build
+
 check: test
 
 copy-config:

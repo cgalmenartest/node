@@ -22,6 +22,12 @@ config/local.js
 config/settings/auth.js
 config/settings/sources.js
 
+# Ignore production files
+assets/prod/js
+assets/prod/css
+assets/prod/font
+assets/prod/fonts
+
 # Ignore editor temp files
 *~
 *#
