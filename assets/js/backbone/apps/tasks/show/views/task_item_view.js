@@ -22,72 +22,87 @@ define([
         self.model = model;
         self.render();
       });
+
+      this.tags = [];
+
+      for (var i = 0; i < TagConfig['task'].length; i += 1) {
+        this.tags.push(TagConfig.tags[TagConfig['task'][i]]);
+      }
+
+      this.formatTags();
     },
 
-    render: function () {
-      var self = this;
+    formatTags: function () {
+      var i         = 0,
+          self      = this,
+          tagIcon   = {},
+          tagClass  = {};
 
-      this.initializeSelect2Data();
+      for ( ; i < this.tags.length; i += 1) {
+        tagIcon[this.tags[i].type] = this.tags[i].icon;
+        tagClass[this.tags[i].type] = this.tags[i]['class'];
+      }
+
+      var renderTag = function (tag) {
+        var templData = {
+          model: self.model.toJSON(),
+          tags: self.tags,
+          tag: tag,
+          edit: self.edit
+        }
+        var compiledTemplate = _.template(TaskShowTemplate, templData);
+        var tagDom = $("#container")
+        tagDom.html(compiledTemplate);
+        $("#" + tagClass[tag.tag.type] + '-empty').hide();
+      };
 
       $.ajax({
         url: '/api/tag/findAllByTaskId/' + self.options.id,
         async: false,
-        success: function (tagData) {
-          var data = {};
-          self.model.attributes['tags'] = tagData;
-
-          var tags = [];
-          var validTags = {};
-
-          // Attempting a push into a fresh array to fix a bug I'm seeing
-          _.each(self.model.toJSON().tags(), function (tag) {
-            tags.push(tag.tag);
+        success: function (data) {
+          for (var i = 0; i < data.length; i += 1) {
+            renderTag(data[i])
           }
-
-          // Attempting to build up an obj that stores the tags
-          // and the config data so that I can have access to both
-          // on the front-end layer after validating the server did indeed
-          // return the propper tag types for this entity (task).
-          for (var i in TagConfig.tags) {
-            for (var j = 0; j < tags.length; j += 1) {
-              if (TagConfig.tags[i].type === tags[j].type) {
-                validTags[tags[j].type + "_config"] = TagConfig.tags[i];
-                validTags[TagConfig.tags[i].type] = tags[j];
-              }
-            }
-          }
-
-          // I can't depend on a key to be the same, so push it into an array
-          var keys = _.keys(validTags)
-
-          // At this point we can confirm it is a valid type
-          // Add the type to the data object to be retrieved in the view
-          for (var k in vaidTags) {
-            for (var l in keys) {
-              data[keys[l]] = validTags[k];
-            }
-          }
-
-          data['model'] = self.model.toJSON();
-
-          var compiledTemplate = _.template(TaskShowTemplate, data);
-          $(self.el).html(compiledTemplate)
-
-          var tags = [
-            $("#topics").select2('data'),
-            $("#skills").select2('data'),
-            $("#skills-required").select2('data'),
-            $("#people").select2('data'),
-            $("#time-required").select2('data'),
-            $("#length").select2('data'),
-            // $("#time-estimate").select2('data'),
-            // $("#task-location").select2('data'),
-            $("#input-specific-location").val(),
-          ];
-          self.initTaskTags(tags);
         }
-      });
+      })
     },
+
+    // render: function () {
+    //   var self = this;
+
+    //   this.initializeSelect2Data();
+
+    //   $.ajax({
+    //     url: '/api/tag/findAllByTaskId/' + self.options.id,
+    //     async: false,
+    //     success: function (tagData) {
+    //       var data = {};
+    //       self.model.attributes['tags'] = tagData;
+
+    //       var tags = [];
+    //       var validTags = {};
+
+
+    //       data['model'] = self.model.toJSON();
+
+    //       var compiledTemplate = _.template(TaskShowTemplate, data);
+    //       $(self.el).html(compiledTemplate)
+
+    //       var tags = [
+    //         $("#topics").select2('data'),
+    //         $("#skills").select2('data'),
+    //         $("#skills-required").select2('data'),
+    //         $("#people").select2('data'),
+    //         $("#time-required").select2('data'),
+    //         $("#length").select2('data'),
+    //         // $("#time-estimate").select2('data'),
+    //         // $("#task-location").select2('data'),
+    //         $("#input-specific-location").val(),
+    //       ];
+    //       self.initTaskTags(tags);
+    //     }
+    //   });
+    // },
 
     initializeSelect2Data: function () {
       var self = this,
