@@ -18,8 +18,7 @@
     <div class="tag-wrapper">
       <strong>Tags:</strong>
 
-      <ul>
-      </ul>
+      <ul></ul>
     </div>
   </div>
 
@@ -37,18 +36,18 @@
       </div>
 
       <div class="task-show-description">
-        I need <strong>2-5 people</strong> to work on an opportunity about these topics:
-        <strong>Topic 1, Topic 2, Topic 3</strong>.
+        I need <strong><%= people %></strong> to work on an opportunity about these topics:
+        <strong><%= topic %></strong>.
 
       <br />
 
-        The following skills are <strong>required</strong> to complete this opportunity:
-        <strong>skills 1, skills 2</strong>.
+        The following skills are <strong><%= skillsRequired %></strong> to complete this opportunity:
+        <strong><%= skill %></strong>.
 
 
-        It will require <strong>time-required</strong> hours of <strong>part time, full time</strong> work, and must be completed within <strong>length</strong>.
+        It will require <strong><%= timeEstimates %></strong> hours of <strong><%= timeRequired %></strong> work, and must be completed within <strong><%= length %></strong>.
 
-        The volunteer(s) must be located at <strong>location</strong> to complete this task.
+        The volunteer(s) must be located at <strong><%= location %></strong> to complete this task.
       </div>
 
       <div class="comment-list-wrapper" style="clear: both;">

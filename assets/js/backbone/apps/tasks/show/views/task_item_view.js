@@ -22,10 +22,6 @@ define([
         self.model = model;
         self.render();
       });
-
-      this.tags = [];
-      this.tagsFromServer = [];
-
     },
 
     formatTags: function () {
@@ -60,13 +56,11 @@ define([
         success: function (data) {
           var self = this;
           this.tags = [];
-          this.tagsFromServer = [];
           for (var i = 0; i < TagConfig['task'].length; i += 1) {
             self.tags.push(TagConfig.tags[TagConfig['task'][i]]);
           }
 
           for (var i = 0; i < data.length; i += 1) {
-            console.log(data);
             renderTag(data[i])
           }
         }
@@ -78,8 +72,48 @@ define([
 
       this.initializeSelect2Data();
 
+      $.ajax({
+        url: '/api/tag/findAllByTaskId/' + self.options.id,
+        async: false,
+        success: function (data) {
+          self.tags = [];
+          for (var i = 0; i < data.length; i += 1) {
+            self.tags.push(data[i]);
+          }
+        }
+      })
+
       var data = {};
       data['model'] = self.model.toJSON();
+      data['tags'] = this.tags;
+
+      for (var e = 0; e < this.tags.length; e += 1) {
+        if (this.tags[e].tag.type === "people") {
+          data['people'] = this.tags[e].tag.name;
+        } else if (this.tags[e].tag.type === "skill") {
+          data['skill'] = this.tags[e].tag.name;
+        } else if (this.tags[e].tag.type === "topic") {
+          data['topic'] = this.tags[e].tag.name;
+        } else if (this.tags[e].tag.type === "skillsRequired") {
+          data['skillsRequired'] = this.tags[e].tag.name;
+        } else if (this.tags[e].tag.type === "timeRequired") {
+          data['timeRequired'] = this.tags[e].tag.name;
+        } else if (this.tags[e].tag.type === "length") {
+          data['length'] = this.tags[e].tag.name;
+        } else if (this.tags[e].tag.type === "timeEstimates") {
+          data['timeEstimates'] = this.tags[e].tag.name;
+        } else if (this.tags[e].tag.type === "location") {
+          data['location'] = this.tags[e].tag.name;
+        } else {
+          data['people'] = '**no team size added yet**';
+          data['skill'] = '**no skills added yet**';
+          data['topic'] = '**no topics added yet**';
+          data['skillsRequired'] = '**skills required not yet set**';
+          data['length'] = '**no length set yet**';
+          data['timeEstimates'] = '**no time estimate yet set**';
+          data['timeRequired'] = '**no time required has been set**';
+        }
+      }
 
       var compiledTemplate = _.template(TaskShowTemplate, data);
       $(self.el).html(compiledTemplate)
