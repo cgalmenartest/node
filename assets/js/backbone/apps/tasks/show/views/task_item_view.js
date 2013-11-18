@@ -24,12 +24,8 @@ define([
       });
 
       this.tags = [];
+      this.tagsFromServer = [];
 
-      for (var i = 0; i < TagConfig['task'].length; i += 1) {
-        this.tags.push(TagConfig.tags[TagConfig['task'][i]]);
-      }
-
-      this.formatTags();
     },
 
     formatTags: function () {
@@ -45,64 +41,63 @@ define([
 
       var renderTag = function (tag) {
         var templData = {
-          model: self.model.toJSON(),
           tags: self.tags,
           tag: tag,
           edit: self.edit
         }
-        var compiledTemplate = _.template(TaskShowTemplate, templData);
-        var tagDom = $("#container")
-        tagDom.html(compiledTemplate);
+
+        var compiledTemplate = _.template("<li><%= tag.tag.name %></li>", templData);
+        var tagDom = $(".tag-wrapper > ul");
+        tagDom.append(compiledTemplate);
         $("#" + tagClass[tag.tag.type] + '-empty').hide();
       };
+
+      this.tags = [];
 
       $.ajax({
         url: '/api/tag/findAllByTaskId/' + self.options.id,
         async: false,
         success: function (data) {
+          var self = this;
+          this.tags = [];
+          this.tagsFromServer = [];
+          for (var i = 0; i < TagConfig['task'].length; i += 1) {
+            self.tags.push(TagConfig.tags[TagConfig['task'][i]]);
+          }
+
           for (var i = 0; i < data.length; i += 1) {
+            console.log(data);
             renderTag(data[i])
           }
         }
       })
     },
 
-    // render: function () {
-    //   var self = this;
+    render: function () {
+      var self = this;
 
-    //   this.initializeSelect2Data();
+      this.initializeSelect2Data();
 
-    //   $.ajax({
-    //     url: '/api/tag/findAllByTaskId/' + self.options.id,
-    //     async: false,
-    //     success: function (tagData) {
-    //       var data = {};
-    //       self.model.attributes['tags'] = tagData;
+      var data = {};
+      data['model'] = self.model.toJSON();
 
-    //       var tags = [];
-    //       var validTags = {};
+      var compiledTemplate = _.template(TaskShowTemplate, data);
+      $(self.el).html(compiledTemplate)
+      this.formatTags();
 
-
-    //       data['model'] = self.model.toJSON();
-
-    //       var compiledTemplate = _.template(TaskShowTemplate, data);
-    //       $(self.el).html(compiledTemplate)
-
-    //       var tags = [
-    //         $("#topics").select2('data'),
-    //         $("#skills").select2('data'),
-    //         $("#skills-required").select2('data'),
-    //         $("#people").select2('data'),
-    //         $("#time-required").select2('data'),
-    //         $("#length").select2('data'),
-    //         // $("#time-estimate").select2('data'),
-    //         // $("#task-location").select2('data'),
-    //         $("#input-specific-location").val(),
-    //       ];
-    //       self.initTaskTags(tags);
-    //     }
-    //   });
-    // },
+      var tags = [
+        $("#topics").select2('data'),
+        $("#skills").select2('data'),
+        $("#skills-required").select2('data'),
+        $("#people").select2('data'),
+        $("#time-required").select2('data'),
+        $("#length").select2('data'),
+        // $("#time-estimate").select2('data'),
+        // $("#task-location").select2('data'),
+        $("#input-specific-location").val(),
+      ];
+      self.initTaskTags(tags);
+    },
 
     initializeSelect2Data: function () {
       var self = this,

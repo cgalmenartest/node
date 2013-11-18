@@ -43,37 +43,37 @@ define({
       'plural': 'Locations'
     },
 
-    taskSkillsRequired: {
+    skillsRequired: {
       id    : 'task-skills-required',
-      type  : 'task-skills-required',
+      type  : 'skillsRequired',
       name  : 'Skills Required',
       klass : 'task-skills-required'
     },
 
-    taskTimeRequired: {
+    timeRequired: {
       id    : 'task-time-required',
-      type  : 'task-time-required',
+      type  : 'timeRequired',
       name  : 'Time Required',
       klass : 'task-time-required'
     },
 
-    taskPeople: {
+    people: {
       id    : 'task-people',
-      type  : 'task-people',
+      type  : 'people',
       name  : 'People',
       klass : 'task-people'
     },
 
-    taskLength: {
+    length: {
       id    : 'task-length',
-      type  : 'task-length',
+      type  : 'length',
       name  : 'Length',
       klass : 'task-length'
     },
 
-    taskTimeEstimates: {
+    timeEstimates: {
       id    : 'task-time-estimates',
-      type  : 'task-time-estimates',
+      type  : 'timeEstimates',
       name  : 'Time Estimates',
       klass : 'task-time-estimatesx'
     }
@@ -89,6 +89,6 @@ define({
   profile   : ['skill', 'topic'],
   profiles  : ['skill', 'topic', 'agency', 'location'],
 
-  task      : ['skill', 'topic', 'taskSkillsRequired', 'taskTimeRequired', 'taskPeople', 'taskLength', 'taskTimeEstimates'],
-  tasks     : ['skill', 'topic', 'agency', 'location', 'taskSkillsRequired', 'taskTimeRequired', 'taskPeople', 'taskLength', 'taskTimeEstimates']
+  task      : ['skill', 'topic', 'skillsRequired', 'timeRequired', 'people', 'length', 'timeEstimates'],
+  tasks     : ['skill', 'topic', 'agency', 'location', 'skillsRequired', 'timeRequired', 'people', 'length', 'timeEstimates']
 });
