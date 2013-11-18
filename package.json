@@ -7,7 +7,6 @@
         "sails": "0.9.4",
         "async": "0.2.9",
         "grunt": "0.4.1",
-        "grunt-contrib-requirejs": "~0.4.1",
         "ejs": "0.8.4",
         "underscore": "1.x",
         "optimist": "0.4.0",
@@ -24,7 +23,9 @@
         "sails-postgresql": "~0.9.4"
     },
     "devDependencies": {
-        "mocha": "*"
+        "mocha": "*",
+        "grunt-contrib-requirejs": "~0.4.1",
+        "grunt-contrib-cssmin": "*"
     },
     "scripts": {
         "start": "node app.js",

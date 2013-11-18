@@ -11,7 +11,7 @@ module.exports = {
 
   find: function (req, res) {
     if (req.task) {
-      return res.send(task);
+      return res.send(req.task);
     }
     Task.find()
     .where({ state: 'public' })

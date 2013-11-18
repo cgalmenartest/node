@@ -16,6 +16,7 @@
 
 module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-requirejs');
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
 
   /**
    * CSS files to inject in order
@@ -127,7 +128,7 @@ module.exports = function (grunt) {
   grunt.loadTasks(depsPath + '/grunt-contrib-jst/tasks');
   grunt.loadTasks(depsPath + '/grunt-contrib-watch/tasks');
   grunt.loadTasks(depsPath + '/grunt-contrib-uglify/tasks');
-  grunt.loadTasks(depsPath + '/grunt-contrib-cssmin/tasks');
+  // grunt.loadTasks(depsPath + '/grunt-contrib-cssmin/tasks');
   grunt.loadTasks(depsPath + '/grunt-contrib-less/tasks');
 
   grunt.initConfig({
@@ -138,11 +139,39 @@ module.exports = function (grunt) {
           name: 'app',
           baseUrl: "assets/js/backbone/app",
           mainConfigFile: "assets/js/backbone/config/require_config.js",
-          out: "assets/js/prod/midas.js",
+          out: "assets/prod/js/midas.js",
           paths: {
             requireLib: "../../vendor/require"
           },
           include: "requireLib"
+        }
+      }
+    },
+
+    cssmin: {
+      combine: {
+        files: {
+          'assets/prod/css/midas.css': [
+            'assets/styles/bootstrap.css',
+            'assets/styles/font-awesome/css/font-awesome.min.css',
+            'assets/styles/font-custom/css/style.css',
+            'assets/js/vendor/select2/select2.css',
+            'assets/styles/application.css',
+            'assets/styles/innovation-theme.css'
+          ]
+        },
+        options: {
+          report: 'min'
+        }
+      },
+      minify: {
+        expand: true,
+        cwd: 'assets/prod/css/',
+        src: ['*.css', '!*.min.css'],
+        dest: 'assets/prod/css/',
+        ext: '.min.css',
+        options: {
+          report: 'min'
         }
       }
     },
@@ -169,11 +198,47 @@ module.exports = function (grunt) {
           dest: 'www'
         }
         ]
+      },
+      prod: {
+        files: [
+        {
+          expand: true,
+          cwd: './assets',
+          src: ['prod/**/*', 'js/vendor/**/*', 'images/**/*'],
+          dest: '.tmp/public'
+        }
+        ]
+      },
+      font: {
+        files: [
+        {
+          expand: true,
+          flatten: true,
+          cwd: './assets',
+          src: ['styles/font-awesome/font/*'],
+          dest: 'assets/prod/font'
+        },
+        {
+          expand: true,
+          flatten: true,
+          cwd: './assets',
+          src: ['styles/font-custom/fonts/*'],
+          dest: 'assets/prod/fonts'
+        },
+        {
+          expand: true,
+          flatten: true,
+          cwd: './assets',
+          src: ['fonts/*'],
+          dest: 'assets/prod/fonts'
+        }
+        ]
       }
     },
 
     clean: {
       dev: ['.tmp/public/**'],
+      prod: ['.tmp/public/**'],
       build: ['www']
     },
 
@@ -228,12 +293,12 @@ module.exports = function (grunt) {
       }
     },
 
-    cssmin: {
-      dist: {
-        src: ['.tmp/public/concat/production.css'],
-        dest: '.tmp/public/min/production.css'
-      }
-    },
+    // cssmin: {
+    //   dist: {
+    //     src: ['.tmp/public/concat/production.css'],
+    //     dest: '.tmp/public/min/production.css'
+    //   }
+    // },
 
     'sails-linker': {
 
@@ -422,31 +487,34 @@ module.exports = function (grunt) {
     'sails-linker:devTplJADE'
   ]);
 
-
-  // Build the assets into a web accessible folder.
-  // (handy for phone gap apps, chrome extensions, etc.)
+  // Build the production files
   grunt.registerTask('build', [
-    'compileAssets',
-    'linkAssets',
-    'clean:build',
-    'copy:build'
+    // compile the js
+    'requirejs',
+    // compile the css
+    'cssmin',
+    // copy fonts
+    'copy:font'
   ]);
 
   // When sails is lifted in production
+  // clean and only copy the production files
   grunt.registerTask('prod', [
-    'clean:dev',
-    'jst:dev',
-    'less:dev',
-    'copy:dev',
-    'concat',
-    'uglify',
-    'cssmin',
-    'sails-linker:prodJs',
-    'sails-linker:prodStyles',
-    'sails-linker:devTpl',
-    'sails-linker:prodJsJADE',
-    'sails-linker:prodStylesJADE',
-    'sails-linker:devTplJADE'
+    'clean:prod',
+    'copy:prod'
+    // 'clean:dev',
+    // 'jst:dev',
+    // 'less:dev',
+    // 'copy:dev',
+    // 'concat',
+    // 'uglify',
+    // 'cssmin',
+    // 'sails-linker:prodJs',
+    // 'sails-linker:prodStyles',
+    // 'sails-linker:devTpl',
+    // 'sails-linker:prodJsJADE',
+    // 'sails-linker:prodStylesJADE',
+    // 'sails-linker:devTplJADE'
   ]);
 
   // When API files are changed:

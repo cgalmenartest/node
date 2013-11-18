@@ -8,13 +8,14 @@ define([
 	'base_controller',
 	'project_item_view',
 	'projectowner_show_view',
+  'attachment_show_view',
 	'task_list_controller',
 	'event_list_controller',
 	'comment_list_controller',
 	'comment_form_view',
 	'modal_component',
 	'autocomplete'
-], function ($, _, async, Backbone, utils, Popovers, BaseController, ProjectItemView, ProjectownerShowView,
+], function ($, _, async, Backbone, utils, Popovers, BaseController, ProjectItemView, ProjectownerShowView, AttachmentView,
 	TaskListController, EventListController, CommentListController, CommentFormView,
 	ModalComponent, autocomplete) {
 
@@ -41,6 +42,7 @@ define([
 			"click #project-close"						: "stateClose",
 			"click #project-reopen"						: "stateReopen",
 			"mouseenter .project-people-div" 	: popovers.popoverPeopleOn,
+			"click .project-people-div" 			: popovers.popoverClick
 		},
 
 		// The initialize method is mainly used for event bindings (for effeciency)
@@ -57,16 +59,15 @@ define([
 			this.listenTo(this.model, "project:model:fetch:success", function (model) {
 				this.model = model;
 				self.initializeItemView();
-				self.initializeOwners();
 			});
 
 			this.model.on("project:show:rendered", function () {
+				self.initializeOwners();
+				self.initializeAttachments();
 				self.initializeItemViewControllers();
 				self.initializeHandlers();
 				self.initializeLikes();
 				self.initializeUI();
-
-
 			});
 		},
 
@@ -99,19 +100,25 @@ define([
 		},
 
 		initializeItemView: function () {
-			var self = this;
-
 			if (this.projectShowItemView) this.projectShowItemView.cleanup();
 			this.projectShowItemView  = new ProjectItemView({ model: this.model }).render();
 		},
 
 
 		initializeOwners : function(){
-			var self = this;
-
 			if (this.projectownerShowView) this.projectownerShowView.cleanup();
 			this.projectownerShowView = new ProjectownerShowView({ model: this.model }).render();
 		},
+
+    initializeAttachments: function () {
+			if (this.attachmentView) this.attachmentView.cleanup();
+      this.attachmentView = new AttachmentView({
+        target: 'project',
+        id: this.model.attributes.id,
+        owner: this.model.attributes.isOwner,
+        el: '.attachment-wrapper'
+      }).render();
+    },
 
 		initializeItemViewControllers: function () {
 			this.taskListController = new TaskListController({ projectId: this.model.id });
@@ -242,6 +249,7 @@ define([
 			if (this.commentListController) this.commentListController.cleanup();
 			if (this.projectShowItemView) this.projectShowItemView.cleanup();
 			if (this.projectownerShowView) this.projectownerShowView.cleanup();
+			if (this.attachmentView) this.attachmentView.cleanup();
 			removeView(this);
 		}
 

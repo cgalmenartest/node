@@ -58,6 +58,7 @@ require.config({
     'browse_main_template'      : '../apps/browse/templates/browse_collection_view_template.html',
     'browse_search_tag'         : '../apps/browse/templates/browse_search_tag.html',
     'project_list_item'         : '../apps/browse/templates/project_list_item.html',
+    'task_list_item'            : '../apps/browse/templates/task_list_item.html',
 
     // ----------
     //= Projects
@@ -112,7 +113,14 @@ require.config({
     'event_form_view'            : '../apps/events/new/views/event_form_view',
 
     // ----------
-    //= PROFILE
+    //= Attachments
+    // ----------
+    'attachment_show_view'      : '../apps/attachment/views/attachment_show_view',
+    'attachment_show_template'  : '../apps/attachment/templates/attachment_show_template.html',
+    'attachment_item_template'  : '../apps/attachment/templates/attachment_item_template.html',
+
+    // ----------
+    //= Profile
     // ----------
     'profile_model'             : '../entities/profiles/profile_model',
     'profile_show_view'         : '../apps/profiles/show/views/profile_show_view',

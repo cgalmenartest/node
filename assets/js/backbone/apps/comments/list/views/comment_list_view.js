@@ -1,11 +1,10 @@
 define([
   'jquery',
   'underscore',
-  'jquery_timeago',
   'backbone',
   'utilities',
   'text!comment_list_template'
-], function ($, _, TimeAgo, Backbone, Utils, CommentListTemplate) {
+], function ($, _, Backbone, Utils, CommentListTemplate) {
 
   var CommentListView = Backbone.View.extend({
 

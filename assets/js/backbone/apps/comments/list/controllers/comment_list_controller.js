@@ -19,6 +19,7 @@ define([
       "click .new-topic"                  : "newTopic",
       "click [data-topic='true']"         : "toggleTopic",
       "mouseenter .comment-user-link"     : popovers.popoverPeopleOn,
+      "click .comment-user-link"          : popovers.popoverClick,
       "click a[href='#reply-to-comment']" : "reply"
     },
 

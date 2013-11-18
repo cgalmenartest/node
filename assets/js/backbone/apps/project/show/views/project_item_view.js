@@ -8,7 +8,7 @@ define([
   'text!project_show_template',
   'tag_show_view',
   'project_edit_form_view'
-], function ($, dropzone, select2, _, Backbone, utils, ProjectShowTemplate, TagShowView, ProjectEditFormView) {
+], function ($, dropzone, select2, _, Backbone, utils, ProjectShowTemplate, TagShowView, AttachmentView, ProjectEditFormView) {
 
   var ProjectShowView = Backbone.View.extend({
 
@@ -100,6 +100,7 @@ define([
     },
 
     cleanup: function () {
+      if (this.tagView) { this.tagView.cleanup(); }
       removeView(this);
     },
   });

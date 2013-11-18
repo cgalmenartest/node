@@ -21,7 +21,8 @@ define([
       'click .rsvp'                     : 'toggleRSVP',
       'mouseenter .data-event-flag-true': 'buttonRSVPOn',
       'mouseleave .data-event-flag-true': 'buttonRSVPOff',
-      "mouseenter .project-people-div"  : popovers.popoverPeopleOn
+      "mouseenter .project-people-div"  : popovers.popoverPeopleOn,
+      "click .project-people-div"       : popovers.popoverClick
     },
 
     initialize: function (settings) {

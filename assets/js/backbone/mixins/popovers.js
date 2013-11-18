@@ -47,6 +47,13 @@ define([
           popover.$tip.addClass(popover.options.placement);
         });
       }
+    },
+
+    popoverClick: function (e) {
+      if (e.preventDefault) e.preventDefault();
+      var id = $(e.currentTarget).data('userid');
+      $(e.currentTarget).popover('hide');
+      Backbone.history.navigate('profile/' + id, { trigger: true });
     }
   });
 
