@@ -36,12 +36,12 @@
       </div>
 
       <div class="task-show-description">
-        I need <strong><%= people %></strong> to work on an opportunity about these topics:
-        <strong><%= topic %></strong>.
+        I need <strong><% if (people) { %><%= 'people' %><% } %></strong> to work on an opportunity about these topics:
+        <strong><% if (topic) { %><%= topic %><% } %></strong>.
 
       <br />
 
-        The following skills are <strong><%= skillsRequired %></strong> to complete this opportunity:
+        The following skills are <strong><% if (skillsRequired) { %><%= skillsRequired %><% } %></strong> to complete this opportunity:
         <strong><%= skill %></strong>.
 
 

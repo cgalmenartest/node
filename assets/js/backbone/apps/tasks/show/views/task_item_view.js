@@ -81,39 +81,54 @@ define([
             self.tags.push(data[i]);
           }
         }
-      })
+      });
 
-      var data = {};
-      data['model'] = self.model.toJSON();
-      data['tags'] = this.tags;
-
-      for (var e = 0; e < this.tags.length; e += 1) {
-        if (this.tags[e].tag.type === "people") {
-          data['people'] = this.tags[e].tag.name;
-        } else if (this.tags[e].tag.type === "skill") {
-          data['skill'] = this.tags[e].tag.name;
-        } else if (this.tags[e].tag.type === "topic") {
-          data['topic'] = this.tags[e].tag.name;
-        } else if (this.tags[e].tag.type === "skillsRequired") {
-          data['skillsRequired'] = this.tags[e].tag.name;
-        } else if (this.tags[e].tag.type === "timeRequired") {
-          data['timeRequired'] = this.tags[e].tag.name;
-        } else if (this.tags[e].tag.type === "length") {
-          data['length'] = this.tags[e].tag.name;
-        } else if (this.tags[e].tag.type === "timeEstimates") {
-          data['timeEstimates'] = this.tags[e].tag.name;
-        } else if (this.tags[e].tag.type === "location") {
-          data['location'] = this.tags[e].tag.name;
-        } else {
-          data['people'] = '**no team size added yet**';
-          data['skill'] = '**no skills added yet**';
-          data['topic'] = '**no topics added yet**';
-          data['skillsRequired'] = '**skills required not yet set**';
-          data['length'] = '**no length set yet**';
-          data['timeEstimates'] = '**no time estimate yet set**';
-          data['timeRequired'] = '**no time required has been set**';
+      function containsAny (arr1, arr2) {
+        for (var i = 0; i < arr1.length; i += 1) {
+          for (var j = 0; j < arr2.length; j += 1) {
+            if (arr1[i] === arr2[j]) return true;
+          }
         }
+        return false;
       }
+
+      function setTagDefaults (notRepresentedTags) {
+        _.each(notRepresentedTags, function (tag) {
+          data[tag] = ''
+        });
+      }
+
+      var data = {
+        model: self.model.toJSON(),
+        tags: this.tags
+      };
+
+      var organizeTags = function (tags) {
+        // put the tags into their types
+        var outTags = {};
+        for (t in tags) {
+          if (!(_.has(outTags, tags[t].tag.type))) {
+            outTags[tags[t].tag.type] = [];
+          }
+          outTags[tags[t].tag.type].push(tags[t].tag);
+        }
+
+        for (var j in outTags) {
+          if (outTags[j].length === 1) {
+            var t = outTags[j].pop();
+            outTags[j] = t
+          }
+
+          data[outTags[j].type] = outTags[j].name;
+        }
+        return outTags;
+      };
+
+      var tagObjects = organizeTags(this.tags);
+      var tagKeys = _.keys(tagObjects);
+
+      var notRepresentedTags = _.difference(TagConfig['task'], tagKeys);
+      setTagDefaults(notRepresentedTags);
 
       var compiledTemplate = _.template(TaskShowTemplate, data);
       $(self.el).html(compiledTemplate)
