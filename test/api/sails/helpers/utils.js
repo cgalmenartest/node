@@ -37,17 +37,6 @@ module.exports = {
       var b = JSON.parse(body);
       cb(null, b);
     });
-  },
-
-  createTask: function (req, cb) {
-    req.post({
-      url: conf.url + '/task',
-      body: JSON.stringify(conf.task)
-    }, function (err, res, body) {
-      if (err) return cb(err, null);
-      var b = JSON.parse(body);
-      cb(null, b);
-    });
   }
 
 };

@@ -14,10 +14,6 @@ module.exports = {
     'title': 'Project Title',
     'description': 'Project Description'
   },
-  'task': {
-    'title': 'Task Title',
-    'description': 'Task Description'
-  },
   'tags': [
     {
       'type': 'skill',
@@ -30,6 +26,6 @@ module.exports = {
     {
       'type': 'office',
       'name': 'Tag3'
-    }
+    }    
   ]
 };
