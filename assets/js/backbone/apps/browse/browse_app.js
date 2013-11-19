@@ -36,7 +36,7 @@ define([
       if (this.browseListController) { this.browseListController.cleanup(); }
       if (this.projectShowController) { this.projectShowController.cleanup(); }
       if (this.profileShowController) { this.profileShowController.cleanup(); }
-      if (this.taskItemView) { this.taskItemView.cleanup(); }
+      if (this.taskShowController) { this.taskShowController.cleanup(); }
       this.data = { saved: false };
     },
 
@@ -71,7 +71,7 @@ define([
       this.cleanupChildren();
       var model = new TaskModel();
       model.set({ id: id })
-      this.taskShowController ? this.taskShowController.cleanup() : this.taskShowController = new TaskShowController({ model: model, router: this, id: id })
+      this.taskShowController = new TaskShowController({ model: model, router: this, id: id });
     },
 
     showProfile: function (id) {

@@ -3,11 +3,12 @@ define([
   'popovers',
   'underscore',
   'backbone',
+  'utilities',
   'async',
   'base_view',
   'tag_config',
   'text!task_show_template'
-], function (Bootstrap, Popovers, _, Backbone, async, BaseView, TagConfig, TaskShowTemplate) {
+], function (Bootstrap, Popovers, _, Backbone, utils, async, BaseView, TagConfig, TaskShowTemplate) {
 
   var TaskItemView = BaseView.extend({
 
@@ -116,7 +117,7 @@ define([
       }
 
       var compiledTemplate = _.template(TaskShowTemplate, data);
-      $(self.el).html(compiledTemplate)
+      self.$el.html(compiledTemplate)
       this.formatTags();
 
       var tags = [
@@ -219,7 +220,7 @@ define([
     },
 
     cleanup: function () {
-      $(this.el).children().remove();
+      removeView(this);
     }
 
   });

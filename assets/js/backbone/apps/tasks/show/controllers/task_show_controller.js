@@ -72,7 +72,7 @@ define([
     },
 
     cleanup: function () {
-      this.commentListController.cleanup();
+      if (this.taskItemView) this.taskItemView.cleanup();
       removeView(this);
     }
 
