@@ -56,7 +56,8 @@ define([
       this.taskItemView = new TaskItemView({
         model: self.options.model,
         router: self.options.router,
-        id: self.options.id
+        id: self.options.id,
+        el: self.el
       });
     },
 

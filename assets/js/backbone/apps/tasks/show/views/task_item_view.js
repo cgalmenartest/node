@@ -14,8 +14,6 @@ define([
 
     // Empty container for task show page
     // Aka item view.
-    el: "#container",
-
     initialize: function (options) {
       var self = this;
       this.model.trigger("task:model:fetch", this.options.id);
