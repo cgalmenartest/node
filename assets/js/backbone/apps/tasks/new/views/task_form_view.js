@@ -80,6 +80,7 @@ define([
         tags.push($("#skills-required").select2('data'));
         tags.push($("#people").select2('data'));
         tags.push($("#time-required").select2('data'));
+        tags.push($("#time-estimate").select2('data'));
         tags.push($("#length").select2('data'));
 
         async.each(tags, addTag, function (err) {
