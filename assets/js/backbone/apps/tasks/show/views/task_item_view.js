@@ -75,19 +75,6 @@ define([
 
       var compiledTemplate = _.template(TaskShowTemplate, this.data);
       $(self.el).html(compiledTemplate)
-
-      var tags = [
-        $("#topics").select2('data'),
-        $("#skills").select2('data'),
-        $("#skills-required").select2('data'),
-        $("#people").select2('data'),
-        $("#time-required").select2('data'),
-        $("#length").select2('data'),
-        // $("#time-estimate").select2('data'),
-        // $("#task-location").select2('data'),
-        $("#input-specific-location").val(),
-      ];
-      // self.initTaskTags(tags);
     },
 
     initializeSelect2Data: function () {

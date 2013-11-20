@@ -12,6 +12,10 @@ body {
 	clear: both;
 }
 
+input {
+	padding: 0 0 0 5px;
+}
+
 .search-result-row:hover {
 	background: #ccc;
 }
@@ -741,6 +745,48 @@ textarea#task-description {
 	line-height: 1.5em;
 }
 
+
+.task-show-description strong input {
+	margin-bottom: 5px;
+}
+
+.task-edit-form-button {
+	margin-bottom: 50px;
+}
+
+.task-location {
+	width: 200px;
+}
+
+.task-skills {
+	margin: 0 0 5px 0;
+}
+
+.task-topics {
+	width: 100%;
+	clear: both;
+	margin: 0 0 15px 0;
+}
+
+#task-description {
+	width: 100%;
+	height: 175px;
+}
+
+.task-people {
+	margin: 0 0 5px 0;
+}
+
+.task-skills {
+	clear: both;
+	width: 100%;
+	margin: 5px 0 15px 0;
+}
+
+.task-length {
+	margin: 5px 0 0 0;
+}
+
 /*****************
 =  ATTACHMENTS
 ******************/
@@ -752,12 +798,4 @@ textarea#task-description {
 .attachment-name > .timeago {
 	font-size: 10px;
 	color: #666;
-}
-
-.task-show-description strong input {
-	margin-bottom: 5px;
-}
-
-.task-edit-form-button {
-	margin-bottom: 50px;
 }

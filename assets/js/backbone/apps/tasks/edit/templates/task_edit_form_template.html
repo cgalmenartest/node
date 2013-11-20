@@ -4,50 +4,56 @@
   <h1><input type="text" placeholder="title"></h1>
 
   <div class="task-show-description">
-    <input type="text" placeholder="description">
+    <textarea name="" id="task-description" placeholder="description"></textarea>
   </div>
+
+  <hr />
 
   <div class="task-show-description">
     I need
       <strong>
-          <input type="text" placeholder="people assigned">
+          <input type="text" placeholder="to set a team size" class="task-people" id="people" />
       </strong>
 
     to work on an opportunity about these topics:
     <strong>
-        <input type="text" placeholder="topics">
-    </strong>.
+        <input type="text" placeholder="topic 1, topic 2, etc..." id="topics" class="task-topics" />
+    </strong>
 
-    <br />
+    <hr />
 
     The following skills are
       <strong>
-          <input type="text" placeholder="are skills required?">
+          <input type="text" placeholder="required/not required" class="task-skills-required" id="skills-required" />
       </strong>
 
     to complete this opportunity:
       <strong>
-          <input type="text" placeholder="skills">
-      </strong>.
+          <input type="text" placeholder="skill 1, skill 2, etc" id="skills" class="task-skills" />
+      </strong>
+
+    <hr />
 
     It will require
       <strong>
-        <input type="text" placeholder="time estimate">
+        <input type="text" placeholder="estimated" class="task-estimated-time" id="time-estimate" />
       </strong>
 
     hours of
       <strong>
-        <input type="text" placeholder="hours required">
+        <input type="text" placeholder="required" class="task-time-required" id="time-required" />
       </strong>
 
     work, and must be completed within
       <strong>
-        <input type="text" placeholder="length">
+        <input type="text" placeholder="this time frame" class="task-length" id="length" />
       </strong>
+
+    <hr />
 
     The volunteer(s) must be located at
       <strong>
-        <input type="text" placeholder="location">
+        <input type="text" placeholder="this city/state" id="location" class="task-location" />
       </strong>
 
     to complete this task.

@@ -7,25 +7,221 @@ define([
 
   var TaskEditFormView = Backbone.View.extend({
 
-    events: {
-      'submit #task-edit-form': 'edit'
-    },
-
     el: ".main-section",
 
+    events: {
+      'submit #task-edit-form': 'submit'
+    },
+
     render: function () {
-      var self = this,
-          data = {
-            data: self.model
-          },
+      var data = { data: this.model },
           compiledTemplate;
 
       compiledTemplate = _.template(TaskEditFormTemplate, data);
       this.$el.html(compiledTemplate);
+
+      // DOM now exists, begin select2 init
+      this.initializeSelect2();
     },
 
-    edit: function (e) {
+    initializeSelect2: function () {
+
+      var formatResult = function (object, container, query) {
+        return object.name;
+      };
+
+      $("#location").select2({
+        formatResult: formatResult,
+        formatSelection: formatResult,
+        minimumInputLength: 1,
+        data: [ location ],
+        ajax: {
+          url: '/api/ac/tag',
+          dataType: 'json',
+          data: function (term) {
+            return {
+              type: 'location',
+              q: term
+            };
+          },
+          results: function (data) {
+            return { results: data };
+          }
+        }
+      });
+
+      $("#skills-required").select2({
+        formatResult: formatResult,
+        formatSelection: formatResult,
+        minimumInputLength: 1,
+        ajax: {
+          url: '/api/ac/tag',
+          dataType: 'json',
+          data: function (term) {
+            return {
+              type: 'skillRequired',
+              q: term
+            };
+          },
+          results: function (data) {
+            return { results: data };
+          }
+        }
+      });
+
+      $("#time-required").select2({
+        formatResult: formatResult,
+        formatSelection: formatResult,
+        minimumInputLength: 1,
+        ajax: {
+          url: '/api/ac/tag',
+          dataType: 'json',
+          data: function (term) {
+            return {
+              type: 'time-required',
+              q: term
+            };
+          },
+          results: function (data) {
+            return { results: data };
+          }
+        }
+      });
+
+      $("#time-estimate").select2({
+        formatResult: formatResult,
+        formatSelection: formatResult,
+        minimumInputLength: 1,
+        ajax: {
+          url: '/api/ac/tag',
+          dataType: 'json',
+          data: function (term) {
+            return {
+              type: 'time-estimate',
+              q: term
+            };
+          },
+          results: function (data) {
+            return { results: data };
+          }
+        }
+      });
+
+      $("#length").select2({
+        formatResult: formatResult,
+        formatSelection: formatResult,
+        minimumInputLength: 1,
+        ajax: {
+          url: '/api/ac/tag',
+          dataType: 'json',
+          data: function (term) {
+            return {
+              type: 'length',
+              q: term
+            };
+          },
+          results: function (data) {
+            return { results: data };
+          }
+        }
+      });
+
+      $("#topics").select2({
+        formatResult: formatResult,
+        formatSelection: formatResult,
+        minimumInputLength: 1,
+        ajax: {
+          url: '/api/ac/tag',
+          dataType: 'json',
+          data: function (term) {
+            return {
+              type: 'topic',
+              q: term
+            };
+          },
+          results: function (data) {
+            return { results: data };
+          }
+        }
+      });
+
+      $("#people").select2({
+        formatResult: formatResult,
+        formatSelection: formatResult,
+        minimumInputLength: 1,
+        ajax: {
+          url: '/api/ac/tag',
+          dataType: 'json',
+          data: function (term) {
+            return {
+              type: 'people',
+              q: term
+            };
+          },
+          results: function (data) {
+            return { results: data };
+          }
+        }
+      });
+
+      $("#skills").select2({
+        formatResult: formatResult,
+        formatSelection: formatResult,
+        minimumInputLength: 1,
+        ajax: {
+          url: '/api/ac/tag',
+          dataType: 'json',
+          data: function (term) {
+            return {
+              type: 'skill',
+              q: term
+            };
+          },
+          results: function (data) {
+            return { results: data };
+          }
+        }
+      });
+
+    },
+
+    submit: function (e) {
       if (e.preventDefault) e.preventDefault();
+
+      var tags = [
+        $("#topics").select2('data'),
+        $("#skills").select2('data'),
+        $("#skills-required").select2('data'),
+        $("#people").select2('data'),
+        $("#time-required").select2('data'),
+        $("#length").select2('data'),
+        // $("#time-estimate").select2('data'),
+        // $("#task-location").select2('data'),
+        $("#input-specific-location").val(),
+      ];
+
+      var self = this,
+          types = ["skillsRequired", "timeRequired", "people", "length", "timeEstimates"];
+
+      this.tagSources = {};
+
+      var requestAllTagsByType = function (type) {
+        $.ajax({
+          url: '/api/ac/tag?type=' + type + '&list',
+          type: 'GET',
+          async: false,
+          success: function (data) {
+            // Dynamically create an associative
+            // array based on that for the pointer to the list itself to be iterated through
+            // on the front-end.
+              self.tagSources[type] = data;
+          }
+        });
+      }
+
+      async.each(types, requestAllTagsByType, function (err) {
+        self.render();
+      });
 
       var data = {
         title: $("#task-edit-form-title").val(),
