@@ -192,26 +192,6 @@ describe('tag:', function() {
       });
     });
 
-    it('findAllByTaskId', function (done) {
-      request.get({ url: conf.url + '/tag/findAllByTaskId/' + task.id },
-        function (err, res, body) {
-          if (err) return done(err);
-          assert.equal(res.statusCode, 200);
-
-          // co
-          // var b = JSON.parse(body);
-
-          // assert.equal(b.length, 1);
-          // assert.equal(b.tag.type, tags[0].type);
-          // assert.equal(b.tag.name, tags[0].name);
-          // assert.equal(b.tagId, tags[0].id);
-          // assert.equal(b.projectId, publicProject.id);
-          // assert(b.id);
-          done();
-      });
-    });
-
-
     it('findAllByProjectId denied', function (done) {
       request.get({ url: conf.url + '/tag/findAllByProjectId/' + draftProject.id },
         function (err, response, body) {
