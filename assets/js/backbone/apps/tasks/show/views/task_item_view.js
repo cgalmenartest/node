@@ -83,15 +83,6 @@ define([
         }
       });
 
-      function containsAny (arr1, arr2) {
-        for (var i = 0; i < arr1.length; i += 1) {
-          for (var j = 0; j < arr2.length; j += 1) {
-            if (arr1[i] === arr2[j]) return true;
-          }
-        }
-        return false;
-      }
-
       function setTagDefaults (notRepresentedTags) {
         _.each(notRepresentedTags, function (tag) {
           data[tag] = ''
