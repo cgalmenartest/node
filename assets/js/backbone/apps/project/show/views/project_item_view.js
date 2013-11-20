@@ -6,24 +6,18 @@ define([
   'backbone',
   'utilities',
   'text!project_show_template',
-  'tag_show_view',
-  'project_edit_form_view'
-], function ($, dropzone, select2, _, Backbone, utils, ProjectShowTemplate, TagShowView, AttachmentView, ProjectEditFormView) {
+  'tag_show_view'
+], function ($, dropzone, select2, _, Backbone, utils, ProjectShowTemplate, TagShowView) {
 
   var ProjectShowView = Backbone.View.extend({
 
     el: "#container",
 
     events: {
-      'click #editProject': 'editProject'
+
     },
 
-    editProject: function () {
-      new ProjectEditFormView({
-        el: ".main-section",
-        model: this.model
-      }).render();
-    },
+
 
     render: function () {
       var compiledTemplate;

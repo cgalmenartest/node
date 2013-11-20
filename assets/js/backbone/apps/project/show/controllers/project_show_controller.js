@@ -7,15 +7,16 @@ define([
 	'popovers',
 	'base_controller',
 	'project_item_view',
+	'project_item_coremeta_view',
 	'projectowner_show_view',
-  'attachment_show_view',
+  	'attachment_show_view',
 	'task_list_controller',
 	'event_list_controller',
 	'comment_list_controller',
 	'comment_form_view',
 	'modal_component',
 	'autocomplete'
-], function ($, _, async, Backbone, utils, Popovers, BaseController, ProjectItemView, ProjectownerShowView, AttachmentView,
+], function ($, _, async, Backbone, utils, Popovers, BaseController, ProjectItemView, ProjectItemCoreMetaView, ProjectownerShowView, AttachmentView,
 	TaskListController, EventListController, CommentListController, CommentFormView,
 	ModalComponent, autocomplete) {
 
@@ -33,7 +34,7 @@ define([
 		model: null,
 
 		events: {
-			"click .edit-project"   					: "edit",
+			// "click .edit-project"   					: "edit",
 			"click #like-button"    					: "like",
 			"keyup .comment-content"					: "search",
 			"click #tag-save"       					: "tagSave",
@@ -41,8 +42,9 @@ define([
 			"click .tag-delete"     					: "tagDelete",
 			"click #project-close"						: "stateClose",
 			"click #project-reopen"						: "stateReopen",
-			"mouseenter .project-people-div" 	: popovers.popoverPeopleOn,
-			"click .project-people-div" 			: popovers.popoverClick
+			// 'click #editProject'						: 'editProject',
+			"mouseenter .project-people-div" 			: popovers.popoverPeopleOn,
+			"click .project-people-div" 				: popovers.popoverClick
 		},
 
 		// The initialize method is mainly used for event bindings (for effeciency)
@@ -51,8 +53,8 @@ define([
 
 			this.router = options.router;
 			this.id = options.id;
-      this.routeId = options.id;
-      this.data = options.data;
+	      	this.routeId = options.id;
+	      	this.data = options.data;
 			// console.log(options);
 
 			this.model.trigger("project:model:fetch", this.model.id);
@@ -62,6 +64,7 @@ define([
 			});
 
 			this.model.on("project:show:rendered", function () {
+				self.initializeItemCoreMetaView();
 				self.initializeOwners();
 				self.initializeAttachments();
 				self.initializeItemViewControllers();
@@ -104,21 +107,26 @@ define([
 			this.projectShowItemView  = new ProjectItemView({ model: this.model }).render();
 		},
 
+		initializeItemCoreMetaView: function () {
+			if (this.projectShowItemCoreMetaView) this.projectShowItemCoreMetaView.cleanup();
+			this.projectShowItemCoreMetaView  = new ProjectItemCoreMetaView({ model: this.model }).render();
+		},
+
 
 		initializeOwners : function(){
 			if (this.projectownerShowView) this.projectownerShowView.cleanup();
 			this.projectownerShowView = new ProjectownerShowView({ model: this.model }).render();
 		},
 
-    initializeAttachments: function () {
-			if (this.attachmentView) this.attachmentView.cleanup();
-      this.attachmentView = new AttachmentView({
-        target: 'project',
-        id: this.model.attributes.id,
-        owner: this.model.attributes.isOwner,
-        el: '.attachment-wrapper'
-      }).render();
-    },
+	    initializeAttachments: function () {
+				if (this.attachmentView) this.attachmentView.cleanup();
+	      this.attachmentView = new AttachmentView({
+	        target: 'project',
+	        id: this.model.attributes.id,
+	        owner: this.model.attributes.isOwner,
+	        el: '.attachment-wrapper'
+	      }).render();
+	    },
 
 		initializeItemViewControllers: function () {
 			this.taskListController = new TaskListController({ projectId: this.model.id });
@@ -176,6 +184,13 @@ define([
 				}).render();
 			}
 		},
+
+		editProject: function () {
+	      new ProjectEditFormView({
+	        el: ".main-section",
+	        model: this.model
+	      }).render();
+	    },
 
 		stateClose: function (e) {
 			if (e.preventDefault) e.preventDefault();
@@ -244,6 +259,7 @@ define([
 		//= Utility Methods
 		// ---------------------
 		cleanup: function() {
+			if (this.projectShowItemCoreMetaView) this.projectShowItemCoreMetaView.cleanup();
 			if (this.taskListController) this.taskListController.cleanup();
 			if (this.eventListController) this.eventListController.cleanup();
 			if (this.commentListController) this.commentListController.cleanup();

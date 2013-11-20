@@ -49,7 +49,7 @@ define([
 
     render: function () {
       var compiledTemplate,
-          data = { data: this.model.toJSON() };
+      data = { data: this.model.toJSON() };
       compiledTemplate = _.template(ProjectownerShowTemplate, data);
       this.$el.html(compiledTemplate);
 
