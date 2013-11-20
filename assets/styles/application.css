@@ -731,14 +731,29 @@ textarea#task-description {
 	padding: 5px;
 }
 
-#section-2 {
-	line-height: 30px;
-}
-
 .task-show-description {
 	font-size: 18px;
 	margin-bottom: 20px;
 	line-height: 1.5em;
+}
+
+/*****************
+=  TASKS MADLIBS FORM
+******************/
+#task-form input.fullwidth {
+	width: 100%;
+}
+
+#task-form textarea.fullwidth {
+	width: 100%;
+}
+
+#task-form #topics {
+	width: 200px;
+}
+
+#task-form #section-1, #task-form #section-2, #task-form #section-3, #task-form #section-4 {
+	min-height: 150px;
 }
 
 /*****************

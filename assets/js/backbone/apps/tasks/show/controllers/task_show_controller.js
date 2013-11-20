@@ -72,6 +72,7 @@ define([
     },
 
     cleanup: function () {
+      if (this.tagView) this.tagView.cleanup();
       if (this.taskItemView) this.taskItemView.cleanup();
       removeView(this);
     }

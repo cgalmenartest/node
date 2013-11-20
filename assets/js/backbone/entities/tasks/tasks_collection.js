@@ -43,9 +43,6 @@ define([
           self.trigger("task:save:success", self.task.id);
         }
       });
-
-      entities.request.trigger("tasks:fetch", data['projectId']);
-      this.trigger("tasks:render")
     }
 
   });

@@ -7,7 +7,7 @@ define({
   // This defines all of the tag elements for use in the app
   tags: {
 
-    skill: {
+    'skill': {
       'icon': 'icon-atom',
       'class': 'skill',
       'id': 'skill',
@@ -16,7 +16,7 @@ define({
       'plural': 'Skills'
     },
 
-    topic: {
+    'topic': {
       'icon': 'icon-briefcase',
       'class': 'topic',
       'id': 'topic',
@@ -25,7 +25,7 @@ define({
       'plural': 'Topics'
     },
 
-    agency: {
+    'agency': {
       'icon': 'icon-library',
       'class': 'agency',
       'id': 'agency',
@@ -34,7 +34,7 @@ define({
       'plural': 'Agencies'
     },
 
-    location: {
+    'location': {
       'icon': 'icon-map-marker',
       'class': 'location',
       'id': 'location',
@@ -43,39 +43,52 @@ define({
       'plural': 'Locations'
     },
 
-    skillsRequired: {
-      id    : 'task-skills-required',
-      type  : 'skillsRequired',
-      name  : 'Skills Required',
-      klass : 'task-skills-required'
+    // ---
+    // Task-specific tags
+    // ---
+    'task-skills-required': {
+      'icon': 'icon-map-marker',
+      'class': 'task-skills-required',
+      'id': 'task-skills-required',
+      'type': 'task-skills-required',
+      'name': 'Skill Required',
+      'plural': 'Skills Required'
     },
 
-    timeRequired: {
-      id    : 'task-time-required',
-      type  : 'timeRequired',
-      name  : 'Time Required',
-      klass : 'task-time-required'
+    'task-time-required': {
+      'icon': 'icon-map-marker',
+      'class': 'task-time-required',
+      'id': 'task-time-required',
+      'type': 'task-time-required',
+      'name': 'Time Required',
+      'plural': 'Time Required'
     },
 
-    people: {
-      id    : 'task-people',
-      type  : 'people',
-      name  : 'People',
-      klass : 'task-people'
+    'task-people': {
+      'icon': 'icon-map-marker',
+      'class': 'task-people',
+      'id': 'task-people',
+      'type': 'task-people',
+      'name': 'Person',
+      'plural': 'People'
     },
 
-    length: {
-      id    : 'task-length',
-      type  : 'length',
-      name  : 'Length',
-      klass : 'task-length'
+    'task-length': {
+      'icon': 'icon-map-marker',
+      'class': 'task-length',
+      'id': 'task-length',
+      'type': 'task-length',
+      'name': 'Length',
+      'plural': 'Length'
     },
 
-    timeEstimates: {
-      id    : 'task-time-estimates',
-      type  : 'timeEstimates',
-      name  : 'Time Estimates',
-      klass : 'task-time-estimatesx'
+    'task-time-estimate': {
+      'icon': 'icon-map-marker',
+      'class': 'task-time-estimate',
+      'id': 'task-time-estimate',
+      'type': 'task-time-estimate',
+      'name': 'Time Estimate',
+      'plural': 'Time Estimate'
     }
 
   },
@@ -89,6 +102,6 @@ define({
   profile   : ['skill', 'topic'],
   profiles  : ['skill', 'topic', 'agency', 'location'],
 
-  task      : ['skill', 'topic', 'skillsRequired', 'timeRequired', 'people', 'length', 'timeEstimates'],
-  tasks     : ['skill', 'topic', 'agency', 'location', 'skillsRequired', 'timeRequired', 'people', 'length', 'timeEstimates']
+  task      : ['skill', 'topic', 'task-skills-required', 'task-time-required', 'task-people', 'task-length', 'task-time-estimate'],
+  tasks     : ['skill', 'topic', 'agency', 'location', 'task-skills-required', 'task-time-required', 'task-people', 'task-length', 'task-time-estimate']
 });

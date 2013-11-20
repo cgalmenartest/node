@@ -1,41 +1,46 @@
 <form id="task-form" class="form-inline" action="/api/task">
 
   <section id="section-1" class="current">
-      <input type="text" id="task-title" placeholder="What problem are you trying to solve?" />
-      <br />
-      <textarea id="task-description" placeholder="Please describe the project details, including goals, expected outcomes and deliverables."></textarea>
+    The problem I'm trying to solve is
+    <input type="text" id="task-title" class="fullwidth" placeholder="What problem are you trying to solve?" />
+    <br/>
+    Some more detail about my problem
+    <textarea id="task-description" class="fullwidth" placeholder="Please describe the project details, including goals, expected outcomes and deliverables."></textarea>
   </section>
 
   <section id="section-2">
     I need
     <select id="people">
-      <% _.each(people, function (person) { %>
+      <% _.each(tags['task-people'], function (person) { %>
         <option value="<%= person.id %>"><%= person.name %></option>
       <% }); %>
     </select>
 
-    to work on an opportunity about these topics:
-    <input type="hidden" id="topics" name="topic" />
+    <div class="form-group">
+      to work on an opportunity about these topics:
+      <input type="hidden" id="topics" name="topic" />
+    </div>
   </section>
 
   <section id="section-3">
     It will require
     <select id="time-estimate">
-      <% _.each(timeEstimates, function (timeEstimate) { %>
+      <% _.each(tags['task-time-estimate'], function (timeEstimate) { %>
         <option value="<%= timeEstimate.id %>"><%= timeEstimate.name %></option>
       <% }); %>
     </select>
 
      of
+
     <select id="time-required">
-      <% _.each(timeRequired, function (time) { %>
+      <% _.each(tags['task-time-required'], function (time) { %>
         <option value="<%= time.id %>"><%= time.name %></option>
       <% }); %>
     </select>
 
     work, and must be completed within
     <select id="length">
-      <% _.each(length, function (item) { %>
+      <% _.each(tags['task-length'], function (item) { %>
         <option value="<%= item.id %>"><%= item.name %></option>
       <% }) %>
     </select>
@@ -57,22 +62,18 @@
     </div>
   </section>
 
-  <section class="section-4">
+  <section id="section-4">
     <div class="form-group">
-      <label for="skills-required">the following skills are
-        <select id="skills-required" name="skills-required">
-          <% _.each(skillsRequired, function(requirement) { %>
-            <option value="<%= requirement.id %>"><%= requirement.name %></option>
-          <% }); %>
-        </select>
-      </label>
+      <select id="skills-required" name="skills-required">
+        <% _.each(tags['task-skills-required'], function(requirement) { %>
+          <option value="<%= requirement.id %>"><%= requirement.name %></option>
+        <% }); %>
+      </select>
     </div>
 
     <div class="form-group">
-      <label for="skills" class="control-label">to complete this opportunity:
-        <input type="hidden" id="skills" name="skills" />
-        <input type="data" style="display: none;" />
-      </label>
+      to complete this opportunity:
+      <input type="hidden" id="skills" name="skills" />
     </div>
   </section>
 

@@ -20,37 +20,64 @@ define([
   'underscore',
   'backbone',
   'utilities',
-  'base_component',
+  'base_view',
   'text!modal_wizard_template'
-], function ($, _, Backbone, utilities, BaseComponent, ModalWizardTemplate) {
+], function ($, _, Backbone, utilities, BaseView, ModalWizardTemplate) {
 
-  Application.Component.ModalWizard = BaseComponent.extend({
+  Application.Component.ModalWizard = BaseView.extend({
 
     template: _.template(ModalWizardTemplate),
 
     events: {
       "click .wizard-forward" : "moveWizardForward",
       "click .wizard-backward": "moveWizardBackward",
-      "click .wizard-submit"  : "submit"
+      "click .wizard-submit"  : "submit",
+      "click .wizard-cancel"  : "cancel"
     },
 
-    intialize: function (options) {
-      this.options = _.extend(this.defaults, options);
-      this.render();
+    initialize: function (options) {
+      this.options = options;
+      this.initializeListeners();
+    },
+
+    initializeListeners: function () {
+      var self = this;
+      if (this.model) {
+        this.listenTo(this.model, this.options.modelName + ':modal:hide', function () {
+          $('.modal.in').modal('hide');
+        });
+      }
     },
 
     render: function () {
-
       if (this.options) {
         this.data = {
-          id: this.options.id,
           modalTitle: this.options.modalTitle
-        }
+        };
       }
 
       var compiledTemplate = this.template(this.data);
-      this.$el.append(compiledTemplate);
+      this.$el.html(compiledTemplate);
+      return this;
+    },
 
+    /**
+     * Set the child of this view, so we can remove it
+     * when the view is destroyed
+     * @return this for chaining
+     */
+    setChildView: function (view) {
+      this.childView = view;
+      return this;
+    },
+
+    /**
+     * Set the callback on the submit button of the modal.
+     * Useful for callbacks
+     * @return this for chaining
+     */
+    setSubmit: function (fn) {
+      this.childSubmit = fn;
       return this;
     },
 
@@ -63,45 +90,31 @@ define([
 
       // Store $(".current") in cache to reduce query times for DOM lookup
       // on future children and adjacent element to the current el.
-      var current   = $(".current");
+      var current   = $(".current"),
           next      = current.next(),
           nextHtml  = next.html();
 
       var nextWizardStep = {
         exists: function () {
-          return !_.isUndefined(nextHtml)
+          return !_.isUndefined(next.next().html());
         },
         doesNotExist: function () {
-          return _.isUndefined(nextHtml)
+          return _.isUndefined(next.next().html());
         }
-      }
+      };
 
-      var child = current.next().children()[1]
-      var nextChild = $(child).next().children("input[type='data']")
-      if (_.isEqual(nextChild.length, 0)) {
-        // no-op
-      } else {
+      hideCurrentAndInitializeNextWizardStep();
+      if (nextWizardStep.doesNotExist()) {
         $("button.wizard-forward").hide();
         $("button.wizard-submit").show();
-      };
-
-      if (nextWizardStep.exists()) {
-        hideCurrentAndInitializeNextWizardStep();
-      } else if (nextWizardStep.doesNotExist()) {
-        console.log("And here we switch the the button logic to now ready for submit.")
-      };
+      }
 
       function hideCurrentAndInitializeNextWizardStep () {
         current.hide();
         current.removeClass("current");
         next.addClass("current");
         next.show();
-      }
-
-    },
-
-    updateButtonForSubmit: function (self) {
-      $(e.currentTarget).text("Submit");
+      };
     },
 
     moveWizardBackward: function (e) {
@@ -112,10 +125,12 @@ define([
           prevHtml  = prev.html();
 
       if (!_.isUndefined(prevHtml)) {
-        current.children().hide();
+        current.hide();
         current.removeClass("current");
         prev.addClass("current");
-        prev.children().show();
+        prev.show();
+        $("button.wizard-forward").show();
+        $("button.wizard-submit").hide();
       } else {
         return;
       }
@@ -125,14 +140,29 @@ define([
     // from the instantiation of this modal wizard.
     submit: function (e) {
       if (e.preventDefault) e.preventDefault();
-      var self = this;
+      $('.modal.in').modal('hide');
 
-      this.collection.trigger(this.modelName + ":save", this.data);
+      var d = this.options.data();
+      var process = true;
+      // pass the data to the view
+      if (this.childSubmit) {
+        // if submit returns true, continue modal processing
+        process = this.childSubmit(e, d);
+      }
 
+      if (process) {
+        this.collection.trigger(this.options.modelName + ":save", d);
+      }
+    },
+
+    cancel: function (e) {
+      if (e.preventDefault) e.preventDefault();
+      $('.modal.in').modal('hide');
     },
 
     cleanup: function () {
-      $(this.el).children(".modal").remove();
+      if (this.childView) { this.childView.cleanup(); }
+      removeView(this);
     }
   });
 

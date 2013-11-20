@@ -5,87 +5,87 @@ module.exports = {
   },
   tags: [
     {
-      type: 'time-required',
+      type: 'task-time-required',
       name: 'Part Time'
     },
     {
-      type: 'time-required',
+      type: 'task-time-required',
       name: 'Full Time'
     },
     {
-      type: 'time-required',
+      type: 'task-time-required',
       name: '20% Time'
     },
     // ------------
     {
-      type: 'people',
+      type: 'task-people',
       name: '1 person'
     },
     {
-      type: 'people',
+      type: 'task-people',
       name: '2 - 5 people'
     },
     {
-      type: 'people',
+      type: 'task-people',
       name: '> 5 people'
     },
     {
-      type: 'people',
+      type: 'task-people',
       name: 'A Team'
     },
     // ------------
     {
-      type: 'skills-required',
+      type: 'task-skills-required',
       name: 'Required'
     },
     {
-      type: 'skills-required',
+      type: 'task-skills-required',
       name: 'Not Required'
     },
     // ------------
     {
-      type: 'length',
+      type: 'task-length',
       name: '1 Day'
     },
     {
-      type: 'length',
+      type: 'task-length',
       name: '1 - 3 Days'
     },
     {
-      type: 'length',
+      type: 'task-length',
       name: '1 Week'
     },
     {
-      type: 'length',
+      type: 'task-length',
       name: '1 Month'
     },
     {
-      type: 'length',
+      type: 'task-length',
       name: 'A Few Months'
     },
     // -------------
     {
-      type: 'time-estimates',
+      type: 'task-time-estimate',
       name: 'Less than 1 hour'
     },
     {
-      type: 'time-estimates',
+      type: 'task-time-estimate',
       name: '1 - 3 hours'
     },
     {
-      type: 'time-estimates',
+      type: 'task-time-estimate',
       name: '4 - 8 hours'
     },
     {
-      type: 'time-estimates',
+      type: 'task-time-estimate',
       name: '9 - 24 hours'
     },
     {
-      type: 'time-estimates',
+      type: 'task-time-estimate',
       name: '25 - 40 hours'
     },
     {
-      type: 'time-estimates',
+      type: 'task-time-estimate',
       name: 'longer than 40 hours'
     },
 

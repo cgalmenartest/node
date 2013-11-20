@@ -108,6 +108,9 @@ define([
       };
 
       var depth = {};
+      if (!data.comments) {
+        data.comments = [];
+      }
       for (var i = 0; i < data.comments.length; i += 1) {
         if (data.comments[i].topic === true) {
           depth[data.comments[i].id] = 0;
