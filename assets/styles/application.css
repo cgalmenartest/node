@@ -753,3 +753,11 @@ textarea#task-description {
 	font-size: 10px;
 	color: #666;
 }
+
+.task-show-description strong input {
+	margin-bottom: 5px;
+}
+
+.task-edit-form-button {
+	margin-bottom: 50px;
+}

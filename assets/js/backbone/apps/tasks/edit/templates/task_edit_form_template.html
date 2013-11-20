@@ -1,14 +1,57 @@
-<form id="task-edit-form" role="form" action="/api/task/">
-  <div class="row">
-    <div class="col-lg-12 form-group">
-      <!-- RIGHT MAIN BAR -->
-      <input id="task-edit-form-title" class="form-control input-lg" type="text" />
+<form action="/api/task">
+  <div class="edit-task-section">
 
-      <textarea maxlength="500" rows="10" class="form-control" id="task-edit-form-description">
-      </textarea>
+  <h1><input type="text" placeholder="title"></h1>
 
-      <div class="clearfix"></div>
-      <input type="submit">
-    </div>
+  <div class="task-show-description">
+    <input type="text" placeholder="description">
   </div>
+
+  <div class="task-show-description">
+    I need
+      <strong>
+          <input type="text" placeholder="people assigned">
+      </strong>
+
+    to work on an opportunity about these topics:
+    <strong>
+        <input type="text" placeholder="topics">
+    </strong>.
+
+    <br />
+
+    The following skills are
+      <strong>
+          <input type="text" placeholder="are skills required?">
+      </strong>
+
+    to complete this opportunity:
+      <strong>
+          <input type="text" placeholder="skills">
+      </strong>.
+
+    It will require
+      <strong>
+        <input type="text" placeholder="time estimate">
+      </strong>
+
+    hours of
+      <strong>
+        <input type="text" placeholder="hours required">
+      </strong>
+
+    work, and must be completed within
+      <strong>
+        <input type="text" placeholder="length">
+      </strong>
+
+    The volunteer(s) must be located at
+      <strong>
+        <input type="text" placeholder="location">
+      </strong>
+
+    to complete this task.
+  </div>
+
+  <input type="submit" class="btn btn-primary btn-lg task-edit-form-button">
 </form>

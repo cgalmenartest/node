@@ -5,14 +5,11 @@ define([
   'backbone',
   'async',
   'base_view',
-  'tag_config',
   'text!task_show_template'
-], function (Bootstrap, Popovers, _, Backbone, async, BaseView, TagConfig, TaskShowTemplate) {
+], function (Bootstrap, Popovers, _, Backbone, async, BaseView, TaskShowTemplate) {
 
   var TaskItemView = BaseView.extend({
 
-    // Empty container for task show page
-    // Aka item view.
     el: "#container",
 
     initialize: function (options) {
@@ -20,57 +17,13 @@ define([
       this.model.trigger("task:model:fetch", this.options.id);
       this.listenTo(this.model, "task:model:fetch:success", function (model) {
         self.model = model;
+        self.getTagData();
         self.render();
       });
     },
 
-    formatTags: function () {
-      var i         = 0,
-          self      = this,
-          tagIcon   = {},
-          tagClass  = {};
-
-      for ( ; i < this.tags.length; i += 1) {
-        tagIcon[this.tags[i].type] = this.tags[i].icon;
-        tagClass[this.tags[i].type] = this.tags[i]['class'];
-      }
-
-      var renderTag = function (tag) {
-        var templData = {
-          tags: self.tags,
-          tag: tag,
-          edit: self.edit
-        }
-
-        var compiledTemplate = _.template("<li><%= tag.tag.name %></li>", templData);
-        var tagDom = $(".tag-wrapper > ul");
-        tagDom.append(compiledTemplate);
-        $("#" + tagClass[tag.tag.type] + '-empty').hide();
-      };
-
-      this.tags = [];
-
-      $.ajax({
-        url: '/api/tag/findAllByTaskId/' + self.options.id,
-        async: false,
-        success: function (data) {
-          var self = this;
-          this.tags = [];
-          for (var i = 0; i < TagConfig['task'].length; i += 1) {
-            self.tags.push(TagConfig.tags[TagConfig['task'][i]]);
-          }
-
-          for (var i = 0; i < data.length; i += 1) {
-            renderTag(data[i])
-          }
-        }
-      })
-    },
-
-    render: function () {
+    getTagData: function () {
       var self = this;
-
-      this.initializeSelect2Data();
 
       $.ajax({
         url: '/api/tag/findAllByTaskId/' + self.options.id,
@@ -83,47 +36,45 @@ define([
         }
       });
 
-      function setTagDefaults (notRepresentedTags) {
-        _.each(notRepresentedTags, function (tag) {
-          data[tag] = ''
-        });
+      // Build object for render
+      this.data = {
+        model: self.model.toJSON(),
+        tags: this.tags,
+        madlibTags: {}
+      };
+
+      // Call to organize tags now that we have built render obj.
+      self.organizeTags(self.tags);
+    },
+
+    organizeTags: function (tags) {
+      // Put the tags into their types
+      var outTags = {};
+      for (t in tags) {
+        if (!(_.has(outTags, tags[t].tag.type))) {
+          outTags[tags[t].tag.type] = [];
+        }
+        outTags[tags[t].tag.type].push(tags[t].tag);
       }
 
-      var data = {
-        model: self.model.toJSON(),
-        tags: this.tags
-      };
-
-      var organizeTags = function (tags) {
-        // put the tags into their types
-        var outTags = {};
-        for (t in tags) {
-          if (!(_.has(outTags, tags[t].tag.type))) {
-            outTags[tags[t].tag.type] = [];
-          }
-          outTags[tags[t].tag.type].push(tags[t].tag);
+      // If a tag only has one item, make it a top level object
+      for (var j in outTags) {
+        if (outTags[j].length === 1) {
+          var obj = outTags[j].pop();
+          outTags[j] = obj
         }
+        this.data.madlibTags[outTags[j].type] = outTags[j].name;
+      }
+      return this.data.madlibTags;
+    },
 
-        for (var j in outTags) {
-          if (outTags[j].length === 1) {
-            var t = outTags[j].pop();
-            outTags[j] = t
-          }
+    render: function () {
+      var self = this;
 
-          data[outTags[j].type] = outTags[j].name;
-        }
-        return outTags;
-      };
+      this.initializeSelect2Data();
 
-      var tagObjects = organizeTags(this.tags);
-      var tagKeys = _.keys(tagObjects);
-
-      var notRepresentedTags = _.difference(TagConfig['task'], tagKeys);
-      setTagDefaults(notRepresentedTags);
-
-      var compiledTemplate = _.template(TaskShowTemplate, data);
+      var compiledTemplate = _.template(TaskShowTemplate, this.data);
       $(self.el).html(compiledTemplate)
-      this.formatTags();
 
       var tags = [
         $("#topics").select2('data'),
@@ -136,7 +87,7 @@ define([
         // $("#task-location").select2('data'),
         $("#input-specific-location").val(),
       ];
-      self.initTaskTags(tags);
+      // self.initTaskTags(tags);
     },
 
     initializeSelect2Data: function () {
@@ -151,8 +102,7 @@ define([
           type: 'GET',
           async: false,
           success: function (data) {
-            // Dynamically take the hyphen delimited type (if more than 1 word) and
-            // camelize it like the template expects.  Then create an associative
+            // Dynamically create an associative
             // array based on that for the pointer to the list itself to be iterated through
             // on the front-end.
               self.tagSources[type] = data;
@@ -163,71 +113,7 @@ define([
       async.each(types, requestAllTagsByType, function (err) {
         self.render();
       });
-    },
-
-    initializeTags: function () {
-      this.tagsView = new TagShowView({
-        model: this.model,
-        el: '.project-tags-wrapper',
-        target: 'task',
-        url: '/api/tag/findAllByTaskId'
-      });
-    },
-
-    initTaskTags: function (tags) {
-      var self = this,
-          tagMap;
-
-      var removeTag = function (type, done) {
-        if (self.model[type]) {
-          if (self.model[type].tagId) {
-            return done();
-          }
-        $.ajax({
-          url: '/api/tag/' + self.model[type].tagId,
-          type: 'DELETE',
-          success: function (data) {
-            return done();
-          }
-        });
-        return;
-        }
-        return done
-      };
-
-      var addTag = function (tag, done) {
-        if (!tag || !tag.id) {
-          return done();
-        }
-
-        tagMap = {
-          tagId: tag.id,
-          taskId: this.model.id
-        }
-
-        $.ajax({
-          url: '/api/tag',
-          type: 'POST',
-          data: tagMap
-        }).done(function (data) {
-          done();
-        });
-      }
-
-      async.each(tags, addTag, function (err) {
-        return self.model.trigger("task:tags:save:success", err);
-      });
-
-      this.listenTo(self.model, "task:tags:save:success", function (data) {
-        Backbone.history.navigate('taskShow', { trigger: true })
-      });
-
-    },
-
-    cleanup: function () {
-      $(this.el).children().remove();
     }
-
   });
 
   return TaskItemView;
