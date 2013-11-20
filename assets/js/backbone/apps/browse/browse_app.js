@@ -9,8 +9,9 @@ define([
   'project_show_controller',
   'profile_show_controller',
   'task_model',
-  'task_show_controller'
-], function ($, _, Backbone, utils, NavView, BrowseListController, ProjectModel, ProjectShowController, ProfileShowController, TaskModel, TaskShowController) {
+  'task_show_controller',
+  'task_edit_form_view'
+], function ($, _, Backbone, utils, NavView, BrowseListController, ProjectModel, ProjectShowController, ProfileShowController, TaskModel, TaskShowController, TaskEditFormView) {
 
   var BrowseRouter = Backbone.Router.extend({
 
@@ -20,6 +21,7 @@ define([
       'projects/:id(/)'           : 'showProject',
       'tasks(/)'                  : 'listTasks',
       'tasks/:id(/)'              : 'showTask',
+      'tasks/:id/edit(/)'         : 'editTask',
       'profile(/)'                : 'showProfile',
       'profile/:id(/)'            : 'showProfile'
     },
@@ -72,7 +74,15 @@ define([
       scrollTop();
       var model = new TaskModel();
       model.set({ id: id })
-      this.taskShowController ? this.taskShowController.cleanup() : this.taskShowController = new TaskShowController({ model: model, router: this, id: id })
+      if (this.taskShowController) this.taskShowController.cleanup();
+      this.taskShowController = new TaskShowController({ model: model, router: this, id: id })
+    },
+
+    editTask: function (id) {
+      var model = new TaskModel();
+      model.set({ id: id })''
+      if (this.taskEditFormView) this.taskEditFormView.cleanup();
+      this.taskEditFormView = new TaskEditFormView({ el: '.edit-task-section', edit: true, taskId: id, model: model }).render();
     },
 
     showProfile: function (id) {

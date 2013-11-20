@@ -1,3 +1,6 @@
+// todo:
+// - add live tag data from the show to prepopulate on the edit view if it exists
+
 define([
   'jquery',
   'underscore',
@@ -11,6 +14,32 @@ define([
 
     events: {
       'submit #task-edit-form': 'submit'
+    },
+
+    viewEvents: function () {
+      var self = this;
+      $(".show-task").on('click', function (e) {
+        self.returnToTaskShowPage();
+      });
+    },
+
+    initialize: function (options) {
+      this.options = options;
+      if (this.options.edit) {
+        // Sync out of scope events and DOM elements.
+        this.syncOutOfScopeDomElements();
+        this.viewEvents();
+      }
+    },
+
+    syncOutOfScopeDomElements: function () {
+      $(".edit-task").removeClass("edit-task").addClass("show-task");
+      $(".show-task > i > strong").text("Show");
+    },
+
+    returnToTaskShowPage: function () {
+      alert("You will lose all saved data if you continue without submitting");
+      Backbone.history.navigate('tasks/' + self.options.taskId, { trigger: true }, self.options.taskId);
     },
 
     render: function () {
