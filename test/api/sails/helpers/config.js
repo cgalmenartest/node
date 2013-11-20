@@ -14,10 +14,6 @@ module.exports = {
     'title': 'Project Title',
     'description': 'Project Description'
   },
-  'task': {
-    'title': 'Task Title',
-    'description': 'Task Description'
-  },
   'tags': [
     {
       'type': 'skill',

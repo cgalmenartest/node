@@ -7,7 +7,7 @@ var request;
 
 describe('tag:', function() {
 
-  var publicProject, draftProject, task;
+  var publicProject, draftProject;
   var tags = [];
 
   before(function(done) {
@@ -20,11 +20,6 @@ describe('tag:', function() {
           draftProject = proj;
           done(err);
         });
-      });
-
-      utils.createTask(request, function (err, t) {
-        if (err) return done(err);
-        task = t;
       });
     });
   });

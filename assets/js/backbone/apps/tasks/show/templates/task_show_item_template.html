@@ -17,8 +17,11 @@
 
     <div class="tag-wrapper">
       <strong>Tags:</strong>
-
-      <ul></ul>
+      <ul>
+        <% _.each(tags, function (tag) { %>
+          <li><%= tag.tag.name %></li>
+        <% }) %>
+      </ul>
     </div>
   </div>
 
@@ -36,18 +39,82 @@
       </div>
 
       <div class="task-show-description">
-        I need <strong><%= people %></strong> to work on an opportunity about these topics:
-        <strong><%= topic %></strong>.
+        I need
+          <strong>
+            <% if (madlibTags['task-people']) { %>
+              <%= madlibTags['task-people'] %>
+            <% } else { %>
+              'no people yet assigned'
+            <% } %>
+          </strong>
 
-      <br />
+        to work on an opportunity about these topics:
+        <strong>
+          <% if (madlibTags.topic) { %>
+            <%= madlibTags.topic %>
+          <% } else { %>
+            'no topics yet assigned'
+          <% } %>
+        </strong>.
 
-        The following skills are <strong><%= skillsRequired %></strong> to complete this opportunity:
-        <strong><%= skill %></strong>.
+        <br />
+
+        The following skills are
+          <strong>
+            <% if (madlibTags['task-skills-required']) { %>
+              <%= madlibTags['task-skills-required'] %>
+            <% } else { %>
+              'skills required not set'
+            <% } %>
+          </strong>
+
+        to complete this opportunity:
+          <strong>
+            <% if (madlibTags.skill) { %>
+              <%= madlibTags.skill %>
+            <% } else { %>
+              'no skills yet assigned'
+            <% } %>
+          </strong>.
 
 
-        It will require <strong><%= timeEstimates %></strong> hours of <strong><%= timeRequired %></strong> work, and must be completed within <strong><%= length %></strong>.
+        It will require
+          <strong>
+            <% if (madlibTags['task-time-estimate']) { %>
+              <%= madlibTags['task-time-estimate'] %>
+            <% } else { %>
+              'time estimates not set'
+            <% } %>
+          </strong>
 
-        The volunteer(s) must be located at <strong><%= location %></strong> to complete this task.
+        hours of
+          <strong>
+            <% if (madlibTags['task-time-required']) { %>
+              <%= madlibTags['task-time-required'] %>
+            <% } else { %>
+              'time required not set'
+            <% } %>
+          </strong>
+
+        work, and must be completed within
+          <strong>
+            <% if (madlibTags['task-length']) { %>
+              <%= madlibTags['task-length'] %>
+            <% } else { %>
+              'length not set'
+            <% } %>
+          </strong>
+
+        The volunteer(s) must be located at
+          <strong>
+            <% if (madlibTags.location) { %>
+              <%= madlibTags.location %>
+            <% } else { %>
+              'location not set'
+            <% } %>
+            </strong>
+
+        to complete this task.
       </div>
 
       <div class="comment-list-wrapper" style="clear: both;">

@@ -69,6 +69,7 @@ define([
 
     showTask: function (id) {
       this.cleanupChildren();
+      scrollTop();
       var model = new TaskModel();
       model.set({ id: id })
       this.taskShowController = new TaskShowController({ model: model, router: this, id: id });
