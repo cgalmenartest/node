@@ -39,7 +39,7 @@ define([
 
     returnToTaskShowPage: function () {
       alert("You will lose all saved data if you continue without submitting");
-      Backbone.history.navigate('tasks/' + self.options.taskId, { trigger: true }, self.options.taskId);
+      Backbone.history.navigate('tasks/' + this.options.taskId, { trigger: true }, this.options.taskId);
     },
 
     render: function () {

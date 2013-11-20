@@ -80,7 +80,7 @@ define([
 
     editTask: function (id) {
       var model = new TaskModel();
-      model.set({ id: id })''
+      model.set({ id: id });
       if (this.taskEditFormView) this.taskEditFormView.cleanup();
       this.taskEditFormView = new TaskEditFormView({ el: '.edit-task-section', edit: true, taskId: id, model: model }).render();
     },
