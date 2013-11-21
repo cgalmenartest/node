@@ -8,10 +8,11 @@ define([
   'backbone',
   'base_view',
   'comment_list_controller',
+  'attachment_show_view',
   'task_item_view',
   'tag_show_view',
   'task_edit_form_view'
-], function (Bootstrap, _, Backbone, BaseView, CommentListController, TaskItemView, TagShowView, TaskEditFormView) {
+], function (Bootstrap, _, Backbone, BaseView, CommentListController, AttachmentView, TaskItemView, TagShowView, TaskEditFormView) {
 
   var TaskShowController = BaseView.extend({
 
@@ -47,6 +48,14 @@ define([
           edit: true,
           url: '/api/tag/findAllByTaskId/'
         }).render();
+
+        if (self.attachmentView) self.attachmentView.cleanup();
+        self.attachmentView = new AttachmentView({
+          target: 'task',
+          id: this.model.attributes.id,
+          owner: this.model.attributes.isOwner,
+          el: '.attachment-wrapper'
+        }).render();
       });
     },
 
@@ -75,6 +84,7 @@ define([
 
     cleanup: function () {
       if (this.tagView) { this.tagView.cleanup(); }
+      if (this.attachmentView) { this.attachmentView.cleanup(); }
       if (this.commentListController) { this.commentListController.cleanup(); }
       if (this.taskItemView) { this.taskItemView.cleanup(); }
       removeView(this);
