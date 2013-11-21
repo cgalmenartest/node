@@ -51,30 +51,24 @@ define([
       if ($(e.currentTarget).find(".comment-content:first-child").children("a").attr("href") !== undefined)
         this.wikiLink = _.escape($(e.currentTarget).find(".comment-content:first-child").children("a").attr("href"))
 
-      var projectId   = this.options.projectId,
-          parentId,
-          taskId;
+      var parentId;
 
       if (this.options.parentId) {
         parentId = parseInt(this.options.parentId);
       }
 
-      if (this.options.taskId) {
-        taskId = parseInt(this.options.taskId);
-      }
-
       var data = {
-        projectId : projectId,
-        taskId    : taskId,
         comment   : this.comment,
         topic     : false
       };
+      data[this.options.target + 'Id'] = this.options[this.options.target + 'Id'];
 
       if (this.options.topic) {
         data.topic = true;
       } else {
         data.parentId = parentId;
       }
+      console.log(data);
 
       var currentTarget = e.currentTarget;
       this.collection.trigger("comment:save", data, currentTarget);

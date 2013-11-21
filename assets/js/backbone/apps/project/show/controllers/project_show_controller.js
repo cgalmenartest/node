@@ -123,7 +123,7 @@ define([
 		initializeItemViewControllers: function () {
 			this.taskListController = new TaskListController({ projectId: this.model.id });
 			this.eventListController = new EventListController({ projectId: this.model.id });
-			this.commentListController = new CommentListController({ projectId: this.model.id });
+			this.commentListController = new CommentListController({ target: 'project', id: this.model.id });
 		},
 
 		initializeLikes: function() {

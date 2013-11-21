@@ -43,23 +43,13 @@ define([
       if (this.commentCollection) { this.renderView() }
       else { this.commentCollection = new CommentCollection(); }
 
-      if (this.options.task) {
-        this.commentCollection.fetch({
-          url: '/api/comment/findAllByTaskId/' + this.options.taskId,
-          success: function (collection) {
-            self.collection = collection;
-            self.renderView(collection);
-          }
-        });
-      } else {
-        this.commentCollection.fetch({
-          url: '/api/comment/findAllByProjectId/' + this.options.projectId,
-          success: function (collection) {
-            self.collection = collection;
-            self.renderView(collection);
-          }
-        });
-      }
+      this.commentCollection.fetch({
+        url: '/api/comment/findAllBy' + this.options.target + 'Id/' + this.options.id,
+        success: function (collection) {
+          self.collection = collection;
+          self.renderView(collection);
+        }
+      });
     },
 
     initializeListeners: function() {
@@ -67,10 +57,10 @@ define([
 
       this.listenTo(this.commentCollection, "comment:topic:new", function (value) {
         var data = {
-          projectId: self.options.projectId,
           value: value,
           topic: true
         };
+        data[self.options.target + 'Id'] = self.options.id;
 
         // TODO: DM: Fix this to add to the collection appropriately,
         // and fetch/re-render as needed.  This is a hack to get it to work
@@ -82,7 +72,7 @@ define([
           data: JSON.stringify(data)
         }).done(function (result) {
           self.commentCollection.fetch({
-            url: '/api/comment/findAllByProjectId/' + self.options.projectId,
+            url: '/api/comment/findAllBy' + self.options.target + 'Id/' + self.options.id,
             success: function (collection) {
 
                 // var comment = new CommentItemView({
@@ -133,11 +123,12 @@ define([
     renderComment: function (self, comment, collection) {
       var self = this;
       // Render the topic view and then in that view spew out all of its children.
-      // console.log("Comment's with children:");
       var commentIV = new CommentItemView({
         el: "#comment-list-" + (comment.topic ? 'null' : comment.parentId),
         model: comment,
+        target: this.options.target,
         projectId: comment.projectId,
+        taskId: comment.taskId,
         collection: collection
       }).render();
       self.commentViews.push(commentIV);
@@ -145,6 +136,7 @@ define([
         // Place the commentForm at the bottom of the list of comments for that topic.
         var commentFV = new CommentFormView({
           el: '#comment-form-' + comment.id,
+          target: this.options.target,
           projectId: comment.projectId,
           taskId: comment.taskId,
           parentId: comment.id,
@@ -162,9 +154,8 @@ define([
 
     toggleTopic: function (e) {
       if (e.preventDefault) e.preventDefault();
-      // The next() is the adjacent DOM element, and that will always be
-      // the list of comments that directly follows the topic (not child-literal of topic though).
-      $(e.currentTarget).next().slideToggle();
+      // toggle all the sublists
+      $($(e.currentTarget).children('.comment-sublist-wrapper')[0]).slideToggle();
     },
 
     reply: function (e) {
@@ -182,18 +173,18 @@ define([
     },
 
     newTopic: function (e) {
-      var self = this;
       if (e.preventDefault) e.preventDefault();
 
       if (this.topicForm) this.topicForm.cleanup();
-      this.topicForm = new CommentFormView({
+      var options = {
         el: '.topic-form-wrapper',
-        projectId: self.options.projectId,
-        taskId: self.options.taskId,
-        collection: self.collection,
+        target: this.options.target,
+        collection: this.collection,
         topic: true,
         depth: -1
-      });
+      }
+      options[this.options.target + 'Id'] = this.options.id;
+      this.topicForm = new CommentFormView(options);
     },
 
     addNewCommentToDom: function (modelJson, currentTarget) {

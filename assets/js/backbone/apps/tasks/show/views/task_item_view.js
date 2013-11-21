@@ -37,6 +37,7 @@ define([
 
       // Build object for render
       this.data = {
+        user: window.cache.currentUser,
         model: self.model.toJSON(),
         tags: this.tags,
         madlibTags: {}
@@ -71,7 +72,8 @@ define([
       this.initializeSelect2Data();
 
       var compiledTemplate = _.template(TaskShowTemplate, this.data);
-      this.$el.html(compiledTemplate)
+      this.$el.html(compiledTemplate);
+      this.model.trigger('task:show:render:done');
     },
 
     initializeSelect2Data: function () {

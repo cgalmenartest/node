@@ -24,29 +24,30 @@ define([
     initialize: function (options) {
       this.options = options;
 
-      this.initializeChildren();
       this.initializeTaskItemView();
-
+      this.initializeChildren();
     },
 
     initializeChildren: function () {
       var self = this;
 
-      if (this.commentListController) this.commentListController.cleanup();
-      this.commentListController = new CommentListController({
-        task: true,
-        taskId: this.model.id
-      });
+      this.listenTo(this.model, 'task:show:render:done', function () {
+        if (self.commentListController) self.commentListController.cleanup();
+        self.commentListController = new CommentListController({
+          target: 'task',
+          id: self.model.id
+        });
 
-      if (this.tagView) this.tagView.cleanup();
-      this.tagView = new TagShowView({
-        model: self.model,
-        el: '.tag-wrapper',
-        target: 'task',
-        targetId: 'taskId',
-        edit: true,
-        url: '/api/tag/findAllByTaskId/'
-      }).render();
+        if (self.tagView) self.tagView.cleanup();
+        self.tagView = new TagShowView({
+          model: self.model,
+          el: '.tag-wrapper',
+          target: 'task',
+          targetId: 'taskId',
+          edit: true,
+          url: '/api/tag/findAllByTaskId/'
+        }).render();
+      });
     },
 
     initializeTaskItemView: function () {
@@ -73,8 +74,9 @@ define([
     },
 
     cleanup: function () {
-      if (this.tagView) this.tagView.cleanup();
-      if (this.taskItemView) this.taskItemView.cleanup();
+      if (this.tagView) { this.tagView.cleanup(); }
+      if (this.commentListController) { this.commentListController.cleanup(); }
+      if (this.taskItemView) { this.taskItemView.cleanup(); }
       removeView(this);
     }
 

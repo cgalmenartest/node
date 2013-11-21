@@ -1,174 +1,202 @@
+<!-- ALERTS -->
+<div class="alert alert-danger" id="alert-closed" style="<% if (model.state != 'closed') { %>display: none;<% } %>">This opportunity is <strong>closed</strong>.  It is no longer active, and no more modifications may be made.</div>
+
 <div class="row">
   <div class="col-lg-4 project-sidebar">
     <!-- LEFT SIDEBAR -->
-    <div class="row like-content">
-      <div class="col-lg-12">
-        <a href="#" id="like-button">
-          <i id="like-button-icon" class="icon icon-star-empty icon-large gold"></i>
-        </a>
-
-        <div class="pull-right like-buttons">
-          <button class="btn btn-c4"><i class="icon icon-envelope-alt"></i> Email</button>
-          <button class="btn btn-c3"><i class="icon icon-twitter"></i> Tweet</button>
-          <button class="btn btn-c3 edit-task"><i class="icon icon-edit"> <strong>Edit</strong></i></button>
+    <div class="row">
+      <div class="col-lg-12 box">
+        <div class="box-main tag-wrapper">
         </div>
       </div>
     </div>
 
-    <div class="tag-wrapper">
-      <strong>Tags:</strong>
-      <ul>
-        <% _.each(tags, function (tag) { %>
-          <li><%= tag.tag.name %></li>
-        <% }) %>
-      </ul>
+    <div class="row">
+      <div class="col-lg-12 box">
+        <div class="attachment-wrapper">
+        </div>
+      </div>
     </div>
   </div>
 
-
-
   <div class="col-lg-8">
-    <!-- RIGHT MAIN BAR -->
-    <div class="main-section">
-      <div class="edit-task-section">
+    <div class="row">
+      <div class="col-lg-9">
+        <div class="box box-main">
 
-      <h1><%= model.title %></h1>
+          <div class="main-section">
+            <div class="edit-task-section">
 
-      <div class="task-show-description">
-        <%= model.description %>
+              <h1><%= model.title %></h1>
+
+              <div class="task-show-description">
+                <%= model.description %>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+      <div class="col-lg-3 padding-left-none">
+        <div class="box padding-none">
 
-      <div class="task-show-description">
-        I need
-          <strong>
-            <% if (madlibTags['task-people']) { %>
-              <%= madlibTags['task-people'] %>
+          <div class="navbar-side like-row border-bottom">
+            <% if (user) { %>
+            <a href="#" id="like-button" class="like-button">
             <% } else { %>
-              'no people yet assigned'
+            <span class="like-button">
             <% } %>
-          </strong>
-
-        to work on an opportunity about these topics:
-        <strong>
-          <% if (madlibTags.topic) { %>
-            <%= madlibTags.topic %>
-          <% } else { %>
-            'no topics yet assigned'
+              <i id="like-button-icon" class="icon icon-star-empty icon-large gold"></i>
+            <% if (user) { %>
+            </a>
+            <% } else { %>
+            </span>
+            <% } %>
+            <span class="like-number" id="like-number"><%- model.likeCount %></span>
+            <span class="like-plural" id="like-text" data-plural="likes" data-singular="like">likes</span>
+          </div>
+          <div class="navbar-side border-bottom">
+            <ul class="nav nav-pills nav-stacked">
+              <li>
+                <a href="#" id="volunteer"><i class="icon icon-envelope-alt"></i> <span class="box-icon-text">Volunteer</span></a>
+              </li>
+              <li>
+                <a href="#" id="email"><i class="icon icon-envelope-alt"></i> <span class="box-icon-text">Email</span></a>
+              </li>
+            </ul>
+          </div>
+          <% if (model.isOwner) { %>
+          <div class="navbar-side">
+            <ul class="nav nav-pills nav-stacked">
+              <li>
+                <a href="#" id="editProject"><i class="icon-pencil"></i> <span class="box-icon-text">Edit Opportunity</span></a>
+              </li>
+              <li id="li-project-close" style="<% if (model.state == 'closed') { %>display: none;<% } %>">
+                <a href="#" id="project-close"><i class="icon-remove-sign"></i> <span class="box-icon-text">Close Opportunity</span></a>
+              </li>
+              <li id="li-project-reopen" style="<% if (model.state != 'closed') { %>display: none;<% } %>">
+                <a href="#" id="project-reopen"><i class="icon-share-alt"></i> <span class="box-icon-text">Reopen Opportunity</span></a>
+              </li>
+              <!--
+              <li>
+                <a href="#" id="project-delete"><i class="icon-trash"></i> <span class="box-icon-text">Delete Project</span></a>
+              </li>
+              -->
+            </ul>
+          </div>
           <% } %>
-        </strong>.
-
-        <br />
-
-        The following skills are
-          <strong>
-            <% if (madlibTags['task-skills-required']) { %>
-              <%= madlibTags['task-skills-required'] %>
-            <% } else { %>
-              'skills required not set'
-            <% } %>
-          </strong>
-
-        to complete this opportunity:
-          <strong>
-            <% if (madlibTags.skill) { %>
-              <%= madlibTags.skill %>
-            <% } else { %>
-              'no skills yet assigned'
-            <% } %>
-          </strong>.
-
-
-        It will require
-          <strong>
-            <% if (madlibTags['task-time-estimate']) { %>
-              <%= madlibTags['task-time-estimate'] %>
-            <% } else { %>
-              'time estimates not set'
-            <% } %>
-          </strong>
-
-        hours of
-          <strong>
-            <% if (madlibTags['task-time-required']) { %>
-              <%= madlibTags['task-time-required'] %>
-            <% } else { %>
-              'time required not set'
-            <% } %>
-          </strong>
-
-        work, and must be completed within
-          <strong>
-            <% if (madlibTags['task-length']) { %>
-              <%= madlibTags['task-length'] %>
-            <% } else { %>
-              'length not set'
-            <% } %>
-          </strong>
-
-        The volunteer(s) must be located at
-          <strong>
-            <% if (madlibTags.location) { %>
-              <%= madlibTags.location %>
-            <% } else { %>
-              'location not set'
-            <% } %>
-            </strong>
-
-        to complete this task.
+        </div>
       </div>
+    </div>
 
-      <div class="comment-list-wrapper" style="clear: both;">
-        <h4>Discussions
-        <button class="btn btn-c3 btn-sm file-add new-topic" id="project-topic-new">New Topic</button>
-        </h4>
-        <div class="topic-form-wrapper"></div>
-        <ul id="comment-list-null"></ul>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="box box-main">
+
+          <div class="task-show-description">
+            I need
+              <strong>
+                <% if (madlibTags['task-people']) { %>
+                  <%= madlibTags['task-people'] %>
+                <% } else { %>
+                  'no people yet assigned'
+                <% } %>
+              </strong>
+
+            to work on an opportunity about these topics:
+            <strong>
+              <% if (madlibTags.topic) { %>
+                <%= madlibTags.topic %>
+              <% } else { %>
+                'no topics yet assigned'
+              <% } %>
+            </strong>.
+
+            <br />
+
+            The following skills are
+              <strong>
+                <% if (madlibTags['task-skills-required']) { %>
+                  <%= madlibTags['task-skills-required'] %>
+                <% } else { %>
+                  'skills required not set'
+                <% } %>
+              </strong>
+
+            to complete this opportunity:
+              <strong>
+                <% if (madlibTags.skill) { %>
+                  <%= madlibTags.skill %>
+                <% } else { %>
+                  'no skills yet assigned'
+                <% } %>
+              </strong>.
+
+
+            It will require
+              <strong>
+                <% if (madlibTags['task-time-estimate']) { %>
+                  <%= madlibTags['task-time-estimate'] %>
+                <% } else { %>
+                  'time estimates not set'
+                <% } %>
+              </strong>
+
+            hours of
+              <strong>
+                <% if (madlibTags['task-time-required']) { %>
+                  <%= madlibTags['task-time-required'] %>
+                <% } else { %>
+                  'time required not set'
+                <% } %>
+              </strong>
+
+            work, and must be completed within
+              <strong>
+                <% if (madlibTags['task-length']) { %>
+                  <%= madlibTags['task-length'] %>
+                <% } else { %>
+                  'length not set'
+                <% } %>
+              </strong>
+
+            The volunteer(s) must be located at
+              <strong>
+                <% if (madlibTags.location) { %>
+                  <%= madlibTags.location %>
+                <% } else { %>
+                  'location not set'
+                <% } %>
+                </strong>
+
+            to complete this task.
+          </div>
+        </div>
       </div>
+    </div>
 
-      <hr class="clear" />
+    <div class="row">
+      <div class="col-lg-12">
 
-      <h4 class="clearfix">Attachments
-        <button class="btn btn-c3 btn-sm file-add">Add File</button>
-      </h4>
-      <div class="file-list">
-        <table class="table table-hover table-condensed">
-          <tbody>
-            <tr>
-              <td>
-                <span class="file-tag c3-bg white">wikipedia</span>
-              </td>
-              <td>
-                <a href="http://en.wikipedia.org/wiki/Presidential_Innovation_Fellows">Presidential Innovation Fellows</a>
-              </td>
-              <td class="file-uploader">
-                added by <a href="#">Joe Polastre</a>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <span class="file-tag c1-bg white">project</span>
-              </td>
-              <td>
-                <a href="#">GSA Open Opportunities</a>
-              </td>
-              <td class="file-uploader">
-                added by <a href="#">Dain Miller</a>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <span class="file-tag c0-bg white">file</span>
-              </td>
-              <td>
-                <a href="#">innovation_styleguide.v1.1.ai</a>
-              </td>
-              <td class="file-uploader">
-                added by <a href="#">Joe Polastre</a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div> <!-- /file-list -->
-    </div> <!-- /main-section -->
+        <div class="box comment-list-wrapper" style="clear: both;">
+          <div class="box-pad-lr border-bottom">
+            <h2>Discussion
+            <% if (user) { %>
+            <button class="btn btn-c0 btn-sm file-add new-topic" id="project-topic-new">New Topic</button>
+            <% } %>
+            </h2>
+          </div>
+          <div class="">
+            <div class="box-pad-lr box-pad-t topic-form-wrapper"></div>
+            <ul id="comment-list-null">
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- add a space at the bottom of the page until we figure out what goes here -->
+    <div style="height: 50px;">
+    </div>
+
   </div>
 </div>
