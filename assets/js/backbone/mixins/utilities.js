@@ -146,7 +146,6 @@ var addSpinnerToFunctionPrototype = function (self) {
  * keep it as a top level object.
  * @param  {[array]} tags           [array of tags]
  * @param  {[object]} bindingObject [this is the object you want to be returned out to the view to mix in to the template]
- * @param  {[string]} subObjectName [simply name the key for the object that will contain all of these tags]
  * @return {[object]}               [bindingObject returned out]
  */
 var organizeTags = function (tags, bindingObject) {
