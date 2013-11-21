@@ -148,9 +148,10 @@ var addSpinnerToFunctionPrototype = function (self) {
  * @param  {[object]} bindingObject [this is the object you want to be returned out to the view to mix in to the template]
  * @return {[object]}               [bindingObject returned out]
  */
-var organizeTags = function (tags, bindingObject) {
-  // Put the tags into their types
-  var outTags = {};
+var organizeTags = function (tags) {
+  var obj     = {},
+      outTags = {};
+
   for (t in tags) {
     if (!(_.has(outTags, tags[t].tag.type))) {
       outTags[tags[t].tag.type] = [];
@@ -158,13 +159,12 @@ var organizeTags = function (tags, bindingObject) {
     outTags[tags[t].tag.type].push(tags[t].tag);
   }
 
-  // If a tag only has one item, make it a top level object
   for (var j in outTags) {
     if (outTags[j].length === 1) {
       var obj = outTags[j].pop();
       outTags[j] = obj
     }
-    bindingObject.madlibTags[outTags[j].type] = outTags[j].name;
+    obj[outTags[j].type] = outTags[j].name;
   }
-  return bindingObject.madlibTags;
+  return obj;
 }

@@ -38,14 +38,8 @@ define([
       });
 
       // Build object for render
-      this.data = {
-        model: self.model.toJSON(),
-        tags: this.tags,
-        madlibTags: {}
-      };
-
-      // Call to organize tags now that we have built render obj.
-      organizeTags(self.tags, this.data);
+      this.data = { model: self.model.toJSON(), tags: this.tags };
+      this.data['madlibTags'] = organizeTags(self.tags);
     },
 
     render: function () {

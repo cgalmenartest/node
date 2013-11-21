@@ -56,16 +56,8 @@ define([
         }
       });
 
-      this.data = {
-        data: this.model,
-        madlibTags: {}
-      }
-
-      // Another usage pattern is:
-      // this.data = organizeTags(this.tags)
-      // And this way we remove the binding object needed and just return out an object
-      // Then the user can _.extend(this.data, { model: this.model }); if needed.
-      organizeTags(this.tags, this.data);
+      this.data = { data: this.model }
+      this.data['madlibTags'] = organizeTags(this.tags);
 
       compiledTemplate = _.template(TaskEditFormTemplate, this.data);
       this.$el.html(compiledTemplate);
