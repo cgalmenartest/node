@@ -71,6 +71,8 @@ define([
     render: function () {
       var self = this;
 
+      console.log(this.data);
+
       this.initializeSelect2Data();
 
       var compiledTemplate = _.template(TaskShowTemplate, this.data);

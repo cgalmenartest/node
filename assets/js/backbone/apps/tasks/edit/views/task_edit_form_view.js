@@ -43,8 +43,50 @@ define([
     },
 
     render: function () {
-      var data = { data: this.model },
+
+      var self = this,
           compiledTemplate;
+
+      $.ajax({
+        url: '/api/tag/findAllByTaskId/' + self.model.id,
+        async: false,
+        success: function (res, text, xhr) {
+          self.tags = [];
+          for (var i = 0; i < res.length; i += 1) {
+            self.tags.push(res[i]);
+          }
+        }
+      });
+
+
+
+      var organizeTags = function (tags) {
+        this.data = {
+          data: this.model,
+          madlibTags: {}
+        };
+
+        var outTags = {};
+
+        for (t in tags) {
+          if (!(_.has(outTags, tags[t].tag.type))) {
+            outTags[tags[t].tag.type] = [];
+          }
+          outTags[tags[t].tag.type].push(tags[t].tag);
+        }
+
+        // If a tag only has one item, make it a top level object
+        for (var j in outTags) {
+          if (outTags[j].length === 1) {
+            var obj = outTags[j].pop();
+            outTags[j] = obj
+          }
+          this.data.madlibTags[outTags[j].type] = outTags[j].name;
+        }
+        return this.data.madlibTags;
+      }
+
+      organizeTags(this.tags);
 
       compiledTemplate = _.template(TaskEditFormTemplate, data);
       this.$el.html(compiledTemplate);
