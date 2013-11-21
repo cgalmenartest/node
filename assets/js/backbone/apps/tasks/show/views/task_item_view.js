@@ -99,6 +99,10 @@ define([
       async.each(types, requestAllTagsByType, function (err) {
         self.render();
       });
+    },
+
+    cleanup: function() {
+      removeView(this);
     }
   });
 
