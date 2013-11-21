@@ -30,8 +30,16 @@ define([
     },
 
     // The initialize method is mainly used for event bindings (for effeciency)
-    initialize: function () {
+    initialize: function (options) {
       var self = this;
+      this.options = options;
+      this.data = options.data;
+      this.action = options.action;
+      if (this.options.action) {
+        if (this.options.action == 'edit') {
+          this.edit = true;
+        }
+      }
 
       this.model.on("project:coremeta:show:rendered", function () {
         self.initializeToggledElements();
@@ -60,9 +68,14 @@ define([
     },
 
     initializeToggledElements: function(){
-      self.$('#coremeta-save').hide();
-      self.$('#coremeta-cancel').hide();
-      self.$('#project-coremeta-form').hide();
+      if (this.model.attributes.isOwner && this.edit){
+        self.$('#coremeta-save').hide();
+        self.$('#coremeta-cancel').hide();
+        self.$('#project-coremeta-form').hide();
+      }
+      else{
+        self.$('.coremeta-admin').hide();
+      }
     },
 
     // initializeOwnerSelect2: function () {
@@ -110,13 +123,13 @@ define([
     // },
 
     toggleCoreMeta : function(e){
-      if (!this.model.attributes.isOwner) return false;
+      if (!this.model.attributes.isOwner && this.edit) return false;
       $('.coremeta-form-toggle').toggle(400);
     },
 
     saveCoreMeta : function(e){
       if (e.preventDefault) e.preventDefault();
-      if (!this.model.attributes.isOwner) return false;
+      if (!this.model.attributes.isOwner && this.edit) return false;
       var self = this;
       // if (this.modalComponent) this.modalComponent;
       // this.modalComponent = new ModalComponent({
