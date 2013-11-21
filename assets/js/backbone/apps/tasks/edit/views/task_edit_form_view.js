@@ -1,12 +1,10 @@
-// todo:
-// - add live tag data from the show to prepopulate on the edit view if it exists
-
 define([
   'jquery',
   'underscore',
   'backbone',
+  'utilities',
   'text!task_edit_form_template'
-], function ($, _, Backbone, TaskEditFormTemplate) {
+], function ($, _, Backbone, utilities, TaskEditFormTemplate) {
 
   var TaskEditFormView = Backbone.View.extend({
 
@@ -58,37 +56,14 @@ define([
         }
       });
 
-
-
-      var organizeTags = function (tags) {
-        this.data = {
-          data: this.model,
-          madlibTags: {}
-        };
-
-        var outTags = {};
-
-        for (t in tags) {
-          if (!(_.has(outTags, tags[t].tag.type))) {
-            outTags[tags[t].tag.type] = [];
-          }
-          outTags[tags[t].tag.type].push(tags[t].tag);
-        }
-
-        // If a tag only has one item, make it a top level object
-        for (var j in outTags) {
-          if (outTags[j].length === 1) {
-            var obj = outTags[j].pop();
-            outTags[j] = obj
-          }
-          this.data.madlibTags[outTags[j].type] = outTags[j].name;
-        }
-        return this.data.madlibTags;
+      this.data = {
+        data: this.model,
+        madlibTags: {}
       }
 
-      organizeTags(this.tags);
+      organizeTags(this.tags, this.data);
 
-      compiledTemplate = _.template(TaskEditFormTemplate, data);
+      compiledTemplate = _.template(TaskEditFormTemplate, this.data);
       this.$el.html(compiledTemplate);
 
       // DOM now exists, begin select2 init

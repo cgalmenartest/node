@@ -138,5 +138,34 @@ var addSpinnerToFunctionPrototype = function (self) {
   } else {
     throw new Error("Pass in a Backbone View class");
   }
+}
 
+/**
+ * Organize the tags output into an associative array key'd by their type.
+ * If the tag has more than one value for said key, make it an array otherwise
+ * keep it as a top level object.
+ * @param  {[array]} tags           [array of tags]
+ * @param  {[object]} bindingObject [this is the object you want to be returned out to the view to mix in to the template]
+ * @param  {[string]} subObjectName [simply name the key for the object that will contain all of these tags]
+ * @return {[object]}               [bindingObject returned out]
+ */
+var organizeTags = function (tags, bindingObject) {
+  // Put the tags into their types
+  var outTags = {};
+  for (t in tags) {
+    if (!(_.has(outTags, tags[t].tag.type))) {
+      outTags[tags[t].tag.type] = [];
+    }
+    outTags[tags[t].tag.type].push(tags[t].tag);
+  }
+
+  // If a tag only has one item, make it a top level object
+  for (var j in outTags) {
+    if (outTags[j].length === 1) {
+      var obj = outTags[j].pop();
+      outTags[j] = obj
+    }
+    bindingObject.madlibTags[outTags[j].type] = outTags[j].name;
+  }
+  return bindingObject.madlibTags;
 }
