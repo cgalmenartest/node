@@ -17,7 +17,8 @@ define([
 
     events: {
       "click .new-topic"                  : "newTopic",
-      "click [data-topic='true']"         : "toggleTopic",
+      "click .comment-expand"             : "topicExpand",
+      "click .comment-contract"           : "topicContract",
       "mouseenter .comment-user-link"     : popovers.popoverPeopleOn,
       "click .comment-user-link"          : popovers.popoverClick,
       "click a[href='#reply-to-comment']" : "reply"
@@ -74,16 +75,6 @@ define([
           self.commentCollection.fetch({
             url: '/api/comment/findAllBy' + self.options.target + 'Id/' + self.options.id,
             success: function (collection) {
-
-                // var comment = new CommentItemView({
-                //   el: ".comment-item",
-                //   model: comment
-                // }).render()
-
-              // self.commentListView = new CommentListView({
-              //   el: ".comment-list-wrapper",
-              //   collection: collection
-              // }).render();
             }
           });
         });
@@ -152,10 +143,22 @@ define([
       popovers.popoverPeopleInit(".project-people-div");
     },
 
-    toggleTopic: function (e) {
+    topicExpand: function (e) {
       if (e.preventDefault) e.preventDefault();
       // toggle all the sublists
-      $($(e.currentTarget).children('.comment-sublist-wrapper')[0]).slideToggle();
+      var target = $($(e.currentTarget).parents('li')[0])
+      $(e.currentTarget).hide();
+      $(target.find('.comment-contract')[0]).show();
+      $(target.children('.comment-sublist-wrapper')[0]).slideToggle();
+    },
+
+    topicContract: function (e) {
+      if (e.preventDefault) e.preventDefault();
+      // toggle all the sublists
+      var target = $($(e.currentTarget).parents('li')[0])
+      $(e.currentTarget).hide();
+      $(target.find('.comment-expand')[0]).show();
+      $(target.children('.comment-sublist-wrapper')[0]).slideToggle();
     },
 
     reply: function (e) {

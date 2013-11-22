@@ -617,6 +617,7 @@ li.border-left {
 .comment-content {
 	padding-top: 5px;
 	padding-bottom: 5px;
+	position: relative;
 }
 
 .comment-item {
@@ -641,6 +642,21 @@ li.border-left {
 	display: table-cell;
 	width: 100%;
 	vertical-align: top;
+}
+
+.comment-expand, .comment-contract {
+	position: absolute;
+	top: 0;
+	right: 0;
+	cursor: pointer;
+}
+
+.comment-expand > .content, .comment-contract > .content {
+	font-size: 10px;
+}
+
+.comment-expand {
+	display: none;
 }
 
 /*****************
