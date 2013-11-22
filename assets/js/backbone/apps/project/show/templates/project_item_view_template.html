@@ -12,7 +12,7 @@
         <% } else { %>
         <div id="project-header">
         <% } %>
-          <div id="fileupload" class="btn btn-c2" <% if (!data.isOwner) { %>style="display:none;"<% } %>><i class="icon-camera icon-large" title="Change Cover Photo" id="fileupload-icon"></i></div>
+          <div id="fileupload" class="btn btn-c2" <% if (!data.isOwner || !edit) { %>style="display:none;"<% } %>><i class="icon-camera icon-large" title="Change Cover Photo" id="fileupload-icon"></i></div>
         </div>
         <div id="file-upload-progress-container" style="display: none;" class="progress progress-striped active">
           <div id="file-upload-progress" class="progress-bar" style="width: 0"></div>

@@ -25,6 +25,14 @@ define([
 
     initialize: function (options) {
       this.options = options;
+      this.data = options.data;
+      this.action = options.action;
+      this.edit = false;
+      if (this.options.action) {
+        if (this.options.action == 'edit') {
+          this.edit = true;
+        }
+      }
     },
 
     initializeFiles: function () {

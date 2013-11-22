@@ -37,7 +37,8 @@ define([
       var compiledTemplate;
       var data = {
         data: this.model.toJSON(),
-        user: window.cache.currentUser
+        user: window.cache.currentUser,
+        edit: this.edit
       };
 
       compiledTemplate = _.template(ProjectShowTemplate, data);

@@ -134,6 +134,8 @@ define([
 	      this.attachmentView = new AttachmentView({
 	        target: 'project',
 	        id: this.model.attributes.id,
+	        action: this.action,
+	        data: this.data,
 	        owner: this.model.attributes.isOwner,
 	        el: '.attachment-wrapper'
 	      }).render();

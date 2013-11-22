@@ -35,6 +35,7 @@ define([
       this.options = options;
       this.data = options.data;
       this.action = options.action;
+      this.edit = false;
       if (this.options.action) {
         if (this.options.action == 'edit') {
           this.edit = true;
@@ -45,10 +46,7 @@ define([
         self.initializeToggledElements();
       });
 
-      // \\this.model.on(project:coremeta:show:rendered", function () {
-      //   self.initializeOwnerSelect2();
-      // });
-      // //when owner set is updated, re-render and re-init popovers
+
       this.model.on("project:save:success", function (data) {
         self.render();
 
@@ -68,6 +66,7 @@ define([
     },
 
     initializeToggledElements: function(){
+      var self = this;
       if (this.model.attributes.isOwner && this.edit){
         self.$('#coremeta-save').hide();
         self.$('#coremeta-cancel').hide();
@@ -78,49 +77,7 @@ define([
       }
     },
 
-    // initializeOwnerSelect2: function () {
-    //   var self = this;
-    //   if (this.model.attributes.isOwner){
-    //     var formatResult = function (object, container, query) {
-    //       return object.name;
-    //     };
-    //     var oldOwners = this.model.attributes.owners || [];
-    //     var oldOwnerIds = _.map(oldOwners, function(owner){ return owner.userId }) || [];
 
-    //     self.$("#owners").select2({
-    //       placeholder: 'Add Project Owners',
-    //       multiple: true,
-    //       formatResult: formatResult,
-    //       formatSelection: formatResult,
-    //       minimumInputLength: 1,
-    //       ajax: {
-    //           url: '/api/ac/user',
-    //           dataType: 'json',
-    //           data: function (term) {
-    //             return {
-    //               q: term
-    //             };
-    //           },
-    //           results: function (data) {
-    //             return { results: _.filter(data, function(user){  return _.indexOf( oldOwnerIds, user.id) >= 0 ? false : true; }, self ) };
-    //         }
-    //       }
-    //     });
-
-    //     self.$('#owner-edit').show();
-
-    //   }
-    //   else
-    //   {
-    //     self.$('#owner-edit').hide();
-    //   }
-
-    //   self.$('#project-owners-form').hide();
-    //   self.$('#project-owners-show').show();
-    //   self.$('#owner-save').hide();
-    //   self.$('#owner-cancel').hide();
-
-    // },
 
     toggleCoreMeta : function(e){
       if (!this.model.attributes.isOwner && this.edit) return false;
@@ -137,98 +94,11 @@ define([
       var description = self.$('#project-edit-form-description').val();
       var params = { title :title, description: description };
 
-      $.ajax({
-          url:'/api/project/',
-          type:'PUT',
-          data: {
-            id: pId,
-            title: title,
-            description: description
-          }
-      }).done(function (data) {
         self.model.trigger("project:model:update", params);
-      });;
-
-      // if (this.modalComponent) this.modalComponent;
-      // this.modalComponent = new ModalComponent({
-      //   el: "#container",
-      //   id: "editProject",
-      //   modalTitle: "Edit Project"
-      // }).render();
-
-      // if (!_.isUndefined(this.modalComponent)) {
-      //   if (this.projectEditFormView) this.projectEditForm();
-      //   this.projectEditFormView = new ProjectEditFormView({
-      //     el: ".modal-template",
-      //     model: self.model
-      //   }).render();
-      // }
-
 
     },
 
 
-
-
-    // saveOwners : function(e){
-    //   if (e.preventDefault) e.preventDefault();
-    //   if (!this.model.attributes.isOwner) return false;
-    //   var self = this;
-
-    //   var pId = self.model.attributes.id;
-
-    //   var oldOwners = this.model.attributes.owners || [];
-    //   var s2data = $("#owners").select2("data")  || [];
-    //   var s2OwnerIds = _.map(s2data, function(owner){ return owner.id }) || [];
-
-    //   async.each(s2OwnerIds, createOwner, function(){ self.model.trigger("projectowner:show:changed", oldOwners); });
-
-    //   $("#owners").select2("data", []);
-
-    //   function createOwner(ownerID, done){
-    //     var self = this;
-    //     $.ajax({
-    //         url: '/api/projectowner/',
-    //         type: 'POST',
-    //         data: {
-    //           projectId: pId,
-    //           userId: ownerID
-    //         },
-    //         success : function(data){
-    //           var POId = data.id;
-    //           oldOwners.push({ id:POId, userId: ownerID});
-    //         }
-
-    //       }).done(function (data) {
-    //         done();
-    //       });
-    //   };
-
-    // },
-
-    // removeOwner: function(e) {
-    //   if (e.preventDefault) e.preventDefault();
-    //   $(e.currentTarget).off("mouseenter");
-    //   $('.popover').remove();
-
-    //   var pOId = $(e.currentTarget).data('poid');
-    //   var uId = $(e.currentTarget).data('uid');
-    //   var self = this;
-
-    //   if(typeof cache !== "undefined" && uId !== cache.currentUser.id)
-    //   {
-    //     $.ajax({
-    //       url: '/api/projectowner/' + pOId,
-    //       type: 'DELETE',
-    //     }).done(function (data) {
-    //         // done();
-    //     });
-    //   }
-
-    //   var oldOwners = this.model.attributes.owners || [];
-    //   var unchangedOwners = _.filter(oldOwners, function(owner){ return ( owner.id !== pOId ); } , this)  || [];
-    //   self.model.trigger("projectowner:show:changed", unchangedOwners);
-    // },
 
 
 
