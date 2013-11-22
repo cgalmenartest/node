@@ -48,6 +48,12 @@ define([
         this.comment = $(e.currentTarget).find(".comment-content:first-child").text();
       }
 
+      // abort if the comment is empty
+      if (!this.comment) {
+        this.$('.comment-alert-empty').show();
+        return;
+      }
+
       if ($(e.currentTarget).find(".comment-content:first-child").children("a").attr("href") !== undefined)
         this.wikiLink = _.escape($(e.currentTarget).find(".comment-content:first-child").children("a").attr("href"))
 
@@ -68,7 +74,7 @@ define([
       } else {
         data.parentId = parentId;
       }
-      console.log(data);
+      this.$('.comment-alert-empty').hide();
 
       var currentTarget = e.currentTarget;
       this.collection.trigger("comment:save", data, currentTarget);

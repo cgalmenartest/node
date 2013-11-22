@@ -644,6 +644,10 @@ li.border-left {
 	vertical-align: top;
 }
 
+.comment-alert-empty {
+	display: none;
+}
+
 .comment-expand, .comment-contract {
 	position: absolute;
 	top: 0;
