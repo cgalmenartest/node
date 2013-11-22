@@ -341,6 +341,7 @@ a.delete-projectowner {
 	width: 40px;
 	max-height: 40px;
 	border-radius: 25px;
+	vertical-align: baseline;
 }
 
 .project-comments {
@@ -351,6 +352,20 @@ a.delete-projectowner {
 	position: relative;
 	display: inline-block;
 	cursor: pointer;
+}
+
+.project-people-space {
+	margin-left: 10px;
+	margin-right: 10px;
+	position: relative;
+	display: inline-block;
+}
+
+.project-people-space > .bar {
+	width: 1px;
+	height: 40px;
+	max-height: 40px;
+	background-color: #f0f0f0;
 }
 
 .project-people-popover {

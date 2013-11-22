@@ -11,6 +11,9 @@ var authorized = function (id, userId, cb) {
   Task.findOneById(id, function (err, task) {
     if (err) { return cb('Error finding task.', null); }
     // otherwise, check that we have an owner
+    if (userId && (userId == task.userId)) {
+      task.isOwner = true;
+    }
     if (task.userId == userId) {
       return cb(null, task);
     }

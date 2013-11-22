@@ -45,7 +45,7 @@ define([
           el: '.tag-wrapper',
           target: 'task',
           targetId: 'taskId',
-          edit: true,
+          edit: false,
           url: '/api/tag/findAllByTaskId/'
         }).render();
 

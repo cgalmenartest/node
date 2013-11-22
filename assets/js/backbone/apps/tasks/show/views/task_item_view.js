@@ -9,7 +9,14 @@ define([
   'text!task_show_template'
 ], function (Bootstrap, Popovers, _, Backbone, utils, async, BaseView, TaskShowTemplate) {
 
+  var popovers = new Popovers();
+
   var TaskItemView = BaseView.extend({
+
+    events: {
+      "mouseenter .project-people-div"  : popovers.popoverPeopleOn,
+      "click .project-people-div"       : popovers.popoverClick
+    },
 
     initialize: function (options) {
       var self = this;
@@ -73,6 +80,7 @@ define([
 
       var compiledTemplate = _.template(TaskShowTemplate, this.data);
       this.$el.html(compiledTemplate);
+      popovers.popoverPeopleInit(".project-people-div");
       this.model.trigger('task:show:render:done');
     },
 

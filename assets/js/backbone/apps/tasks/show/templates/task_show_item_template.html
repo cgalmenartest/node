@@ -57,7 +57,7 @@
           <div class="navbar-side border-bottom">
             <ul class="nav nav-pills nav-stacked">
               <li>
-                <a href="#" id="volunteer"><i class="icon icon-envelope-alt"></i> <span class="box-icon-text">Volunteer</span></a>
+                <a href="#" id="volunteer"><i class="icon icon-thumbs-up-alt"></i> <span class="box-icon-text">Volunteer</span></a>
               </li>
               <li>
                 <a href="#" id="email"><i class="icon icon-envelope-alt"></i> <span class="box-icon-text">Email</span></a>
@@ -169,6 +169,27 @@
                 </strong>
 
             to complete this task.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="box">
+          <div class="box-pad-lr border-bottom">
+            <h2>Owner and Volunteers
+            </h2>
+          </div>
+          <div class="box-main">
+            <div class="project-people-div" data-userid="<%= model.userId %>">
+              <img src="/api/user/photo/<%= model.userId %>" class="project-people"/>
+            </div>
+            <div class="project-people-space">
+              <div class="bar">
+              </div>
+            </div>
+            <!-- insert volunteers here -->
           </div>
         </div>
       </div>
