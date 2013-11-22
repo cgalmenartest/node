@@ -41,7 +41,7 @@ define([
       //   self.initializeOwnerSelect2();
       // });
       // //when owner set is updated, re-render and re-init popovers
-      this.model.on("project:update:coremeta:success", function (data) {
+      this.model.on("project:save:success", function (data) {
         self.render();
 
       });
@@ -118,6 +118,24 @@ define([
       if (e.preventDefault) e.preventDefault();
       if (!this.model.attributes.isOwner) return false;
       var self = this;
+
+      var pId = self.model.attributes.id;
+      var title = self.$('#project-edit-form-title').val();
+      var description = self.$('#project-edit-form-description').val();
+      var params = { title :title, description: description };
+
+      $.ajax({
+          url:'/api/project/',
+          type:'PUT',
+          data: {
+            id: pId,
+            title: title,
+            description: description
+          }
+      }).done(function (data) {
+        self.model.trigger("project:model:update", params);
+      });;
+
       // if (this.modalComponent) this.modalComponent;
       // this.modalComponent = new ModalComponent({
       //   el: "#container",

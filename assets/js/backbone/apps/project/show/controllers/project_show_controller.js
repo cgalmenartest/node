@@ -53,8 +53,9 @@ define([
 
 			this.router = options.router;
 			this.id = options.id;
-	      	this.routeId = options.id;
-	      	this.data = options.data;
+    	this.routeId = options.id;
+    	this.data = options.data;
+    	this.action = options.action;
 			// console.log(options);
 
 			this.model.trigger("project:model:fetch", this.model.id);
