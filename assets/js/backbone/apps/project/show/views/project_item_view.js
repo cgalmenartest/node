@@ -17,7 +17,21 @@ define([
 
     },
 
-
+    initialize: function (options) {
+      this.options = options;
+      this.data = options.data;
+      this.action = options.action;
+      this.edit = false;
+      if (this.options.action) {
+        if (this.options.action == 'edit') {
+          this.edit = true;
+        }
+      }
+      // if (this.data.saved) {
+      //   this.saved = true;
+      //   this.data.saved = false;
+      // }
+    },
 
     render: function () {
       var compiledTemplate;
@@ -29,6 +43,7 @@ define([
       compiledTemplate = _.template(ProjectShowTemplate, data);
       this.$el.html(compiledTemplate);
 
+      this.initializeToggle();
       this.initializeFileUpload();
       this.initializeTags();
       this.updatePhoto();
@@ -49,13 +64,22 @@ define([
       });
     },
 
+    initializeToggle: function () {
+      if(this.edit){
+        this.$('#editProject').find('.box-icon-text').html('View Project');
+      }
+      else{
+        this.$('#editProject').find('.box-icon-text').html('Edit Project');
+      }
+    },
+
     initializeTags: function() {
       this.tagView = new TagShowView({
         model: this.model,
         el: '.tag-wrapper',
         target: 'project',
         targetId: 'projectId',
-        edit: true,
+        edit: this.edit,
         url: '/api/tag/findAllByProjectId/'
       });
       this.tagView.render();
@@ -92,6 +116,8 @@ define([
 
       myDropzone.on("thumbnail", function(file) { });
     },
+
+
 
     cleanup: function () {
       if (this.tagView) { this.tagView.cleanup(); }

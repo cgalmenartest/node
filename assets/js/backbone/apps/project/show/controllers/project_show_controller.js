@@ -42,7 +42,7 @@ define([
 			"click .tag-delete"     					: "tagDelete",
 			"click #project-close"						: "stateClose",
 			"click #project-reopen"						: "stateReopen",
-			// 'click #editProject'						: 'editProject',
+			'click #editProject'						: 'toggleEditMode',
 			"mouseenter .project-people-div" 			: popovers.popoverPeopleOn,
 			"click .project-people-div" 				: popovers.popoverClick
 		},
@@ -53,10 +53,8 @@ define([
 
 			this.router = options.router;
 			this.id = options.id;
-    	this.routeId = options.id;
     	this.data = options.data;
     	this.action = options.action;
-			// console.log(options);
 
 			this.model.trigger("project:model:fetch", this.model.id);
 			this.listenTo(this.model, "project:model:fetch:success", function (model) {
@@ -105,18 +103,30 @@ define([
 
 		initializeItemView: function () {
 			if (this.projectShowItemView) this.projectShowItemView.cleanup();
-			this.projectShowItemView  = new ProjectItemView({ model: this.model }).render();
+			this.projectShowItemView  = new ProjectItemView({
+																model: this.model,
+																action: this.action,
+																data: this.data
+															}).render();
 		},
 
 		initializeItemCoreMetaView: function () {
 			if (this.projectShowItemCoreMetaView) this.projectShowItemCoreMetaView.cleanup();
-			this.projectShowItemCoreMetaView  = new ProjectItemCoreMetaView({ model: this.model }).render();
+			this.projectShowItemCoreMetaView  = new ProjectItemCoreMetaView({
+																model: this.model,
+																action: this.action,
+																data: this.data
+															 }).render();
 		},
 
 
 		initializeOwners : function(){
 			if (this.projectownerShowView) this.projectownerShowView.cleanup();
-			this.projectownerShowView = new ProjectownerShowView({ model: this.model }).render();
+			this.projectownerShowView = new ProjectownerShowView({
+																model: this.model,
+																action: this.action,
+																data: this.data
+															 }).render();
 		},
 
 	    initializeAttachments: function () {
@@ -164,6 +174,19 @@ define([
 
 		initializeUI: function() {
 			popovers.popoverPeopleInit(".project-people-div");
+		},
+
+		toggleEditMode: function(e){
+			e.preventDefault();
+			var action;
+			if(this.action && this.action == 'edit'){
+				action = 'view';
+
+			}else{
+				action = 'edit';
+				$(e.currentTarget).find('.box-icon-text').html('View Project');
+			}
+      		Backbone.history.navigate('projects/' + this.id + '/' + action, { trigger: true });
 		},
 
 		edit: function (e) {

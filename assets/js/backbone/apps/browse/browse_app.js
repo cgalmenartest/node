@@ -18,7 +18,7 @@ define([
       ''                          : 'redirectHome',
       'projects(/)'               : 'listProjects',
       'projects/:id(/)'           : 'showProject',
-      'projects/:id/:action(/)'      : 'showProject',
+      'projects/:id/:action(/)'   : 'showProject',
       'tasks(/)'                  : 'listTasks',
       'tasks/:id(/)'              : 'showTask',
       'profile(/)'                : 'showProfile',
