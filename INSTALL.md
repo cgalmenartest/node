@@ -121,6 +121,20 @@ Alternatively, you can also run:
 
      grunt build
 
+### Initialize the database
+
+The database needs to be populated with the tag defaults for your application's configuration.
+
+Edit the configuration file at `test/init/init/config.js` to match your tags in `assets/js/backbone/components/tag.js`
+
+Then initialize the database with:
+
+     make init
+
+If you'd like to include a sample project, also run:
+
+     make demo
+
 ### Start the forever server (from the midas git folder)
 
 This will run the application server on port 1337
