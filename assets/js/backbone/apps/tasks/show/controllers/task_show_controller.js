@@ -22,10 +22,12 @@ define([
     el: "#container",
 
     events: {
-      'click .edit-task'                : 'edit',
+      'click #task-edit'                : 'edit',
       "click #like-button"              : 'like',
       'click #volunteer'                : 'volunteer',
       'click #volunteered'              : 'volunteered',
+      "click #task-close"               : "stateClose",
+      "click #task-reopen"              : "stateReopen",
       "mouseenter .project-people-div"  : popovers.popoverPeopleOn,
       "click .project-people-div"       : popovers.popoverClick
     },
@@ -41,6 +43,7 @@ define([
       var self = this;
 
       this.listenTo(this.model, 'task:show:render:done', function () {
+        self.initializeHandlers();
         self.initializeLikes();
         if (window.cache.currentUser) {
           self.initializeVolunteers();
@@ -96,6 +99,19 @@ define([
       }
     },
 
+    initializeHandlers: function() {
+      this.listenTo(this.model, "task:update:state:success", function (data) {
+        if (data.attributes.state == 'closed') {
+          $("#li-task-close").hide();
+          $("#li-task-reopen").show();
+          $("#alert-closed").show();
+        } else {
+          $("#li-task-close").show();
+          $("#li-task-reopen").hide();
+          $("#alert-closed").hide();
+        }
+      });
+    },
     initializeTaskItemView: function () {
       var self = this;
 
@@ -183,6 +199,16 @@ define([
     volunteered: function (e) {
       if (e.preventDefault) e.preventDefault();
       // Not able to un-volunteer, so do nothing
+    },
+
+    stateClose: function (e) {
+      if (e.preventDefault) e.preventDefault();
+      this.model.trigger("task:update:state", 'closed');
+    },
+
+    stateReopen: function (e) {
+      if (e.preventDefault) e.preventDefault();
+      this.model.trigger("task:update:state", 'public');
     },
 
     cleanup: function () {

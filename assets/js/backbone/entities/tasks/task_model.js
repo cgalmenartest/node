@@ -25,6 +25,10 @@ define([
       this.listenTo(this, "task:update", function (data) {
         this.update(data);
       });
+
+      this.listenTo(this, "task:update:state", function (state) {
+        this.updateState(state);
+      });
     },
 
     update: function (data) {
@@ -37,6 +41,18 @@ define([
       }, {
         success: function (data) {
           console.log(data); }
+      });
+    },
+
+    updateState: function (state) {
+      var self = this;
+
+      this.save({
+        state: state
+      }, {
+        success: function(data) {
+          self.trigger("task:update:state:success", data);
+        }
       });
     },
 
