@@ -72,11 +72,15 @@ module.exports.policies = {
   },
 
   LikeController : {
-    '*': ['authenticated', 'addUserId', 'project'],
+    '*': ['authenticated', 'addUserId'],
     'count': ['authenticated', 'requireId', 'project'],
+    'countt': ['authenticated', 'requireId', 'task'],
+    'countu': ['authenticated', 'requireId', 'requireUserId'],
     'like': ['authenticated', 'requireUserId', 'addUserId', 'requireId'],
+    'liket': ['authenticated', 'requireUserId', 'addUserId', 'requireId'],
     'likeu': ['authenticated', 'requireUserId', 'addUserId', 'requireId'],
     'unlike': ['authenticated', 'requireUserId', 'addUserId', 'requireId'],
+    'unliket': ['authenticated', 'requireUserId', 'addUserId', 'requireId'],
     'unlikeu': ['authenticated', 'requireUserId', 'addUserId', 'requireId'],
     'create': ['authenticated', 'requireUserId', 'addUserId'],
     'destroy': false,

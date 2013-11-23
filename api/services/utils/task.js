@@ -47,7 +47,34 @@ var getTags = function (task, cb) {
   });
 };
 
+var getMetadata = function(task, user, cb) {
+  task.like = false;
+  Like.countByTaskId(task.id, function (err, likes) {
+    if (err) { return cb(err, task); }
+    task.likeCount = likes;
+    if (!user) {
+      return cb(null, task);
+    }
+    Like.findOne({ where: { userId: user.id, taskId: task.id }}, function (err, like) {
+      if (err) { return cb(err, task); }
+      if (like) { task.like = true; }
+      return cb(null, task);
+    });
+  });
+};
+
+var getLikes = function (task, cb) {
+  Like.countByTaskId(task.id, function (err, count) {
+    if (!err) {
+      task.likeCount = count;
+    }
+    cb(err);
+  });
+};
+
 module.exports = {
   authorized: authorized,
-  getTags: getTags
+  getTags: getTags,
+  getMetadata: getMetadata,
+  getLikes: getLikes
 };

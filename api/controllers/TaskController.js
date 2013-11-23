@@ -11,7 +11,14 @@ module.exports = {
 
   find: function (req, res) {
     if (req.task) {
-      return res.send(req.task);
+      var user = null;
+      if (req.user) {
+        user = req.user[0];
+      }
+      taskUtil.getMetadata(req.task, user, function (err) {
+        if (err) { return res.send(400, { message: 'Error looking up task likes.' }); }
+        return res.send(req.task);
+      });
     }
     Task.find()
     .where({ state: 'public' })
@@ -20,7 +27,10 @@ module.exports = {
       if (err) { return res.send(400, { message: 'Error looking up tasks.' }); }
       async.each(tasks, taskUtil.getTags, function (err) {
         if (err) { return res.send(400, { message: 'Error looking up task tags.' }); }
-        return res.send({ tasks: tasks });
+        async.each(tasks, taskUtil.getLikes, function (err) {
+          if (err) { return res.send(400, { message: 'Error looking up task likes.' }); }
+          return res.send({ tasks: tasks });
+        });
       });
     });
   },
