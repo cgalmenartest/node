@@ -76,7 +76,6 @@ var getUser = function (userId, reqId, cb) {
 var update = function (req, res) {
   var user = req.user[0];
   var params = _.extend(req.body || {}, req.params);
-  sails.log.debug(params);
   if (params.name) { user.name = params.name; }
   if (params.username) { user.username = params.username; }
   if (params.email) { user.email = params.email; }

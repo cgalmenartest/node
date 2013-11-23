@@ -6,13 +6,16 @@ define([
   'bootstrap',
   'underscore',
   'backbone',
+  'popovers',
   'base_view',
   'comment_list_controller',
   'attachment_show_view',
   'task_item_view',
   'tag_show_view',
   'task_edit_form_view'
-], function (Bootstrap, _, Backbone, BaseView, CommentListController, AttachmentView, TaskItemView, TagShowView, TaskEditFormView) {
+], function (Bootstrap, _, Backbone, Popovers, BaseView, CommentListController, AttachmentView, TaskItemView, TagShowView, TaskEditFormView) {
+
+  var popovers = new Popovers();
 
   var TaskShowController = BaseView.extend({
 
@@ -20,7 +23,11 @@ define([
 
     events: {
       'click .edit-task'                : 'edit',
-      "click #like-button"              : 'like'
+      "click #like-button"              : 'like',
+      'click #volunteer'                : 'volunteer',
+      'click #volunteered'              : 'volunteered',
+      "mouseenter .project-people-div"  : popovers.popoverPeopleOn,
+      "click .project-people-div"       : popovers.popoverClick
     },
 
     initialize: function (options) {
@@ -35,6 +42,10 @@ define([
 
       this.listenTo(this.model, 'task:show:render:done', function () {
         self.initializeLikes();
+        if (window.cache.currentUser) {
+          self.initializeVolunteers();
+        }
+        popovers.popoverPeopleInit(".project-people-div");
 
         if (self.commentListController) self.commentListController.cleanup();
         self.commentListController = new CommentListController({
@@ -62,7 +73,7 @@ define([
       });
     },
 
-    initializeLikes: function() {
+    initializeLikes: function () {
       $("#like-number").text(this.model.attributes.likeCount);
       if (parseInt(this.model.attributes.likeCount) === 1) {
         $("#like-text").text($("#like-text").data('singular'));
@@ -72,6 +83,16 @@ define([
       if (this.model.attributes.like) {
         $("#like-button-icon").removeClass('icon-star-empty');
         $("#like-button-icon").addClass('icon-star');
+      }
+    },
+
+    initializeVolunteers: function () {
+      if (this.model.attributes.volunteer) {
+        $('.volunteer-true').show();
+        $('.volunteer-false').hide();
+      } else {
+        $('.volunteer-true').hide();
+        $('.volunteer-false').show();
       }
     },
 
@@ -138,6 +159,30 @@ define([
           // response should be null (empty)
         });
       }
+    },
+
+    volunteer: function (e) {
+      if (e.preventDefault) e.preventDefault();
+      var self = this;
+      var child = $(e.currentTarget).children("#like-button-icon");
+      $.ajax({
+        url: '/api/volunteer/',
+        type: 'POST',
+        data: {
+          taskId: this.model.attributes.id
+        }
+      }).done( function (data) {
+        $('.volunteer-true').show();
+        $('.volunteer-false').hide();
+        var html = '<div class="project-people-div" data-userid="' + data.userId + '"><img src="/api/user/photo/' + data.userId + '" class="project-people"/></div>';
+        $('#task-volunteers').append(html);
+        popovers.popoverPeopleInit(".project-people-div");
+      });
+    },
+
+    volunteered: function (e) {
+      if (e.preventDefault) e.preventDefault();
+      // Not able to un-volunteer, so do nothing
     },
 
     cleanup: function () {

@@ -49,6 +49,7 @@ var getTags = function (task, cb) {
 
 var getMetadata = function(task, user, cb) {
   task.like = false;
+  task.volunteer = false;
   Like.countByTaskId(task.id, function (err, likes) {
     if (err) { return cb(err, task); }
     task.likeCount = likes;
@@ -58,7 +59,11 @@ var getMetadata = function(task, user, cb) {
     Like.findOne({ where: { userId: user.id, taskId: task.id }}, function (err, like) {
       if (err) { return cb(err, task); }
       if (like) { task.like = true; }
-      return cb(null, task);
+      Volunteer.findOne({ where: { userId: user.id, taskId: task.id }}, function (err, v) {
+        if (err) { return cb(err, task); }
+        if (v) { task.volunteer = true; }
+        return cb(null, task);
+      });
     });
   });
 };
@@ -72,9 +77,24 @@ var getLikes = function (task, cb) {
   });
 };
 
+var getVolunteers = function (task, cb) {
+  task.volunteers = [];
+  Volunteer.find()
+  .where({ taskId: task.id })
+  .sort('createdAt')
+  .exec(function (err, vols) {
+    if (err) { return cb(err); }
+    for (var i in vols) {
+      task.volunteers.push(vols[i].userId);
+    }
+    cb();
+  });
+};
+
 module.exports = {
   authorized: authorized,
   getTags: getTags,
   getMetadata: getMetadata,
-  getLikes: getLikes
+  getLikes: getLikes,
+  getVolunteers: getVolunteers
 };

@@ -56,9 +56,14 @@
           </div>
           <div class="navbar-side border-bottom">
             <ul class="nav nav-pills nav-stacked">
-              <li>
+              <% if (user) { %>
+              <li class="active volunteer-true" style="display: none;">
+                <a href="#" id="volunteered"><i class="icon icon-thumbs-up"></i> <span class="box-icon-text">Volunteered!</span></a>
+              </li>
+              <li class="volunteer-false">
                 <a href="#" id="volunteer"><i class="icon icon-thumbs-up-alt"></i> <span class="box-icon-text">Volunteer</span></a>
               </li>
+              <% } %>
               <li>
                 <a href="#" id="email"><i class="icon icon-envelope-alt"></i> <span class="box-icon-text">Email</span></a>
               </li>
@@ -78,7 +83,7 @@
               </li>
               <!--
               <li>
-                <a href="#" id="project-delete"><i class="icon-trash"></i> <span class="box-icon-text">Delete Project</span></a>
+                <a href="#" id="project-delete"><i class="icon-trash"></i> <span class="box-icon-text">Delete Opportunity</span></a>
               </li>
               -->
             </ul>
@@ -181,7 +186,7 @@
             <h2>Owner and Volunteers
             </h2>
           </div>
-          <div class="box-main">
+          <div class="box-main" id="task-volunteers">
             <div class="project-people-div" data-userid="<%= model.userId %>">
               <img src="/api/user/photo/<%= model.userId %>" class="project-people"/>
             </div>
@@ -189,7 +194,11 @@
               <div class="bar">
               </div>
             </div>
-            <!-- insert volunteers here -->
+            <% _.each(model.volunteers, function (v) { %>
+            <div class="project-people-div" data-userid="<%= v %>">
+              <img src="/api/user/photo/<%= v %>" class="project-people"/>
+            </div>
+            <% }); %>
           </div>
         </div>
       </div>

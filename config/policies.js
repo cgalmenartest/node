@@ -87,6 +87,11 @@ module.exports.policies = {
     'update': false
   },
 
+  VolunteerController : {
+    '*': false,
+    'create': ['authenticated', 'requireUserId', 'addUserId'],
+  },
+
   EventController : {
     'create': ['authenticated', 'requireUserId', 'addUserId', 'projectId', 'eventUuid'],
     'update': ['authenticated', 'requireUserId', 'projectId'],

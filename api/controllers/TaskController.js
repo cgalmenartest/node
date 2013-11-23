@@ -17,8 +17,12 @@ module.exports = {
       }
       taskUtil.getMetadata(req.task, user, function (err) {
         if (err) { return res.send(400, { message: 'Error looking up task likes.' }); }
-        return res.send(req.task);
+        taskUtil.getVolunteers(req.task, function (err) {
+          if (err) { return res.send(400, { message: 'Error looking up task volunteers.' }); }
+          return res.send(req.task);
+        });
       });
+      return;
     }
     Task.find()
     .where({ state: 'public' })
