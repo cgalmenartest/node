@@ -9,9 +9,10 @@ define([
   'jquery',
 	'underscore',
 	'backbone',
+  'utilities',
 	'base_component',
   'text!modal_template'
-], function ($, _, Backbone, BaseComponent, ModalTemplate) {
+], function ($, _, Backbone, utils, BaseComponent, ModalTemplate) {
 
 	Application.Component.Modal = BaseComponent.extend({
 
@@ -35,6 +36,10 @@ define([
       this.$el.append(compiledTemplate);
 
       return this;
+    },
+
+    cleanup: function () {
+      removeView(this);
     }
 
 	});

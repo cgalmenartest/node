@@ -39,7 +39,13 @@ define([
       this.collection.trigger(this.target + ":fetch");
 
       this.listenTo(this.collection, "project:save:success", function (data) {
-        Backbone.history.navigate('projects/' + data.attributes.id, { trigger: true });
+        // hide the modal
+        $('.modal.in').modal('hide');
+        // give the modal time to disappear
+        setTimeout(function () {
+          // navigate to the new project
+          Backbone.history.navigate('projects/' + data.attributes.id, { trigger: true });
+        }, 100);
       })
     },
 
@@ -96,22 +102,20 @@ define([
 
     addProject: function (e) {
       if (e.preventDefault) e.preventDefault();
-      var self = this;
 
-      if (this.modalComponent) this.modalComponent;
+      if (this.projectFormView) this.projectFormView.cleanup();
+      if (this.modalComponent) this.modalComponent.cleanup();
+
       this.modalComponent = new ModalComponent({
         el: "#container",
         id: "addProject",
         modalTitle: "Add Project"
       }).render();
 
-      if (!_.isUndefined(this.modalComponent)) {
-        if (this.projectFormView) this.projectFormView();
-        this.projectFormView = new ProjectFormView({
-          el: ".modal-template",
-          collection: self.collection
-        }).render();
-      }
+      this.projectFormView = new ProjectFormView({
+        el: ".modal-template",
+        collection: this.collection
+      }).render();
 
     },
 
@@ -124,6 +128,8 @@ define([
     //= UTILITY METHODS
     // ---------------------
     cleanup: function() {
+      if (this.projectFormView) { this.projectFormView.cleanup(); }
+      if (this.modalComponent) { this.modalComponent.cleanup(); }
       if (this.browseMainView) { this.browseMainView.cleanup(); }
       removeView(this);
     }
