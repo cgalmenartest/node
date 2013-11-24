@@ -53,7 +53,7 @@ define([
 
         var addTag = function (tag, done) {
           if (!tag || !tag.id) return done();
-          if (tag.tagId) return done();
+          // if (tag.tagId) return done();
 
           var tagMap = {
             taskId: taskId,
@@ -82,6 +82,11 @@ define([
         tags.push($("#time-required").select2('data'));
         tags.push($("#time-estimate").select2('data'));
         tags.push($("#length").select2('data'));
+        console.log($("#task-location").select2('data'));
+        if (self.$("#task-location").select2('data').id == 'true') {
+          tags.push.apply(tags, self.$("#location").select2('data'));
+        }
+        console.log(tags);
 
         async.each(tags, addTag, function (err) {
           self.model.trigger("task:modal:hide");
@@ -165,6 +170,29 @@ define([
         }
       });
 
+      // Topics select 2
+      this.$("#location").select2({
+        placeholder: "locations",
+        width: '100%',
+        multiple: true,
+        formatResult: formatResult,
+        formatSelection: formatResult,
+        ajax: {
+          url: '/api/ac/tag',
+          dataType: 'json',
+          data: function (term) {
+            return {
+              type: 'location',
+              q: term
+            };
+          },
+          results: function (data) {
+            return { results: data }
+          }
+        }
+      });
+      this.$(".el-specific-location").hide();
+
       // ------------------------------ //
       // PRE-DEFINED SELECT MENUS BELOW //
       // ------------------------------ //
@@ -195,15 +223,15 @@ define([
 
       $("#task-location").select2({
         placeholder: 'length',
-        width: '130px'
+        width: '200px'
       });
 
     },
 
     locationChange: function (e) {
-      if (_.isEqual(e.currentTarget.value, "a specific location")) {
+      if (_.isEqual(e.currentTarget.value, "true")) {
         $(".el-specific-location").show();
-      } else if (!_.isEqual(e.currentTarget.value, "a specific location")) {
+      } else if (!_.isEqual(e.currentTarget.value, "false")) {
         $(".el-specific-location").hide();
       }
     },

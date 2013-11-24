@@ -176,16 +176,22 @@
               </strong>
             <% } %>
 
+            <% if (madlibTags.location) { %>
             The volunteer(s) must be located at
-              <strong>
-                <% if (madlibTags.location) { %>
-                  <%= madlibTags.location %>
-                <% } else { %>
-                  'location not set'
-                <% } %>
-                </strong>
+            <strong>
+              <% _.each(madlibTags.location, function (s, i) { %>
+              <% if (i > 0) { %>
+              ,
+              <% } %>
+              <%= s.name %>
+              <% }) %>
+            </strong>
+            to complete this opportunity.
+            <% } else { %>
+            The volunteer(s) can be located anywhere.
+            <% } %>
+            </strong>
 
-            to complete this task.
           </div>
         </div>
       </div>

@@ -102,6 +102,6 @@ define({
   profile   : ['skill', 'topic'],
   profiles  : ['skill', 'topic', 'agency', 'location'],
 
-  task      : ['skill', 'topic', 'task-skills-required', 'task-time-required', 'task-people', 'task-length', 'task-time-estimate'],
+  task      : ['skill', 'topic', 'location', 'task-skills-required', 'task-time-required', 'task-people', 'task-length', 'task-time-estimate'],
   tasks     : ['skill', 'topic', 'agency', 'location', 'task-skills-required', 'task-time-required', 'task-people', 'task-length', 'task-time-estimate']
 });

@@ -187,11 +187,12 @@ define([
         $("#skills").select2('data', this.data['madlibTags'].skill);
       }
 
+      // Topics select 2
       $("#location").select2({
+        placeholder: "locations",
+        multiple: true,
         formatResult: formatResult,
         formatSelection: formatResult,
-        minimumInputLength: 1,
-        data: [ location ],
         ajax: {
           url: '/api/ac/tag',
           dataType: 'json',
@@ -202,10 +203,13 @@ define([
             };
           },
           results: function (data) {
-            return { results: data };
+            return { results: data }
           }
         }
       });
+      if (this.data['madlibTags'].location) {
+        $("#skills").select2('data', this.data['madlibTags'].location);
+      }
 
       $("#skills-required").select2({
         placeholder: "required/not-required",
