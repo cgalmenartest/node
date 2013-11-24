@@ -18,6 +18,7 @@ define([
       ''                          : 'redirectHome',
       'projects(/)'               : 'listProjects',
       'projects/:id(/)'           : 'showProject',
+      'projects/:id/:action(/)'   : 'showProject',
       'tasks(/)'                  : 'listTasks',
       'tasks/:id(/)'              : 'showTask',
       'profile(/)'                : 'showProfile',
@@ -60,11 +61,11 @@ define([
       });
     },
 
-    showProject: function (id) {
+    showProject: function (id, action) {
       this.cleanupChildren();
       var model = new ProjectModel();
       model.set({ id: id });
-      this.projectShowController = new ProjectShowController({ model: model, router: this, id: id });
+      this.projectShowController = new ProjectShowController({ model: model, router: this, id: id, action: action, data: this.data });
     },
 
     showTask: function (id) {

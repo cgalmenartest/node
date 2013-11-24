@@ -30,8 +30,16 @@ define([
     },
 
     // The initialize method is mainly used for event bindings (for effeciency)
-    initialize: function () {
+    initialize: function (options) {
       var self = this;
+      this.options = options;
+      this.data = options.data;
+      this.action = options.action;
+      if (this.options.action) {
+        if (this.options.action == 'edit') {
+          this.edit = true;
+        }
+      }
 
       this.model.on("projectowner:show:rendered", function () {
         self.initializeOwnerSelect2();
@@ -49,7 +57,7 @@ define([
 
     render: function () {
       var compiledTemplate,
-          data = { data: this.model.toJSON() };
+      data = { data: this.model.toJSON() };
       compiledTemplate = _.template(ProjectownerShowTemplate, data);
       this.$el.html(compiledTemplate);
 
@@ -60,7 +68,7 @@ define([
 
     initializeOwnerSelect2: function () {
       var self = this;
-      if (this.model.attributes.isOwner){
+      if (this.model.attributes.isOwner && this.edit){
         var formatResult = function (object, container, query) {
           return object.name;
         };
@@ -103,7 +111,7 @@ define([
     },
 
     toggleOwners : function(e){
-      if (!this.model.attributes.isOwner) return false;
+      if (!this.model.attributes.isOwner  && this.edit) return false;
       $('.owner-form-toggle').toggle(400);
     },
 
@@ -112,7 +120,7 @@ define([
 
     saveOwners : function(e){
       if (e.preventDefault) e.preventDefault();
-      if (!this.model.attributes.isOwner) return false;
+      if (!this.model.attributes.isOwner  && this.edit) return false;
       var self = this;
 
       var pId = self.model.attributes.id;
@@ -147,6 +155,7 @@ define([
     },
 
     removeOwner: function(e) {
+      if(e.stopPropagation()) e.stopPropagation();
       if (e.preventDefault) e.preventDefault();
       $(e.currentTarget).off("mouseenter");
       $('.popover').remove();
