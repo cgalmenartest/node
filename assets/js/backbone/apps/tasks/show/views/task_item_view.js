@@ -14,15 +14,13 @@ define([
       var self = this;
       this.model.trigger("task:model:fetch", this.options.id);
       this.listenTo(this.model, "task:model:fetch:success", function (model) {
+        console.log('initializeTags -- go');
         self.model = model;
-        self.getTagData();
-        self.render();
+        self.initializeTags(self);
       });
     },
 
-    getTagData: function () {
-      var self = this;
-
+    getTagData: function (self, cb) {
       $.ajax({
         url: '/api/tag/findAllByTaskId/' + self.options.id,
         async: false,
@@ -31,34 +29,34 @@ define([
           for (var i = 0; i < data.length; i += 1) {
             self.tags.push(data[i]);
           }
+          // Build object for render
+          self.data = {
+            user: window.cache.currentUser,
+            model: self.model.toJSON(),
+            tags: self.tags
+          };
+          self.data['madlibTags'] = organizeTags(self.tags);
+          self.model.trigger('task:tag:data', self.tags, self.data['madlibTags']);
+          return cb();
         }
       });
 
-      // Build object for render
-      this.data = {
-        user: window.cache.currentUser,
-        model: self.model.toJSON(),
-        tags: this.tags
-      };
-      this.data['madlibTags'] = organizeTags(self.tags);
-      console.log(this.data['madlibTags']);
     },
 
-    render: function () {
-      this.initializeTags();
-
-      var compiledTemplate = _.template(TaskShowTemplate, this.data);
-      this.$el.html(compiledTemplate);
-      this.model.trigger('task:show:render:done');
+    render: function (self) {
+      self.getTagData(self, function () {
+        var compiledTemplate = _.template(TaskShowTemplate, self.data);
+        self.$el.html(compiledTemplate);
+        self.model.trigger('task:show:render:done');
+      });
     },
 
-    initializeTags: function () {
-      var self = this,
-          types = ["task-skills-required", "task-time-required", "task-people", "task-length", "task-time-estimate"];
+    initializeTags: function (self) {
+      var types = ["task-skills-required", "task-time-required", "task-people", "task-length", "task-time-estimate"];
 
-      this.tagSources = {};
+      self.tagSources = {};
 
-      var requestAllTagsByType = function (type) {
+      var requestAllTagsByType = function (type, cb) {
         $.ajax({
           url: '/api/ac/tag?type=' + type + '&list',
           type: 'GET',
@@ -68,12 +66,14 @@ define([
             // array based on that for the pointer to the list itself to be iterated through
             // on the front-end.
             self.tagSources[type] = data;
+            return cb();
           }
         });
       }
 
       async.each(types, requestAllTagsByType, function (err) {
-        self.render();
+        self.model.trigger('task:tag:types', self.tagSources);
+        self.render(self);
       });
     },
 

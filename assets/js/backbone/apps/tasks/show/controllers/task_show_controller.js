@@ -42,7 +42,10 @@ define([
         el: '.edit-task-section',
         edit: true,
         taskId: this.model.attributes.id,
-        model: this.model
+        model: this.model,
+        tags: this.tags,
+        madlibTags: this.madlibTags,
+        tagTypes: this.tagTypes
       }).render();
       this.$(".task-show-madlib").hide();
       this.$(".li-task-view").show();
@@ -128,6 +131,18 @@ define([
       });
     },
     initializeTaskItemView: function () {
+      var self = this;
+      // Get the tag type info from the view so we don't have to refetch
+      this.listenTo(this.model, 'task:tag:types', function (data) {
+        self.tagTypes = data;
+        console.log(self.tagTypes);
+      });
+      this.listenTo(this.model, 'task:tag:data', function (tags, madlibTags) {
+        self.tags = tags;
+        self.madlibTags = madlibTags;
+        console.log(self.tags);
+        console.log(self.madlibTags);
+      });
       if (this.taskItemView) this.taskItemView.cleanup();
       this.taskItemView = new TaskItemView({
         model: this.options.model,

@@ -56,6 +56,10 @@ input {
 	padding-top: 10px;
 }
 
+.box-pad-b {
+	padding-bottom: 10px;
+}
+
 .box-icon-text {
 	margin-left: 5px;
 }
@@ -781,16 +785,13 @@ textarea#task-description {
 	margin-bottom: 5px;
 }
 
-.task-edit-form-button {
-	margin-bottom: 10px;
-}
-
 .task-location {
 	width: 200px;
 }
 
 .task-skills {
-	margin: 0 0 5px 0;
+	margin-top: 5px;
+	width: 100%;
 }
 
 .task-topics {
@@ -806,12 +807,6 @@ textarea#task-description {
 
 .task-people {
 	margin: 0 0 5px 0;
-}
-
-.task-skills {
-	clear: both;
-	width: 100%;
-	margin: 5px 0 15px 0;
 }
 
 .task-length {

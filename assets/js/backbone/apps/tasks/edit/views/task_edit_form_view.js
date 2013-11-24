@@ -9,6 +9,7 @@ define([
   var TaskEditFormView = Backbone.View.extend({
 
     events: {
+      'click #task-view'      : 'view',
       'submit #task-edit-form': 'submit'
     },
 
@@ -16,23 +17,20 @@ define([
       this.options = options;
     },
 
+    view: function () {
+      if (e.preventDefault) e.preventDefault();
+      Backbone.history.navigate('tasks/' + this.model.attributes.id, { trigger: true });
+    },
+
     render: function () {
-      var self = this,
-          compiledTemplate;
+      var compiledTemplate;
 
-      $.ajax({
-        url: '/api/tag/findAllByTaskId/' + self.model.id,
-        async: false,
-        success: function (res, text, xhr) {
-          self.tags = [];
-          for (var i = 0; i < res.length; i += 1) {
-            self.tags.push(res[i]);
-          }
-        }
-      });
-
-      this.data = { data: this.model.toJSON() }
-      this.data['madlibTags'] = organizeTags(this.tags);
+      this.data = {
+        data: this.model.toJSON(),
+        tagTypes: this.options.tagTypes,
+        tags: this.options.tags,
+        madlibTags: this.options.madlibTags
+      };
       console.log(this.data);
 
       compiledTemplate = _.template(TaskEditFormTemplate, this.data);
@@ -47,6 +45,147 @@ define([
       var formatResult = function (object, container, query) {
         return object.name;
       };
+
+      // $("#skills-required").select2({
+      //   formatResult: formatResult,
+      //   formatSelection: formatResult,
+      //   minimumInputLength: 1,
+      //   ajax: {
+      //     url: '/api/ac/tag',
+      //     dataType: 'json',
+      //     data: function (term) {
+      //       return {
+      //         type: 'skillRequired',
+      //         q: term
+      //       };
+      //     },
+      //     results: function (data) {
+      //       return { results: data };
+      //     }
+      //   }
+      // });
+
+      // $("#time-required").select2({
+      //   formatResult: formatResult,
+      //   formatSelection: formatResult,
+      //   minimumInputLength: 1,
+      //   ajax: {
+      //     url: '/api/ac/tag',
+      //     dataType: 'json',
+      //     data: function (term) {
+      //       return {
+      //         type: 'time-required',
+      //         q: term
+      //       };
+      //     },
+      //     results: function (data) {
+      //       return { results: data };
+      //     }
+      //   }
+      // });
+
+      // $("#time-estimate").select2({
+      //   formatResult: formatResult,
+      //   formatSelection: formatResult,
+      //   minimumInputLength: 1,
+      //   ajax: {
+      //     url: '/api/ac/tag',
+      //     dataType: 'json',
+      //     data: function (term) {
+      //       return {
+      //         type: 'time-estimate',
+      //         q: term
+      //       };
+      //     },
+      //     results: function (data) {
+      //       return { results: data };
+      //     }
+      //   }
+      // });
+
+      // $("#length").select2({
+      //   formatResult: formatResult,
+      //   formatSelection: formatResult,
+      //   minimumInputLength: 1,
+      //   ajax: {
+      //     url: '/api/ac/tag',
+      //     dataType: 'json',
+      //     data: function (term) {
+      //       return {
+      //         type: 'length',
+      //         q: term
+      //       };
+      //     },
+      //     results: function (data) {
+      //       return { results: data };
+      //     }
+      //   }
+      // });
+
+      $("#topics").select2({
+        placeholder: "topics",
+        multiple: true,
+        formatResult: formatResult,
+        formatSelection: formatResult,
+        ajax: {
+          url: '/api/ac/tag',
+          dataType: 'json',
+          data: function (term) {
+            return {
+              type: 'topic',
+              q: term
+            };
+          },
+          results: function (data) {
+            return { results: data }
+          }
+        }
+      });
+      if (this.data['madlibTags'].topic) {
+        $("#topics").select2('data', this.data['madlibTags'].topic);
+      }
+
+      // $("#people").select2({
+      //   formatResult: formatResult,
+      //   formatSelection: formatResult,
+      //   minimumInputLength: 1,
+      //   ajax: {
+      //     url: '/api/ac/tag',
+      //     dataType: 'json',
+      //     data: function (term) {
+      //       return {
+      //         type: 'people',
+      //         q: term
+      //       };
+      //     },
+      //     results: function (data) {
+      //       return { results: data };
+      //     }
+      //   }
+      // });
+
+      $("#skills").select2({
+        placeholder: "skills",
+        multiple: true,
+        formatResult: formatResult,
+        formatSelection: formatResult,
+        ajax: {
+          url: '/api/ac/tag',
+          dataType: 'json',
+          data: function (term) {
+            return {
+              type: 'skill',
+              q: term
+            };
+          },
+          results: function (data) {
+            return { results: data }
+          }
+        }
+      });
+      if (this.data['madlibTags'].skill) {
+        $("#skills").select2('data', this.data['madlibTags'].skill);
+      }
 
       $("#location").select2({
         formatResult: formatResult,
@@ -69,137 +208,53 @@ define([
       });
 
       $("#skills-required").select2({
-        formatResult: formatResult,
-        formatSelection: formatResult,
-        minimumInputLength: 1,
-        ajax: {
-          url: '/api/ac/tag',
-          dataType: 'json',
-          data: function (term) {
-            return {
-              type: 'skillRequired',
-              q: term
-            };
-          },
-          results: function (data) {
-            return { results: data };
-          }
-        }
+        placeholder: "required/not-required",
+        width: '200px'
       });
 
       $("#time-required").select2({
-        formatResult: formatResult,
-        formatSelection: formatResult,
-        minimumInputLength: 1,
-        ajax: {
-          url: '/api/ac/tag',
-          dataType: 'json',
-          data: function (term) {
-            return {
-              type: 'time-required',
-              q: term
-            };
-          },
-          results: function (data) {
-            return { results: data };
-          }
-        }
-      });
-
-      $("#time-estimate").select2({
-        formatResult: formatResult,
-        formatSelection: formatResult,
-        minimumInputLength: 1,
-        ajax: {
-          url: '/api/ac/tag',
-          dataType: 'json',
-          data: function (term) {
-            return {
-              type: 'time-estimate',
-              q: term
-            };
-          },
-          results: function (data) {
-            return { results: data };
-          }
-        }
-      });
-
-      $("#length").select2({
-        formatResult: formatResult,
-        formatSelection: formatResult,
-        minimumInputLength: 1,
-        ajax: {
-          url: '/api/ac/tag',
-          dataType: 'json',
-          data: function (term) {
-            return {
-              type: 'length',
-              q: term
-            };
-          },
-          results: function (data) {
-            return { results: data };
-          }
-        }
-      });
-
-      $("#topics").select2({
-        formatResult: formatResult,
-        formatSelection: formatResult,
-        minimumInputLength: 1,
-        ajax: {
-          url: '/api/ac/tag',
-          dataType: 'json',
-          data: function (term) {
-            return {
-              type: 'topic',
-              q: term
-            };
-          },
-          results: function (data) {
-            return { results: data };
-          }
-        }
+        placeholder: 'time-required',
+        width: '130px'
       });
 
       $("#people").select2({
-        formatResult: formatResult,
-        formatSelection: formatResult,
-        minimumInputLength: 1,
-        ajax: {
-          url: '/api/ac/tag',
-          dataType: 'json',
-          data: function (term) {
-            return {
-              type: 'people',
-              q: term
-            };
-          },
-          results: function (data) {
-            return { results: data };
-          }
-        }
+        placeholder: 'people',
+        width: '150px'
       });
 
-      $("#skills").select2({
-        formatResult: formatResult,
-        formatSelection: formatResult,
-        minimumInputLength: 1,
-        ajax: {
-          url: '/api/ac/tag',
-          dataType: 'json',
-          data: function (term) {
-            return {
-              type: 'skill',
-              q: term
-            };
-          },
-          results: function (data) {
-            return { results: data };
-          }
-        }
+      $("#length").select2({
+        placeholder: 'length',
+        width: '130px'
       });
+
+      $("#time-estimate").select2({
+        placeholder: 'time-estimate',
+        width: '200px'
+      });
+
+      $("#task-location").select2({
+        placeholder: 'location',
+        width: '130px'
+      });
+
+      // $("#skills").select2({
+      //   formatResult: formatResult,
+      //   formatSelection: formatResult,
+      //   minimumInputLength: 1,
+      //   ajax: {
+      //     url: '/api/ac/tag',
+      //     dataType: 'json',
+      //     data: function (term) {
+      //       return {
+      //         type: 'skill',
+      //         q: term
+      //       };
+      //     },
+      //     results: function (data) {
+      //       return { results: data };
+      //     }
+      //   }
+      // });
 
     },
 

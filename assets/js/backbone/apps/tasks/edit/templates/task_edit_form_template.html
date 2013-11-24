@@ -14,85 +14,49 @@
 
   <div class="task-edit-description">
     I need
-      <strong>
-          <input type="hidden"
-            <% if (madlibTags['people']) { %>
-              placeholder="<%= madlibTags['people'] %>"
-            <% } else { %>
-              placeholder="to set a team size"
-            <% } %>
-          class="task-people" id="people" />
-      </strong>
+    <select id="people">
+      <% _.each(tagTypes['task-people'], function (t) { %>
+      <option value=<%= t.id %> <% if (madlibTags['task-people'] && (madlibTags['task-people'][0].id == t.id)) { %>selected<% } %>><%= t.name %></option>
+      <% }); %>
+    </select>
 
     to work on an opportunity about these topics:
-    <strong>
-        <input type="text"
-          <% if (madlibTags['topic']) { %>
-            placeholder="<%= madlibTags['topic'] %>"
-          <% } else { %>
-            placeholder="topic 1, topic 2, etc..."
-          <% } %>
-        id="topics" class="task-topics" />
-    </strong>
+      <input type="hidden" id="topics" class="task-skills" />
 
     <hr />
 
     The following skills are
-      <strong>
-          <input type="text"
-            <% if (madlibTags['skills-required']) { %>
-              placeholder="<%= madlibTags['skills-required'] %>"
-            <% } else { %>
-              placeholder="required/not required"
-            <% } %>
-          class="task-skills-required" id="skills-required" />
-      </strong>
+    <select id="skills-required">
+      <% _.each(tagTypes['task-skills-required'], function (t) { %>
+      <option value=<%= t.id %> <% if (madlibTags['task-skills-required'] && (madlibTags['task-skills-required'][0].id == t.id)) { %>selected<% } %>><%= t.name %></option>
+      <% }); %>
+    </select>
 
     to complete this opportunity:
-      <strong>
-          <input type="text"
-            <% if (madlibTags['skill']) { %>
-              placeholder="<%= madlibTags['skill'] %>"
-            <% } else { %>
-              placeholder="skill 1, skill 2, etc"
-            <% } %>
-          id="skills" class="task-skills" />
-      </strong>
+    <input type="hidden" id="skills" class="task-skills"/>
 
     <hr />
 
     It will require
-      <strong>
-        <input type="text"
-          <% if (madlibTags['time-estimate']) { %>
-            placeholder="<%= madlibTags['time-estimate'] %>"
-          <% } else { %>
-            placeholder="estimated"
-          <% } %>
-        class="task-estimated-time" id="time-estimate" />
-      </strong>
+    <select id="time-estimate">
+      <% _.each(tagTypes['task-time-estimate'], function (t) { %>
+      <option value=<%= t.id %> <% if (madlibTags['task-time-estimate'] && (madlibTags['task-time-estimate'][0].id == t.id)) { %>selected<% } %>><%= t.name %></option>
+      <% }); %>
+    </select>
 
     hours of
-      <strong>
-        <input type="text"
-          <% if (madlibTags['time-required']) { %>
-            placeholder="<%= madlibTags['time-required'] %>"
-          <% } else { %>
-            placeholder="required"
-          <% } %>
-        class="task-time-required" id="time-required" />
-      </strong>
+    <select id="time-required">
+      <% _.each(tagTypes['task-time-required'], function (t) { %>
+      <option value=<%= t.id %> <% if (madlibTags['task-time-required'] && (madlibTags['task-time-required'][0].id == t.id)) { %>selected<% } %>><%= t.name %></option>
+      <% }); %>
+    </select>
 
     work, and must be completed within
-      <strong>
-        <input type="text"
-          <% if (madlibTags['length']) { %>
-            placeholder="<%= madlibTags['length'] %>"
-          <% } else { %>
-            placeholder="this time frame"
-          <% } %>
-        class="task-length" id="length" />
-      </strong>
+    <select id="length">
+      <% _.each(tagTypes['task-length'], function (t) { %>
+      <option value=<%= t.id %> <% if (madlibTags['task-length'] && (madlibTags['task-length'][0].id == t.id)) { %>selected<% } %>><%= t.name %></option>
+      <% }); %>
+    </select>
 
     <hr />
 
@@ -113,8 +77,9 @@
   </div>
   <div class="row">
     <div class="col-lg-12">
-      <div class="pull-right">
-        <input type="submit" class="btn btn-c2 task-edit-form-button" value="Save Changes"/>
+      <div class="pull-right box-pad-b">
+        <button class="btn btn-c0" id="task-view">View Opportunity</button>
+        <input type="submit" class="btn btn-c2" value="Save Changes"/>
       </div>
     </div>
   </div>
