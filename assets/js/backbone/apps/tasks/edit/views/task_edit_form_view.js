@@ -8,40 +8,15 @@ define([
 
   var TaskEditFormView = Backbone.View.extend({
 
-    el: ".main-section",
-
     events: {
       'submit #task-edit-form': 'submit'
     },
 
-    viewEvents: function () {
-      var self = this;
-      $(".show-task").on('click', function (e) {
-        self.returnToTaskShowPage();
-      });
-    },
-
     initialize: function (options) {
       this.options = options;
-      if (this.options.edit) {
-        // Sync out of scope events and DOM elements.
-        this.syncOutOfScopeDomElements();
-        this.viewEvents();
-      }
-    },
-
-    syncOutOfScopeDomElements: function () {
-      $(".edit-task").removeClass("edit-task").addClass("show-task");
-      $(".show-task > i > strong").text("Show");
-    },
-
-    returnToTaskShowPage: function () {
-      alert("You will lose all saved data if you continue without submitting");
-      Backbone.history.navigate('tasks/' + this.options.taskId, { trigger: true }, this.options.taskId);
     },
 
     render: function () {
-
       var self = this,
           compiledTemplate;
 
@@ -56,8 +31,9 @@ define([
         }
       });
 
-      this.data = { data: this.model }
+      this.data = { data: this.model.toJSON() }
       this.data['madlibTags'] = organizeTags(this.tags);
+      console.log(this.data);
 
       compiledTemplate = _.template(TaskEditFormTemplate, this.data);
       this.$el.html(compiledTemplate);

@@ -45,14 +45,14 @@ define([
     },
 
     render: function () {
-      this.initializeSelect2Data();
+      this.initializeTags();
 
       var compiledTemplate = _.template(TaskShowTemplate, this.data);
       this.$el.html(compiledTemplate);
       this.model.trigger('task:show:render:done');
     },
 
-    initializeSelect2Data: function () {
+    initializeTags: function () {
       var self = this,
           types = ["task-skills-required", "task-time-required", "task-people", "task-length", "task-time-estimate"];
 
@@ -67,7 +67,7 @@ define([
             // Dynamically create an associative
             // array based on that for the pointer to the list itself to be iterated through
             // on the front-end.
-              self.tagSources[type] = data;
+            self.tagSources[type] = data;
           }
         });
       }

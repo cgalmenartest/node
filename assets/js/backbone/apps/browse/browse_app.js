@@ -22,7 +22,7 @@ define([
       'projects/:id/:action(/)'   : 'showProject',
       'tasks(/)'                  : 'listTasks',
       'tasks/:id(/)'              : 'showTask',
-      'tasks/:id/edit(/)'         : 'editTask',
+      'tasks/:id/edit(/)'         : 'showTask',
       'profile(/)'                : 'showProfile',
       'profile/:id(/)'            : 'showProfile'
     },
@@ -70,19 +70,11 @@ define([
       this.projectShowController = new ProjectShowController({ model: model, router: this, id: id, action: action, data: this.data });
     },
 
-    showTask: function (id) {
+    showTask: function (id, action) {
       this.cleanupChildren();
-      scrollTop();
       var model = new TaskModel();
       model.set({ id: id })
-      this.taskShowController = new TaskShowController({ model: model, router: this, id: id });
-    },
-
-    editTask: function (id) {
-      var model = new TaskModel();
-      model.set({ id: id });
-      if (this.taskEditFormView) this.taskEditFormView.cleanup();
-      this.taskEditFormView = new TaskEditFormView({ el: '.edit-task-section', edit: true, taskId: id, model: model }).render();
+      this.taskShowController = new TaskShowController({ model: model, router: this, id: id, action: action, data: this.data });
     },
 
     showProfile: function (id) {

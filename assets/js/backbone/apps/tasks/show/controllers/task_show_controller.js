@@ -19,6 +19,7 @@ define([
 
     events: {
       'click #task-edit'                : 'edit',
+      'click #task-view'                : 'view',
       "click #like-button"              : 'like',
       'click #volunteer'                : 'volunteer',
       'click #volunteered'              : 'volunteered',
@@ -35,22 +36,47 @@ define([
       this.initializeChildren();
     },
 
+    initializeEdit: function () {
+      if (this.taskEditFormView) this.taskEditFormView.cleanup();
+      this.taskEditFormView = new TaskEditFormView({
+        el: '.edit-task-section',
+        edit: true,
+        taskId: this.model.attributes.id,
+        model: this.model
+      }).render();
+      this.$(".task-show-madlib").hide();
+      this.$(".li-task-view").show();
+      this.$(".li-task-edit").hide();
+      this.$(".task-view").hide();
+    },
+
     initializeChildren: function () {
       var self = this;
 
       this.listenTo(this.model, 'task:show:render:done', function () {
         self.initializeHandlers();
         self.initializeLikes();
-        if (window.cache.currentUser) {
-          self.initializeVolunteers();
-        }
-        popovers.popoverPeopleInit(".project-people-div");
 
-        if (self.commentListController) self.commentListController.cleanup();
-        self.commentListController = new CommentListController({
-          target: 'task',
-          id: self.model.id
-        });
+        if (this.action == 'edit') {
+          self.initializeEdit();
+        } else {
+          if (window.cache.currentUser) {
+            self.initializeVolunteers();
+          }
+          popovers.popoverPeopleInit(".project-people-div");
+          if (self.commentListController) self.commentListController.cleanup();
+          self.commentListController = new CommentListController({
+            target: 'task',
+            id: self.model.attributes.id
+          });
+          if (self.attachmentView) self.attachmentView.cleanup();
+          self.attachmentView = new AttachmentView({
+            target: 'task',
+            id: this.model.attributes.id,
+            owner: this.model.attributes.isOwner,
+            el: '.attachment-wrapper'
+          }).render();
+        }
 
         if (self.tagView) self.tagView.cleanup();
         self.tagView = new TagShowView({
@@ -62,13 +88,6 @@ define([
           url: '/api/tag/findAllByTaskId/'
         }).render();
 
-        if (self.attachmentView) self.attachmentView.cleanup();
-        self.attachmentView = new AttachmentView({
-          target: 'task',
-          id: this.model.attributes.id,
-          owner: this.model.attributes.isOwner,
-          el: '.attachment-wrapper'
-        }).render();
       });
     },
 
@@ -109,20 +128,24 @@ define([
       });
     },
     initializeTaskItemView: function () {
-      var self = this;
-
       if (this.taskItemView) this.taskItemView.cleanup();
       this.taskItemView = new TaskItemView({
-        model: self.options.model,
-        router: self.options.router,
-        id: self.options.id,
-        el: self.el
+        model: this.options.model,
+        router: this.options.router,
+        id: this.options.id,
+        el: this.el
       });
     },
 
     edit: function (e) {
       if (e.preventDefault) e.preventDefault();
-      Backbone.history.navigate('tasks/' + this.model.id + '/edit', { trigger: true });
+      this.initializeEdit();
+      Backbone.history.navigate('tasks/' + this.model.id + '/edit');
+    },
+
+    view: function (e) {
+      if (e.preventDefault) e.preventDefault();
+      Backbone.history.navigate('tasks/' + this.model.id, { trigger: true });
     },
 
     like: function (e) {
@@ -202,6 +225,7 @@ define([
     },
 
     cleanup: function () {
+      if (this.taskEditFormView) this.taskEditFormView.cleanup();
       if (this.tagView) { this.tagView.cleanup(); }
       if (this.attachmentView) { this.attachmentView.cleanup(); }
       if (this.commentListController) { this.commentListController.cleanup(); }
