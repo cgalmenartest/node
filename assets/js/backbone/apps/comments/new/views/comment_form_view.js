@@ -48,27 +48,33 @@ define([
         this.comment = $(e.currentTarget).find(".comment-content:first-child").text();
       }
 
+      // abort if the comment is empty
+      if (!this.comment) {
+        this.$('.comment-alert-empty').show();
+        return;
+      }
+
       if ($(e.currentTarget).find(".comment-content:first-child").children("a").attr("href") !== undefined)
         this.wikiLink = _.escape($(e.currentTarget).find(".comment-content:first-child").children("a").attr("href"))
 
-      var projectId   = this.options.projectId,
-          parentId;
+      var parentId;
 
       if (this.options.parentId) {
         parentId = parseInt(this.options.parentId);
       }
 
       var data = {
-        projectId : projectId,
         comment   : this.comment,
         topic     : false
       };
+      data[this.options.target + 'Id'] = this.options[this.options.target + 'Id'];
 
       if (this.options.topic) {
         data.topic = true;
       } else {
         data.parentId = parentId;
       }
+      this.$('.comment-alert-empty').hide();
 
       var currentTarget = e.currentTarget;
       this.collection.trigger("comment:save", data, currentTarget);

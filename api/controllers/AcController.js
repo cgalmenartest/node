@@ -61,7 +61,11 @@ module.exports = {
 
   search: function (req, res) {
     if (!req.param('q')) { return res.send([]); }
-    runSearch('search', req.param('q'), req.query, function (err, results) {
+    var searchTarget = 'search';
+    if (req.params.id) {
+      searchTarget = 'search-' + req.params.id;
+    }
+    runSearch(searchTarget, req.param('q'), req.query, function (err, results) {
       if (err) { return res.send(400, { message: 'Error performing search' }); }
       return res.send(results);
     });

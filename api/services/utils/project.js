@@ -6,7 +6,7 @@
  */
 var authorized = function (id, userId, cb) {
   Project.findOneById(id, function (err, proj) {
-    if (err) { return cb('Error finding project.', null); }
+    if (err || !proj) { return cb('Error finding project.', null); }
     // otherwise, check that we have an owner
     ProjectOwner.findByProjectId(proj.id, function(err, owners) {
       if (err) { return cb('Error looking up owners.', null); }
@@ -27,6 +27,49 @@ var authorized = function (id, userId, cb) {
   });
 };
 
+var getMetadata = function(proj, user, cb) {
+  proj.like = false;
+  Like.countByProjectId( proj.id, function (err, likes) {
+    if (err) { return cb(err, proj); }
+    proj.likeCount = likes;
+    if (!user) {
+      return cb(null, proj);
+    }
+    Like.findOne({ where: { userId: user.id, projectId: proj.id }}, function (err, like) {
+      if (err) { return cb(err, proj); }
+      if (like) { proj.like = true; }
+      return cb(null, proj);
+    });
+  });
+};
+
+var addCounts = function(proj, done) {
+  // Count the number of comments
+  Comment.count()
+  .where({ projectId: proj.id })
+  .exec(function (err, commentCount) {
+    if (err) return done(err);
+    proj.commentCount = commentCount;
+    // Count the number of owners
+    ProjectOwner.count()
+    .where({ projectId: proj.id })
+    .exec(function (err, ownerCount) {
+      if (err) return done(err);
+      proj.ownerCount = ownerCount;
+      // Count the number of tasks
+      Task.count()
+      .where({ projectId: proj.id })
+      .exec(function (err, taskCount) {
+        if (err) return done(err);
+        proj.taskCount = taskCount;
+        done();
+      });
+    });
+  });
+};
+
 module.exports = {
-  authorized: authorized
+  getMetadata: getMetadata,
+  authorized: authorized,
+  addCounts: addCounts
 };

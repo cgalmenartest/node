@@ -5,10 +5,10 @@
 module.exports = {
 
   attributes: {
-    // Current state of the task (active, closed, etc)
+    // Current state of the task
     state: {
         type: 'STRING',
-        defaultsTo: 'draft'
+        defaultsTo: 'public'
     },
     // user id of the task owner
     userId: 'INTEGER',
@@ -19,13 +19,6 @@ module.exports = {
     // description of the task
     description: 'STRING',
 
-    /* Location is not yet added because Sails doesn't
-       yet have support for GIS extensions to postgresql.
-       Location will also need a modifier, such as how far
-       away from the location is acceptable, and whether
-       location is a required qualification.
-       */
-    // location: 'UNKNOWN'
   }
 
 };

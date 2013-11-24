@@ -28,15 +28,14 @@ define([
       project = new ProjectModel({
         title: data['title'],
         description: data['description']
-      })
-
-      self.add(project);
-
-      self.models.forEach(function (model) {
-        model.save();
       });
 
-      self.trigger("project:save:success");
+      project.save({}, {
+        success: function (data) {
+          self.add(project);
+          self.trigger("project:save:success", data);
+        }
+      });
     }
 
   });

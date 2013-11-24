@@ -19,7 +19,10 @@ define([
     events: {
       'click .add-event'                : 'add',
       'click .rsvp'                     : 'toggleRSVP',
-      "mouseenter .project-people-div"  : popovers.popoverPeopleOn
+      'mouseenter .data-event-flag-true': 'buttonRSVPOn',
+      'mouseleave .data-event-flag-true': 'buttonRSVPOff',
+      "mouseenter .project-people-div"  : popovers.popoverPeopleOn,
+      "click .project-people-div"       : popovers.popoverClick
     },
 
     initialize: function (settings) {
@@ -31,8 +34,6 @@ define([
         $(".modal").modal('hide')
         this.requestEventsCollectionData()
       });
-
-
     },
 
     fireUpEventsCollection: function () {
@@ -55,7 +56,6 @@ define([
     },
 
     renderEventCollectionView: function (collection) {
-
       if (this.eventCollectionView) {
         this.eventCollectionView.cleanup()
       }
@@ -63,7 +63,8 @@ define([
       this.eventCollectionView = new EventCollectionView({
         el: "#event-list-wrapper",
         onRender: true,
-        collection: collection
+        collection: collection,
+        projectId: this.options.projectId
       });
 
       popovers.popoverPeopleInit(".project-people-div");
@@ -89,28 +90,55 @@ define([
       }
     },
 
+    updatePeople: function (e, inc) {
+      var peopleDiv = $($(e.currentTarget).parents('.event')[0]).find('.event-people')[0];
+      var numDiv = $(peopleDiv).children('.event-people-number');
+      var newNum = parseInt($(numDiv).html());
+      if (inc) {
+        newNum++
+      } else {
+        newNum--;
+      }
+      $(numDiv).html(newNum);
+      var textDiv = $(peopleDiv).children('.event-people-text')[0];
+      if (newNum == 1) {
+        $(textDiv).html($(textDiv).data('singular'));
+      } else {
+        $(textDiv).html($(textDiv).data('plural'));
+      }
+    },
+
+    buttonRSVPOn: function (e) {
+      $(e.currentTarget).button('hover');
+    },
+
+    buttonRSVPOff: function (e) {
+      $(e.currentTarget).button('going');
+    },
+
     toggleRSVP: function (e) {
-      if (e.preventDefault) e.preventDefault()
-
-      // Move this to a more semantic method
-      var id = parseInt($(e.currentTarget).parent().parent().parent().parent().parent().attr("id"))
-
+      var self = this;
+      if (e.preventDefault) e.preventDefault();
+      // get the id from the parent event div
+      var id = $($(e.currentTarget).parents('div.event')[0]).data('id');
       if ($(".rsvp").hasClass("data-event-flag-true") === false) {
         $(".rsvp").removeClass("data-event-flag-false");
         $(".rsvp").addClass("data-event-flag-true");
+        $(e.currentTarget).button('going');
+        self.updatePeople(e, true);
         $.ajax({
           url: '/api/event/attend/' + id,
           success: function (data) {
-            $(e.currentTarget).text("I'm going.");
           }
         });
       } else {
         $(".rsvp").removeClass("data-event-flag-true");
         $(".rsvp").addClass("data-event-flag-false");
+        $(e.currentTarget).button('rsvp');
+        self.updatePeople(e, false);
         $.ajax({
           url: '/api/event/cancel/' + id,
           success: function (data) {
-            $(e.currentTarget).text("RSVP")
           }
         })
       }

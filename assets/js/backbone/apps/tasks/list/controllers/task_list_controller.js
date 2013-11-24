@@ -17,6 +17,7 @@ define([
     events: {
       'click .add-task' : 'add',
       'click .show-task': 'show',
+      'click .task'     : 'show',
       'click .wizard'   : 'wizard'
     },
 
@@ -26,6 +27,7 @@ define([
 
       this.initializeTaskCollectionInstance();
       this.initializeTaskModelInstance();
+      this.initializeListeners();
       this.requestTasksCollectionData();
 
       this.collection.on("tasks:render", function () {
@@ -33,10 +35,15 @@ define([
       })
     },
 
+    initializeListeners: function() {
+      var self = this;
+      this.listenTo(this.taskModel, 'task:tags:save:success', function () {
+        self.initializeTaskModelInstance();
+        self.requestTasksCollectionData();
+      });
+    },
+
     initializeTaskModelInstance: function () {
-      if (this.taskModel) {
-        this.taskModel.remove();
-      }
       this.taskModel = new TaskModel();
     },
 
@@ -63,10 +70,6 @@ define([
     renderTaskCollectionView: function () {
       var self = this;
 
-      $(".modal-backdrop").hide();
-      $(".modal").modal('hide');
-      $("body").removeClass("modal-open")
-
       if (this.taskCollectionView) this.taskCollectionView.cleanup();
       this.taskCollectionView = new TaskCollectionView({
         el: "#task-list-wrapper",
@@ -79,34 +82,44 @@ define([
       if (e.preventDefault) e.preventDefault();
       var self = this;
 
-      if (this.modalWizardComponent) this.modalWizardComponent;
+      if (this.taskFormView) this.taskFormView.cleanup();
+      if (this.modalWizardComponent) this.modalWizardComponent.cleanup();
       this.modalWizardComponent = new ModalWizardComponent({
-        el: "#task-list-wrapper",
-        id: "addTask",
-        modalTitle: 'New Opportunity'
+        el: "#addTask",
+        modalTitle: 'New Opportunity',
+        model: self.taskModel,
+        collection: self.tasks,
+        modelName: 'task',
+        data: function() { return {
+          title: $("#task-title").val(),
+          description: $("#task-description").val(),
+          projectId: self.options.projectId
+        } }
       }).render();
 
-      if (!_.isUndefined(this.modalWizardComponent)) {
-        if (this.taskFormView) this.taskFormView;
-        this.taskFormView = new TaskFormView({
-          el: ".modal-body",
-          projectId: this.options.projectId,
-          model: self.taskModel,
-          tasks: self.tasks
-        }).render();
-      }
+      this.taskFormView = new TaskFormView({
+        el: ".modal-body",
+        projectId: this.options.projectId,
+        model: self.taskModel,
+        tasks: self.tasks
+      }).render();
+      this.modalWizardComponent.setChildView(this.taskFormView);
 
     },
 
     show: function (e) {
       if (e.preventDefault) e.preventDefault();
-      var projectId = parseInt($(e.currentTarget).parent().parent().parent().attr('data-project-id')),
-          taskId    = parseInt($(e.currentTarget).parent().parent().attr('data-id'));
+      var projectId = $(e.currentTarget).data('projectid'),
+          taskId    = $(e.currentTarget).data('id');
 
-      Backbone.history.navigate('projects/' + projectId + '/tasks/' + taskId, { trigger: true });
+      if (taskId == 'null') { return; }
+
+      Backbone.history.navigate('tasks/' + taskId, { trigger: true }, taskId);
     },
 
     cleanup: function () {
+      if (this.taskFormView) this.taskFormView.cleanup();
+      if (this.modalWizardComponent) this.modalWizardComponent.cleanup();
       if (this.taskCollectionView) this.taskCollectionView.cleanup();
       removeView(this);
     }
@@ -114,4 +127,4 @@ define([
   });
 
   return Application.Controller.TaskList;
-})
+});

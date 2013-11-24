@@ -6,6 +6,7 @@
  */
 var async = require('async');
 var _ = require('underscore');
+var projUtils = require('../services/utils/project');
 var tagUtils = require('../services/utils/tag');
 
 /**
@@ -75,7 +76,6 @@ var getUser = function (userId, reqId, cb) {
 var update = function (req, res) {
   var user = req.user[0];
   var params = _.extend(req.body || {}, req.params);
-  sails.log.debug(params);
   if (params.name) { user.name = params.name; }
   if (params.username) { user.username = params.username; }
   if (params.email) { user.email = params.email; }
@@ -146,11 +146,8 @@ module.exports = {
     if (!req.user) {
       return res.send(403, null);
     }
-    var reqId = null;
+    var reqId = req.user[0].id;
     var userId = req.user[0].id;
-    if (req.user) {
-      reqId = req.user[0].id;
-    }
     if (req.route.params.id) {
       userId = req.route.params.id;
     }
@@ -164,6 +161,66 @@ module.exports = {
 
   update: function (req, res) {
     return update(req, res);
+  },
+
+  activities: function (req, res) {
+    var reqId = null;
+    var userId = (req.user ? req.user[0].id : null);
+    if (req.user) {
+      reqId = req.user[0].id;
+    }
+    if (req.route.params.id) {
+      reqId = req.route.params.id;
+    }
+    var projects = [];
+    // Get projects owned by this user
+    ProjectOwner.find()
+    .where({ userId: reqId })
+    .exec(function (err, ownerList) {
+      var projIds = [];
+      // Get each project that the current user is authorized to see
+      var getProject = function(projId, done) {
+        projUtils.authorized(projId, userId, function (err, proj) {
+          if (proj) {
+            // delete unnecessary data from projects
+            delete proj['deletedAt'];
+            projects.push(proj);
+          }
+          done(err);
+        });
+      };
+      for (var i in ownerList) {
+        projIds.push(ownerList[i].projectId);
+      }
+
+      // Grab each of the projects
+      async.each(projIds, getProject, function (err) {
+        if (err) { return res.send(400, { message: 'Error looking up projects.'}); }
+        // Then grab the project metadata
+        var getMetadata = function(proj, done) {
+          projUtils.getMetadata(proj, userId, function (err, newProj) {
+            if (!err) {
+              proj = newProj;
+            }
+            return done(err);
+          });
+        };
+        async.each(projects, getMetadata, function (err) {
+          if (err) { return res.send(400, { message: 'Error looking up projects.'}); }
+          // find tasks that user owns
+          Task.find()
+          .where({ userId: reqId })
+          .exec(function (err, tasks) {
+            if (err) { return res.send(400, { message: 'Error looking up tasks.'}); }
+            return res.send({
+              projects: projects,
+              tasks: tasks
+            });
+          });
+        })
+      });
+
+    });
   },
 
   photo: function(req, res) {

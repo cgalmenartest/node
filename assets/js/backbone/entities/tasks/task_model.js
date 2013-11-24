@@ -14,27 +14,57 @@ define([
     urlRoot: '/api/task',
 
     initialize: function () {
-      this.initializeTaskSave();
+      this.listenTo(this, "task:save", function (data) {
+        this.save();
+      });
+
+      this.listenTo(this, "task:model:fetch", function (data) {
+        this.get(data);
+      });
+
+      this.listenTo(this, "task:update", function (data) {
+        this.update(data);
+      });
+
+      this.listenTo(this, "task:update:state", function (state) {
+        this.updateState(state);
+      });
     },
 
-    initializeTaskSave: function () {
+    update: function (data) {
       var self = this;
 
-      this.listenTo(this, "task:save", function (title, projectId, description) {
-        self.save({
-          title: title, 
-          projectId: projectId, 
-          description: description 
-          }, { 
-          success: function (data) { 
-            self.trigger("task:save:success")
-          }, 
-          error: function (data) { 
-            console.log(data) 
-          }
-        });
+      this.save({
+        title       : data['title'],
+        description : data['description']
+      }, {
+        success: function (data) {
+          self.trigger("task:update:success", data);
+        }
       });
-    }
+    },
+
+    updateState: function (state) {
+      var self = this;
+
+      this.save({
+        state: state
+      }, {
+        success: function(data) {
+          self.trigger("task:update:state:success", data);
+        }
+      });
+    },
+
+    get: function (id) {
+      var self = this;
+      this.set({ id: id });
+      this.fetch({
+        success: function (data) {
+          self.trigger("task:model:fetch:success", data);
+        }
+      });
+    },
 
   });
 

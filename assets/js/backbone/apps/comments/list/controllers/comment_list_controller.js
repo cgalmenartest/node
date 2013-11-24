@@ -17,8 +17,10 @@ define([
 
     events: {
       "click .new-topic"                  : "newTopic",
-      "click [data-topic='true']"         : "toggleTopic",
+      "click .comment-expand"             : "topicExpand",
+      "click .comment-contract"           : "topicContract",
       "mouseenter .comment-user-link"     : popovers.popoverPeopleOn,
+      "click .comment-user-link"          : popovers.popoverClick,
       "click a[href='#reply-to-comment']" : "reply"
     },
 
@@ -43,7 +45,7 @@ define([
       else { this.commentCollection = new CommentCollection(); }
 
       this.commentCollection.fetch({
-        url: '/api/comment/findAllByProjectId/' + this.options.projectId,
+        url: '/api/comment/findAllBy' + this.options.target + 'Id/' + this.options.id,
         success: function (collection) {
           self.collection = collection;
           self.renderView(collection);
@@ -56,10 +58,10 @@ define([
 
       this.listenTo(this.commentCollection, "comment:topic:new", function (value) {
         var data = {
-          projectId: self.options.projectId,
           value: value,
           topic: true
         };
+        data[self.options.target + 'Id'] = self.options.id;
 
         // TODO: DM: Fix this to add to the collection appropriately,
         // and fetch/re-render as needed.  This is a hack to get it to work
@@ -71,18 +73,8 @@ define([
           data: JSON.stringify(data)
         }).done(function (result) {
           self.commentCollection.fetch({
-            url: '/api/comment/findAllByProjectId/' + self.options.projectId,
+            url: '/api/comment/findAllBy' + self.options.target + 'Id/' + self.options.id,
             success: function (collection) {
-
-                // var comment = new CommentItemView({
-                //   el: ".comment-item",
-                //   model: comment
-                // }).render()
-
-              // self.commentListView = new CommentListView({
-              //   el: ".comment-list-wrapper",
-              //   collection: collection
-              // }).render();
             }
           });
         });
@@ -97,6 +89,9 @@ define([
       };
 
       var depth = {};
+      if (!data.comments) {
+        data.comments = [];
+      }
       for (var i = 0; i < data.comments.length; i += 1) {
         if (data.comments[i].topic === true) {
           depth[data.comments[i].id] = 0;
@@ -109,7 +104,7 @@ define([
 
       self.commentViews = [];
       self.commentForms = [];
-      _.each(data.comments, function (comment) {
+      _.each(data.comments, function (comment, i) {
         self.renderComment(self, comment, collection);
       });
 
@@ -117,12 +112,14 @@ define([
     },
 
     renderComment: function (self, comment, collection) {
+      var self = this;
       // Render the topic view and then in that view spew out all of its children.
-      // console.log("Comment's with children:");
       var commentIV = new CommentItemView({
         el: "#comment-list-" + (comment.topic ? 'null' : comment.parentId),
         model: comment,
+        target: this.options.target,
         projectId: comment.projectId,
+        taskId: comment.taskId,
         collection: collection
       }).render();
       self.commentViews.push(commentIV);
@@ -130,7 +127,9 @@ define([
         // Place the commentForm at the bottom of the list of comments for that topic.
         var commentFV = new CommentFormView({
           el: '#comment-form-' + comment.id,
+          target: this.options.target,
           projectId: comment.projectId,
+          taskId: comment.taskId,
           parentId: comment.id,
           collection: collection,
           depth: comment['depth']
@@ -144,11 +143,22 @@ define([
       popovers.popoverPeopleInit(".project-people-div");
     },
 
-    toggleTopic: function (e) {
+    topicExpand: function (e) {
       if (e.preventDefault) e.preventDefault();
-      // The next() is the adjacent DOM element, and that will always be
-      // the list of comments that directly follows the topic (not child-literal of topic though).
-      $(e.currentTarget).next().slideToggle();
+      // toggle all the sublists
+      var target = $($(e.currentTarget).parents('li')[0])
+      $(e.currentTarget).hide();
+      $(target.find('.comment-contract')[0]).show();
+      $(target.children('.comment-sublist-wrapper')[0]).slideToggle();
+    },
+
+    topicContract: function (e) {
+      if (e.preventDefault) e.preventDefault();
+      // toggle all the sublists
+      var target = $($(e.currentTarget).parents('li')[0])
+      $(e.currentTarget).hide();
+      $(target.find('.comment-expand')[0]).show();
+      $(target.children('.comment-sublist-wrapper')[0]).slideToggle();
     },
 
     reply: function (e) {
@@ -166,19 +176,18 @@ define([
     },
 
     newTopic: function (e) {
-      var self = this;
       if (e.preventDefault) e.preventDefault();
 
-      if (self.topicForm) {
-        self.topicForm.cleanup();
-      }
-      self.topicForm = new CommentFormView({
+      if (this.topicForm) this.topicForm.cleanup();
+      var options = {
         el: '.topic-form-wrapper',
-        projectId: this.options.projectId,
+        target: this.options.target,
         collection: this.collection,
         topic: true,
         depth: -1
-      });
+      }
+      options[this.options.target + 'Id'] = this.options.id;
+      this.topicForm = new CommentFormView(options);
     },
 
     addNewCommentToDom: function (modelJson, currentTarget) {

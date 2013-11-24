@@ -42,6 +42,8 @@ module.exports = {
       };
       if (req.param('type') == 'user') {
         where.targetId = req.params.id;
+      } else if (req.param('type') == 'task') {
+        where.taskId = req.params.id;
       } else {
         where.projectId = req.params.id;
       }
@@ -61,6 +63,9 @@ module.exports = {
           if (likes[i].projectId) {
             l.projectId = likes[i].projectId;
           }
+          if (likes[i].taskId) {
+            l.taskId = likes[i].taskId;
+          }
           if (likes[i].targetId) {
             l.targetId = likes[i].targetId;
           }
@@ -78,6 +83,15 @@ module.exports = {
   count: function (req, res) {
     Like.countByProjectId( req.params.id, function (err, likes) {
       return res.send({ projectId: req.params.id, count: likes });
+    });
+  },
+
+  /**
+   * Get the number of likes for a target user
+   */
+  countt: function (req, res) {
+    Like.countByTaskId( req.params.id, function (err, likes) {
+      return res.send({ userId: req.params.id, count: likes });
     });
   },
 
@@ -106,6 +120,18 @@ module.exports = {
    * Helper function so you don't have to call create
    * Syntax: /like/likeu/:userId where :id is the userId
    */
+  liket: function (req, res) {
+    var l = { taskId: req.params.id, userId: req.user[0].id };
+    like(l, function (err, like) {
+      if (err) { return res.send(400, { message: 'Error creating like.' }); }
+      return res.send(like);
+    });
+  },
+
+  /**
+   * Helper function so you don't have to call create
+   * Syntax: /like/likeu/:userId where :id is the userId
+   */
   likeu: function (req, res) {
     var l = { targetId: req.params.id, userId: req.user[0].id };
     like(l, function (err, like) {
@@ -120,6 +146,18 @@ module.exports = {
    */
   unlike: function (req, res) {
     var l = { projectId: req.params.id, userId: req.user[0].id };
+    unlike(l, function (err) {
+      if (err) { return res.send(400, { message: 'Error destroying like.' }); }
+      return res.send(null);
+    });
+  },
+
+  /**
+   * Helper function so you don't have to call destroy
+   * Syntax: Call /like/unlikeu/:userId where :id is the userId
+   */
+  unliket: function (req, res) {
+    var l = { taskId: req.params.id, userId: req.user[0].id };
     unlike(l, function (err) {
       if (err) { return res.send(400, { message: 'Error destroying like.' }); }
       return res.send(null);

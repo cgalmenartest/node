@@ -88,6 +88,72 @@ var removeView = function (view) {
   view.$el.html("");
 }
 
+/**
+ * Clear out any el.
+ * @params {[The non-jquery mapped el for the view instance]}
+ * Return: Nothing.
+ */
+var clearEl = function (el) {
+  $(el).children().remove();
+}
+
+/**
+ * Clear out our global container for full page transitions.
+ * @params None
+ * @return Nothing
+ */
 var clearContainer = function () {
   $("#container").children().remove();
+}
+
+/**
+ * This helps alleviate a common bug with ajax based
+ * page transitions. That is sometimes when the page pushes itself off the screen
+ * and allows a browser default background to show, after which scrolling
+ * up is required.  It is a somewhat rare bug, but useful to have this function
+ * if you need it.
+ *
+ * Return:
+ * nothing
+ */
+var scrollTop = function () {
+  $(window).scrollTop($(window).scrollTop());
+}
+
+/**
+ * Add a method to the global Function object called "addSpinner",
+ * which allows us to call the chained method "addSpinner" from any function
+ * within the application.  Especially useful with render methods.
+ * @param  {[Backbone View Instance]} self
+ *
+ * Return:
+ * Attaches the spinner to the $el of the backbone view instance passed in, before that
+ * view can actually set its $el, thereby dynamically allowing a spinner to exist with little effort.
+ */
+var addSpinnerToFunctionPrototype = function (self) {
+  if (self) {
+    Function.prototype.addSpinner = function () {
+      self.$el.append("<i class='icon-spin icon-spinner'></i>")
+    }
+  } else {
+    throw new Error("Pass in a Backbone View class");
+  }
+}
+
+/**
+ * Organize the tags output into an associative array key'd by their type.
+ * If the tag has more than one value for said key, make it an array otherwise
+ * keep it as a top level object.
+ * @param  {[array]} tags           [array of tags]
+ * @return {[object]}               [bindingObject returned out]
+ */
+var organizeTags = function (tags) {
+  var outTags = {};
+  for (t in tags) {
+    if (!(_.has(outTags, tags[t].tag.type))) {
+      outTags[tags[t].tag.type] = [];
+    }
+    outTags[tags[t].tag.type].push(tags[t].tag);
+  }
+  return outTags;
 }

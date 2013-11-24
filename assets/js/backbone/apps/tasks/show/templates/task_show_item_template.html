@@ -1,2 +1,250 @@
-<!-- This gets rendered inside of #container -->
-<h1>Task Show View</h1>
+<!-- ALERTS -->
+<div class="alert alert-danger" id="alert-closed" style="<% if (model.state != 'closed') { %>display: none;<% } %>">This opportunity is <strong>closed</strong>.  It is no longer active, and no more modifications may be made.</div>
+
+<div class="row">
+  <div class="col-lg-4 project-sidebar">
+    <!-- LEFT SIDEBAR -->
+    <div class="row">
+      <div class="col-lg-12 box">
+        <div class="box-main tag-wrapper">
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-12 box task-view">
+        <div class="attachment-wrapper">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-8">
+    <div class="row">
+      <div class="col-lg-9">
+        <div class="box box-main">
+
+          <div class="main-section">
+            <div class="edit-task-section">
+
+              <h1><%= model.title %></h1>
+
+              <div class="task-show-description">
+                <%= model.description %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 padding-left-none">
+        <div class="box padding-none">
+
+          <div class="navbar-side like-row border-bottom">
+            <% if (user) { %>
+            <a href="#" id="like-button" class="like-button">
+            <% } else { %>
+            <span class="like-button">
+            <% } %>
+              <i id="like-button-icon" class="icon icon-star-empty icon-large gold"></i>
+            <% if (user) { %>
+            </a>
+            <% } else { %>
+            </span>
+            <% } %>
+            <span class="like-number" id="like-number"><%- model.likeCount %></span>
+            <span class="like-plural" id="like-text" data-plural="likes" data-singular="like">likes</span>
+          </div>
+          <div class="navbar-side border-bottom">
+            <ul class="nav nav-pills nav-stacked">
+              <% if (user) { %>
+              <li class="active volunteer-true" style="display: none;">
+                <a href="#" id="volunteered"><i class="icon icon-thumbs-up"></i> <span class="box-icon-text">Volunteered!</span></a>
+              </li>
+              <li class="volunteer-false">
+                <a href="#" id="volunteer"><i class="icon icon-thumbs-up-alt"></i> <span class="box-icon-text">Volunteer</span></a>
+              </li>
+              <% } %>
+              <li>
+                <a href="#" id="email"><i class="icon icon-envelope-alt"></i> <span class="box-icon-text">Email</span></a>
+              </li>
+            </ul>
+          </div>
+          <% if (model.isOwner) { %>
+          <div class="navbar-side">
+            <ul class="nav nav-pills nav-stacked">
+              <li class="li-task-edit">
+                <a href="#" id="task-edit"><i class="icon-pencil"></i> <span class="box-icon-text">Edit Opportunity</span></a>
+              </li>
+              <li class="li-task-view" style="display: none;">
+                <a href="#" id="task-view"><i class="icon-pencil"></i> <span class="box-icon-text">View Opportunity</span></a>
+              </li>
+              <li id="li-task-close" style="<% if (model.state == 'closed') { %>display: none;<% } %>">
+                <a href="#" id="task-close"><i class="icon-remove-sign"></i> <span class="box-icon-text">Close Opportunity</span></a>
+              </li>
+              <li id="li-task-reopen" style="<% if (model.state != 'closed') { %>display: none;<% } %>">
+                <a href="#" id="task-reopen"><i class="icon-share-alt"></i> <span class="box-icon-text">Reopen</span></a>
+              </li>
+              <!--
+              <li>
+                <a href="#" id="task-delete"><i class="icon-trash"></i> <span class="box-icon-text">Delete Opportunity</span></a>
+              </li>
+              -->
+            </ul>
+          </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="box box-main task-view">
+          <div class="task-show-description">
+            I need
+              <strong>
+                <% if (madlibTags['task-people']) { %>
+                  <%= madlibTags['task-people'][0].name %>
+                <% } else { %>
+                  'no people yet assigned'
+                <% } %>
+              </strong>
+
+            <% if (madlibTags.topic) { %>
+            to work on an opportunity about
+              <strong>
+                    <% _.each(madlibTags.topic, function (t, i) { %>
+                    <% if (i > 0) { %>
+                    ,
+                    <% } %>
+                    <%= t.name %>
+                    <% }) %>
+              </strong>.
+            <% } %>
+
+            <br />
+
+            The following skills are
+              <strong>
+                <% if (madlibTags['task-skills-required']) { %>
+                  <%= madlibTags['task-skills-required'][0].name %>
+                <% } else { %>
+                  not required
+                <% } %>
+              </strong>
+
+            to complete this opportunity:
+              <strong>
+                <% if (madlibTags.skill) { %>
+                  <% _.each(madlibTags.skill, function (s, i) { %>
+                  <% if (i > 0) { %>
+                  ,
+                  <% } %>
+                  <%= s.name %>
+                  <% }) %>
+                <% } else { %>
+                  no special skills required
+                <% } %>
+              </strong>.
+
+
+            It will require
+              <strong>
+                <% if (madlibTags['task-time-estimate']) { %>
+                  <%= madlibTags['task-time-estimate'][0].name %>
+                <% } else { %>
+                  an unspecified amount of time
+                <% } %>
+              </strong>
+
+            of
+              <strong>
+                <% if (madlibTags['task-time-required']) { %>
+                  <%= madlibTags['task-time-required'][0].name %>
+                <% } else { %>
+                  unstructured
+                <% } %>
+              </strong>
+
+            work, and
+            <% if (madlibTags['task-length']) { %>
+            must be completed within
+              <strong>
+                <%= madlibTags['task-length'][0].name %></strong>.
+            <% } else { %>
+              <strong>
+                has no deadline.
+              </strong>
+            <% } %>
+
+            <% if (madlibTags.location) { %>
+            The volunteer(s) must be located at
+            <strong>
+              <% _.each(madlibTags.location, function (s, i) { %>
+              <% if (i > 0) { %>
+              ,
+              <% } %>
+              <%= s.name %>
+              <% }) %>
+            </strong>
+            to complete this opportunity.
+            <% } else { %>
+            The volunteer(s) can be located anywhere.
+            <% } %>
+            </strong>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="box task-view">
+          <div class="box-pad-lr border-bottom">
+            <h2>Owner and Volunteers
+            </h2>
+          </div>
+          <div class="box-main" id="task-volunteers">
+            <div class="project-people-div" data-userid="<%= model.userId %>">
+              <img src="/api/user/photo/<%= model.userId %>" class="project-people"/>
+            </div>
+            <div class="project-people-space">
+              <div class="bar">
+              </div>
+            </div>
+            <% _.each(model.volunteers, function (v) { %>
+            <div class="project-people-div" data-userid="<%= v %>">
+              <img src="/api/user/photo/<%= v %>" class="project-people"/>
+            </div>
+            <% }); %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-12 task-view">
+
+        <div class="box comment-list-wrapper" style="clear: both;">
+          <div class="box-pad-lr border-bottom">
+            <h2>Discussion
+            <% if (user) { %>
+            <button class="btn btn-c0 btn-sm file-add new-topic" id="project-topic-new">New Topic</button>
+            <% } %>
+            </h2>
+          </div>
+          <div class="">
+            <div class="box-pad-lr box-pad-t topic-form-wrapper"></div>
+            <ul id="comment-list-null">
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- add a space at the bottom of the page until we figure out what goes here -->
+    <div style="height: 50px;">
+    </div>
+
+  </div>
+</div>

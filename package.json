@@ -1,7 +1,7 @@
 {
     "name": "midas",
     "private": true,
-    "version": "0.0.6",
+    "version": "0.0.8",
     "description": "Crowdsourcing Platform and Collaboration Tool",
     "dependencies": {
         "sails": "0.9.4",
@@ -23,7 +23,9 @@
         "sails-postgresql": "~0.9.4"
     },
     "devDependencies": {
-        "mocha": "*"
+        "mocha": "*",
+        "grunt-contrib-requirejs": "~0.4.1",
+        "grunt-contrib-cssmin": "*"
     },
     "scripts": {
         "start": "node app.js",

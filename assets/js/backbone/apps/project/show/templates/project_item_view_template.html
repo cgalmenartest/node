@@ -1,170 +1,159 @@
-<% if (data.isOwner) { %>
-<div class="row">
-  <div class="col-lg-12">
-    <div class="well well-sm" id="project-admin-bar">
-      <div class="project-admin-title">
-        Project Administration Tools
-      </div>
-      <div class="row">
-        <div class="col-lg-9 project-admin nopadding">
-            <button id="editProject" class="btn btn-c4">Edit</button>
-        </div>
-        <div class="col-lg-2 nopadding">
-        <form class="form-inline" role="form">
-          <div class="form-group project-admin-select">
-            <select class="form-control" id="project-state">
-              <option value="draft" <% if (data.state == 'draft') { %>selected<% } %>>Draft</option>
-              <option value="public" <% if (data.state == 'public') { %>selected<% } %>>Public</option>
-              <option value="closed" <% if (data.state == 'closed') { %>selected<% } %>>Closed</option>
-            </select>
-          </div>
-        </form>
-        </div>
-        <div class="col-lg-1 project-admin-state">
-          <button id="project-admin-state" class="btn btn-link" data-loading-text="<i class='icon-spinner icon-spin'></i>">
-            <span class="glyphicon glyphicon-ok green" ></span>
-          </button>
-        </div>
-      </div>
-      <div id="file-upload-progress-container" style="display: none;" class="progress progress-striped active">
-        <div id="file-upload-progress" class="progress-bar" style="width: 0"></div>
-      </div>
-    </div>
-  </div>
-</div>
-<% } else { %>
-<span id="fileupload" class="btn btn-c4" style="display: none;"><i class="icon-camera icon-large" title="Change Cover Photo" id="fileupload-icon"></i></span>
-<% } %>
+<!-- ALERTS -->
+<div class="alert alert-danger" id="alert-closed" style="<% if (data.state != 'closed') { %>display: none;<% } %>">This project is <strong>closed</strong>.  It is no longer active, and no more modifications may be made.</div>
 
 <div class="row">
   <div class="col-lg-4 project-sidebar">
     <!-- LEFT SIDEBAR -->
-    <div class="row like-content">
-      <div class="col-lg-12">
-        <a href="#" id="like-button">
-          <i id="like-button-icon" class="icon icon-star-empty icon-large gold"></i>
-        </a>
-        <span class="like-number" id="like-number"><%- data.likeCount %></span>
-        <span class="like-plural" id="like-text" data-plural="likes" data-singular="like">likes</span>
 
-        <div class="pull-right like-buttons">
-          <button class="btn btn-c4"><i class="icon icon-envelope-alt"></i> Email</button>
-          <button class="btn btn-c3"><i class="icon icon-twitter"></i> Tweet</button>
+    <div class="row">
+      <div class="col-lg-12 box project-header-wrapper">
+        <% if (data.coverId) { %>
+        <div id="project-header" style="background-image:url('/api/file/get/<%= data.coverId %>');">
+        <% } else { %>
+        <div id="project-header">
+        <% } %>
+          <div id="fileupload" class="btn btn-c2" <% if (!data.isOwner || !edit) { %>style="display:none;"<% } %>>
+            <i class="icon-camera icon-large" title="Change Cover Photo" id="fileupload-icon"></i>
+          </div>
+        </div>
+        <div id="file-upload-progress-container" style="display: none;" class="progress progress-striped active">
+          <div id="file-upload-progress" class="progress-bar" style="width: 0"></div>
         </div>
       </div>
     </div>
 
-    <div class="project-header-wrapper">
-      <% if (data.coverId) { %>
-      <div id="project-header" style="background-image:url('/api/file/get/<%= data.coverId %>');">
-      <% } else { %>
-      <div id="project-header">
-      <% } %>
-      <span id="fileupload" class="btn btn-c4" <% if (!data.isOwner) { %>style="display: none;"<% } %>><i class="icon-camera icon-large" title="Change Cover Photo" id="fileupload-icon"></i></span>
+    <div class="row">
+      <div class="col-lg-12 box">
+        <div class="box-main tag-wrapper">
+        </div>
       </div>
     </div>
 
-    <div class="tag-wrapper">
+    <% if (!data.isOwner || !edit) { %>
+    <div class="row">
+      <div class="col-lg-12 box">
+        <div class="attachment-wrapper">
+        </div>
+      </div>
     </div>
-
-    <!-- BEGIN EVENTS -->
-    <div class="list-box" id="event-list-wrapper">
-
-    </div>
-    <!-- END EVENTS -->
-
-    <!-- BEGIN TASKS -->
-    <div class="list-box" id="task-list-wrapper" data-project-id="<%= data.id %>">
-    </div>
+    <% } %>
 
   </div>
 
   <div class="col-lg-8">
+
     <!-- RIGHT MAIN BAR -->
-    <div class="main-section">
-
-      <h1><%= data.title %></h1>
-
-      <div class="project-description">
-        <%= data.description %>
-      </div>
-
-    </div> <!-- /main-section -->
-
-    <h4>Project Status</h4>
-    <div class="project-status c2">
-      <%= data.status %>
-      Building out the project marketplace and testing it with federal employees.
-    </div>
-    <img src="/images/mockups/status-mockup.gif" style="margin-bottom: 20px"/>
-
-    <h4>Project Participants</h4>
-    <div class="project-contributors">
-      <% if (data.owners) { %>
-        <% for (var i = 0; i < data.owners.length; i++) { %>
-        <div class="project-people-div" data-userid="<%= data.owners[i].userId %>">
-          <img src="/api/user/photo/<%= data.owners[i].userId %>" class="project-people"/>
+    <div class="row">
+      <div class="col-lg-9">
+        <div class="main-section">
+          <div class="box box-main" id="project-coremeta-wrapper">
+          </div>
         </div>
-        <% } %>
-      <% } %>
+      </div>
+      <div class="col-lg-3 padding-left-none">
+        <div class="box padding-none">
+
+          <div class="navbar-side like-row border-bottom">
+            <% if (user) { %>
+            <a href="#" id="like-button" class="like-button">
+            <% } else { %>
+            <span class="like-button">
+            <% } %>
+              <i id="like-button-icon" class="icon icon-star-empty icon-large gold"></i>
+            <% if (user) { %>
+            </a>
+            <% } else { %>
+            </span>
+            <% } %>
+            <span class="like-number" id="like-number"><%- data.likeCount %></span>
+            <span class="like-plural" id="like-text" data-plural="likes" data-singular="like">likes</span>
+          </div>
+          <div class="navbar-side <% if (data.isOwner) { %>border-bottom<% } %>">
+            <ul class="nav nav-pills nav-stacked">
+              <li>
+                <a href="#" id="email"><i class="icon icon-envelope-alt"></i> <span class="box-icon-text">Email</span></a>
+              </li>
+              <li>
+                <a href="/api/event/ical/<%- data.id %>"><span class="glyphicon glyphicon-calendar"></span> <span class="box-icon-text">Calendar</span></a>
+              </li>
+            </ul>
+          </div>
+          <% if (data.isOwner) { %>
+          <div class="navbar-side">
+            <ul class="nav nav-pills nav-stacked">
+              <li>
+                <a href="#" id="editProject"><i class="icon-pencil"></i> <span class="box-icon-text">Edit Project</span></a>
+              </li>
+              <li id="li-project-close" style="<% if (data.state == 'closed') { %>display: none;<% } %>">
+                <a href="#" id="project-close"><i class="icon-remove-sign"></i> <span class="box-icon-text">Close Project</span></a>
+              </li>
+              <li id="li-project-reopen" style="<% if (data.state != 'closed') { %>display: none;<% } %>">
+                <a href="#" id="project-reopen"><i class="icon-share-alt"></i> <span class="box-icon-text">Reopen Project</span></a>
+              </li>
+              <!--
+              <li>
+                <a href="#" id="project-delete"><i class="icon-trash"></i> <span class="box-icon-text">Delete Project</span></a>
+              </li>
+              -->
+            </ul>
+          </div>
+          <% } %>
+        </div>
+      </div>
     </div>
 
-    <hr />
-
-    <div class="comment-list-wrapper" style="clear: both;">
-      <h4>Discussions
-      <button class="btn btn-c3 btn-sm file-add new-topic" id="project-topic-new">New Topic</button>
-      </h4>
-      <div class="topic-form-wrapper"></div>
-      <ul id="comment-list-null">
-
-
-      </ul>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="box" id="projectowner-wrapper">
+        </div>
+      </div>
     </div>
 
-    <hr class="clear" />
-
-    <h4 class="clearfix">Attachments
-      <button class="btn btn-c3 btn-sm file-add">Add File</button>
-    </h4>
-    <div class="file-list">
-      <table class="table table-hover table-condensed">
-        <tbody>
-          <tr>
-            <td>
-              <span class="file-tag c3-bg white">wikipedia</span>
-            </td>
-            <td>
-              <a href="http://en.wikipedia.org/wiki/Presidential_Innovation_Fellows">Presidential Innovation Fellows</a>
-            </td>
-            <td class="file-uploader">
-              added by <a href="#">Joe Polastre</a>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <span class="file-tag c1-bg white">project</span>
-            </td>
-            <td>
-              <a href="#">GSA Open Opportunities</a>
-            </td>
-            <td class="file-uploader">
-              added by <a href="#">Dain Miller</a>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <span class="file-tag c0-bg white">file</span>
-            </td>
-            <td>
-              <a href="#">innovation_styleguide.v1.1.ai</a>
-            </td>
-            <td class="file-uploader">
-              added by <a href="#">Joe Polastre</a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <% if (!data.isOwner || !edit) { %>
+    <div class="row">
+      <div class="col-lg-12">
+        <!-- BEGIN EVENTS -->
+        <div class="box" id="event-list-wrapper">
+        </div>
+        <!-- END EVENTS -->
+      </div>
     </div>
+
+    <div class="row">
+      <div class="col-lg-12">
+        <!-- BEGIN TASKS -->
+        <div class="modal fade" id="addTask"></div>
+        <div class="box" id="task-list-wrapper" data-project-id="<%= data.id %>">
+        </div>
+        <!-- END TASKS -->
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-12">
+
+        <div class="box comment-list-wrapper" style="clear: both;">
+          <div class="box-pad-lr border-bottom">
+            <h2>Discussion
+            <% if (user) { %>
+            <button class="btn btn-c0 btn-sm file-add new-topic" id="project-topic-new">New Topic</button>
+            <% } %>
+            </h2>
+          </div>
+          <div class="">
+            <div class="box-pad-lr box-pad-t topic-form-wrapper"></div>
+            <ul id="comment-list-null">
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <% } %> <!-- end of check for edit mode -->
+
+    <!-- add a space at the bottom of the page until we figure out what goes here -->
+    <div style="height: 50px;">
+    </div>
+
   </div>
 </div>

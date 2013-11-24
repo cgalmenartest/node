@@ -26,6 +26,6 @@ module.exports = {
     {
       'type': 'office',
       'name': 'Tag3'
-    }    
+    }
   ]
 };

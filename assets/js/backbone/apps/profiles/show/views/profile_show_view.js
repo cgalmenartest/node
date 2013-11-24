@@ -4,13 +4,15 @@ define([
   'dropzone',
   'underscore',
   'backbone',
+  'utilities',
   'tag_show_view',
   'text!profile_show_template',
   'text!profile_email_template',
   'modal_component',
+  'profile_activity_view',
   'profile_email_view'
-], function ($, async, dropzone, _, Backbone,
-  TagShowView, ProfileTemplate, EmailTemplate, ModalComponent, EmailFormView) {
+], function ($, async, dropzone, _, Backbone, utils,
+  TagShowView, ProfileTemplate, EmailTemplate, ModalComponent, PAView, EmailFormView) {
 
   var ProfileShowView = Backbone.View.extend({
 
@@ -57,6 +59,7 @@ define([
       this.initializeSelect2();
       this.initializeLikes();
       this.initializeTags();
+      this.initializePAView();
       this.initializeEmail();
       this.updatePhoto();
 
@@ -97,6 +100,7 @@ define([
     },
 
     initializeTags: function() {
+      if (this.tagView) { this.tagView.cleanup(); }
       this.tagView = new TagShowView({
         model: this.model,
         el: '.tag-wrapper',
@@ -105,6 +109,28 @@ define([
         url: '/api/tag/findAllByUserId/'
       });
       this.tagView.render();
+    },
+
+    initializePAView: function () {
+      if (this.projectView) { this.projectView.cleanup(); }
+      if (this.taskView) { this.taskView.cleanup(); }
+      $.ajax('/api/user/activities/' + this.model.attributes.id).done(function (data) {
+        this.projectView = new PAView({
+          model: this.model,
+          el: '.project-activity-wrapper',
+          target: 'project',
+          data: data.projects
+        });
+        this.projectView.render();
+        this.taskView = new PAView({
+          model: this.model,
+          el: '.task-activity-wrapper',
+          target: 'task',
+          data: data.tasks
+        });
+        this.taskView.render();
+
+      });
     },
 
     updatePhoto: function () {
@@ -120,7 +146,7 @@ define([
 
     initializeForm: function() {
       var self = this;
-      
+
       this.listenTo(self.model, "profile:save:success", function (data) {
         $("#submit").button('success');
         // Bootstrap .button() has execution order issue since it
@@ -454,6 +480,9 @@ define([
       }
     },
     cleanup: function () {
+      if (this.tagView) { this.tagView.cleanup(); }
+      if (this.projectView) { this.projectView.cleanup(); }
+      if (this.taskView) { this.taskView.cleanup(); }
       removeView(this);
     },
 

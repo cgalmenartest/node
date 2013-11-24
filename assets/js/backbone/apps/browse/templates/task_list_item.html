@@ -1,0 +1,55 @@
+<li data-id="<%- item.id %>" class="box task-box">
+
+  <div class="task-list-table">
+    <div class="task-list-title">
+      <a href="#" class="task-link c1">
+        <%= item.title %>
+      </a>
+    </div>
+
+    <div class="task-list-person">
+      <div class="project-people-div" data-userid="<%= item.userId %>" style="text-align: right;">
+        <img src="/api/user/photo/<%= item.userId %>" class="project-people"/>
+      </div>
+    </div>
+  </div>
+
+  <div class="task-list-description border-bottom">
+    <%= item.description %>
+  </div>
+
+  <% if (tags.agency) { %>
+  <div class="task-list-agency">
+    <ul class="tags task-tags">
+    <% _.each(tags.agency, function (t) { %>
+      <li>
+        <%= t.name %>
+      </li>
+      <% }); %>
+    </ul>
+  </div>
+  <% } %>
+
+  <% if (tags.location) { %>
+  <div class="task-list-location">
+    <ul class="tags task-tags">
+    <% _.each(tags.location, function (t) { %>
+      <li>
+        <%= t.name %>
+      </li>
+      <% }); %>
+    </ul>
+  </div>
+  <% } %>
+
+  <div class="box-pad-t box-pad-lr">
+    <ul class="tags task-tags">
+      <% _.each(item.tags, function (t) { %>
+      <li>
+        <%= t.tag.name %>
+      </li>
+      <% }); %>
+    </ul>
+  </div>
+
+</li>

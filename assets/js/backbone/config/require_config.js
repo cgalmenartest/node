@@ -27,6 +27,7 @@ require.config({
     //= Core App
     // ---------
     'app'                       : '../app',
+    'app-run'                   : '../app-run',
 
     // ---------
     //= Multi-tenant Router
@@ -39,31 +40,42 @@ require.config({
     'base_controller'           : '../base/base_controller',
     'base_app_module'           : '../base/base_app_module',
     'base_component'            : '../base/base_component',
+    'base_view'                 : '../base/base_view',
 
     // ----------
-    //= Home
+    //= Navigation
     // ----------
-    'marketing_app'             : '../apps/marketing/marketing_app',
-    'marketing_home_controller' : '../apps/marketing/home/controllers/marketing_home_controller',
-    'marketing_home_view'       : '../apps/marketing/home/views/marketing_home_view',
-    'marketing_home_template'   : '../apps/marketing/home/templates/marketing_home_template.html',
+    'nav_view'                  : '../apps/nav/views/nav_view',
+    'nav_template'              : '../apps/nav/templates/nav_template.html',
+
+    // ----------
+    //= Browse
+    // ----------
+    'browse_app'                : '../apps/browse/browse_app',
+    'browse_list_controller'    : '../apps/browse/controllers/browse_list_controller',
+    'browse_main_view'          : '../apps/browse/views/browse_main_view',
+    'browse_list_view'          : '../apps/browse/views/browse_list_view',
+    'browse_main_template'      : '../apps/browse/templates/browse_main_view_template.html',
+    'browse_search_tag'         : '../apps/browse/templates/browse_search_tag.html',
+    'project_list_item'         : '../apps/browse/templates/project_list_item.html',
+    'task_list_item'            : '../apps/browse/templates/task_list_item.html',
 
     // ----------
     //= Projects
     // ----------
-    'project_app'               : '../apps/project/project_app',
-    'project_list_controller'   : '../apps/project/list/controllers/project_list_controller',
-    'project_collection_view'   : '../apps/project/list/views/projects_collection_view',
-    'project_show_controller'   : '../apps/project/show/controllers/project_show_controller',
-    'project_item_view'         : '../apps/project/show/views/project_item_view',
-    'project_show_template'     : '../apps/project/show/templates/project_item_view_template.html',
-    'project_list_template'     : '../apps/project/list/templates/project_collection_view_template.html',
-    'project_model'             : '../entities/projects/project_model',
-    'project_collection'        : '../entities/projects/projects_collection',
-    'project_form_view'         : '../apps/project/new/views/project_new_form_view',
-    'project_form_template'     : '../apps/project/new/templates/project_new_form_template.html',
-    'project_edit_form_template': '../apps/project/edit/templates/project_edit_form_template.html',
-    'project_edit_form_view'    : '../apps/project/edit/views/project_edit_form_view',
+    'project_show_controller'       : '../apps/project/show/controllers/project_show_controller',
+    'project_item_view'             : '../apps/project/show/views/project_item_view',
+    'project_item_coremeta_view'    : '../apps/project/show/views/project_item_coremeta_view',
+    'projectowner_show_view'        : '../apps/projectowner/show/views/projectowner_show_view',
+    'projectowner_show_template'    : '../apps/projectowner/show/templates/projectowner_show_template.html',
+    'project_show_template'         : '../apps/project/show/templates/project_item_view_template.html',
+    'project_model'                 : '../entities/projects/project_model',
+    'project_collection'            : '../entities/projects/projects_collection',
+    'project_form_view'             : '../apps/project/new/views/project_new_form_view',
+    'project_form_template'         : '../apps/project/new/templates/project_new_form_template.html',
+    'project_item_coremeta_template': '../apps/project/show/templates/project_item_coremeta_template.html',
+    'project_edit_form_template'    : '../apps/project/edit/templates/project_edit_form_template.html',
+    'project_edit_form_view'        : '../apps/project/edit/views/project_edit_form_view',
 
     // ----------
     //= Tags
@@ -88,6 +100,8 @@ require.config({
     'task_item_view'            : '../apps/tasks/show/views/task_item_view',
     'task_show_template'        : '../apps/tasks/show/templates/task_show_item_template.html',
     'task_show_controller'      : '../apps/tasks/show/controllers/task_show_controller',
+    'task_edit_form_view'       : '../apps/tasks/edit/views/task_edit_form_view',
+    'task_edit_form_template'   : '../apps/tasks/edit/templates/task_edit_form_template.html',
 
     // ----------
     //= Events
@@ -101,9 +115,15 @@ require.config({
     'event_form_view'            : '../apps/events/new/views/event_form_view',
 
     // ----------
-    //= PROFILE
+    //= Attachments
     // ----------
-    'profile_app'               : '../apps/profiles/profile_app',
+    'attachment_show_view'      : '../apps/attachment/views/attachment_show_view',
+    'attachment_show_template'  : '../apps/attachment/templates/attachment_show_template.html',
+    'attachment_item_template'  : '../apps/attachment/templates/attachment_item_template.html',
+
+    // ----------
+    //= Profile
+    // ----------
     'profile_model'             : '../entities/profiles/profile_model',
     'profile_show_view'         : '../apps/profiles/show/views/profile_show_view',
     'profile_show_controller'   : '../apps/profiles/show/controllers/profile_show_controller',
@@ -111,6 +131,8 @@ require.config({
     'profile_email_template'    : '../apps/profiles/show/templates/profile_email_template.html',
     'profile_email_view'        : '../apps/profiles/email/views/profile_email_view',
     'profile_email_form_template': '../apps/profiles/email/templates/profile_email_form.html',
+    'profile_activity_template' : '../apps/profiles/show/templates/profile_activity_template.html',
+    'profile_activity_view'     : '../apps/profiles/show/views/profile_activity_view',
 
     // ----------
     //= Comments
@@ -144,11 +166,4 @@ require.config({
     }
   }
 
-});
-
-define([
-  'underscore',
-  'app'
-], function (Application) {
-  new Application();
 });

@@ -4,17 +4,16 @@ define([
     'underscore',
     'backbone',
     'async',
+    'utilities',
     'tasks_collection',
-    'text!task_form_template',
-    'tag_show_view'
-], function ($, Bootstrap, _, Backbone, async, TasksCollection, TaskFormTemplate, TagShowView) {
+    'text!task_form_template'
+], function ($, Bootstrap, _, Backbone, async, utilities, TasksCollection, TaskFormTemplate) {
 
 	var TaskFormView = Backbone.View.extend({
 
 		el: "#task-list-wrapper",
 
 		events: {
-      "submit #task-form"     : "post",
       "change #task-location" : "locationChange"
 		},
 
@@ -22,11 +21,12 @@ define([
 			this.options = _.extend(this.options, this.defaults);
       this.tasks = this.options.tasks;
       this.initializeSelect2Data();
+      this.initializeListeners();
 		},
 
     initializeSelect2Data: function () {
-      var self = this,
-          types = ["skills-required", "time-required", "people", "length", "time-estimates"];
+      var self = this;
+      var types = ["task-skills-required", "task-time-required", "task-people", "task-length", "task-time-estimate"];
 
       this.tagSources = {};
 
@@ -36,17 +36,7 @@ define([
           type: 'GET',
           async: false,
           success: function (data) {
-            // Dynamically take the hyphen delimited type (if more than 1 word) and
-            // camelize it like the template expects.  Then create an associative
-            // array based on that for the pointer to the list itself to be iterated through
-            // on the front-end.
-            var typeArray = type.split("-");
-            if (typeArray.length > 1) {
-              typeArray[typeArray.length - 1] = typeArray[typeArray.length - 1].charAt(0).toUpperCase() + typeArray[typeArray.length - 1].substr(1).toLowerCase();
-              self.tagSources[typeArray.join("")] = data;
-            } else {
-              self.tagSources[type] = data;
-            }
+            self.tagSources[type] = data;
           }
         });
       }
@@ -56,45 +46,14 @@ define([
       });
     },
 
-		render: function () {
-      var template = _.template(TaskFormTemplate, this.tagSources)
-			this.$el.html(template);
-      this.initializeSelect2();
-
-      // Important: Hide all non-currently opened sections of wizard.
-      // TODO: Move this to the modalWizard js.
-      $("section:not(.current)").hide();
-		},
-
-    post: function (e) {
-      if (e.preventDefault) e.preventDefault();
+    initializeListeners: function() {
       var self = this;
-
-      var taskData = {
-        title       : $("#task-title").val(),
-        projectId   : this.options.projectId,
-        description : $("#task-description").val()
-      };
-
-      var tags = [
-        $("#topics").select2('data'),
-        $("#skills").select2('data'),
-        $("#skills-required").select2('data'),
-        $("#people").select2('data'),
-        $("#time-required").select2('data'),
-        $("#length").select2('data'),
-        // $("#time-estimate").select2('data'),
-        // $("#task-location").select2('data'),
-        $("#input-specific-location").val(),
-      ];
-
-      this.tasks.trigger("task:save", taskData);
 
       this.listenTo(this.tasks, "task:save:success", function (taskId) {
 
         var addTag = function (tag, done) {
           if (!tag || !tag.id) return done();
-          if (tag.tagId) return done();
+          // if (tag.tagId) return done();
 
           var tagMap = {
             taskId: taskId,
@@ -109,17 +68,51 @@ define([
               done();
             },
             error: function (err) {
-              throw new Error("error");
+              done(err);
             }
           });
+        };
+
+        // Gather tags for submission after the task is created
+        tags = [];
+        tags.push.apply(tags, $("#topics").select2('data'));
+        tags.push.apply(tags, $("#skills").select2('data'));
+        tags.push($("#skills-required").select2('data'));
+        tags.push($("#people").select2('data'));
+        tags.push($("#time-required").select2('data'));
+        tags.push($("#time-estimate").select2('data'));
+        tags.push($("#length").select2('data'));
+
+        if (self.$("#task-location").select2('data').id == 'true') {
+          tags.push.apply(tags, self.$("#location").select2('data'));
         }
 
         async.each(tags, addTag, function (err) {
+          self.model.trigger("task:modal:hide");
           return self.model.trigger("task:tags:save:success", err);
         });
 
       });
+    },
 
+		render: function () {
+      var template = _.template(TaskFormTemplate, { tags: this.tagSources })
+			this.$el.html(template);
+      this.initializeSelect2();
+
+      // Important: Hide all non-currently opened sections of wizard.
+      // TODO: Move this to the modalWizard js.
+      $("section:not(.current)").hide();
+
+      // Return this for chaining.
+      return this;
+		},
+
+    submit: function (e, data) {
+      console.log('post');
+      // nothing necessary to do here.
+      // non-null, non-false return continues processing
+      return this;
     },
 
 
@@ -135,9 +128,9 @@ define([
       // ------------------------------ //
       $("#skills").select2({
         placeholder: "skills",
-        formatResult: formatResult,
         width: '220px',
         multiple: true,
+        formatResult: formatResult,
         formatSelection: formatResult,
         ajax: {
           url: '/api/ac/tag',
@@ -157,9 +150,10 @@ define([
       // Topics select 2
       $("#topics").select2({
         placeholder: "topics",
+        width: '220px',
+        multiple: true,
         formatResult: formatResult,
         formatSelection: formatResult,
-        multiple: true,
         ajax: {
           url: '/api/ac/tag',
           dataType: 'json',
@@ -174,6 +168,29 @@ define([
           }
         }
       });
+
+      // Topics select 2
+      this.$("#location").select2({
+        placeholder: "locations",
+        width: '100%',
+        multiple: true,
+        formatResult: formatResult,
+        formatSelection: formatResult,
+        ajax: {
+          url: '/api/ac/tag',
+          dataType: 'json',
+          data: function (term) {
+            return {
+              type: 'location',
+              q: term
+            };
+          },
+          results: function (data) {
+            return { results: data }
+          }
+        }
+      });
+      this.$(".el-specific-location").hide();
 
       // ------------------------------ //
       // PRE-DEFINED SELECT MENUS BELOW //
@@ -200,41 +217,21 @@ define([
 
       $("#time-estimate").select2({
         placeholder: 'time-estimate',
-        width: '130px'
+        width: '200px'
       });
 
       $("#task-location").select2({
         placeholder: 'length',
-        width: '130px'
+        width: '200px'
       });
 
-      // $("#skills-required").select2({
-      //   placeholder: "required/not-required",
-      //   width: '130px'
-      // });
-
-      // $("#time-required").select2({
-      //   width: '130px'
-      // });
-
-      // $("#people").select2({
-      //   width: '130px'
-      // });
-
-      // $("#length").select2({
-      //   width: '130px'
-      // });
-
-      // $("#time-estimate").select2({
-      //   width: '200px'
-      // });
-
-      // $("#task-location").select2();
     },
 
     locationChange: function (e) {
-      if (_.isEqual(e.currentTarget.value, "a specific location")) {
+      if (_.isEqual(e.currentTarget.value, "true")) {
         $(".el-specific-location").show();
+      } else if (!_.isEqual(e.currentTarget.value, "false")) {
+        $(".el-specific-location").hide();
       }
     },
 

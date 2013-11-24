@@ -12,6 +12,8 @@ module.exports = {
 
     // project that is liked
     projectId: 'INTEGER',
+    // task that is liked
+    taskId: 'INTEGER',
     // person that is liked
     targetId: 'INTEGER',
     // id of the user
