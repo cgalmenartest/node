@@ -82,7 +82,7 @@ define([
         tags.push($("#time-required").select2('data'));
         tags.push($("#time-estimate").select2('data'));
         tags.push($("#length").select2('data'));
-        console.log($("#task-location").select2('data'));
+
         if (self.$("#task-location").select2('data').id == 'true') {
           tags.push.apply(tags, self.$("#location").select2('data'));
         }

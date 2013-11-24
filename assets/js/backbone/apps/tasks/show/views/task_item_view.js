@@ -14,7 +14,6 @@ define([
       var self = this;
       this.model.trigger("task:model:fetch", this.options.id);
       this.listenTo(this.model, "task:model:fetch:success", function (model) {
-        console.log('initializeTags -- go');
         self.model = model;
         self.initializeTags(self);
       });

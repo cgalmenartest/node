@@ -8,12 +8,15 @@ define([
   'browse_main_view',
   'project_collection',
   'tasks_collection',
+  'task_model',
   'project_form_view',
+  'task_form_view',
+  'modal_wizard_component',
   'modal_component'
 ], function (
   $, _, Backbone, Bootstrap, utils, BaseController,
-  BrowseMainView, ProjectsCollection, TasksCollection,
-  ProjectFormView, ModalComponent) {
+  BrowseMainView, ProjectsCollection, TasksCollection, TaskModel,
+  ProjectFormView, TaskFormView, ModalWizardComponent, ModalComponent) {
 
   Application.Browse = {};
 
@@ -27,7 +30,7 @@ define([
       "click .task-link"      : "showTask",
       "click .task-box"       : "showTask",
       "click .add-project"    : "addProject",
-      "click .add-opportunity": "addOpp"
+      "click .add-opportunity": "addTask"
     },
 
     initialize: function ( options ) {
@@ -38,15 +41,20 @@ define([
 
       this.collection.trigger(this.target + ":fetch");
 
-      this.listenTo(this.collection, "project:save:success", function (data) {
+      this.listenTo(this.projectsCollection, "project:save:success", function (data) {
         // hide the modal
-        $('.modal.in').modal('hide');
-        // give the modal time to disappear
-        setTimeout(function () {
-          // navigate to the new project
+        $('#addProject').bind('hidden.bs.modal', function() {
           Backbone.history.navigate('projects/' + data.attributes.id, { trigger: true });
-        }, 100);
-      })
+        }).modal('hide');
+      });
+
+      this.listenTo(this.tasksCollection, "task:save:success", function (data) {
+        // hide the modal
+        $('#addTask').bind('hidden.bs.modal', function() {
+          Backbone.history.navigate('tasks/' + data, { trigger: true });
+        }).modal('hide');
+      });
+
     },
 
     initializeView: function () {
@@ -62,18 +70,16 @@ define([
 
     fireUpCollection: function () {
       var self = this;
-      if (this.collection) {
-        this.collection;
-      } else {
-        if (this.target == 'projects') {
-          this.collection = new ProjectsCollection();
-        }
-        else if (this.target == 'tasks') {
-          this.collection = new TasksCollection();
-        }
-        else {
-          this.collection = new ProfilesCollection();
-        }
+      this.projectsCollection = new ProjectsCollection();
+      this.tasksCollection = new TasksCollection();
+      if (this.target == 'projects') {
+        this.collection = this.projectsCollection;
+      }
+      else if (this.target == 'tasks') {
+        this.collection = this.tasksCollection;
+      }
+      else {
+        this.collection = new ProfilesCollection();
       }
       this.listenToOnce(this.collection, this.target + ":fetch", function () {
         self.collection.fetch({
@@ -114,20 +120,47 @@ define([
 
       this.projectFormView = new ProjectFormView({
         el: ".modal-template",
-        collection: this.collection
+        collection: this.projectsCollection
       }).render();
 
     },
 
-    addOpp: function (e) {
+    addTask: function (e) {
       if (e.preventDefault) e.preventDefault();
-      console.log('Not yet implemented');
+
+      if (this.taskFormView) this.taskFormView.cleanup();
+      if (this.modalWizardComponent) this.modalWizardComponent.cleanup();
+
+      this.taskModel = new TaskModel();
+      this.modalWizardComponent = new ModalWizardComponent({
+        el: "#addTask",
+        modalTitle: 'New Opportunity',
+        model: this.taskModel,
+        collection: this.tasksCollection,
+        modelName: 'task',
+        data: function() { return {
+          title: $("#task-title").val(),
+          description: $("#task-description").val(),
+          // these tasks are orphaned
+          projectId: null
+        } }
+      }).render();
+
+      this.taskFormView = new TaskFormView({
+        el: "#addTask .modal-body",
+        projectId: null,
+        model: this.taskModel,
+        tasks: this.tasksCollection
+      }).render();
+      this.modalWizardComponent.setChildView(this.taskFormView);
     },
 
     // ---------------------
     //= UTILITY METHODS
     // ---------------------
     cleanup: function() {
+      if (this.taskFormView) { this.taskFormView.cleanup(); }
+      if (this.modalWizardComponent) { this.modalWizardComponent.cleanup(); }
       if (this.projectFormView) { this.projectFormView.cleanup(); }
       if (this.modalComponent) { this.modalComponent.cleanup(); }
       if (this.browseMainView) { this.browseMainView.cleanup(); }
