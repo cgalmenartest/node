@@ -86,7 +86,6 @@ define([
         if (self.$("#task-location").select2('data').id == 'true') {
           tags.push.apply(tags, self.$("#location").select2('data'));
         }
-        console.log(tags);
 
         async.each(tags, addTag, function (err) {
           self.model.trigger("task:modal:hide");

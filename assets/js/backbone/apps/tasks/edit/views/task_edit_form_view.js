@@ -2,9 +2,10 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'async',
   'utilities',
   'text!task_edit_form_template'
-], function ($, _, Backbone, utilities, TaskEditFormTemplate) {
+], function ($, _, Backbone, async, utilities, TaskEditFormTemplate) {
 
   var TaskEditFormView = Backbone.View.extend({
 
@@ -15,6 +16,11 @@ define([
 
     initialize: function (options) {
       this.options = options;
+
+      // Register listener to task update, the last step of saving
+      this.listenTo(this.options.model, "task:update:success", function (data) {
+        Backbone.history.navigate('tasks/' + data.attributes.id, { trigger: true });
+      });
     },
 
     view: function () {
@@ -31,7 +37,6 @@ define([
         tags: this.options.tags,
         madlibTags: this.options.madlibTags
       };
-      console.log(this.data);
 
       compiledTemplate = _.template(TaskEditFormTemplate, this.data);
       this.$el.html(compiledTemplate);
@@ -150,82 +155,86 @@ define([
 
     submit: function (e) {
       if (e.preventDefault) e.preventDefault();
+      var self = this;
 
-      var tags = [
-        $("#topics").select2('data'),
-        $("#skills").select2('data'),
-        $("#skills-required").select2('data'),
-        $("#people").select2('data'),
-        $("#time-required").select2('data'),
-        $("#length").select2('data'),
-        // $("#time-estimate").select2('data'),
-        // $("#task-location").select2('data'),
-        $("#input-specific-location").val(),
-      ];
+      var types = ["task-skills-required", "task-time-required", "task-people", "task-length", "task-time-estimate", "skill", "topic", "location"];
 
-      var self = this,
-          types = ["skillsRequired", "timeRequired", "people", "length", "timeEstimates"];
-
-      this.tagSources = {};
-
-      var requestAllTagsByType = function (type) {
-        $.ajax({
-          url: '/api/ac/tag?type=' + type + '&list',
-          type: 'GET',
-          async: false,
-          success: function (data) {
-            // Dynamically create an associative
-            // array based on that for the pointer to the list itself to be iterated through
-            // on the front-end.
-              self.tagSources[type] = data;
-          }
-        });
-      }
-
-      async.each(types, requestAllTagsByType, function (err) {
-        self.render();
-      });
-
-      var data = {
-        title: $("#task-edit-form-title").val(),
-        description: $("#task-edit-form-description").val()
-      }
-
-      this.model.trigger("task:model:update", data);
-    },
-
-    initTaskTags: function (tags) {
-      var self = this,
-          tagMap;
-
-      var removeTag = function (type, done) {
-        if (self.model[type]) {
-
-          if (self.model[type].tagId) {
-            return done();
-          }
-
-          $.ajax({
-            url: '/api/tag/' + self.model[type].tagId,
-            type: 'DELETE',
-            success: function (data) {
-              return done();
-            }
-          });
-
-          return;
-        } return done();
+      // Gather tags for submission after the task is created
+      tags = {
+        topic: this.$("#topics").select2('data'),
+        skill: this.$("#skills").select2('data'),
+        location: this.$("#location").select2('data'),
+        'task-skills-required': [ this.$("#skills-required").select2('data') ],
+        'task-people': [ this.$("#people").select2('data') ],
+        'task-time-required': [ this.$("#time-required").select2('data') ],
+        'task-time-estimate': [ this.$("#time-estimate").select2('data') ],
+        'task-length': [ this.$("#length").select2('data') ]
       };
 
-      var addTag = function (tag, done) {
-        if (!tag || !tag.id) {
-          return done();
-        }
+      var createDiff = function (oldTags, newTags) {
+        var out = {
+          remove: [],
+          add: [],
+          none: []
+        };
 
-        tagMap = {
-          tagId: tag.id,
-          taskId: this.model.id
+        // find if a new tag selected already exists
+        // if it does, remove it from the array
+        // if it doesn't, add to the new list
+        var findTag = function (tag, oldTags) {
+          var none = null;
+          for (var j in oldTags) {
+            // if the tag is in both lists, do nothing
+            if (oldTags[j].tagId == parseInt(tag.id)) {
+              out.none.push(oldTags.id);
+              none = j;
+              break;
+            }
+          }
+          // if in both lists, splice out of the old list
+          if (none) {
+            oldTags.splice(none, 1);
+          } else {
+            // the new tag was not found, so we have to add it
+            out.add.push(parseInt(tag.id));
+          }
+        };
+
+        var findDel = function (oldTags, type) {
+          for (var j in oldTags) {
+            // anything left of this type should be deleted
+            if (oldTags[j].type == type) {
+              out.remove.push(oldTags[j].id);
+            }
+          }
+        };
+
+        for (var t in types) {
+          // check if
+          _.each(newTags[types[t]], function (newTag) {
+            findTag(newTag, oldTags);
+          });
+          // if there's any tags left in oldTags, they need to be deleted
+          findDel(oldTags, types[t]);
         }
+        return out;
+      }
+
+      var removeTag = function (id, done) {
+        $.ajax({
+          url: '/api/tag/' + id,
+          type: 'DELETE',
+          success: function (data) {
+            return done();
+          }
+        });
+      };
+
+      var addTag = function (id, done) {
+        var tagMap = {
+          tagId: id,
+          taskId: self.model.id
+        };
 
         $.ajax({
           url: '/api/tag',
@@ -234,15 +243,36 @@ define([
         }).done(function (data) {
           done();
         });
+      };
+
+      var oldTags = [];
+      for (var i in this.options.tags) {
+        oldTags.push({
+          id: parseInt(this.options.tags[i].id),
+          tagId: parseInt(this.options.tags[i].tag.id),
+          type: this.options.tags[i].tag.type
+        });
       }
 
-      async.each(tags, addTag, function (err) {
-        return self.model.trigger("task:tags:save:success", err);
-      });
+      var diff = createDiff(oldTags, tags);
 
-      this.listenTo(self.model, "task:tags:save:success", function (data) {
-        Backbone.history.navigate('taskShow', { trigger: true })
+      var modelData = {
+        title: this.$("#task-title").val(),
+        description: this.$("#task-description").val()
+      }
+
+      // Add new tags
+      async.each(diff.add, addTag, function (err) {
+        // Delete old tags
+        async.each(diff.remove, removeTag, function (err) {
+          // Update model metadata
+          self.options.model.trigger("task:update", modelData);
+        });
       });
+    },
+
+    cleanup: function () {
+      removeView(this);
     }
 
   });

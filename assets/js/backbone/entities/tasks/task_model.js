@@ -34,13 +34,13 @@ define([
     update: function (data) {
       var self = this;
 
-      this.save(self, {
-        projectId   : data['projectId'],
+      this.save({
         title       : data['title'],
         description : data['description']
       }, {
         success: function (data) {
-          console.log(data); }
+          self.trigger("task:update:success", data);
+        }
       });
     },
 
