@@ -58,6 +58,9 @@ module.exports.routes = {
   '/tasks/:unknownRoute': {
     view: 'main/index'
   },
+  '/tasks/:id/:unknownRoute': {
+    view: 'main/index'
+  },
   '/profile': {
     view: 'main/index'
   },

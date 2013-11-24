@@ -22,7 +22,7 @@ define([
       'projects/:id/:action(/)'   : 'showProject',
       'tasks(/)'                  : 'listTasks',
       'tasks/:id(/)'              : 'showTask',
-      'tasks/:id/edit(/)'         : 'showTask',
+      'tasks/:id/:action(/)'      : 'showTask',
       'profile(/)'                : 'showProfile',
       'profile/:id(/)'            : 'showProfile'
     },
@@ -73,7 +73,7 @@ define([
     showTask: function (id, action) {
       this.cleanupChildren();
       var model = new TaskModel();
-      model.set({ id: id })
+      model.set({ id: id });
       this.taskShowController = new TaskShowController({ model: model, router: this, id: id, action: action, data: this.data });
     },
 
