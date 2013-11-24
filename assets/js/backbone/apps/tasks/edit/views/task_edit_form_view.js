@@ -122,7 +122,7 @@ define([
       //   }
       // });
 
-      $("#topics").select2({
+      this.$("#topics").select2({
         placeholder: "topics",
         multiple: true,
         formatResult: formatResult,
@@ -142,7 +142,7 @@ define([
         }
       });
       if (this.data['madlibTags'].topic) {
-        $("#topics").select2('data', this.data['madlibTags'].topic);
+        this.$("#topics").select2('data', this.data['madlibTags'].topic);
       }
 
       // $("#people").select2({
@@ -164,7 +164,7 @@ define([
       //   }
       // });
 
-      $("#skills").select2({
+      this.$("#skills").select2({
         placeholder: "skills",
         multiple: true,
         formatResult: formatResult,
@@ -184,11 +184,11 @@ define([
         }
       });
       if (this.data['madlibTags'].skill) {
-        $("#skills").select2('data', this.data['madlibTags'].skill);
+        this.$("#skills").select2('data', this.data['madlibTags'].skill);
       }
 
       // Topics select 2
-      $("#location").select2({
+      this.$("#location").select2({
         placeholder: "locations",
         multiple: true,
         formatResult: formatResult,
@@ -208,7 +208,7 @@ define([
         }
       });
       if (this.data['madlibTags'].location) {
-        $("#skills").select2('data', this.data['madlibTags'].location);
+        this.$("#location").select2('data', this.data['madlibTags'].location);
       }
 
       $("#skills-required").select2({

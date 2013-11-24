@@ -60,18 +60,8 @@
 
     <hr />
 
-    The volunteer(s) must be located at
-      <strong>
-        <input type="text"
-          <% if (madlibTags['location']) { %>
-            placeholder="<%= madlibTags['location'] %>"
-          <% } else { %>
-            placeholder="this city/state"
-          <% } %>
-        id="location" class="task-location" />
-      </strong>
-
-    to complete this task.
+    The volunteer(s) must be at these locations:
+    <input type="hidden" id="location" class="task-skills"/>
 
     <hr/>
   </div>
