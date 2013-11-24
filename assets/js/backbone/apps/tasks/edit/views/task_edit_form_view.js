@@ -2,8 +2,9 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'utilities',
   'text!task_edit_form_template'
-], function ($, _, Backbone, TaskEditFormTemplate) {
+], function ($, _, Backbone, utilities, TaskEditFormTemplate) {
 
   var TaskEditFormView = Backbone.View.extend({
 
@@ -13,11 +14,52 @@ define([
       'submit #task-edit-form': 'submit'
     },
 
+    viewEvents: function () {
+      var self = this;
+      $(".show-task").on('click', function (e) {
+        self.returnToTaskShowPage();
+      });
+    },
+
+    initialize: function (options) {
+      this.options = options;
+      if (this.options.edit) {
+        // Sync out of scope events and DOM elements.
+        this.syncOutOfScopeDomElements();
+        this.viewEvents();
+      }
+    },
+
+    syncOutOfScopeDomElements: function () {
+      $(".edit-task").removeClass("edit-task").addClass("show-task");
+      $(".show-task > i > strong").text("Show");
+    },
+
+    returnToTaskShowPage: function () {
+      alert("You will lose all saved data if you continue without submitting");
+      Backbone.history.navigate('tasks/' + this.options.taskId, { trigger: true }, this.options.taskId);
+    },
+
     render: function () {
-      var data = { data: this.model },
+
+      var self = this,
           compiledTemplate;
 
-      compiledTemplate = _.template(TaskEditFormTemplate, data);
+      $.ajax({
+        url: '/api/tag/findAllByTaskId/' + self.model.id,
+        async: false,
+        success: function (res, text, xhr) {
+          self.tags = [];
+          for (var i = 0; i < res.length; i += 1) {
+            self.tags.push(res[i]);
+          }
+        }
+      });
+
+      this.data = { data: this.model }
+      this.data['madlibTags'] = organizeTags(this.tags);
+
+      compiledTemplate = _.template(TaskEditFormTemplate, this.data);
       this.$el.html(compiledTemplate);
 
       // DOM now exists, begin select2 init

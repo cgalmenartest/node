@@ -38,33 +38,10 @@ define([
       this.data = {
         user: window.cache.currentUser,
         model: self.model.toJSON(),
-        tags: this.tags,
-        madlibTags: {}
+        tags: this.tags
       };
-
-      // Call to organize tags now that we have built render obj.
-      self.organizeTags(self.tags);
-    },
-
-    organizeTags: function (tags) {
-      // Put the tags into their types
-      var outTags = {};
-      for (t in tags) {
-        if (!(_.has(outTags, tags[t].tag.type))) {
-          outTags[tags[t].tag.type] = [];
-        }
-        outTags[tags[t].tag.type].push(tags[t].tag);
-      }
-
-      // If a tag only has one item, make it a top level object
-      for (var j in outTags) {
-        if (outTags[j].length === 1) {
-          var obj = outTags[j].pop();
-          outTags[j] = obj
-        }
-        this.data.madlibTags[outTags[j].type] = outTags[j].name;
-      }
-      return this.data.madlibTags;
+      this.data['madlibTags'] = organizeTags(self.tags);
+      console.log(this.data['madlibTags']);
     },
 
     render: function () {

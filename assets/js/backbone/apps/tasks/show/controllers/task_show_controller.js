@@ -1,7 +1,3 @@
-// Here I  will attempt to keep all the logic for tags in the controller
-// and not in the view layer.  If this works then we can move
-// the project view tag methods out to the controller as it should be.
-
 define([
   'bootstrap',
   'underscore',
@@ -126,13 +122,7 @@ define([
 
     edit: function (e) {
       if (e.preventDefault) e.preventDefault();
-      var self = this;
-
-      if (this.taskEditFormView) this.taskEditFormView.cleanup();
-      this.taskEditFormView = new TaskEditFormView({
-        el: '.edit-task-section',
-        model: self.model
-      }).render();
+      Backbone.history.navigate('tasks/' + this.model.id + '/edit', { trigger: true });
     },
 
     like: function (e) {
