@@ -1,10 +1,3 @@
-
-<div class="box-side coremeta-admin" id="project-coremeta-buttons" style="height:35px;">
-    <button class="btn btn-c0 btn-sm file-add coremeta-form-toggle">Edit</button>
-    <button class="btn btn-c0 btn-sm file-add coremeta-form-toggle" id="coremeta-cancel">Cancel</button>
-    <button class="btn btn-c2 btn-sm file-add coremeta-form-toggle" id="coremeta-save">Submit</button>
-</div>
-
 <div id="project-coremeta-show" class="coremeta-form-toggle">
 
     <h1><%= data.title %></h1>
@@ -16,17 +9,31 @@
 
 </div> <!-- /main-section -->
 <div id="project-coremeta-form" class="coremeta-form-toggle coremeta-admin">
+  <div class="row">
+    <div class="col-lg-12 form-group">
 
-      <div class="row">
-        <div class="col-lg-12 form-group">
-          <!-- RIGHT MAIN BAR -->
-          <h2>Project Title</h2>
-          <input id="project-edit-form-title" class="form-control input-lg" value="<%= data.title %>" type="text" />
-          <h2>Project Description</h2>
-          <textarea maxlength="500" rows="8" class="form-control" id="project-edit-form-description"><%= data.description %></textarea>
-          <div class="clearfix"></div>
-
-
-        </div>
+      <div class="alert alert-success" id="project-coremeta-success" style="display: none;">
+        Your project info has been successfully updated!
+        <a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
       </div>
+
+      <!-- RIGHT MAIN BAR -->
+      <div>
+        <h2 class="box-pad-t">Project Title</h2>
+        <input id="project-edit-form-title" class="form-control input-lg" value="<%= data.title %>" type="text" />
+        <h2 class="box-pad-t">Project Description</h2>
+        <textarea maxlength="500" rows="8" class="form-control" id="project-edit-form-description"><%= data.description %></textarea>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12 form-group">
+
+      <div class="pull-right coremeta-admin" id="project-coremeta-buttons">
+          <button class="btn btn-c0" id="coremeta-view">View Project</button>
+          <button class="btn btn-c2" id="coremeta-save">Save Updates</button>
+      </div>
+
+    </div>
+  </div>
 </div>

@@ -23,10 +23,8 @@ define([
     // model: null,
 
     events: {
-      "click button.coremeta-form-toggle"        : "toggleCoreMeta",
-      "click #coremeta-save"                     : "saveCoreMeta"
-      // "click #coremeta-cancel"                   : "toggleCoreMeta"
-      // "click .delete-projectowner"          : "removeOwner"
+      "click #coremeta-save"                     : "saveCoreMeta",
+      "click #coremeta-view"                     : "viewProject"
     },
 
     // The initialize method is mainly used for event bindings (for effeciency)
@@ -46,10 +44,9 @@ define([
         self.initializeToggledElements();
       });
 
-
       this.model.on("project:save:success", function (data) {
         self.render();
-
+        $('#project-coremeta-success').show();
       });
 
     },
@@ -68,23 +65,15 @@ define([
     initializeToggledElements: function(){
       var self = this;
       if (this.model.attributes.isOwner && this.edit){
-        self.$('#coremeta-save').hide();
-        self.$('#coremeta-cancel').hide();
-        self.$('#project-coremeta-form').hide();
+        self.$('#project-coremeta-form').show();
+        self.$('#project-coremeta-show').hide();
       }
       else{
         self.$('.coremeta-admin').hide();
       }
     },
 
-
-
-    toggleCoreMeta : function(e){
-      if (!this.model.attributes.isOwner && this.edit) return false;
-      $('.coremeta-form-toggle').toggle(400);
-    },
-
-    saveCoreMeta : function(e){
+    saveCoreMeta: function (e){
       if (e.preventDefault) e.preventDefault();
       if (!this.model.attributes.isOwner && this.edit) return false;
       var self = this;
@@ -94,14 +83,13 @@ define([
       var description = self.$('#project-edit-form-description').val();
       var params = { title :title, description: description };
 
-        self.model.trigger("project:model:update", params);
-
+      self.model.trigger("project:model:update", params);
     },
 
-
-
-
-
+    viewProject: function (e) {
+      if (e.preventDefault) e.preventDefault();
+        Backbone.history.navigate('projects/' + this.model.attributes.id, { trigger: true });
+    },
 
     // ---------------------
     //= Utility Methods
