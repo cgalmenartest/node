@@ -46,82 +46,6 @@ define([
         return object.name;
       };
 
-      // $("#skills-required").select2({
-      //   formatResult: formatResult,
-      //   formatSelection: formatResult,
-      //   minimumInputLength: 1,
-      //   ajax: {
-      //     url: '/api/ac/tag',
-      //     dataType: 'json',
-      //     data: function (term) {
-      //       return {
-      //         type: 'skillRequired',
-      //         q: term
-      //       };
-      //     },
-      //     results: function (data) {
-      //       return { results: data };
-      //     }
-      //   }
-      // });
-
-      // $("#time-required").select2({
-      //   formatResult: formatResult,
-      //   formatSelection: formatResult,
-      //   minimumInputLength: 1,
-      //   ajax: {
-      //     url: '/api/ac/tag',
-      //     dataType: 'json',
-      //     data: function (term) {
-      //       return {
-      //         type: 'time-required',
-      //         q: term
-      //       };
-      //     },
-      //     results: function (data) {
-      //       return { results: data };
-      //     }
-      //   }
-      // });
-
-      // $("#time-estimate").select2({
-      //   formatResult: formatResult,
-      //   formatSelection: formatResult,
-      //   minimumInputLength: 1,
-      //   ajax: {
-      //     url: '/api/ac/tag',
-      //     dataType: 'json',
-      //     data: function (term) {
-      //       return {
-      //         type: 'time-estimate',
-      //         q: term
-      //       };
-      //     },
-      //     results: function (data) {
-      //       return { results: data };
-      //     }
-      //   }
-      // });
-
-      // $("#length").select2({
-      //   formatResult: formatResult,
-      //   formatSelection: formatResult,
-      //   minimumInputLength: 1,
-      //   ajax: {
-      //     url: '/api/ac/tag',
-      //     dataType: 'json',
-      //     data: function (term) {
-      //       return {
-      //         type: 'length',
-      //         q: term
-      //       };
-      //     },
-      //     results: function (data) {
-      //       return { results: data };
-      //     }
-      //   }
-      // });
-
       this.$("#topics").select2({
         placeholder: "topics",
         multiple: true,
@@ -144,25 +68,6 @@ define([
       if (this.data['madlibTags'].topic) {
         this.$("#topics").select2('data', this.data['madlibTags'].topic);
       }
-
-      // $("#people").select2({
-      //   formatResult: formatResult,
-      //   formatSelection: formatResult,
-      //   minimumInputLength: 1,
-      //   ajax: {
-      //     url: '/api/ac/tag',
-      //     dataType: 'json',
-      //     data: function (term) {
-      //       return {
-      //         type: 'people',
-      //         q: term
-      //       };
-      //     },
-      //     results: function (data) {
-      //       return { results: data };
-      //     }
-      //   }
-      // });
 
       this.$("#skills").select2({
         placeholder: "skills",
@@ -240,25 +145,6 @@ define([
         placeholder: 'location',
         width: '130px'
       });
-
-      // $("#skills").select2({
-      //   formatResult: formatResult,
-      //   formatSelection: formatResult,
-      //   minimumInputLength: 1,
-      //   ajax: {
-      //     url: '/api/ac/tag',
-      //     dataType: 'json',
-      //     data: function (term) {
-      //       return {
-      //         type: 'skill',
-      //         q: term
-      //       };
-      //     },
-      //     results: function (data) {
-      //       return { results: data };
-      //     }
-      //   }
-      // });
 
     },
 
