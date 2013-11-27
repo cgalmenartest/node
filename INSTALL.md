@@ -161,15 +161,15 @@ With the application server running and nginx running, you should now be able to
 
 ### Install Visual C++ 2008 x64 or x86 Redistributable Package
 
-     http://www.microsoft.com/en-us/download/details.aspx?id=15336
+[Runtime 64](http://www.microsoft.com/en-us/download/details.aspx?id=15336)
      or
-     http://www.microsoft.com/en-us/download/details.aspx?id=29
+[Runtime 32](http://www.microsoft.com/en-us/download/details.aspx?id=29)
 
 Reboot server once finished
 
 ### Install/Configure Postgres 9.2+ via windows msi installer
 
-`http://www.postgresql.org/download/windows/`
+[PostgreSQL](http://www.postgresql.org/download/windows/`)
 
 Establish admin user account during the wizard and verify that PostgreSQL is running as a service
 
@@ -179,11 +179,11 @@ Open pgAdmin
      
 ### Install Node.js via Windows MSI, select all available add-ons
 
-`http://nodejs.org/download/`
+[Node.js](http://nodejs.org/download/`)
      
 ### Install GraphicsMagick
 
-`ftp://ftp.graphicsmagick.org/pub/GraphicsMagick/windows/`
+[GraphicsMagick](ftp://ftp.graphicsmagick.org/pub/GraphicsMagick/windows/`)
      
 Select Q8 version along with latest corresponding to 32 bit vs. 64 bit OS
      
