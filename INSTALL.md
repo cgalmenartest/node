@@ -169,7 +169,7 @@ Reboot server once finished
 
 ### Install/Configure Postgres 9.2+ via windows msi installer
 
-     http://www.postgresql.org/download/windows/
+`http://www.postgresql.org/download/windows/`
 
 Establish admin user account during the wizard and verify that PostgreSQL is running as a service
 
@@ -179,13 +179,13 @@ Open pgAdmin
      
 ### Install Node.js via Windows MSI, select all available add-ons
 
-     http://nodejs.org/download/
+`http://nodejs.org/download/`
      
 ### Install GraphicsMagick
 
-     ftp://ftp.graphicsmagick.org/pub/GraphicsMagick/windows/
+`ftp://ftp.graphicsmagick.org/pub/GraphicsMagick/windows/`
      
-     Select Q8 version along with latest corresponding to 32 bit vs. 64 bit OS
+Select Q8 version along with latest corresponding to 32 bit vs. 64 bit OS
      
 ### Set System Path Variables
 
