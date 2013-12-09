@@ -1,3 +1,4 @@
+<div id="login-wrapper"></div>
 <div class="navbar navbar-default navbar-static-top">
   <div class="container">
     <div class="navbar-header">
@@ -36,11 +37,11 @@
               <li role="presentation"><a role="menuitem" class="nav-link" tabindex="-1" href="/profile">Profile</a></li>
               <li role="presentation" class="divider"></li>
               <li role="presentation"><a role="menuitem"
-                 tabindex="-1" href="/auth/logout">Logout</a></li>
+                 tabindex="-1" href="/auth/logout" class="logout">Logout</a></li>
             </ul>
           </li>
         <% } else { %>
-          <li class="navbar-1line"><a href="/auth"><i class="icon-plus-sign"></i> Sign In</a></li>
+          <li class="navbar-1line"><a href="/auth" class="login"><i class="icon-plus-sign"></i> Sign In</a></li>
         <% }; %>
       </ul>
     </div>

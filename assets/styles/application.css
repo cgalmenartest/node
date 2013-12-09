@@ -164,6 +164,31 @@ ul.nav-search > li {
 }
 
 /*****************
+=  LOGIN
+******************/
+.login-oauth {
+	width: 100%;
+	text-align: center;
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.login-option {
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.login-form {
+	margin: 10px;
+	text-align: center;
+}
+
+.btn-login {
+	width: 250px;
+	text-align: center;
+}
+
+/*****************
 =  TEXT COLORS
 ******************/
 .green {

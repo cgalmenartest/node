@@ -4,8 +4,8 @@ define([
   'underscore',
   'backbone',
   'utilities',
-  'text!tag_form_template'
-], function ($, Bootstrap, _, Backbone, utils, TagFormTemplate) {
+  'text!login_template'
+], function ($, Bootstrap, _, Backbone, utils, LoginTemplate) {
 
   var TagFormView = Backbone.View.extend({
 

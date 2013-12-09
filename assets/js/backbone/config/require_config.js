@@ -49,6 +49,14 @@ require.config({
     'nav_template'              : '../apps/nav/templates/nav_template.html',
 
     // ----------
+    //= Login
+    // ----------
+    'login'                     : '../components/login',
+    'login_view'                : '../apps/login/views/login_view',
+    'login_template'            : '../apps/login/templates/login_template.html',
+    'login_controller'          : '../apps/login/controllers/login_controller',
+
+    // ----------
     //= Browse
     // ----------
     'browse_app'                : '../apps/browse/browse_app',

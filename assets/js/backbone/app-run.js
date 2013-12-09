@@ -12,15 +12,13 @@ define([
     initialize: function () {
       var self = this;
       // Cache user
-      $.ajax({
-        url: '/api/user',
-        type: 'GET',
-        success: function (data) {
-          window.cache = {
-            currentUser: data
-          }
-        }
-      });
+      // Check if a user is already defined
+      if (!_.isUndefined(backendUser)) {
+        window.cache.currentUser = backendUser;
+      }
+
+      // Create a user events handler
+      _.extend(window.cache.userEvents, Backbone.Events);
 
       // Mixin backbone events into our pub sub handler
       _.extend(entities.request, Backbone.Events);

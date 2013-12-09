@@ -4,21 +4,35 @@ define([
   'underscore',
   'backbone',
   'utilities',
+  'login_controller',
   'text!nav_template'
-], function ($, dropzone, _, Backbone, utils, NavTemplate) {
+], function ($, dropzone, _, Backbone, utils, LoginController, NavTemplate) {
 
   var NavView = Backbone.View.extend({
 
     events: {
-      'click .nav-link': 'link'
+      'click .nav-link': 'link',
+      'click .login': 'login',
+      'click .logout': 'logout'
+    },
+
+    initialize: function (options) {
+      var self = this;
+      this.options = options;
+
+      window.cache.userEvents.on("user:login", function (userData) {
+        self.doRender({ user: userData });
+      });
+
+      window.cache.userEvents.on("user:logout", function () {
+        self.doRender({ user: null });
+        Backbone.history.loadUrl();
+      });
     },
 
     render: function () {
       var self = this;
-      this.doRender({ user: null });
-      $.ajax('/api/user').done(function (userData) {
-        self.doRender({ user: userData });
-      });
+      this.doRender({ user: window.cache.currentUser });
       return this;
     },
 
@@ -37,7 +51,30 @@ define([
       Backbone.history.navigate(link, { trigger: true });
     },
 
+    login: function (e) {
+      if (e.preventDefault) e.preventDefault();
+      if (this.loginController) {
+        this.loginController.cleanup();
+      }
+      this.loginController = new LoginController({
+        el: '#login-wrapper'
+      });
+    },
+
+    logout: function (e) {
+      if (e.preventDefault) e.preventDefault();
+      $.ajax({
+        url: '/auth/logout?json=true',
+      }).done(function (success) {
+        window.cache.currentUser = null;
+        window.cache.userEvents.trigger("user:logout");
+      }).fail(function (error) {
+        // do nothing
+      });
+    },
+
     cleanup: function () {
+      if (this.loginController) { this.loginController.cleanup(); }
       removeView(this);
     },
   });

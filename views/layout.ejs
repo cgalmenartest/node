@@ -12,6 +12,13 @@
     <!-- listen on socket.io for incoming messages -->
     <!-- <script type="text/javascript" src="/js/vendor/sails/app.js"></script> -->
 
+    <script type="text/javascript">
+    <% if (req.user) { %>
+    backendUser = <%- JSON.stringify(req.user[0]) %>;
+    <% } else { %>
+    backendUser = null;
+    <% } %>
+    </script>
     <!-- There be dragons here (aka, don't remove and put into require.js flow, as that fails 1/5 times) -->
     <script type="text/javascript" src="/js/vendor/jquery.js"></script>
 

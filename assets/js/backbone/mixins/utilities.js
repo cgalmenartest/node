@@ -80,11 +80,7 @@ var cleanStringFromUndefined = function (model, field, splitType) {
  * nothing
  */
 var removeView = function (view) {
-  // view.$el.removeData().unbind();
-  // view.remove();
-  // Backbone.View.prototype.remove.call(view);
   view.undelegateEvents();
-  //view.model.undelegateEvents();
   view.$el.html("");
 }
 
