@@ -66,7 +66,6 @@ define([
       });
 
       myDropzone.on("sending", function(file, xhr, formData) {
-        formData.append('type', 'image_square');
         $('.attachment-fileupload > .progress').show();
       });
 
