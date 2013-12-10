@@ -35,9 +35,11 @@
             <img src="/api/user/photo/<%- user.id %>" class="navbar-people"/> &nbsp;<%- user.name %></a>
             <ul class="dropdown-menu" role="menu" aria-labelledby="navbar-profile">
               <li role="presentation"><a role="menuitem" class="nav-link" tabindex="-1" href="/profile">Profile</a></li>
+              <% if (login.local.logout) { %>
               <li role="presentation" class="divider"></li>
               <li role="presentation"><a role="menuitem"
                  tabindex="-1" href="/auth/logout" class="logout">Logout</a></li>
+              <% } %>
             </ul>
           </li>
         <% } else { %>

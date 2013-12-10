@@ -18,13 +18,16 @@
   </div>
   <% } %>
 
-  <% if (login.local === true) { %>
+  <% if (login.local.enabled === true) { %>
     <hr/>
     <div class="login-oauth">
-      or <a href="#" id="login-password">log in with username and password</a>.
+      or
+      <% if (login.local.expand !== true) { %><a href="#" id="login-password"><% } %>
+        log in with username and password.
+      <% if (login.local.expand !== true) { %></a><% } %>
     </div>
     <div class="alert alert-danger" id="login-error" style="display:none;"></div>
-    <div class="login-form" style="display:none;">
+    <div class="login-form" <% if (login.local.expand !== true) { %>style="display:none;"<% } %>>
       <form class="form-inline" id="login-password-form">
         <input type="text" class="form-control" style="width:180px;" name="username" id="username" placeholder="Email Address"/>
         <input type="password" class="form-control" style="width:180px;" name="password" id="password" placeholder="Password"/>

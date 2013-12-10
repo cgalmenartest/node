@@ -18,5 +18,12 @@ define({
   ],
   // should local username/password logins be allowed?
   // set to true to allow username/password
-  local: true
+  local: {
+    // is login enabled by local username/password?
+    enabled: true,
+    // should the username/password fields be expanded/visible by default?
+    expand: true,
+    // should the user be able to logout (for auto-login systems)
+    logout: true
+  }
 });

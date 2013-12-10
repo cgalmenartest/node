@@ -4,9 +4,10 @@ define([
   'underscore',
   'backbone',
   'utilities',
+  'login',
   'login_controller',
   'text!nav_template'
-], function ($, dropzone, _, Backbone, utils, LoginController, NavTemplate) {
+], function ($, dropzone, _, Backbone, utils, Login, LoginController, NavTemplate) {
 
   var NavView = Backbone.View.extend({
 
@@ -44,6 +45,7 @@ define([
     },
 
     doRender: function (data) {
+      data.login = Login;
       var template = _.template(NavTemplate, data);
       this.$el.html(template);
       $(".nav li").on("click", function () {
