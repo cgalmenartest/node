@@ -51,7 +51,7 @@ require.config({
     // ----------
     //= Login
     // ----------
-    'login'                     : '../components/login',
+    'login_config'              : '../config/login',
     'login_view'                : '../apps/login/views/login_view',
     'login_template'            : '../apps/login/templates/login_template.html',
     'login_controller'          : '../apps/login/controllers/login_controller',
@@ -88,7 +88,7 @@ require.config({
     // ----------
     //= Tags
     // ----------
-    'tag_config'                : '../components/tag',
+    'tag_config'                : '../config/tag',
     'tag_show_view'             : '../apps/tag/show/views/tag_show_view',
     'tag_show_template'         : '../apps/tag/show/templates/tag_show_template.html',
     'tag_item_template'         : '../apps/tag/show/templates/tag_item_template.html',

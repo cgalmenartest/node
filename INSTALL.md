@@ -110,8 +110,13 @@ Then run the normal npm package installer
 
 Tag configuration:
 
-     cd assets/js/backbone/components
+     cd assets/js/backbone/config
      vi tag.js
+     vi login.js
+
+`tag.js` specifies the tags that the frontend understands and stores in the backend.
+
+`login.js` specifies the login options available on the frontend, and must have a corresponding backend component or configuration enabled (see `config/settings/auth.ex.js`).
 
 ### Compile production JS and CSS (from the midas git folder)
 

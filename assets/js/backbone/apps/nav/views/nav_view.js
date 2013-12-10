@@ -4,7 +4,7 @@ define([
   'underscore',
   'backbone',
   'utilities',
-  'login',
+  'login_config',
   'login_controller',
   'text!nav_template'
 ], function ($, dropzone, _, Backbone, utils, Login, LoginController, NavTemplate) {
