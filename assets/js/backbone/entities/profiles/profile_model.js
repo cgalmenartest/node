@@ -26,8 +26,11 @@ define([
 	      this.set({ id: id });
       }
       this.fetch({
-        success: function (data) {
-          self.trigger("profile:fetch:success", data);
+        success: function (model, response, options) {
+          self.trigger("profile:fetch:success", model);
+        },
+        error: function (model, response, options) {
+          self.trigger("profile:fetch:error", model, response);
         }
       });
     },

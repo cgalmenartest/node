@@ -29,6 +29,12 @@ define([
         Backbone.history.loadUrl();
         window.cache.userEvents.trigger("user:logout:success");
       });
+
+      // request that the user log in to see the page
+      window.cache.userEvents.on("user:request:login", function (message) {
+        // trigger the login modal
+        self.login(message);
+      });
     },
 
     render: function () {
@@ -52,13 +58,18 @@ define([
       Backbone.history.navigate(link, { trigger: true });
     },
 
-    login: function (e) {
+    loginClick: function (e) {
       if (e.preventDefault) e.preventDefault();
+      this.login();
+    },
+
+    login: function (message) {
       if (this.loginController) {
         this.loginController.cleanup();
       }
       this.loginController = new LoginController({
-        el: '#login-wrapper'
+        el: '#login-wrapper',
+        message: message
       });
     },
 

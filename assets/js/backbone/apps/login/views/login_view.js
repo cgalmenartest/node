@@ -20,7 +20,8 @@ define([
 
     render: function () {
       data = {
-        login: this.options.login
+        login: this.options.login,
+        message: this.options.message
       }
       var template = _.template(LoginTemplate, data);
       this.$el.html(template);

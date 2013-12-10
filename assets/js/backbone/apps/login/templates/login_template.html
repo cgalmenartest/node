@@ -1,5 +1,11 @@
 <div class="modal-body">
 
+  <% if (message) { %>
+  <div class="alert alert-warning">
+    <%= message %>
+  </div>
+  <% } %>
+
   <% if (login.oauth.length > 0) { %>
   <div class="login-oauth">Sign in using
   <% _.each(login.oauth, function (e) { %>

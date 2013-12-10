@@ -4,8 +4,9 @@ define([
   'backbone',
   'base_controller',
   'profile_model',
-  'profile_show_view'
-], function ($, _, Backbone, BaseController, ProfileModel, ProfileView) {
+  'profile_show_view',
+  'text!alert_template'
+], function ($, _, Backbone, BaseController, ProfileModel, ProfileView, AlertTemplate) {
 
   Application.Controller.Profile = BaseController.extend({
 
@@ -34,6 +35,7 @@ define([
       var fetchId = null;
       if (this.id && this.id != 'edit') { fetchId = this.id; }
       this.model.trigger("profile:fetch", fetchId);
+      // process a successful model fetch, and display the model
       this.listenTo(this.model, "profile:fetch:success", function (model) {
         // @instance
         self.model = model;
@@ -49,6 +51,28 @@ define([
           }
         }
         self.initializeProfileViewInstance();
+      });
+      // if the profile fetch fails, check if it is due to the user
+      // not being logged in
+      this.listenTo(this.model, "profile:fetch:error", function (model, response) {
+        // if the user isn't logged in, trigger the login window
+        if (response.status === 403) {
+          window.cache.userEvents.trigger("user:request:login", "You must be logged in to view profiles");
+        }
+        var data = {
+          alert: {
+            message: "<strong>Unable to load profile.  Please reload this page to try again.</strong><br/>Error: "
+          }
+        };
+        // check if the response provided an error
+        if (response.responseText) {
+          var err = JSON.parse(response.responseText);
+          if (err.message) {
+            data.alert.message += err.message;
+          }
+        }
+        var template = _.template(AlertTemplate, data)
+        this.$el.html(template);
       });
     },
 

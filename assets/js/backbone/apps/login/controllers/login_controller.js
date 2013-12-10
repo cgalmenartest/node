@@ -17,7 +17,7 @@ define([
 
     initialize: function ( options ) {
       var self = this;
-      this.target = this.options.target;
+      this.options = options;
       this.initializeView();
     },
 
@@ -35,7 +35,8 @@ define([
 
       this.loginView = new LoginView({
         el: ".modal-template",
-        login: Login
+        login: Login,
+        message: this.options.message
       }).render();
       $("#login").modal('show');
 
