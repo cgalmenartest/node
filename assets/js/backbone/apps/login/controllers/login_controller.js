@@ -44,6 +44,7 @@ define([
         $('#login').bind('hidden.bs.modal', function() {
           // reload the page after login
           Backbone.history.loadUrl();
+          window.cache.userEvents.trigger("user:login:success", user);
         }).modal('hide');
       });
     },

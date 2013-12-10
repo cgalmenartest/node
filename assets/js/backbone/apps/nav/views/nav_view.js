@@ -20,13 +20,14 @@ define([
       var self = this;
       this.options = options;
 
-      window.cache.userEvents.on("user:login", function (userData) {
+      window.cache.userEvents.on("user:login:success", function (userData) {
         self.doRender({ user: userData });
       });
 
       window.cache.userEvents.on("user:logout", function () {
         self.doRender({ user: null });
         Backbone.history.loadUrl();
+        window.cache.userEvents.trigger("user:logout:success");
       });
     },
 
