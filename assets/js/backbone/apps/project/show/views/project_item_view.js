@@ -27,10 +27,6 @@ define([
           this.edit = true;
         }
       }
-      // if (this.data.saved) {
-      //   this.saved = true;
-      //   this.data.saved = false;
-      // }
     },
 
     render: function () {
@@ -91,7 +87,8 @@ define([
 
       var myDropzone = new dropzone("#fileupload", {
         url: "/api/file/create",
-        clickable: ['#fileupload', '#fileupload-icon']
+        clickable: ['#fileupload', '#fileupload-icon'],
+        acceptedFiles: 'image/*,.jpg,.png,.gif'
       });
 
       myDropzone.on("addedfile", function(file) {

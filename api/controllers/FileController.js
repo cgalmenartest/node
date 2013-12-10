@@ -72,10 +72,13 @@ module.exports = {
       if (req.param('type') == 'image_square') {
         gm(f.data, 'photo.jpg')
         .size(function (err, size) {
+          if (err || !size) {
+            return res.send(400, { message: 'Error with file: it is probably not an image. ', error: err });
+          }
           if (size.width == size.height) {
             sails.log.debug('Create File:', f);
             File.create(f, function(err, newFile) {
-              if (err || !newFile) { return res.send(400, {message:'Error storing file.'}) }
+              if (err || !newFile) { return res.send(400, { message:'Error storing file.', error: err }); }
               delete newFile['data'];
               return res.send(newFile);
             });
@@ -89,7 +92,7 @@ module.exports = {
             f.size = buffer.length;
             sails.log.debug('Create File:', f);
             File.create(f, function(err, newFile) {
-              if (err || !newFile) { return res.send(400, {message:'Error storing file.'}) }
+              if (err || !newFile) { return res.send(400, { message:'Error storing file.', error: err }); }
               delete newFile['data'];
               return res.send(newFile);
             });
@@ -98,7 +101,7 @@ module.exports = {
       } else {
         sails.log.debug('Create File:', f);
         File.create(f, function(err, newFile) {
-          if (err || !newFile) { return res.send(400, {message:'Error storing file.'}) }
+          if (err || !newFile) { return res.send(400, { message:'Error storing file.', error: err }); }
           delete newFile['data'];
           return res.send(newFile);
         });
