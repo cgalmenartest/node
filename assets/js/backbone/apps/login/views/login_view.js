@@ -57,7 +57,7 @@ define([
         window.cache.userEvents.trigger("user:login", success);
       }).fail(function (error) {
         var d = JSON.parse(error.responseText);
-        self.$("#login-error").html(d.info.message);
+        self.$("#login-error").html(d.message);
         self.$("#login-error").show();
       });
     },

@@ -31,7 +31,7 @@ function authenticate(req, res, strategy, json) {
         if (json === true) {
           res.send(403, {
             error: err,
-            info: info
+            message: info.message
           });
         } else {
           res.redirect('/auth');
@@ -47,7 +47,7 @@ function authenticate(req, res, strategy, json) {
           if (json === true) {
             res.send(403, {
               error: err,
-              info: info
+              message: info.message
             });
           } else {
             res.redirect('/auth');
