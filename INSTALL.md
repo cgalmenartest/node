@@ -162,6 +162,73 @@ Configure nginx with the files in the tools folder.  Use the SSL config file if 
 
 With the application server running and nginx running, you should now be able to access the application at `http://localhost`
 
-## Windows (Windows 7 Server)
+## Windows (Windows 2008 Server)
 
-Insert information about installing on Windows here.
+### Install Visual C++ 2008 x64 or x86 Redistributable Package
+
+[Runtime 64](http://www.microsoft.com/en-us/download/details.aspx?id=15336)
+     or
+[Runtime 32](http://www.microsoft.com/en-us/download/details.aspx?id=29)
+
+Reboot server once finished
+
+### Install/Configure Postgres 9.2+ via windows msi installer
+
+[PostgreSQL](http://www.postgresql.org/download/windows/`)
+
+Establish admin user account during the wizard and verify that PostgreSQL is running as a service
+
+Open pgAdmin
+     
+     Create database 'midas', user account 'midas' with password 'midas', and assign user 'midas' full rights to administer DB 'midas'
+     
+### Install Node.js via Windows MSI, select all available add-ons
+
+[Node.js](http://nodejs.org/download/`)
+     
+### Install GraphicsMagick
+
+[GraphicsMagick](ftp://ftp.graphicsmagick.org/pub/GraphicsMagick/windows/`)
+     
+Select Q8 version along with latest corresponding to 32 bit vs. 64 bit OS
+     
+### Set System Path Variables
+
+Go to Control Panel -> System -> Advanced System Settings -> Environment Variables
+Find "Path" Variable in System Variables table and double click to edit it. Make sure it contains all of the following parts (in 	addition to anything else) separated by a semi-colon.
+	
+	DRIVE:\program files\graphicsmagick-1.3.18-q8;
+	(or similar, depending on your graphicsmagick version)
+	DRIVE:\Program Files\nodejs\;
+     	
+Save.
+
+### Host and Configure Application
+
+#### If hosting on an on-line server
+
+Follow instructions as above in Linux Install Guide to retrieve necessary files from GitHub.
+
+Install NPM Modules as directed above.
+
+#### If hosting on an off-line server
+
+Retrieve Midas from GitHub as above on an online pc. Install NPM modules as directed. Copy to offline server your local npm_modules directory (in project home) as well as the contents of the directory found in Users/YOUR_USER_NAME/AppData/Roaming/npm to corresponding locations on offline-server. 
+
+#### Starting Midas
+
+Navigate to Midas directory via windows cmd.exe prompt
+
+Enter the following commands
+
+	npm install sails -g
+	npm install
+	npm link sails-postgresql
+	grunt requirejs
+     
+Raise sails with
+
+     sails lift
+     
+You can now access the server at `http://localhost:1337`
+
