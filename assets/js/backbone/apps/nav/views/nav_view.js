@@ -13,7 +13,7 @@ define([
 
     events: {
       'click .nav-link': 'link',
-      'click .login': 'login',
+      'click .login': 'loginClick',
       'click .logout': 'logout'
     },
 
