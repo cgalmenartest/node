@@ -36,7 +36,8 @@ module.exports = {
             UserPassword.create(pwObj).done(function (err, pwObj) {
               if (err) { return done(null, false, { message: 'Unable to store password'}); }
               // if the username is an email address, store it
-              if (check(username).isEmail()) {
+              try {
+                check(username).isEmail();
                 var email = {
                   userId: user['id'],
                   email: username,
@@ -46,7 +47,9 @@ module.exports = {
                   if (err) { return done(null, false, { message: 'Unable to store user email address.' }); }
                   return done(null, user);
                 });
-              } else {
+              }
+              // email validation failed, proceed
+              catch (e) {
                 return done(null, user);
               }
             });
