@@ -1,3 +1,5 @@
+var check = require('validator').check;
+
 module.exports = {
 
   /**
@@ -8,6 +10,7 @@ module.exports = {
    * @param done callback with form (null, user, error)
    */
   createLocalUser: function (username, password, done) {
+    username = username.toLowerCase();
     User.findOneByUsername(username, function (err, user) {
       if (err) { return done(null, false, { message: 'Error looking up user' }); }
       // Look up user and check password hash
@@ -28,8 +31,20 @@ module.exports = {
               password: hash
             };
             UserPassword.create(pwObj).done(function (err, pwObj) {
-              if (err) { return done(null, false, { message: 'Unable to store password'}) }
-              return done(null, user);
+              if (err) { return done(null, false, { message: 'Unable to store password'}); }
+              // if the username is an email address, store it
+              if (check(username).isEmail()) {
+                var email = {
+                  userId: user['id'],
+                  email: username,
+                }
+                UserEmail.create(email).done(function (err, email) {
+                  if (err) { return done(null, false, { message: 'Unable to store user email address.' }); }
+                  return done(null, user);
+                });
+              } else {
+                return done(null, user);
+              }
             });
           });
         });
@@ -67,8 +82,13 @@ module.exports = {
       if (userAuth.length === 0) {
         var user = {
           name: providerUser.displayName,
-          photoUrl: providerUser.photoUrl
+          photoUrl: providerUser.photoUrl,
+          title: providerUser.title,
+          bio: providerUser.bio
         };
+        if (providerUser.emails && (providerUser.emails.length > 0)) {
+          user.username = providerUser.emails[0].value.toLowerCase();
+        }
 
         function user_cb(err, user) {
           var creds = {
@@ -100,10 +120,26 @@ module.exports = {
           });
         }
 
+        // if this user is logged in, then we're adding a new
+        // service for them.  Update their user fields if they
+        // aren't already set.
         if (req.user) {
+          var update = false;
           if (!req.user[0].photoId && !req.user[0].photoUrl && providerUser.photoUrl) {
             req.user[0].photoUrl = providerUser.photoUrl;
+            update = true;
+          }
+          if (!req.user[0].bio && providerUser.bio) {
+            req.user[0].bio = providerUser.bio;
+            update = true;
+          }
+          if (!req.user[0].title && providerUser.title) {
+            req.user[0].title = providerUser.title;
+            update = true;
+          }
+          if (update === true) {
             req.user[0].save(function (err) {
+              if (err) { return done(null, false, { message: 'Unable to update user information.' }); }
               user_cb(null, req.user[0]);
             });
           } else {
