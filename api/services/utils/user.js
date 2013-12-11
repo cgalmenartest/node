@@ -178,8 +178,8 @@ module.exports = {
           // acquire user model and authenticate
           User.findOneById(userAuth['userId'], function (err, user) {
             if (!user || err) { return done(null, false, { message: 'Error looking up user.' }); }
-            sails.log.debug('User Found:', user[0]);
-            return done(null, user[0]);
+            sails.log.debug('User Found:', user);
+            return done(null, user);
           });
         });
       }
