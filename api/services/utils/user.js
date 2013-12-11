@@ -11,25 +11,28 @@ module.exports = {
    */
   createLocalUser: function (username, password, done) {
     username = username.toLowerCase();
+    // Check if the username already exists
     User.findOneByUsername(username, function (err, user) {
       if (err) { return done(null, false, { message: 'Error looking up user' }); }
       // Look up user and check password hash
       var bcrypt = require('bcrypt');
+      // The user doesn't exist, so create an account for them
       if (!user) {
         bcrypt.hash(password, 10, function(err, hash) {
           // Create and store the user
           User.create({
             username: username,
           }).done(function (err, user) {
-            sails.log.debug('User Created:', user);
             if (err) {
               sails.log.debug('User creation error:', err);
               return done(null, false, { message: 'Unable to create new user'});
             }
+            sails.log.debug('User Created:', user);
             var pwObj = {
               userId: user.id,
               password: hash
             };
+            // Store the user's password with the bcrypt hash
             UserPassword.create(pwObj).done(function (err, pwObj) {
               if (err) { return done(null, false, { message: 'Unable to store password'}); }
               // if the username is an email address, store it
@@ -38,6 +41,7 @@ module.exports = {
                   userId: user['id'],
                   email: username,
                 }
+                // Store the email address
                 UserEmail.create(email).done(function (err, email) {
                   if (err) { return done(null, false, { message: 'Unable to store user email address.' }); }
                   return done(null, user);
@@ -49,13 +53,18 @@ module.exports = {
           });
         });
       } else {
+        // The user exists so look up their password
         UserPassword.findOneByUserId(user.id, function (err, pwObj) {
+          // If no password is set or there is an error, abort
           if (err || !pwObj) { return done(null, false, { message: 'Invalid password'}); }
+          // Compare the passwords to check if it is correct
           bcrypt.compare(password, pwObj.password, function (err, res) {
+            // Valid password
             if (res === true) {
               sails.log.debug('User Found:', user);
               return done(null, user);
             }
+            // Invalid password
             else { return done(null, false, { message: 'Invalid password' }); }
           });
         });
@@ -78,7 +87,7 @@ module.exports = {
       if (!userAuth) { userAuth = []; }
       if (err) { return done(null, false, { message: 'Error looking up user credentials.' }); }
       // If the user's authentication tokens don't exist
-      // then this must be a new user, so create the user
+      // then add the authentication tokens and update the user profile
       if (userAuth.length === 0) {
         var user = {
           name: providerUser.displayName,
@@ -90,6 +99,8 @@ module.exports = {
           user.username = providerUser.emails[0].value.toLowerCase();
         }
 
+        // Utility function that completes the oauth user creation/update process
+        // Stores the credentials and the user's other profile data
         function user_cb(err, user) {
           var creds = {
             userId: user['id'],
@@ -102,6 +113,7 @@ module.exports = {
           UserAuth.create(creds).done(function (err, creds) {
             if (err) { return done(null, false, { message: 'Unable to store user credentials.' }); }
             sails.log.debug('Created Credentials:', creds);
+            // Store emails if they're available
             if (providerUser.emails && (providerUser.emails.length > 0)) {
               var email = {
                 userId: user['id'],
@@ -121,7 +133,7 @@ module.exports = {
         }
 
         // if this user is logged in, then we're adding a new
-        // service for them.  Update their user fields if they
+        // service for them.  Update their user model fields if they
         // aren't already set.
         if (req.user) {
           var update = false;
@@ -145,8 +157,9 @@ module.exports = {
           } else {
             user_cb(null, req.user[0]);
           }
-        } else {
-          // create user
+        }
+        // create user because the user is not logged in
+        else {
           User.create(user).done(function (err, user) {
             sails.log.debug('Created User: ', user);
             if (err) { return done(null, false, { message: 'Unable to create user.' }); }
@@ -162,10 +175,9 @@ module.exports = {
         userAuth.refreshToken = tokens.refreshToken;
         userAuth.save(function (err) {
           if (err) { return done(null, false, { message: 'Unable to update user credentials.' }); }
-          // acquire user object and authenticate
-          User.findById(userAuth['userId'], function (err, user) {
+          // acquire user model and authenticate
+          User.findOneById(userAuth['userId'], function (err, user) {
             if (!user || err) { return done(null, false, { message: 'Error looking up user.' }); }
-            if (user.length === 0) { return done(null, false, { message: 'User not found.' })}
             sails.log.debug('User Found:', user[0]);
             return done(null, user[0]);
           });
