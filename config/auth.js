@@ -137,7 +137,7 @@ function tokenFlow(provider, req, tokens, providerUser, done) {
         });
       }
     }
-    // Look up the user by the provider id
+    // The user has authentication tokens already for this provider, update them.
     else {
       userAuth = userAuth[0];
       // Update access and refresh tokens
@@ -199,7 +199,7 @@ passport.use('myusa', new MyUSAStrategy({
     passReqToCallback: true,
     clientID: authSettings.auth.myusa.clientId,
     clientSecret: authSettings.auth.myusa.clientSecret,
-    callbackURL: 'http://localhost/api/auth/myusa/callback',
+    callbackURL: authSettings.auth.myusa.callbackUrl,
     // Initially use staging.my.usa.gov until app approved for production
     authorizationURL: 'https://staging.my.usa.gov/oauth/authorize',
     tokenURL: 'https://staging.my.usa.gov/oauth/authorize',
@@ -226,13 +226,70 @@ passport.use('myusa', new MyUSAStrategy({
 //   profile), and invoke a callback with a user object.
 passport.use('linkedin', new LinkedInStrategy({
     passReqToCallback: true,
-    profileFields: ['id', 'first-name', 'last-name', 'formatted-name', 'email-address', 'headline', 'picture-url'],
-    consumerKey: process.env.LINKEDIN_CLIENT_ID  || 'CLIENT_ID',
-    consumerSecret: process.env.LINKEDIN_CLIENT_SECRET || 'CLIENT_SECRET',
-    callbackURL: 'http://localhost/api/auth/linkedin/callback',
+    profileFields: [
+      'id',
+      'first-name',
+      'last-name',
+      'formatted-name',
+      'email-address',
+      'headline',
+      'picture-url',
+      'picture-urls::(original)',
+      'location:(name)',
+      'summary',
+      'skills',
+      'interests',
+      'three-current-positions'
+    ],
+    consumerKey: authSettings.auth.linkedin.clientId,
+    consumerSecret: authSettings.auth.linkedin.clientSecret,
+    callbackURL: authSettings.auth.linkedin.callbackUrl
   },
   function(req, accessToken, refreshToken, profile, done) {
-    profile.photoUrl = profile._json.pictureUrl;
+    // parse profile data to standard format
+    // take standard low-res photo
+    if (profile._json.pictureUrl) {
+      profile.photoUrl = profile._json.pictureUrl;
+    }
+    // upgrade to higher res photo if its available
+    if (profile._json.pictureUrls && (profile._json.pictureUrls._total > 0)) {
+      profile.photoUrl = profile._json.pictureUrls.values[0];
+    }
+    // bio
+    if (profile._json.summary) {
+      profile.bio = profile._json.summary;
+    }
+    // current company and title
+    if (profile._json.threeCurrentPositions && (profile._json.threeCurrentPositions._total > 0)) {
+      profile.company = profile._json.threeCurrentPositions.values[0].company.name;
+      profile.title = profile._json.threeCurrentPositions.values[0].title;
+    }
+    // location
+    if (profile._json.location) {
+      profile.location = profile._json.location.name;
+    }
+    // parse skills
+    profile.skills = [];
+    if (profile._json.skills && (profile._json.skills._total > 0)) {
+      _.each(profile._json.skills.values, function (s) {
+        profile.skills.push(s.skill.name);
+      });
+    }
+    // parse topics
+    profile.topics = [];
+    if (profile._json.interests) {
+      _.each(profile._json.interests.split(','), function (i) {
+        i = i.trim();
+        if (i.toLowerCase().substring(0,4) == 'and ') {
+          i = i.slice(3).trim();
+        }
+        if (i.substring(0,1) == '&') {
+          i = i.slice(1).trim();
+        }
+        profile.topics.push(i);
+      });
+    }
+    // Linked in profile is complete; now authenticate user
     console.log('LINKEDIN:', profile);
     tokenFlow('linkedin',
           req,
