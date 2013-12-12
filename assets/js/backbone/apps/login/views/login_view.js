@@ -11,6 +11,7 @@ define([
     events: {
       'click .oauth-link'              : 'link',
       'click #login-password'          : 'showLogin',
+      'click #login-register'          : 'showRegister',
       'submit #login-password-form'    : 'submit'
     },
 
@@ -37,6 +38,11 @@ define([
     showLogin: function (e) {
       if (e.preventDefault) e.preventDefault();
       $(".login-form").show();
+    },
+
+    showRegister: function (e) {
+      if (e.preventDefault) e.preventDefault();
+      alert('Register not yet implemented.');
     },
 
     submit: function (e) {
