@@ -32,6 +32,11 @@ module.exports = {
     isAdmin: {
       type: 'BOOLEAN',
       defaultsTo: false
+    },
+
+    disabled: {
+      type: 'BOOLEAN',
+      defaultsTo: false
     }
   }
 

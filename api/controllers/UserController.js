@@ -224,17 +224,54 @@ module.exports = {
   },
 
   photo: function(req, res) {
-    if (req.route.params.id) {
-      User.findOneById(req.route.params.id, function (err, user) {
-        if (err || !user) { return res.redirect('/images/default-user-icon-profile.png'); }
-        if (user.photoId) {
-          return res.redirect(307, '/api/file/get/' + user.photoId);
-        } else if (user.photoUrl) {
-          return res.redirect(307, user.photoUrl);
-        } else {
-          return res.redirect(307, '/images/default-user-icon-profile.png');
-        }
+    User.findOneById(req.route.params.id, function (err, user) {
+      if (err || !user) { return res.redirect('/images/default-user-icon-profile.png'); }
+      if (user.photoId) {
+        return res.redirect(307, '/api/file/get/' + user.photoId);
+      } else if (user.photoUrl) {
+        return res.redirect(307, user.photoUrl);
+      } else {
+        return res.redirect(307, '/images/default-user-icon-profile.png');
+      }
+    });
+  },
+
+  // Enable a disabled user
+  enable: function (req, res) {
+    // policies will ensure only admins can run this function
+    User.findOneById(req.route.params.id, function (err, user) {
+      if (err) { return res.send(400, { message: 'An error occurred looking up this user.', error: err }); }
+      user.disabled = false;
+      user.save(function (err) {
+        if (err) { return res.send(400, { message: 'An error occurred enabling this user.', error: err }); }
+        return res.send(user);
       });
+    });
+  },
+
+  // Disable a user so that they cannot log in
+  disable: function (req, res) {
+    // check that we're permitted to disable this user
+    if ((req.user[0].id == req.route.params.id) || (req.user[0].isAdmin)) {
+      if (req.user[0].id == req.route.params.id) {
+        req.user[0].disabled = true;
+        req.user[0].save(function (err) {
+          if (err) { return res.send(400, { message: 'An error occurred disabling this user.', error: err }); }
+          return res.send(req.user[0]);
+        });
+      } else {
+        User.findOneById(req.route.params.id, function (err, user) {
+          if (err) { return res.send(400, { message: 'An error occurred looking up this user.', error: err }); }
+          user.disabled = true;
+          user.save(function (err) {
+            if (err) { return res.send(400, { message: 'An error occurred disabling this user.', error: err }); }
+            return res.send(user);
+          });
+        });
+      }
+    }
+    else {
+      res.send(403, { message: 'Not authorized.' });
     }
   }
 

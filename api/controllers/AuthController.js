@@ -93,9 +93,7 @@ module.exports = {
   */
   local: function(req, res) {
     var json = false;
-    sails.log.debug(req.param);
     if (req.param('json')) {
-      sails.log.debug('json');
       json = true;
     }
     authenticate(req, res, 'local', json);

@@ -56,6 +56,9 @@ module.exports = {
           });
         });
       } else {
+        if (user.disabled === true) {
+          return done(null, false, { message: 'Your account is disabled.' });
+        }
         // The user exists so look up their password
         UserPassword.findOneByUserId(user.id, function (err, pwObj) {
           // If no password is set or there is an error, abort
@@ -139,6 +142,9 @@ module.exports = {
         // service for them.  Update their user model fields if they
         // aren't already set.
         if (req.user) {
+          if (req.user[0].disabled === true) {
+            return done(null, false, { message: 'Your account is disabled.' });
+          }
           var update = false;
           if (!req.user[0].photoId && !req.user[0].photoUrl && providerUser.photoUrl) {
             req.user[0].photoUrl = providerUser.photoUrl;

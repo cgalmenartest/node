@@ -30,10 +30,30 @@ module.exports = {
     });
   },
 
+  user_info: function (request, cb) {
+    var r = request.get({
+      url: conf.url + '/user/'
+    }, function(err, response, body) {
+      if (err) { return cb(err, null); }
+      var b = JSON.parse(body);
+      cb(null, b);
+    });
+  },
+
   user_put: function (request, user, cb) {
     var r = request.put({
       url: conf.url + '/user/' + user.id,
       body: JSON.stringify(user)
+    }, function(err, response, body) {
+      if (err) { return cb(err, null); }
+      var b = JSON.parse(body);
+      cb(null, b);
+    });
+  },
+
+  user_disable: function (request, user, cb) {
+    var r = request.get({
+      url: conf.url + '/user/disable/' + user.id,
     }, function(err, response, body) {
       if (err) { return cb(err, null); }
       var b = JSON.parse(body);
