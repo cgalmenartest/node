@@ -40,10 +40,8 @@ describe('init:', function() {
 
   after(function(done) {
     utils.user_info(request, function (err, user) {
-      console.log(user);
       if (err) return done(err);
       utils.user_disable(request, user, function (err, user) {
-        console.log(user);
         done(err);
       });
     })
