@@ -150,14 +150,14 @@ passport.use('linkedin', new LinkedInStrategy({
       profile.location = profile._json.location.name;
     }
     // parse skills
-    profile.skills = [];
+    profile.skill = [];
     if (profile._json.skills && (profile._json.skills._total > 0)) {
       _.each(profile._json.skills.values, function (s) {
-        profile.skills.push(s.skill.name);
+        profile.skill.push(s.skill.name);
       });
     }
     // parse topics
-    profile.topics = [];
+    profile.topic = [];
     if (profile._json.interests) {
       _.each(profile._json.interests.split(','), function (i) {
         i = i.trim();
@@ -167,7 +167,7 @@ passport.use('linkedin', new LinkedInStrategy({
         if (i.substring(0,1) == '&') {
           i = i.slice(1).trim();
         }
-        profile.topics.push(i);
+        profile.topic.push(i);
       });
     }
     // Linked in profile is complete; now authenticate user

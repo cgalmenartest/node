@@ -103,8 +103,10 @@ Then run the normal npm package installer
      cd config/settings
      cp auth.ex.js auth.js
      cp sources.ex.js sources.js
+     cp tags.ex.js tags.js
      vi auth.js
      vi sources.js
+     vi tags.js
 
 ### Edit the front-end configuration files
 

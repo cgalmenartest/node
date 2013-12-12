@@ -1,4 +1,5 @@
 var check = require('validator').check;
+var tagUtils = require('./tag.js');
 
 module.exports = {
 
@@ -124,11 +125,12 @@ module.exports = {
               var email = {
                 userId: user['id'],
                 email: providerUser.emails[0].value.toLowerCase(),
-              }
-              UserEmail.find(email, function (err, storedEmail) {
+              };
+              UserEmail.findOne(email, function (err, storedEmail) {
                 if (storedEmail) { return done(null, user); }
                 UserEmail.create(email).done(function (err, email) {
                   if (err) { return done(null, false, { message: 'Unable to store user email address.' }); }
+                  sails.log.debug('Created Email:', email);
                   return done(null, user);
                 });
               });
@@ -136,7 +138,25 @@ module.exports = {
               return done(null, user);
             }
           });
-        }
+        };
+
+        // Takes the providerUser object and creates a tag object from it
+        function create_tag_obj (providerUser) {
+          var result = {};
+          if (providerUser.skill) {
+            result.skill = providerUser.skill;
+          }
+          if (providerUser.topic) {
+            result.topic = providerUser.topic;
+          }
+          if (providerUser.location) {
+            result.location = [ providerUser.location ];
+          }
+          if (providerUser.company) {
+            result.agency = [ providerUser.company ];
+          }
+          return result;
+        };
 
         // if this user is logged in, then we're adding a new
         // service for them.  Update their user model fields if they
@@ -164,7 +184,12 @@ module.exports = {
               user_cb(null, req.user[0]);
             });
           } else {
-            user_cb(null, req.user[0]);
+            var tags = create_tag_obj(providerUser);
+            // Don't update the user's tags for now; need to deal with
+            // tags that exist, and replacements.
+            // tagUtils.findOrCreateTags(req.user[0].id, tags, function (err, newTags) {
+              user_cb(null, req.user[0]);
+            // });
           }
         }
         // create user because the user is not logged in
@@ -172,7 +197,11 @@ module.exports = {
           User.create(user).done(function (err, user) {
             sails.log.debug('Created User: ', user);
             if (err) { return done(null, false, { message: 'Unable to create user.' }); }
-            user_cb(err, user);
+            var tags = create_tag_obj(providerUser);
+            // Update the user's tags
+            tagUtils.findOrCreateTags(user.id, tags, function (err, newTags) {
+              user_cb(null, user);
+            });
           });
         }
       }
