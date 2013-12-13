@@ -16,6 +16,18 @@ input {
 	padding: 0 0 0 5px;
 }
 
+/* Override bootstrap's .row margins for mobile & tablet */
+@media (max-width: 978px) {
+	.row {
+		margin-left: 0;
+		margin-right: 0;
+	}
+}
+
+.navbar-toggle {
+	margin-top: 18px;
+}
+
 .search-result-row:hover {
 	background: #ccc;
 }
@@ -184,8 +196,13 @@ ul.nav-search > li {
 }
 
 .btn-login {
-	width: 250px;
+	width: 100%;
 	text-align: center;
+}
+
+.btn-login-responsive {
+	height: auto;
+	max-width: 100%;
 }
 
 /*****************
@@ -299,15 +316,56 @@ div.project-title {
 	margin: 5px 0 0 8px;
 }
 
+#browse-list {
+	padding: 0;
+	margin-left: -15px;
+}
+
 #browse-list li {
 	list-style: none;
+}
+
+.browse-buttons {
+	/*padding: 0 10px 0 0;*/
+	padding: 0;
+	text-align: right;
+}
+
+/* Correctly show search input and button */
+@media (max-width: 768px) {
+	.browse-buttons {
+		text-align: center;
+	}
+}
+
+/* Correctly show search input and button */
+@media (min-width: 768px) {
+	.input-search {
+		padding-left: 0;
+		padding-right: 0;
+	}
+	.btn-search {
+		padding-left: 0;
+		padding-right: 0;
+	}
+}
+
+@media (max-width: 768px) {
+	.btn-search {
+		margin-top: 10px;
+		text-align: right;
+	}
 }
 
 .search-row {
 	margin-bottom: 25px;
 }
 
+.add-project {
+	margin-bottom: 10px;
+}
 .add-opportunity {
+	margin-bottom: 10px;
 	margin-left: 10px;
 }
 
