@@ -10,7 +10,7 @@
         <% if (data.coverId) { %>
         <div id="project-header" style="background-image:url('/api/file/get/<%= data.coverId %>');">
         <% } else { %>
-        <div id="project-header">
+        <div id="project-header" style="background-image:url('/images/project_default.png');">
         <% } %>
           <div id="fileupload" class="btn btn-c2" <% if (!data.isOwner || !edit) { %>style="display:none;"<% } %>>
             <i class="icon-camera icon-large" title="Change Cover Photo" id="fileupload-icon"></i>

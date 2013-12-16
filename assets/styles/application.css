@@ -296,7 +296,7 @@ div.project-title {
 }
 
 .project-background-image-default {
-	background: url('http://placehold.it/180x180');
+	background: url('/images/project_default_browse.png');
 }
 
 .nopadding {
