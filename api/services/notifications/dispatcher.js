@@ -11,8 +11,12 @@
 
 module.exports = {
 
-	handle: function(){
-
+	sendSimpleEmail: function(fields, settings, cb){
+		cb(null);
+	},
+	sendSimpleMessage: function(fields, settings, cb){
+		cb(null);
 	}
+
 
 }

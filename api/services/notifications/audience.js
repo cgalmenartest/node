@@ -11,32 +11,19 @@
 
 module.exports = {
 
-	findAllUsers: function(params, cb){
+	findAllUsers: function(fields, settings, cb){
 		User.find({}).done(cb);
-
 	},
-	findUser: function(params, cb){
-		if(!params.hasOwnProperty('data') || !params.data.hasOwnProperty('recipientId'))
-		{
-			throw new Error(arguments.callee.name + ' has received an improperly-defined parameter');
-		}
-
-		User.find({id: params.data.recipientId}).done(cb);
+	findUser: function(fields, settings, cb){
+		User.find({id: fields.userId}).done(cb);
 	},
-	findProjectOwners: function(params, cb){
-		if(!params.hasOwnProperty('data') || !params.data.hasOwnProperty('projectId'))
-		{
-			throw new Error(arguments.callee.name + ' has received an improperly-defined parameter');
-		}
-		ProjectOwner.find({projectId: params.data.projectId}).done(convertToUsers);
-		//User.find({id: params.data.recipientId}).done(cb);
+	findProjectOwners: function(fields, settings, cb){
+		ProjectOwner.find({projectId: fields.projectId}).done(convertToUsers);
 		function convertToUsers(err, projOwners){
 			var uIds = [];
-			//var concat = '[';
 			_.each(projOwners, function(po){
 				uIds.push({ id: po.userId });
 			});
-			//concat = concat + uIds.join(',') + ']';
 			User.find({
 				where: {
 					or: uIds
@@ -44,13 +31,13 @@ module.exports = {
 			}).done(cb);
 		}
 	},
-	findProjectParticipants: function(params, cb){
+	findProjectParticipants: function(fields, settings, cb){
 
 	},
-	findProjectLikers: function(params, cb){
+	findProjectLikers: function(fields, settings, cb){
 
 	},
-	findProjectThreadCommenters: function(params, cb){
+	findProjectThreadCommenters: function(fields, settings, cb){
 
 	}
 

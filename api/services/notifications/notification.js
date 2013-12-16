@@ -11,8 +11,8 @@
 
 module.exports = {
 
-	process: function(){
-
+	passThrough: function(fields, settings, cb){
+		cb(null, {});
 	}
 
 }
