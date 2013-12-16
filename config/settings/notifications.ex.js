@@ -1,6 +1,7 @@
  module.exports = {
   // NOTIFICATION SETTINGS
   // service functions called to produce the given audience
+
   audiences : {
     'everyone' : {
       method: 'findAllUsers',
