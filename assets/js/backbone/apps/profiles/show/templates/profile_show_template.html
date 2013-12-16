@@ -8,11 +8,11 @@
   <div class="alert alert-success">Your profile has been successfully updated.</div>
   <% } %>
 
-  <div class="col-lg-4 project-sidebar">
+  <div class="col-sm-3 col-md-4 project-sidebar">
     <!-- LEFT SIDEBAR -->
 
     <div class="row">
-      <div class="col-lg-12 box project-header-wrapper">
+      <div class="col-md-12 box project-header-wrapper">
         <div id="project-header" style="background-image:url('/api/user/photo/<%- data.id %>');">
           <div id="fileupload" class="btn btn-primary" <% if (!(data.isOwner && edit)) { %>style="display:none;"<% } %>><i class="icon-camera icon-large" title="Change Cover Photo" id="fileupload-icon"></i></div>
         </div>
@@ -23,14 +23,14 @@
     </div>
 
     <div class="row">
-      <div class="col-lg-12 box">
+      <div class="col-md-12 box">
         <div class="box-main tag-wrapper">
         </div>
       </div>
     </div>
   </div>
 
-  <div class="col-lg-8">
+  <div class="col-sm-9 col-md-8">
     <!-- RIGHT MAIN BAR -->
     <% if (edit) { %> <!-- in edit mode -->
     <div class="box box-main">
@@ -45,29 +45,29 @@
         <h2> Bio </h2>
 
         <div class="form-group">
-          <label for="title" class="col-lg-3 control-label">Title</label>
-          <div class="col-lg-9">
+          <label for="title" class="col-md-3 control-label">Title</label>
+          <div class="col-md-9">
             <input type="text" class="form-control" id="title" name="title" placeholder="Title" value="<% if (data.title) { %><%- data.title %><% } %>"/>
           </div>
         </div>
 
         <div class="form-group">
-          <label for="company" class="col-lg-3 control-label">Agency</label>
-          <div class="col-lg-9">
+          <label for="company" class="col-md-3 control-label">Agency</label>
+          <div class="col-md-9">
             <input type="hidden" id="company" name="company" style="width: 100%"/>
           </div>
         </div>
 
         <div class="form-group">
-          <label for="location" class="col-lg-3 control-label">Location</label>
-          <div class="col-lg-9">
+          <label for="location" class="col-md-3 control-label">Location</label>
+          <div class="col-md-9">
             <input type="hidden" id="location" name="location" style="width: 100%"/>
           </div>
         </div>
 
         <div class="form-group">
-          <label for="bio" class="col-lg-3 control-label">A brief public biography</label>
-          <div class="col-lg-9">
+          <label for="bio" class="col-md-3 control-label">A brief public biography</label>
+          <div class="col-md-9">
             <textarea class="form-control" name="bio" id="bio" rows="5"><% if (data.bio) { %><%- data.bio %><% } %></textarea>
           </div>
         </div>
@@ -75,8 +75,8 @@
         <h2> Account Information </h2>
 
         <div class="form-group">
-          <label for="username" class="col-lg-3 control-label">Username</label>
-          <div class="col-lg-9 input-group">
+          <label for="username" class="col-md-3 control-label">Username</label>
+          <div class="col-md-9 input-group">
             <input type="text" class="form-control" id="username" name="username" placeholder="username" value="<% if (data.username) { %><%- data.username %><% } %>"/>
             <span class="input-group-btn">
               <a href="#" class="btn btn-success" id="username-button">
@@ -86,16 +86,16 @@
           </div>
         </div>
         <div class="form-group">
-          <label for="primaryEmail" class="col-lg-3 control-label">Primary Email</label>
-          <div class="col-lg-9">
+          <label for="primaryEmail" class="col-md-3 control-label">Primary Email</label>
+          <div class="col-md-9">
             <div id="profile-emails">
             </div>
             <a href="#addEmail" class="btn btn-default btn-xs" id="add-email" data-toggle="modal">Add Email Address</a>
           </div>
         </div>
         <div class="form-group">
-          <label for="services" class="col-lg-3 control-label">Services</label>
-          <div class="col-lg-9">
+          <label for="services" class="col-md-3 control-label">Services</label>
+          <div class="col-md-9">
             <% if (_.contains(data.auths, 'linkedin')) { %>
               <button class="btn btn-success btn-xs" disabled="disabled"><span class="glyphicon glyphicon-ok" alt="Connected"></span></button>
               <a href="#" class="btn btn-default btn-xs removeAuth" id="linkedin"><span class="glyphicon glyphicon-remove"></span></a>
@@ -107,7 +107,7 @@
           </div>
         </div>
         <div class="form-group">
-          <div class="col-lg-offset-3 col-lg-9">
+          <div class="col-md-offset-3 col-md-9">
 
             <button id="submit" type="submit" class="btn btn-primary" disabled="disabled" data-loading-text="<i class='icon-spinner icon-spin'></i> Saving..." data-success-text="Saved!" data-fail-text="Save Failed.">Save Changes</button>
 
@@ -119,7 +119,7 @@
     </div>
     <% } else { %> <!-- not in edit mode -->
     <div class="row">
-      <div class="col-lg-9">
+      <div class="col-md-9 sm-nopadding md-nopadding">
         <div class="box box-main">
           <h1><% if (data.name) { %><%- data.name %><% } else { %><%- data.username %><% } %></h1>
 
@@ -132,7 +132,7 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-3 padding-left-none">
+      <div class="col-md-3 sm-nopadding md-nopadding padding-left-none">
         <div class="box padding-none">
 
           <div class="navbar-side like-row border-bottom">
@@ -174,19 +174,19 @@
 
       <div class="box-pad-lr box-pad-t">
         <div class="row">
-          <div class="col-lg-3">
+          <div class="col-xs-3 col-sm-3 col-md-3">
             Username:
           </div>
-          <div class="col-lg-9">
+          <div class="col-xs-9 col-sm-9 col-md-9">
             <% if (data.username) { %><%- data.username %><% } %>
           </div>
         </div>
 
         <div class="row">
-          <div class="col-lg-3">
+          <div class="col-xs-3 col-sm-3 col-md-3">
             Emails:
           </div>
-          <div class="col-lg-9">
+          <div class="col-xs-9 col-sm-9 col-md-9">
             <% for (var e = 0; e < data.emails.length; e++) { %>
               <% if (data.emails[e].isPrimary) { %>x<% } %>
               <%- data.emails[e].email %><br/>
@@ -198,10 +198,10 @@
         </div>
 
         <div class="row">
-          <div class="col-lg-3">
+          <div class="col-xs-3 col-sm-3 col-md-3">
             Services:
           </div>
-          <div class="col-lg-9">
+          <div class="col-xs-9 col-sm-9 col-md-9">
             <i class="icon icon-linkedin-sign" alt="LinkedIn"></i> LinkedIn -
             <% if (_.contains(data.auths, 'linkedin')) { %>Connected<% } else { %>Not Connected<% } %>
           </div>

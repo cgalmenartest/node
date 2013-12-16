@@ -409,6 +409,7 @@ a.search-tag-remove:hover {
 	#project-coremeta-wrapper {
 		min-height: 390px;
 		max-height: 390px;
+		overflow: none
 	}
 }
 
