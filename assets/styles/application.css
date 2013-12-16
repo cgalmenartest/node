@@ -304,6 +304,19 @@ div.project-title {
 	padding-right: 0;
 }
 
+@media (max-width: 768px) {
+	.sm-nopadding {
+		padding-left: 0;
+		padding-right: 0;
+	}
+}
+@media (max-width: 992px) {
+	.md-nopadding {
+		padding-left: 0;
+		padding-right: 0;
+	}
+}
+
 #project-form input {
 	margin: 5px 0 5px 0;
 }
@@ -385,6 +398,18 @@ a.search-tag-remove:hover {
 	width: 100%;
 	padding: 17px;
 	position: relative;
+}
+
+@media (min-width: 992px) {
+	#project-coremeta-wrapper {
+		min-height: 323px;
+	}
+}
+@media (min-width: 1170px) {
+	#project-coremeta-wrapper {
+		min-height: 390px;
+		max-height: 390px;
+	}
 }
 
 #project-header {
