@@ -15,7 +15,8 @@
           name: 'userId',
           required: true,
           type: 'INTEGER',
-          defaultValue: null
+          defaultValue: null,
+          validation: null
         }
       },
       settings: {}
@@ -27,7 +28,8 @@
           name: 'projectId',
           required: true,
           type: 'INTEGER',
-          defaultValue: null
+          defaultValue: null,
+          validation: null
         }
       },
       settings: {}
@@ -39,7 +41,8 @@
           name: 'projectId',
           required: true,
           type: 'INTEGER',
-          defaultValue: null
+          defaultValue: null,
+          validation: null
         }
       },
       settings: {}
@@ -51,19 +54,21 @@
           name: 'projectId',
           required: true,
           type: 'INTEGER',
-          defaultValue: null
+          defaultValue: null,
+          validation: null
         }
       },
       settings: {}
     },
     'projectThreadCommenters' : {
-      method: 'findProjectThreadCommenters',
+      method: 'findProjectThreadParentCommenters',
       fields: {
         'commentId' : {
           name: 'commentId',
           required: true,
           type: 'INTEGER',
-          defaultValue: null
+          defaultValue: null,
+          validation: null
         }
       },
       settings: {}
@@ -105,26 +110,77 @@
       // dataPackages: ['subjectMessage', 'bodyMessage', 'email'],
       // frequencies: ['never', 'immediate', 'daily', 'weekly', 'monthly'],
       preflight: {
-        method: 'passThrough',
+        method: 'prepareCommentReplyEmail',
         fields: {
-          // 'test' : {
-          //   name: 'test',
+          // callerId: {
+          //   name: 'callerId',
           //   required: true,
           //   type: 'INTEGER',
-          //   defaultValue: null
-          // }
+          //   defaultValue: null,
+          //   validation: null
+          // },
+          recipientId: {
+            name: 'recipientId',
+            required: true,
+            type: 'INTEGER',
+            defaultValue: null,
+            validation: null
+          }
         },
         settings: {}
       },
       content: {
         method: 'sendSimpleEmail',
         fields: {
-          // 'test' : {
-          //   name: 'test',
-          //   required: true,
-          //   type: 'INTEGER',
-          //   defaultValue: null
-          // }
+          to: {
+            name: 'to',
+            required: true,
+            type: 'STRING',
+            defaultValue: null,
+            validation: null
+          },
+          from: {
+            name: 'from',
+            required: true,
+            type: 'STRING',
+            defaultValue: null,
+            validation: null
+          },
+          subject: {
+            name: 'subject',
+            required: true,
+            type: 'STRING',
+            defaultValue: null,
+            validation: null
+          },
+          layout: {
+            name: 'layout',
+            required: false,
+            type: 'STRING',
+            defaultValue: 'default',
+            validation: null
+          },
+          layoutLocals: {
+            name: 'layoutLocals',
+            required: false,
+            type: 'OBJECT',
+            defaultValue: {},
+            validation: null
+          },
+          template: {
+            name: 'template',
+            required: true,
+            type: 'STRING',
+            defaultValue: 'default',
+            validation: null
+          },
+          templateLocals: {
+            name: 'templateLocals',
+            required: false,
+            type: 'OBJECT',
+            defaultValue: {},
+            validation: null
+          }
         },
         settings: {
           'globalBlast': {
@@ -156,7 +212,8 @@
             name: 'test',
             required: true,
             type: 'INTEGER',
-            defaultValue: null
+            defaultValue: null,
+            validation: null
           }
         },
         settings: {}
@@ -168,7 +225,8 @@
             name: 'test',
             required: false,
             type: 'INTEGER',
-            defaultValue: null
+            defaultValue: null,
+            validation: null
           }
         },
         settings: {
@@ -179,21 +237,4 @@
       }
     }
   },
-
-
-  // emailTemplates : {
-
-  //   'default' : {
-  //     file: '',
-  //     fields : {
-  //       required: [],
-  //       optional: []
-  //     }
-  //   }
-
-  // }
-
-
-
-
 };

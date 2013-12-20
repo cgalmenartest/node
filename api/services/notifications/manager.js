@@ -6,48 +6,53 @@ var util = require("util");
 var events = require("events");
 var _ = require('underscore');
 var async = require('async');
+var uuid = require('node-uuid');
 var lib = require('../utils/lib');
 
 var notificationBuilder = new NotificationBuilder();
 // might need to make a facade for complex params
 function NotificationBuilder(){
 	// events.EventEmitter.call(this);
-	this.notify = function notify(params, cb){
-		/*
-		params: {
-			trigger: {
-				callerType: <action-specific>,
-				callerId: <action-specific>,
-				action : <action-specific>
-			}
-			data: {
-				audience: {
-					<action-specific>: {
-						fields: { <action-specific> },
-						settings: { <action-specific> }
-					},
-					...
-				},
-				delivery: {
-					<deliveryType>: {
-						preflight: {
-							fields: { <notification-specific> },
-							settings: { <notification-specific> }
-						},
-						content: {
-							fields: { <notification-specific> },
-							settings: { <notification-specific> }
-						}
-					},
-					...
-				}
-			}
-			recipients: [ <output> ],
-			notifications: [ <output> ],
-			deliveries: [ <output> ]
-		}
-		*/
 
+	/**
+	 * public function that performs notification action triggered by a set of parameters stored in 'param' object
+	 *
+	 * @params - object of the following form
+	 * 	params: {
+	 *		trigger: {
+	 *			callerType: <action-specific>,
+	 *			callerId: <action-specific>,
+	 *			action : <action-specific>
+	 *		}
+	 *		data: {
+	 *			audience: {
+	 *				<action-specific>: {
+	 *					fields: { <action-specific> },
+	 *					settings: { <action-specific> }
+	 *				},
+	 *				...
+	 *			},
+	 *			delivery: {
+	 *				<deliveryType>: {
+	 *					preflight: {
+	 *						fields: { <notification-specific> },
+	 *						settings: { <notification-specific> }
+	 *					},
+	 *					content: {
+	 *						fields: { <notification-specific> },
+	 *						settings: { <notification-specific> }
+	 *					}
+	 *				},
+	 *				...
+	 *			}
+	 *		}
+	 *		recipients: [ <output> ],
+	 *		notifications: [ <output> ],
+	 *		deliveries: [ <output> ]
+	 * @cb - callback function that accepts error as parameter 1 and the modified params object as parameter 2
+	 */
+
+	this.notify = function notify(params, cb){
 		// these are unique to this notify call
 		var actionID, createdDate, action;
 		// preconfiguring param structure
@@ -59,7 +64,6 @@ function NotificationBuilder(){
 		params.recipients = params.recipients || [];
 		params.notifications = params.notifications || [];
 		params.deliveries = params.deliveries || [];
-
 		// initial state check
 		if( !params.trigger.hasOwnProperty("callerType") ||
 				!params.trigger.hasOwnProperty('callerId') ||
@@ -67,9 +71,8 @@ function NotificationBuilder(){
 			throw new Error(arguments.callee.name + ' has received an improperly-defined parameter');
 		}
 		// these are shared among all notifications produced from same notify() call
-		actionID = lib.guid();
+		actionID = uuid.v4();
 		createdDate = new Date();
-
 		prepareAudienceSettingsAndFields();
 		// find audience for action, then create notifications for each audience member, then send deliveries for each notification
 		async.each(sails.config.notifications.triggers[params.trigger.action].audiences, populateGroup, function(err) {
@@ -83,41 +86,20 @@ function NotificationBuilder(){
 
 			function prepareSingleAudienceSettingsAndFields(audience){
 				params.data.audience[audience] = params.data.audience[audience] || {};
-
 				params.data.audience[audience].settings = params.data.audience[audience].settings || {};
 				params.data.audience[audience].settings = lib.deepExtend(
 					sails.config.notifications.audiences[audience].settings,
 					params.data.audience[audience].settings
 				);
-
 				params.data.audience[audience].fields = params.data.audience[audience].fields || {};
-				validateFields(params.data.audience[audience].fields, sails.config.notifications.audiences[audience].fields);
+				sails.services.utils.lib['validateFields'](
+					params.data.audience[audience].fields,
+					sails.config.notifications.audiences[audience].fields
+				);
 			}
 
 		}
 
-		function validateFields(fields, globalFieldCollection){
-			_.each(fields, validateField);
-			_.each(globalFieldCollection, validateGlobals);
-
-			function validateGlobals(fieldObject, key, list){
-				if(fieldObject.required && !(fieldObject.name in fields) && typeof fieldObject.defaultValue === "undefined"){
-					//todo: more relevant data here
-					throw new Error('validation failed');
-				}
-				if(fieldObject.required && !(fieldObject.name in fields) && !(typeof fieldObject.defaultValue === "undefined")  ){
-					fields[fieldObject.name] = fieldObject.defaultValue;
-				}
-			}
-
-			function validateField(value, field, list){
-				var validator;
-				validator = sails.services.notifications['validation'];
-				if(!validator[globalFieldCollection[field].type](value)){
-					throw new Error('validation failed');
-				}
-			}
-		}
 
 		// creates array of users to whom the notifications apply
 		function populateGroup(audience, done){
@@ -134,7 +116,6 @@ function NotificationBuilder(){
 
 		// make a notification for the passed user and the notification action
 		function generateUserNotificationsForAction(user, done){
-
 			Notification.create({
 				callerType: params.trigger.callerType,
 				callerId: params.trigger.callerId,
@@ -160,18 +141,13 @@ function NotificationBuilder(){
 			  	done(err);
 			  }
 			});
-
 		}
 
 		function deliverNotification(notification, callback){
-
-
 			async.each(sails.config.notifications.triggers[params.trigger.action].deliveries, performDelivery, function(err){
 				// generate and send deliveries relevant to the given action
 				callback(err);
-
 			});
-
 
 			function performDelivery(deliveryType, done){
 				populateSingleDeliveryPreSettingsAndFields(deliveryType);
@@ -182,13 +158,14 @@ function NotificationBuilder(){
 							if(!err){
 								generateDelivery(deliveryType, function(err, delivery){
 									if (!err) {
-										sendDelivery(delivery, function(err){
+										params.deliveries.push(delivery);
+										sendDelivery(delivery, function(err, response){
 											if (!err) {
 												delivery.isDelivered = true;
 												delivery.deliveryDate = new Date();
 												delivery.save(function(err){
 													if (!err) {
-														params.deliveries.push(delivery);
+
 													}
 													done(err);
 												});
@@ -218,7 +195,8 @@ function NotificationBuilder(){
 				params.data.delivery[deliveryType] = params.data.delivery[deliveryType] || {};
 				params.data.delivery[deliveryType].preflight = params.data.delivery[deliveryType].preflight || {};
 				params.data.delivery[deliveryType].preflight.fields = params.data.delivery[deliveryType].preflight.fields || {};
-				validateFields(
+				params.data.delivery[deliveryType].preflight.fields.recipientId = notification.recipientId;
+				sails.services.utils.lib['validateFields'](
 					params.data.delivery[deliveryType].preflight.fields,
 					sails.config.notifications.deliveries[deliveryType].preflight.fields
 				);
@@ -233,7 +211,7 @@ function NotificationBuilder(){
 				params.data.delivery[deliveryType] = params.data.delivery[deliveryType] || {};
 				params.data.delivery[deliveryType].content = params.data.delivery[deliveryType].content || {};
 				params.data.delivery[deliveryType].content.fields = params.data.delivery[deliveryType].content.fields || {};
-				validateFields(
+				sails.services.utils.lib['validateFields'](
 					params.data.delivery[deliveryType].content.fields,
 					sails.config.notifications.deliveries[deliveryType].content.fields
 				);
@@ -259,7 +237,6 @@ function NotificationBuilder(){
 				});
 			}
 
-
 			function performPreDelivery(deliveryType, done){
 				var preDispatcher, actor;
 				// call delivery functions
@@ -268,6 +245,7 @@ function NotificationBuilder(){
 				actor[preDispatcher](
 					params.data.delivery[deliveryType].preflight.fields,
 					params.data.delivery[deliveryType].preflight.settings,
+					notification,
 					function(err, content) {
 				  	done(err, content);
 					}
@@ -290,8 +268,8 @@ function NotificationBuilder(){
 				actor[dispatcher](
 					params.data.delivery[delivery.deliveryType].content.fields,
 					params.data.delivery[delivery.deliveryType].content.settings,
-					function(err, d) {
-				  	done(err);
+					function(err, response) {
+				  	done(err, response);
 					}
 				);
 			}

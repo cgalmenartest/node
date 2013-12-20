@@ -20,7 +20,7 @@
  * Replies are children of comments.  Replies should have the topicId
  * set to the main topic.  The parentId should be the id of the parent comment.
  */
-
+ var noteUtils = require('../services/notifications/manager');
 module.exports = {
 
   attributes: {
@@ -41,6 +41,47 @@ module.exports = {
     userId: 'INTEGER',
     // content of the comment
     value: 'STRING'
+  },
+  afterCreate: function (values, cb){
+    var params = {
+            trigger: {
+                callerType: 'Comment',
+                callerId: values.id,
+                action: 'projectCommentAdded'
+            },
+            data: {
+                audience: {
+                    'projectOwners': {
+                        fields: {
+                            projectId: values.projectId
+                        },
+                        settings: {}
+                    },
+                    'projectThreadCommenters': {
+                        fields: {
+                            commentId: values.id
+                        },
+                        settings: {}
+                    }
+                },
+                delivery: {
+                    'contactEmail' : {
+                        preflight: {
+                            fields: {},
+                            settings: {}
+                        },
+                        content: {
+                            fields: sails.services.utils.emailTemplate['generateEmailLocals']('commentUpdate'),
+                            settings: {}
+                        }
+                    }
+                }
+            }
+        };
+        if(values.parentId) noteUtils.notifier.notify(params, cb);
+        else cb(null, null);
+
+
   }
 
 };
