@@ -15,6 +15,9 @@ before(function(done) {
     log: {
       level: 'error'
     },
+    hooks: {
+      grunt: false
+    }
 
   }, function(e, s) {
     sails = s;
