@@ -16,6 +16,13 @@
               <div class="task-show-description">
                 <%= model.description %>
               </div>
+
+              <div class="task-show-creation">
+                Opportunity created <time class="timeago" datetime="<%- model.createdAt %>"><%- model.createdAt %></time>
+                <% if (model.createdAt != model.updatedAt) { %>
+                and updated <time class="timeago" datetime="<%- model.updatedAt %>"><%- model.updatedAt %></time>
+                <% } %>
+              </div>
             </div>
           </div>
         </div>

@@ -891,13 +891,21 @@ textarea#task-description {
 
 .task-show-description {
 	font-size: 18px;
-	margin-bottom: 20px;
+	margin-bottom: 10px;
 	line-height: 1.5em;
 }
 
-
 .task-show-description strong input {
 	margin-bottom: 5px;
+}
+
+.task-show-creation {
+	font-size: 13px;
+	color: #9a9a9a;
+}
+
+.task-show-creation > time {
+	font-weight: bold;
 }
 
 .task-location {
