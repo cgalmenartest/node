@@ -315,6 +315,12 @@ div.project-title {
 		padding-left: 0;
 		padding-right: 0;
 	}
+	.md-nopadding-left {
+		padding-left: 0;
+	}
+	.md-nopadding-right {
+		padding-right: 0;
+	}
 }
 
 #project-form input {
@@ -409,7 +415,7 @@ a.search-tag-remove:hover {
 	#project-coremeta-wrapper {
 		min-height: 390px;
 		max-height: 390px;
-		overflow: none
+		overflow: hidden;
 	}
 }
 
