@@ -165,13 +165,17 @@ function NotificationBuilder(){
 												delivery.deliveryDate = new Date();
 												delivery.save(function(err){
 													if (!err) {
-
+														//might want to do something here eventually.
 													}
-													done(err);
+													else{
+														console.log(err);
+													}
+													done(null);
 												});
 											}
 											else{
-												done(err);
+												console.log(err);
+												done(null);
 											}
 										});
 									}
