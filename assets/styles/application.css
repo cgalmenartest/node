@@ -100,6 +100,14 @@ input {
 	padding-left: 0;
 }
 
+.padding-right-none {
+	padding-right: 0;
+}
+
+.fullwidth {
+	width: 100%;
+}
+
 .align-right {
 	text-align: right;
 }
@@ -669,6 +677,20 @@ a.like-button:hover {
 .event-icon-center {
 	width: 10px;
 	display: inline-block;
+	text-align: center;
+}
+
+.event-timezone {
+	font-size: 12px;
+}
+
+.event-timezone > .timezone {
+	font-weight: bold;
+}
+
+input.fullwidth {
+	padding-left: 2px;
+	padding-right: 2px;
 	text-align: center;
 }
 

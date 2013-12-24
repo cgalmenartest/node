@@ -7,4 +7,6 @@
 [submodule "public/vendor/requirejs"]
 	path = public/vendor/requirejs
 	url = https://github.com/jrburke/requirejs.git
-
+[submodule "assets/js/vendor/jquery-timepicker"]
+	path = assets/js/vendor/jquery-timepicker
+	url = https://github.com/jonthornton/jquery-timepicker.git
