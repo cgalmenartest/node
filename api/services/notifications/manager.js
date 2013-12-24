@@ -74,9 +74,7 @@ function NotificationBuilder(){
 		createdDate = new Date();
 		// find audience for action, then create notifications for each audience member, then send deliveries for each notification
 		async.each(sails.config.notifications.triggers[params.trigger.action].audiences, establishAudience, function(err){
-				if(err){ console.log(err); cb(null, params); return false;}
 				async.each(params.recipients, generateUserNotificationsForAction, function(err){
-					if(err){ console.log(err); cb(null, params); return false;}
 						cb(err, params);
 				});
 		});
@@ -191,7 +189,7 @@ function NotificationBuilder(){
 			 */
 			function registerDeliveryAsSent(delivery, done){
 				performServiceAction(sails.services.notifications['dispatcher'], sails.config.notifications.deliveries[delivery.deliveryType].content.method, params.data.delivery[delivery.deliveryType].content, function(err, response){
-					if(err){ console.log(err); done(null); return false; return false;}
+					if(err){ console.log(err); done(null); return false; }
 						delivery.isDelivered = true;
 						delivery.deliveryDate = new Date();
 						delivery.save(function(err){

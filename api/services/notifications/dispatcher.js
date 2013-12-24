@@ -49,18 +49,14 @@ module.exports = {
 		fields.template,
 		fields.templateLocals,
 		function(err, html, text){
-			if(!err){
-				send(
-					{
-						to: fields.to,
-						subject: fields.subject,
-						from: fields.from
-					},
-					html, text, cb);
-			}
-			else{
-				cb(err, null);
-			}
+			if(err){ console.log(err); cb(null, null); return false;}
+			send(
+			{
+				to: fields.to,
+				subject: fields.subject,
+				from: fields.from
+			},
+			html, text, cb);
 		});
 	},
 	sendSimpleMessage: function(fields, settings, cb){

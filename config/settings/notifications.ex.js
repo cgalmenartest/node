@@ -112,13 +112,13 @@
       preflight: {
         method: 'prepareCommentReplyEmail',
         fields: {
-          // callerId: {
-          //   name: 'callerId',
-          //   required: true,
-          //   type: 'INTEGER',
-          //   defaultValue: null,
-          //   validation: null
-          // },
+          callerId: {
+            name: 'callerId',
+            required: true,
+            type: 'INTEGER',
+            defaultValue: null,
+            validation: null
+          },
           recipientId: {
             name: 'recipientId',
             required: true,
