@@ -138,11 +138,17 @@ define([
     post: function (e) {
       if (e.preventDefault) e.preventDefault();
 
+      // create time objects
+      var start = $('#event-start').data("DateTimePicker").getDate().clone().toDate();
+      var end = $('#event-start').data("DateTimePicker").getDate().clone().toDate();
+      start = $('#event-start-time').timepicker('getTime', start);
+      end = $('#event-end-time').timepicker('getTime', end);
+
       var data = {
         title       : $("#event-title").val(),
         description : $("#event-description").val(),
-        start       : new Date($("#event-start").val()).toISOString(),
-        end         : new Date($("#event-end").val()).toISOString(),
+        start       : start.toISOString(),
+        end         : end.toISOString(),
         location    : $("#event-location").val(),
         projectId   : this.options.projectId
       };
