@@ -3,11 +3,12 @@ define([
     'bootstrap',
     'underscore',
     'backbone',
+    'utilities',
     'bootstrap-datetimepicker',
     'jquery_timepicker',
     'events_collection',
     'text!event_form_template'
-], function ($, Bootstrap, _, Backbone, DatePicker, TimePicker, EventsCollection, EventFormTemplate) {
+], function ($, Bootstrap, _, Backbone, utils, DatePicker, TimePicker, EventsCollection, EventFormTemplate) {
 
   var EventFormView = Backbone.View.extend({
 
@@ -21,8 +22,6 @@ define([
 
     initialize: function () {
       this.options = _.extend(this.options, this.defaults);
-
-      this.initializePosteventSaveEventListeners();
     },
 
     initializeTimeZone: function () {
@@ -156,17 +155,8 @@ define([
       this.collection.trigger("event:save", data);
     },
 
-    initializePosteventSaveEventListeners: function () {
-
-      this.listenTo(this.collection, "events:render", function () {
-
-        // Hard wipe out the modal upon the rendering of a event (success)
-        $(".modal a[href='#addevent']").modal('hide');
-        $('body').removeClass('modal-open');
-        $('.modal-backdrop').remove();
-
-      });
-
+    cleanup: function () {
+      removeView(this);
     }
 
   });
