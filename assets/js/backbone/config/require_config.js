@@ -8,6 +8,7 @@ require.config({
     // ----------
     'text'                      : '../../vendor/text',
     'jquery'                    : '../../vendor/jquery',
+    'moment'                    : '../../vendor/moment/moment',
     'jquery_timeago'            : '../../vendor/jquery.timeago',
     'jquery_select2'            : '../../vendor/select2/select2',
     'jquery_timepicker'         : '../../vendor/jquery-timepicker/jquery.timepicker',
@@ -15,6 +16,7 @@ require.config({
     'underscore'                : '../../vendor/underscore',
     'backbone'                  : '../../vendor/backbone',
     'bootstrap'                 : '../../vendor/bootstrap',
+    'bootstrap-datetimepicker'  : '../../vendor/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min',
     'async'                     : '../../vendor/async/lib/async',
 
     // ---------
@@ -176,4 +178,9 @@ require.config({
     }
   }
 
+});
+
+// moment needs to be initialized or plugins will throw an error
+define(["moment"], function (moment) {
+    moment().format();
 });

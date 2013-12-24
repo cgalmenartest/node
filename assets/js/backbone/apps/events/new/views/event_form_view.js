@@ -3,10 +3,11 @@ define([
     'bootstrap',
     'underscore',
     'backbone',
+    'bootstrap-datetimepicker',
     'jquery_timepicker',
     'events_collection',
     'text!event_form_template'
-], function ($, Bootstrap, _, Backbone, TimePicker, EventsCollection, EventFormTemplate) {
+], function ($, Bootstrap, _, Backbone, DatePicker, TimePicker, EventsCollection, EventFormTemplate) {
 
   var EventFormView = Backbone.View.extend({
 
@@ -88,6 +89,45 @@ define([
       var endTime = new Date(startTime.getTime() + 1000*60*60);
       $('#event-start-time').timepicker('setTime', startTime);
       $('#event-end-time').timepicker('setTime', endTime);
+
+      // Initialize the date pickers
+      var startDate = new Date();
+      $('#event-start').datetimepicker({
+        pickDate: true,
+        pickTime: false,
+        startDate: startDate
+      });
+      $('#event-end').datetimepicker({
+        pickDate: true,
+        pickTime: false,
+        startDate: startDate
+      });
+      // Set the initial date to now (today)
+      $('#event-start').data("DateTimePicker").setDate(startDate);
+      $('#event-end').data("DateTimePicker").setDate(startDate);
+
+      // When the start date changes,
+      // set the end date to be at least the start date
+      $('#event-start').on("change.dp",function (e) {
+        $('#event-end').data("DateTimePicker").setStartDate(e.date);
+        var diff = $('#event-end').data("DateTimePicker").getDate().unix() - e.date.unix();
+        if (diff < 0) {
+          $('#event-end').data("DateTimePicker").setDate(e.date);
+        }
+        $(e.currentTarget).blur();
+      });
+      // When the end date changes,
+      // Enable/disable duration in the timepicker based on whether the
+      // start and end dates match
+      $('#event-end').on("change.dp",function (e) {
+        var diff = e.date.unix() - $('#event-start').data("DateTimePicker").getDate().unix();
+        if (diff === 0) {
+          $('#event-end-time').timepicker('option', 'showDuration', true);
+        } else {
+          $('#event-end-time').timepicker('option', 'showDuration', false);
+        }
+        $(e.currentTarget).blur();
+      });
     },
 
     render: function () {
