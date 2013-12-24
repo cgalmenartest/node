@@ -899,6 +899,14 @@ textarea#task-description {
 	margin-bottom: 5px;
 }
 
+.task-edit-description {
+	line-height: 2.0em;
+}
+
+.task-edit-description > .dropdown {
+	margin-top: -7px;
+}
+
 .task-show-creation {
 	font-size: 13px;
 	color: #9a9a9a;
@@ -913,8 +921,9 @@ textarea#task-description {
 }
 
 .task-skills {
-	margin-top: 5px;
 	width: 100%;
+	line-height: 1.4em;
+	margin-top: 5px;
 }
 
 .task-topics {

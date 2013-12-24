@@ -13,20 +13,20 @@
   <hr />
 
   <div class="task-edit-description">
-    I need
-    <select id="people">
+    We need
+    <select id="people" class="dropdown">
       <% _.each(tagTypes['task-people'], function (t) { %>
       <option value=<%= t.id %> <% if (madlibTags['task-people'] && (madlibTags['task-people'][0].id == t.id)) { %>selected<% } %>><%= t.name %></option>
       <% }); %>
     </select>
 
-    to work on an opportunity about these topics:
+    to work on an opportunity about:
       <input type="hidden" id="topics" class="task-skills" />
 
     <hr />
 
-    The following skills are
-    <select id="skills-required">
+    The following skills are useful and
+    <select id="skills-required" class="dropdown">
       <% _.each(tagTypes['task-skills-required'], function (t) { %>
       <option value=<%= t.id %> <% if (madlibTags['task-skills-required'] && (madlibTags['task-skills-required'][0].id == t.id)) { %>selected<% } %>><%= t.name %></option>
       <% }); %>
@@ -37,22 +37,22 @@
 
     <hr />
 
-    It will require
-    <select id="time-estimate">
+    The opportunity will require
+    <select id="time-estimate" class="dropdown">
       <% _.each(tagTypes['task-time-estimate'], function (t) { %>
       <option value=<%= t.id %> <% if (madlibTags['task-time-estimate'] && (madlibTags['task-time-estimate'][0].id == t.id)) { %>selected<% } %>><%= t.name %></option>
       <% }); %>
     </select>
 
-    hours of
-    <select id="time-required">
+    of
+    <select id="time-required" class="dropdown">
       <% _.each(tagTypes['task-time-required'], function (t) { %>
       <option value=<%= t.id %> <% if (madlibTags['task-time-required'] && (madlibTags['task-time-required'][0].id == t.id)) { %>selected<% } %>><%= t.name %></option>
       <% }); %>
     </select>
 
     work, and must be completed within
-    <select id="length">
+    <select id="length" class="dropdown">
       <% _.each(tagTypes['task-length'], function (t) { %>
       <option value=<%= t.id %> <% if (madlibTags['task-length'] && (madlibTags['task-length'][0].id == t.id)) { %>selected<% } %>><%= t.name %></option>
       <% }); %>
@@ -60,7 +60,7 @@
 
     <hr />
 
-    The volunteer(s) must be at these locations:
+    The volunteer(s) must be located at:
     <input type="hidden" id="location" class="task-skills"/>
 
     <hr/>
