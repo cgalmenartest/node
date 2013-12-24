@@ -35,10 +35,8 @@ function send(locals, html, text, cb){
     to: locals.to,
     subject: locals.subject,
     html: html,
-    // generateTextFromHTML: true,
     text: text
   },
-  // function(err, response){ console.log(err); cb(err, response); });
   cb);
 }
 

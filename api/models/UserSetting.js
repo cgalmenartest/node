@@ -1,8 +1,8 @@
 /**
- * UserNotificationSetting
+ * UserSetting
  *
  * @module      :: Model
- * @description :: A representation of a user setting overriding a global configuration regarding notification delivery
+ * @description :: A representation of a user setting overriding a global configuration
  * @docs		:: http://sailsjs.org/#!documentation/models
  */
 

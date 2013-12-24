@@ -38,7 +38,6 @@ function deepExtend(){
 }
 
 function singleton(callerFuncName, makerFunc, makerArgs){
-	// return (function(callerFuncName, makerFunc, makerArgs){
 		var _instance;
 		var _returnMe;
 		var makeInstance = function(){
@@ -54,12 +53,12 @@ function singleton(callerFuncName, makerFunc, makerArgs){
 		_returnMe = {};
 		_returnMe[callerFuncName] = getInstance;
 		return _returnMe;
-	// })();
 }
 
-function validateFields(fields, globalFieldCollection){
+function validateFields(fields, globalFieldCollection, done){
 	_.each(fields, validateField);
 	_.each(globalFieldCollection, validateGlobals);
+	done(null);
 
 	function validateGlobals(fieldObject, key, list){
 		if(fieldObject.required && !(fieldObject.name in fields) && typeof fieldObject.defaultValue === "undefined"){

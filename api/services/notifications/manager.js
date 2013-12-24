@@ -51,7 +51,6 @@ function NotificationBuilder(){
 	 *		deliveries: [ <output> ]
 	 * @cb - callback function that accepts error as parameter 1 and the modified params object as parameter 2
 	 */
-
 	this.notify = function notify(params, cb){
 		// these are unique to this notify call
 		var actionID, createdDate, action;
@@ -73,48 +72,36 @@ function NotificationBuilder(){
 		// these are shared among all notifications produced from same notify() call
 		actionID = uuid.v4();
 		createdDate = new Date();
-		prepareAudienceSettingsAndFields();
 		// find audience for action, then create notifications for each audience member, then send deliveries for each notification
-		async.each(sails.config.notifications.triggers[params.trigger.action].audiences, populateGroup, function(err) {
-			async.each(params.recipients, generateUserNotificationsForAction, function(err){
-					cb(err, params);
-			});
+		async.each(sails.config.notifications.triggers[params.trigger.action].audiences, establishAudience, function(err){
+				if(err){ console.log(err); cb(null, params); return false;}
+				async.each(params.recipients, generateUserNotificationsForAction, function(err){
+					if(err){ console.log(err); cb(null, params); return false;}
+						cb(err, params);
+				});
 		});
-
-		function prepareAudienceSettingsAndFields(){
-			_.each(sails.config.notifications.triggers[params.trigger.action].audiences, prepareSingleAudienceSettingsAndFields);
-
-			function prepareSingleAudienceSettingsAndFields(audience){
-				params.data.audience[audience] = params.data.audience[audience] || {};
-				params.data.audience[audience].settings = params.data.audience[audience].settings || {};
-				params.data.audience[audience].settings = lib.deepExtend(
-					sails.config.notifications.audiences[audience].settings,
-					params.data.audience[audience].settings
-				);
-				params.data.audience[audience].fields = params.data.audience[audience].fields || {};
-				sails.services.utils.lib['validateFields'](
-					params.data.audience[audience].fields,
-					sails.config.notifications.audiences[audience].fields
-				);
-			}
-
-		}
-
-
-		// creates array of users to whom the notifications apply
-		function populateGroup(audience, done){
-			var popMethod, actor;
-			popMethod = sails.config.notifications.audiences[audience].method;
-			actor = sails.services.notifications['audience'];
-			actor[popMethod](params.data.audience[audience].fields, params.data.audience[audience].settings, function(err, r) {
-			  if (!err) {
-			    params.recipients =  _.union(params.recipients, r || []);
-			  }
-			  done(err);
+		/**
+		 * private function that configures audience settings from main param, then populates and validates fields from main param, then populates recipient pool with union to prevent duplicates
+		 * @audience - name of audience
+		 */
+		function establishAudience(audience, done){
+			params.data.audience[audience] = params.data.audience[audience] || {};
+			sythesizeSettings(params.data.audience[audience], sails.config.notifications.audiences[audience], function(err){
+				if(err){ console.log(err); done(null); return false;}
+				synthesizeAndValidateFields(params.data.audience[audience], sails.config.notifications.audiences[audience], sails.services.utils.lib['validateFields'], function(err){
+					if(err){ console.log(err); done(null); return false;}
+					performServiceAction(sails.services.notifications['audience'], sails.config.notifications.audiences[audience].method, params.data.audience[audience], function(err, r){
+						if(err){ console.log(err); done(null); return false;}
+					  params.recipients =  _.union(params.recipients, r || []);
+						done(null);
+					});
+				});
 			});
 		}
-
-		// make a notification for the passed user and the notification action
+		/**
+		 * private function that makes a notification for the passed user and the notification action, then triggers the send delivery function for that notification
+		 * @user - user object
+		 */
 		function generateUserNotificationsForAction(user, done){
 			Notification.create({
 				callerType: params.trigger.callerType,
@@ -123,160 +110,168 @@ function NotificationBuilder(){
 				action: params.trigger.action,
 				recipientId: user.id,
 				createdDate: createdDate,
-				// data: JSON.stringify(params.data),
 				options: JSON.stringify(params.data)
 			}).done(function(err, newNotification){
-				if (!err) {
-			    params.notifications.push(newNotification);
-			    deliverNotification(newNotification, function(err){
-			    	if(!err){
-			    		done(err);
-			    	}
-			    	else{
-			    		done(err);
-			    	}
-			    });
-			  }
-			  else{
-			  	done(err);
-			  }
+				if(err){ console.log(err); done(null); return false;}
+		    params.notifications.push(newNotification);
+		    deliverNotification(newNotification, function(err){
+		    	if(err){ console.log(err); done(null); return false;}
+	    		done(null);
+		    });
 			});
 		}
-
+		/**
+		 * private function that iterates through each delivery for the given notification and processes it
+		 * @notification - notification object
+		 */
 		function deliverNotification(notification, callback){
-			async.each(sails.config.notifications.triggers[params.trigger.action].deliveries, performDelivery, function(err){
-				// generate and send deliveries relevant to the given action
+			async.each(sails.config.notifications.triggers[params.trigger.action].deliveries, deliver, function(err){
 				callback(err);
 			});
-
-			function performDelivery(deliveryType, done){
-				populateSingleDeliveryPreSettingsAndFields(deliveryType);
-				performPreDelivery(deliveryType, function(err, content){
-					if(!err){
-						params.data.delivery[deliveryType].content = lib.deepExtend(params.data.delivery[deliveryType].content, content);
-						populateSingleDeliveryContentSettingsAndFields(deliveryType, function(err){
-							if(!err){
-								generateDelivery(deliveryType, function(err, delivery){
-									if (!err) {
-										params.deliveries.push(delivery);
-										sendDelivery(delivery, function(err, response){
-											if (!err) {
-												delivery.isDelivered = true;
-												delivery.deliveryDate = new Date();
-												delivery.save(function(err){
-													if (!err) {
-														//might want to do something here eventually.
-													}
-													else{
-														console.log(err);
-													}
-													done(null);
-												});
-											}
-											else{
-												console.log(err);
-												done(null);
-											}
-										});
-									}
-									else{
-										done(err);
-									}
-								});
-							}
-							else{
-								done(err);
-							}
-						});
-					}
-					else{
-						done(err);
-					}
+			/**
+			 * private function that consumes main param fields/settings and performs all pre-flight notification preparation for delivery, then consumes main param fields/settings to generate a delivery and send it
+			 * @deliveryType - string name of delivery type
+			 */
+			function deliver(deliveryType, done){
+				params.data.delivery[deliveryType] = params.data.delivery[deliveryType] || {};
+				preparePreflight(deliveryType, notification, function(err, content){
+					if(err){ console.log(err); done(null); return false;}
+					prepareDelivery(deliveryType, content, notification, function(err, delivery){
+						if(err){ console.log(err); done(null); return false;}
+						registerDeliveryAsSent(delivery, done);
+						// done(null);
+					});
 				});
 			}
-
-			function populateSingleDeliveryPreSettingsAndFields(deliveryType){
-				params.data.delivery[deliveryType] = params.data.delivery[deliveryType] || {};
+			/**
+			 * private function that consumes main param fields/settings and performs all pre-flight notification preparation for delivery
+			 * @deliveryType - string name of delivery type
+			 * @notification - notification object
+			 */
+			function preparePreflight(deliveryType, notification, done){
 				params.data.delivery[deliveryType].preflight = params.data.delivery[deliveryType].preflight || {};
 				params.data.delivery[deliveryType].preflight.fields = params.data.delivery[deliveryType].preflight.fields || {};
 				params.data.delivery[deliveryType].preflight.fields.recipientId = notification.recipientId;
-				sails.services.utils.lib['validateFields'](
-					params.data.delivery[deliveryType].preflight.fields,
-					sails.config.notifications.deliveries[deliveryType].preflight.fields
-				);
-				params.data.delivery[deliveryType].preflight.settings = params.data.delivery[deliveryType].preflight.settings || {};
-				params.data.delivery[deliveryType].preflight.settings = lib.deepExtend(
-					sails.config.notifications.deliveries[deliveryType].preflight.settings,
-					params.data.delivery[deliveryType].preflight.settings
-				);
-			}
-
-			function populateSingleDeliveryContentSettingsAndFields(deliveryType, done){
-				params.data.delivery[deliveryType] = params.data.delivery[deliveryType] || {};
-				params.data.delivery[deliveryType].content = params.data.delivery[deliveryType].content || {};
-				params.data.delivery[deliveryType].content.fields = params.data.delivery[deliveryType].content.fields || {};
-				sails.services.utils.lib['validateFields'](
-					params.data.delivery[deliveryType].content.fields,
-					sails.config.notifications.deliveries[deliveryType].content.fields
-				);
-				params.data.delivery[deliveryType].content.settings = params.data.delivery[deliveryType].content.settings || {};
-				UserNotificationSetting.find({
-					userId: notification.recipientId,
-					actionType: params.trigger.action,
-					deliveryType: deliveryType
-				}).done(function(err, settings){
-					if(!err){
-						userSettingObject = {};
-						userSettingObject[params.trigger.action] = {};
-						_.each(settings, function(userSetting){
-							userSettingObject[params.trigger.action][userSetting.key] =  userSetting.value;
+				params.data.delivery[deliveryType].preflight.fields.callerId = notification.callerId;
+				sythesizeSettings(params.data.delivery[deliveryType].preflight, sails.config.notifications.deliveries[deliveryType].preflight, function(err){
+					if(err){ console.log(err); done(null, params.data.delivery[deliveryType].content); return false;}
+					synthesizeAndValidateFields(params.data.delivery[deliveryType].preflight, sails.config.notifications.deliveries[deliveryType].preflight, sails.services.utils.lib['validateFields'], function(err){
+						if(err){ console.log(err); done(null, params.data.delivery[deliveryType].content); return false;}
+						performServiceAction(sails.services.notifications['notification'], sails.config.notifications.deliveries[deliveryType].preflight.method, params.data.delivery[deliveryType].preflight, function(err, content){
+							if(err){ console.log(err); done(null, params.data.delivery[deliveryType].content); return false;}
+							params.data.delivery[deliveryType].content = lib.deepExtend(params.data.delivery[deliveryType].content, content);
+							done(err, params.data.delivery[deliveryType].content);
 						});
-						params.data.delivery[deliveryType].content.settings = lib.deepExtend(
-							sails.config.notifications.deliveries[deliveryType].content.settings,
-							userSettingObject,
-							params.data.delivery[deliveryType].content.settings
-						);
-					}
-					done(err);
+					});
 				});
 			}
-
-			function performPreDelivery(deliveryType, done){
-				var preDispatcher, actor;
-				// call delivery functions
-				preDispatcher = sails.config.notifications.deliveries[deliveryType].preflight.method;
-				actor = sails.services.notifications['notification'];
-				actor[preDispatcher](
-					params.data.delivery[deliveryType].preflight.fields,
-					params.data.delivery[deliveryType].preflight.settings,
-					notification,
-					function(err, content) {
-				  	done(err, content);
-					}
-				);
+			/**
+			 * private function that consumes main param fields/settings and generates a delivery and sends it
+			 * @deliveryType - string name of delivery type
+			 * @content - content to be added to delivery data
+			 * @notification - notification object
+			 */
+			function prepareDelivery(deliveryType, content, notification, done){
+				params.data.delivery[deliveryType].content = params.data.delivery[deliveryType].content || {};
+				sythesizeSettings(params.data.delivery[deliveryType].content, sails.config.notifications.deliveries[deliveryType].content, {userId: notification.recipientId,actionType: params.trigger.action,deliveryType: deliveryType}, function(err){
+					if(err){ console.log(err); done(null, null); return false;}
+						synthesizeAndValidateFields(params.data.delivery[deliveryType].content, sails.config.notifications.deliveries[deliveryType].content, sails.services.utils.lib['validateFields'], function(err){
+							if(err){ console.log(err); done(null, null); return false;}
+								generateDelivery(deliveryType, notification, function(err, delivery){
+									if(err){ console.log(err); done(null, null); return false;}
+									params.deliveries.push(delivery);
+									done(err, delivery);
+								});
+						});
+				});
 			}
-
-			function generateDelivery(deliveryType, done){
+			/**
+			 * private function that updates a delivery as sent
+			 * @delivery - string name of delivery type
+			 */
+			function registerDeliveryAsSent(delivery, done){
+				performServiceAction(sails.services.notifications['dispatcher'], sails.config.notifications.deliveries[delivery.deliveryType].content.method, params.data.delivery[delivery.deliveryType].content, function(err, response){
+					if(err){ console.log(err); done(null); return false; return false;}
+						delivery.isDelivered = true;
+						delivery.deliveryDate = new Date();
+						delivery.save(function(err){
+							if(err){ console.log(err); done(null); return false;}
+							done(null);
+						});
+				});
+			}
+			/**
+			 * private function creates the delivery model
+			 * @deliveryType - string name of delivery type
+			 */
+			function generateDelivery(deliveryType, notification, done){
 				Delivery.create({
 					notificationId: notification.id,
 					deliveryType: deliveryType,
 					content: JSON.stringify(params.data.delivery[deliveryType].content)
 				}).done(done);
 			}
-
-			function sendDelivery(delivery, done){
-				var dispatcher, actor;
-				// call delivery functions
-				dispatcher = sails.config.notifications.deliveries[delivery.deliveryType].content.method;
-				actor = sails.services.notifications['dispatcher'];
-				actor[dispatcher](
-					params.data.delivery[delivery.deliveryType].content.fields,
-					params.data.delivery[delivery.deliveryType].content.settings,
-					function(err, response) {
-				  	done(err, response);
-					}
+		}
+		/**
+		 * private helper function that properly sets all settings
+		 * @hostObject - object that contains a settings property
+		 * @globalObject - global object that contains a settings property
+		 * @userSettingTemplate - optional property that contains a match for user settings
+		 */
+		function sythesizeSettings(hostObject, globalObject, userSettingTemplate, done){
+			hostObject.settings = hostObject.settings || {};
+			if(typeof userSettingTemplate === 'function'){
+				done = userSettingTemplate;
+				hostObject.settings = lib.deepExtend(
+					globalObject.settings,
+					hostObject.settings
 				);
+				done(null);
 			}
+			else{
+				UserSetting.find({
+					userId: userSettingTemplate.userId,
+					actionType: userSettingTemplate.actionType,
+					deliveryType: userSettingTemplate.deliveryType
+				}).done(function(err, settings){
+					if(err){ console.log(err); done(null); return false;}
+					userSettingObject = {};
+					userSettingObject[userSettingTemplate.actionType] = {};
+					_.each(settings, function(userSetting){
+						userSettingObject[userSettingTemplate.actionType][userSetting.key] =  userSetting.value;
+					});
+					// setting priority is local > user > global
+					hostObject.settings = lib.deepExtend(
+						globalObject.settings,
+						userSettingObject,
+						hostObject.settings
+					);
+					done(err);
+				});
+			}
+		}
+		/**
+		 * private helper function that properly sets all fields and validates them based on service method
+		 * @hostObject - object that contains a fields property
+		 * @globalObject - global object that contains a fields property
+		 * @validator - validation function to apply
+		 */
+		function synthesizeAndValidateFields(hostObject, globalObject, validator, done){
+			hostObject.fields = hostObject.fields || {};
+			validator(hostObject.fields, globalObject.fields, done);
+		}
+		/**
+		 * private helper function that fires off a service method
+		 * @actor - object upon which the service is called
+		 * @action - service method to call
+		 * @actionParams - object with fields and settings to be applied in the method
+		 */
+		function performServiceAction(actor, action, actionParams, done){
+			actor[action](
+				actionParams.fields,
+				actionParams.settings,
+				done
+			);
 		}
 	};
 }
