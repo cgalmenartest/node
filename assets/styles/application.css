@@ -382,6 +382,12 @@ div.project-title {
 	margin: 5px 0 0 8px;
 }
 
+#browse-search-spinner {
+	font-size: 28px;
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
+
 #browse-list {
 	padding: 0;
 	margin-left: -15px;
