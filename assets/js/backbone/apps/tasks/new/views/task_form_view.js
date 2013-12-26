@@ -127,8 +127,7 @@ define([
       //  DROP DOWNS REQUIRING A FETCH  //
       // ------------------------------ //
       $("#skills").select2({
-        placeholder: "skills",
-        width: '220px',
+        placeholder: "Start typing to select a skill",
         multiple: true,
         formatResult: formatResult,
         formatSelection: formatResult,
@@ -149,8 +148,7 @@ define([
 
       // Topics select 2
       $("#topics").select2({
-        placeholder: "topics",
-        width: '220px',
+        placeholder: "Start typing to select a topic",
         multiple: true,
         formatResult: formatResult,
         formatSelection: formatResult,
@@ -172,7 +170,6 @@ define([
       // Topics select 2
       this.$("#location").select2({
         placeholder: "locations",
-        width: '100%',
         multiple: true,
         formatResult: formatResult,
         formatSelection: formatResult,
@@ -196,33 +193,33 @@ define([
       // PRE-DEFINED SELECT MENUS BELOW //
       // ------------------------------ //
       $("#skills-required").select2({
-        placeholder: "required/not-required",
-        width: '200px'
+        placeholder: "Required/Not Required",
+        width: 'resolve'
       });
 
       $("#time-required").select2({
-        placeholder: 'time-required',
-        width: '130px'
+        placeholder: 'Time Commitment',
+        width: 'resolve'
       });
 
       $("#people").select2({
-        placeholder: 'people',
-        width: '150px'
+        placeholder: 'Personnel Needed',
+        width: 'resolve'
       });
 
       $("#length").select2({
-        placeholder: 'length',
-        width: '130px'
+        placeholder: 'Deadline',
+        width: 'resolve'
       });
 
       $("#time-estimate").select2({
-        placeholder: 'time-estimate',
-        width: '200px'
+        placeholder: 'Estimated Time Required',
+        width: 'resolve'
       });
 
       $("#task-location").select2({
-        placeholder: 'length',
-        width: '200px'
+        placeholder: 'Work Location',
+        width: 'resolve'
       });
 
     },
