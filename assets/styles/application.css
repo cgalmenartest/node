@@ -797,6 +797,10 @@ ul.comment-list > li {
 	margin-bottom: 10px;
 }
 
+.comment-form-topic {
+	margin-bottom: 20px;
+}
+
 li.border-left {
 	margin-bottom: 5px;
 }
@@ -865,6 +869,11 @@ li.border-left {
 
 .comment-expand {
 	display: none;
+}
+
+#comment-empty {
+	padding-top: 10px;
+	padding-bottom: 10px;
 }
 
 /*****************
