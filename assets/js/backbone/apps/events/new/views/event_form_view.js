@@ -17,7 +17,12 @@ define([
     template: _.template(EventFormTemplate),
 
     events: {
-      "submit #event-form" : "post"
+      // field validation
+      "blur #event-title"       : "validate",
+      "blur #event-description" : "validate",
+      "blur #event-location"    : "validate",
+      // form submission
+      "submit #event-form"      : "post"
     },
 
     initialize: function () {
@@ -134,10 +139,34 @@ define([
       this.initializeTimeZone();
     },
 
+    validate: function (e) {
+      var parent = $(e.currentTarget).parents('.form-group')[0];
+      if (!($(e.currentTarget).val())) {
+        $(parent).addClass('has-error');
+        $($(parent).find('.help-block')[0]).show();
+        return true;
+      } else {
+        $(parent).removeClass('has-error');
+        $($(parent).find('.help-block')[0]).hide();
+        return false;
+      }
+    },
+
     post: function (e) {
       if (e.preventDefault) e.preventDefault();
 
-      // create time objects
+      // validate the fields; if any is not validated, abort form submission
+      var validateIds = ['#event-title', '#event-description', '#event-location'];
+      var abort = false;
+      for (i in validateIds) {
+        var temp = this.validate({ currentTarget: validateIds[i] });
+        abort = abort || temp;
+      }
+      if (abort) {
+        return;
+      }
+
+      // process the form; create time objects
       var start = $('#event-start').data("DateTimePicker").getDate().clone().toDate();
       var end = $('#event-start').data("DateTimePicker").getDate().clone().toDate();
       start = $('#event-start-time').timepicker('getTime', start);

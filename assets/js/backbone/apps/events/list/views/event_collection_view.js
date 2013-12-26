@@ -20,7 +20,6 @@ define([
         projectId: this.options.projectId,
         user: window.cache.currentUser
       }
-      console.log(eventsJSON);
 
       this.compiledTemplate = _.template(EventListTemplate, eventsJSON);
       this.$el.html(this.compiledTemplate);

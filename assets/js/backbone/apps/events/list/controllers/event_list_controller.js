@@ -32,7 +32,6 @@ define([
 
       this.listenTo(this.collection, "event:save:success", function (model) {
         $('#addEvent').bind('hidden.bs.modal', function() {
-          console.log('fetch data');
           self.requestEventsCollectionData();
         }).modal('hide');
       });
@@ -45,7 +44,6 @@ define([
         url: '/api/event/findAllByProjectId/' + parseInt(this.options.projectId),
         success: function (collection) {
           self.collection = collection;
-          console.log(collection.toJSON());
           self.renderEventCollectionView(collection);
         }
       })
@@ -53,7 +51,6 @@ define([
 
     renderEventCollectionView: function (collection) {
       if (this.eventCollectionView) {
-        console.log('cleanup');
         this.eventCollectionView.cleanup();
       }
 
