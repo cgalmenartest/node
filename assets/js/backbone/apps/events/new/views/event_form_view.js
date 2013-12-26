@@ -159,8 +159,7 @@ define([
       var validateIds = ['#event-title', '#event-description', '#event-location'];
       var abort = false;
       for (i in validateIds) {
-        var temp = this.validate({ currentTarget: validateIds[i] });
-        abort = abort || temp;
+        abort = abort || this.validate({ currentTarget: validateIds[i] });;
       }
       if (abort) {
         return;
