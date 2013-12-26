@@ -6,7 +6,6 @@
 define({
   // This defines all of the tag elements for use in the app
   tags: {
-
     'skill': {
       'icon': 'icon-atom',
       'class': 'skill',
@@ -39,8 +38,8 @@ define({
       'class': 'location',
       'id': 'location',
       'type': 'location',
-      'name': 'Location',
-      'plural': 'Locations'
+      'name': 'Work Location',
+      'plural': 'Work Locations'
     },
 
     // ---
@@ -56,39 +55,39 @@ define({
     },
 
     'task-time-required': {
-      'icon': 'icon-map-marker',
+      'icon': 'icon-calendar-empty',
       'class': 'task-time-required',
       'id': 'task-time-required',
       'type': 'task-time-required',
-      'name': 'Time Required',
-      'plural': 'Time Required'
+      'name': 'Time Commitment',
+      'plural': 'Time Commitment'
     },
 
     'task-people': {
-      'icon': 'icon-map-marker',
+      'icon': 'icon-group',
       'class': 'task-people',
       'id': 'task-people',
       'type': 'task-people',
-      'name': 'Person',
-      'plural': 'People'
+      'name': 'Personnel Needed',
+      'plural': 'Personnel Needed'
     },
 
     'task-length': {
-      'icon': 'icon-map-marker',
+      'icon': 'icon-bullseye',
       'class': 'task-length',
       'id': 'task-length',
       'type': 'task-length',
-      'name': 'Length',
-      'plural': 'Length'
+      'name': 'Deadline',
+      'plural': 'Deadline'
     },
 
     'task-time-estimate': {
-      'icon': 'icon-map-marker',
+      'icon': 'icon-cogs',
       'class': 'task-time-estimate',
       'id': 'task-time-estimate',
       'type': 'task-time-estimate',
-      'name': 'Time Estimate',
-      'plural': 'Time Estimate'
+      'name': 'Estimated Time Required',
+      'plural': 'Estimated Time Required'
     }
 
   },
@@ -102,6 +101,6 @@ define({
   profile   : ['skill', 'topic'],
   profiles  : ['skill', 'topic', 'agency', 'location'],
 
-  task      : ['skill', 'topic', 'location', 'task-skills-required', 'task-time-required', 'task-people', 'task-length', 'task-time-estimate'],
+  task      : ['skill', 'topic', 'location', 'task-people', 'task-time-estimate', 'task-time-required', 'task-length'],
   tasks     : ['skill', 'topic', 'agency', 'location', 'task-skills-required', 'task-time-required', 'task-people', 'task-length', 'task-time-estimate']
 });
