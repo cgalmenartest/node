@@ -135,7 +135,7 @@ define([
       //  DROP DOWNS REQUIRING A FETCH  //
       // ------------------------------ //
       $("#skills").select2({
-        placeholder: "Start typing to select a skill",
+        placeholder: "Start typing to select a skill.",
         multiple: true,
         formatResult: formatResult,
         formatSelection: formatResult,
@@ -156,7 +156,7 @@ define([
 
       // Topics select 2
       $("#topics").select2({
-        placeholder: "Start typing to select a topic",
+        placeholder: "Start typing to select a topic.",
         multiple: true,
         formatResult: formatResult,
         formatSelection: formatResult,
@@ -177,7 +177,7 @@ define([
 
       // Topics select 2
       this.$("#location").select2({
-        placeholder: "locations",
+        placeholder: "Start typing to select a location.",
         multiple: true,
         formatResult: formatResult,
         formatSelection: formatResult,
