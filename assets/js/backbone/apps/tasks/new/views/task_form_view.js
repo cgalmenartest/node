@@ -14,6 +14,7 @@ define([
 		el: "#task-list-wrapper",
 
 		events: {
+      "blur .validate"        : "v",
       "change #task-location" : "locationChange"
 		},
 
@@ -108,13 +109,20 @@ define([
       return this;
 		},
 
-    submit: function (e, data) {
-      console.log('post');
-      // nothing necessary to do here.
-      // non-null, non-false return continues processing
-      return this;
+    v: function (e) {
+      return validate(e);
     },
 
+    childNext: function (e, current) {
+      // find all the validation elements
+      var children = current.find('.validate');
+      var abort = false;
+      _.each(children, function (child) {
+        var iAbort = validate({ currentTarget: child });
+        abort = abort || iAbort;
+      });
+      return abort;
+    },
 
     initializeSelect2: function () {
       var self = this;
@@ -227,7 +235,7 @@ define([
     locationChange: function (e) {
       if (_.isEqual(e.currentTarget.value, "true")) {
         $(".el-specific-location").show();
-      } else if (!_.isEqual(e.currentTarget.value, "false")) {
+      } else {
         $(".el-specific-location").hide();
       }
     },

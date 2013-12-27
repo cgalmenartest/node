@@ -153,6 +153,8 @@ define([
         tasks: this.tasksCollection
       }).render();
       this.modalWizardComponent.setChildView(this.taskFormView);
+      this.modalWizardComponent.setNext(this.taskFormView.childNext);
+      this.modalWizardComponent.setSubmit(this.taskFormView.childNext);
     },
 
     // ---------------------

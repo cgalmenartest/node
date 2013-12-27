@@ -104,7 +104,8 @@ define([
         tasks: self.tasks
       }).render();
       this.modalWizardComponent.setChildView(this.taskFormView);
-
+      this.modalWizardComponent.setNext(this.taskFormView.childNext);
+      this.modalWizardComponent.setSubmit(this.taskFormView.childNext);
     },
 
     show: function (e) {

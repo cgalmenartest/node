@@ -7,7 +7,9 @@
       </label>
       <div class="row">
         <div class="col-md-12">
-          <input type="text" id="task-title" class="fullwidth form-control" placeholder="A short description of the problem." />
+          <input type="text" id="task-title" class="fullwidth form-control validate" placeholder="A short description of the problem." data-validate="empty,count100"/>
+          <span class="help-block error-empty" style="display:none;">You must enter a title for this opportunity</span>
+          <span class="help-block error-count100" style="display:none;">The short description of the problem must be less than 100 characters.</span>
         </div>
       </div>
     </div>
@@ -95,7 +97,7 @@
       </label>
       <select id="task-location" class="dropdown">
         <option value="false">worldwide</option>
-        <option class="specific-location" value="true">at specific location(s)</option>
+        <option value="true">at specific location(s)</option>
       </select> to complete this task.
 
       <div class="row el-specific-location">
@@ -118,7 +120,9 @@
       </label>
       <div class="row">
         <div class="col-md-12">
-          <textarea id="task-description" class="fullwidth form-control" placeholder="Description of opportunity including goals, expected outcomes and deliverables." rows="4"></textarea>
+          <textarea id="task-description" class="fullwidth form-control validate" placeholder="Description of opportunity including goals, expected outcomes and deliverables." rows="4" maxlength="400" data-validate="empty,count400"></textarea>
+          <span class="help-block error-empty" style="display:none;">You must enter a description for this opportunity</span>
+          <span class="help-block error-count400" style="display:none;">The description of the opportunity must be less than 400 characters.</span>
         </div>
       </div>
     </div>
