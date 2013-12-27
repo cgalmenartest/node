@@ -9,21 +9,21 @@ define([
     'text!task_form_template'
 ], function ($, Bootstrap, _, Backbone, async, utilities, TasksCollection, TaskFormTemplate) {
 
-	var TaskFormView = Backbone.View.extend({
+  var TaskFormView = Backbone.View.extend({
 
-		el: "#task-list-wrapper",
+    el: "#task-list-wrapper",
 
-		events: {
+    events: {
       "blur .validate"        : "v",
       "change #task-location" : "locationChange"
-		},
+    },
 
-		initialize: function () {
-			this.options = _.extend(this.options, this.defaults);
+    initialize: function () {
+      this.options = _.extend(this.options, this.defaults);
       this.tasks = this.options.tasks;
       this.initializeSelect2Data();
       this.initializeListeners();
-		},
+    },
 
     initializeSelect2Data: function () {
       var self = this;
@@ -96,9 +96,9 @@ define([
       });
     },
 
-		render: function () {
+    render: function () {
       var template = _.template(TaskFormTemplate, { tags: this.tagSources })
-			this.$el.html(template);
+      this.$el.html(template);
       this.initializeSelect2();
 
       // Important: Hide all non-currently opened sections of wizard.
@@ -107,7 +107,7 @@ define([
 
       // Return this for chaining.
       return this;
-		},
+    },
 
     v: function (e) {
       return validate(e);
@@ -244,8 +244,8 @@ define([
       removeView(this);
     }
 
-	});
+  });
 
-	return TaskFormView;
+  return TaskFormView;
 
 });
