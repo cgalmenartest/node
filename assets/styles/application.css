@@ -963,6 +963,10 @@ ul.task-tags > li {
 	margin-top: -7px;
 }
 
+#task-edit-form .select2-container-multi {
+	line-height: 1.2em;
+}
+
 .task-show-creation {
 	font-size: 13px;
 	color: #9a9a9a;
