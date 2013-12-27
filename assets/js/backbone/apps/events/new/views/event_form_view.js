@@ -18,9 +18,9 @@ define([
 
     events: {
       // field validation
-      "blur #event-title"       : "validate",
-      "blur #event-description" : "validate",
-      "blur #event-location"    : "validate",
+      "blur #event-title"       : "v",
+      "blur #event-description" : "v",
+      "blur #event-location"    : "v",
       // form submission
       "submit #event-form"      : "post"
     },
@@ -139,17 +139,8 @@ define([
       this.initializeTimeZone();
     },
 
-    validate: function (e) {
-      var parent = $(e.currentTarget).parents('.form-group')[0];
-      if (!($(e.currentTarget).val())) {
-        $(parent).addClass('has-error');
-        $($(parent).find('.help-block')[0]).show();
-        return true;
-      } else {
-        $(parent).removeClass('has-error');
-        $($(parent).find('.help-block')[0]).hide();
-        return false;
-      }
+    v: function (e) {
+      return validate(e);
     },
 
     post: function (e) {
@@ -159,7 +150,8 @@ define([
       var validateIds = ['#event-title', '#event-description', '#event-location'];
       var abort = false;
       for (i in validateIds) {
-        abort = abort || this.validate({ currentTarget: validateIds[i] });;
+        var iAbort = validate({ currentTarget: validateIds[i] });
+        abort = abort || iAbort;
       }
       if (abort) {
         return;
