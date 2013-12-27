@@ -467,9 +467,9 @@ a.search-tag-remove:hover {
 @media (min-width: 1170px) {
 	#project-coremeta-wrapper {
 		min-height: 390px;
-		max-height: 390px;
+/*		max-height: 390px;
 		overflow: hidden;
-	}
+*/	}
 }
 
 #project-header {

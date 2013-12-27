@@ -23,6 +23,8 @@ define([
     // model: null,
 
     events: {
+      "blur #project-edit-form-title"            : "v",
+      "blur #project-edit-form-description"      : "v",
       "click #coremeta-save"                     : "saveCoreMeta",
       "click #coremeta-view"                     : "viewProject"
     },
@@ -73,11 +75,27 @@ define([
       }
     },
 
+    v: function(e) {
+      return validate(e);
+    },
+
     saveCoreMeta: function (e){
       if (e.preventDefault) e.preventDefault();
       if (!this.model.attributes.isOwner && this.edit) return false;
-      var self = this;
 
+      // validate the form fields
+      var validateIds = ['#project-edit-form-title', '#project-edit-form-description'];
+      var abort = false;
+      for (var i in validateIds) {
+        var iAbort = validate({ currentTarget: validateIds[i] });
+        abort = abort || iAbort;
+      }
+      if (abort) {
+        return;
+      }
+
+      // process and update the data model for the project
+      var self = this;
       var pId = self.model.attributes.id;
       var title = self.$('#project-edit-form-title').val();
       var description = self.$('#project-edit-form-description').val();
@@ -88,7 +106,7 @@ define([
 
     viewProject: function (e) {
       if (e.preventDefault) e.preventDefault();
-        Backbone.history.navigate('projects/' + this.model.attributes.id, { trigger: true });
+      Backbone.history.navigate('projects/' + this.model.attributes.id, { trigger: true });
     },
 
     // ---------------------
