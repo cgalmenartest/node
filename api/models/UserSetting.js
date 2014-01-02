@@ -11,10 +11,12 @@ module.exports = {
   attributes: {
     // ID of owner of setting
     userId: 'INTEGER',
-    // action trigger type that setting applies to
-    actionType: 'STRING',
-    // delivery type that the setting applies to
-    deliveryType: 'STRING',
+    // context to which key applies
+    context: 'STRING',
+    // // action trigger type that setting applies to
+    // actionType: 'STRING',
+    // // delivery type that the setting applies to
+    // deliveryType: 'STRING',
     // key of the setting
     key: 'STRING',
     // value of the setting

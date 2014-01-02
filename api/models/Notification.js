@@ -17,8 +17,10 @@ module.exports = {
     triggerGuid: 'STRING',
     // trigger action type
     action: 'STRING',
+    // name of intended audience
+    audience: 'STRING',
     // ID of user to whom the notification is directed
-    recipientId: 'INTEGER',
+    // recipientId: 'INTEGER',
     // Timestamp of creation
     createdDate: 'DATETIME',
     // JSON object representing implementation-specific data being contained inside of the triggering action

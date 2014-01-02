@@ -10,7 +10,7 @@ module.exports = {
 
   attributes: {
   	// ID of corresponding Notification
-  	notificationId: 'INTEGER',
+  	userNotificationId: 'INTEGER',
   	// DateTime that the delivery is issued
   	deliveryDate: 'DATETIME',
   	// Identifies the delivery mechanism to the delivery manager

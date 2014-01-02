@@ -23,8 +23,8 @@
  */
 
 module.exports = {
-
-
+  // hostName defines the domain upon which your app will be deployed (e.g. 'localhost', for development)
+  hostName: 'localhost',
   // The `port` setting determines which TCP port your app will be deployed on
   // Ports are a transport-layer concept designed to allow many different
   // networking applications run at the same time on a single computer.
@@ -68,8 +68,8 @@ module.exports = {
 
   // Email Templating settings
   emailTemplateDirectories: {
-    templateDir: 'assets/email/templates', //path.resolve(__dirname, '../../..', 'assets/email', 'content'),
-    layoutDir: 'assets/email/layouts' //path.resolve(__dirname, '../../..', 'assets/email', 'layouts')
+    templateDir: 'assets/email/templates',
+    layoutDir: 'assets/email/layouts'
   },
 
   // SMTP Mail settings

@@ -42,46 +42,55 @@ module.exports = {
     // content of the comment
     value: 'STRING'
   },
+  // for the sake of alerting owners and parent commenters
   afterCreate: function (values, cb){
-    var params = {
-            trigger: {
-                callerType: 'Comment',
-                callerId: values.id,
-                action: 'projectCommentAdded'
-            },
-            data: {
-                audience: {
-                    'projectOwners': {
-                        fields: {
-                            projectId: values.projectId
-                        },
-                        settings: {}
-                    },
-                    'projectThreadCommenters': {
-                        fields: {
-                            commentId: values.id
-                        },
-                        settings: {}
-                    }
-                },
-                delivery: {
-                    'contactEmail' : {
-                        preflight: {
-                            fields: {},
-                            settings: {}
-                        },
-                        content: {
-                            fields: sails.services.utils.emailTemplate['generateEmailLocals']('commentUpdate'),
-                            settings: {}
+    var params = {};
+    if(values.projectId){
+        params.trigger =    {
+                                callerType: 'Comment',
+                                callerId: values.id,
+                                action: 'projectCommentAdded'
+                            }
+        params.data =   {
+                            audience: {
+                                'projectOwners': {
+                                    fields: {
+                                        projectId: values.projectId
+                                    }
+                                },
+                                'projectThreadCommenters': {
+                                    fields: {
+                                        commentId: values.id
+                                    }
+                                }
+                            }
                         }
-                    }
-                }
-            }
-        };
-        if(values.parentId) noteUtils.notifier.notify(params, cb);
-        else cb(null, null);
-
-
+    }
+    else if(values.taskId){
+        params.trigger =    {
+                                callerType: 'Comment',
+                                callerId: values.id,
+                                action: 'taskCommentAdded'
+                            }
+        params.data =   {
+                            audience: {
+                                'taskOwners': {
+                                    fields: {
+                                        taskId: values.taskId
+                                    }
+                                },
+                                'taskThreadCommenters': {
+                                    fields: {
+                                        commentId: values.id
+                                    }
+                                }
+                            }
+                        }
+    }
+    else {
+        throw new Error('projectId or taskId must be defined');
+    }
+    noteUtils.notifier.notify(params, cb);
   }
 
 };

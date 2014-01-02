@@ -48,7 +48,7 @@ define([
       this.initializeFileUpload();
       this.initializeTags();
       this.updatePhoto();
-
+      this.updateProjectEmail();
       this.model.trigger("project:show:rendered");
 
       return this;
@@ -63,6 +63,21 @@ define([
         }
         $('#file-upload-progress-container').hide();
       });
+    },
+
+    // eventually want to move this to config file
+    updateProjectEmail: function() {
+      var self = this;
+      $.ajax({
+        url: '/api/email/makeURL?email=contactUserAboutProject&subject=Check Out "'+ self.model.attributes.title + '"' +
+        '&projectTitle=' + self.model.attributes.title +
+        '&projectLink=' + window.location.protocol + "//" + window.location.host + "" + window.location.pathname +
+        '&projectDescription=' + (self.model.attributes.description || ''),
+        type: 'GET'
+      }).done( function (data) {
+        self.$('#email').attr('href', data);
+      });
+
     },
 
     initializeToggle: function () {
