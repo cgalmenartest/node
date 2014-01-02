@@ -22,18 +22,18 @@ define([
       var self = this;
       this.options = options;
 
-      window.cache.userEvents.on("user:login:success", function (userData) {
+      this.listenTo(window.cache.userEvents, "user:login:success", function (userData) {
         self.doRender({ user: userData });
       });
 
-      window.cache.userEvents.on("user:logout", function () {
+      this.listenTo(window.cache.userEvents, "user:logout", function () {
         self.doRender({ user: null });
         Backbone.history.loadUrl();
         window.cache.userEvents.trigger("user:logout:success");
       });
 
       // request that the user log in to see the page
-      window.cache.userEvents.on("user:request:login", function (message) {
+      this.listenTo(window.cache.userEvents, "user:request:login", function (message) {
         // trigger the login modal
         self.login(message);
       });

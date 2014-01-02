@@ -22,6 +22,7 @@ define([
     },
 
     initializeView: function () {
+      var self = this;
       if (this.loginView) {
         this.loginView.cleanup();
         this.modalComponent.cleanup();
@@ -40,12 +41,15 @@ define([
       }).render();
       $("#login").modal('show');
 
-      window.cache.userEvents.on("user:login", function (user) {
+      self.listenTo(window.cache.userEvents, "user:login", function (user) {
         // hide the modal
+        self.stopListening(window.cache.userEvents);
+        // window.cache.userEvents.stopListening();
         $('#login').bind('hidden.bs.modal', function() {
           // reload the page after login
           Backbone.history.loadUrl();
           window.cache.userEvents.trigger("user:login:success", user);
+          self.cleanup();
         }).modal('hide');
       });
     },
