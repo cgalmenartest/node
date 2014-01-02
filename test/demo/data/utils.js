@@ -61,7 +61,7 @@ module.exports = {
     });
   },
 
-  file_create: function(request, filename, cb) {
+  file_create: function(request, filename, square, cb) {
     var r = request.post({
       url: conf.url + '/file'
     }, function (err, response, body) {
@@ -70,6 +70,9 @@ module.exports = {
       return cb(null, b);
     });
     var form = r.form();
+    if (square === true) {
+      form.append('type', 'image_square');
+    }
     form.append('file', fs.createReadStream(path.join(__dirname, filename)));
   },
 

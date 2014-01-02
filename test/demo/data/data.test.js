@@ -18,7 +18,7 @@ describe('demo:', function() {
       utils.login(request, user.username, user.password, function (err) {
         if (err) return done(err);
         // add photo
-        utils.file_create(request, user.photo, function (err, fileObj) {
+        utils.file_create(request, user.photo, true, function (err, fileObj) {
           // update user profile
           if (err) return done(err);
           user.photoId = fileObj.id;
@@ -133,7 +133,7 @@ describe('demo:', function() {
         if (!proj.cover) return done();
         utils.login(request, user.username, user.password, function (err) {
           if (err) return done(err);
-          utils.file_create(request, proj.cover, function (err, fileObj) {
+          utils.file_create(request, proj.cover, false, function (err, fileObj) {
             if (err) return done(err);
             proj.coverId = fileObj.id;
             utils.proj_put(request, proj, function (err, projObj) {
@@ -242,7 +242,7 @@ describe('demo:', function() {
           proj.obj = projObj;
           proj.id = projObj.id;
           // Process each of the sub functions
-          async.each(order, start, function (err) {
+          async.eachSeries(order, start, function (err) {
             done(err);
           });
         });
