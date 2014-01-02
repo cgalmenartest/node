@@ -5,6 +5,7 @@
  * @description :: Contains logic for handling authentication requests.
  */
 var passport = require('passport');
+var userUtils = require('../services/utils/user');
 
 /* Authenticate a user based on the credentials returned,
  * whether those are provided by 'local' user/password
@@ -16,7 +17,7 @@ function authenticate(req, res, strategy, json) {
     passport.authorize(strategy, function(err, user, info)
     {
       if (json) {
-        res.send(req.user);
+        res.send(userUtils.cleanUser(req.user));
       } else {
         res.redirect('/profile/edit');
       }
@@ -56,7 +57,7 @@ function authenticate(req, res, strategy, json) {
         }
 
         if (json === true) {
-          res.send(user);
+          res.send(userUtils.cleanUser(user));
         }
         else {
           res.redirect('/projects');
