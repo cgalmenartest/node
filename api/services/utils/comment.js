@@ -48,30 +48,32 @@ var commentParentThreadAssemble = function(comment, where, done){
   if(!comment.parentId){
     done(null, []);
   }
-  var returnMe = [];
-  where = where || {};
-  where = _.extend(where, { id: comment.parentId });
-  commentAssemble(where, function(err, result){
-    if(!err){
-      if(result && result.length > 0){
-        returnMe = result.slice(0);
-        var item = result.pop();
-        returnMe.push(item);
-        commentParentThreadAssemble(item, where, function(err, res){
-          if(!err){
-            returnMe = _.union(returnMe, res);
-          }
+  else {
+    var returnMe = [];
+    where = where || {};
+    where = _.extend(where, { id: comment.parentId });
+    commentAssemble(where, function(err, result){
+      if(!err) {
+        if(result && result.length > 0){
+          returnMe = result.slice(0);
+          var item = result.pop();
+          returnMe.push(item);
+          commentParentThreadAssemble(item, where, function(err, res){
+            if(!err){
+              returnMe = _.union(returnMe, res);
+            }
+            done(err, returnMe);
+          });
+        }
+        else {
           done(err, returnMe);
-        });
+        }
       }
-      else{
+      else {
         done(err, returnMe);
       }
-    }
-    else {
-      done(err, returnMe);
-    }
-  });
+    });
+  }
 };
 
 module.exports = {

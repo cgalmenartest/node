@@ -25,14 +25,18 @@ function deepExtend(){
 	// return returnMe;
 
 	function _deepExtend(target, source) {
-	  for (var prop in source){
-	  	if (typeof target[prop] == 'object' && prop in target){
-	  		_deepExtend(target[prop], source[prop]);
-	  	}
-	  	else{
-	  		target[prop] = source[prop];
-	  	}
-	  }
+		if(source){
+			for (var prop in source){
+				target = target || {};
+				if (typeof target[prop] == 'object' && prop in target && source[prop]) {
+					_deepExtend(target[prop], source[prop]);
+				}
+				else if(source[prop]){
+					target[prop] = source[prop];
+				}
+				// won't override target if source property is NULL
+			}
+		}
 	  return target;
 	}
 }
@@ -58,7 +62,7 @@ function singleton(callerFuncName, makerFunc, makerArgs){
 function validateFields(fields, globalFieldCollection, done){
 	_.each(fields, validateField);
 	_.each(globalFieldCollection, validateGlobals);
-	done(null);
+	done(null, fields);
 
 	function validateGlobals(fieldObject, key, list){
 		if(fieldObject.required && !(fieldObject.name in fields) && typeof fieldObject.defaultValue === "undefined"){
@@ -75,7 +79,7 @@ function validateFields(fields, globalFieldCollection, done){
 		validator = sails.services.utils['validation'];
 		if(typeof globalFieldCollection[field].validation !== "undefined" && globalFieldCollection[field].validation)
 		{
-			// NOTE: Must all validator functions are performed without callbacks. Must not contain IO/
+			// NOTE: All validator functions are performed without callbacks. Must not contain I/O
 			if(!validator[globalFieldCollection[field].validation](field, value, fields)){
 				//todo: more relevant data here
 				throw new Error('validation failed');

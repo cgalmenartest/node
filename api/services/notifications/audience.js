@@ -10,17 +10,22 @@
  var async = require('async');
 
 
- function convertToUsers(err, userIdPropertyCollection, cb){
+function convertToUsers(err, userIdPropertyCollection, cb){
  	var uIds = [];
  	_.each(userIdPropertyCollection, function(item){
  		uIds.push({ id: item.userId });
  	});
- 	User.find({
- 		where: {
- 			or: uIds
- 		}
- 	}).done(cb);
- }
+ 	if(uIds.length > 0){
+	 	User.find({
+	 		where: {
+	 			or: uIds
+	 		}
+	 	}).done(cb);
+ 	}
+ 	else {
+ 		cb(null, []);
+ 	}
+}
 
 
 module.exports = {
@@ -46,14 +51,48 @@ module.exports = {
 		// todo
 	},
 	findProjectThreadParentCommenters: function(fields, settings, cb){
-		Comment.find({id : fields.id }).done(function(err, comments){
+		Comment.find({id : fields.commentId }).done(function(err, comments){
 			if(!err && comments.length > 0){
 				var comment = comments.pop();
 				sails.services.utils['comment'].commentParentThreadAssemble(comment, {}, function (err, comments){
 				  if(!err){
 				  	convertToUsers(err, comments, cb);
 				  }
-				  cb(err, comments);
+				  else {
+				  	cb(err, []);
+				  }
+				});
+			}
+			else {
+				cb(err, []);
+			}
+		});
+	},
+	findTaskOwners: function(fields, settings, cb){
+		Task.find({id: fields.taskId}).done(function(err, owners){
+			convertToUsers(err, owners, cb);
+		});
+	},
+	findTaskParticipants: function(fields, settings, cb){
+		// todo
+	},
+	findTaskLikers: function(fields, settings, cb){
+		// todo
+	},
+	findTaskThreadCommenters: function(fields, settings, cb){
+		// todo
+	},
+	findTaskThreadParentCommenters: function(fields, settings, cb){
+		Comment.find({id : fields.commentId }).done(function(err, comments){
+			if(!err && comments.length > 0){
+				var comment = comments.pop();
+				sails.services.utils['comment'].commentParentThreadAssemble(comment, {}, function (err, comments){
+				  if(!err){
+				  	convertToUsers(err, comments, cb);
+				  }
+				  else {
+				  	cb(err, []);
+				  }
 				});
 			}
 			else {

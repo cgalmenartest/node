@@ -42,7 +42,6 @@ function send(locals, html, text, cb){
 
 module.exports = {
 	sendSimpleEmail: function(fields, settings, cb){
-		// return cb(null, null);
 		sails.services.utils['emailTemplate'].prepareLayout(
 		fields.layout,
 		fields.layoutLocals,
@@ -50,14 +49,22 @@ module.exports = {
 		fields.templateLocals,
 		function(err, html, text){
 			if(err){ console.log(err); cb(null, null); return false;}
-			send(
-			{
-				to: fields.to,
-				subject: fields.subject,
-				from: fields.from
-			},
-			html, text, cb);
+			if(fields.to && fields.from){
+				send(
+				{
+					to: fields.to,
+					subject: fields.subject,
+					from: fields.from
+				},
+				html, text, cb);
+			}
+			else{
+				cb(null, null);
+			}
 		});
+	},
+	bypass: function(fields, settings, cb){
+		cb(null, null);
 	},
 	sendSimpleMessage: function(fields, settings, cb){
 		cb(null, null);
