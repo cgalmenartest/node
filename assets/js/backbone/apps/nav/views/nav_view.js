@@ -12,9 +12,10 @@ define([
   var NavView = Backbone.View.extend({
 
     events: {
-      'click .nav-link': 'link',
-      'click .login': 'loginClick',
-      'click .logout': 'logout'
+      'click .navbar-brand'   : 'home',
+      'click .nav-link'       : 'link',
+      'click .login'          : 'loginClick',
+      'click .logout'         : 'logout'
     },
 
     initialize: function (options) {
@@ -52,6 +53,11 @@ define([
         $(".nav li").removeClass("active");
         $(this).addClass("active");
       });
+    },
+
+    home: function (e) {
+      if (e.preventDefault) e.preventDefault();
+      Backbone.history.navigate('', { trigger: true });
     },
 
     link: function (e) {

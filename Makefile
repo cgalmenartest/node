@@ -29,6 +29,8 @@ import:
 	-cp $(DIR)/config/local.js config/
 	-cp $(DIR)/config/settings/*.js config/settings/
 	-cp $(DIR)/assets/js/backbone/config/*.js assets/js/backbone/config/
+	-cp $(DIR)/assets/styles/*.css assets/styles/
+	-cp -R $(DIR)/assets/images/* assets/images/
 	-cp $(DIR)/test/init/init/config.js test/init/init/config.js
 	-cp $(DIR)/test/demo/data/config.js test/demo/data/config.js
 	-cp -R $(DIR)/test/demo/data/assets/* test/demo/data/assets

@@ -314,6 +314,25 @@ h6 {
   background-color: #D63A25;
 }
 
+.navbar-brand {
+  background-image: url(/images/logo.png);
+  background-repeat: no-repeat;
+  background-size: 256px 40px;
+  width: 256px;
+  height: 40px;
+  margin-top: 15px;
+}
+
+@media only screen and (-moz-min-device-pixel-ratio: 1.5),
+  only screen and (-o-min-device-pixel-ratio: 3/2),
+  only screen and (-webkit-min-device-pixel-ratio: 1.5),
+  only screen and (min-device-pixel-ratio: 1.5),
+  only screen and (min-resolution: 144dpi) {
+    .navbar-brand {
+         background-image: url(/images/logo@2x.png);
+    }
+}
+
 .navbar {
   background-color: #fff;
   -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 5px rgba(0, 0, 0, 0.075);

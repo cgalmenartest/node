@@ -159,7 +159,7 @@ module.exports = function (grunt) {
             'assets/js/vendor/jquery-timepicker/jquery.timepicker.css',
             'assets/js/vendor/select2/select2.css',
             'assets/styles/application.css',
-            'assets/styles/innovation-theme.css'
+            'assets/styles/theme.css'
           ]
         },
         options: {
