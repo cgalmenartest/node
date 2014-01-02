@@ -254,4 +254,23 @@ describe('demo:', function() {
     });
   });
 
+  after(function(done) {
+    // Disable all of the users after populating the database
+    var disableUser = function(u, done) {
+      utils.login(request, u.username, u.password, function (err) {
+        if (err) return done(err);
+        utils.user_info(request, function (err, user) {
+          if (err) return done(err);
+          utils.user_disable(request, user, function (err, user) {
+            done(err);
+          });
+        });
+      });
+    };
+
+    async.eachSeries(_.values(conf.users), disableUser, function (err) {
+      done(err);
+    });
+  });
+
 });
