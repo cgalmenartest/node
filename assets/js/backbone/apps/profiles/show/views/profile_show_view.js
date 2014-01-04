@@ -99,7 +99,6 @@ define([
       myDropzone.on("thumbnail", function(file) { });
     },
 
-    // eventually want to move this to config file
     updateProfileEmail: function(){
       var self = this;
       $.ajax({

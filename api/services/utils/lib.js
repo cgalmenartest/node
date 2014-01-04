@@ -58,12 +58,12 @@ function singleton(callerFuncName, makerFunc, makerArgs){
 		_returnMe[callerFuncName] = getInstance;
 		return _returnMe;
 }
-
+// validate local fields against global field definitions
 function validateFields(fields, globalFieldCollection, done){
 	_.each(fields, validateField);
 	_.each(globalFieldCollection, validateGlobals);
 	done(null, fields);
-
+	// sets local field to default value if one exists
 	function validateGlobals(fieldObject, key, list){
 		if(fieldObject.required && !(fieldObject.name in fields) && typeof fieldObject.defaultValue === "undefined"){
 			//todo: more relevant data here
@@ -73,7 +73,7 @@ function validateFields(fields, globalFieldCollection, done){
 			fields[fieldObject.name] = fieldObject.defaultValue;
 		}
 	}
-
+	// ensure that each field passed is valid
 	function validateField(value, field, list){
 		var validator;
 		validator = sails.services.utils['validation'];

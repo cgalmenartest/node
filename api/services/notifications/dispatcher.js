@@ -9,7 +9,7 @@
  var _ 							= require('underscore');
  var async 					= require('async');
  var nodemailer     = require('nodemailer');
-
+// configure settings for email and generate nodemailer "transport" object
 function transport(){
 	var smtp = sails.config.smtp;
 	var configs = {
@@ -27,7 +27,7 @@ function transport(){
  	};
 	return nodemailer.createTransport("SMTP", configs);
 }
-
+// dispatch the email
 function send(locals, html, text, cb){
   transport().sendMail(
   {
@@ -41,6 +41,7 @@ function send(locals, html, text, cb){
 }
 
 module.exports = {
+	// send an email with basic email properties
 	sendSimpleEmail: function(fields, settings, cb){
 		sails.services.utils['emailTemplate'].prepareLayout(
 		fields.layout,
@@ -48,7 +49,7 @@ module.exports = {
 		fields.template,
 		fields.templateLocals,
 		function(err, html, text){
-			if(err){ console.log(err); cb(null, null); return false;}
+			if(err){ sails.log.debug(err); cb(null, null); return false;}
 			if(fields.to && fields.from){
 				send(
 				{
@@ -63,6 +64,7 @@ module.exports = {
 			}
 		});
 	},
+	// do nothing
 	bypass: function(fields, settings, cb){
 		cb(null, null);
 	},

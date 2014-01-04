@@ -1,15 +1,15 @@
 /**
  * Source definition for
  *
- * @module    :: Source
- * @description ::
+ * @module    :: audience.js
+ * @description :: defines service functions that return collections of users
  */
  var util = require("util");
  var events = require("events");
  var _ = require('underscore');
  var async = require('async');
 
-
+// convenience function that accepts a collection of entities with a property "userId" (must be exact) and returns a collection of those users
 function convertToUsers(err, userIdPropertyCollection, cb){
  	var uIds = [];
  	_.each(userIdPropertyCollection, function(item){
@@ -54,6 +54,7 @@ module.exports = {
 		Comment.find({id : fields.commentId }).done(function(err, comments){
 			if(!err && comments.length > 0){
 				var comment = comments.pop();
+				// get all parent comments
 				sails.services.utils['comment'].commentParentThreadAssemble(comment, {}, function (err, comments){
 				  if(!err){
 				  	convertToUsers(err, comments, cb);
@@ -86,6 +87,7 @@ module.exports = {
 		Comment.find({id : fields.commentId }).done(function(err, comments){
 			if(!err && comments.length > 0){
 				var comment = comments.pop();
+				// get all parent comments
 				sails.services.utils['comment'].commentParentThreadAssemble(comment, {}, function (err, comments){
 				  if(!err){
 				  	convertToUsers(err, comments, cb);

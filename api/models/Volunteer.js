@@ -44,7 +44,7 @@ module.exports = {
                       }
                     }
 
-    noteUtils.notifier.notify(params, cb);
+    noteUtils.notifier.notify(params, true, cb);
   }
 
 };

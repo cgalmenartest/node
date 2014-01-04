@@ -45,6 +45,7 @@ module.exports = {
   // for the sake of alerting owners and parent commenters
   afterCreate: function (values, cb){
     var params = {};
+    // comment applies to a project
     if(values.projectId){
         params.trigger =    {
                                 callerType: 'Comment',
@@ -66,6 +67,7 @@ module.exports = {
                             }
                         }
     }
+    // comment applies to a task
     else if(values.taskId){
         params.trigger =    {
                                 callerType: 'Comment',
@@ -90,7 +92,7 @@ module.exports = {
     else {
         throw new Error('projectId or taskId must be defined');
     }
-    noteUtils.notifier.notify(params, cb);
+    noteUtils.notifier.notify(params, true, cb);
   }
 
 };

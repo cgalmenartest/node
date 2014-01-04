@@ -45,6 +45,7 @@ var commentAssemble = function (where, done) {
 
 // Finds all parent comments recursively
 var commentParentThreadAssemble = function(comment, where, done){
+  // base case
   if(!comment.parentId){
     done(null, []);
   }
@@ -52,12 +53,15 @@ var commentParentThreadAssemble = function(comment, where, done){
     var returnMe = [];
     where = where || {};
     where = _.extend(where, { id: comment.parentId });
+    // get parent comment
     commentAssemble(where, function(err, result){
       if(!err) {
         if(result && result.length > 0){
           returnMe = result.slice(0);
           var item = result.pop();
+          // add parent comment to list
           returnMe.push(item);
+          // recursive call on parent
           commentParentThreadAssemble(item, where, function(err, res){
             if(!err){
               returnMe = _.union(returnMe, res);

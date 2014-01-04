@@ -51,7 +51,6 @@ define([
       });
     },
 
-    // eventually want to move this to config file
     updateTaskEmail: function() {
       var self = this;
       $.ajax({

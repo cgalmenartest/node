@@ -65,7 +65,6 @@ define([
       });
     },
 
-    // eventually want to move this to config file
     updateProjectEmail: function() {
       var self = this;
       $.ajax({

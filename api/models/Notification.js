@@ -20,13 +20,13 @@ module.exports = {
     // name of intended audience
     audience: 'STRING',
     // ID of user to whom the notification is directed
-    // recipientId: 'INTEGER',
+    recipientId: 'INTEGER',
     // Timestamp of creation
     createdDate: 'DATETIME',
-    // JSON object representing implementation-specific data being contained inside of the triggering action
-    data: 'STRING',
-    // JSON object representing implementation-specific option for the processing of the action
-    options: 'STRING',
+    // JSON object representing local data needed to process the notification into a delivery
+    localParams: 'STRING',
+    // JSON object representing global data needed to process the notification into a delivery
+    globalParams: 'STRING',
     // Future soft-delete functionality
     isActive: {
       'type': 'BOOLEAN',

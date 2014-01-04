@@ -83,25 +83,27 @@ function NotificationBuilder(){
 		actionID = uuid.v4();
 		createdDate = new Date();
 		// find audience for action, then create notifications for each audience member, then send deliveries for each notification.
+		// first fork in the execution path
 		// Structure is far from ideal, but it must be done this way to get around the cumbersome single parameter restriction in the async library's "each" function
 		async.each(Object.keys(sails.config.notifications.triggerRoutes[params.trigger.action].audience), startNotify, function(err){
 			if(!isCBShortCircuited){
+				// call callback now and continue execution
 				cb(null);
 			}
 		});
-
 		function startNotify(audience, done){
+			// get subscriber list for action
 			populateRecipients(audience, function(err, recipients, audience){
-				generateNotificationForAction(audience, recipients, function(err, notification, audience, recipients){
-
-					function finishNotify(recipient, fin){
-						generateUserNotifications(audience, notification, recipient, function(err, userNotification, recipient, notification, audience){
-							deliverNotification(notification, recipient, userNotification, fin);
-						});
-					}
-
-					async.each(recipients, finishNotify, done);
-				});
+				// begin the delivery process, will fork execution into a fan of callbacks for each Notification and again for each delivery
+				function finishNotify(recipient, fin){
+					// make Notification model for each recipient
+					generateNotifications(audience, recipient, function(err, notification, audience, recipient){
+						// kick off delivery process for each recipient, will end up forking execution again for each delivery
+						deliverNotification(audience, notification, recipient, fin);
+					});
+				}
+				// second fork in the execution path
+				async.each(recipients, finishNotify, done);
 			});
 		}
 		/**
@@ -110,23 +112,27 @@ function NotificationBuilder(){
 		 */
 		function populateRecipients(audience, done){
 			params.data.audience[audience] = params.data.audience[audience] || {};
+			// combine global default settings with local settings to produce master settings list
 			sythesizeSettings(
 				params.data.audience[audience],
 				sails.config.notifications.audiences[audience],
 				function(err, settings){
-					if(err){ console.log(err); done(null, [], audience); return false;}
+					if(err){ sails.log.debug(err); done(null, [], audience); return false;}
+					// combine global default fields with local fields to produce master fields list
 					synthesizeAndValidateFields(
 						params.data.audience[audience],
 						sails.config.notifications.audiences[audience],
 						sails.services.utils.lib['validateFields'],
 						function(err, fields){
-							if(err){ console.log(err); done(null, [], audience); return false;}
+							if(err){ sails.log.debug(err); done(null, [], audience); return false;}
+							// get recipient list and return it in callback
 							performServiceAction(
 								sails.services.notifications['audience'],
 								sails.config.notifications.audiences[audience].method,
+								// pass in master settings and fields
 								{ settings: settings, fields: fields },
 								function(err, recipients){
-									if(err){ console.log(err); done(null, recipients, audience); return false;}
+									if(err){ sails.log.debug(err); done(null, recipients, audience); return false;}
 									done(null, recipients, audience);
 								}
 							);
@@ -136,146 +142,142 @@ function NotificationBuilder(){
 			);
 		}
 		/**
-		 * private function that makes a notification for the notification action
+		 * private function that makes a notification for the notification action for each recipient
 		 * @audience - name of audience
-		 * @recipients - array of users that comprise the audience to which the notification applies
+		 * @user - user to whom the notification is being related (recipient)
 		 */
-		function generateNotificationForAction(audience, recipients, done){
+		function generateNotifications(audience, user, done){
+			// persists notification representation, then return it in callback
 			Notification.create({
 				callerType: params.trigger.callerType,
 				callerId: params.trigger.callerId,
 				triggerGuid: actionID,
 				action: params.trigger.action,
 				audience: audience,
+				recipientId: user.id,
 				createdDate: createdDate,
-				options: JSON.stringify(params.data)
+				localParams: JSON.stringify(params.data.audience[audience]),
+				globalParams: JSON.stringify(sails.config.notifications.triggerRoutes[params.trigger.action].audience[audience])
 			}).done(function(err, newNotification){
-				if(err){ console.log(err); done(null, newNotification, audience, recipients); return false;}
-    		done(null, newNotification, audience, recipients);
+				if(err){ sails.log.debug(err); done(null, newNotification, audience, user); return false;}
+    		done(null, newNotification, audience, user);
 			});
 		}
-
-		/**
-		 * private function that ties a notification to the passed user
-		 * @audience - name of audience
-		 * @notification - notification object
-		 * @user - user to whom the notification is being related (recipient)
-		 */
-		function generateUserNotifications(audience, notification, user, done){
-			UserNotification.create({
-				userId: user.id,
-				notificationId: notification.id
-			}).done(function(err, newUserNotification){
-				if(err){ console.log(err); done(null, newUserNotification, user, notification, audience); return false;}
-    		done(null, newUserNotification, user, notification, audience);
-			});
-		}
-
-
 		/**
 		 * private function that iterates through each delivery for the given notification and processes it
+		 * @audience - name of audience
 		 * @notification - notification object
 		 * @recipient - user to whom the delivery is being sent
-		 * @userNotification - userNotification object
 		 */
-		function deliverNotification(notification, recipient, userNotification, callback){
-			var strategyName;
-			var preflightContent = {};
-			for(key in sails.config.notifications.triggerRoutes[params.trigger.action].audience[notification.audience].strategy)
-			{
-				strategyName = key;
-			}
-			params.data.audience[notification.audience].strategy = params.data.audience[notification.audience].strategy || {};
-			params.data.audience[notification.audience].strategy[strategyName] = params.data.audience[notification.audience].strategy[strategyName] || {};
-			params.data.audience[notification.audience].strategy[strategyName].preflight = params.data.audience[notification.audience].strategy[strategyName].preflight || {};
-			params.data.audience[notification.audience].strategy[strategyName].delivery = params.data.audience[notification.audience].strategy[strategyName].delivery || {};
-			deliver(
-				sails.config.notifications.triggerRoutes[params.trigger.action].audience[notification.audience].strategy[strategyName],
-				notification,
-				recipient,
-				userNotification,
+		function deliverNotification(audience, notification, recipient, callback){
+			// iterate through all strategies defined for deliverables to be dispached to the given audience
+			// this will likely only ever just be a single strategy, but the edge case possibility exists
+			// third fork in the execution path
+			async.each(
+				Object.keys(sails.config.notifications.triggerRoutes[params.trigger.action].audience[audience].strategy),
+				deliverEachStrategy,
 				callback
 			);
-
 			/**
-			 * private function that consumes main param fields/settings and performs all pre-flight notification preparation for delivery, then consumes main param fields/settings to generate a delivery and send it
-			 * @notification - notification object
-			 * @recipient - user to whom the delivery is being sent
-			 * @userNotification - userNotification object
-			 * @strategy - string name of delivery strategy defined in the notifications config
+			 * private function that kicks off and then follows to completion the delivery proces for a given strategy
+			 * @strategyName - string name of strategy type which defined preflight strategies and delivery strategy
 			 */
-			function deliver(strategy, notification, recipient, userNotification, done){
-				var preflightStrategies;
+			function deliverEachStrategy(strategyName, done){
+				var strategy;
+				// this will hold the content which will eventually be consumed by the delivery method
+				var preflightContent = {};
+				// ensuring proper object structure
+				params.data.audience[audience].strategy = params.data.audience[audience].strategy || {};
+				params.data.audience[audience].strategy[strategyName] = params.data.audience[audience].strategy[strategyName] || {};
+				params.data.audience[audience].strategy[strategyName].preflight = params.data.audience[audience].strategy[strategyName].preflight || {};
+				params.data.audience[audience].strategy[strategyName].delivery = params.data.audience[audience].strategy[strategyName].delivery || {};
+				// var created for convenience, as object is very deep and cumbersome
+				strategy = sails.config.notifications.triggerRoutes[params.trigger.action].audience[audience].strategy[strategyName];
 				strategy.preflight = strategy.preflight || [];
-				preflightStrategies = strategy.preflight;
-				async.each(preflightStrategies, preparePreflight, function(err){
-					prepareDelivery(notification, recipient, userNotification, strategy.delivery, preflightContent, done);
+				// This performs all preflight activity required for final delivery, then calls that delivery function on callback
+				// fourth and final fork in the execution path
+				async.each(strategy.preflight, preparePreflight, function(err){
+					prepareDelivery(audience, notification, recipient, strategyName, strategy.delivery, preflightContent, done);
 				});
-			}
-			/**
-			 * private function that consumes main param fields/settings and performs all pre-flight notification preparation for delivery
-			 * @preflightStrategy - string name of preflight strategy type
-			 */
-			function preparePreflight(preflightStrategy, done){
-				params.data.audience[notification.audience].strategy[strategyName].preflight[preflightStrategy] = params.data.audience[notification.audience].strategy[strategyName].preflight[preflightStrategy] || {};
-				var localVars = _.extend({}, params.data.audience[notification.audience].strategy[strategyName].preflight[preflightStrategy]);
-				localVars.fields = localVars.fields || {};
-				localVars.fields.recipientId = recipient.id;
-				localVars.fields.callerId = notification.callerId;
-				sythesizeSettings(
-					localVars,
-					sails.config.notifications.preflights[preflightStrategy],
-					function(err, settings){
-						if(err){ console.log(err); done(null); return false;}
-						synthesizeAndValidateFields(
-							localVars,
-							sails.config.notifications.preflights[preflightStrategy],
-							sails.services.utils.lib['validateFields'],
-							function(err, fields){
-								if(err){ console.log(err); done(null); return false;}
-								performServiceAction(
-									sails.services.notifications['notification'],
-									sails.config.notifications.preflights[preflightStrategy].method,
-									{ settings: settings, fields: fields },
-									function(err, content){
-										if(err){ console.log(err); done(null); return false;}
-										preflightContent = lib.deepExtend(preflightContent, content);
-										done(err);
-									}
-								);
-							}
-						);
-					}
-				);
+				/**
+				 * private function that consumes main param fields/settings and performs all pre-flight notification preparation for delivery
+				 * @preflightStrategy - string name of preflight strategy type
+				 */
+				function preparePreflight(preflightStrategy, done){
+					params.data.audience[audience].strategy[strategyName].preflight[preflightStrategy] = params.data.audience[audience].strategy[strategyName].preflight[preflightStrategy] || {};
+					// local parameter preflight settings and fields transferred over to a new object to be modified
+					var localVars = _.extend({}, params.data.audience[audience].strategy[strategyName].preflight[preflightStrategy]);
+					localVars.fields = localVars.fields || {};
+					// recipientId and callerId added to fields for convenience, as they will almost always come in handy
+					localVars.fields.recipientId = recipient.id;
+					localVars.fields.callerId = notification.callerId;
+					// combine global default settings with local settings to produce master settings list
+					sythesizeSettings(
+						localVars,
+						sails.config.notifications.preflights[preflightStrategy],
+						function(err, settings){
+							if(err){ sails.log.debug(err); done(null); return false;}
+							// combine global default fields with local fields to produce master fields list
+							synthesizeAndValidateFields(
+								localVars,
+								sails.config.notifications.preflights[preflightStrategy],
+								sails.services.utils.lib['validateFields'],
+								function(err, fields){
+									if(err){ sails.log.debug(err); done(null); return false;}
+									// get generated delivery content and return it in callback
+									performServiceAction(
+										sails.services.notifications['preflight'],
+										sails.config.notifications.preflights[preflightStrategy].method,
+										// master fields and settings passed in
+										{ settings: settings, fields: fields },
+										function(err, content){
+											if(err){ sails.log.debug(err); done(null); return false;}
+											// mix new delivery content in with existing content
+											preflightContent = lib.deepExtend(preflightContent, content);
+											done(err);
+										}
+									);
+								}
+							);
+						}
+					);
+				}
 			}
 			/**
 			 * private function that consumes main param fields/settings and generates a delivery and sends it
+			 * @audience - name of audience
 			 * @notification - notification object
 			 * @recipient - user to whom the delivery is being sent
-			 * @userNotification - userNotification object
 			 * @deliveryStrategy - string name of delivery strategy defined in the notifications config
 			 * @content - content to be added to delivery data
 			 */
-			function prepareDelivery(notification, recipient, userNotification, deliveryStrategy, content, done){
-				params.data.audience[notification.audience].strategy[strategyName].delivery[deliveryStrategy] = params.data.audience[notification.audience].strategy[strategyName].delivery[deliveryStrategy] || {};
-				var localVars = _.extend({}, params.data.audience[notification.audience].strategy[strategyName].delivery[deliveryStrategy]);
+			function prepareDelivery(audience, notification, recipient, strategyName, deliveryStrategy, content, done){
+				params.data.audience[audience].strategy[strategyName].delivery[deliveryStrategy] = params.data.audience[audience].strategy[strategyName].delivery[deliveryStrategy] || {};
+				// local parameter delivery settings and fields transferred over to a new object to be modified
+				var localVars = _.extend({}, params.data.audience[audience].strategy[strategyName].delivery[deliveryStrategy]);
 				localVars.fields = localVars.fields || {};
 				localVars.settings = localVars.settings || {};
+				// mix-in results of preflight functions
 				localVars = lib.deepExtend(content, localVars);
+				// combine global default settings with local settings to produce master settings list
 				sythesizeSettings(
 					localVars,
 					sails.config.notifications.deliveries[deliveryStrategy],
-					{userId: recipient.id, action: params.trigger.action, audience: notification.audience, delivery: deliveryStrategy},
+					// include user settings template to find and incorporate appropriate global overrides
+					{userId: recipient.id, action: params.trigger.action, audience: audience, delivery: deliveryStrategy},
 					function(err, settings){
-						if(err){ console.log(err); done(null, null); return false;}
+						if(err){ sails.log.debug(err); done(null, null); return false;}
+						// combine global default fields with local fields to produce master fields list
 						synthesizeAndValidateFields(
 							localVars,
 							sails.config.notifications.deliveries[deliveryStrategy],
 							sails.services.utils.lib['validateFields'],
 							function(err, fields){
-								if(err){ console.log(err); done(null, null); return false;}
-								generateDelivery(notification, userNotification, deliveryStrategy, content, function(err, delivery){
-									if(err){ console.log(err); done(null, null); return false;}
+								if(err){ sails.log.debug(err); done(null, null); return false;}
+								// goes ahead and persists the delivery model here, as the fields/settings produced in prior callback will still be in scope
+								generateDelivery(audience, notification, deliveryStrategy, content, function(err, delivery){
+									if(err){ sails.log.debug(err); done(null, null); return false;}
+									// makes use of master fields/settings in scope and dispatches the delivery
 									registerDeliveryAsSent(delivery, { settings: settings, fields: fields }, done);
 								});
 							}
@@ -285,18 +287,19 @@ function NotificationBuilder(){
 			}
 			/**
 			 * private function creates the delivery model
+			 * @audience - name of audience
 			 * @notification - notification object
-			 * @userNotification - userNotification object
 			 * @deliveryType - string name of delivery type
 			 * @content - content to be added to delivery data
 			 */
-			function generateDelivery(notification, userNotification, deliveryType, content, done){
+			function generateDelivery(audience, notification, deliveryType, content, done){
+				// persists delivery representation and returns it
 				Delivery.create({
-					userNotificationId: userNotification.id,
+					notificationId: notification.id,
 					deliveryType: deliveryType,
 					content: JSON.stringify(content)
 				}).done(function(err, delivery){
-					if(err){ console.log(err); done(null, delivery); return false; }
+					if(err){ sails.log.debug(err); done(null, delivery); return false; }
 					done(err, delivery);
 				});
 			}
@@ -306,19 +309,20 @@ function NotificationBuilder(){
 			 * @paramObject - parameters to be sent to delivery
 			 */
 			function registerDeliveryAsSent(delivery, paramObject, done){
+				// perform delivery action and return response in callback
 				performServiceAction(
 					sails.services.notifications['dispatcher'],
 					sails.config.notifications.deliveries[delivery.deliveryType].method,
 					paramObject,
 					function(err, response){
-						if(err){ console.log(err); done(null); return false; }
+						if(err){ sails.log.debug(err); done(null); return false; }
+						// update delivery to reflect its completed status
 						delivery.isDelivered = true;
 						delivery.deliveryDate = new Date();
 						delivery.save(done);
 					}
 				);
 			}
-
 		}
 		/**
 		 * private helper function that properly sets all settings
@@ -328,22 +332,26 @@ function NotificationBuilder(){
 		 */
 		function sythesizeSettings(hostObject, globalObject, userSettingTemplate, done){
 			var settings, localSettings, globalSettings;
+			// ensure both parameter objects have proper form
 			hostObject.settings = hostObject.settings || {};
 			globalObject.settings = globalObject.settings || {};
 			settings = {};
 			localSettings = _.extend({}, hostObject.settings);
 			globalSettings = _.extend({}, globalObject.settings);
 			if(typeof userSettingTemplate === 'function'){
+				// if userSettingTemplate not included, so bypasses user settings
 				done = userSettingTemplate;
+				// simply mix-in global and local settings and callback
 				settings = lib.deepExtend(globalSettings, localSettings);
 				done(null, settings);
 			}
 			else{
+				// user setting template is included, so pull related delivery settings and mix those in with the rest
 				UserSetting.find({
 					userId: userSettingTemplate.userId,
 					context: JSON.stringify({ action: userSettingTemplate.action, audience: userSettingTemplate.audience, delivery: userSettingTemplate.delivery })
 				}).done(function(err, settings){
-					if(err){ console.log(err); done(null, settings); return false;}
+					if(err){ sails.log.debug(err); done(null, settings); return false;}
 					userSettingObject = {};
 					userSettingObject[userSettingTemplate.actionType] = {};
 					userSettingObject[userSettingTemplate.actionType].audience = {};
@@ -371,9 +379,9 @@ function NotificationBuilder(){
 			var localFields, globalFields;
 			hostObject.fields = hostObject.fields || {};
 			globalObject.fields = globalObject.fields || {};
-			// fields = {};
 			localFields = _.extend({}, hostObject.fields);
 			globalFields = _.extend({}, globalObject.fields);
+			// validate that local fields are appropriate given configuration definition
 			validator(localFields, globalFields, function(err, fields){
 				done(err, fields);
 			});
