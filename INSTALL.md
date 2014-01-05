@@ -69,6 +69,7 @@ need to `npm link` in order for everything to function properly.
 
      git clone https://github.com/Innovation-Toolkit/sails-postgresql.git
      cd sails-postgresql
+     git checkout bytea
      npm install
      sudo npm link
 
