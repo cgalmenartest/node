@@ -20,7 +20,7 @@ module.exports = {
     // name of intended audience
     audience: 'STRING',
     // ID of user to whom the notification is directed
-    recipientId: 'INTEGER',
+    // recipientId: 'INTEGER',
     // Timestamp of creation
     createdDate: 'DATETIME',
     // JSON object representing local data needed to process the notification into a delivery
