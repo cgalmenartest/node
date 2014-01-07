@@ -22,6 +22,8 @@ config/local.js
 config/settings/auth.js
 config/settings/sources.js
 config/settings/tags.js
+config/settings/emailTemplates.js
+config/settings/notifications.js
 
 # Ignore production files
 assets/prod/js
