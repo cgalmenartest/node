@@ -79,9 +79,9 @@ module.exports = {
     secureConnection    : true,
     port                : 465,
     auth                : {
-                            user: '',
-                            pass: ''
-                          },
+      user              : '',
+      pass              : ''
+    },
     ignoreTLS           : false,
     debug               : false,
     maxConnections      : 5
