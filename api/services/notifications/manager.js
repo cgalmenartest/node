@@ -267,7 +267,12 @@ function NotificationBuilder () {
           localVars,
           sails.config.notifications.deliveries[deliveryStrategy],
           // include user settings template to find and incorporate appropriate global overrides
-          {userId: recipient.id, action: params.trigger.action, audience: audience, delivery: deliveryStrategy},
+          {
+            userId: recipient.id,
+            action: params.trigger.action,
+            audience: audience,
+            delivery: deliveryStrategy
+          },
           function (err, settings) {
             if(err){ sails.log.debug(err); done(null, null); return false;}
             // combine global default fields with local fields to produce master fields list
@@ -285,7 +290,7 @@ function NotificationBuilder () {
                 });
               }
             );
-          };
+          }
         );
       };
 
@@ -325,7 +330,7 @@ function NotificationBuilder () {
             delivery.isDelivered = true;
             delivery.deliveryDate = new Date();
             delivery.save(done);
-          };
+          }
         );
       };
     }
