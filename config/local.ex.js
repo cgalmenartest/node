@@ -72,23 +72,34 @@ module.exports = {
     layoutDir: 'assets/email/layouts'
   },
 
-  // SMTP Mail settings
+  // SMTP Mail settings -- uses Nodemailer
+  // See for more config options: https://github.com/andris9/Nodemailer#setting-up-smtp
   smtp: {
+    // Specify to use a supported service; leave blank for SMTP
+    // See: https://github.com/andris9/Nodemailer#well-known-services-for-smtp
     service             : '',
+    // remote SMTP host
     host                : '',
+    // true to use SSL connections
     secureConnection    : true,
+    // 25 (non-secure) or 465 (secure)
     port                : 465,
+    // username and password settings for secure connections
     auth                : {
       user              : '',
       pass              : ''
     },
+    // ignore server support for STARTTLS (defaults to false)
     ignoreTLS           : false,
+    // output client and server messages to console
     debug               : false,
+    // how many connections to keep in the pool (defaults to 5)
     maxConnections      : 5
+    // limit the count of messages to send through a single connection (no limit by default)
     // maxMessages         :
   },
 
-  // system email
+  // system email address (from address)
   systemEmail: 'test@midas.com'
 
 };
