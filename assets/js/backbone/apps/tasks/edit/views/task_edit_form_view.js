@@ -198,6 +198,7 @@ define([
         // if it does, remove it from the array
         // if it doesn't, add to the new list
         var findTag = function (tag, oldTags) {
+          if(!tag) return;
           var none = null;
           for (var j in oldTags) {
             // if the tag is in both lists, do nothing
