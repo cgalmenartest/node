@@ -10,24 +10,32 @@
 </div> <!-- /main-section -->
 <div id="project-coremeta-form" class="coremeta-form-toggle coremeta-admin">
   <div class="row">
-    <div class="col-lg-12 form-group">
+    <div class="col-md-12">
+      <form role="form">
 
-      <div class="alert alert-success" id="project-coremeta-success" style="display: none;">
-        Your project info has been successfully updated!
-        <a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
-      </div>
+        <div class="alert alert-success" id="project-coremeta-success" style="display: none;">
+          Your project has been successfully updated!
+          <a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
+        </div>
 
-      <!-- RIGHT MAIN BAR -->
-      <div>
-        <h2 class="box-pad-t">Project Title</h2>
-        <input id="project-edit-form-title" class="form-control input-lg" value="<%= data.title %>" type="text" />
-        <h2 class="box-pad-t">Project Description</h2>
-        <textarea maxlength="500" rows="8" class="form-control" id="project-edit-form-description"><%= data.description %></textarea>
-      </div>
+        <!-- RIGHT MAIN BAR -->
+        <div class="form-group">
+          <h2 class="box-pad-t">Project Title</h2>
+          <input id="project-edit-form-title" class="form-control input-lg" value="<%= data.title %>" type="text" data-validate="empty,count100"/>
+          <span class="help-block error-empty" style="display:none;">You must enter a project title.</span>
+          <span class="help-block error-count100" style="display:none;">Your title must be less than 100 characters.</span>
+        </div>
+        <div class="form-group">
+          <h2 class="box-pad-t">Project Description</h2>
+          <textarea maxlength="400" rows="6" class="form-control" id="project-edit-form-description" data-validate="empty,count400"><%= data.description %></textarea>
+          <span class="help-block error-empty" style="display:none;">You must enter a project description.</span>
+          <span class="help-block error-count400" style="display:none;">Your title must be less than 400 characters.</span>
+        </div>
+      </form>
     </div>
   </div>
   <div class="row">
-    <div class="col-lg-12 form-group">
+    <div class="col-md-12 form-group">
 
       <div class="pull-right coremeta-admin" id="project-coremeta-buttons">
           <button class="btn btn-c0" id="coremeta-view">View Project</button>

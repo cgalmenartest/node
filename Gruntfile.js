@@ -155,9 +155,11 @@ module.exports = function (grunt) {
             'assets/styles/bootstrap.css',
             'assets/styles/font-awesome/css/font-awesome.min.css',
             'assets/styles/font-custom/css/style.css',
+            'assets/js/vendor/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css',
+            'assets/js/vendor/jquery-timepicker/jquery.timepicker.css',
             'assets/js/vendor/select2/select2.css',
             'assets/styles/application.css',
-            'assets/styles/innovation-theme.css'
+            'assets/styles/theme.css'
           ]
         },
         options: {

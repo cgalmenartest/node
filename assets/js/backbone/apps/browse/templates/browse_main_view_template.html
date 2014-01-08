@@ -1,28 +1,29 @@
 <div class="modal fade" id="addTask"></div>
 
 <div class="row search-row">
-  <div class="col-lg-9">
-    <form id="search-form">
-      <input type="hidden" id="search" style="width: 90%"/>
-      <input type="submit" class="btn btn-c1" value="Search"/>
-    </form>
-  </div>
-  <div class="col-lg-3 align-right padding-none">
+  <div class="col-md-3 col-md-push-9 browse-buttons">
     <a href="#addProject" class="btn btn-c2 add-project" data-toggle="modal" style="<% if (!user) { %>display: none;<% } %>"><i class="icon-plus"></i> Project</a>
     <a href="#addTask" class="btn btn-c2 add-opportunity" data-toggle="modal" style="<% if (!user) { %>display: none;<% } %>"><i class="icon-plus"></i> Opportunity</a>
   </div>
+  <div class="col-md-9 col-md-pull-3">
+    <form class="form-horizontal" role="form" id="search-form">
+
+      <div class="form-group row">
+        <div class="col-sm-10 col-md-10 col-lg-9 input-search">
+          <input type="hidden" id="search" style="width: 100%"/>
+        </div>
+        <div class="col-sm-2 col-md-2 col-lg-3 btn-search">
+          <input type="submit" class="btn btn-c1" value="Search"/>
+        </div>
+      </div>
+
+    </form>
+  </div>
 </div>
 <div class="row">
-  <div class="col-lg-9">
 
-    <div id="browse-search-spinner">
-      <!-- insert spinner here -->
-    </div>
-    <ul id="browse-list">
-    </ul>
-  </div>
-  <div class="col-lg-3 box">
-    <div class="box-pad-lr border-bottom">
+  <div class="col-md-3 col-md-push-9 box">
+    <div class="border-bottom box-pad-lr">
       <h2>Search Criteria</h2>
     </div>
     <div class="box-pad-t">
@@ -44,4 +45,14 @@
       </div>
     </div>
   </div>
+
+  <div class="col-md-9 col-md-pull-3">
+
+    <div id="browse-search-spinner" class="fullwidth text-center">
+      Loading... <i class="icon-spinner icon-spin"></i>
+    </div>
+    <ul id="browse-list">
+    </ul>
+  </div>
+
 </div>

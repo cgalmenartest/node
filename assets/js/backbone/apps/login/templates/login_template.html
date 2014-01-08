@@ -9,10 +9,14 @@
   <% if (login.oauth.length > 0) { %>
   <div class="login-oauth">Log in or Register with
   <% _.each(login.oauth, function (e) { %>
-  <div class="login-option">
-    <a href="<%= e.endpoint %>" class="btn btn-c0 btn-login">
-    <img src="<%= e.image %>" alt="<%= e.name %>"/>
-    </a>
+  <div class="row">
+    <div class="col-sm-offset-3 col-sm-6">
+      <div class="login-option">
+        <a href="<%= e.endpoint %>" class="btn btn-c0 btn-login">
+          <img src="<%= e.image %>" alt="<%= e.name %>" class="btn-login-responsive"/>
+        </a>
+      </div>
+    </div>
   </div>
   <% }); %>
   </div>

@@ -39,7 +39,7 @@ define([
       this.fireUpCollection();
       this.initializeView();
 
-      this.collection.trigger(this.target + ":fetch");
+      this.collection.trigger('browse:' + this.target + ":fetch");
 
       this.listenTo(this.projectsCollection, "project:save:success", function (data) {
         // hide the modal
@@ -81,7 +81,7 @@ define([
       else {
         this.collection = new ProfilesCollection();
       }
-      this.listenToOnce(this.collection, this.target + ":fetch", function () {
+      this.listenToOnce(this.collection, 'browse:' + this.target + ":fetch", function () {
         self.collection.fetch({
           success: function (collection) {
             self.collection = collection;
@@ -153,6 +153,8 @@ define([
         tasks: this.tasksCollection
       }).render();
       this.modalWizardComponent.setChildView(this.taskFormView);
+      this.modalWizardComponent.setNext(this.taskFormView.childNext);
+      this.modalWizardComponent.setSubmit(this.taskFormView.childNext);
     },
 
     // ---------------------

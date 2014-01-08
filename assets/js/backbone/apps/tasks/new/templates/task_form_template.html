@@ -1,66 +1,112 @@
 <form id="task-form" class="form-inline" action="/api/task">
 
   <section id="section-1" class="current">
-    The problem I'm trying to solve is
-    <input type="text" id="task-title" class="fullwidth" placeholder="What problem are you trying to solve?" />
-    <br/>
-    Some more detail about my problem
-    <textarea id="task-description" class="fullwidth" placeholder="Please describe the project details, including goals, expected outcomes and deliverables."></textarea>
-  </section>
-
-  <section id="section-2">
-    I need
-    <select id="people">
-      <% _.each(tags['task-people'], function (person) { %>
-        <option value="<%= person.id %>"><%= person.name %></option>
-      <% }); %>
-    </select>
-
-    <div class="form-group">
-      to work on an opportunity about these topics:
-      <input type="hidden" id="topics" name="topic" />
+    <div class="form-group fullwidth">
+      <label for="task-title">
+        What problem are you trying to solve?
+      </label>
+      <div class="row">
+        <div class="col-md-12">
+          <input type="text" id="task-title" class="fullwidth form-control validate" placeholder="A short description of the problem." data-validate="empty,count100"/>
+          <span class="help-block error-empty" style="display:none;">You must enter a title for this opportunity</span>
+          <span class="help-block error-count100" style="display:none;">The short description of the problem must be less than 100 characters.</span>
+        </div>
+      </div>
     </div>
   </section>
 
-  <section id="section-3">
-    It will require
-    <select id="time-estimate">
-      <% _.each(tags['task-time-estimate'], function (timeEstimate) { %>
-        <option value="<%= timeEstimate.id %>"><%= timeEstimate.name %></option>
-      <% }); %>
-    </select>
+  <section id="section-2">
+    <div class="form-group fullwidth">
+      <label for="people">
+        We need
+      </label>
+      <select id="people" class="dropdown">
+        <% _.each(tags['task-people'], function (person) { %>
+          <option value="<%= person.id %>"><%= person.name %></option>
+        <% }); %>
+      </select>
 
-     of
-
-    <select id="time-required">
-      <% _.each(tags['task-time-required'], function (time) { %>
-        <option value="<%= time.id %>"><%= time.name %></option>
-      <% }); %>
-    </select>
-
-    work, and must be completed within
-    <select id="length">
-      <% _.each(tags['task-length'], function (item) { %>
-        <option value="<%= item.id %>"><%= item.name %></option>
-      <% }) %>
-    </select>
-
-    <br />
-    <br />
-
-    The volunteer(s) must be located at
-    <select id="task-location">
-      <option value="false">any location</option>
-      <option class="specific-location" value="true">a specific location</option>
-    </select> to complete this task.
-
-    <div class="el-specific-location">
-      <hr />
+      <label for="topics">
+        to work on an opportunity about these topics:
+      </label>
       <div class="row">
-        <div class="col-lg-12">
-          <div class="form-group task-skills">
-            The specific locations are:
-            <input type="hidden" id="location" name="location"/>
+        <div class="col-md-12">
+          <input type="hidden" id="topics" class="fullwidth" name="topic" />
+        </div>
+      </div>
+    </div>
+
+    <hr/>
+
+    <div class="form-group fullwidth">
+      <label for="skills-required">
+        The following skills are useful and
+      </label>
+      <select id="skills-required" name="skills-required" class="dropdown">
+        <% _.each(tags['task-skills-required'], function(requirement) { %>
+          <option value="<%= requirement.id %>"><%= requirement.name %></option>
+        <% }); %>
+      </select>
+      <label for="skills">
+        to complete this opportunity:
+      </label>
+      <div class="row">
+        <div class="col-md-12">
+          <input type="hidden" id="skills" name="skills" class="fullwidth" />
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <section id="section-3">
+    <div class="form-group fullwidth">
+      <label for="time-estimate">
+        The opportunity will require
+      </label>
+      <select id="time-estimate" class="dropdown">
+        <% _.each(tags['task-time-estimate'], function (timeEstimate) { %>
+          <option value="<%= timeEstimate.id %>"><%= timeEstimate.name %></option>
+        <% }); %>
+      </select>
+
+      <label for="time-required">
+        of
+      </label>
+      <select id="time-required" class="dropdown">
+        <% _.each(tags['task-time-required'], function (time) { %>
+          <option value="<%= time.id %>"><%= time.name %></option>
+        <% }); %>
+      </select>
+
+      <label for="length">
+        work, and must be completed within
+      </label>
+      <select id="length" class="dropdown">
+        <% _.each(tags['task-length'], function (item) { %>
+          <option value="<%= item.id %>"><%= item.name %></option>
+        <% }) %>
+      </select>
+    </div>
+
+    <hr/>
+
+    <div class="form-group fullwidth">
+      <label for="task-location">
+        The volunteer(s) must be located
+      </label>
+      <select id="task-location" class="dropdown">
+        <option value="false">worldwide</option>
+        <option value="true">at specific location(s)</option>
+      </select> to complete this task.
+
+      <div class="row el-specific-location">
+        <div class="col-md-12">
+          <div class="form-group task-skills fullwidth">
+            <label for="location">
+              The specific location(s) are:
+            </label>
+            <input type="hidden" id="location" name="location" class="fullwidth"/>
           </div>
         </div>
       </div>
@@ -68,17 +114,17 @@
   </section>
 
   <section id="section-4">
-    <div class="form-group">
-      <select id="skills-required" name="skills-required">
-        <% _.each(tags['task-skills-required'], function(requirement) { %>
-          <option value="<%= requirement.id %>"><%= requirement.name %></option>
-        <% }); %>
-      </select>
-    </div>
-
-    <div class="form-group">
-      to complete this opportunity:
-      <input type="hidden" id="skills" name="skills" />
+    <div class="form-group fullwidth">
+      <label for="task-description">
+        Describe the opportunity details, including goals, expected outcomes and deliverables.
+      </label>
+      <div class="row">
+        <div class="col-md-12">
+          <textarea id="task-description" class="fullwidth form-control validate" placeholder="Description of opportunity including goals, expected outcomes and deliverables." rows="4" maxlength="400" data-validate="empty,count400"></textarea>
+          <span class="help-block error-empty" style="display:none;">You must enter a description for this opportunity</span>
+          <span class="help-block error-count400" style="display:none;">The description of the opportunity must be less than 400 characters.</span>
+        </div>
+      </div>
     </div>
   </section>
 

@@ -69,6 +69,7 @@ need to `npm link` in order for everything to function properly.
 
      git clone https://github.com/Innovation-Toolkit/sails-postgresql.git
      cd sails-postgresql
+     git checkout bytea
      npm install
      sudo npm link
 
@@ -152,7 +153,7 @@ You can now access the server at `http://localhost:1337`
 
 ### Optional: install nginx
 
-     add-apt-repository -y ppa:nginx/stable
+     sudo add-apt-repository -y ppa:nginx/stable
      sudo apt-get update
      sudo apt-get install nginx
 

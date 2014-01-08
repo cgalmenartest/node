@@ -8,12 +8,15 @@ require.config({
     // ----------
     'text'                      : '../../vendor/text',
     'jquery'                    : '../../vendor/jquery',
+    'moment'                    : '../../vendor/moment/moment',
     'jquery_timeago'            : '../../vendor/jquery.timeago',
     'jquery_select2'            : '../../vendor/select2/select2',
+    'jquery_timepicker'         : '../../vendor/jquery-timepicker/jquery.timepicker',
     'dropzone'                  : '../../vendor/dropzone-amd-module',
     'underscore'                : '../../vendor/underscore',
     'backbone'                  : '../../vendor/backbone',
     'bootstrap'                 : '../../vendor/bootstrap',
+    'bootstrap-datetimepicker'  : '../../vendor/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min',
     'async'                     : '../../vendor/async/lib/async',
 
     // ---------
@@ -153,7 +156,6 @@ require.config({
     //= Comments
     // ----------
     'comment_list_controller'   : '../apps/comments/list/controllers/comment_list_controller',
-    'comment_list_template'     : '../apps/comments/list/templates/comment_list_template.html',
     'comment_item_template'     : '../apps/comments/list/templates/comment_item_template.html',
     'comment_wrapper_template'  : '../apps/comments/list/templates/comment_wrapper_template.html',
     'comment_list_view'         : '../apps/comments/list/views/comment_list_view',
@@ -182,4 +184,9 @@ require.config({
     }
   }
 
+});
+
+// moment needs to be initialized or plugins will throw an error
+define(["moment"], function (moment) {
+    moment().format();
 });

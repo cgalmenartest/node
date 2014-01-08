@@ -72,6 +72,16 @@ define([
     },
 
     /**
+     * Set the callback on the next button of the modal.
+     * Useful for callbacks
+     * @return this for chaining
+     */
+    setNext: function (fn) {
+      this.childNext = fn;
+      return this;
+    },
+
+    /**
      * Set the callback on the submit button of the modal.
      * Useful for callbacks
      * @return this for chaining
@@ -93,6 +103,16 @@ define([
       var current   = $(".current"),
           next      = current.next(),
           nextHtml  = next.html();
+
+      // Notify the sub-view to see if it is safe to proceed
+      // if not, return and stop processing.
+      var abort = false;
+      if (this.childNext) {
+        abort = this.childNext(e, current);
+      }
+      if (abort === true) {
+        return;
+      }
 
       var nextWizardStep = {
         exists: function () {
@@ -140,19 +160,21 @@ define([
     // from the instantiation of this modal wizard.
     submit: function (e) {
       if (e.preventDefault) e.preventDefault();
-      $('.modal.in').modal('hide');
 
       var d = this.options.data();
-      var process = true;
+      var abort = false;
       // pass the data to the view
       if (this.childSubmit) {
-        // if submit returns true, continue modal processing
-        process = this.childSubmit(e, d);
+        // if submit returns true, abort modal processing
+        abort = this.childSubmit(e, $(".current"));
       }
 
-      if (process) {
-        this.collection.trigger(this.options.modelName + ":save", d);
+      if (abort === true) {
+        return;
       }
+
+      $('.modal.in').modal('hide');
+      this.collection.trigger(this.options.modelName + ":save", d);
     },
 
     cancel: function (e) {

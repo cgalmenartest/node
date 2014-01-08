@@ -26,38 +26,32 @@ define([
     },
 
     initialize: function (settings) {
-      this.options = _.extend(settings, this.defaults)
-      this.fireUpEventsCollection()
-      this.requestEventsCollectionData()
+      var self = this;
+      this.options = _.extend(settings, this.defaults);
+      this.requestEventsCollectionData();
 
-      this.listenTo(this.collection, "event:save:success", function () {
-        $(".modal").modal('hide')
-        this.requestEventsCollectionData()
+      this.listenTo(this.collection, "event:save:success", function (model) {
+        $('#addEvent').bind('hidden.bs.modal', function() {
+          self.requestEventsCollectionData();
+        }).modal('hide');
       });
-    },
-
-    fireUpEventsCollection: function () {
-      if (this.collection) {
-        this.collection.initialize()
-      } else {
-        this.collection = new EventsCollection()
-      }
     },
 
     requestEventsCollectionData: function () {
       var self = this;
+      this.collection = new EventsCollection();
       this.collection.fetch({
         url: '/api/event/findAllByProjectId/' + parseInt(this.options.projectId),
         success: function (collection) {
-          self.renderEventCollectionView(collection)
-          collection = self.collection
+          self.collection = collection;
+          self.renderEventCollectionView(collection);
         }
       })
     },
 
     renderEventCollectionView: function (collection) {
       if (this.eventCollectionView) {
-        this.eventCollectionView.cleanup()
+        this.eventCollectionView.cleanup();
       }
 
       this.eventCollectionView = new EventCollectionView({
@@ -73,21 +67,22 @@ define([
     add: function (e) {
       if (e.preventDefault) e.preventDefault();
 
-      if (this.modalComponent) this.modalComponent;
+      // cleanup existing views
+      if (this.eventFormView) this.eventFormView.cleanup();
+      if (this.modalComponent) this.modalComponent.cleanup();
+
+      // instantiate the modal with the event form view
       this.modalComponent = new ModalComponent({
-        el: "#container",
+        el: "#event-modal-add",
         id: "addEvent",
         modalTitle: 'Add Event'
       }).render();
 
-      if (!_.isUndefined(this.modalComponent)) {
-        if (this.eventFormView) this.eventFormView;
-        this.eventFormView = new EventFormView({
-          el: ".modal-template",
-          projectId: this.options.projectId,
-          collection: this.collection
-        }).render();
-      }
+      this.eventFormView = new EventFormView({
+        el: "#event-modal-add .modal-template",
+        projectId: this.options.projectId,
+        collection: this.collection
+      }).render();
     },
 
     updatePeople: function (e, inc) {
@@ -146,6 +141,8 @@ define([
 
     cleanup: function () {
       if (this.eventCollectionView) this.eventCollectionView.cleanup();
+      if (this.eventFormView) this.eventFormView.cleanup();
+      if (this.modalComponent) this.modalComponent.cleanup();
       removeView(this);
     }
 

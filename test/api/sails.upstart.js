@@ -22,6 +22,9 @@ before(function(done) {
     },
     adapters: {
       'default': 'disk'
+    },
+    hooks: {
+      grunt: false
     }
 
   }, function(e, s) {

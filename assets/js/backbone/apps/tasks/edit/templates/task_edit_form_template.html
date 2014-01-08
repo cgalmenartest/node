@@ -3,56 +3,69 @@
     <h2 class="box-pad-t">
       Opportunity Title
     </h2>
-    <input id="task-title" type="text" placeholder="title" value="<%= data.title %>" class="form-control input-lg"/>
-
+    <input id="task-title" type="text" placeholder="A short description of the problem." value="<%= data.title %>" class="form-control input-lg validate" data-validate="empty,count100"/>
+    <span class="help-block error-empty" style="display:none;">You must enter a title for this opportunity</span>
+    <span class="help-block error-count100" style="display:none;">The short description of the problem must be less than 100 characters.</span>
+  </div>
+  <div class="form-group">
     <h2 class="box-pad-t">
       Opportunity Description
     </h2>
-    <textarea name="" id="task-description" class="form-control" placeholder="description"><%= data.description %></textarea>
+    <textarea name="" id="task-description" class="form-control validate" placeholder="Description of opportunity including goals, expected outcomes and deliverables." rows="4" maxlength="400" data-validate="empty,count400"><%= data.description %></textarea>
+    <span class="help-block error-empty" style="display:none;">You must enter a description for this opportunity</span>
+    <span class="help-block error-count400" style="display:none;">The description of the opportunity must be less than 400 characters.</span>
   </div>
   <hr />
 
   <div class="task-edit-description">
-    I need
-    <select id="people">
+    We need
+    <select id="people" class="dropdown">
       <% _.each(tagTypes['task-people'], function (t) { %>
       <option value=<%= t.id %> <% if (madlibTags['task-people'] && (madlibTags['task-people'][0].id == t.id)) { %>selected<% } %>><%= t.name %></option>
       <% }); %>
     </select>
 
-    to work on an opportunity about these topics:
-      <input type="hidden" id="topics" class="task-skills" />
+    to work on an opportunity about:
+    <div class="row">
+      <div class="col-md-12">
+        <input type="hidden" id="topics" class="task-skills fullwidth" />
+      </div>
+    </div>
 
     <hr />
 
-    The following skills are
-    <select id="skills-required">
+    The following skills are useful and
+    <select id="skills-required" class="dropdown">
       <% _.each(tagTypes['task-skills-required'], function (t) { %>
       <option value=<%= t.id %> <% if (madlibTags['task-skills-required'] && (madlibTags['task-skills-required'][0].id == t.id)) { %>selected<% } %>><%= t.name %></option>
       <% }); %>
     </select>
 
     to complete this opportunity:
-    <input type="hidden" id="skills" class="task-skills"/>
+    <div class="row">
+      <div class="col-md-12">
+        <input type="hidden" id="skills" class="task-skills fullwidth"/>
+      </div>
+    </div>
 
     <hr />
 
-    It will require
-    <select id="time-estimate">
+    The opportunity will require
+    <select id="time-estimate" class="dropdown">
       <% _.each(tagTypes['task-time-estimate'], function (t) { %>
       <option value=<%= t.id %> <% if (madlibTags['task-time-estimate'] && (madlibTags['task-time-estimate'][0].id == t.id)) { %>selected<% } %>><%= t.name %></option>
       <% }); %>
     </select>
 
-    hours of
-    <select id="time-required">
+    of
+    <select id="time-required" class="dropdown">
       <% _.each(tagTypes['task-time-required'], function (t) { %>
       <option value=<%= t.id %> <% if (madlibTags['task-time-required'] && (madlibTags['task-time-required'][0].id == t.id)) { %>selected<% } %>><%= t.name %></option>
       <% }); %>
     </select>
 
     work, and must be completed within
-    <select id="length">
+    <select id="length" class="dropdown">
       <% _.each(tagTypes['task-length'], function (t) { %>
       <option value=<%= t.id %> <% if (madlibTags['task-length'] && (madlibTags['task-length'][0].id == t.id)) { %>selected<% } %>><%= t.name %></option>
       <% }); %>
@@ -60,8 +73,14 @@
 
     <hr />
 
-    The volunteer(s) must be at these locations:
-    <input type="hidden" id="location" class="task-skills"/>
+    The volunteer(s) must be located at:<br/>
+
+    <div class="row">
+      <div class="col-md-12">
+        <input type="hidden" id="location" class="task-skills fullwidth"/>
+      </div>
+    </div>
+    <small>Leave empty if the volunteer can be located worldwide</small>
 
     <hr/>
   </div>

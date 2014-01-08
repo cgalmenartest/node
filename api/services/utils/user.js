@@ -58,21 +58,32 @@ module.exports = {
         });
       } else {
         if (user.disabled === true) {
-          return done(null, false, { message: 'Your account is disabled.' });
+          sails.log.info('Disabled user login: ', user);
+          return done(null, false, { message: 'Invalid username or password.' });
         }
         // The user exists so look up their password
         UserPassword.findOneByUserId(user.id, function (err, pwObj) {
           // If no password is set or there is an error, abort
-          if (err || !pwObj) { return done(null, false, { message: 'Invalid password'}); }
+          if (err || !pwObj) { return done(null, false, { message: 'Invalid username or password.'}); }
           // Compare the passwords to check if it is correct
           bcrypt.compare(password, pwObj.password, function (err, res) {
             // Valid password
             if (res === true) {
               sails.log.debug('User Found:', user);
-              return done(null, user);
+              user.passwordAttempts = 0;
+              user.save(function (err) {
+                if (err) { return done(null, false, { message: 'An error occurred while logging on.' }); }
+                return done(null, user);
+              });
             }
             // Invalid password
-            else { return done(null, false, { message: 'Invalid password' }); }
+            else {
+              user.passwordAttempts++;
+              user.save(function (err) {
+                if (err) { return done(null, false, { message: 'An error occurred while logging on.' }); }
+                return done(null, false, { message: 'Invalid username or password.' });
+              });
+            }
           });
         });
       }
@@ -222,6 +233,25 @@ module.exports = {
         });
       }
     });
+  },
+
+  /**
+   * Clean fields from a user object that might
+   * be sensitive.
+   * @param user the user object to clean
+   * @return a new user object
+   */
+  cleanUser: function (user) {
+    var u = {
+      id: user.id,
+      username: user.username,
+      name: user.name,
+      title: user.title,
+      bio: user.bio,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt
+    };
+    return u;
   }
 
 };

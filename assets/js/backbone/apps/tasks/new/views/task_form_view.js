@@ -9,20 +9,21 @@ define([
     'text!task_form_template'
 ], function ($, Bootstrap, _, Backbone, async, utilities, TasksCollection, TaskFormTemplate) {
 
-	var TaskFormView = Backbone.View.extend({
+  var TaskFormView = Backbone.View.extend({
 
-		el: "#task-list-wrapper",
+    el: "#task-list-wrapper",
 
-		events: {
+    events: {
+      "blur .validate"        : "v",
       "change #task-location" : "locationChange"
-		},
+    },
 
-		initialize: function () {
-			this.options = _.extend(this.options, this.defaults);
+    initialize: function () {
+      this.options = _.extend(this.options, this.defaults);
       this.tasks = this.options.tasks;
       this.initializeSelect2Data();
       this.initializeListeners();
-		},
+    },
 
     initializeSelect2Data: function () {
       var self = this;
@@ -95,9 +96,9 @@ define([
       });
     },
 
-		render: function () {
+    render: function () {
       var template = _.template(TaskFormTemplate, { tags: this.tagSources })
-			this.$el.html(template);
+      this.$el.html(template);
       this.initializeSelect2();
 
       // Important: Hide all non-currently opened sections of wizard.
@@ -106,15 +107,22 @@ define([
 
       // Return this for chaining.
       return this;
-		},
-
-    submit: function (e, data) {
-      console.log('post');
-      // nothing necessary to do here.
-      // non-null, non-false return continues processing
-      return this;
     },
 
+    v: function (e) {
+      return validate(e);
+    },
+
+    childNext: function (e, current) {
+      // find all the validation elements
+      var children = current.find('.validate');
+      var abort = false;
+      _.each(children, function (child) {
+        var iAbort = validate({ currentTarget: child });
+        abort = abort || iAbort;
+      });
+      return abort;
+    },
 
     initializeSelect2: function () {
       var self = this;
@@ -127,8 +135,7 @@ define([
       //  DROP DOWNS REQUIRING A FETCH  //
       // ------------------------------ //
       $("#skills").select2({
-        placeholder: "skills",
-        width: '220px',
+        placeholder: "Start typing to select a skill.",
         multiple: true,
         formatResult: formatResult,
         formatSelection: formatResult,
@@ -149,8 +156,7 @@ define([
 
       // Topics select 2
       $("#topics").select2({
-        placeholder: "topics",
-        width: '220px',
+        placeholder: "Start typing to select a topic.",
         multiple: true,
         formatResult: formatResult,
         formatSelection: formatResult,
@@ -171,8 +177,7 @@ define([
 
       // Topics select 2
       this.$("#location").select2({
-        placeholder: "locations",
-        width: '100%',
+        placeholder: "Start typing to select a location.",
         multiple: true,
         formatResult: formatResult,
         formatSelection: formatResult,
@@ -196,33 +201,33 @@ define([
       // PRE-DEFINED SELECT MENUS BELOW //
       // ------------------------------ //
       $("#skills-required").select2({
-        placeholder: "required/not-required",
-        width: '200px'
+        placeholder: "Required/Not Required",
+        width: 'resolve'
       });
 
       $("#time-required").select2({
-        placeholder: 'time-required',
-        width: '130px'
+        placeholder: 'Time Commitment',
+        width: 'resolve'
       });
 
       $("#people").select2({
-        placeholder: 'people',
-        width: '150px'
+        placeholder: 'Personnel Needed',
+        width: 'resolve'
       });
 
       $("#length").select2({
-        placeholder: 'length',
-        width: '130px'
+        placeholder: 'Deadline',
+        width: 'resolve'
       });
 
       $("#time-estimate").select2({
-        placeholder: 'time-estimate',
-        width: '200px'
+        placeholder: 'Estimated Time Required',
+        width: 'resolve'
       });
 
       $("#task-location").select2({
-        placeholder: 'length',
-        width: '200px'
+        placeholder: 'Work Location',
+        width: 'resolve'
       });
 
     },
@@ -230,7 +235,7 @@ define([
     locationChange: function (e) {
       if (_.isEqual(e.currentTarget.value, "true")) {
         $(".el-specific-location").show();
-      } else if (!_.isEqual(e.currentTarget.value, "false")) {
+      } else {
         $(".el-specific-location").hide();
       }
     },
@@ -239,8 +244,8 @@ define([
       removeView(this);
     }
 
-	});
+  });
 
-	return TaskFormView;
+  return TaskFormView;
 
 });

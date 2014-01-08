@@ -34,9 +34,16 @@ module.exports = {
       defaultsTo: false
     },
 
+    // is the user's login disabled
     disabled: {
       type: 'BOOLEAN',
       defaultsTo: false
+    },
+
+    // Store the number of invalid password attempts
+    passwordAttempts: {
+      type: 'INTEGER',
+      defaultsTo: 0
     }
   }
 

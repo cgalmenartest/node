@@ -4,13 +4,13 @@
     "version": "0.0.9",
     "description": "Crowdsourcing Platform and Collaboration Tool",
     "dependencies": {
-        "sails": "0.9.4",
+        "sails": "0.9.8",
         "async": "0.2.9",
-        "grunt": "0.4.1",
-        "ejs": "0.8.4",
+        "grunt": "0.4.2",
+        "ejs": "0.8.5",
         "underscore": "1.x",
         "optimist": "0.4.0",
-	"validator": "2.0.0",
+        "validator": "2.0.0",
         "passport": "0.1.x",
         "passport-local": "0.1.x",
         "passport-oauth": "0.1.x",
@@ -21,7 +21,8 @@
         "bcrypt": "0.7.7",
         "request": "2.x",
         "gm": "~1.13.1",
-        "sails-postgresql": "~0.9.4"
+        "sails-disk": "~0.9.0",
+        "sails-postgresql": "~0.9.5"
     },
     "devDependencies": {
         "mocha": "*",
