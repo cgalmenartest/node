@@ -53,7 +53,7 @@ module.exports = {
                       content.fields.templateLocals.parentComment = parComment.value;
                       content.fields.templateLocals.callerComment = callComment.value;
                       content.fields.templateLocals.projectTitle = project.title;
-                      content.fields.templateLocals.projectLink = sails.config['HttpProtocol'] + '://' + sails.config['hostName'] + ':' + sails.config['port'] + '/projects/' + project.id;
+                      content.fields.templateLocals.projectLink = sails.config['httpProtocol'] + '://' + sails.config['hostName'] + '/projects/' + project.id;
                     }
                     cb(err, content);
                   });
@@ -113,7 +113,7 @@ module.exports = {
                     content.fields.templateLocals.parentComment = (parComment ? parComment.value : 'New Topic');
                     content.fields.templateLocals.callerComment = callComment.value;
                     content.fields.templateLocals.projectTitle = project.title;
-                    content.fields.templateLocals.projectLink = sails.config['HttpProtocol'] + '://' + sails.config['hostName'] + ':' + sails.config['port'] + '/projects/' + project.id;
+                    content.fields.templateLocals.projectLink = sails.config['httpProtocol'] + '://' + sails.config['hostName'] + '/projects/' + project.id;
                   }
                   cb(err, content);
                 });
@@ -170,7 +170,7 @@ module.exports = {
                       content.fields.templateLocals.parentComment = parComment.value;
                       content.fields.templateLocals.callerComment = callComment.value;
                       content.fields.templateLocals.taskTitle = task.title;
-                      content.fields.templateLocals.taskLink = sails.config['HttpProtocol'] + '://' + sails.config['hostName'] + ':' + sails.config['port'] + '/tasks/' + task.id;
+                      content.fields.templateLocals.taskLink = sails.config['httpProtocol'] + '://' + sails.config['hostName'] + '/tasks/' + task.id;
                     }
                     cb(err, content);
                   });
@@ -230,7 +230,7 @@ module.exports = {
                     content.fields.templateLocals.parentComment = (parComment ? parComment.value : 'New Topic');
                     content.fields.templateLocals.callerComment = callComment.value;
                     content.fields.templateLocals.taskTitle = task.title;
-                    content.fields.templateLocals.taskLink = sails.config['HttpProtocol'] + '://' + sails.config['hostName'] + ':' + sails.config['port'] + '/tasks/' + task.id;
+                    content.fields.templateLocals.taskLink = sails.config['httpProtocol'] + '://' + sails.config['hostName'] + '/tasks/' + task.id;
                   }
                   cb(err, content);
                 });
@@ -276,8 +276,8 @@ module.exports = {
               content.fields.subject = "Your Task \"" + task.title + "\" Has a New Volunteer: " + volunteer.name ;
               content.fields.templateLocals = content.fields.templateLocals || {};
               content.fields.templateLocals.taskTitle = task.title;
-              content.fields.templateLocals.taskLink = sails.config['HttpProtocol'] + '://' + sails.config['hostName'] + ':' + sails.config['port'] + '/tasks/' + task.id;
-              content.fields.templateLocals.profileLink = sails.config['HttpProtocol'] + '://' + sails.config['hostName'] + ':' + sails.config['port'] + '/profile/' + volunteer.id;
+              content.fields.templateLocals.taskLink = sails.config['httpProtocol'] + '://' + sails.config['hostName'] + '/tasks/' + task.id;
+              content.fields.templateLocals.profileLink = sails.config['httpProtocol'] + '://' + sails.config['hostName'] + '/profile/' + volunteer.id;
               content.fields.templateLocals.profileTitle = volunteer.title;
               content.fields.templateLocals.profileName = volunteer.name;
               volunteer.location = volunteer.location || {};

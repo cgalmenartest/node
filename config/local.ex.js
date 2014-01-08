@@ -23,6 +23,8 @@
  */
 
 module.exports = {
+  // 'http' or 'https'
+  httpProtocol: 'http',
   // hostName defines the domain upon which your app will be deployed (e.g. 'localhost', for development)
   hostName: 'localhost',
   // The `port` setting determines which TCP port your app will be deployed on
