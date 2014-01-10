@@ -4,6 +4,7 @@ define([
   'backbone',
   'utilities',
   'nav_view',
+  'footer_view',
   'browse_list_controller',
   'project_model',
   'project_show_controller',
@@ -11,7 +12,7 @@ define([
   'task_model',
   'task_show_controller',
   'task_edit_form_view'
-], function ($, _, Backbone, utils, NavView, BrowseListController, ProjectModel, ProjectShowController, ProfileShowController, TaskModel, TaskShowController, TaskEditFormView) {
+], function ($, _, Backbone, utils, NavView, FooterView, BrowseListController, ProjectModel, ProjectShowController, ProfileShowController, TaskModel, TaskShowController, TaskEditFormView) {
 
   var BrowseRouter = Backbone.Router.extend({
 
@@ -32,6 +33,9 @@ define([
     initialize: function () {
       this.navView = new NavView({
         el: '.navigation'
+      }).render();
+      this.footerView = new FooterView({
+        el: '#footer'
       }).render();
     },
 

@@ -47,6 +47,11 @@ body {
 	font-weight: 300;
 }
 
+#footer {
+	font-size: 11px;
+	padding-bottom: 3px;
+}
+
 .clear {
 	clear: both;
 }
