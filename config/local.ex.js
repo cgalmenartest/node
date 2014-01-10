@@ -8,14 +8,14 @@
  *
  *
  * PLEASE NOTE:
- *		This file is included in your .gitignore, so if you're using git
- *		as a version control solution for your Sails app, keep in mind that
- *		this file won't be committed to your repository!
+ *    This file is included in your .gitignore, so if you're using git
+ *    as a version control solution for your Sails app, keep in mind that
+ *    this file won't be committed to your repository!
  *
- *		Good news is, that means you can specify configuration for your local
- *		machine in this file without inadvertently committing personal information
- *		(like database passwords) to the repo.  Plus, this prevents other members
- *		of your team from commiting their local configuration changes on top of yours.
+ *    Good news is, that means you can specify configuration for your local
+ *    machine in this file without inadvertently committing personal information
+ *    (like database passwords) to the repo.  Plus, this prevents other members
+ *    of your team from commiting their local configuration changes on top of yours.
  *
  *
  * For more information, check out:
@@ -23,8 +23,10 @@
  */
 
 module.exports = {
-
-
+  // 'http' or 'https'
+  httpProtocol: 'http',
+  // hostName defines the domain upon which your app will be deployed (e.g. 'localhost', for development)
+  hostName: 'localhost',
   // The `port` setting determines which TCP port your app will be deployed on
   // Ports are a transport-layer concept designed to allow many different
   // networking applications run at the same time on a single computer.
@@ -65,5 +67,41 @@ module.exports = {
       softDelete  : true
     }
   },
+
+  // Email Templating settings
+  emailTemplateDirectories: {
+    templateDir: 'assets/email/templates',
+    layoutDir: 'assets/email/layouts'
+  },
+
+  // SMTP Mail settings -- uses Nodemailer
+  // See for more config options: https://github.com/andris9/Nodemailer#setting-up-smtp
+  smtp: {
+    // Specify to use a supported service; leave blank for SMTP
+    // See: https://github.com/andris9/Nodemailer#well-known-services-for-smtp
+    service             : '',
+    // remote SMTP host
+    host                : '',
+    // true to use SSL connections
+    secureConnection    : true,
+    // 25 (non-secure) or 465 (secure)
+    port                : 465,
+    // username and password settings for secure connections
+    auth                : {
+      user              : '',
+      pass              : ''
+    },
+    // ignore server support for STARTTLS (defaults to false)
+    ignoreTLS           : false,
+    // output client and server messages to console
+    debug               : false,
+    // how many connections to keep in the pool (defaults to 5)
+    maxConnections      : 5
+    // limit the count of messages to send through a single connection (no limit by default)
+    // maxMessages         :
+  },
+
+  // system email address (from address)
+  systemEmail: 'test@midas.com'
 
 };

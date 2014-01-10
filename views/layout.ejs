@@ -13,6 +13,7 @@
     <!-- <script type="text/javascript" src="/js/vendor/sails/app.js"></script> -->
 
     <script type="text/javascript">
+    version = <%- JSON.stringify(sails.config.version) %>;
     <% if (req.user) { %>
     backendUser = <%- JSON.stringify(req.user[0]) %>;
     <% } else { %>
@@ -58,6 +59,8 @@
 
     <%- body %>
 
+    <footer id="footer">
+    </footer>
   </body>
 
 </html>

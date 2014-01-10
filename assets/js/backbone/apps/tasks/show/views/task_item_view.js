@@ -48,8 +48,24 @@ define([
         var compiledTemplate = _.template(TaskShowTemplate, self.data);
         self.$el.html(compiledTemplate);
         $("time.timeago").timeago();
+        self.updateTaskEmail();
         self.model.trigger('task:show:render:done');
       });
+    },
+
+    updateTaskEmail: function() {
+      var self = this;
+      $.ajax({
+        url: '/api/email/makeURL?email=contactUserAboutTask&subject=Check Out "'+ self.model.attributes.title + '"' +
+        '&opportunityTitle=' + self.model.attributes.title +
+        '&opportunityLink=' + window.location.protocol + "//" + window.location.host + "" + window.location.pathname +
+        '&opportunityDescription=' + (self.model.attributes.description || '') +
+        '&opportunityMadlibs=' + $('<div />', { html: self.$('#task-show-madlib-description').html() }).text().replace(/\s+/g, " "),
+        type: 'GET'
+      }).done( function (data) {
+        self.$('#email').attr('href', data);
+      });
+
     },
 
     initializeTags: function (self) {

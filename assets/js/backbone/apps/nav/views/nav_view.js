@@ -1,13 +1,12 @@
 define([
   'jquery',
-  'dropzone',
   'underscore',
   'backbone',
   'utilities',
   'login_config',
   'login_controller',
   'text!nav_template'
-], function ($, dropzone, _, Backbone, utils, Login, LoginController, NavTemplate) {
+], function ($, _, Backbone, utils, Login, LoginController, NavTemplate) {
 
   var NavView = Backbone.View.extend({
 

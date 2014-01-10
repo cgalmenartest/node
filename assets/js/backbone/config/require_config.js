@@ -52,6 +52,12 @@ require.config({
     'nav_template'              : '../apps/nav/templates/nav_template.html',
 
     // ----------
+    //= Footer
+    // ----------
+    'footer_view'               : '../apps/footer/views/footer_view',
+    'footer_template'           : '../apps/footer/templates/footer_template.html',
+
+    // ----------
     //= Login
     // ----------
     'login_config'              : '../config/login',

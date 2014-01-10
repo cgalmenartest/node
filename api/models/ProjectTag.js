@@ -8,11 +8,11 @@
 
 module.exports = {
 
-    attributes: {
-        // project that has a tag assigned to it
-        projectId: 'INTEGER',
-        // id of the tag
-        tagId: 'INTEGER'
-    }
+  attributes: {
+    // project that has a tag assigned to it
+    projectId: 'INTEGER',
+    // id of the tag
+    tagId: 'INTEGER'
+  }
 
 };

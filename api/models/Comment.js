@@ -20,6 +20,7 @@
  * Replies are children of comments.  Replies should have the topicId
  * set to the main topic.  The parentId should be the id of the parent comment.
  */
+var noteUtils = require('../services/notifications/manager');
 
 module.exports = {
 
@@ -41,6 +42,62 @@ module.exports = {
     userId: 'INTEGER',
     // content of the comment
     value: 'STRING'
+  },
+  // for the sake of alerting owners and parent commenters
+  afterCreate: function (values, cb){
+    var params = {};
+    // comment applies to a project
+    if(values.projectId){
+      params = {
+        trigger: {
+          callerType: 'Comment',
+          callerId: values.id,
+          action: 'projectCommentAdded'
+        },
+        data: {
+          audience: {
+            'projectOwners': {
+              fields: {
+                projectId: values.projectId
+              }
+            },
+            'projectThreadCommenters': {
+              fields: {
+                commentId: values.id
+              }
+            }
+          }
+        }
+      };
+    }
+    // comment applies to a task
+    else if(values.taskId){
+      params = {
+        trigger: {
+          callerType: 'Comment',
+          callerId: values.id,
+          action: 'taskCommentAdded'
+        },
+        data: {
+          audience: {
+            'taskOwners': {
+              fields: {
+                taskId: values.taskId
+              }
+            },
+            'taskThreadCommenters': {
+              fields: {
+                commentId: values.id
+              }
+            }
+          }
+        }
+      };
+    }
+    else {
+      throw new Error('projectId or taskId must be defined');
+    }
+    noteUtils.notifier.notify(params, true, cb);
   }
 
 };
