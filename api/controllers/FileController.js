@@ -31,22 +31,16 @@ module.exports = {
       File.findOneById(req.params.id, function(err, f) {
         if (err) { return res.send(400, {message:'Error while finding file.'}) }
         if (!f || !f.data) { return res.send(400, {message:'Error while finding file.'}) }
-        // Don't let browsers cache the response
         res.set('Content-Type', f.mimeType);
+        res.set('Content-disposition', 'attachment; filename=' + f.name);
+        // Don't let browsers cache the response
         res.set('Cache-Control', 'no-cache, no-store, must-revalidate'); // HTTP 1.1.
         res.set('Pragma', 'no-cache'); // HTTP 1.0.
         res.set('Expires', '0'); // Proxies.
         return res.send(f.data);
       });
-    }
-    if (_.isString(req.id)) {
-      // a File name has been provided
-      File.find({where: { name: req.id }}, function(err, f) {
-        if (err || !f || f.length == 0 || !f[0].data) { }
-        if (f.length > 1) { return res.send(400, {message:'Abiguous file; please use file id.'}) }
-        res.set('Content-Type', f.mimeType);
-        return res.send(f.data);
-      });
+    } else {
+      return res.send(400, {message: 'Abiguous file; please use file id.'});
     }
   },
   
@@ -60,10 +54,11 @@ module.exports = {
     fs.readFile(req.files.file.path, function (err, fdata) {
       if (err || !fdata) { return res.send(400, {message:'Error storing file.'}) }
       // Create a file object to put in the database.
+      sails.log.debug('File', req.files.file);
       var f = {
         userId: req.user[0].id,
         name: req.files.file.name,
-        mimeType: req.files.file.type,
+        mimeType: req.files.file.type || req.files.file.headers['content-type'],
         size: fdata.length,
         data: fdata
       }
