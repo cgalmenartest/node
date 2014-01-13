@@ -10,33 +10,35 @@
       <%- item.title %>
     </a>
   </div>
-
-  <div class="project-list-description border-bottom">
+  <div class="project-list-description">
     <%- item.description %>
   </div>
-  <div class="project-list-counts">
-    <div class="project-list-counts-col">
-      <div class="project-list-count c2">
-        <%- item.taskCount %>
+
+  <div class="project-list-bottom-wrapper border-top">
+    <div class="project-list-counts">
+      <div class="project-list-counts-col">
+        <div class="project-list-count c2">
+          <%- item.taskCount %>
+        </div>
+        <div class="project-list-count-text c2">
+          opp<% if (item.taskCount != 1) { %>s<% } %>
+        </div>
       </div>
-      <div class="project-list-count-text c2">
-        opp<% if (item.taskCount != 1) { %>s<% } %>
+      <div class="project-list-counts-col">
+        <div class="project-list-count c2">
+          <%- item.commentCount %>
+        </div>
+        <div class="project-list-count-text c2">
+          comment<% if (item.commentCount != 1) { %>s<% } %>
+        </div>
       </div>
-    </div>
-    <div class="project-list-counts-col">
-      <div class="project-list-count c2">
-        <%- item.commentCount %>
-      </div>
-      <div class="project-list-count-text c2">
-        comment<% if (item.commentCount != 1) { %>s<% } %>
-      </div>
-    </div>
-    <div class="project-list-counts-col">
-      <div class="project-list-count c2">
-        <%- item.ownerCount %>
-      </div>
-      <div class="project-list-count-text c2  ">
-        <% if (item.ownerCount != 1) { %>people<% } else { %>person<% } %>
+      <div class="project-list-counts-col">
+        <div class="project-list-count c2">
+          <%- item.ownerCount %>
+        </div>
+        <div class="project-list-count-text c2  ">
+          <% if (item.ownerCount != 1) { %>people<% } else { %>person<% } %>
+        </div>
       </div>
     </div>
   </div>
