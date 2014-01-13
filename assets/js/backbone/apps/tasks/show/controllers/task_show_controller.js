@@ -249,7 +249,27 @@ define([
 
     stateClose: function (e) {
       if (e.preventDefault) e.preventDefault();
-      this.model.trigger("task:update:state", 'closed');
+      var self = this;
+
+      if (this.modalAlert) { this.modalAlert.cleanup(); }
+      if (this.modalComponent) { this.modalComponent.cleanup(); }
+      this.modalComponent = new ModalComponent({
+        el: "#modal-close",
+        id: "check-close",
+        modalTitle: "Close Opportunity"
+      }).render();
+
+      this.modalAlert = new ModalAlert({
+        el: "#check-close .modal-template",
+        modalDiv: '#check-close',
+        content: '<p>Are you sure you want to close this opportunity?  Once the opportunity is closed, volunteers will no longer be able to contribute.</p>',
+        cancel: 'Cancel',
+        submit: 'Close Opportunity',
+        callback: function (e) {
+          // user clicked the submit button
+          self.model.trigger("task:update:state", 'closed');
+        }
+      }).render();
     },
 
     stateReopen: function (e) {
