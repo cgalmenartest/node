@@ -47,21 +47,13 @@
           </div>
           <div class="navbar-side border-bottom">
             <ul class="nav nav-pills nav-stacked">
-              <% if (user) { %>
-              <li class="active volunteer-true" style="display: none;">
-                <a href="#" id="volunteered"><i class="icon icon-thumbs-up"></i> <span class="box-icon-text">Volunteered!</span></a>
-              </li>
-              <li class="volunteer-false">
-                <a href="#" id="volunteer"><i class="icon icon-thumbs-up-alt"></i> <span class="box-icon-text">Volunteer</span></a>
-              </li>
-              <% } %>
               <li>
                 <a href="#" id="email"><i class="icon icon-envelope-alt"></i> <span class="box-icon-text">Email</span></a>
               </li>
             </ul>
           </div>
           <% if (model.isOwner) { %>
-          <div class="navbar-side">
+          <div class="navbar-side <% if (user) { %>border-bottom<% } %>">
             <ul class="nav nav-pills nav-stacked">
               <li class="li-task-edit">
                 <a href="#" id="task-edit"><i class="icon-pencil"></i> <span class="box-icon-text">Edit Opportunity</span></a>
@@ -80,6 +72,18 @@
                 <a href="#" id="task-delete"><i class="icon-trash"></i> <span class="box-icon-text">Delete Opportunity</span></a>
               </li>
               -->
+            </ul>
+          </div>
+          <% } %>
+          <% if (user) { %>
+          <div class="navbar-side border-bottom">
+            <ul class="nav nav-pills nav-stacked">
+              <li class="active volunteer-true" style="display: none;">
+                <a href="#" id="volunteered" class="btn btn-c2"><i class="icon icon-thumbs-up"></i> <span class="box-icon-text">Volunteered!</span></a>
+              </li>
+              <li class="volunteer-false">
+                <a href="#" id="volunteer" class="btn btn-c1"><i class="icon icon-thumbs-up-alt"></i> <span class="box-icon-text">Volunteer</span></a>
+              </li>
             </ul>
           </div>
           <% } %>
@@ -192,7 +196,7 @@
       <div class="col-md-12 sm-nopadding md-nopadding">
         <div class="box task-view">
           <div class="box-pad-lr border-bottom">
-            <h2>Owner and Volunteers
+            <h2>Requestor and Volunteers
             </h2>
           </div>
           <div class="box-main" id="task-volunteers">
