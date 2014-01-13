@@ -77,12 +77,13 @@
           <% } %>
           <% if (user) { %>
           <div class="navbar-side border-bottom">
+            <div id="modal-volunteer"></div>
             <ul class="nav nav-pills nav-stacked">
-              <li class="active volunteer-true" style="display: none;">
-                <a href="#" id="volunteered" class="btn btn-c2"><i class="icon icon-thumbs-up"></i> <span class="box-icon-text">Volunteered!</span></a>
+              <li class="volunteer-true" style="display: none;">
+                <a href="#" id="volunteered" class="btn btn-c1"><i class="icon icon-thumbs-up"></i> <span class="box-icon-text">Volunteered!</span></a>
               </li>
               <li class="volunteer-false">
-                <a href="#" id="volunteer" class="btn btn-c1"><i class="icon icon-thumbs-up-alt"></i> <span class="box-icon-text">Volunteer</span></a>
+                <a href="#" id="volunteer" class="btn btn-c2"><i class="icon icon-thumbs-up-alt"></i> <span class="box-icon-text">Volunteer</span></a>
               </li>
             </ul>
           </div>

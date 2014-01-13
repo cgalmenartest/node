@@ -169,6 +169,8 @@ require.config({
     // ----------
     'modal_component'           : '../components/modal',
     'modal_template'            : '../components/modal_template.html',
+    'modal_alert'               : '../components/modal_alert',
+    'modal_alert_template'      : '../components/modal_alert_template.html',
     'modal_wizard_component'    : '../components/modal_wizard',
     'modal_wizard_template'     : '../components/modal_wizard_template.html',
     'alert_template'            : '../components/alert_template.html',
