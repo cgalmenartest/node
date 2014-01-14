@@ -83,7 +83,7 @@ define([
     logout: function (e) {
       if (e.preventDefault) e.preventDefault();
       $.ajax({
-        url: '/auth/logout?json=true',
+        url: '/api/auth/logout?json=true',
       }).done(function (success) {
         window.cache.currentUser = null;
         window.cache.userEvents.trigger("user:logout");
