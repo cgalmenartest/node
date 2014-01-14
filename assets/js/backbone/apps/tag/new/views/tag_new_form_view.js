@@ -10,7 +10,8 @@ define([
   var TagFormView = Backbone.View.extend({
 
     events: {
-      "submit #tag-form" : "post"
+      "blur #tag-form-name" : "v",
+      "submit #tag-form"    : "post"
     },
 
     initialize: function (options) {
@@ -28,8 +29,25 @@ define([
       return this;
     },
 
+    v: function (e) {
+      return validate(e);
+    },
+
     post: function (e) {
       if (e.preventDefault) e.preventDefault();
+
+      // perform field validation
+      var validateIds = ['#tag-form-name'];
+      var abort = false;
+      for (var i in validateIds) {
+        var iAbort = validate({ currentTarget: validateIds[i] });
+        abort = abort || iAbort;
+      }
+      if (abort) {
+        return;
+      }
+
+      // assemble form and submit
       var data;
       var self = this;
 

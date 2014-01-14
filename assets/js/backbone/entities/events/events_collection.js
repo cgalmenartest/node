@@ -17,15 +17,15 @@ define([
     url: '/api/event',
 
     initialize: function () {
-      this.initializeSaveListeners();
+      this.addAndSave();
     },
 
-    initializeSaveListeners: function () {
+    addAndSave: function () {
       var self = this;
 
       this.listenTo(this, "event:save", function (data) {
 
-        self.task = new EventModel({
+        self.ev = new EventModel({
           title       : data['title'], 
           description : data['description'], 
           start       : data['start'],
@@ -34,12 +34,13 @@ define([
           projectId   : data['projectId'] 
         });
 
-        self.add(self.task);
-        self.models.forEach(function (_model) {
-          _model.save();
-        });
+        self.add(self.event);
 
-        self.trigger("event:save:success")
+        self.ev.save({}, {
+          success: function (modelInstance, response) {
+            self.trigger("event:save:success", modelInstance, response);
+          }
+        });
       });
     }
 

@@ -30,6 +30,16 @@ module.exports = {
     });
   },
 
+  user_info: function (request, cb) {
+    var r = request.get({
+      url: conf.url + '/user/'
+    }, function(err, response, body) {
+      if (err) { return cb(err, null); }
+      var b = JSON.parse(body);
+      cb(null, b);
+    });
+  },
+
   user_put: function (request, user, cb) {
     var r = request.put({
       url: conf.url + '/user/' + user.id,
@@ -41,7 +51,17 @@ module.exports = {
     });
   },
 
-  file_create: function(request, filename, cb) {
+  user_disable: function (request, user, cb) {
+    var r = request.get({
+      url: conf.url + '/user/disable/' + user.id,
+    }, function(err, response, body) {
+      if (err) { return cb(err, null); }
+      var b = JSON.parse(body);
+      cb(null, b);
+    });
+  },
+
+  file_create: function(request, filename, square, cb) {
     var r = request.post({
       url: conf.url + '/file'
     }, function (err, response, body) {
@@ -50,6 +70,9 @@ module.exports = {
       return cb(null, b);
     });
     var form = r.form();
+    if (square === true) {
+      form.append('type', 'image_square');
+    }
     form.append('file', fs.createReadStream(path.join(__dirname, filename)));
   },
 

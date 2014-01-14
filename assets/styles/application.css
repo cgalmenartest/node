@@ -1,11 +1,55 @@
 /*****************
 =  GLOBAL
 ******************/
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Lato Light'), local('Lato-Light'), url(../fonts/lato-300.woff) format('woff');
+}
+/*
+LATO 400 not used for anything right now
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Lato Regular'), local('Lato-Regular'), url(../fonts/lato-400.woff) format('woff');
+}
+*/
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Lato Bold'), local('Lato-Bold'), url(../fonts/lato-700.woff) format('woff');
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Roboto Light'), local('Roboto-Light'), url(../fonts/roboto-300.woff) format('woff');
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Roboto Regular'), local('Roboto-Regular'), url(../fonts/roboto-400.woff) format('woff');
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Roboto Bold'), local('Roboto-Bold'), url(../fonts/roboto-700.woff) format('woff');
+}
+
 body {
 	background-color: #e5e5e5;
-	/*font-family: 'Lato', Helvetica, Arial, sans-serif;*/
 	font-family: 'Roboto', Helvetica, Arial, sans-serif;
 	font-weight: 300;
+}
+
+#footer {
+	font-size: 11px;
+	padding-bottom: 3px;
 }
 
 .clear {
@@ -14,6 +58,18 @@ body {
 
 input {
 	padding: 0 0 0 5px;
+}
+
+/* Override bootstrap's .row margins for mobile & tablet */
+@media (max-width: 978px) {
+	.row {
+		margin-left: 0;
+		margin-right: 0;
+	}
+}
+
+.navbar-toggle {
+	margin-top: 18px;
 }
 
 .search-result-row:hover {
@@ -86,6 +142,14 @@ input {
 
 .padding-left-none {
 	padding-left: 0;
+}
+
+.padding-right-none {
+	padding-right: 0;
+}
+
+.fullwidth {
+	width: 100%;
 }
 
 .align-right {
@@ -161,6 +225,36 @@ ul.nav-search > li {
 	margin-bottom: 3px;
 	position: relative;
 	display: block;
+}
+
+/*****************
+=  LOGIN
+******************/
+.login-oauth {
+	width: 100%;
+	text-align: center;
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.login-option {
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.login-form {
+	margin: 10px;
+	text-align: center;
+}
+
+.btn-login {
+	width: 100%;
+	text-align: center;
+}
+
+.btn-login-responsive {
+	height: auto;
+	max-width: 100%;
 }
 
 /*****************
@@ -254,12 +348,31 @@ div.project-title {
 }
 
 .project-background-image-default {
-	background: url('http://placehold.it/180x180');
+	background: url('/images/project_default_browse.png');
 }
 
 .nopadding {
 	padding-left: 0;
 	padding-right: 0;
+}
+
+@media (max-width: 768px) {
+	.sm-nopadding {
+		padding-left: 0;
+		padding-right: 0;
+	}
+}
+@media (max-width: 992px) {
+	.md-nopadding {
+		padding-left: 0;
+		padding-right: 0;
+	}
+	.md-nopadding-left {
+		padding-left: 0;
+	}
+	.md-nopadding-right {
+		padding-right: 0;
+	}
 }
 
 #project-form input {
@@ -274,15 +387,62 @@ div.project-title {
 	margin: 5px 0 0 8px;
 }
 
+#browse-search-spinner {
+	font-size: 28px;
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
+
+#browse-list {
+	padding: 0;
+	margin-left: -15px;
+}
+
 #browse-list li {
 	list-style: none;
+}
+
+.browse-buttons {
+	/*padding: 0 10px 0 0;*/
+	padding: 0;
+	text-align: right;
+}
+
+/* Correctly show search input and button */
+@media (max-width: 768px) {
+	.browse-buttons {
+		text-align: center;
+	}
+}
+
+/* Correctly show search input and button */
+@media (min-width: 768px) {
+	.input-search {
+		padding-left: 0;
+		padding-right: 0;
+	}
+	.btn-search {
+		padding-left: 0;
+		padding-right: 0;
+	}
+}
+
+@media (max-width: 768px) {
+	.btn-search {
+		margin-top: 10px;
+		text-align: right;
+	}
 }
 
 .search-row {
 	margin-bottom: 25px;
 }
 
+.add-project {
+	margin-bottom: 10px;
+}
 .add-opportunity {
+	margin-bottom: 10px;
 	margin-left: 10px;
 }
 
@@ -302,6 +462,19 @@ a.search-tag-remove:hover {
 	width: 100%;
 	padding: 17px;
 	position: relative;
+}
+
+@media (min-width: 992px) {
+	#project-coremeta-wrapper {
+		min-height: 323px;
+	}
+}
+@media (min-width: 1170px) {
+	#project-coremeta-wrapper {
+		min-height: 390px;
+/*		max-height: 390px;
+		overflow: hidden;
+*/	}
 }
 
 #project-header {
@@ -557,6 +730,23 @@ a.like-button:hover {
 	text-align: center;
 }
 
+.event-timezone {
+	font-size: 12px;
+}
+
+.event-timezone > .timezone {
+	font-weight: bold;
+}
+
+#event-start,
+#event-end,
+#div-event-start-time > input.fullwidth,
+#div-event-end-time > input.fullwidth {
+	padding-left: 2px;
+	padding-right: 2px;
+	text-align: center;
+}
+
 /*****************
 =  FILES
 ******************/
@@ -610,6 +800,10 @@ ul.comment-list > li {
 .comment-form {
 	margin-left: 40px;
 	margin-bottom: 10px;
+}
+
+.comment-form-topic {
+	margin-bottom: 20px;
 }
 
 li.border-left {
@@ -680,6 +874,11 @@ li.border-left {
 
 .comment-expand {
 	display: none;
+}
+
+#comment-empty {
+	padding-top: 10px;
+	padding-bottom: 10px;
 }
 
 /*****************
@@ -755,67 +954,52 @@ ul.task-tags > li {
 	font-size: 10px;
 }
 
-.task-view {
-	margin-top: 10px;
-}
-
-#addTask .modal-dialog {
-	width: 890px;
-}
-
-input#task-title {
-	margin-bottom: 10px;
-	border: 1px #ccc solid;
-	padding: 5px;
-}
-
-textarea#task-description {
-	border: 1px #ccc solid;
-	padding: 5px;
-}
-
 .task-show-description {
 	font-size: 18px;
-	margin-bottom: 20px;
+	margin-bottom: 10px;
 	line-height: 1.5em;
 }
 
-
-.task-show-description strong input {
-	margin-bottom: 5px;
+.task-edit-description {
+	line-height: 2.0em;
 }
 
-.task-location {
-	width: 200px;
+.task-edit-description > .dropdown {
+	margin-top: -7px;
 }
 
-.task-skills {
-	margin-top: 5px;
-	width: 100%;
+#task-edit-form .select2-container-multi {
+	line-height: 1.2em;
 }
 
-.task-topics {
-	width: 100%;
-	clear: both;
-	margin: 0 0 15px 0;
+.task-show-creation {
+	font-size: 13px;
+	color: #9a9a9a;
 }
 
-#task-description {
-	width: 100%;
-	height: 65px;
-}
-
-.task-people {
-	margin: 0 0 5px 0;
-}
-
-.task-length {
-	margin: 5px 0 0 0;
+.task-show-creation > time {
+	font-weight: bold;
 }
 
 /*****************
 =  TASKS MADLIBS FORM
 ******************/
+#task-form {
+	line-height: 2.1em;
+}
+
+#task-form .select2-container-multi {
+	line-height: 1.2em;
+}
+
+#task-form label {
+	font-weight: 300;
+}
+
+#task-form .dropdown {
+	margin-top: -7px;
+}
+
 #task-form input.fullwidth {
 	width: 100%;
 }
@@ -824,12 +1008,39 @@ textarea#task-description {
 	width: 100%;
 }
 
-#task-form #topics {
-	width: 200px;
+@media (max-width: 978px) {
+	#task-form .col-md-12 {
+		padding-left: 0;
+		padding-right: 0;
+	}
 }
 
 #task-form #section-1, #task-form #section-2, #task-form #section-3, #task-form #section-4 {
-	min-height: 150px;
+	min-height: 210px;
+}
+
+#task-form #people {
+	width: 110px;
+}
+
+#task-form #skills-required {
+	width: 120px;
+}
+
+#task-form #time-estimate {
+	width: 168px;
+}
+
+#task-form #time-required {
+	width: 98px;
+}
+
+#task-form #length {
+	width: 125px;
+}
+
+#task-form #task-location {
+	width: 168px;
 }
 
 /*****************

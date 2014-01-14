@@ -56,13 +56,13 @@ define([
     },
 
     render: function () {
-      var compiledTemplate,
-      data = { data: this.model.toJSON() };
+      var compiledTemplate;
+      var data = { data: this.model.toJSON() };
+      data.data.edit = this.edit;
       compiledTemplate = _.template(ProjectownerShowTemplate, data);
       this.$el.html(compiledTemplate);
 
       this.model.trigger("projectowner:show:rendered", data);
-
       return this;
     },
 

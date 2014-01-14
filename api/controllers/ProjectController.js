@@ -5,6 +5,7 @@
  * @description :: Contains logic for handling requests.
  */
 var async = require('async');
+var _ = require('underscore');
 
 var util = require('../services/utils/project');
 

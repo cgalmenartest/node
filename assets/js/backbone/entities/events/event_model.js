@@ -9,5 +9,5 @@ define([
 
   });
 
-    return EventModel;
+  return EventModel;
 });

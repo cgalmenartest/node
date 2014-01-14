@@ -69,6 +69,7 @@ need to `npm link` in order for everything to function properly.
 
      git clone https://github.com/Innovation-Toolkit/sails-postgresql.git
      cd sails-postgresql
+     git checkout bytea
      npm install
      sudo npm link
 
@@ -103,15 +104,22 @@ Then run the normal npm package installer
      cd config/settings
      cp auth.ex.js auth.js
      cp sources.ex.js sources.js
+     cp tags.ex.js tags.js
      vi auth.js
      vi sources.js
+     vi tags.js
 
 ### Edit the front-end configuration files
 
 Tag configuration:
 
-     cd assets/js/backbone/components
+     cd assets/js/backbone/config
      vi tag.js
+     vi login.js
+
+`tag.js` specifies the tags that the frontend understands and stores in the backend.
+
+`login.js` specifies the login options available on the frontend, and must have a corresponding backend component or configuration enabled (see `config/settings/auth.ex.js`).
 
 ### Compile production JS and CSS (from the midas git folder)
 
@@ -145,7 +153,7 @@ You can now access the server at `http://localhost:1337`
 
 ### Optional: install nginx
 
-     add-apt-repository -y ppa:nginx/stable
+     sudo add-apt-repository -y ppa:nginx/stable
      sudo apt-get update
      sudo apt-get install nginx
 

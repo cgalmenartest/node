@@ -2,15 +2,15 @@
 <div class="alert alert-danger" id="alert-closed" style="<% if (data.state != 'closed') { %>display: none;<% } %>">This project is <strong>closed</strong>.  It is no longer active, and no more modifications may be made.</div>
 
 <div class="row">
-  <div class="col-lg-4 project-sidebar">
+  <div class="col-sm-4 col-md-4 col-lg-4 project-sidebar md-nopadding-right sm-nopadding">
     <!-- LEFT SIDEBAR -->
 
     <div class="row">
-      <div class="col-lg-12 box project-header-wrapper">
+      <div class="col-md-12 box project-header-wrapper">
         <% if (data.coverId) { %>
         <div id="project-header" style="background-image:url('/api/file/get/<%= data.coverId %>');">
         <% } else { %>
-        <div id="project-header">
+        <div id="project-header" style="background-image:url('/images/project_default.png');">
         <% } %>
           <div id="fileupload" class="btn btn-c2" <% if (!data.isOwner || !edit) { %>style="display:none;"<% } %>>
             <i class="icon-camera icon-large" title="Change Cover Photo" id="fileupload-icon"></i>
@@ -22,35 +22,19 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-lg-12 box">
-        <div class="box-main tag-wrapper">
-        </div>
-      </div>
-    </div>
-
-    <% if (!data.isOwner || !edit) { %>
-    <div class="row">
-      <div class="col-lg-12 box">
-        <div class="attachment-wrapper">
-        </div>
-      </div>
-    </div>
-    <% } %>
-
   </div>
 
-  <div class="col-lg-8">
+  <div class="col-sm-8 col-md-8 col-lg-8 md-nopadding sm-nopadding">
 
     <!-- RIGHT MAIN BAR -->
     <div class="row">
-      <div class="col-lg-9">
+      <div class="col-sm-8 col-md-9 sm-nopadding">
         <div class="main-section">
           <div class="box box-main" id="project-coremeta-wrapper">
           </div>
         </div>
       </div>
-      <div class="col-lg-3 padding-left-none">
+      <div class="col-sm-4 col-md-3 padding-left-none sm-nopadding">
         <div class="box padding-none">
 
           <div class="navbar-side like-row border-bottom">
@@ -74,7 +58,7 @@
                 <a href="#" id="email"><i class="icon icon-envelope-alt"></i> <span class="box-icon-text">Email</span></a>
               </li>
               <li>
-                <a href="/api/event/ical/<%- data.id %>"><span class="glyphicon glyphicon-calendar"></span> <span class="box-icon-text">Calendar</span></a>
+                <a href="webcal://<%- hostname %>/api/event/ical/<%- data.id %>"><span class="glyphicon glyphicon-calendar"></span> <span class="box-icon-text">Calendar</span></a>
               </li>
             </ul>
           </div>
@@ -102,8 +86,33 @@
       </div>
     </div>
 
+  </div>
+</div>
+<div class="row">
+
+  <div class="col-sm-5 col-md-4 md-nopadding-right sm-nopadding">
+
     <div class="row">
-      <div class="col-lg-12">
+      <div class="col-md-12 box">
+        <div class="box-main tag-wrapper">
+        </div>
+      </div>
+    </div>
+
+    <% if (!data.isOwner || !edit) { %>
+    <div class="row">
+      <div class="col-md-12 box">
+        <div class="attachment-wrapper">
+        </div>
+      </div>
+    </div>
+    <% } %>
+
+  </div>
+  <div class="col-sm-7 col-md-8 md-nopadding-right sm-nopadding">
+
+    <div class="row">
+      <div class="col-md-12 sm-nopadding md-nopadding">
         <div class="box" id="projectowner-wrapper">
         </div>
       </div>
@@ -111,7 +120,7 @@
 
     <% if (!data.isOwner || !edit) { %>
     <div class="row">
-      <div class="col-lg-12">
+      <div class="col-md-12 sm-nopadding md-nopadding">
         <!-- BEGIN EVENTS -->
         <div class="box" id="event-list-wrapper">
         </div>
@@ -120,7 +129,7 @@
     </div>
 
     <div class="row">
-      <div class="col-lg-12">
+      <div class="col-md-12 sm-nopadding md-nopadding">
         <!-- BEGIN TASKS -->
         <div class="modal fade" id="addTask"></div>
         <div class="box" id="task-list-wrapper" data-project-id="<%= data.id %>">
@@ -130,21 +139,9 @@
     </div>
 
     <div class="row">
-      <div class="col-lg-12">
+      <div class="col-md-12 sm-nopadding md-nopadding">
 
         <div class="box comment-list-wrapper" style="clear: both;">
-          <div class="box-pad-lr border-bottom">
-            <h2>Discussion
-            <% if (user) { %>
-            <button class="btn btn-c0 btn-sm file-add new-topic" id="project-topic-new">New Topic</button>
-            <% } %>
-            </h2>
-          </div>
-          <div class="">
-            <div class="box-pad-lr box-pad-t topic-form-wrapper"></div>
-            <ul id="comment-list-null">
-            </ul>
-          </div>
         </div>
       </div>
     </div>

@@ -80,11 +80,7 @@ var cleanStringFromUndefined = function (model, field, splitType) {
  * nothing
  */
 var removeView = function (view) {
-  // view.$el.removeData().unbind();
-  // view.remove();
-  // Backbone.View.prototype.remove.call(view);
   view.undelegateEvents();
-  //view.model.undelegateEvents();
   view.$el.html("");
 }
 
@@ -157,3 +153,49 @@ var organizeTags = function (tags) {
   }
   return outTags;
 }
+
+/**
+ * Validate an input field.  Assumes that there is a data
+ * variable in the HTML tag called `data-validate` with the
+ * validation options that you want to enforce.
+ *
+ * The input should be in a `form-group` component,
+ * and the component should have a .help-text element
+ * with a class `.error-[code]` where [code] is the
+ * validation rule (eg, `empty`);
+ *
+ * Expects an object with currentTarget, eg { currentTarget: '#foo' }
+ */
+var validate = function (e) {
+  var opts = $(e.currentTarget).data('validate').split(',');
+  var val = $(e.currentTarget).val();
+  var parent = $(e.currentTarget).parents('.form-group')[0];
+  var result = false;
+  _.each(opts, function (o) {
+    if (o == 'empty') {
+      if (!val) {
+        $(parent).find('.error-empty').show();
+        result = true;
+      } else {
+        $(parent).find('.error-empty').hide();
+      }
+      return;
+    }
+    if (o.substring(0,5) == 'count') {
+      var len = parseInt(o.substring(5));
+      if (val.length > len) {
+        $(parent).find('.error-' + o).show();
+        result = true;
+      } else {
+        $(parent).find('.error-' + o).hide();
+      }
+      return;
+    }
+  });
+  if (result === true) {
+    $(parent).addClass('has-error');
+  } else {
+    $(parent).removeClass('has-error');
+  }
+  return result;
+};

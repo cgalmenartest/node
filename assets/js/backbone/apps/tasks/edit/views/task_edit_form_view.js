@@ -10,6 +10,7 @@ define([
   var TaskEditFormView = Backbone.View.extend({
 
     events: {
+      'blur .validate'        : 'v',
       'click #task-view'      : 'view',
       'submit #task-edit-form': 'submit'
     },
@@ -26,6 +27,10 @@ define([
     view: function () {
       if (e.preventDefault) e.preventDefault();
       Backbone.history.navigate('tasks/' + this.model.attributes.id, { trigger: true });
+    },
+
+    v: function (e) {
+      return validate(e);
     },
 
     render: function () {
@@ -52,7 +57,7 @@ define([
       };
 
       this.$("#topics").select2({
-        placeholder: "topics",
+        placeholder: "Start typing to select a topic.",
         multiple: true,
         formatResult: formatResult,
         formatSelection: formatResult,
@@ -75,7 +80,7 @@ define([
       }
 
       this.$("#skills").select2({
-        placeholder: "skills",
+        placeholder: "Start typing to select a skill.",
         multiple: true,
         formatResult: formatResult,
         formatSelection: formatResult,
@@ -99,7 +104,7 @@ define([
 
       // Topics select 2
       this.$("#location").select2({
-        placeholder: "locations",
+        placeholder: "Start typing to select a location.",
         multiple: true,
         formatResult: formatResult,
         formatSelection: formatResult,
@@ -157,6 +162,17 @@ define([
       if (e.preventDefault) e.preventDefault();
       var self = this;
 
+      // check all of the field validation before submitting
+      var children = this.$el.find('.validate');
+      var abort = false;
+      _.each(children, function (child) {
+        var iAbort = validate({ currentTarget: child });
+        abort = abort || iAbort;
+      });
+      if (abort === true) {
+        return;
+      }
+
       var types = ["task-skills-required", "task-time-required", "task-people", "task-length", "task-time-estimate", "skill", "topic", "location"];
 
       // Gather tags for submission after the task is created
@@ -182,6 +198,7 @@ define([
         // if it does, remove it from the array
         // if it doesn't, add to the new list
         var findTag = function (tag, oldTags) {
+          if(!tag) return;
           var none = null;
           for (var j in oldTags) {
             // if the tag is in both lists, do nothing

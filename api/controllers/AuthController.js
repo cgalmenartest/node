@@ -5,17 +5,23 @@
  * @description :: Contains logic for handling authentication requests.
  */
 var passport = require('passport');
+var userUtils = require('../services/utils/user');
 
 /* Authenticate a user based on the credentials returned,
  * whether those are provided by 'local' user/password
  * logins or by OAuth authentication + REST profile from
  * remote server.
  */
-function authenticate(req, res, strategy) {
+function authenticate(req, res, strategy, json) {
   if (req.user) {
     passport.authorize(strategy, function(err, user, info)
     {
-      res.redirect('/profile/edit');
+      if (json) {
+        res.send(userUtils.cleanUser(req.user));
+      } else {
+        res.redirect('/profile/edit');
+      }
+      return;
     })(req, res);
   } else {
     passport.authenticate(strategy, function(err, user, info)
@@ -23,7 +29,14 @@ function authenticate(req, res, strategy) {
       if ((err) || (!user))
       {
         sails.log.debug('Authentication Error:', err, info);
-        res.redirect('/auth');
+        if (json === true) {
+          res.send(403, {
+            error: err,
+            message: info.message
+          });
+        } else {
+          res.redirect('/auth');
+        }
         return;
       }
 
@@ -32,11 +45,23 @@ function authenticate(req, res, strategy) {
         if (err)
         {
           sails.log.debug('Authentication Error:', err, info);
-          res.redirect('/auth');
+          if (json === true) {
+            res.send(403, {
+              error: err,
+              message: info.message
+            });
+          } else {
+            res.redirect('/auth');
+          }
           return;
         }
 
-        res.redirect('/projects');
+        if (json === true) {
+          res.send(userUtils.cleanUser(user));
+        }
+        else {
+          res.redirect('/projects');
+        }
         return;
       });
     })(req, res);
@@ -49,7 +74,7 @@ function authenticate(req, res, strategy) {
 function processOAuth(req, res, strategy, options) {
   if (req.params['id'] === 'callback') {
     // Authenticate, log in, and create the user if necessary
-    authenticate(req, res, strategy);
+    authenticate(req, res, strategy, false);
   } else {
     // start the oauth process by redirecting to the service provider
     passport.authenticate(strategy, options)(req, res);
@@ -68,7 +93,11 @@ module.exports = {
   /* Authentication Providers
   */
   local: function(req, res) {
-    authenticate(req, res, 'local');
+    var json = false;
+    if (req.param('json')) {
+      json = true;
+    }
+    authenticate(req, res, 'local', json);
   },
   oauth2: function(req, res) {
     processOAuth(req, res, 'oauth2');
@@ -85,7 +114,11 @@ module.exports = {
   logout: function (req,res) {
     // logout and redirect back to the app
     req.logout();
-    res.redirect('/projects');
+    if (req.param('json')) {
+      res.send({ logout: true });
+    } else {
+      res.redirect('/projects');
+    }
   }
 
 };

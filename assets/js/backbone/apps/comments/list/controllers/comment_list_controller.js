@@ -4,10 +4,10 @@ define([
   'backbone',
   'popovers',
   'comment_collection',
-  'comment_list_view',
   'comment_form_view',
-  'comment_item_view'
-], function ($, _, Backbone, Popovers, CommentCollection, CommentListView, CommentFormView, CommentItemView) {
+  'comment_item_view',
+  'text!comment_wrapper_template'
+], function ($, _, Backbone, Popovers, CommentCollection, CommentFormView, CommentItemView, CommentWrapper) {
 
   var popovers = new Popovers();
 
@@ -28,6 +28,7 @@ define([
       var self = this;
       this.options = options;
 
+      this.initializeRender();
       this.initializeCommentCollection();
       this.initializeListeners();
 
@@ -36,6 +37,11 @@ define([
         self.addNewCommentToDom(modelJson, currentTarget);
       });
 
+    },
+
+    initializeRender: function() {
+      var template = _.template(CommentWrapper, { user: window.cache.currentUser });
+      this.$el.html(template);
     },
 
     initializeCommentCollection: function () {
@@ -102,8 +108,14 @@ define([
         }
       }
 
+      // hide the loading spinner
+      this.$('.comment-spinner').hide();
+
       self.commentViews = [];
       self.commentForms = [];
+      if (data.comments.length == 0) {
+        this.$('#comment-empty').show();
+      }
       _.each(data.comments, function (comment, i) {
         self.renderComment(self, comment, collection);
       });
@@ -195,6 +207,7 @@ define([
       modelJson['user'] = window.cache.currentUser;
 
       modelJson['depth'] = $(currentTarget).data('depth') + 1;
+      $("#comment-empty").hide();
       self.renderComment(self, modelJson, self.collection);
       self.initializeCommentUIAdditions();
 

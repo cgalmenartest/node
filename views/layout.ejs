@@ -12,6 +12,14 @@
     <!-- listen on socket.io for incoming messages -->
     <!-- <script type="text/javascript" src="/js/vendor/sails/app.js"></script> -->
 
+    <script type="text/javascript">
+    version = <%- JSON.stringify(sails.config.version()) %>;
+    <% if (req.user) { %>
+    backendUser = <%- JSON.stringify(req.user[0]) %>;
+    <% } else { %>
+    backendUser = null;
+    <% } %>
+    </script>
     <!-- There be dragons here (aka, don't remove and put into require.js flow, as that fails 1/5 times) -->
     <script type="text/javascript" src="/js/vendor/jquery.js"></script>
 
@@ -30,17 +38,15 @@
     <link rel="stylesheet" type="text/css" href="/styles/bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="/styles/font-awesome/css/font-awesome.min.css" />
     <link rel="stylesheet" type="text/css" href="/styles/font-custom/css/style.css" />
-    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'/>
-    <link href='http://fonts.googleapis.com/css?family=Roboto:300,400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="/js/vendor/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css"/>
+    <link rel="stylesheet" type="text/css" href="/js/vendor/jquery-timepicker/jquery.timepicker.css"/>
     <link rel="stylesheet" type="text/css" href="/js/vendor/select2/select2.css" />
     <link rel="stylesheet" type="text/css" href="/styles/application.css" />
-    <link rel="stylesheet" type="text/css" href="/styles/innovation-theme.css" />
+    <link rel="stylesheet" type="text/css" href="/styles/theme.css" />
 
     <% } else { %>
 
     <script type="text/javascript" src="/prod/js/midas.js"></script>
-    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'/>
-    <link href='http://fonts.googleapis.com/css?family=Roboto:300,400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="/prod/css/midas.css" />
 
     <% } %>
@@ -53,6 +59,8 @@
 
     <%- body %>
 
+    <footer id="footer">
+    </footer>
   </body>
 
 </html>

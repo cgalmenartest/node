@@ -25,7 +25,7 @@ h3 {
 }
 
 h4 {
-  color: #818991;
+  color: #F04F24;
   font-size: 18px;
   font-weight: 700;
 }
@@ -154,6 +154,12 @@ h6 {
   background-color: #4D4D4D;
   /*border-color: #F0F0F0;*/
   color: #F0F0F0;
+}
+
+.btn-c0:hover.btn-login,
+.btn-c0.hover.btn-login {
+  background-color: #F2F2F2;
+  border-color: #C5C5C5;
 }
 
 .btn-c1 {
@@ -306,6 +312,25 @@ h6 {
 .dropdown-menu > .active > a:hover,
 .dropdown-menu > .active > a:focus {
   background-color: #D63A25;
+}
+
+.navbar-brand {
+  background-image: url(/images/logo.png);
+  background-repeat: no-repeat;
+  background-size: 256px 40px;
+  width: 256px;
+  height: 40px;
+  margin-top: 15px;
+}
+
+@media only screen and (-moz-min-device-pixel-ratio: 1.5),
+  only screen and (-o-min-device-pixel-ratio: 3/2),
+  only screen and (-webkit-min-device-pixel-ratio: 1.5),
+  only screen and (min-device-pixel-ratio: 1.5),
+  only screen and (min-resolution: 144dpi) {
+    .navbar-brand {
+         background-image: url(/images/logo@2x.png);
+    }
 }
 
 .navbar {

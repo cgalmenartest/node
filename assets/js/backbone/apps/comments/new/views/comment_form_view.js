@@ -9,13 +9,10 @@ define([
   'backbone',
   'utilities',
   'comment_collection',
-  'text!comment_form_template',
-  'comment_list_view'
-], function ($, _, Backbone, utils, CommentCollection, CommentFormTemplate, CommentListView) {
+  'text!comment_form_template'
+], function ($, _, Backbone, utils, CommentCollection, CommentFormTemplate) {
 
   var CommentFormView = Backbone.View.extend({
-
-    // el: ".comment-form-wrapper",
 
     events: {
       "submit .comment-submit": "post"
@@ -78,6 +75,10 @@ define([
 
       var currentTarget = e.currentTarget;
       this.collection.trigger("comment:save", data, currentTarget);
+
+      if (this.options.topic) {
+        this.$el.hide();
+      }
     },
 
     cleanup: function () {

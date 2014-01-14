@@ -1,3 +1,4 @@
+<div id="login-wrapper"></div>
 <div class="navbar navbar-default navbar-static-top">
   <div class="container">
     <div class="navbar-header">
@@ -7,7 +8,6 @@
         <span class="icon-bar"></span>
       </button>
       <a class="navbar-brand" href="/">
-        <img src="/images/innovation-gov-e74024.png" alt="innovation.gov">
       </a>
     </div>
     <div class="navbar-collapse collapse pull-right">
@@ -31,16 +31,22 @@
         <li class="divider-vertical navbar-text"></li>
         <% if (user) { %>
           <li class="profile dropdown"><a href="/profile" id="navbar-profile" role="button" class="dropdown-toggle" data-toggle="dropdown">
-            <img src="/api/user/photo/<%- user.id %>" class="navbar-people"/> &nbsp;<%- user.name %></a>
+            <img src="/api/user/photo/<%- user.id %>" class="navbar-people"/> &nbsp;
+              <% if (user.name) { %><%- user.name %>
+              <% } else { %><%- user.username %>
+              <% } %>
+            </a>
             <ul class="dropdown-menu" role="menu" aria-labelledby="navbar-profile">
               <li role="presentation"><a role="menuitem" class="nav-link" tabindex="-1" href="/profile">Profile</a></li>
+              <% if (login.local.logout) { %>
               <li role="presentation" class="divider"></li>
               <li role="presentation"><a role="menuitem"
-                 tabindex="-1" href="/auth/logout">Logout</a></li>
+                 tabindex="-1" href="/auth/logout" class="logout">Logout</a></li>
+              <% } %>
             </ul>
           </li>
         <% } else { %>
-          <li class="navbar-1line"><a href="/auth"><i class="icon-plus-sign"></i> Sign In</a></li>
+          <li class="navbar-1line"><a href="/auth" class="login"><i class="icon-plus-sign"></i> Sign In</a></li>
         <% }; %>
       </ul>
     </div>
