@@ -14,7 +14,8 @@ define([
   Application.Login = BaseController.extend({
 
     events: {
-      "click .login-register"    : "showRegister"
+      "click #register-cancel"   : "showLogin",
+      "click #login-register"    : "showRegister"
     },
 
     initialize: function ( options ) {
@@ -41,6 +42,7 @@ define([
         login: Login,
         message: this.options.message
       }).render();
+      this.$("#registration-view").hide();
       $("#login").modal('show');
 
       self.listenTo(window.cache.userEvents, "user:login", function (user) {
@@ -56,24 +58,16 @@ define([
       });
     },
 
-
     showRegister: function (e) {
       if (e.preventDefault) e.preventDefault();
+      this.$("#login-view").hide();
+      this.$("#registration-view").show();
+    },
 
-      if (this.loginView) this.loginView.cleanup();
-      if (this.modalComponent) this.modalComponent.cleanup();
-
-      this.modalComponent = new ModalComponent({
-        el: "#container",
-        id: "login-register",
-        modalTitle: "REGISTER FINALLY! From Login Controller!!!"
-      }).render();
-
-      this.loginView = new RegistrationView({
-        el: ".modal-template",
-        message: this.options.message
-      }).render();
-
+    showLogin: function (e) {
+      if (e.preventDefault) e.preventDefault();
+      this.$("#login-view").show();
+      this.$("#registration-view").hide();
     },
 
     // ---------------------
