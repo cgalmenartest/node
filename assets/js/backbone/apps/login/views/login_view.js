@@ -4,9 +4,8 @@ define([
   'backbone',
   'utilities',
   'text!login_template',
-  'modal_component',
-  'registration_view'
-], function ($, _, Backbone, utils, LoginTemplate, ModalComponent, RegistrationView) {
+  'modal_component'
+], function ($, _, Backbone, utils, LoginTemplate, ModalComponent) {
 
   var LoginView = Backbone.View.extend({
 
@@ -36,6 +35,10 @@ define([
       window.location.href = link;
     },
 
+    v: function (e) {
+      return validate(e);
+    },
+
     submitLogin: function (e) {
       var self = this;
       if (e.preventDefault) e.preventDefault();
@@ -62,9 +65,21 @@ define([
     submitRegister: function (e) {
       var self = this;
       if (e.preventDefault) e.preventDefault();
+
+      // validate input fields
+      var validateIds = ['#rpassword', '#rterms'];
+      var abort = false;
+      for (i in validateIds) {
+        var iAbort = validate({ currentTarget: validateIds[i] });
+        abort = abort || iAbort;
+      }
+      if (abort === true) {
+        return;
+      }
+
       var data = {
-        username: this.$("#username").val(),
-        password: this.$("#password").val(),
+        username: this.$("#rusername").val(),
+        password: this.$("#rpassword").val(),
         json: true
       };
       $.ajax({

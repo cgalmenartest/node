@@ -7,9 +7,8 @@ define([
   'base_controller',
   'login_view',
   'login_config',
-  'modal_component',
-  'registration_view'
-], function ($, _, Backbone, Bootstrap, utils, BaseController, LoginView, Login, ModalComponent, RegistrationView) {
+  'modal_component'
+], function ($, _, Backbone, Bootstrap, utils, BaseController, LoginView, Login, ModalComponent) {
 
   Application.Login = BaseController.extend({
 

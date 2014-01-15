@@ -167,9 +167,9 @@ var organizeTags = function (tags) {
  * Expects an object with currentTarget, eg { currentTarget: '#foo' }
  */
 var validate = function (e) {
-  var opts = $(e.currentTarget).data('validate').split(',');
+  var opts = String($(e.currentTarget).data('validate')).split(',');
   var val = $(e.currentTarget).val();
-  var parent = $(e.currentTarget).parents('.form-group')[0];
+  var parent = $(e.currentTarget).parents('.form-group, .checkbox')[0];
   var result = false;
   _.each(opts, function (o) {
     if (o == 'empty') {
@@ -181,9 +181,29 @@ var validate = function (e) {
       }
       return;
     }
+    if (o == 'checked') {
+      if ($(e.currentTarget).prop('checked') !== true) {
+        $(parent).find('.error-checked').show();
+        result = true;
+      } else {
+        $(parent).find('.error-checked').hide();
+      }
+      return;
+    }
     if (o.substring(0,5) == 'count') {
       var len = parseInt(o.substring(5));
       if (val.length > len) {
+        $(parent).find('.error-' + o).show();
+        result = true;
+      } else {
+        $(parent).find('.error-' + o).hide();
+      }
+      return;
+    }
+    if (o == 'confirm') {
+      var id = $(e.currentTarget).attr('id');
+      var newVal = $('#' + id + '-confirm').val();
+      if (val != newVal) {
         $(parent).find('.error-' + o).show();
         result = true;
       } else {
