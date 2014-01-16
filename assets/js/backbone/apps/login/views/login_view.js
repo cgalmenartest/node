@@ -11,6 +11,8 @@ define([
 
     events: {
       'click .oauth-link'              : 'link',
+      'keyup #rusername'               : 'checkUsername',
+      'click #rusername-button'        : 'clickUsername',
       'submit #login-password-form'    : 'submitLogin',
       'submit #registration-form'      : 'submitRegister'
     },
@@ -67,7 +69,7 @@ define([
       if (e.preventDefault) e.preventDefault();
 
       // validate input fields
-      var validateIds = ['#rpassword', '#rterms'];
+      var validateIds = ['#rusername', '#rpassword', '#rterms'];
       var abort = false;
       for (i in validateIds) {
         var iAbort = validate({ currentTarget: validateIds[i] });
@@ -95,6 +97,37 @@ define([
         self.$("#registration-error").html(d.message);
         self.$("#registration-error").show();
       });
+    },
+
+    checkUsername: function (e) {
+      var username = $("#rusername").val();
+      $("#rusername-button").removeClass('btn-success');
+      $("#rusername-button").removeClass('btn-danger');
+      $("#rusername-button").addClass('btn-default');
+      $("#rusername-check").removeClass('icon-ok');
+      $("#rusername-check").removeClass('icon-remove');
+      $("#rusername-check").addClass('icon-spin');
+      $("#rusername-check").addClass('icon-spinner');
+      $.ajax({
+        url: '/api/user/username/' + username,
+      }).done(function (data) {
+        $("#rusername-check").removeClass('icon-spin');
+        $("#rusername-check").removeClass('icon-spinner');
+        $("#rusername-button").removeClass('btn-default');
+        if (data) {
+          // username is take
+          $("#rusername-button").addClass('btn-danger');
+          $("#rusername-check").addClass('icon-remove');
+        } else {
+          // username is available
+          $("#rusername-button").addClass('btn-success');
+          $("#rusername-check").addClass('icon-ok');
+        }
+      });
+    },
+
+    clickUsername: function (e) {
+      e.preventDefault();
     },
 
     cleanup: function () {

@@ -211,6 +211,14 @@ var validate = function (e) {
       }
       return;
     }
+    if (o == 'button') {
+      if (!($($(parent).find("#" + $(e.currentTarget).attr('id') + "-button")[0]).hasClass('btn-success'))) {
+        $(parent).find('.error-' + o).show();
+        result = true;
+      } else {
+        $(parent).find('.error-' + o).hide();
+      }
+    }
   });
   if (result === true) {
     $(parent).addClass('has-error');
