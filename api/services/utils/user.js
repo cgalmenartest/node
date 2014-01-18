@@ -41,7 +41,16 @@ module.exports = {
    * @param done callback with form (null, user, error)
    */
   createLocalUser: function (username, password, done) {
+    var self = this;
+    // normalize username
     username = username.toLowerCase();
+    // ensure the username is a valid email address
+    try {
+      check(username).isEmail();
+    }
+    catch (e) {
+      return done(null, false, { message: 'Email address is not valid.' });
+    }
     // Check if the username already exists
     this.findUser(username, function (err, user) {
       if (err) { return done(null, false, { message: 'Error looking up user' }); }
@@ -49,6 +58,16 @@ module.exports = {
       var bcrypt = require('bcrypt');
       // The user doesn't exist, so create an account for them
       if (!user) {
+        // Check that the password meets validation rules
+        var rules = self.validatePassword(username, password);
+        var success = true;
+        _.each(_.values(rules), function (v) {
+          success = success && v;
+        });
+        if (success !== true) {
+          return done(null, false, { message: 'Password does not meet password rules.' });
+        }
+        // Encrypt the password
         bcrypt.hash(password, 10, function(err, hash) {
           // Create and store the user
           User.create({
@@ -368,5 +387,54 @@ module.exports = {
         });
       });
     });
+  },
+
+  /**
+   * Validate a password based on OWASP password rules.
+   * @param username the user's name or email
+   * @param password the user's proposed password
+   * @return an object returning keys set to true where the rule passes,
+   *         false if the rule failed.
+   */
+  validatePassword: function (username, password) {
+    var rules = {
+      username: false,
+      length: false,
+      upper: false,
+      lower: false,
+      number: false,
+      symbol: false
+    };
+    var _username = username.toLowerCase().trim();
+    var _password = password.toLowerCase().trim();
+    // check username is not the same as the password, in any case
+    if (_username != _password && _username.split('@',1)[0] != _password) {
+      rules['username'] = true;
+    }
+    // length > 8 characters
+    if (password && password.length >= 8) {
+      rules['length'] = true;
+    }
+    // Uppercase, Lowercase, and Numbers
+    for (var i = 0; i < password.length; i++) {
+      var test = password.charAt(i);
+      // from http://stackoverflow.com/questions/3816905/checking-if-a-string-starts-with-a-lowercase-letter
+      if (test === test.toLowerCase() && test !== test.toUpperCase()) {
+        // lowercase found
+        rules['lower'] = true;
+      }
+      else if (test === test.toUpperCase() && test !== test.toLowerCase()) {
+        rules['upper'] = true;
+      }
+      // from http://stackoverflow.com/questions/18082/validate-numbers-in-javascript-isnumeric
+      else if (!isNaN(parseFloat(test)) && isFinite(test)) {
+        rules['number'] = true;
+      }
+    }
+    // check for symbols
+    if (/.*[^\w\s].*/.test(password)) {
+      rules['symbol'] = true;
+    }
+    return rules;
   }
 };
