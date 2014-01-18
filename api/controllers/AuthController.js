@@ -28,11 +28,16 @@ function authenticate(req, res, strategy, json) {
     {
       if ((err) || (!user))
       {
+        var message = info.message;
+        // if local strategy, don't show user what actually happened for security purposes
+        if (strategy === 'local') {
+          message = 'Invalid email address or password.'
+        }
         sails.log.debug('Authentication Error:', err, info);
         if (json === true) {
           res.send(403, {
             error: err,
-            message: info.message
+            message: message
           });
         } else {
           res.redirect('/auth');

@@ -107,16 +107,16 @@ module.exports = {
       var bcrypt = require('bcrypt');
       // The user doesn't exist, error out (they must register)
       if (!user) {
-        return done(null, false, { message: 'Invalid username or password.' });
+        return done(null, false, { message: 'Invalid email address or password.' });
       } else {
         if (user.disabled === true) {
           sails.log.info('Disabled user login: ', user);
-          return done(null, false, { message: 'Invalid username or password.' });
+          return done(null, false, { message: 'Invalid email address or password.' });
         }
         // The user exists so look up their password
         UserPassword.findOneByUserId(user.id, function (err, pwObj) {
           // If no password is set or there is an error, abort
-          if (err || !pwObj) { return done(null, false, { message: 'Invalid username or password.'}); }
+          if (err || !pwObj) { return done(null, false, { message: 'Invalid email address or password.'}); }
           // Compare the passwords to check if it is correct
           bcrypt.compare(password, pwObj.password, function (err, res) {
             // Valid password
@@ -133,7 +133,7 @@ module.exports = {
               user.passwordAttempts++;
               user.save(function (err) {
                 if (err) { return done(null, false, { message: 'An error occurred while logging on. Please try again.' }); }
-                return done(null, false, { message: 'Invalid username or password.' });
+                return done(null, false, { message: 'Invalid email address or password.' });
               });
             }
           });
