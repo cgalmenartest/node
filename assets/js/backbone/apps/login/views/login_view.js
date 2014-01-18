@@ -85,7 +85,7 @@ define([
         json: true
       };
       $.ajax({
-        url: '/api/auth/local',
+        url: '/api/auth/register',
         type: 'POST',
         data: data
       }).done(function (success) {

@@ -5,8 +5,36 @@ var projUtils = require('./project');
 var tagUtils = require('./tag');
 
 module.exports = {
+
   /**
-   * Find or log in a user based on their username and password.
+   * Find a user by given username.  Looks up the user
+   * by username or by email address
+   *
+   * @param username
+   * @param done callback with the user object, or null if no user
+   *        format: done(err, user)
+   */
+  findUser: function (username, done) {
+    username = username.toLowerCase();
+    // Check if the username already exists
+    User.findOneByUsername(username, function (err, user) {
+      if (err) { return done(err, null); }
+      if (user) { return done(null, user); }
+      // user not found, try again by email address
+      UserEmail.findOneByEmail(username, function (err, userEmail) {
+        if (err) { return done(err, null); }
+        if (!user) { return done(null, null); }
+        // email address found; look up the user object
+        User.findOneById(userEmail.userId, function (err, user) {
+          if (err) { return done(err, null); }
+          return done(null, user);
+        });
+      });
+    });
+  },
+
+  /**
+   * Create a user based on their username and password.
    *
    * @param username
    * @param password will be bcrypt encrypted
@@ -15,7 +43,7 @@ module.exports = {
   createLocalUser: function (username, password, done) {
     username = username.toLowerCase();
     // Check if the username already exists
-    User.findOneByUsername(username, function (err, user) {
+    this.findUser(username, function (err, user) {
       if (err) { return done(null, false, { message: 'Error looking up user' }); }
       // Look up user and check password hash
       var bcrypt = require('bcrypt');
@@ -28,7 +56,7 @@ module.exports = {
           }).done(function (err, user) {
             if (err) {
               sails.log.debug('User creation error:', err);
-              return done(null, false, { message: 'Unable to create new user'});
+              return done(null, false, { message: 'Unable to create new user. Please try again.'});
             }
             sails.log.debug('User Created:', user);
             var pwObj = {
@@ -37,7 +65,7 @@ module.exports = {
             };
             // Store the user's password with the bcrypt hash
             UserPassword.create(pwObj).done(function (err, pwObj) {
-              if (err) { return done(null, false, { message: 'Unable to store password'}); }
+              if (err) { return done(null, false, { message: 'Unable to store password.'}); }
               // if the username is an email address, store it
               try {
                 check(username).isEmail();
@@ -59,6 +87,28 @@ module.exports = {
           });
         });
       } else {
+        return done(null, false, { message: 'User already exists. Please log in instead.' })
+      }
+    });
+  },
+
+  /**
+   * Find and log in a user based on their username and password.
+   *
+   * @param username
+   * @param password will be bcrypt encrypted
+   * @param done callback with form (null, user, error)
+   */
+  findLocalUser: function (username, password, done) {
+    // Check if the username already exists
+    this.findUser(username, function (err, user) {
+      if (err) { return done(null, false, { message: 'Error looking up user. Please try again.' }); }
+      // Look up user and check password hash
+      var bcrypt = require('bcrypt');
+      // The user doesn't exist, error out (they must register)
+      if (!user) {
+        return done(null, false, { message: 'Invalid username or password.' });
+      } else {
         if (user.disabled === true) {
           sails.log.info('Disabled user login: ', user);
           return done(null, false, { message: 'Invalid username or password.' });
@@ -74,7 +124,7 @@ module.exports = {
               sails.log.debug('User Found:', user);
               user.passwordAttempts = 0;
               user.save(function (err) {
-                if (err) { return done(null, false, { message: 'An error occurred while logging on.' }); }
+                if (err) { return done(null, false, { message: 'An error occurred while logging on. Please try again.' }); }
                 return done(null, user);
               });
             }
@@ -82,7 +132,7 @@ module.exports = {
             else {
               user.passwordAttempts++;
               user.save(function (err) {
-                if (err) { return done(null, false, { message: 'An error occurred while logging on.' }); }
+                if (err) { return done(null, false, { message: 'An error occurred while logging on. Please try again.' }); }
                 return done(null, false, { message: 'Invalid username or password.' });
               });
             }

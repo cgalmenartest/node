@@ -40,6 +40,10 @@ function authenticate(req, res, strategy, json) {
         return;
       }
 
+      // process additional registration information if available
+      if (strategy === 'register') {
+      }
+
       req.logIn(user, function(err)
       {
         if (err)
@@ -98,6 +102,14 @@ module.exports = {
       json = true;
     }
     authenticate(req, res, 'local', json);
+  },
+  register: function(req, res) {
+    var json = false;
+    req.register = true;
+    if (req.param('json')) {
+      json = true;
+    }
+    authenticate(req, res, 'register', json);
   },
   oauth2: function(req, res) {
     processOAuth(req, res, 'oauth2');

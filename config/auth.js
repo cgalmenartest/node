@@ -32,6 +32,12 @@ passport.deserializeUser(function (id, done) {
 // LocalStrategy - Primarily for testing (non-OAuth provider)
 passport.use('local', new LocalStrategy(
   function (username, password, done) {
+    userUtils.findLocalUser(username, password, done);
+  }
+));
+
+passport.use('register', new LocalStrategy(
+  function (username, password, done) {
     userUtils.createLocalUser(username, password, done);
   }
 ));
