@@ -257,6 +257,27 @@ ul.nav-search > li {
 	max-width: 100%;
 }
 
+.password-rules-title {
+	padding-top: 10px;
+	font-weight: 700;
+}
+
+ul.password-rules {
+	padding-left: 0;
+	list-style: none;
+	font-size: 12px;
+	padding-top: 4px;
+}
+
+.password-rules .success {
+	color: #419641;
+	display: none;
+}
+
+.password-rules .error {
+	color: #c12e2a;
+}
+
 /*****************
 =  TEXT COLORS
 ******************/

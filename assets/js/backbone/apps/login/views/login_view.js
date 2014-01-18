@@ -13,6 +13,8 @@ define([
       'click .oauth-link'              : 'link',
       'keyup #rusername'               : 'checkUsername',
       'click #rusername-button'        : 'clickUsername',
+      'keyup #rpassword'               : 'checkPassword',
+      'blur #rpassword'                : 'checkPassword',
       'submit #login-password-form'    : 'submitLogin',
       'submit #registration-form'      : 'submitRegister'
     },
@@ -75,7 +77,15 @@ define([
         var iAbort = validate({ currentTarget: validateIds[i] });
         abort = abort || iAbort;
       }
-      if (abort === true) {
+      var passwordSuccess = this.checkPassword();
+      var parent = $(this.$("#rpassword").parents('.form-group')[0]);
+      if (passwordSuccess !== true) {
+        parent.addClass('has-error');
+        $(parent.find('.error-password')[0]).show();
+      } else {
+        $(parent.find('.error-password')[0]).hide();
+      }
+      if (abort === true || passwordSuccess !== true) {
         return;
       }
 
@@ -124,6 +134,22 @@ define([
           $("#rusername-check").addClass('icon-ok');
         }
       });
+    },
+
+    checkPassword: function (e) {
+      var rules = validatePassword(this.$("#rusername").val(), this.$("#rpassword").val());
+      var success = true;
+      _.each(rules, function (value, key) {
+        if (value === true) {
+          this.$(".password-rules .success.rule-" + key).show();
+          this.$(".password-rules .error.rule-" + key).hide();
+        } else {
+          this.$(".password-rules .success.rule-" + key).hide();
+          this.$(".password-rules .error.rule-" + key).show();
+        }
+        success = success && value;
+      });
+      return success;
     },
 
     clickUsername: function (e) {
