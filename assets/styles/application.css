@@ -148,12 +148,76 @@ input {
 	padding-right: 0;
 }
 
+.nopadding {
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.padding-bottom-none {
+	padding-bottom: 0;
+}
+
+.nomargin {
+	margin-left: 0;
+	margin-right: 0;
+}
+
+.margin-bottom-none {
+	margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+	.sm-nopadding {
+		padding-left: 0;
+		padding-right: 0;
+	}
+}
+@media (max-width: 992px) {
+	.md-nopadding {
+		padding-left: 0;
+		padding-right: 0;
+	}
+	.md-nopadding-left {
+		padding-left: 0;
+	}
+	.md-nopadding-right {
+		padding-right: 0;
+	}
+}
+
 .fullwidth {
 	width: 100%;
 }
 
 .align-right {
 	text-align: right;
+}
+
+.modal-content {
+	border-radius: 3px;
+}
+
+.modal-footer-text {
+	font-size: 13px;
+	text-align: left;
+	font-weight: bold;
+	color: #808080;
+}
+
+.modal-footer-text > a {
+	text-decoration: none;
+	color: #808080;
+}
+
+.modal-footer-text > a:hover {
+	color: #303030;
+	text-decoration: underline;
+}
+
+.modal-footer-grey {
+	background-color: #e9e9e9;
+	border-top-color: #c0c0c0;
+	border-radius: 0 0 3px 3px;
 }
 
 .select2-container-multi .select2-choices .select2-search-choice {
@@ -240,11 +304,6 @@ ul.nav-search > li {
 .login-option {
 	margin-top: 5px;
 	margin-bottom: 5px;
-}
-
-.login-form {
-	margin: 10px;
-	text-align: center;
 }
 
 .btn-login {
@@ -370,30 +429,6 @@ div.project-title {
 
 .project-background-image-default {
 	background: url('/images/project_default_browse.png');
-}
-
-.nopadding {
-	padding-left: 0;
-	padding-right: 0;
-}
-
-@media (max-width: 768px) {
-	.sm-nopadding {
-		padding-left: 0;
-		padding-right: 0;
-	}
-}
-@media (max-width: 992px) {
-	.md-nopadding {
-		padding-left: 0;
-		padding-right: 0;
-	}
-	.md-nopadding-left {
-		padding-left: 0;
-	}
-	.md-nopadding-right {
-		padding-right: 0;
-	}
 }
 
 #project-form input {

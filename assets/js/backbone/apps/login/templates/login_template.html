@@ -1,4 +1,6 @@
-<div class="modal-body" id="login-view">
+<form class="form-horizontal" role="form" id="login-password-form">
+
+<div class="modal-body padding-bottom-none" id="login-view">
 
   <% if (message) { %>
   <div class="alert alert-warning">
@@ -7,7 +9,7 @@
   <% } %>
 
   <% if (login.oauth.length > 0) { %>
-  <div class="login-oauth">Log in or Register with
+  <div class="login-oauth">Login with
   <% _.each(login.oauth, function (e) { %>
   <div class="row">
     <div class="col-sm-offset-3 col-sm-6">
@@ -26,44 +28,39 @@
     <% if (login.oauth.length > 0) { %>
     <hr/>
     <% } %>
-    <div class="login-oauth">
-      <% if (login.oauth.length > 0) { %>
-      or
-      <% } %>
-      <% if (login.local.expand !== true) { %><a href="#" id="login-password"><% } %>Log In<% if (login.local.expand !== true) { %></a><% } %>
-      or
-      <a href="#login-register" id="login-register">Register</a>
-      with your email address
-    </div>
     <div class="alert alert-danger" id="login-error" style="display:none;"></div>
-    <div class="login-form" <% if (login.local.expand !== true) { %>style="display:none;"<% } %>>
-
-      <form class="form-horizontal" role="form" id="login-password-form">
-        <div class="form-group">
-          <label for="username" class="col-sm-offset-1 col-sm-3 control-label">Email Address</label>
-          <div class="col-sm-6">
-            <input type="email" class="form-control" id="username" name="username" placeholder="Email Address"/>
-          </div>
+      <div class="form-group">
+        <label for="username" class="col-sm-offset-1 col-sm-3 control-label">Email Address</label>
+        <div class="col-sm-6">
+          <input type="email" class="form-control" id="username" name="username" placeholder="Email Address"/>
         </div>
-        <div class="form-group">
-          <label for="password" class="col-sm-offset-1 col-sm-3 control-label">Password</label>
-          <div class="col-sm-6">
-            <input type="password" class="form-control" id="password" name="password" placeholder="Password"/>
-          </div>
+      </div>
+      <div class="form-group margin-bottom-none">
+        <label for="password" class="col-sm-offset-1 col-sm-3 control-label">Password</label>
+        <div class="col-sm-6">
+          <input type="password" class="form-control" id="password" name="password" placeholder="Password"/>
         </div>
-        <div class="form-group">
-          <div class="col-sm-12">
-            <button type="submit" class="btn btn-c2">Sign in</button>
-          </div>
-        </div>
-      </form>
+      </div>
+  </div>
+  <div class="modal-footer modal-footer-grey" id="login-footer">
+    <div class="row">
+      <div class="col-md-3 col-md-push-9">
+        <button type="submit" class="btn btn-c2 pull-right">Sign in</button>
+      </div>
+      <div class="col-md-9 col-md-pull-3 modal-footer-text">
+        <a href="#forgot-password" id="forgot-password">Forgot your password?</a>
+        <br/>
+        <a href="#login-register" id="login-register">Sign up now</a>
+      </div>
     </div>
+  </div>
+  <% } else { %>
+  </div>
   <% } %>
+</form>
 
-</div>
-
-<div class="modal-body" id="registration-view">
-  <form role="form" id="registration-form">
+<form role="form" id="registration-form">
+<div class="modal-body padding-bottom-none" id="registration-view">
     <h2>Create a New Account</h2>
 
     <div class="form-group">
@@ -121,24 +118,22 @@
       </label>
     </div>
 
-    <div class="form-group">
+    <div class="form-group margin-bottom-none">
       <div class="row">
         <div class="col-sm-12">
           <div class="alert alert-danger" id="registration-error" style="display:none;"></div>
         </div>
       </div>
     </div>
-
-    <div class="form-group">
-      <div class="row">
-        <div class="col-sm-12">
-          <div class="pull-right">
-            <button type="button" id="register-cancel" class="btn btn-c0">Cancel</button>
-            <button type="submit" class="btn btn-c2">Register</button>
-          </div>
-        </div>
+</div>
+<div class="modal-footer modal-footer-grey" id="registration-footer" style="display:none;">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="pull-right">
+        <button type="button" id="register-cancel" class="btn btn-c0">Cancel</button>
+        <button type="submit" class="btn btn-c2">Register</button>
       </div>
     </div>
-
-  </form>
+  </div>
 </div>
+</form>

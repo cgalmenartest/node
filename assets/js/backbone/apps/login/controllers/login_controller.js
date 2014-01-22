@@ -60,13 +60,17 @@ define([
     showRegister: function (e) {
       if (e.preventDefault) e.preventDefault();
       this.$("#login-view").hide();
+      this.$("#login-footer").hide();
       this.$("#registration-view").show();
+      this.$("#registration-footer").show();
     },
 
     showLogin: function (e) {
       if (e.preventDefault) e.preventDefault();
       this.$("#login-view").show();
+      this.$("#login-footer").show();
       this.$("#registration-view").hide();
+      this.$("#registration-footer").hide();
     },
 
     // ---------------------
