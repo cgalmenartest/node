@@ -132,12 +132,16 @@ module.exports = {
           sails.log.info('Disabled user login: ', user);
           return done(null, false, { message: 'Invalid email address or password.' });
         }
-        // The user exists so look up their password
-        UserPassword.findOneByUserId(user.id, function (err, pwObj) {
+        // The user exists so look up their password -- the last password is the valid one
+        UserPassword.find()
+        .where({ userId: user.id })
+        .sort({ createdAt: 'desc' })
+        .limit(1)
+        .exec(function (err, pwObj) {
           // If no password is set or there is an error, abort
-          if (err || !pwObj) { return done(null, false, { message: 'Invalid email address or password.'}); }
+          if (err || !pwObj || pwObj.length == 0) { return done(null, false, { message: 'Invalid email address or password.'}); }
           // Compare the passwords to check if it is correct
-          bcrypt.compare(password, pwObj.password, function (err, res) {
+          bcrypt.compare(password, pwObj[0].password, function (err, res) {
             // Valid password
             if (res === true) {
               sails.log.debug('User Found:', user);
