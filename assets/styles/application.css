@@ -429,6 +429,7 @@ div.project-title {
 
 .project-background-image-default {
 	background: url('/images/project_default_browse.png');
+	background-size: 100% 120px;
 }
 
 #project-form input {
