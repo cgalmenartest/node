@@ -379,6 +379,7 @@ ul.password-rules {
 	padding-top: 0;
 	margin-right: 20px;
 	margin-bottom: 10px;
+	position: relative;
 }
 
 div.project-title {
@@ -394,6 +395,13 @@ div.project-title {
 	font-size: 13px;
 	overflow: hidden;
 	word-wrap: break-word;
+}
+.project-list-bottom-wrapper {
+	position: absolute;
+	height: 48px;
+	bottom: 0;
+	background-color: #fff;
+	width: 100%;
 }
 
 .project-list-counts {
