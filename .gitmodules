@@ -16,3 +16,6 @@
 [submodule "assets/js/vendor/moment"]
 	path = assets/js/vendor/moment
 	url = https://github.com/moment/moment.git
+[submodule "assets/js/vendor/jquery-dotdotdot"]
+	path = assets/js/vendor/jquery-dotdotdot
+	url = https://github.com/BeSite/jQuery.dotdotdot.git

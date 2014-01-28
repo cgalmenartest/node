@@ -3,11 +3,13 @@ define([
   'underscore',
   'backbone',
   'async',
+  'jquery_dotdotdot',
   'utilities',
+  'tag_config',
   'popovers',
   'text!project_list_item',
   'text!task_list_item'
-], function ($, _, Backbone, async, utils, Popovers, ProjectListItem, TaskListItem) {
+], function ($, _, Backbone, async, dotdotdot, utils, TagConfig, Popovers, ProjectListItem, TaskListItem) {
 
   var popovers = new Popovers();
 
@@ -39,7 +41,9 @@ define([
       for (var l in this.options.collection) {
         var item = {
           item: this.options.collection[l],
-          user: window.cache.currentUser
+          user: window.cache.currentUser,
+          tagConfig: TagConfig,
+          tagShow: ['location', 'skill', 'topic', 'task-time-estimate', 'task-time-required']
         }
         if (this.options.collection[l].tags) {
           item.tags = this.organizeTags(this.options.collection[l].tags);
@@ -52,6 +56,7 @@ define([
         }
         this.$el.append(compiledTemplate);
         popovers.popoverPeopleInit(".project-people-div");
+        $(".dotdotdot").dotdotdot();
       }
 
       return this;

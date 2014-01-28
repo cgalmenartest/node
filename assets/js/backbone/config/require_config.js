@@ -12,6 +12,7 @@ require.config({
     'jquery_timeago'            : '../../vendor/jquery.timeago',
     'jquery_select2'            : '../../vendor/select2/select2',
     'jquery_timepicker'         : '../../vendor/jquery-timepicker/jquery.timepicker',
+    'jquery_dotdotdot'          : '../../vendor/jquery-dotdotdot/src/js/jquery.dotdotdot',
     'dropzone'                  : '../../vendor/dropzone-amd-module',
     'underscore'                : '../../vendor/underscore',
     'backbone'                  : '../../vendor/backbone',
