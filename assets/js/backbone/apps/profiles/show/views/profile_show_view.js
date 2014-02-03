@@ -156,6 +156,8 @@ define([
         $.get(url, function (data) {
           $("#project-header").css('background-image', "url('" + url + "')");
           $('#file-upload-progress-container').hide();
+          // notify listeners of the new user image
+          window.cache.userEvents.trigger("user:profile:photo:save", url);
         });
       });
     },
@@ -168,6 +170,7 @@ define([
         // Bootstrap .button() has execution order issue since it
         // uses setTimeout to change the text of buttons.
         // make sure attr() runs last
+        window.cache.userEvents.trigger("user:profile:save", data.toJSON());
 
         var tags = [
           $("#company").select2('data'),
