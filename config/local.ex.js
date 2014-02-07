@@ -21,6 +21,7 @@
  * For more information, check out:
  * http://sailsjs.org/#documentation
  */
+var fs = require('fs');
 
 module.exports = {
   // 'http' or 'https'
@@ -105,19 +106,19 @@ module.exports = {
 
   // SES Mail settings -- uses Nodemailer
   ses: {
-    AWSAccessKeyID: 'AWSACCESSKEY',
-    AWSSecretKey: 'AWS/Secret/key',
-    ServiceUrl: 'https://email.us-east-1.amazonaws.com'
+    // AWSAccessKeyID: 'AWSACCESSKEY',
+    // AWSSecretKey: 'AWS/Secret/key',
+    // ServiceUrl: 'https://email.us-east-1.amazonaws.com'
   },
 
   // is DKIM signing enabled for Nodemailer transport?
   dkimEnabled: false,
   // DKIM signing options for Nodemailer transport
   dkim: {
-    domainName: "kreata.ee",
-    keySelector: "dkim",
-    privateKey: fs.readFileSync("private_key.pem"),
-    headerFieldNames: ''
+    // domainName: "kreata.ee",
+    // keySelector: "dkim",
+    // privateKey: fs.readFileSync("private_key.pem"),
+    // headerFieldNames: ''
   },
 
   // system email address (from address)
