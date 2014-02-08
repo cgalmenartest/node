@@ -3,8 +3,8 @@ module.exports = {
   users: {
     'tyrion': {
       name: 'Tyrion Lannister',
-      username: 'tyrion',
-      password: 'tyrion',
+      username: 'tyrion@gameofthrones.com',
+      password: 'tyrionT1!',
       title: 'The Imp',
       agency: 'lannister',
       location: 'kl',
@@ -12,8 +12,8 @@ module.exports = {
     },
     'arya': {
       name: 'Arya Stark',
-      username: 'arya',
-      password: 'arya',
+      username: 'arya@gameofthrones.com',
+      password: 'aryaAA1!',
       title: 'Youngest daughter of Eddard Stark',
       agency: 'stark',
       location: 'winterfell',
@@ -21,8 +21,8 @@ module.exports = {
     },
     'danny': {
       name: 'Daenerys Targaryen',
-      username: 'danny',
-      password: 'danny',
+      username: 'danny@gameofthrones.com',
+      password: 'dannyD1!',
       title: 'Mother of Dragons',
       agency: 'targaryen',
       location: 'astapor',
@@ -30,8 +30,8 @@ module.exports = {
     },
     'ned': {
       name: 'Eddard Stark',
-      username: 'ned',
-      password: 'ned',
+      username: 'ned@gameofthrones.com',
+      password: 'nednedN1!',
       title: 'Lord of Winterfell and Warden of the North',
       agency: 'stark',
       location: 'kl',

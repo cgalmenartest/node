@@ -16,16 +16,28 @@ module.exports = {
       if (err) { return cb(err); }
       // then login
       request.post({ url: conf.url + '/auth/local',
-                     form: { username: username, password: password },
-                   }, function(err, response, body) {
-        if (err) { return cb(err); }
-        request(conf.url + '/user', function(err, response, body) {
-          if (err) { return cb(err); }
-          if (response.statusCode !== 200) {
-            cb('Error: Login unsuccessful. ' + body)
-          }
-          cb(null);
-        });
+                     form: { username: username, password: password, json: true },
+                   }, function (err, response, body) {
+        var getUser = function (cb) {
+          request(conf.url + '/user', function (err, response, body) {
+            if (err) { return cb(err); }
+            if (response.statusCode !== 200) {
+              cb('Error: Login unsuccessful. ' + body)
+            }
+            cb(null);
+          });
+        }
+        if (response.statusCode == 403) {
+          // this could be because the user isn't registered; try to register
+          request.post({ url: conf.url + '/auth/register',
+                         form: { username: username, password: password, json: true },
+                       }, function (err, response, body) {
+            if (err) { return cb(err); }
+            getUser(cb);
+          });
+        } else {
+          getUser(cb);
+        }
       });
     });
   },
