@@ -14,6 +14,7 @@ describe('event:', function() {
   before(function(done) {
     request = utils.init();
     utils.login(request, function(err) {
+      if (err) { return done(err); }
       utils.createProject(request, true, function(err, proj) {
         if (err) { return done(err); }
         publicProject = proj;
@@ -50,7 +51,7 @@ describe('event:', function() {
                      body: JSON.stringify(testEvent)
                    }, function (err, response, body) {
         if (err) { return done(err); }
-        assert.equal(response.statusCode, 200);
+        assert.equal(response.statusCode, 201);
         var b = JSON.parse(body);
         // check that the values passed in are the same as those passed back
         assert.equal(testEvent.title, b.title);
@@ -73,13 +74,13 @@ describe('event:', function() {
                      body: JSON.stringify(testEvent)
                    }, function(err, response, body) {
         if (err) { return done(err); }
-        assert.equal(response.statusCode, 200);
+        assert.equal(response.statusCode, 201);
         var p1 = JSON.parse(body);
         request.post({ url: conf.url + '/event',
                        body: JSON.stringify(testEvent)
                      }, function (err, response, body) {
           if (err) { return done(err); }
-          assert.equal(response.statusCode, 200);
+          assert.equal(response.statusCode, 201);
           var p2 = JSON.parse(body);
           assert.notEqual(p1.uuid, p2.uuid);
           done();
@@ -93,7 +94,7 @@ describe('event:', function() {
                      body: JSON.stringify(testEvent)
                    }, function (err, response, body) {
         if (err) { return done(err); }
-        assert.equal(response.statusCode, 200);
+        assert.equal(response.statusCode, 201);
         var b = JSON.parse(body);
         draftEvent = b;
         done();
