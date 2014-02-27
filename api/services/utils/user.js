@@ -1,5 +1,5 @@
 var _ = require('underscore');
-var check = require('validator').check;
+var validator = require('validator');
 var async = require('async');
 var projUtils = require('./project');
 var tagUtils = require('./tag');
@@ -45,10 +45,7 @@ module.exports = {
     // normalize username
     username = username.toLowerCase();
     // ensure the username is a valid email address
-    try {
-      check(username).isEmail();
-    }
-    catch (e) {
+    if (validator.isEmail(username) !== true) {
       return done(null, false, { message: 'Email address is not valid.' });
     }
     // Check if the username already exists
@@ -86,22 +83,19 @@ module.exports = {
             UserPassword.create(pwObj).done(function (err, pwObj) {
               if (err) { return done(null, false, { message: 'Unable to store password.'}); }
               // if the username is an email address, store it
-              try {
-                check(username).isEmail();
-                var email = {
-                  userId: user['id'],
-                  email: username,
-                }
-                // Store the email address
-                UserEmail.create(email).done(function (err, email) {
-                  if (err) { return done(null, false, { message: 'Unable to store user email address.' }); }
-                  return done(null, user);
-                });
-              }
-              // email validation failed, proceed
-              catch (e) {
+              if (validator.isEmail(username) !== true) {
+                // email validation failed, proceed
                 return done(null, user);
               }
+              var email = {
+                userId: user['id'],
+                email: username,
+              }
+              // Store the email address
+              UserEmail.create(email).done(function (err, email) {
+                if (err) { return done(null, false, { message: 'Unable to store user email address.' }); }
+                return done(null, user);
+              });
             });
           });
         });

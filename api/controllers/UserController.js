@@ -9,7 +9,7 @@ var _ = require('underscore');
 var projUtils = require('../services/utils/project');
 var tagUtils = require('../services/utils/tag');
 var userUtils = require('../services/utils/user');
-var check = require('validator').check;
+var validator = require('validator');
 
 var update = function (req, res) {
   var user = req.user[0];
@@ -66,10 +66,7 @@ module.exports = {
       return res.send(true);
     }
     // only allow email usernames, so check if the email is valid
-    try {
-      check(req.route.params.id).isEmail();
-    }
-    catch (e) {
+    if (validator.isEmail(req.route.params.id) !== true) {
       return res.send(true);
     }
     // check if a user already has this email
