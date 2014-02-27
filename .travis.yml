@@ -8,8 +8,9 @@ before_install:
   - cd sails-postgresql
   - git checkout bytea
   - npm install
+  - cd ../node_modules
+  - ln -s ../sails-postgresql sails-postgresql
   - cd ..
-  - ln -s sails-postgresql node_modules/sails-postgresql
   # - git clone git://github.com/Innovation-Toolkit/anchor.git
   # - cd anchor
   # - npm install
