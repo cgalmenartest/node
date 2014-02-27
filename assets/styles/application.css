@@ -193,6 +193,14 @@ input {
 	text-align: right;
 }
 
+input[type="submit"] {
+	font-weight: 700;
+}
+
+.btn.wizard-submit, .btn.wizard-forward {
+	font-weight: 700;
+}
+
 .modal-content {
 	border-radius: 3px;
 }
@@ -200,7 +208,6 @@ input {
 .modal-footer-text {
 	font-size: 13px;
 	text-align: left;
-	font-weight: bold;
 	color: #808080;
 }
 
