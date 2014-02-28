@@ -149,8 +149,8 @@ define([
       $("#browse-search-spinner").hide();
       $("#browse-list").show();
       this.browseListView.render();
-      popovers.popoverPeopleInit(".project-people-div");
       $(".dotdotdot").dotdotdot();
+      popovers.popoverPeopleInit(".project-people-div");
     },
 
     searchExec: function (terms) {
