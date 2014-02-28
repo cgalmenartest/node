@@ -3,22 +3,13 @@ define([
   'underscore',
   'backbone',
   'async',
-  'jquery_dotdotdot',
   'utilities',
   'tag_config',
-  'popovers',
   'text!project_list_item',
   'text!task_list_item'
-], function ($, _, Backbone, async, dotdotdot, utils, TagConfig, Popovers, ProjectListItem, TaskListItem) {
-
-  var popovers = new Popovers();
+], function ($, _, Backbone, async, utils, TagConfig, ProjectListItem, TaskListItem) {
 
   var BrowseListView = Backbone.View.extend({
-
-    events: {
-      "mouseenter .project-people-div"  : popovers.popoverPeopleOn,
-      "click      .project-people-div"  : popovers.popoverClick
-    },
 
     initialize: function (options) {
       this.options = options;
@@ -55,8 +46,6 @@ define([
           compiledTemplate = _.template(TaskListItem, item);
         }
         this.$el.append(compiledTemplate);
-        popovers.popoverPeopleInit(".project-people-div");
-        $(".dotdotdot").dotdotdot();
       }
 
       return this;
