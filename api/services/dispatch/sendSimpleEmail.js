@@ -15,11 +15,12 @@ function transport () {
 
 // dispatch the email
 function send (locals, html, text, cb) {
+  var t = transport();
   if(sails.config.dkimEnabled)
   {
-    transport.useDKIM(sails.config.dkim);
+    t.useDKIM(sails.config.dkim);
   }
-  transport().sendMail(
+  t.sendMail(
   {
     from: locals.from,
     to: locals.to,
