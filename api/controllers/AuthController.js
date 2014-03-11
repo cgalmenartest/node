@@ -28,16 +28,25 @@ function authenticate(req, res, strategy, json) {
     {
       if ((err) || (!user))
       {
+        var message = info.message;
+        // if local strategy, don't show user what actually happened for security purposes
+        if (strategy === 'local') {
+          message = 'Invalid email address or password.'
+        }
         sails.log.debug('Authentication Error:', err, info);
         if (json === true) {
           res.send(403, {
             error: err,
-            message: info.message
+            message: message
           });
         } else {
           res.redirect('/auth');
         }
         return;
+      }
+
+      // process additional registration information if available
+      if (strategy === 'register') {
       }
 
       req.logIn(user, function(err)
@@ -98,6 +107,14 @@ module.exports = {
       json = true;
     }
     authenticate(req, res, 'local', json);
+  },
+  register: function(req, res) {
+    var json = false;
+    req.register = true;
+    if (req.param('json')) {
+      json = true;
+    }
+    authenticate(req, res, 'register', json);
   },
   oauth2: function(req, res) {
     processOAuth(req, res, 'oauth2');

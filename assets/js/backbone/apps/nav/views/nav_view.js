@@ -36,6 +36,19 @@ define([
         // trigger the login modal
         self.login(message);
       });
+
+      // update the navbar when the profile changes
+      this.listenTo(window.cache.userEvents, "user:profile:save", function (data) {
+        // reset the currentUser object
+        window.cache.currentUser = data;
+        // re-render the view
+        self.render();
+      });
+
+      // update the user's photo when they change it
+      this.listenTo(window.cache.userEvents, "user:profile:photo:save", function (url) {
+        $(".navbar-people").attr('src', url);
+      });
     },
 
     render: function () {

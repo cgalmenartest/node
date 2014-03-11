@@ -13,6 +13,8 @@ define([
   Application.Login = BaseController.extend({
 
     events: {
+      "click #register-cancel"   : "showLogin",
+      "click #login-register"    : "showRegister"
     },
 
     initialize: function ( options ) {
@@ -39,6 +41,7 @@ define([
         login: Login,
         message: this.options.message
       }).render();
+      this.$("#registration-view").hide();
       $("#login").modal('show');
 
       self.listenTo(window.cache.userEvents, "user:login", function (user) {
@@ -52,6 +55,22 @@ define([
           self.cleanup();
         }).modal('hide');
       });
+    },
+
+    showRegister: function (e) {
+      if (e.preventDefault) e.preventDefault();
+      this.$("#login-view").hide();
+      this.$("#login-footer").hide();
+      this.$("#registration-view").show();
+      this.$("#registration-footer").show();
+    },
+
+    showLogin: function (e) {
+      if (e.preventDefault) e.preventDefault();
+      this.$("#login-view").show();
+      this.$("#login-footer").show();
+      this.$("#registration-view").hide();
+      this.$("#registration-footer").hide();
     },
 
     // ---------------------

@@ -49,6 +49,7 @@ define([
       this.model.on("project:save:success", function (data) {
         self.render();
         $('#project-coremeta-success').show();
+        self.viewProject({});
       });
 
     },

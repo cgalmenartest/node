@@ -1,6 +1,11 @@
 module.exports = {
-  'username': 'foo',
-  'password': 'bar',
+  'username': 'tester1@midascrowd.com',
+  'password': 'TestTest123#',
+  // for the user.test.js suite
+  'testUser': {
+    'username': 'testuser@midascrowd.com',
+    'password': 'MidasTestM4$'
+  },
   'url': 'http://localhost:1337/api',
   'sails': {
       log: {

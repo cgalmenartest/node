@@ -12,6 +12,7 @@ require.config({
     'jquery_timeago'            : '../../vendor/jquery.timeago',
     'jquery_select2'            : '../../vendor/select2/select2',
     'jquery_timepicker'         : '../../vendor/jquery-timepicker/jquery.timepicker',
+    'jquery_dotdotdot'          : '../../vendor/jquery-dotdotdot/src/js/jquery.dotdotdot',
     'dropzone'                  : '../../vendor/dropzone-amd-module',
     'underscore'                : '../../vendor/underscore',
     'backbone'                  : '../../vendor/backbone',
@@ -169,6 +170,8 @@ require.config({
     // ----------
     'modal_component'           : '../components/modal',
     'modal_template'            : '../components/modal_template.html',
+    'modal_alert'               : '../components/modal_alert',
+    'modal_alert_template'      : '../components/modal_alert_template.html',
     'modal_wizard_component'    : '../components/modal_wizard',
     'modal_wizard_template'     : '../components/modal_wizard_template.html',
     'alert_template'            : '../components/alert_template.html',

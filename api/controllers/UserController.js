@@ -8,7 +8,8 @@ var async = require('async');
 var _ = require('underscore');
 var projUtils = require('../services/utils/project');
 var tagUtils = require('../services/utils/tag');
-var check = require('validator').check;
+var userUtils = require('../services/utils/user');
+var validator = require('validator');
 
 var update = function (req, res) {
   var user = req.user[0];
@@ -56,6 +57,8 @@ module.exports = {
    *
    * @params :id of the username to test, eg:
    *         user/username/:id such as user/username/foo
+   * @return true if the username is taken (can't be used),
+   *         false if the username is available
    */
   username: function (req, res) {
     // don't allow empty usernames
@@ -63,17 +66,15 @@ module.exports = {
       return res.send(true);
     }
     // only allow email usernames, so check if the email is valid
-    try {
-      check(req.route.params.id).isEmail();
-    }
-    catch (e) {
+    if (validator.isEmail(req.route.params.id) !== true) {
       return res.send(true);
     }
     // check if a user already has this email
-    User.findOneByUsername(req.route.params.id, function (err, user) {
+    userUtils.findUser(req.route.params.id, function (err, user) {
       if (err) { return res.send(400, {message:'Error looking up username.'}); }
-      if (user && req.user[0].id != user.id) return res.send(true);
-      return res.send(false);
+      if (!user) { return res.send(false); }
+      if (req.user && req.user[0].id == user.id) { return res.send(false); }
+      return res.send(true);
     });
   },
 

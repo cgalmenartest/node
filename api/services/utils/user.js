@@ -1,26 +1,70 @@
 var _ = require('underscore');
-var check = require('validator').check;
+var validator = require('validator');
 var async = require('async');
 var projUtils = require('./project');
 var tagUtils = require('./tag');
 
 module.exports = {
+
   /**
-   * Find or log in a user based on their username and password.
+   * Find a user by given username.  Looks up the user
+   * by username or by email address
+   *
+   * @param username
+   * @param done callback with the user object, or null if no user
+   *        format: done(err, user)
+   */
+  findUser: function (username, done) {
+    username = username.toLowerCase();
+    // Check if the username already exists
+    User.findOneByUsername(username, function (err, user) {
+      if (err) { return done(err, null); }
+      if (user) { return done(null, user); }
+      // user not found, try again by email address
+      UserEmail.findOneByEmail(username, function (err, userEmail) {
+        if (err) { return done(err, null); }
+        if (!user) { return done(null, null); }
+        // email address found; look up the user object
+        User.findOneById(userEmail.userId, function (err, user) {
+          if (err) { return done(err, null); }
+          return done(null, user);
+        });
+      });
+    });
+  },
+
+  /**
+   * Create a user based on their username and password.
    *
    * @param username
    * @param password will be bcrypt encrypted
    * @param done callback with form (null, user, error)
    */
   createLocalUser: function (username, password, done) {
+    var self = this;
+    // normalize username
     username = username.toLowerCase();
+    // ensure the username is a valid email address
+    if (validator.isEmail(username) !== true) {
+      return done(null, false, { message: 'Email address is not valid.' });
+    }
     // Check if the username already exists
-    User.findOneByUsername(username, function (err, user) {
+    this.findUser(username, function (err, user) {
       if (err) { return done(null, false, { message: 'Error looking up user' }); }
       // Look up user and check password hash
       var bcrypt = require('bcrypt');
       // The user doesn't exist, so create an account for them
       if (!user) {
+        // Check that the password meets validation rules
+        var rules = self.validatePassword(username, password);
+        var success = true;
+        _.each(_.values(rules), function (v) {
+          success = success && v;
+        });
+        if (success !== true) {
+          return done(null, false, { message: 'Password does not meet password rules.' });
+        }
+        // Encrypt the password
         bcrypt.hash(password, 10, function(err, hash) {
           // Create and store the user
           User.create({
@@ -28,7 +72,7 @@ module.exports = {
           }).done(function (err, user) {
             if (err) {
               sails.log.debug('User creation error:', err);
-              return done(null, false, { message: 'Unable to create new user'});
+              return done(null, false, { message: 'Unable to create new user. Please try again.'});
             }
             sails.log.debug('User Created:', user);
             var pwObj = {
@@ -37,44 +81,67 @@ module.exports = {
             };
             // Store the user's password with the bcrypt hash
             UserPassword.create(pwObj).done(function (err, pwObj) {
-              if (err) { return done(null, false, { message: 'Unable to store password'}); }
+              if (err) { return done(null, false, { message: 'Unable to store password.'}); }
               // if the username is an email address, store it
-              try {
-                check(username).isEmail();
-                var email = {
-                  userId: user['id'],
-                  email: username,
-                }
-                // Store the email address
-                UserEmail.create(email).done(function (err, email) {
-                  if (err) { return done(null, false, { message: 'Unable to store user email address.' }); }
-                  return done(null, user);
-                });
-              }
-              // email validation failed, proceed
-              catch (e) {
+              if (validator.isEmail(username) !== true) {
+                // email validation failed, proceed
                 return done(null, user);
               }
+              var email = {
+                userId: user['id'],
+                email: username,
+              }
+              // Store the email address
+              UserEmail.create(email).done(function (err, email) {
+                if (err) { return done(null, false, { message: 'Unable to store user email address.' }); }
+                return done(null, user);
+              });
             });
           });
         });
       } else {
+        return done(null, false, { message: 'User already exists. Please log in instead.' })
+      }
+    });
+  },
+
+  /**
+   * Find and log in a user based on their username and password.
+   *
+   * @param username
+   * @param password will be bcrypt encrypted
+   * @param done callback with form (null, user, error)
+   */
+  findLocalUser: function (username, password, done) {
+    // Check if the username already exists
+    this.findUser(username, function (err, user) {
+      if (err) { return done(null, false, { message: 'Error looking up user. Please try again.' }); }
+      // Look up user and check password hash
+      var bcrypt = require('bcrypt');
+      // The user doesn't exist, error out (they must register)
+      if (!user) {
+        return done(null, false, { message: 'Invalid email address or password.' });
+      } else {
         if (user.disabled === true) {
           sails.log.info('Disabled user login: ', user);
-          return done(null, false, { message: 'Invalid username or password.' });
+          return done(null, false, { message: 'Invalid email address or password.' });
         }
-        // The user exists so look up their password
-        UserPassword.findOneByUserId(user.id, function (err, pwObj) {
+        // The user exists so look up their password -- the last password is the valid one
+        UserPassword.find()
+        .where({ userId: user.id })
+        .sort({ createdAt: 'desc' })
+        .limit(1)
+        .exec(function (err, pwObj) {
           // If no password is set or there is an error, abort
-          if (err || !pwObj) { return done(null, false, { message: 'Invalid username or password.'}); }
+          if (err || !pwObj || pwObj.length == 0) { return done(null, false, { message: 'Invalid email address or password.'}); }
           // Compare the passwords to check if it is correct
-          bcrypt.compare(password, pwObj.password, function (err, res) {
+          bcrypt.compare(password, pwObj[0].password, function (err, res) {
             // Valid password
             if (res === true) {
               sails.log.debug('User Found:', user);
               user.passwordAttempts = 0;
               user.save(function (err) {
-                if (err) { return done(null, false, { message: 'An error occurred while logging on.' }); }
+                if (err) { return done(null, false, { message: 'An error occurred while logging on. Please try again.' }); }
                 return done(null, user);
               });
             }
@@ -82,8 +149,8 @@ module.exports = {
             else {
               user.passwordAttempts++;
               user.save(function (err) {
-                if (err) { return done(null, false, { message: 'An error occurred while logging on.' }); }
-                return done(null, false, { message: 'Invalid username or password.' });
+                if (err) { return done(null, false, { message: 'An error occurred while logging on. Please try again.' }); }
+                return done(null, false, { message: 'Invalid email address or password.' });
               });
             }
           });
@@ -318,5 +385,54 @@ module.exports = {
         });
       });
     });
+  },
+
+  /**
+   * Validate a password based on OWASP password rules.
+   * @param username the user's name or email
+   * @param password the user's proposed password
+   * @return an object returning keys set to true where the rule passes,
+   *         false if the rule failed.
+   */
+  validatePassword: function (username, password) {
+    var rules = {
+      username: false,
+      length: false,
+      upper: false,
+      lower: false,
+      number: false,
+      symbol: false
+    };
+    var _username = username.toLowerCase().trim();
+    var _password = password.toLowerCase().trim();
+    // check username is not the same as the password, in any case
+    if (_username != _password && _username.split('@',1)[0] != _password) {
+      rules['username'] = true;
+    }
+    // length > 8 characters
+    if (password && password.length >= 8) {
+      rules['length'] = true;
+    }
+    // Uppercase, Lowercase, and Numbers
+    for (var i = 0; i < password.length; i++) {
+      var test = password.charAt(i);
+      // from http://stackoverflow.com/questions/3816905/checking-if-a-string-starts-with-a-lowercase-letter
+      if (test === test.toLowerCase() && test !== test.toUpperCase()) {
+        // lowercase found
+        rules['lower'] = true;
+      }
+      else if (test === test.toUpperCase() && test !== test.toLowerCase()) {
+        rules['upper'] = true;
+      }
+      // from http://stackoverflow.com/questions/18082/validate-numbers-in-javascript-isnumeric
+      else if (!isNaN(parseFloat(test)) && isFinite(test)) {
+        rules['number'] = true;
+      }
+    }
+    // check for symbols
+    if (/.*[^\w\s].*/.test(password)) {
+      rules['symbol'] = true;
+    }
+    return rules;
   }
 };

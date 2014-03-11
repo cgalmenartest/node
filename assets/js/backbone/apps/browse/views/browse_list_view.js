@@ -4,19 +4,12 @@ define([
   'backbone',
   'async',
   'utilities',
-  'popovers',
+  'tag_config',
   'text!project_list_item',
   'text!task_list_item'
-], function ($, _, Backbone, async, utils, Popovers, ProjectListItem, TaskListItem) {
-
-  var popovers = new Popovers();
+], function ($, _, Backbone, async, utils, TagConfig, ProjectListItem, TaskListItem) {
 
   var BrowseListView = Backbone.View.extend({
-
-    events: {
-      "mouseenter .project-people-div"  : popovers.popoverPeopleOn,
-      "click      .project-people-div"  : popovers.popoverClick
-    },
 
     initialize: function (options) {
       this.options = options;
@@ -39,7 +32,9 @@ define([
       for (var l in this.options.collection) {
         var item = {
           item: this.options.collection[l],
-          user: window.cache.currentUser
+          user: window.cache.currentUser,
+          tagConfig: TagConfig,
+          tagShow: ['location', 'skill', 'topic', 'task-time-estimate', 'task-time-required']
         }
         if (this.options.collection[l].tags) {
           item.tags = this.organizeTags(this.options.collection[l].tags);
@@ -51,7 +46,6 @@ define([
           compiledTemplate = _.template(TaskListItem, item);
         }
         this.$el.append(compiledTemplate);
-        popovers.popoverPeopleInit(".project-people-div");
       }
 
       return this;
