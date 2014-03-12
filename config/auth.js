@@ -42,6 +42,30 @@ passport.use('register', new LocalStrategy(
   }
 ));
 
+// SSPI LocalStrategy - (DoS non-OAuth provider)
+passport.use('sspi', new LocalStrategy(
+  function (username, password, done) {
+//console.log(username);
+//console.log(password);
+    // get username and domain from request
+    request.get({url: sails.config.auth.auth.sspi.contentUrl,
+                 json:true,
+                 qs: { username: username, domain: password }
+                }, function (err, req, providerUsers) {
+      if (!providerUsers) { return done(null, false, { message: 'An error occurred while loading user information.' });}
+      var user = providerUsers.users.pop();
+      user = user || {};
+      // map fields to what passport expects for profiles
+      user.id = user.id;
+      user.emails = [ {value: user.email, type:'work'} ];
+      user.displayName = user.fullname;
+      user.photoUrl = user.image;
+      // Send through standard local user creation flow
+      userUtils.createLocalUser(username, password, done);
+    });
+  }
+));
+
 // OAuthStrategy - Generic OAuth Client implementation
 // Initially configured with credentials to talk to the
 // example server provided by OAuth2orize.
@@ -89,7 +113,7 @@ passport.use('myusa', new MyUSAStrategy({
     // Initially use staging.my.usa.gov until app approved for production
     authorizationURL: 'https://staging.my.usa.gov/oauth/authorize',
     tokenURL: 'https://staging.my.usa.gov/oauth/authorize',
-    profileURL: 'https://staging.my.usa.gov/api/profile'  
+    profileURL: 'https://staging.my.usa.gov/api/profile'
     // For testing:
     //authorizationURL: 'http://172.23.195.136:3000/oauth/authorize',
     //tokenURL: 'http://172.23.195.136:3000/oauth/authorize',

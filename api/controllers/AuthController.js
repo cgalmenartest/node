@@ -116,6 +116,13 @@ module.exports = {
     }
     authenticate(req, res, 'register', json);
   },
+  sspi: function(req, res) {
+    var json = false;
+    if (req.param('json')) {
+      json = true;
+    }
+    authenticate(req, res, 'sspi', json);
+  },
   oauth2: function(req, res) {
     processOAuth(req, res, 'oauth2');
   },
