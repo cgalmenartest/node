@@ -16,11 +16,11 @@ define([
 			var self = this;
 
 			this.listenTo(this, "profile:fetch", function (id) {
-				self.get(id);
+				self.remoteGet(id);
 			});
 		},
 
-    get: function (id) {
+    remoteGet: function (id) {
       var self = this;
       if (id) {
 	      this.set({ id: id });
