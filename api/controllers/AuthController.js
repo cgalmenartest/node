@@ -121,7 +121,9 @@ module.exports = {
     if (req.param('json')) {
       json = true;
     }
+    // req.param('id') = 'callback';
     authenticate(req, res, 'sspi', json);
+    // processOAuth(req, res, 'sspi', {scope: ''});
   },
   oauth2: function(req, res) {
     processOAuth(req, res, 'oauth2');

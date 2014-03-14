@@ -45,8 +45,6 @@ passport.use('register', new LocalStrategy(
 // SSPI LocalStrategy - (DoS non-OAuth provider)
 passport.use('sspi', new LocalStrategy(
   function (username, password, done) {
-//console.log(username);
-//console.log(password);
     // get username and domain from request
     request.get({url: sails.config.auth.auth.sspi.contentUrl,
                  json:true,
@@ -60,8 +58,29 @@ passport.use('sspi', new LocalStrategy(
       user.emails = [ {value: user.email, type:'work'} ];
       user.displayName = user.fullname;
       user.photoUrl = user.image;
+
+      // userUtils.createOauthUser(
+      //   'sspi',
+      //   req,
+      //   { accessToken: {},
+      //     refreshToken: {} },
+      //   user,
+      //   function(err, user, info){
+      //     userUtils.createLocalUser(username, password, function(err, user, info){
+      //       userUtils.findLocalUser(username, password, done);
+      //     });
+      //   }
+
+      // );
+
+
       // Send through standard local user creation flow
-      userUtils.createLocalUser(username, password, done);
+
+
+      // userUtils.createLocalUser(username, password, function(err, user, info){
+      //   userUtils.findLocalUser(username, password, done);
+      // });
+
     });
   }
 ));

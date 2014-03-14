@@ -40,23 +40,296 @@ module.exports = {
    * @param password will be bcrypt encrypted
    * @param done callback with form (null, user, error)
    */
-  createLocalUser: function (username, password, done) {
+  createLocalUser: function (username, password, userData, done) {
     var self = this;
-    // normalize username
-    username = username.toLowerCase();
+    var updateAction = true;
+    if(typeof userData == 'function'){
+      done = userData;
+      userData = {};
+      updateAction = false;
+    }
+    // userData.username = username;
+    // userData.password = password;
+
+    userData = {
+      name: userData.displayName,
+      photoUrl: userData.photoUrl,
+      title: userData.title,
+      bio: userData.bio
+    };
+    if (userData.emails && (userData.emails.length > 0)) {
+      // normalize username
+      userData.username = userData.emails[0].value.toLowerCase();
+    }
+    else {
+      // normalize username
+      userData.username = username.toLowerCase();
+    }
+    userData.password = password;
+
+
     // ensure the username is a valid email address
-    if (validator.isEmail(username) !== true) {
+    if (validator.isEmail(userData.username) !== true) {
       return done(null, false, { message: 'Email address is not valid.' });
     }
+
+    // Utility function that completes the local user creation/update process
+    // Stores the credentials and the user's other profile data
+    function user_cb(err, user) {
+      var creds = {
+        userId: user['id']
+      };
+      // store login credentials
+      if (userData.emails && (userData.emails.length > 0)) {
+        var email = {
+          userId: user['id'],
+          email: userData.emails[0].value.toLowerCase(),
+        };
+        UserEmail.findOne(email, function (err, storedEmail) {
+          if (storedEmail) { return done(null, user); }
+          UserEmail.create(email).done(function (err, email) {
+            if (err) { return done(null, false, { message: 'Unable to store user email address.' }); }
+            sails.log.debug('Created Email:', email);
+            return done(null, user);
+          });
+        });
+      } else {
+        return done(null, user);
+      }
+    };
+
+    // Takes the userData object and creates a tag object from it
+    function create_tag_obj (userData) {
+      var result = {};
+      if (userData.skill) {
+        result.skill = userData.skill;
+      }
+      if (userData.topic) {
+        result.topic = userData.topic;
+      }
+      if (userData.location) {
+        result.location = [ userData.location ];
+      }
+      if (userData.company) {
+        result.agency = [ userData.company ];
+      }
+      return result;
+    };
+
     // Check if the username already exists
-    this.findUser(username, function (err, user) {
+    this.findUser(userData.username, function (err, user) {
       if (err) { return done(null, false, { message: 'Error looking up user' }); }
       // Look up user and check password hash
       var bcrypt = require('bcrypt');
+
+      // if this user is logged in, then we're adding a new
+      // service for them.  Update their user model fields if they
+      // aren't already set.
+      if(req.user){
+        if (req.user[0].disabled === true) {
+          return done(null, false, { message: 'Your account is disabled.' });
+        }
+        var update = false;
+        if (!req.user[0].photoId && !req.user[0].photoUrl && userData.photoUrl) {
+          req.user[0].photoUrl = userData.photoUrl;
+          update = true;
+        }
+        if (!req.user[0].bio && userData.bio) {
+          req.user[0].bio = userData.bio;
+          update = true;
+        }
+        if (!req.user[0].title && userData.title) {
+          req.user[0].title = userData.title;
+          update = true;
+        }
+        if (update === true) {
+          req.user[0].save(function (err) {
+            if (err) { return done(null, false, { message: 'Unable to update user information.' }); }
+            user_cb(null, req.user[0]);
+          });
+        } else if(updateAction){
+          var tags = create_tag_obj(userData);
+          // Don't update the user's tags for now; need to deal with
+          // tags that exist, and replacements.
+          // tagUtils.findOrCreateTags(req.user[0].id, tags, function (err, newTags) {
+            user_cb(null, req.user[0]);
+          // });
+        }
+        else{
+          return done(null, false, { message: 'User already exists. Please log in instead.' });
+        }
+      }
+      else{
+        User.create(user).done(function (err, user) {
+          sails.log.debug('Created User: ', user);
+          if (err) { return done(null, false, { message: 'Unable to create user.' }); }
+          var tags = create_tag_obj(userData);
+          // Update the user's tags
+          tagUtils.findOrCreateTags(user.id, tags, function (err, newTags) {
+            user_cb(null, user);
+          });
+        });
+      }
+
+
+
+
+
+
+
+
+
+
+
+      // // If the user's authentication tokens don't exist
+      // // then add the authentication tokens and update the user profile
+      // if (userAuth.length === 0) {
+      //   // var user = {
+      //   //   name: providerUser.displayName,
+      //   //   photoUrl: providerUser.photoUrl,
+      //   //   title: providerUser.title,
+      //   //   bio: providerUser.bio
+      //   // };
+      //   // if (providerUser.emails && (providerUser.emails.length > 0)) {
+      //   //   user.username = providerUser.emails[0].value.toLowerCase();
+      //   // }
+
+      //   // // Utility function that completes the oauth user creation/update process
+      //   // // Stores the credentials and the user's other profile data
+      //   // function user_cb(err, user) {
+      //   //   var creds = {
+      //   //     userId: user['id'],
+      //   //     provider: provider,
+      //   //     providerId: providerUser.id,
+      //   //     accessToken: tokens.accessToken,
+      //   //     refreshToken: tokens.refreshToken,
+      //   //   };
+      //   //   // store login credentials
+      //   //   UserAuth.create(creds).done(function (err, creds) {
+      //   //     if (err) { return done(null, false, { message: 'Unable to store user credentials.' }); }
+      //   //     sails.log.debug('Created Credentials:', creds);
+      //   //     // Store emails if they're available
+      //   //     if (providerUser.emails && (providerUser.emails.length > 0)) {
+      //   //       var email = {
+      //   //         userId: user['id'],
+      //   //         email: providerUser.emails[0].value.toLowerCase(),
+      //   //       };
+      //   //       UserEmail.findOne(email, function (err, storedEmail) {
+      //   //         if (storedEmail) { return done(null, user); }
+      //   //         UserEmail.create(email).done(function (err, email) {
+      //   //           if (err) { return done(null, false, { message: 'Unable to store user email address.' }); }
+      //   //           sails.log.debug('Created Email:', email);
+      //   //           return done(null, user);
+      //   //         });
+      //   //       });
+      //   //     } else {
+      //   //       return done(null, user);
+      //   //     }
+      //   //   });
+      //   // };
+
+      //   // // Takes the providerUser object and creates a tag object from it
+      //   // function create_tag_obj (providerUser) {
+      //   //   var result = {};
+      //   //   if (providerUser.skill) {
+      //   //     result.skill = providerUser.skill;
+      //   //   }
+      //   //   if (providerUser.topic) {
+      //   //     result.topic = providerUser.topic;
+      //   //   }
+      //   //   if (providerUser.location) {
+      //   //     result.location = [ providerUser.location ];
+      //   //   }
+      //   //   if (providerUser.company) {
+      //   //     result.agency = [ providerUser.company ];
+      //   //   }
+      //   //   return result;
+      //   // };
+
+      //   // if this user is logged in, then we're adding a new
+      //   // service for them.  Update their user model fields if they
+      //   // aren't already set.
+      //   if (req.user) {
+      //     // if (req.user[0].disabled === true) {
+      //     //   return done(null, false, { message: 'Your account is disabled.' });
+      //     // }
+      //     // var update = false;
+      //     // if (!req.user[0].photoId && !req.user[0].photoUrl && providerUser.photoUrl) {
+      //     //   req.user[0].photoUrl = providerUser.photoUrl;
+      //     //   update = true;
+      //     // }
+      //     // if (!req.user[0].bio && providerUser.bio) {
+      //     //   req.user[0].bio = providerUser.bio;
+      //     //   update = true;
+      //     // }
+      //     // if (!req.user[0].title && providerUser.title) {
+      //     //   req.user[0].title = providerUser.title;
+      //     //   update = true;
+      //     // }
+      //     // if (update === true) {
+      //     //   req.user[0].save(function (err) {
+      //     //     if (err) { return done(null, false, { message: 'Unable to update user information.' }); }
+      //     //     user_cb(null, req.user[0]);
+      //     //   });
+      //     // } else {
+      //     //   var tags = create_tag_obj(providerUser);
+      //     //   // Don't update the user's tags for now; need to deal with
+      //     //   // tags that exist, and replacements.
+      //     //   // tagUtils.findOrCreateTags(req.user[0].id, tags, function (err, newTags) {
+      //     //     user_cb(null, req.user[0]);
+      //     //   // });
+      //     // }
+      //   }
+      //   // create user because the user is not logged in
+      //   else {
+      //     // User.create(user).done(function (err, user) {
+      //     //   sails.log.debug('Created User: ', user);
+      //     //   if (err) { return done(null, false, { message: 'Unable to create user.' }); }
+      //     //   var tags = create_tag_obj(providerUser);
+      //     //   // Update the user's tags
+      //     //   tagUtils.findOrCreateTags(user.id, tags, function (err, newTags) {
+      //     //     user_cb(null, user);
+      //     //   });
+      //     // });
+      //   }
+      // }
+      // // The user has authentication tokens already for this provider, update them.
+      // else {
+      //   userAuth = userAuth[0];
+      //   // Update access and refresh tokens
+      //   userAuth.accessToken = tokens.accessToken;
+      //   userAuth.refreshToken = tokens.refreshToken;
+      //   userAuth.save(function (err) {
+      //     if (err) { return done(null, false, { message: 'Unable to update user credentials.' }); }
+      //     // acquire user model and authenticate
+      //     User.findOneById(userAuth['userId'], function (err, user) {
+      //       if (!user || err) { return done(null, false, { message: 'Error looking up user.' }); }
+      //       sails.log.debug('User Found:', user);
+      //       return done(null, user);
+      //     });
+      //   });
+      // }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       // The user doesn't exist, so create an account for them
       if (!user) {
         // Check that the password meets validation rules
-        var rules = self.validatePassword(username, password);
+        var rules = self.validatePassword(userData.username, userData.password);
         var success = true;
         _.each(_.values(rules), function (v) {
           success = success && v;
@@ -65,7 +338,17 @@ module.exports = {
           return done(null, false, { message: 'Password does not meet password rules.' });
         }
         // Encrypt the password
-        bcrypt.hash(password, 10, function(err, hash) {
+        bcrypt.hash(userData.password, 10, function(err, hash) {
+          // var user = {
+          //   name: userData.displayName,
+          //   photoUrl: userData.photoUrl,
+          //   title: userData.title,
+          //   bio: userData.bio
+          // };
+          // if (userData.emails && (userData.emails.length > 0)) {
+          //   user.username = userData.emails[0].value.toLowerCase();
+          // }
+
           // Create and store the user
           User.create({
             username: username,
@@ -100,7 +383,7 @@ module.exports = {
           });
         });
       } else {
-        return done(null, false, { message: 'User already exists. Please log in instead.' })
+        return done(null, false, { message: 'User already exists. Please log in instead.' });
       }
     });
   },
@@ -112,7 +395,11 @@ module.exports = {
    * @param password will be bcrypt encrypted
    * @param done callback with form (null, user, error)
    */
-  findLocalUser: function (username, password, done) {
+  findLocalUser: function (username, password, userData, done) {
+    if(typeof userData == 'function'){
+      done = userData;
+      userData = null;
+    }
     // Check if the username already exists
     this.findUser(username, function (err, user) {
       if (err) { return done(null, false, { message: 'Error looking up user. Please try again.' }); }
