@@ -12,8 +12,9 @@
         <% } else { %>
         <div id="project-header" style="background-image:url('/images/project_default.png');">
         <% } %>
-          <div id="fileupload" class="btn btn-c2" <% if (!data.isOwner || !edit) { %>style="display:none;"<% } %>>
+          <div class="btn btn-c2 fileinput-button" <% if (!data.isOwner || !edit) { %>style="display:none;"<% } %>>
             <i class="icon-camera icon-large" title="Change Cover Photo" id="fileupload-icon"></i>
+            <input id="fileupload" type="file" name="files[]" multiple="">
           </div>
         </div>
         <div id="file-upload-progress-container" style="display: none;" class="progress progress-striped active">

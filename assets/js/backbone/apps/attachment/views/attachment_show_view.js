@@ -60,42 +60,42 @@ define([
         // clickable: ['#fileupload', '#fileupload-icon']
       });
 
-      myDropzone.on("addedfile", function(file) {
-        // no need for the dropzone preview
-        $('.dz-preview').hide();
-      });
+      // myDropzone.on("addedfile", function(file) {
+      //   // no need for the dropzone preview
+      //   $('.dz-preview').hide();
+      // });
 
-      myDropzone.on("sending", function(file, xhr, formData) {
-        $('.attachment-fileupload > .progress').show();
-      });
+      // myDropzone.on("sending", function(file, xhr, formData) {
+      //   $('.attachment-fileupload > .progress').show();
+      // });
 
-      // Show the progress bar
-      myDropzone.on("uploadprogress", function(file, progress, bytesSent) {
-        $('.attachment-fileupload > .progress-bar').css(
-          'width',
-          progress + '%'
-        );
-      });
+      // // Show the progress bar
+      // myDropzone.on("uploadprogress", function(file, progress, bytesSent) {
+      //   $('.attachment-fileupload > .progress-bar').css(
+      //     'width',
+      //     progress + '%'
+      //   );
+      // });
 
-      myDropzone.on("success", function(file, data) {
-        // store id in the database with the file
-        var aData = {
-          fileId: data.id
-        };
-        aData[self.options.target + 'Id'] = self.options.id;
-        $.ajax({
-          url: '/api/attachment',
-          type: 'POST',
-          data: JSON.stringify(aData),
-          dataType: 'json',
-          contentType: 'application/json'
-        }).done(function (attachment) {
-          $('.attachment-fileupload > .progress').hide();
-          self.renderNewAttachment(data, attachment);
-        });
-      });
+      // myDropzone.on("success", function(file, data) {
+      //   // store id in the database with the file
+      //   var aData = {
+      //     fileId: data.id
+      //   };
+      //   aData[self.options.target + 'Id'] = self.options.id;
+      //   $.ajax({
+      //     url: '/api/attachment',
+      //     type: 'POST',
+      //     data: JSON.stringify(aData),
+      //     dataType: 'json',
+      //     contentType: 'application/json'
+      //   }).done(function (attachment) {
+      //     $('.attachment-fileupload > .progress').hide();
+      //     self.renderNewAttachment(data, attachment);
+      //   });
+      // });
 
-      myDropzone.on("thumbnail", function(file) { });
+      // myDropzone.on("thumbnail", function(file) { });
     },
 
     render: function () {

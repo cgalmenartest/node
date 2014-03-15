@@ -7,6 +7,7 @@
 var fs = require('fs');
 var gm = require('gm');
 var _ = require('underscore');
+var async = require('async');
 
 module.exports = {
   find: function(req, res) {
@@ -49,60 +50,84 @@ module.exports = {
     // Create only accepts post
     if (req.route.method != 'post') { return res.send(400, {message:'Unsupported operation.'}) }
     // If a file wasn't included, abort.
-    if (!req.files.file) { return res.send(400, {message:'Must provide file data.'})}
-    // Read the temporary file
-    fs.readFile(req.files.file.path, function (err, fdata) {
-      if (err || !fdata) { return res.send(400, {message:'Error storing file.'}) }
-      // Create a file object to put in the database.
-      sails.log.debug('File', req.files.file);
-      var f = {
-        userId: req.user[0].id,
-        name: req.files.file.name,
-        mimeType: req.files.file.type || req.files.file.headers['content-type'],
-        size: fdata.length,
-        data: fdata
-      }
-      // if the type of the file should be a square image
-      // resize the image before storing it.
-      if (req.param('type') == 'image_square') {
-        gm(f.data, 'photo.jpg')
-        .size(function (err, size) {
-          if (err || !size) {
-            return res.send(400, { message: 'Error with file: it is probably not an image. ', error: err });
-          }
-          if (size.width == size.height) {
-            sails.log.debug('Create File:', f);
-            File.create(f, function(err, newFile) {
-              if (err || !newFile) { return res.send(400, { message:'Error storing file.', error: err }); }
-              delete newFile['data'];
-              return res.send(newFile);
-            });
-            return;
-          }
-          var newSize = Math.min(size.width, size.height);
+    sails.log.debug('Files:',req.files);
+    sails.log.debug('Param:',req.params);
+    sails.log.debug('Body: ',req.body);
+    if (!req.files || req.files.length === 0) { return res.send(400, {message:'Must provide file data.'})}
+
+    var results = [];
+
+    var processFile = function (upload, done) {
+      // Read the temporary file
+      sails.log.debug('processing...', upload);
+      fs.readFile(upload.path, function (err, fdata) {
+        if (err || !fdata) { return done({message:'Error storing file.'}); }
+        // Create a file object to put in the database.
+        var f = {
+          userId: req.user[0].id,
+          name: upload.name,
+          mimeType: upload.type || upload.headers['content-type'],
+          size: fdata.length,
+          data: fdata
+        };
+        // if the type of the file should be a square image
+        // resize the image before storing it.
+        if (req.param('type') == 'image_square') {
           gm(f.data, 'photo.jpg')
-          .crop(newSize, newSize, ((size.width - newSize) / 2), ((size.height - newSize) / 2))
-          .toBuffer(function (err, buffer) {
-            f.data = buffer;
-            f.size = buffer.length;
-            sails.log.debug('Create File:', f);
-            File.create(f, function(err, newFile) {
-              if (err || !newFile) { return res.send(400, { message:'Error storing file.', error: err }); }
-              delete newFile['data'];
-              return res.send(newFile);
+          .size(function (err, size) {
+            if (err || !size) {
+              return done({ message: 'Error with file: it is probably not an image. ', error: err });
+            }
+            if (size.width == size.height) {
+              sails.log.debug('Create File:', f);
+              File.create(f, function(err, newFile) {
+                if (err || !newFile) { return done({ message:'Error storing file.', error: err }); }
+                delete newFile['data'];
+                results.push(newFile);
+                return done();
+              });
+              return;
+            }
+            var newSize = Math.min(size.width, size.height);
+            gm(f.data, 'photo.jpg')
+            .crop(newSize, newSize, ((size.width - newSize) / 2), ((size.height - newSize) / 2))
+            .toBuffer(function (err, buffer) {
+              f.data = buffer;
+              f.size = buffer.length;
+              sails.log.debug('Create File:', f);
+              File.create(f, function(err, newFile) {
+                if (err || !newFile) { return done({ message:'Error storing file.', error: err }); }
+                delete newFile['data'];
+                results.push(newFile);
+                return done();
+              });
             });
           });
-        });
-      } else {
-        sails.log.debug('Create File:', f);
-        File.create(f, function(err, newFile) {
-          if (err || !newFile) { return res.send(400, { message:'Error storing file.', error: err }); }
-          delete newFile['data'];
-          return res.send(newFile);
-        });
-      }
+        } else {
+          sails.log.debug('Create File:', f);
+          File.create(f, function(err, newFile) {
+            if (err || !newFile) { return done({ message:'Error storing file.', error: err }); }
+            delete newFile['data'];
+            results.push(newFile);
+            return done();
+          });
+        }
+      });
+    };
 
+    async.each(req.files.files, processFile, function (err) {
+      if (err) {
+        return res.send(400, err);
+      }
+      sails.log.debug('Results:', results);
+      res.set('Content-Type', 'text/html');
+      var wrapper = '<textarea data-type="application/json">';
+      wrapper += JSON.stringify(results);
+      wrapper += '</textarea>';
+      sails.log.debug(wrapper);
+      return res.send(wrapper);
     });
+
   },
 
   // XXX TODO: Remove before release/production.
