@@ -69,35 +69,35 @@ define([
     initializeFileUpload: function () {
       var self = this;
 
-      var myDropzone = new dropzone("#fileupload", {
-        url: "/api/file/create",
-        clickable: ['#fileupload', '#fileupload-icon'],
-        acceptedFiles: 'image/*,.jpg,.png,.gif'
+      $('#fileupload').fileupload({
+          url: "/api/file/create",
+          dataType: 'text',
+          acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+          formData: { 'type': 'image_square' },
+          add: function (e, data) {
+            $('#file-upload-progress-container').show();
+            data.submit();
+          },
+          progressall: function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('#file-upload-progress').css(
+              'width',
+              progress + '%'
+            );
+          },
+          done: function (e, data) {
+            // for IE8/9 that use iframe
+            if (data.dataType == 'iframe text') {
+              var result = JSON.parse(data.result);
+            }
+            // for modern XHR browsers
+            else {
+              var result = JSON.parse($(data.result).text());
+            }
+            self.model.trigger("profile:updateWithPhotoId", result[0]);
+          }
       });
 
-      myDropzone.on("addedfile", function(file) {
-        // no need for the dropzone preview
-        $('.dz-preview').hide();
-      });
-
-      myDropzone.on("sending", function(file, xhr, formData) {
-        formData.append('type', 'image_square');
-        $('#file-upload-progress-container').show();
-      });
-
-      // Show the progress bar
-      myDropzone.on("uploadprogress", function(file, progress, bytesSent) {
-        $('#file-upload-progress').css(
-          'width',
-          progress + '%'
-        );
-      });
-
-      myDropzone.on("success", function(file, data) {
-        self.model.trigger("profile:updateWithPhotoId", data);
-      });
-
-      myDropzone.on("thumbnail", function(file) { });
     },
 
     updateProfileEmail: function(){
