@@ -50,16 +50,12 @@ module.exports = {
     // Create only accepts post
     if (req.route.method != 'post') { return res.send(400, {message:'Unsupported operation.'}) }
     // If a file wasn't included, abort.
-    sails.log.debug('Files:',req.files);
-    sails.log.debug('Param:',req.params);
-    sails.log.debug('Body: ',req.body);
     if (!req.files || req.files.length === 0) { return res.send(400, {message:'Must provide file data.'})}
 
     var results = [];
 
     var processFile = function (upload, done) {
       // Read the temporary file
-      sails.log.debug('processing...', upload);
       fs.readFile(upload.path, function (err, fdata) {
         if (err || !fdata) { return done({message:'Error storing file.'}); }
         // Create a file object to put in the database.
@@ -119,44 +115,14 @@ module.exports = {
       if (err) {
         return res.send(400, err);
       }
-      sails.log.debug('Results:', results);
       res.set('Content-Type', 'text/html');
+      // Wrap in HTML so IE8/9 can process it; can't accept json directly
       var wrapper = '<textarea data-type="application/json">';
       wrapper += JSON.stringify(results);
       wrapper += '</textarea>';
-      sails.log.debug(wrapper);
       return res.send(wrapper);
     });
 
   },
 
-  // XXX TODO: Remove before release/production.
-  // Test function that puts a file from /tmp/binary.png into the database
-  // For testing, just an easy why to put something in the DB.
-  test: function(req, res) {
-    sails.log.debug('test');
-    var f = { userId: 1,
-              mimeType: 'image/png'
-            };
-    fs.readFile('/tmp/binary.png', function (err, data) {
-      f.size = data.length;
-      f.data = data;
-      sails.log.debug(f);
-      File.create(f).done(function (err, fi) {
-        sails.log.debug(err);
-        sails.log.debug(fi);
-        sails.log.debug(Buffer.isBuffer(fi.data));
-        sails.log.debug(fi.data.length);
-        res.set('Content-Type', fi.mimeType);
-        res.send(fi.data);
-      });
-    });
-  },
-
-  // XXX TODO: Remove before release/production.
-  // Sample HTML form to upload a file and test the create function.
-  // Make sure you're logged in!
-  testupload: function(req, res) {
-    res.view();
-  }
 };
