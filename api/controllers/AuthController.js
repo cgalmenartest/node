@@ -49,8 +49,20 @@ function authenticate(req, res, strategy, json) {
       if (strategy === 'register') {
       }
 
+      // process additional sspi information if available
+      if (strategy === 'sspi') {
+        if (json === true) {
+          res.send(userUtils.cleanUser(user));
+        }
+        else {
+          res.redirect('/projects');
+        }
+        return;
+      }
+
       req.logIn(user, function(err)
       {
+        sails.log.debug(user);
         if (err)
         {
           sails.log.debug('Authentication Error:', err, info);
@@ -118,12 +130,11 @@ module.exports = {
   },
   sspi: function(req, res) {
     var json = false;
+    req.register = true;
     if (req.param('json')) {
       json = true;
     }
-    // req.param('id') = 'callback';
     authenticate(req, res, 'sspi', json);
-    // processOAuth(req, res, 'sspi', {scope: ''});
   },
   oauth2: function(req, res) {
     processOAuth(req, res, 'oauth2');
