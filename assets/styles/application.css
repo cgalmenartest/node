@@ -682,7 +682,7 @@ body > .popover {
 	margin-bottom: 0;
 }
 
-#fileupload {
+.fileinput-button {
 	position: absolute;
 	bottom: 10px;
 	right: 10px;

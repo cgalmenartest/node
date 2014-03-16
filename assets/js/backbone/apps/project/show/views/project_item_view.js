@@ -85,7 +85,7 @@ define([
       }
     },
 
-    initializeTags: function() {
+    initializeTags: function () {
       this.tagView = new TagShowView({
         model: this.model,
         el: '.tag-wrapper',

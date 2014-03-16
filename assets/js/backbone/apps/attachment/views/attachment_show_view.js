@@ -18,7 +18,7 @@ define([
   var AttachmentShowView = Backbone.View.extend({
 
     events: {
-      'click .file-delete'                : 'delete',
+      'click .file-delete'                : 'deleteAttachment',
       "mouseenter .project-people-div"    : popovers.popoverPeopleOn,
       "click .project-people-div"         : popovers.popoverClick,
     },
@@ -129,7 +129,7 @@ define([
       popovers.popoverPeopleInit(".project-people-div");
     },
 
-    delete: function (e) {
+    deleteAttachment: function (e) {
       if (e.preventDefault) { e.preventDefault(); }
       $.ajax({
         url: '/api/attachment/' + $(e.currentTarget).data('id'),

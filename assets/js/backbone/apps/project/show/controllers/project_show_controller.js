@@ -271,17 +271,6 @@ define([
       }
     },
 
-    delete: function (e) {
-      if (e.preventDefault) e.preventDefault();
-      var model, title;
-
-      attr = $(e.currentTarget).closest(".project-title").children(".project").text();
-      model = getCurrentModelFromFormAttributes(this.collection, attr);
-
-      model.destroy();
-      this.renderProjectCollectionView();
-    },
-
     // ---------------------
     //= Utility Methods
     // ---------------------

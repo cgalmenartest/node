@@ -16,8 +16,6 @@ define([
 
 	Application.Component.Modal = BaseComponent.extend({
 
-    template: _.template(ModalTemplate),
-
 		initialize: function (options) {
       this.options = options;
     },
@@ -28,7 +26,7 @@ define([
         modalTitle: this.options.modalTitle
       };
 
-      var compiledTemplate = this.template(data);
+      var compiledTemplate = _.template(ModalTemplate, data);
       this.$el.append(compiledTemplate);
 
       return this;
