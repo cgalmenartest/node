@@ -1,12 +1,11 @@
 define([
   'jquery',
   'async',
-  'dropzone',
   'underscore',
   'backbone',
   'utilities',
   'text!profile_activity_template'
-], function ($, async, dropzone, _, Backbone, utils, ActTemplate) {
+], function ($, async, _, Backbone, utils, ActTemplate) {
 
   var ProfileActivityView = Backbone.View.extend({
 

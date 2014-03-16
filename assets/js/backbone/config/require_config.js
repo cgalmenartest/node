@@ -16,7 +16,6 @@ require.config({
     'jquery_iframe'             : '../../vendor/jquery-file-upload/js/jquery.iframe-transport',
     'jquery.ui.widget'          : '../../vendor/jquery-file-upload/js/vendor/jquery.ui.widget',
     'jquery_fileupload'         : '../../vendor/jquery-file-upload/js/jquery.fileupload',
-    'dropzone'                  : '../../vendor/dropzone-amd-module',
     'underscore'                : '../../vendor/underscore',
     'backbone'                  : '../../vendor/backbone',
     'bootstrap'                 : '../../vendor/bootstrap',
