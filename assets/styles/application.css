@@ -682,7 +682,7 @@ body > .popover {
 	margin-bottom: 0;
 }
 
-.fileinput-button {
+#project-header > .fileinput-button {
 	position: absolute;
 	bottom: 10px;
 	right: 10px;
