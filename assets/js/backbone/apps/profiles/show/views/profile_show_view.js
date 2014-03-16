@@ -1,7 +1,8 @@
 define([
   'jquery',
   'async',
-  'dropzone',
+  'jquery_iframe',
+  'jquery_fileupload',
   'underscore',
   'backbone',
   'utilities',
@@ -11,7 +12,7 @@ define([
   'modal_component',
   'profile_activity_view',
   'profile_email_view'
-], function ($, async, dropzone, _, Backbone, utils,
+], function ($, async, jqIframe, jqFU, _, Backbone, utils,
   TagShowView, ProfileTemplate, EmailTemplate, ModalComponent, PAView, EmailFormView) {
 
   var ProfileShowView = Backbone.View.extend({
