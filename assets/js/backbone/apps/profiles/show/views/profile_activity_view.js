@@ -15,7 +15,6 @@ define([
 
     initialize: function (options) {
       this.options = options;
-      // this.render();
     },
 
     render: function () {
