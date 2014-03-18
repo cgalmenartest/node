@@ -6,8 +6,9 @@ require.config({
     // ----------
     //= Vendor
     // ----------
-    'text'                      : '../../vendor/text',
     'jquery'                    : '../../vendor/jquery',
+    'text'                      : '../../vendor/text',
+    'json'                      : '../../vendor/requirejs-plugins/src/json',
     'moment'                    : '../../vendor/moment/moment',
     'jquery_timeago'            : '../../vendor/jquery.timeago',
     'jquery_select2'            : '../../vendor/select2/select2',
@@ -63,7 +64,7 @@ require.config({
     // ----------
     //= Login
     // ----------
-    'login_config'              : '../config/login',
+    'login_config'              : '../config/login.json',
     'login_view'                : '../apps/login/views/login_view',
     'login_template'            : '../apps/login/templates/login_template.html',
     'login_controller'          : '../apps/login/controllers/login_controller',
