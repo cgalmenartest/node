@@ -22,7 +22,12 @@ function authenticate(req, res, strategy, json) {
         res.redirect('/profile/edit');
       }
       return;
-    })(req, res);
+    })(req, res, function (err) {
+      if (err) {
+        sails.log.error('Authentication Error:', err);
+        return res.send(500, { message: "An internal error occurred while trying to authenticate.  Please try again later.", error: err });
+      }
+    });
   } else {
     passport.authenticate(strategy, function(err, user, info)
     {
@@ -73,7 +78,12 @@ function authenticate(req, res, strategy, json) {
         }
         return;
       });
-    })(req, res);
+    })(req, res, function (err) {
+      if (err) {
+        sails.log.error('Authentication Error:', err);
+        return res.send(500, { message: "An internal error occurred while trying to authenticate.  Please try again later.", error: err });
+      }
+    });
   }
 };
 
@@ -115,14 +125,12 @@ module.exports = {
       return res.send(403, { message: "Unsupported OAuth method." });
     };
     var config = sails.config.auth.config.config;
-    // TODO: catch the error:
-    // TypeError: Property 'next' of object #<Context> is not a function
-    try {
-      passport.authenticate(target, config[target].params || null)(req, res);
-    }
-    catch (e) {
-      res.send(500, { message: "An internal error occurred, please try again later." });
-    }
+    passport.authenticate(target, config[target].params || null)(req, res, function (err) {
+      if (err) {
+        sails.log.error('Authentication Error:', err);
+        return res.send(500, { message: "An internal error occurred while trying to authenticate.  Please try again later.", error: err });
+      }
+    });
   },
 
   /**
