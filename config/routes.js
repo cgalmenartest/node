@@ -37,11 +37,6 @@ module.exports.routes = {
     action: 'find'
   },
 
- '/test': {
-   controller: 'main',
-   action: 'test'
- },
-
   // These routes are for backbone push state to work
   '/projects': {
     controller: 'main',
@@ -75,14 +70,6 @@ module.exports.routes = {
     controller: 'main',
     action: 'find'
   }
-
-
-
-
-
-
-
-
 
   // // By default, your root route (aka home page) points to a view
   // // located at `views/home/index.ejs`
