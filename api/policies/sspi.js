@@ -27,7 +27,6 @@ module.exports = function sspi (req, res, next) {
     var domain = credentials.domain;
     var password = sails.config.auth.auth.sspi.globalPass;
 
-
     request.get(
       {
         url: 'http://localhost:1337/api/auth/sspi',

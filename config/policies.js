@@ -28,7 +28,7 @@ module.exports.policies = {
   },
 
   MainController : {
-    'find': ['sspi']
+    '*': ['sspi']
   },
 
   // Limit user controller view to just the /user endpoint
