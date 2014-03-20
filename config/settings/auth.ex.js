@@ -19,7 +19,7 @@ module.exports = {
       emailDomain : 'state.gov',
       header      : 'x_remote_user',
       globalPass  : 'AbAbAb12!@',
-      isEnabled   : true
+      isEnabled   : false
     }
   },
   config: config
