@@ -6,7 +6,7 @@ define([
   'utilities',
   'base_controller',
   'login_view',
-  'login_config',
+  'json!login_config',
   'modal_component'
 ], function ($, _, Backbone, Bootstrap, utils, BaseController, LoginView, Login, ModalComponent) {
 

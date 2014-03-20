@@ -24,10 +24,10 @@ define([
     },
 
     render: function () {
-      data = {
+      var data = {
         login: this.options.login,
         message: this.options.message
-      }
+      };
       var template = _.template(LoginTemplate, data);
       this.$el.html(template);
       return this;

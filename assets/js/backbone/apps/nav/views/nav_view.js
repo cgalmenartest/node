@@ -3,7 +3,7 @@ define([
   'underscore',
   'backbone',
   'utilities',
-  'login_config',
+  'json!login_config',
   'login_controller',
   'text!nav_template'
 ], function ($, _, Backbone, utils, Login, LoginController, NavTemplate) {

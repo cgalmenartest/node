@@ -97,6 +97,10 @@ define([
       } else {
         newNum--;
       }
+      // Don't allow race conditions to set the number of people below zero
+      if (newNum < 0) {
+        newNum = 0;
+      }
       $(numDiv).html(newNum);
       var textDiv = $(peopleDiv).children('.event-people-text')[0];
       if (newNum == 1) {

@@ -22,3 +22,6 @@
 [submodule "assets/js/vendor/jquery-file-upload"]
 	path = assets/js/vendor/jquery-file-upload
 	url = https://github.com/blueimp/jQuery-File-Upload.git
+[submodule "assets/js/vendor/requirejs-plugins"]
+	path = assets/js/vendor/requirejs-plugins
+	url = https://github.com/millermedeiros/requirejs-plugins.git
