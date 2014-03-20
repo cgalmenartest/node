@@ -19,7 +19,7 @@ define([
       });
 
       this.listenTo(this, "task:model:fetch", function (data) {
-        this.get(data);
+        this.remoteGet(data);
       });
 
       this.listenTo(this, "task:update", function (data) {
@@ -56,7 +56,7 @@ define([
       });
     },
 
-    get: function (id) {
+    remoteGet: function (id) {
       var self = this;
       this.set({ id: id });
       this.fetch({

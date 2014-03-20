@@ -16,23 +16,17 @@ define([
 
 	Application.Component.Modal = BaseComponent.extend({
 
-    template: _.template(ModalTemplate),
-
-		intialize: function (options) {
-      this.options = _.extend(this.defaults, options);
-      this.render();
+		initialize: function (options) {
+      this.options = options;
     },
 
     render: function () {
+      var data = {
+        id: this.options.id,
+        modalTitle: this.options.modalTitle
+      };
 
-      if (this.options) {
-        this.data = {
-          id: this.options.id,
-          modalTitle: this.options.modalTitle
-        }
-      }
-
-      var compiledTemplate = this.template(this.data);
+      var compiledTemplate = _.template(ModalTemplate, data);
       this.$el.append(compiledTemplate);
 
       return this;

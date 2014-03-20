@@ -19,3 +19,6 @@
 [submodule "assets/js/vendor/jquery-dotdotdot"]
 	path = assets/js/vendor/jquery-dotdotdot
 	url = https://github.com/BeSite/jQuery.dotdotdot.git
+[submodule "assets/js/vendor/jquery-file-upload"]
+	path = assets/js/vendor/jquery-file-upload
+	url = https://github.com/blueimp/jQuery-File-Upload.git

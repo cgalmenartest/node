@@ -682,7 +682,7 @@ body > .popover {
 	margin-bottom: 0;
 }
 
-#fileupload {
+#project-header > .fileinput-button {
 	position: absolute;
 	bottom: 10px;
 	right: 10px;
@@ -745,10 +745,14 @@ ul.tags > li {
 	margin-top: 7px;
 }
 
-a.like-button {
+.like-button {
 	font-size: 22px;
 	vertical-align: text-bottom;
 	text-decoration: none;
+}
+
+span.like-button > .gold {
+	color: #f2e187;
 }
 
 a.like-button:hover {

@@ -2,7 +2,8 @@ define([
   'jquery',
   'bootstrap',
   'underscore',
-  'dropzone',
+  'jquery_iframe',
+  'jquery_fileupload',
   'jquery_timeago',
   'backbone',
   'utilities',
@@ -10,7 +11,7 @@ define([
   'popovers',
   'text!attachment_item_template',
   'text!attachment_show_template'
-], function ($, Bootstrap, _, Dropzone, TimeAgo, Backbone, utils, async,
+], function ($, Bootstrap, _, jqIframe, jqFU, TimeAgo, Backbone, utils, async,
   Popovers, AITemplate, ASTemplate) {
 
   var popovers = new Popovers();
@@ -18,7 +19,7 @@ define([
   var AttachmentShowView = Backbone.View.extend({
 
     events: {
-      'click .file-delete'                : 'delete',
+      'click .file-delete'                : 'deleteAttachment',
       "mouseenter .project-people-div"    : popovers.popoverPeopleOn,
       "click .project-people-div"         : popovers.popoverClick,
     },
@@ -55,53 +56,56 @@ define([
     initializeFileUpload: function () {
       var self = this;
 
-      var myDropzone = new Dropzone(".attachment-filebtn", {
+
+      $('#attachment-fileupload').fileupload({
         url: "/api/file/create",
-        // clickable: ['#fileupload', '#fileupload-icon']
+        dataType: 'text',
+        acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+        add: function (e, data) {
+          $('#file-upload-progress-container').show();
+          data.submit();
+        },
+        progressall: function (e, data) {
+          var progress = parseInt(data.loaded / data.total * 100, 10);
+          $('.attachment-fileupload .progress-bar').css(
+            'width',
+            progress + '%'
+          );
+        },
+        done: function (e, data) {
+          // for IE8/9 that use iframe
+          if (data.dataType == 'iframe text') {
+            var result = JSON.parse(data.result);
+          }
+          // for modern XHR browsers
+          else {
+            var result = JSON.parse($(data.result).text());
+          }
+
+          // store id in the database with the file
+          var aData = {
+            fileId: result[0].id
+          };
+          aData[self.options.target + 'Id'] = self.options.id;
+          $.ajax({
+            url: '/api/attachment',
+            type: 'POST',
+            data: JSON.stringify(aData),
+            dataType: 'json',
+            contentType: 'application/json'
+          }).done(function (attachment) {
+            $('.attachment-fileupload > .progress').hide();
+            self.renderNewAttachment(result[0], attachment);
+          });
+        }
       });
 
-      myDropzone.on("addedfile", function(file) {
-        // no need for the dropzone preview
-        $('.dz-preview').hide();
-      });
-
-      myDropzone.on("sending", function(file, xhr, formData) {
-        $('.attachment-fileupload > .progress').show();
-      });
-
-      // Show the progress bar
-      myDropzone.on("uploadprogress", function(file, progress, bytesSent) {
-        $('.attachment-fileupload > .progress-bar').css(
-          'width',
-          progress + '%'
-        );
-      });
-
-      myDropzone.on("success", function(file, data) {
-        // store id in the database with the file
-        var aData = {
-          fileId: data.id
-        };
-        aData[self.options.target + 'Id'] = self.options.id;
-        $.ajax({
-          url: '/api/attachment',
-          type: 'POST',
-          data: JSON.stringify(aData),
-          dataType: 'json',
-          contentType: 'application/json'
-        }).done(function (attachment) {
-          $('.attachment-fileupload > .progress').hide();
-          self.renderNewAttachment(data, attachment);
-        });
-      });
-
-      myDropzone.on("thumbnail", function(file) { });
     },
 
     render: function () {
       data = {
         user: window.cache.currentUser
-      }
+      };
       var template = _.template(ASTemplate, data);
       this.$el.html(template);
       this.initializeFileUpload();
@@ -129,7 +133,7 @@ define([
       popovers.popoverPeopleInit(".project-people-div");
     },
 
-    delete: function (e) {
+    deleteAttachment: function (e) {
       if (e.preventDefault) { e.preventDefault(); }
       $.ajax({
         url: '/api/attachment/' + $(e.currentTarget).data('id'),

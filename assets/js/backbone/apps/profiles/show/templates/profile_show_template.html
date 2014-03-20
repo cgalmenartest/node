@@ -14,7 +14,10 @@
     <div class="row">
       <div class="col-md-12 box project-header-wrapper">
         <div id="project-header" style="background-image:url('/api/user/photo/<%- data.id %>');">
-          <div id="fileupload" class="btn btn-primary" <% if (!(data.isOwner && edit)) { %>style="display:none;"<% } %>><i class="icon-camera icon-large" title="Change Cover Photo" id="fileupload-icon"></i></div>
+          <div class="btn btn-c2 fileinput-button" <% if (!(data.isOwner && edit)) { %>style="display:none;"<% } %>>
+            <i class="icon-camera icon-large" title="Change Cover Photo" id="fileupload-icon"></i>
+            <input id="fileupload" type="file" name="files[]">
+          </div>
         </div>
         <div id="file-upload-progress-container" style="display: none;" class="progress progress-striped active">
           <div id="file-upload-progress" class="progress-bar" style="width: 0"></div>
@@ -146,7 +149,7 @@
           <div class="navbar-side <% if (data.isOwner) { %>border-bottom<% } %>">
             <ul class="nav nav-pills nav-stacked">
               <li>
-                <a href="#" id="email"><i class="icon icon-envelope-alt"></i> <span class="box-icon-text">Email</span></a>
+                <a href="#" id="email"><i class="icon icon-envelope-alt"></i> <span class="box-icon-text">Share</span></a>
               </li>
               <% if (data.isOwner) { %>
               <li>

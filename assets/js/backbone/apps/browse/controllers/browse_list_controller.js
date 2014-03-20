@@ -35,7 +35,8 @@ define([
 
     initialize: function ( options ) {
       var self = this;
-      this.target = this.options.target;
+      // this.options = options;
+      this.target = options.target;
       this.fireUpCollection();
       this.initializeView();
 
