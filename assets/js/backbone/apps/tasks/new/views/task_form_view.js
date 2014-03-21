@@ -18,8 +18,8 @@ define([
       "change #task-location" : "locationChange"
     },
 
-    initialize: function () {
-      this.options = _.extend(this.options, this.defaults);
+    initialize: function (options) {
+      this.options = _.extend(options, this.defaults);
       this.tasks = this.options.tasks;
       this.initializeSelect2Data();
       this.initializeListeners();

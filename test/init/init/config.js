@@ -1,7 +1,7 @@
 module.exports = {
   user: {
-    username: 'initialize',
-    password: 'initialize'
+    username: 'initialize@midascrowd.com',
+    password: 'initializeI1!'
   },
   tags: [
     {

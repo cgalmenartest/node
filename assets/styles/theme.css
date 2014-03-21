@@ -182,9 +182,14 @@ h6 {
   /*color: #007D3D;*/
 }
 
+.nav > li > a:hover.btn-c1, .nav > li > a:focus.btn-c1 {
+  background-color: #D63A25;
+}
+
 .btn-c2 {
   background-color: #39B7EA;
   color: #fff;
+  font-weight: bold;
 }
 
 .btn-c2:active,
@@ -200,6 +205,10 @@ h6 {
   color: #fff;
   /*border-color: #BE471B;*/
   /*color: #BE471B;*/
+}
+
+.nav > li > a:hover.btn-c2, .nav > li > a:focus.btn-c2 {
+  background-color: #297BB5;
 }
 
 .btn-default {
@@ -327,7 +336,7 @@ h6 {
   only screen and (-o-min-device-pixel-ratio: 3/2),
   only screen and (-webkit-min-device-pixel-ratio: 1.5),
   only screen and (min-device-pixel-ratio: 1.5),
-  only screen and (min-resolution: 144dpi) {
+  only screen and (min-resolution: 144dppx) {
     .navbar-brand {
          background-image: url(/images/logo@2x.png);
     }

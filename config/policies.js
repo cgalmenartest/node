@@ -33,7 +33,7 @@ module.exports.policies = {
     'photo': ['authenticated', 'requireId'],
     'info': ['authenticated', 'requireId'],
     'update': ['authenticated', 'requireUserId', 'requireId'],
-    'username': ['authenticated', 'requireUserId', 'requireId'],
+    'username': ['authenticated'],
     'find': ['authenticated', 'requireUserId'],
     'activities': ['authenticated'],
     'disable': ['authenticated', 'requireId', 'requireUserId'],

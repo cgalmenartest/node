@@ -167,9 +167,9 @@ var organizeTags = function (tags) {
  * Expects an object with currentTarget, eg { currentTarget: '#foo' }
  */
 var validate = function (e) {
-  var opts = $(e.currentTarget).data('validate').split(',');
+  var opts = String($(e.currentTarget).data('validate')).split(',');
   var val = $(e.currentTarget).val();
-  var parent = $(e.currentTarget).parents('.form-group')[0];
+  var parent = $(e.currentTarget).parents('.form-group, .checkbox')[0];
   var result = false;
   _.each(opts, function (o) {
     if (o == 'empty') {
@@ -178,6 +178,15 @@ var validate = function (e) {
         result = true;
       } else {
         $(parent).find('.error-empty').hide();
+      }
+      return;
+    }
+    if (o == 'checked') {
+      if ($(e.currentTarget).prop('checked') !== true) {
+        $(parent).find('.error-checked').show();
+        result = true;
+      } else {
+        $(parent).find('.error-checked').hide();
       }
       return;
     }
@@ -191,6 +200,25 @@ var validate = function (e) {
       }
       return;
     }
+    if (o == 'confirm') {
+      var id = $(e.currentTarget).attr('id');
+      var newVal = $('#' + id + '-confirm').val();
+      if (val != newVal) {
+        $(parent).find('.error-' + o).show();
+        result = true;
+      } else {
+        $(parent).find('.error-' + o).hide();
+      }
+      return;
+    }
+    if (o == 'button') {
+      if (!($($(parent).find("#" + $(e.currentTarget).attr('id') + "-button")[0]).hasClass('btn-success'))) {
+        $(parent).find('.error-' + o).show();
+        result = true;
+      } else {
+        $(parent).find('.error-' + o).hide();
+      }
+    }
   });
   if (result === true) {
     $(parent).addClass('has-error');
@@ -198,4 +226,46 @@ var validate = function (e) {
     $(parent).removeClass('has-error');
   }
   return result;
+};
+
+var validatePassword = function (username, password) {
+  var rules = {
+    username: false,
+    length: false,
+    upper: false,
+    lower: false,
+    number: false,
+    symbol: false
+  };
+  var _username = username.toLowerCase().trim();
+  var _password = password.toLowerCase().trim();
+  // check username is not the same as the password, in any case
+  if (_username != _password && _username.split('@',1)[0] != _password) {
+    rules['username'] = true;
+  }
+  // length > 8 characters
+  if (password && password.length >= 8) {
+    rules['length'] = true;
+  }
+  // Uppercase, Lowercase, and Numbers
+  for (var i = 0; i < password.length; i++) {
+    var test = password.charAt(i);
+    // from http://stackoverflow.com/questions/3816905/checking-if-a-string-starts-with-a-lowercase-letter
+    if (test === test.toLowerCase() && test !== test.toUpperCase()) {
+      // lowercase found
+      rules['lower'] = true;
+    }
+    else if (test === test.toUpperCase() && test !== test.toLowerCase()) {
+      rules['upper'] = true;
+    }
+    // from http://stackoverflow.com/questions/18082/validate-numbers-in-javascript-isnumeric
+    else if (!isNaN(parseFloat(test)) && isFinite(test)) {
+      rules['number'] = true;
+    }
+  }
+  // check for symbols
+  if (/.*[^\w\s].*/.test(password)) {
+    rules['symbol'] = true;
+  }
+  return rules;
 };

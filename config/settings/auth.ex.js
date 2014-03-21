@@ -1,4 +1,6 @@
- module.exports = {
+// import login configuration
+var config = require('../../assets/js/backbone/config/login.json');
+module.exports = {
   // AUTHENTICATION SETTINGS
   // Set your client ids private keys for each of your services
   auth: {
@@ -12,5 +14,6 @@
       clientSecret: process.env.MYUSA_CLIENT_SECRET || 'CLIENT_SECRET',
       callbackUrl : process.env.MYUSA_CALLBACK_URL || 'http://localhost/api/auth/myusa/callback'
     }
-  }
+  },
+  config: config
 };

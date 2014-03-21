@@ -10,8 +10,6 @@ define([
 
   var ProjectFormView = Backbone.View.extend({
 
-    template: _.template(ProjectFormTemplate),
-
     events: {
       "blur #project-form-title"      : "v",
       "blur #project-form-description": "v",
@@ -19,7 +17,8 @@ define([
     },
 
     render: function () {
-      this.$el.html(this.template);
+      var template = _.template(ProjectFormTemplate);
+      this.$el.html(template);
     },
 
     v: function (e) {

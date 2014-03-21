@@ -1,0 +1,30 @@
+{
+  "oauth": [
+    "linkedin",
+    "myusa"
+  ],
+  "config": {
+    "linkedin": {
+      "name": "LinkedIn",
+      "image": "/images/login/linkedin.png",
+      "endpoint": "/api/auth/oauth/linkedin",
+      "params": {"scope": ["r_basicprofile", "r_fullprofile", "r_emailaddress", "r_network"]}
+    },
+    "myusa": {
+      "name": "MyUSA",
+      "image": "/images/login/myusa.png",
+      "endpoint": "/api/auth/oauth/myusa",
+      "params": { "scope": "profile" }
+    }
+  },
+  "local": {
+    "enabled": true,
+    "expand": true,
+    "logout": true
+  },
+  "terms": {
+    "enabled": true,
+    "name": "Terms and Conditions",
+    "link": "https://18f.gsa.gov/"
+  }
+}

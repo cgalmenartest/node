@@ -10,7 +10,7 @@ module.exports.adapters = {
   // In-memory adapter for DEVELOPMENT ONLY
   // (data is NOT preserved when the server shuts down)
   memory: {
-    module: 'sails-dirty',
+    module: 'sails-disk',
     inMemory: true
   },
 
@@ -20,7 +20,7 @@ module.exports.adapters = {
   //        because of limitations in node-dirty
   //        See https://github.com/felixge/node-dirty/issues/34
   disk: {
-    module: 'sails-dirty',
+    module: 'sails-disk',
     filePath: './.tmp/dirty.db',
     inMemory: false
   },

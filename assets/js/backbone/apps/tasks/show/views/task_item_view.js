@@ -13,7 +13,8 @@ define([
 
     initialize: function (options) {
       var self = this;
-      this.model.trigger("task:model:fetch", this.options.id);
+      this.options = options;
+      this.model.trigger("task:model:fetch", options.id);
       this.listenTo(this.model, "task:model:fetch:success", function (model) {
         self.model = model;
         self.initializeTags(self);

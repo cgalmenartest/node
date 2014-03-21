@@ -127,8 +127,7 @@ function NotificationBuilder () {
               if(err){ sails.log.debug(err); done(null, [], audience); return false;}
               // get recipient list and return it in callback
               performServiceAction(
-                sails.services.notifications['audience'],
-                sails.config.notifications.audiences[audience].method,
+                sails.services.audience[sails.config.notifications.audiences[audience].method],
                 // pass in master settings and fields
                 { settings: settings, fields: fields },
                 function(err, recipients){
@@ -228,8 +227,7 @@ function NotificationBuilder () {
                   if(err){ sails.log.debug(err); done(null); return false;}
                   // get generated delivery content and return it in callback
                   performServiceAction(
-                    sails.services.notifications['preflight'],
-                    sails.config.notifications.preflights[preflightStrategy].method,
+                    sails.services.preflight[sails.config.notifications.preflights[preflightStrategy].method],
                     // master fields and settings passed in
                     { settings: settings, fields: fields },
                     function(err, content){
@@ -321,8 +319,7 @@ function NotificationBuilder () {
       function registerDeliveryAsSent (delivery, paramObject, done) {
         // perform delivery action and return response in callback
         performServiceAction(
-          sails.services.notifications['dispatcher'],
-          sails.config.notifications.deliveries[delivery.deliveryType].method,
+          sails.services.dispatch[sails.config.notifications.deliveries[delivery.deliveryType].method],
           paramObject,
           function (err, response) {
             if(err){ sails.log.debug(err); done(null); return false; }
@@ -405,8 +402,8 @@ function NotificationBuilder () {
      * @action - service method to call
      * @actionParams - object with fields and settings to be applied in the method
      */
-    function performServiceAction (actor, action, actionParams, done) {
-      actor[action](
+    function performServiceAction (actor, actionParams, done) {
+      actor.execute(
         actionParams.fields,
         actionParams.settings,
         done

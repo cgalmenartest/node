@@ -4,18 +4,24 @@ define([
   'underscore',
   'backbone',
   'utilities',
+  'jquery_dotdotdot',
+  'popovers',
   'tag_config',
   'browse_list_view',
   'text!browse_main_template',
   'text!browse_search_tag'
-], function ($, select2, _, Backbone, utils, TagConfig, BrowseListView, BrowseMainTemplate, BrowseSearchTag) {
+], function ($, select2, _, Backbone, utils, dotdotdot, Popovers, TagConfig, BrowseListView, BrowseMainTemplate, BrowseSearchTag) {
+
+  var popovers = new Popovers();
 
   var BrowseMainView = Backbone.View.extend({
 
     events: {
       "submit #search-form"       : "search",
       "click .search-tag-remove"  : "searchTagRemove",
-      "click .search-clear"       : "searchClear"
+      "click .search-clear"       : "searchClear",
+      "mouseenter .project-people-div"  : popovers.popoverPeopleOn,
+      "click      .project-people-div"  : popovers.popoverClick
     },
 
     initialize: function (options) {
@@ -139,9 +145,12 @@ define([
         el: '#browse-list',
         target: this.options.target,
         collection: collection,
-      }).render();
+      });
       $("#browse-search-spinner").hide();
       $("#browse-list").show();
+      this.browseListView.render();
+      $(".dotdotdot").dotdotdot();
+      popovers.popoverPeopleInit(".project-people-div");
     },
 
     searchExec: function (terms) {

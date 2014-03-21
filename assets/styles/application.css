@@ -148,12 +148,83 @@ input {
 	padding-right: 0;
 }
 
+.nopadding {
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.padding-bottom-none {
+	padding-bottom: 0;
+}
+
+.nomargin {
+	margin-left: 0;
+	margin-right: 0;
+}
+
+.margin-bottom-none {
+	margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+	.sm-nopadding {
+		padding-left: 0;
+		padding-right: 0;
+	}
+}
+@media (max-width: 992px) {
+	.md-nopadding {
+		padding-left: 0;
+		padding-right: 0;
+	}
+	.md-nopadding-left {
+		padding-left: 0;
+	}
+	.md-nopadding-right {
+		padding-right: 0;
+	}
+}
+
 .fullwidth {
 	width: 100%;
 }
 
 .align-right {
 	text-align: right;
+}
+
+input[type="submit"] {
+	font-weight: 700;
+}
+
+.btn.wizard-submit, .btn.wizard-forward {
+	font-weight: 700;
+}
+
+.modal-content {
+	border-radius: 3px;
+}
+
+.modal-footer-text {
+	font-size: 13px;
+	text-align: left;
+	color: #808080;
+}
+
+.modal-footer-text > a {
+	text-decoration: none;
+	color: #808080;
+}
+
+.modal-footer-text > a:hover {
+	color: #303030;
+	text-decoration: underline;
+}
+
+.modal-footer-grey {
+	background-color: #e9e9e9;
+	border-top-color: #c0c0c0;
+	border-radius: 0 0 3px 3px;
 }
 
 .select2-container-multi .select2-choices .select2-search-choice {
@@ -242,11 +313,6 @@ ul.nav-search > li {
 	margin-bottom: 5px;
 }
 
-.login-form {
-	margin: 10px;
-	text-align: center;
-}
-
 .btn-login {
 	width: 100%;
 	text-align: center;
@@ -255,6 +321,27 @@ ul.nav-search > li {
 .btn-login-responsive {
 	height: auto;
 	max-width: 100%;
+}
+
+.password-rules-title {
+	padding-top: 10px;
+	font-weight: 700;
+}
+
+ul.password-rules {
+	padding-left: 0;
+	list-style: none;
+	font-size: 12px;
+	padding-top: 4px;
+}
+
+.password-rules .success {
+	color: #419641;
+	display: none;
+}
+
+.password-rules .error {
+	color: #c12e2a;
 }
 
 /*****************
@@ -299,6 +386,7 @@ ul.nav-search > li {
 	padding-top: 0;
 	margin-right: 20px;
 	margin-bottom: 10px;
+	position: relative;
 }
 
 div.project-title {
@@ -314,6 +402,13 @@ div.project-title {
 	font-size: 13px;
 	overflow: hidden;
 	word-wrap: break-word;
+}
+.project-list-bottom-wrapper {
+	position: absolute;
+	height: 48px;
+	bottom: 0;
+	background-color: #fff;
+	width: 100%;
 }
 
 .project-list-counts {
@@ -349,30 +444,7 @@ div.project-title {
 
 .project-background-image-default {
 	background: url('/images/project_default_browse.png');
-}
-
-.nopadding {
-	padding-left: 0;
-	padding-right: 0;
-}
-
-@media (max-width: 768px) {
-	.sm-nopadding {
-		padding-left: 0;
-		padding-right: 0;
-	}
-}
-@media (max-width: 992px) {
-	.md-nopadding {
-		padding-left: 0;
-		padding-right: 0;
-	}
-	.md-nopadding-left {
-		padding-left: 0;
-	}
-	.md-nopadding-right {
-		padding-right: 0;
-	}
+	background-size: 100% 120px;
 }
 
 #project-form input {
@@ -610,7 +682,7 @@ body > .popover {
 	margin-bottom: 0;
 }
 
-#fileupload {
+#project-header > .fileinput-button {
 	position: absolute;
 	bottom: 10px;
 	right: 10px;
@@ -673,10 +745,14 @@ ul.tags > li {
 	margin-top: 7px;
 }
 
-a.like-button {
+.like-button {
 	font-size: 22px;
 	vertical-align: text-bottom;
 	text-decoration: none;
+}
+
+span.like-button > .gold {
+	color: #f2e187;
 }
 
 a.like-button:hover {
@@ -895,36 +971,73 @@ li.border-left {
 	position: relative;
 }
 
-.task-list-table {
-	display: inline-table;
-	width: 100%;
-}
-
 .task-list-title {
-  display: table-cell;
 	padding: 5px 10px 0;
   font-weight: 400;
-  font-size: 18px;
-  width: 100%;
-}
-
-.task-list-person {
-	display: table-cell;
-	height: 50px;
-	padding: 10px;
-	width: 60px;
+  font-size: 16px;
+  max-height: 50px;
 }
 
 .task-list-description {
-	max-height: 110px;
+	max-height: 95px;
 	padding-left: 10px;
 	padding-right: 10px;
 	padding-bottom: 5px;
 	font-size: 13px;
-	overflow: hidden;
 	word-wrap: break-word;
 }
 
+.task-list-bottom {
+	position: absolute;
+	top: 145px;
+	width: 100%;
+	padding: 5px 10px 0;
+}
+
+.task-list-bottom-person {
+	position: absolute;
+	width: 100%;
+	padding: 10px 10px 5px;
+	bottom: 0;
+}
+
+.task-list-requestbox {
+	padding-left: 45px;
+	line-height: 0.95em;
+	height: 44px;
+	overflow: none;
+}
+
+.task-list-requested {
+	font-size: 10px;
+	font-style: italic;
+	color: #9A9A9A;
+}
+
+.task-list-name {
+	font-size: 14px;
+}
+
+.task-list-agency {
+	font-size: 11px;
+	color: #505050;
+	max-height: 14px;
+}
+.task-list-icon-center {
+	width: 15px;
+	display: inline-block;
+	text-align: center;
+}
+
+.task-list-tags {
+	font-size: 12px;
+	max-height: 28px;
+	color: #505050;
+}
+
+.float-left {
+	float: left;
+}
 /*****************
 =  TASKS
 ******************/
