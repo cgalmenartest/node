@@ -21,5 +21,9 @@
     "enabled": true,
     "expand": true,
     "logout": true
+  },
+  "terms": {
+    "enabled": true,
+    "link": "https://18f.gsa.gov/"
   }
 }

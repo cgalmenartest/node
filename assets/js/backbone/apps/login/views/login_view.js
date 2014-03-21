@@ -71,7 +71,11 @@ define([
       if (e.preventDefault) e.preventDefault();
 
       // validate input fields
-      var validateIds = ['#rusername', '#rpassword', '#rterms'];
+      var validateIds = ['#rusername', '#rpassword'];
+      // Only validate terms & conditions if it is enabled
+      if (this.options.login.terms.enabled === true) {
+        validateIds.push('#rterms');
+      }
       var abort = false;
       for (i in validateIds) {
         var iAbort = validate({ currentTarget: validateIds[i] });
@@ -89,11 +93,17 @@ define([
         return;
       }
 
+      // Create a data object with the required fields
       var data = {
         username: this.$("#rusername").val(),
         password: this.$("#rpassword").val(),
         json: true
       };
+      // Add in additional, optional fields
+      if (this.options.login.terms.enabled === true) {
+        data['terms'] = (this.$("#rterms").val() == "on");
+      }
+      // Post the registration request to the server
       $.ajax({
         url: '/api/auth/register',
         type: 'POST',
@@ -111,21 +121,15 @@ define([
 
     checkUsername: function (e) {
       var username = $("#rusername").val();
-      $("#rusername-button").removeClass('btn-success');
-      $("#rusername-button").removeClass('btn-danger');
-      $("#rusername-button").addClass('btn-default');
-      $("#rusername-check").removeClass('icon-ok');
-      $("#rusername-check").removeClass('icon-remove');
-      $("#rusername-check").addClass('icon-spin');
-      $("#rusername-check").addClass('icon-spinner');
       $.ajax({
         url: '/api/user/username/' + username,
       }).done(function (data) {
-        $("#rusername-check").removeClass('icon-spin');
-        $("#rusername-check").removeClass('icon-spinner');
-        $("#rusername-button").removeClass('btn-default');
+        $("#rusername-button").removeClass('btn-success');
+        $("#rusername-button").removeClass('btn-danger');
+        $("#rusername-check").removeClass('icon-ok');
+        $("#rusername-check").removeClass('icon-remove');
         if (data) {
-          // username is take
+          // username is taken
           $("#rusername-button").addClass('btn-danger');
           $("#rusername-check").addClass('icon-remove');
         } else {
