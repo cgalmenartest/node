@@ -22,22 +22,36 @@ function authenticate(req, res, strategy, json) {
         res.redirect('/profile/edit');
       }
       return;
-    })(req, res);
+    })(req, res, function (err) {
+      if (err) {
+        sails.log.error('Authentication Error:', err);
+        return res.send(500, { message: "An internal error occurred while trying to authenticate.  Please try again later.", error: err });
+      }
+    });
   } else {
     passport.authenticate(strategy, function(err, user, info)
     {
       if ((err) || (!user))
       {
+        var message = info.message;
+        // if local strategy, don't show user what actually happened for security purposes
+        if (strategy === 'local') {
+          message = 'Invalid email address or password.'
+        }
         sails.log.debug('Authentication Error:', err, info);
         if (json === true) {
           res.send(403, {
             error: err,
-            message: info.message
+            message: message
           });
         } else {
           res.redirect('/auth');
         }
         return;
+      }
+
+      // process additional registration information if available
+      if (strategy === 'register') {
       }
 
       req.logIn(user, function(err)
@@ -64,25 +78,18 @@ function authenticate(req, res, strategy, json) {
         }
         return;
       });
-    })(req, res);
+    })(req, res, function (err) {
+      if (err) {
+        sails.log.error('Authentication Error:', err);
+        return res.send(500, { message: "An internal error occurred while trying to authenticate.  Please try again later.", error: err });
+      }
+    });
   }
 };
 
-/* Process any OAuth based authentication.
- * Handles the initial redirect, and then the callback.
- */
-function processOAuth(req, res, strategy, options) {
-  if (req.params['id'] === 'callback') {
-    // Authenticate, log in, and create the user if necessary
-    authenticate(req, res, strategy, false);
-  } else {
-    // start the oauth process by redirecting to the service provider
-    passport.authenticate(strategy, options)(req, res);
-  }
-}
-
 module.exports = {
-  /* View login options
+  /**
+   * View login options
    */
   index: function(req, res) {
     // if the user is logged in, redirect them back to the app
@@ -90,8 +97,9 @@ module.exports = {
     res.view();
   },
 
-  /* Authentication Providers
-  */
+  /**
+   * Authentication Provider for local and register username/password system
+   */
   local: function(req, res) {
     var json = false;
     if (req.param('json')) {
@@ -99,17 +107,45 @@ module.exports = {
     }
     authenticate(req, res, 'local', json);
   },
-  oauth2: function(req, res) {
-    processOAuth(req, res, 'oauth2');
-  },
-  myusa: function(req, res) {
-    processOAuth(req, res, 'myusa', {scope: 'profile'});
-  },
-  linkedin: function(req, res) {
-    processOAuth(req, res, 'linkedin', {scope: ['r_basicprofile', 'r_fullprofile', 'r_emailaddress', 'r_network']});
+  register: function(req, res) {
+    var json = false;
+    req.register = true;
+    if (req.param('json')) {
+      json = true;
+    }
+    authenticate(req, res, 'register', json);
   },
 
-  /* Logout user from session
+  /**
+   * Start the OAuth authentication process for a given strategy
+   */
+  oauth: function (req, res) {
+    var target = req.route.params.id;
+    if (!target || target == '' || !_.contains(sails.config.auth.config.oauth, target)) {
+      return res.send(403, { message: "Unsupported OAuth method." });
+    };
+    var config = sails.config.auth.config.config;
+    passport.authenticate(target, config[target].params || null)(req, res, function (err) {
+      if (err) {
+        sails.log.error('Authentication Error:', err);
+        return res.send(500, { message: "An internal error occurred while trying to authenticate.  Please try again later.", error: err });
+      }
+    });
+  },
+
+  /**
+   * Complete OAuth authentication by validating the callback
+   */
+  callback: function (req, res) {
+    var target = req.route.params.id;
+    if (!target || target == '' || !_.contains(sails.config.auth.config.oauth, target)) {
+      return res.send(403, { message: "Unsupported OAuth method." });
+    };
+    authenticate(req, res, target, false);
+  },
+
+  /**
+   * Logout user from session
    */
   logout: function (req,res) {
     // logout and redirect back to the app

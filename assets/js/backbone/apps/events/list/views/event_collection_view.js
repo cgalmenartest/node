@@ -10,7 +10,8 @@ define([
 
     el: "#event-list-wrapper",
 
-    initialize: function () {
+    initialize: function (options) {
+      this.options = options;
       this.render();
     },
 

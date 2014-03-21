@@ -36,12 +36,6 @@ module.exports.routes = {
     view: 'main/index'
   },
 
-  '/auth': 'AuthController',
-  '/auth/logout': {
-    controller: 'AuthController',
-    action: 'logout'
-  },
-
   // These routes are for backbone push state to work
   '/projects': {
     view: 'main/index'

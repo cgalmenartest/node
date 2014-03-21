@@ -31,7 +31,7 @@ describe('like:', function() {
                      body: JSON.stringify(like)
                    }, function(err, response, body) {
         if (err) { return done(err); }
-        assert.equal(response.statusCode, 200);
+        assert.equal(response.statusCode, 201);
         var b = JSON.parse(body);
         // check that the values passed in are the same as those passed back
         assert.equal(b.projectId, publicProject.id);
@@ -55,14 +55,14 @@ describe('like:', function() {
     });
 
     it('likeu', function (done) {
-      request.get({ url: conf.url + '/like/likeu/' + draftProject.userId },
+      request.get({ url: conf.url + '/like/likeu/' + draftProject.owners[0].userId },
         function (err, response, body) {
           if (err) { return done(err); }
           assert.equal(response.statusCode, 200);
           var b = JSON.parse(body);
           // check that the values passed in are the same as those passed back
-          assert.equal(b.userId, draftProject.userId);
-          assert.equal(b.targetId, draftProject.userId);
+          assert.equal(b.userId, draftProject.owners[0].userId);
+          assert.equal(b.targetId, draftProject.owners[0].userId);
           assert(b.id);
           done();
       });
@@ -113,12 +113,12 @@ describe('like:', function() {
 
     it('unlikeu', function (done) {
       // Unlike
-      request.get({ url: conf.url + '/like/unlikeu/' + draftProject.userId },
+      request.get({ url: conf.url + '/like/unlikeu/' + draftProject.owners[0].userId },
         function (err, response, body) {
           if (err) { return done(err); }
           assert.equal(response.statusCode, 200);
           // Check if it is unliked.
-          request.get({ url: conf.url + '/like/find/' + draftProject.userId + '?type=user' },
+          request.get({ url: conf.url + '/like/find/' + draftProject.owners[0].userId + '?type=user' },
             function (err, response, body) {
               if (err) { return done(err); }
               assert.equal(response.statusCode, 200);

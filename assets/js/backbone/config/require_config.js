@@ -6,13 +6,17 @@ require.config({
     // ----------
     //= Vendor
     // ----------
-    'text'                      : '../../vendor/text',
     'jquery'                    : '../../vendor/jquery',
+    'text'                      : '../../vendor/text',
+    'json'                      : '../../vendor/requirejs-plugins/src/json',
     'moment'                    : '../../vendor/moment/moment',
     'jquery_timeago'            : '../../vendor/jquery.timeago',
     'jquery_select2'            : '../../vendor/select2/select2',
     'jquery_timepicker'         : '../../vendor/jquery-timepicker/jquery.timepicker',
-    'dropzone'                  : '../../vendor/dropzone-amd-module',
+    'jquery_dotdotdot'          : '../../vendor/jquery-dotdotdot/src/js/jquery.dotdotdot',
+    'jquery_iframe'             : '../../vendor/jquery-file-upload/js/jquery.iframe-transport',
+    'jquery.ui.widget'          : '../../vendor/jquery-file-upload/js/vendor/jquery.ui.widget',
+    'jquery_fileupload'         : '../../vendor/jquery-file-upload/js/jquery.fileupload',
     'underscore'                : '../../vendor/underscore',
     'backbone'                  : '../../vendor/backbone',
     'bootstrap'                 : '../../vendor/bootstrap',
@@ -60,7 +64,7 @@ require.config({
     // ----------
     //= Login
     // ----------
-    'login_config'              : '../config/login',
+    'login_config'              : '../config/login.json',
     'login_view'                : '../apps/login/views/login_view',
     'login_template'            : '../apps/login/templates/login_template.html',
     'login_controller'          : '../apps/login/controllers/login_controller',
@@ -169,6 +173,8 @@ require.config({
     // ----------
     'modal_component'           : '../components/modal',
     'modal_template'            : '../components/modal_template.html',
+    'modal_alert'               : '../components/modal_alert',
+    'modal_alert_template'      : '../components/modal_alert_template.html',
     'modal_wizard_component'    : '../components/modal_wizard',
     'modal_wizard_template'     : '../components/modal_wizard_template.html',
     'alert_template'            : '../components/alert_template.html',

@@ -3,8 +3,9 @@ define([
   'underscore',
   'backbone',
   'utilities',
+  'json!login_config',
   'text!footer_template'
-], function ($, _, Backbone, utils, FooterTemplate) {
+], function ($, _, Backbone, utils, Login, FooterTemplate) {
 
   var FooterView = Backbone.View.extend({
 
@@ -13,7 +14,11 @@ define([
 
     render: function () {
       var self = this;
-      var compiledTemplate = _.template(FooterTemplate, version);
+      var data = {
+        version: version,
+        login: Login
+      };
+      var compiledTemplate = _.template(FooterTemplate, data);
       this.$el.html(compiledTemplate);
 
       function resizeElements() {

@@ -16,9 +16,9 @@ define([
   var TagShowView = Backbone.View.extend({
 
     events: {
-      "click #tag-create"     : "create",
-      "click #tag-save"       : "save",
-      "click .tag-delete"     : "delete"
+      "click #tag-create"     : "createTag",
+      "click #tag-save"       : "saveTag",
+      "click .tag-delete"     : "deleteTag"
     },
 
     initialize: function (options) {
@@ -127,7 +127,7 @@ define([
       return this;
     },
 
-    create: function (e) {
+    createTag: function (e) {
       if (e.preventDefault) e.preventDefault();
       var self = this;
 
@@ -155,7 +155,7 @@ define([
       }
     },
 
-    save: function (e) {
+    saveTag: function (e) {
       if (e.preventDefault) e.preventDefault();
       var self = this;
       // Cycle through tags in select box
@@ -197,7 +197,7 @@ define([
 
     },
 
-    delete: function (e) {
+    deleteTag: function (e) {
       if (e.preventDefault) e.preventDefault();
       var self = this;
       // Get the data-id of the currentTarget

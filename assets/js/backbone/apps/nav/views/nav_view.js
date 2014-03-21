@@ -3,7 +3,7 @@ define([
   'underscore',
   'backbone',
   'utilities',
-  'login_config',
+  'json!login_config',
   'login_controller',
   'text!nav_template'
 ], function ($, _, Backbone, utils, Login, LoginController, NavTemplate) {
@@ -35,6 +35,19 @@ define([
       this.listenTo(window.cache.userEvents, "user:request:login", function (message) {
         // trigger the login modal
         self.login(message);
+      });
+
+      // update the navbar when the profile changes
+      this.listenTo(window.cache.userEvents, "user:profile:save", function (data) {
+        // reset the currentUser object
+        window.cache.currentUser = data;
+        // re-render the view
+        self.render();
+      });
+
+      // update the user's photo when they change it
+      this.listenTo(window.cache.userEvents, "user:profile:photo:save", function (url) {
+        $(".navbar-people").attr('src', url);
       });
     },
 
@@ -83,7 +96,7 @@ define([
     logout: function (e) {
       if (e.preventDefault) e.preventDefault();
       $.ajax({
-        url: '/auth/logout?json=true',
+        url: '/api/auth/logout?json=true',
       }).done(function (success) {
         window.cache.currentUser = null;
         window.cache.userEvents.trigger("user:logout");

@@ -14,8 +14,6 @@ define([
 
     el: "#event-list-wrapper",
 
-    template: _.template(EventFormTemplate),
-
     events: {
       // field validation
       "blur #event-title"       : "v",
@@ -135,7 +133,8 @@ define([
     },
 
     render: function () {
-      this.$el.html(this.template);
+      var template = _.template(EventFormTemplate);
+      this.$el.html(template);
       this.initializeTimeZone();
     },
 

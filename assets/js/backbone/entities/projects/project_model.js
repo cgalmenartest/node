@@ -17,7 +17,7 @@ define([
       var self = this;
 
       this.listenTo(this, "project:model:fetch", function (id) {
-        self.get(id);
+        self.remoteGet(id);
       });
 
       this.listenTo(this, "project:model:update", function (data) {
@@ -36,13 +36,11 @@ define([
         self.updateOwners(data);
       });
 
-
-
     },
 
     urlRoot: '/api/project',
 
-    get: function (id) {
+    remoteGet: function (id) {
       var self = this;
       this.set({ id: id });
       this.fetch({

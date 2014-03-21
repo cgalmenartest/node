@@ -29,12 +29,6 @@ define([
       var self = this;
       this.options = _.extend(settings, this.defaults);
       this.requestEventsCollectionData();
-
-      this.listenTo(this.collection, "event:save:success", function (model) {
-        $('#addEvent').bind('hidden.bs.modal', function() {
-          self.requestEventsCollectionData();
-        }).modal('hide');
-      });
     },
 
     requestEventsCollectionData: function () {
@@ -50,6 +44,15 @@ define([
     },
 
     renderEventCollectionView: function (collection) {
+      var self = this;
+      this.listenTo(this.collection, "event:save:success", function (model) {
+        $('#addEvent').bind('hidden.bs.modal', function() {
+          self.requestEventsCollectionData();
+          if (this.eventFormView) this.eventFormView.cleanup();
+          if (this.modalComponent) this.modalComponent.cleanup();
+        }).modal('hide');
+      });
+
       if (this.eventCollectionView) {
         this.eventCollectionView.cleanup();
       }
@@ -93,6 +96,10 @@ define([
         newNum++
       } else {
         newNum--;
+      }
+      // Don't allow race conditions to set the number of people below zero
+      if (newNum < 0) {
+        newNum = 0;
       }
       $(numDiv).html(newNum);
       var textDiv = $(peopleDiv).children('.event-people-text')[0];

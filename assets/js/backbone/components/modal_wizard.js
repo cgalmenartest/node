@@ -26,8 +26,6 @@ define([
 
   Application.Component.ModalWizard = BaseView.extend({
 
-    template: _.template(ModalWizardTemplate),
-
     events: {
       "click .wizard-forward" : "moveWizardForward",
       "click .wizard-backward": "moveWizardBackward",
@@ -50,13 +48,13 @@ define([
     },
 
     render: function () {
+      var data = {}
       if (this.options) {
-        this.data = {
+        data = {
           modalTitle: this.options.modalTitle
         };
       }
-
-      var compiledTemplate = this.template(this.data);
+      var compiledTemplate = _.template(ModalWizardTemplate, data);
       this.$el.html(compiledTemplate);
       return this;
     },
