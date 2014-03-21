@@ -22,5 +22,6 @@ module.exports = {
       isEnabled   : false
     }
   },
+  // Pass the login.json config object to sails
   config: config
 };
