@@ -3,8 +3,11 @@
     <div class="col-md-12">
       <a href="https://github.com/Innovation-Toolkit/midas"><i class="icon icon-github"></i> powered by midas</a>
       |
-      version <%- version %> (<a href="https://github.com/Innovation-Toolkit/midas/commit/<%- gitLong %>"><%- gitShort %></a>)
-
+      version <%- version.version %> (<a href="https://github.com/Innovation-Toolkit/midas/commit/<%- version.gitLong %>"><%- version.gitShort %></a>)
+      <% if (login.terms.enabled === true) { %>
+      |
+      <a href="<%= login.terms.link %>"><%= login.terms.name %></a>
+      <% } %>
     </div>
   </div>
 </div>

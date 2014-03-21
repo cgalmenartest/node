@@ -113,8 +113,10 @@
 
     <div class="checkbox">
       <label>
-        <input type="checkbox" id="rterms" class="validate" data-validate="checked"> Yes, I agree to the <a href="#">Terms and Conditions</a>.
-        <span class="help-block error-checked" style="display:none;">You must accept the terms and conditions to register.</span>
+        <% if (login.terms.enabled === true) { %>
+        <input type="checkbox" id="rterms" class="validate" data-validate="checked"> Yes, I agree to the <a href="<%= login.terms.link %>"><%= login.terms.name %></a>.
+        <span class="help-block error-checked" style="display:none;">You must accept the <%= login.terms.name %> to register.</span>
+        <% } %>
       </label>
     </div>
 
