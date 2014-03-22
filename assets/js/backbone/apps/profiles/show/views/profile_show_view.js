@@ -9,11 +9,12 @@ define([
   'tag_show_view',
   'text!profile_show_template',
   'text!profile_email_template',
+  'json!login_config',
   'modal_component',
   'profile_activity_view',
   'profile_email_view'
 ], function ($, async, jqIframe, jqFU, _, Backbone, utils,
-  TagShowView, ProfileTemplate, EmailTemplate, ModalComponent, PAView, EmailFormView) {
+  TagShowView, ProfileTemplate, EmailTemplate, Login, ModalComponent, PAView, EmailFormView) {
 
   var ProfileShowView = Backbone.View.extend({
 
@@ -46,6 +47,7 @@ define([
 
     render: function () {
       var data = {
+        login: Login,
         data: this.model.toJSON(),
         edit: this.edit,
         saved: this.saved

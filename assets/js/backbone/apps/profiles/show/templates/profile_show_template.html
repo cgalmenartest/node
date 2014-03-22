@@ -79,7 +79,7 @@
         <h2> Account Information </h2>
 
         <div class="form-group">
-          <label for="primaryEmail" class="col-md-3 control-label">Primary Email</label>
+          <label for="profile-emails" class="col-md-3 control-label">Primary Email</label>
           <div class="col-md-9">
             <div id="profile-emails">
             </div>
@@ -87,17 +87,27 @@
           </div>
         </div>
         <div class="form-group">
-          <label for="services" class="col-md-3 control-label">Services</label>
-          <div class="col-md-9">
-            <% if (_.contains(data.auths, 'linkedin')) { %>
-              <button class="btn btn-success btn-xs" disabled="disabled"><span class="glyphicon glyphicon-ok" alt="Connected"></span></button>
-              <a href="#" class="btn btn-default btn-xs removeAuth" id="linkedin"><span class="glyphicon glyphicon-remove"></span></a>
-            <% } else { %>
-              <button class="btn btn-danger btn-xs" disabled="disabled"><span class="glyphicon glyphicon-remove" alt="Disconnected"></span></button>
-              <a href="/api/auth/linkedin" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-plus"></span></a>
-            <% } %>
-            <i class="icon icon-linkedin-sign" alt="LinkedIn"></i> LinkedIn
+          <% if (login.oauth.length > 0) { %>
+          <label for="services" class="col-md-3 control-label">Connected Accounts</label>
+          <div class="col-md-9" id="services">
+            <form class="form-horizontal" role="form">
+            <% _.each(login.oauth, function (a) { %>
+              <div class="form-group">
+                <div class="col-xs-8 col-sm-9 col-md-9">
+                  <img src="<%= login.config[a].image %>" alt="<%= login.config[a].name %>" style="height: 30px"/>
+                </div>
+                <div class="col-xs-4 col-sm-3 col-md-3">
+                  <% if (_.contains(data.auths, a)) { %>
+                  <a href="#" class="btn btn-danger btn-sm removeAuth pull-right" data-service="<%= a %>"><span class="glyphicon glyphicon-remove"></span> Disconnect</a>
+                  <% } else { %>
+                  <a href="<%= login.config[a].endpoint %>" class="btn btn-success btn-sm pull-right"><span class="glyphicon glyphicon-plus"></span> Connect</a>
+                  <% } %>
+                  <!-- <%= login.config[a].name %> -->
+                </div>
+              </div>
+            <% }); %>
           </div>
+          <% } %>
         </div>
         <div class="form-group">
           <div class="col-md-offset-3 col-md-9">
@@ -182,15 +192,26 @@
           </div>
         </div>
 
+        <% if (login.oauth.length > 0) { %>
         <div class="row">
           <div class="col-xs-3 col-sm-3 col-md-3">
-            Services:
+            Connected Accounts:
           </div>
           <div class="col-xs-9 col-sm-9 col-md-9">
-            <i class="icon icon-linkedin-sign" alt="LinkedIn"></i> LinkedIn -
-            <% if (_.contains(data.auths, 'linkedin')) { %>Connected<% } else { %>Not Connected<% } %>
+            <% if (data.auths.length === 0) { %>
+              No connected accounts.
+            <% } %>
+            <% _.each(login.oauth, function (a) { %>
+              <% if (_.contains(data.auths, a)) { %>
+              <div>
+                <%= login.config[a].name %>
+                <span class="label label-success">Connected</span>
+              </div>
+              <% } %>
+            <% }); %>
           </div>
         </div>
+        <% } %>
       </div>
     </div>
     <% } %>
