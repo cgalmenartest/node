@@ -14,13 +14,13 @@ var validator = require('validator');
 var update = function (req, res) {
   var user = req.user[0];
   var params = _.extend(req.body || {}, req.params);
-  if (params.name) { user.name = params.name; }
-  if (params.username) { user.username = params.username; }
-  if (params.email) { user.email = params.email; }
-  if (params.photoId) { user.photoId = params.photoId; }
-  if (params.photoUrl) { user.photoUrl = params.photoUrl; }
-  if (params.title) { user.title = params.title; }
-  if (params.bio) { user.bio = params.bio; }
+  if (!_.isUndefined(params.name)) { user.name = params.name; }
+  if (!_.isUndefined(params.username)) { user.username = params.username; }
+  if (!_.isUndefined(params.email)) { user.email = params.email; }
+  if (!_.isUndefined(params.photoId)) { user.photoId = params.photoId; }
+  if (!_.isUndefined(params.photoUrl)) { user.photoUrl = params.photoUrl; }
+  if (!_.isUndefined(params.title)) { user.title = params.title; }
+  if (!_.isUndefined(params.bio)) { user.bio = params.bio; }
   // The main user object is being updated
   if (user) {
     sails.log.debug('User Update:', user);
