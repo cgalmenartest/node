@@ -23,7 +23,7 @@ module.exports = {
       // user not found, try again by email address
       UserEmail.findOneByEmail(username, function (err, userEmail) {
         if (err) { return done(err, null); }
-        if (!user) { return done(null, null); }
+        if (!userEmail) { return done(null, null); }
         // email address found; look up the user object
         User.findOneById(userEmail.userId, function (err, user) {
           if (err) { return done(err, null); }
