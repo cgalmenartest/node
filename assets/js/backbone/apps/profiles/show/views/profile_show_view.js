@@ -23,9 +23,7 @@ define([
       "click #profile-edit"        : "profileEdit",
       "click #profile-cancel"      : "profileCancel",
       "click #like-button"         : "like",
-      "keyup #name, #username, #title, #bio" : "fieldModified",
-      "keyup #username"            : "checkUsername",
-      "click #username-button"     : "clickUsername",
+      "keyup #name, #title, #bio" : "fieldModified",
       "click #add-email"           : "addEmail",
       "click .email-remove"        : "removeEmail",
       "click .removeAuth"          : "removeAuth"
@@ -361,15 +359,10 @@ define([
 
     profileSubmit: function (e) {
       e.preventDefault();
-      if (!$("#username-button").hasClass('btn-success')) {
-        alert("Please pick a valid username.");
-        return;
-      }
       $("#profile-save, #submit").button('loading');
       setTimeout(function() { $("#profile-save, #submit").attr("disabled", "disabled") }, 0);
       var data = {
         name: $("#name").val(),
-        username: $("#username").val(),
         title: $("#title").val(),
         bio: $("#bio").val()
       };
@@ -425,37 +418,6 @@ define([
         self.model.trigger("profile:email:delete", e);
       });
 
-    },
-
-    checkUsername: function (e) {
-      var username = $("#username").val();
-      $("#username-button").removeClass('btn-success');
-      $("#username-button").removeClass('btn-danger');
-      $("#username-button").addClass('btn-default');
-      $("#username-check").removeClass('icon-ok');
-      $("#username-check").removeClass('icon-remove');
-      $("#username-check").addClass('icon-spin');
-      $("#username-check").addClass('icon-spinner');
-      $.ajax({
-        url: '/api/user/username/' + username,
-      }).done(function (data) {
-        $("#username-check").removeClass('icon-spin');
-        $("#username-check").removeClass('icon-spinner');
-        $("#username-button").removeClass('btn-default');
-        if (data) {
-          // username is take
-          $("#username-button").addClass('btn-danger');
-          $("#username-check").addClass('icon-remove');
-        } else {
-          // username is available
-          $("#username-button").addClass('btn-success');
-          $("#username-check").addClass('icon-ok');
-        }
-      });
-    },
-
-    clickUsername: function (e) {
-      e.preventDefault();
     },
 
     like: function (e) {

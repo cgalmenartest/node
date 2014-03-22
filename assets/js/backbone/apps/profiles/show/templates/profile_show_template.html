@@ -78,17 +78,6 @@
         <h2> Account Information </h2>
 
         <div class="form-group">
-          <label for="username" class="col-md-3 control-label">Username</label>
-          <div class="col-md-9 input-group">
-            <input type="text" class="form-control" id="username" name="username" placeholder="username" value="<% if (data.username) { %><%- data.username %><% } %>"/>
-            <span class="input-group-btn">
-              <a href="#" class="btn btn-success" id="username-button">
-                <i id="username-check" class="icon-ok"></i>
-              </a>
-            </span>
-          </div>
-        </div>
-        <div class="form-group">
           <label for="primaryEmail" class="col-md-3 control-label">Primary Email</label>
           <div class="col-md-9">
             <div id="profile-emails">
@@ -179,16 +168,7 @@
       <div class="box-pad-lr box-pad-t">
         <div class="row">
           <div class="col-xs-3 col-sm-3 col-md-3">
-            Username:
-          </div>
-          <div class="col-xs-9 col-sm-9 col-md-9">
-            <% if (data.username) { %><%- data.username %><% } %>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-xs-3 col-sm-3 col-md-3">
-            Emails:
+            Email<% if (data.emails.length > 1) { %>s<% }%>:
           </div>
           <div class="col-xs-9 col-sm-9 col-md-9">
             <% for (var e = 0; e < data.emails.length; e++) { %>
