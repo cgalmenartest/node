@@ -65,7 +65,7 @@ function authenticate(req, res, strategy, json) {
               message: info.message
             });
           } else {
-            res.redirect('/auth');
+            res.redirect('/');
           }
           return;
         }
