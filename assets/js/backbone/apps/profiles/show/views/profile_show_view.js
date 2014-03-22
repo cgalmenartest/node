@@ -333,6 +333,10 @@ define([
         $("#profile-emails").append(template);
       });
 
+      this.model.listenTo(this.model, "profile:email:error", function (data) {
+        // nothing to be done
+      });
+
       this.listenTo(this.model, "profile:email:delete", function (e) {
         $(e.currentTarget).parents('div.radio').remove();
       });
@@ -385,25 +389,19 @@ define([
 
       // Pop up dialog box to create tag,
       // then put tag into the select box
-      if (_.isUndefined(this.emailModalComponent)) {
-        this.emailModalComponent = new ModalComponent({
-          el: "#container",
-          id: "addEmail",
-          modalTitle: "Add Email Address"
-        }).render();
-      }
-
-      if (!_.isUndefined(this.emailModalComponent)) {
-        if (this.emailFormView) {
-          this.emailFormView.cleanup();
-        }
-        this.emailFormView = new EmailFormView({
-          el: "#addEmail .modal-template",
-          model: self.model,
-          target: 'profile'
-        });
-        this.emailFormView.render();
-      }
+      if (this.emailFormView) this.emailFormView.cleanup();
+      if (this.emailModalComponent) this.emailModalComponent.cleanup();
+      this.emailModalComponent = new ModalComponent({
+        el: "#emailModal",
+        id: "addEmail",
+        modalTitle: "Add Email Address"
+      }).render();
+      this.emailFormView = new EmailFormView({
+        el: "#addEmail .modal-template",
+        model: self.model,
+        target: 'profile'
+      });
+      this.emailFormView.render();
     },
 
     removeEmail: function (e) {

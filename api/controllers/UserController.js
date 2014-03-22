@@ -16,7 +16,6 @@ var update = function (req, res) {
   var params = _.extend(req.body || {}, req.params);
   if (!_.isUndefined(params.name)) { user.name = params.name; }
   if (!_.isUndefined(params.username)) { user.username = params.username; }
-  if (!_.isUndefined(params.email)) { user.email = params.email; }
   if (!_.isUndefined(params.photoId)) { user.photoId = params.photoId; }
   if (!_.isUndefined(params.photoUrl)) { user.photoUrl = params.photoUrl; }
   if (!_.isUndefined(params.title)) { user.title = params.title; }

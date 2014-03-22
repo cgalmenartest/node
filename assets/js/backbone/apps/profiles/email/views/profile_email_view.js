@@ -29,6 +29,7 @@ define([
       var data;
       var self = this;
 
+      this.$(".alert").hide();
       data = {
         email: $(e.currentTarget).find("#email").val(),
       }
@@ -36,10 +37,16 @@ define([
       $.ajax({
         url: '/api/useremail',
         type: 'POST',
-        data: data
-      }).done(function (result) {
-        // Pass the tag back
-        self.options.model.trigger(self.target + ":email:new", result);
+        data: data,
+        success: function (result) {
+          // Pass the tag back
+          self.options.model.trigger(self.target + ":email:new", result);
+        },
+        error: function (req, status, error) {
+          self.$(".alert").html(req.responseJSON.message);
+          self.$(".alert").show();
+          self.options.model.trigger(self.target + ":email:error", req.responseJSON);
+        }
       });
 
     },
