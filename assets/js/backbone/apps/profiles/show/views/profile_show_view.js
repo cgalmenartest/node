@@ -6,6 +6,7 @@ define([
   'underscore',
   'backbone',
   'utilities',
+  'marked',
   'tag_show_view',
   'text!profile_show_template',
   'text!profile_email_template',
@@ -13,7 +14,7 @@ define([
   'modal_component',
   'profile_activity_view',
   'profile_email_view'
-], function ($, async, jqIframe, jqFU, _, Backbone, utils,
+], function ($, async, jqIframe, jqFU, _, Backbone, utils, marked,
   TagShowView, ProfileTemplate, EmailTemplate, Login, ModalComponent, PAView, EmailFormView) {
 
   var ProfileShowView = Backbone.View.extend({
@@ -51,6 +52,9 @@ define([
         data: this.model.toJSON(),
         edit: this.edit,
         saved: this.saved
+      }
+      if (data.data.bio) {
+        data.data.bioHtml = marked(data.data.bio);
       }
       var template = _.template(ProfileTemplate, data);
       this.$el.html(template);

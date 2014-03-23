@@ -4,11 +4,12 @@ define([
   'async',
   'backbone',
   'utilities',
+  'marked',
   'popovers', /* Popovers,*/
   'modal_component',
   'autocomplete',
   'text!project_item_coremeta_template'
-], function ($, _, async, Backbone, utils, Popovers, ModalComponent, autocomplete, ProjectItemCoreMetaTemplate) {
+], function ($, _, async, Backbone, utils, marked, Popovers, ModalComponent, autocomplete, ProjectItemCoreMetaTemplate) {
 
   //if(_.isUndefined(popovers)){var popovers = new Popovers();}
 
@@ -55,9 +56,12 @@ define([
     },
 
     render: function () {
-      var compiledTemplate,
-      data = { data: this.model.toJSON() };
-      compiledTemplate = _.template(ProjectItemCoreMetaTemplate, data);
+      var data = {
+        data: this.model.toJSON()
+      };
+      // convert description to html using markdown syntax
+      data.data.descriptionHtml = marked(data.data.description);
+      var compiledTemplate = _.template(ProjectItemCoreMetaTemplate, data);
       this.$el.html(compiledTemplate);
 
       this.model.trigger("project:coremeta:show:rendered", data);

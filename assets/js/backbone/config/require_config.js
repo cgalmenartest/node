@@ -22,6 +22,7 @@ require.config({
     'bootstrap'                 : '../../vendor/bootstrap',
     'bootstrap-datetimepicker'  : '../../vendor/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min',
     'async'                     : '../../vendor/async/lib/async',
+    'marked'                    : '../../vendor/marked/lib/marked',
 
     // ---------
     //= Mixins

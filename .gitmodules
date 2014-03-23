@@ -25,3 +25,6 @@
 [submodule "assets/js/vendor/requirejs-plugins"]
 	path = assets/js/vendor/requirejs-plugins
 	url = https://github.com/millermedeiros/requirejs-plugins.git
+[submodule "assets/js/vendor/marked"]
+	path = assets/js/vendor/marked
+	url = https://github.com/chjj/marked.git
