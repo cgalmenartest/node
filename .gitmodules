@@ -28,3 +28,6 @@
 [submodule "assets/js/vendor/marked"]
 	path = assets/js/vendor/marked
 	url = https://github.com/chjj/marked.git
+[submodule "assets/js/vendor/jquery-selection"]
+	path = assets/js/vendor/jquery-selection
+	url = https://github.com/madapaja/jquery.selection.git
