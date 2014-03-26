@@ -82,25 +82,41 @@ define([
       var t = $(e.currentTarget);
       var selText = this.$("#" + this.options.id).selection();
       var editData = t.data('edit');
-      // check if it already has the attributes
       if ((editData != 'preview') &&
           (editData != 'edit') &&
           (editData != 'help')) {
+        // get the current selected positions
+        var pos = this.$("#" + this.options.id).selection('getPos');
+        var text = this.$("#" + this.options.id).val();
+        // check if this modifier has already been inserted
+        var origBefore = text.substring(pos.start-this.actions[editData].before.length,pos.start);
+        var origAfter = text.substring(pos.end,pos.end+this.actions[editData].after.length);
+        var before = this.actions[editData].before;
+        var after = this.actions[editData].after;
+        // If the selected text already has the markdown syntax before and after
+        // don't insert it again.  Eg, if text is selected in **text**, don't add ** again
+        if ((origBefore == before) && (origAfter == after)) {
+          before = '';
+          after = '';
+        }
+        // set placeholder text if no text is selected by the user
         if (selText == '') {
           selText = this.actions[editData].text;
         }
+        // insert markdown syntax
         this.$("#" + this.options.id).selection('insert', {
-          text: this.actions[editData].before,
+          text: before,
           mode: 'before'
         })
         .selection('replace', {
           text: selText
         })
         .selection('insert', {
-          text: this.actions[editData].after,
+          text: after,
           mode: 'after'
         });
       } else if (editData == 'help') {
+        // show help text and links to markdown syntax
         if (this.$('.help').is(':visible')) {
           this.$('.help').hide();
           t.removeClass('active');
@@ -109,8 +125,8 @@ define([
           t.addClass('active');
         }
       } else {
-        // if we're in preview mode, switch back to edit mode
         if (this.$('.preview').is(':visible')) {
+          // if we're in preview mode, switch back to edit mode
           this.$('.btn-edit').hide();
           this.$('.btn-preview').show();
           this.$('.preview').hide();
