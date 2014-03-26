@@ -1187,3 +1187,7 @@ ul.task-tags > li {
 	border-width: 1px 0;
 	border-color: #e0e0e0;
 }
+
+.markdown-edit textarea.form-control {
+	width: 100%;
+}

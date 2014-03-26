@@ -131,7 +131,7 @@ define([
     //= Utility Methods
     // ---------------------
     cleanup: function() {
-      if (this.md) this.md.cleanup();
+      if (this.md) { this.md.cleanup(); }
       removeView(this);
     }
 

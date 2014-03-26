@@ -6,6 +6,7 @@ define([
   'underscore',
   'backbone',
   'utilities',
+  'markdown_editor',
   'marked',
   'tag_show_view',
   'text!profile_show_template',
@@ -14,7 +15,7 @@ define([
   'modal_component',
   'profile_activity_view',
   'profile_email_view'
-], function ($, async, jqIframe, jqFU, _, Backbone, utils, marked,
+], function ($, async, jqIframe, jqFU, _, Backbone, utils, MarkdownEditor, marked,
   TagShowView, ProfileTemplate, EmailTemplate, Login, ModalComponent, PAView, EmailFormView) {
 
   var ProfileShowView = Backbone.View.extend({
@@ -66,6 +67,7 @@ define([
       this.initializeTags();
       this.initializePAView();
       this.initializeEmail();
+      this.initializeTextArea();
       this.updatePhoto();
       this.updateProfileEmail();
       return this;
@@ -348,6 +350,17 @@ define([
       });
     },
 
+    initializeTextArea: function () {
+      if (this.md) { this.md.cleanup(); }
+      this.md = new MarkdownEditor({
+        data: this.model.toJSON().bio,
+        el: ".markdown-edit",
+        id: 'bio',
+        placeholder: 'A short biography.',
+        rows: 6
+      }).render();
+    },
+
     fieldModified: function (e) {
       this.model.trigger("profile:input:changed", e);
     },
@@ -466,6 +479,7 @@ define([
       }
     },
     cleanup: function () {
+      if (this.md) { this.md.cleanup(); }
       if (this.tagView) { this.tagView.cleanup(); }
       if (this.projectView) { this.projectView.cleanup(); }
       if (this.taskView) { this.taskView.cleanup(); }

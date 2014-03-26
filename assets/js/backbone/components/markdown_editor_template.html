@@ -25,7 +25,7 @@
 <textarea
   <%if (!_.isUndefined(maxlength)) { %>maxlength="<%= maxlength %>"<% } %>
   <% if (!_.isUndefined(rows)) { %>rows="<%= rows %>"<% } %>
-  class="form-control"
+  class="form-control validate"
   id="<%= id %>"
   data-validate="<% if (!_.isUndefined(validation)) { %><%= validation.join(',') %><% } %>"
   <% if (!_.isUndefined(placeholder)) { %>placeholder="<%= placeholder %>"<% } %>
