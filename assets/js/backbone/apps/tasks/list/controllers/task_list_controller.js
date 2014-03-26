@@ -85,7 +85,8 @@ define([
       if (this.taskFormView) this.taskFormView.cleanup();
       if (this.modalWizardComponent) this.modalWizardComponent.cleanup();
       this.modalWizardComponent = new ModalWizardComponent({
-        el: "#addTask",
+        el: ".wrapper-addTask",
+        id: "addTask",
         modalTitle: 'New Opportunity',
         model: self.taskModel,
         collection: self.tasks,

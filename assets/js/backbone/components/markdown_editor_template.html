@@ -1,0 +1,33 @@
+<div class="btn-toolbar" role="toolbar">
+  <div class="btn-group btn-group-sm">
+    <button type="button" class="btn btn-c0" data-edit="bold" title="Bold"><i class="icon-bold" alt="Bold"></i></button>
+    <button type="button" class="btn btn-c0" data-edit="italic" title="Italic"><i class="icon-italic" alt="Italic"></i></button>
+    <button type="button" class="btn btn-c0" data-edit="strikethrough" title="Strikethrough"><i class="icon-strikethrough" alt="Strikethrough"></i></button>
+    <button type="button" class="btn btn-c0" data-edit="code" title="Code"><i class="icon-code" alt="Code"></i></button>
+  </div>
+  <div class="btn-group btn-group-sm">
+    <button type="button" class="btn btn-c0" data-edit="link" title="Link"><i class="icon-link" alt="Link"></i></button>
+  </div>
+  <div class="btn-group btn-group-sm">
+    <button type="button" class="btn btn-c0" data-edit="help"><i class="icon-question-sign" alt="Help"></i> Help</button>
+  </div>
+
+  <div class="btn-group btn-group-sm">
+    <button type="button" class="btn btn-c1 btn-preview" data-edit="preview"><i class="icon-eye-open" alt="Open"></i> Preview</button>
+  </div>
+  <div class="btn-group btn-group-sm">
+    <button type="button" class="btn btn-c1 btn-edit" data-edit="edit" style="display: none;"><i class="icon-pencil" alt="Edit"></i> Edit</button>
+  </div>
+</div>
+<div class="help">
+  You can use any <a href="http://daringfireball.net/projects/markdown/syntax" target="_blank">Markdown</a> or <a href="https://help.github.com/articles/github-flavored-markdown" target="_blank">GitHub Flavored Markdown</a> syntax in this text box.
+</div>
+<textarea
+  <%if (!_.isUndefined(maxlength)) { %>maxlength="<%= maxlength %>"<% } %>
+  <% if (!_.isUndefined(rows)) { %>rows="<%= rows %>"<% } %>
+  class="form-control validate"
+  id="<%= id %>"
+  data-validate="<% if (!_.isUndefined(validation)) { %><%= validation.join(',') %><% } %>"
+  <% if (!_.isUndefined(placeholder)) { %>placeholder="<%= placeholder %>"<% } %>
+  ><%= data %></textarea>
+<div class="preview" style="display: none;"></div>

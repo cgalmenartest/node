@@ -25,3 +25,9 @@
 [submodule "assets/js/vendor/requirejs-plugins"]
 	path = assets/js/vendor/requirejs-plugins
 	url = https://github.com/millermedeiros/requirejs-plugins.git
+[submodule "assets/js/vendor/marked"]
+	path = assets/js/vendor/marked
+	url = https://github.com/chjj/marked.git
+[submodule "assets/js/vendor/jquery-selection"]
+	path = assets/js/vendor/jquery-selection
+	url = https://github.com/madapaja/jquery.selection.git

@@ -4,8 +4,9 @@ define([
   'backbone',
   'async',
   'utilities',
+  'markdown_editor',
   'text!task_edit_form_template'
-], function ($, _, Backbone, async, utilities, TaskEditFormTemplate) {
+], function ($, _, Backbone, async, utilities, MarkdownEditor, TaskEditFormTemplate) {
 
   var TaskEditFormView = Backbone.View.extend({
 
@@ -48,6 +49,7 @@ define([
 
       // DOM now exists, begin select2 init
       this.initializeSelect2();
+      this.initializeTextArea();
     },
 
     initializeSelect2: function () {
@@ -156,6 +158,19 @@ define([
         width: '130px'
       });
 
+    },
+
+    initializeTextArea: function () {
+      if (this.md) { this.md.cleanup(); }
+      this.md = new MarkdownEditor({
+        data: this.model.toJSON().description,
+        el: ".markdown-edit",
+        id: 'task-description',
+        placeholder: 'Description of opportunity including goals, expected outcomes and deliverables.',
+        rows: 6,
+        maxlength: 1000,
+        validation: ['empty', 'count1000']
+      }).render();
     },
 
     submit: function (e) {
@@ -289,6 +304,7 @@ define([
     },
 
     cleanup: function () {
+      if (this.md) { this.md.cleanup(); }
       removeView(this);
     }
 

@@ -72,7 +72,7 @@
         <div class="form-group">
           <label for="bio" class="col-md-3 control-label">A brief public biography</label>
           <div class="col-md-9">
-            <textarea class="form-control" name="bio" id="bio" rows="5"><% if (data.bio) { %><%- data.bio %><% } %></textarea>
+            <div class="markdown-edit"></div>
           </div>
         </div>
 
@@ -132,7 +132,7 @@
           <div class="profile-location"><% if (data.location) { %><span class="glyphicon glyphicon-map-marker"></span> <span class="box-icon-text"><%- data.location.tag.name %></span><% } %></div>
 
           <div class="profile-bio box-pad-t">
-            <% if (data.bio) { %><%- data.bio %><% } else { %>This person doesn't have a bio yet.<% } %>
+            <% if (data.bioHtml) { %><%= data.bioHtml %><% } else { %>This person doesn't have a bio yet.<% } %>
           </div>
         </div>
       </div>

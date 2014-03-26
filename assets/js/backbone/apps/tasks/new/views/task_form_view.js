@@ -5,9 +5,10 @@ define([
     'backbone',
     'async',
     'utilities',
+    'markdown_editor',
     'tasks_collection',
     'text!task_form_template'
-], function ($, Bootstrap, _, Backbone, async, utilities, TasksCollection, TaskFormTemplate) {
+], function ($, Bootstrap, _, Backbone, async, utilities, MarkdownEditor, TasksCollection, TaskFormTemplate) {
 
   var TaskFormView = Backbone.View.extend({
 
@@ -104,6 +105,8 @@ define([
       // Important: Hide all non-currently opened sections of wizard.
       // TODO: Move this to the modalWizard js.
       $("section:not(.current)").hide();
+
+      this.initializeTextArea();
 
       // Return this for chaining.
       return this;
@@ -232,6 +235,19 @@ define([
 
     },
 
+    initializeTextArea: function () {
+      if (this.md) { this.md.cleanup(); }
+      this.md = new MarkdownEditor({
+        data: '',
+        el: ".markdown-edit",
+        id: 'task-description',
+        placeholder: 'Description of opportunity including goals, expected outcomes and deliverables.',
+        rows: 6,
+        maxlength: 1000,
+        validation: ['empty', 'count1000']
+      }).render();
+    },
+
     locationChange: function (e) {
       if (_.isEqual(e.currentTarget.value, "true")) {
         $(".el-specific-location").show();
@@ -241,6 +257,7 @@ define([
     },
 
     cleanup: function () {
+      if (this.md) { this.md.cleanup(); }
       removeView(this);
     }
 

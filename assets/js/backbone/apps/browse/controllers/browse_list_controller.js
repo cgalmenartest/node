@@ -134,7 +134,8 @@ define([
 
       this.taskModel = new TaskModel();
       this.modalWizardComponent = new ModalWizardComponent({
-        el: "#addTask",
+        el: ".wrapper-addTask",
+        id: "addTask",
         modalTitle: 'New Opportunity',
         model: this.taskModel,
         collection: this.tasksCollection,

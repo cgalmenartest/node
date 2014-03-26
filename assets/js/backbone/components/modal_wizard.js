@@ -48,12 +48,10 @@ define([
     },
 
     render: function () {
-      var data = {}
-      if (this.options) {
-        data = {
-          modalTitle: this.options.modalTitle
-        };
-      }
+      var data = {
+        id: this.options.id,
+        modalTitle: this.options.modalTitle
+      };
       var compiledTemplate = _.template(ModalWizardTemplate, data);
       this.$el.html(compiledTemplate);
       return this;
