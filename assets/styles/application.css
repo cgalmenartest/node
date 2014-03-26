@@ -1052,6 +1052,13 @@ li.border-left {
 	line-height: 1.8em;
 }
 
+.task-project {
+	margin-top: -10px;
+	margin-bottom: 10px;
+	padding-left: 5px;
+	font-weight: bold;
+}
+
 .task-description {
 	padding-bottom: 5px;
 }

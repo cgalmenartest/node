@@ -20,6 +20,15 @@ module.exports = {
         if (err) { return res.send(400, { message: 'Error looking up task likes.' }); }
         taskUtil.getVolunteers(req.task, function (err) {
           if (err) { return res.send(400, { message: 'Error looking up task volunteers.' }); }
+          if (req.task.projectId != null) {
+            // Look up parent project information
+            Project.findOneById(req.task.projectId, function (err, project) {
+              if (err) { return res.send(400, { message: 'Error looking up parent project.' }); }
+              req.task.project = project;
+              res.send(req.task);
+            });
+            return;
+          }
           return res.send(req.task);
         });
       });
