@@ -77,13 +77,13 @@ define([
 
         // Gather tags for submission after the task is created
         tags = [];
-        tags.push.apply(tags, $("#topics").select2('data'));
-        tags.push.apply(tags, $("#skills").select2('data'));
-        tags.push($("#skills-required").select2('data'));
-        tags.push($("#people").select2('data'));
-        tags.push($("#time-required").select2('data'));
-        tags.push($("#time-estimate").select2('data'));
-        tags.push($("#length").select2('data'));
+        tags.push.apply(tags, self.$("#topics").select2('data'));
+        tags.push.apply(tags, self.$("#skills").select2('data'));
+        tags.push(self.$("#skills-required").select2('data'));
+        tags.push(self.$("#people").select2('data'));
+        tags.push(self.$("#time-required").select2('data'));
+        tags.push(self.$("#time-estimate").select2('data'));
+        tags.push(self.$("#length").select2('data'));
 
         if (self.$("#task-location").select2('data').id == 'true') {
           tags.push.apply(tags, self.$("#location").select2('data'));
@@ -104,7 +104,7 @@ define([
 
       // Important: Hide all non-currently opened sections of wizard.
       // TODO: Move this to the modalWizard js.
-      $("section:not(.current)").hide();
+      this.$("section:not(.current)").hide();
 
       this.initializeTextArea();
 
@@ -137,7 +137,7 @@ define([
       // ------------------------------ //
       //  DROP DOWNS REQUIRING A FETCH  //
       // ------------------------------ //
-      $("#skills").select2({
+      self.$("#skills").select2({
         placeholder: "Start typing to select a skill.",
         multiple: true,
         formatResult: formatResult,
@@ -158,7 +158,7 @@ define([
       });
 
       // Topics select 2
-      $("#topics").select2({
+      self.$("#topics").select2({
         placeholder: "Start typing to select a topic.",
         multiple: true,
         formatResult: formatResult,
@@ -179,7 +179,7 @@ define([
       });
 
       // Topics select 2
-      this.$("#location").select2({
+      self.$("#location").select2({
         placeholder: "Start typing to select a location.",
         multiple: true,
         formatResult: formatResult,
@@ -198,37 +198,37 @@ define([
           }
         }
       });
-      this.$(".el-specific-location").hide();
+      self.$(".el-specific-location").hide();
 
       // ------------------------------ //
       // PRE-DEFINED SELECT MENUS BELOW //
       // ------------------------------ //
-      $("#skills-required").select2({
+      self.$("#skills-required").select2({
         placeholder: "Required/Not Required",
         width: 'resolve'
       });
 
-      $("#time-required").select2({
+      self.$("#time-required").select2({
         placeholder: 'Time Commitment',
         width: 'resolve'
       });
 
-      $("#people").select2({
+      self.$("#people").select2({
         placeholder: 'Personnel Needed',
         width: 'resolve'
       });
 
-      $("#length").select2({
+      self.$("#length").select2({
         placeholder: 'Deadline',
         width: 'resolve'
       });
 
-      $("#time-estimate").select2({
+      self.$("#time-estimate").select2({
         placeholder: 'Estimated Time Required',
         width: 'resolve'
       });
 
-      $("#task-location").select2({
+      self.$("#task-location").select2({
         placeholder: 'Work Location',
         width: 'resolve'
       });
@@ -250,9 +250,9 @@ define([
 
     locationChange: function (e) {
       if (_.isEqual(e.currentTarget.value, "true")) {
-        $(".el-specific-location").show();
+        this.$(".el-specific-location").show();
       } else {
-        $(".el-specific-location").hide();
+        this.$(".el-specific-location").hide();
       }
     },
 
