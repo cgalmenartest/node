@@ -25,7 +25,7 @@ define([
       });
     },
 
-    view: function () {
+    view: function (e) {
       if (e.preventDefault) e.preventDefault();
       Backbone.history.navigate('tasks/' + this.model.attributes.id, { trigger: true });
     },
