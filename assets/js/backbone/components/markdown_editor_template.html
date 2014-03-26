@@ -22,5 +22,12 @@
 <div class="help">
   You can use any <a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a> or <a href="https://help.github.com/articles/github-flavored-markdown" target="_top">GitHub Flavored Markdown</a> syntax in this text box.
 </div>
-<textarea <%if (!_.isUndefined(maxlength)) { %>maxlength="<%= maxlength %>"<% } %> <% if (!_.isUndefined(rows)) { %>rows="<%= rows %>"<% } %> class="form-control" id="<%= id %>" data-validate="<% if (!_.isUndefined(validation)) { %><%= validation.join(',') %><% } %>"><%= data %></textarea>
+<textarea
+  <%if (!_.isUndefined(maxlength)) { %>maxlength="<%= maxlength %>"<% } %>
+  <% if (!_.isUndefined(rows)) { %>rows="<%= rows %>"<% } %>
+  class="form-control"
+  id="<%= id %>"
+  data-validate="<% if (!_.isUndefined(validation)) { %><%= validation.join(',') %><% } %>"
+  <% if (!_.isUndefined(placeholder)) { %>placeholder="<%= placeholder %>"<% } %>
+  ><%= data %></textarea>
 <div class="preview" style="display: none;"></div>

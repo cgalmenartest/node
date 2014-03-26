@@ -9,6 +9,7 @@
  *   el: HTML element to fill - required
  *   id: HTML ID for the <textarea> element - required
  *   data: Default data for the textarea - required
+ *   placeholder: Textarea placeholder value - optional
  *   maxlength: Maximum characters for the text area - optional
  *   rows: Number of rows in the textarea - optional
  *   validation: List of strings for the data-validate attribute - optional
@@ -69,6 +70,7 @@ define([
         validation: this.options.validation,
         rows: this.options.rows,
         maxlength: this.options.maxlength,
+        placeholder: this.options.placeholder,
         data: this.options.data
       };
       var template = _.template(EditorTemplate, data);
