@@ -91,9 +91,9 @@ define([
         model: self.taskModel,
         collection: self.tasks,
         modelName: 'task',
-        data: function() { return {
-          title: $("#task-title").val(),
-          description: $("#task-description").val(),
+        data: function (parent) { return {
+          title: parent.$("#task-title").val(),
+          description: parent.$("#task-description").val(),
           projectId: self.options.projectId
         } }
       }).render();

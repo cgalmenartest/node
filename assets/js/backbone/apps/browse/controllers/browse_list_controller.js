@@ -140,9 +140,9 @@ define([
         model: this.taskModel,
         collection: this.tasksCollection,
         modelName: 'task',
-        data: function() { return {
-          title: $("#task-title").val(),
-          description: $("#task-description").val(),
+        data: function (parent) { return {
+          title: parent.$("#task-title").val(),
+          description: parent.$("#task-description").val(),
           // these tasks are orphaned
           projectId: null
         } }
