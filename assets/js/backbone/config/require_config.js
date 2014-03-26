@@ -17,6 +17,7 @@ require.config({
     'jquery_iframe'             : '../../vendor/jquery-file-upload/js/jquery.iframe-transport',
     'jquery.ui.widget'          : '../../vendor/jquery-file-upload/js/vendor/jquery.ui.widget',
     'jquery_fileupload'         : '../../vendor/jquery-file-upload/js/jquery.fileupload',
+    'jquery.selection'          : '../../vendor/jquery-selection/src/jquery.selection',
     'underscore'                : '../../vendor/underscore',
     'backbone'                  : '../../vendor/backbone',
     'bootstrap'                 : '../../vendor/bootstrap',
@@ -179,6 +180,8 @@ require.config({
     'modal_wizard_component'    : '../components/modal_wizard',
     'modal_wizard_template'     : '../components/modal_wizard_template.html',
     'alert_template'            : '../components/alert_template.html',
+    'markdown_editor'           : '../components/markdown_editor',
+    'markdown_editor_template'  : '../components/markdown_editor_template.html',
     'autocomplete'              : '../mixins/autocomplete'
   },
 

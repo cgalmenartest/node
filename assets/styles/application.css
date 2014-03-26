@@ -1168,3 +1168,16 @@ ul.task-tags > li {
 	font-size: 10px;
 	color: #666;
 }
+
+/*****************
+= MARKDOWN EDITOR
+******************/
+.markdown-edit > .btn-toolbar {
+	margin-bottom: 10px;
+}
+
+.markdown-edit .help {
+	font-size: 12px;
+	padding-bottom: 5px;
+	display: none;
+}

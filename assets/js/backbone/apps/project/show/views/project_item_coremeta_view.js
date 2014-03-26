@@ -5,11 +5,12 @@ define([
   'backbone',
   'utilities',
   'marked',
+  'markdown_editor',
   'popovers', /* Popovers,*/
   'modal_component',
   'autocomplete',
   'text!project_item_coremeta_template'
-], function ($, _, async, Backbone, utils, marked, Popovers, ModalComponent, autocomplete, ProjectItemCoreMetaTemplate) {
+], function ($, _, async, Backbone, utils, marked, MarkdownEditor, Popovers, ModalComponent, autocomplete, ProjectItemCoreMetaTemplate) {
 
   //if(_.isUndefined(popovers)){var popovers = new Popovers();}
 
@@ -44,6 +45,7 @@ define([
       }
 
       this.model.on("project:coremeta:show:rendered", function () {
+        self.initializeTextArea();
         self.initializeToggledElements();
       });
 
@@ -69,7 +71,17 @@ define([
       return this;
     },
 
-    initializeToggledElements: function(){
+    initializeTextArea: function () {
+      var md = new MarkdownEditor({
+        data: this.model.toJSON().description,
+        el: ".markdown-edit",
+        id: 'project-edit-form-description',
+        rows: 6,
+        validate: ['empty', 'count400']
+      }).render();
+    },
+
+    initializeToggledElements: function() {
       var self = this;
       if (this.model.attributes.isOwner && this.edit){
         self.$('#project-coremeta-form').show();
