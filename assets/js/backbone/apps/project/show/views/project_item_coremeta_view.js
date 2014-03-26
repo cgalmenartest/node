@@ -72,7 +72,8 @@ define([
     },
 
     initializeTextArea: function () {
-      var md = new MarkdownEditor({
+      if (this.md) { this.md.cleanup(); }
+      this.md = new MarkdownEditor({
         data: this.model.toJSON().description,
         el: ".markdown-edit",
         id: 'project-edit-form-description',
@@ -130,6 +131,7 @@ define([
     //= Utility Methods
     // ---------------------
     cleanup: function() {
+      if (this.md) this.md.cleanup();
       removeView(this);
     }
 
