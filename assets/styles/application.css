@@ -1181,3 +1181,9 @@ ul.task-tags > li {
 	padding-bottom: 5px;
 	display: none;
 }
+
+.markdown-edit > .preview {
+	border-style: solid none;
+	border-width: 1px 0;
+	border-color: #e0e0e0;
+}
