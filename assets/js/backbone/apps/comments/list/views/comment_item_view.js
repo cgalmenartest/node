@@ -4,8 +4,9 @@ define([
   'backbone',
   'jquery_timeago',
   'utilities',
+  'autolinker',
   'text!comment_item_template',
-], function ($, _, Backbone, TimeAgo, utilities, CommentItemTemplate) {
+], function ($, _, Backbone, TimeAgo, utilities, Autolinker, CommentItemTemplate) {
 
   var CommentItemView = Backbone.View.extend({
 
@@ -13,6 +14,7 @@ define([
       // Clean string out from undefineds in the marshalling process.
       cleanStringFromUndefined(this.model, this.model.value, "||");
       this.model.currentUser = window.cache.currentUser;
+      this.model.valueHtml = Autolinker.link(this.model.value);
       if (this.model.topic) {
         compiledTemplate = _.template(CommentItemTemplate, this.model);
         this.$el.append(compiledTemplate);

@@ -24,6 +24,7 @@ require.config({
     'bootstrap-datetimepicker'  : '../../vendor/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min',
     'async'                     : '../../vendor/async/lib/async',
     'marked'                    : '../../vendor/marked/lib/marked',
+    'autolinker'                : '../../vendor/autolinker/dist/Autolinker',
 
     // ---------
     //= Mixins
@@ -190,6 +191,9 @@ require.config({
     'jquery_select2': {
       deps: ['jquery'],
       exports: 'select2'
+    },
+    'autolinker': {
+      exports: 'Autolinker'
     }
   }
 

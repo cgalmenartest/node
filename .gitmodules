@@ -31,3 +31,6 @@
 [submodule "assets/js/vendor/jquery-selection"]
 	path = assets/js/vendor/jquery-selection
 	url = https://github.com/madapaja/jquery.selection.git
+[submodule "assets/js/vendor/autolinker"]
+	path = assets/js/vendor/autolinker
+	url = https://github.com/gregjacobs/Autolinker.js.git
