@@ -238,13 +238,17 @@ input[type="submit"] {
 
 .select2-result-description {
 	font-size: 11px;
-	height: 1.3em;
+	max-height: 2.5em;
 	color: #606060;
 	overflow-y: hidden;
 }
 
 .select2-highlighted .select2-result-description {
 	color: #e0e0e0;
+}
+
+.select2-result-description p {
+	margin: -1px 0;
 }
 
 /*****************
