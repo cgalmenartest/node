@@ -68,6 +68,7 @@ define([
         multiple: false,
         formatResult: formatResult,
         formatSelection: formatResult,
+        allowClear: true,
         ajax: {
           url: '/api/ac/project',
           dataType: 'json',
