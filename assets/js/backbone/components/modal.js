@@ -17,6 +17,10 @@ define([
 
   Application.Component.Modal = BaseComponent.extend({
 
+    events: {
+      "click .link-backbone"  : "link"
+    },
+
     initialize: function (options) {
       this.options = options;
     },
@@ -24,13 +28,22 @@ define([
     render: function () {
       var data = {
         id: this.options.id,
-        modalTitle: this.options.modalTitle
+        modalTitle: this.options.modalTitle,
+        disableClose: this.options.disableClose
       };
 
       var compiledTemplate = _.template(ModalTemplate, data);
       this.$el.append(compiledTemplate);
 
       return this;
+    },
+
+    link: function (e) {
+      if (e.preventDefault) e.preventDefault();
+      // hide the modal, wait for it to close, then navigate
+      $('#' + this.options.id).bind('hidden.bs.modal', function() {
+        Backbone.history.navigate($(e.currentTarget).attr('href'), { trigger: true });
+      }).modal('hide');
     },
 
     cleanup: function () {

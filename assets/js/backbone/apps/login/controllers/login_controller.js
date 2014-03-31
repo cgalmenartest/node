@@ -30,10 +30,12 @@ define([
         this.modalComponent.cleanup();
       }
 
+      var disableClose = this.options.message.disableClose || false;
       this.modalComponent = new ModalComponent({
         el: this.el,
         id: "login",
-        modalTitle: "Login or Register"
+        modalTitle: "Login or Register",
+        disableClose: disableClose
       }).render();
 
       this.loginView = new LoginView({
