@@ -80,6 +80,7 @@
     'tag': ['tag'],
     'attachments': ['profile', 'wikipedia'],
     'user': ['user'],
+    'project': ['project'],
     // these are sub-ids of search, for powering the browse view
     'search-projects': ['project', 'tag'],
     'search-tasks': ['task', 'tag'],

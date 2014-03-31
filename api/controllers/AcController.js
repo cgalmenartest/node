@@ -100,5 +100,13 @@ module.exports = {
       if (err) { return res.send(400, { message: 'Error performing search' }); }
       return res.send(results);
     });
+  },
+
+  project: function (req, res) {
+    if (!req.param('q')) { return res.send([]); }
+    runSearch('project', req.param('q'), req.query, function (err, results) {
+      if (err) { return res.send(400, { message: 'Error performing search' }); }
+      return res.send(results);
+    });
   }
 };

@@ -55,8 +55,35 @@ define([
     initializeSelect2: function () {
 
       var formatResult = function (object, container, query) {
-        return object.name;
+        if (!_.isUndefined(object.name)) {
+          return object.name;
+        } else if (!_.isUndefined(object.title)) {
+          return object.title;
+        }
+        return 'Invalid selection';
       };
+
+      this.$("#projectId").select2({
+        placeholder: "Select a project to associate",
+        multiple: false,
+        formatResult: formatResult,
+        formatSelection: formatResult,
+        ajax: {
+          url: '/api/ac/project',
+          dataType: 'json',
+          data: function (term) {
+            return {
+              q: term
+            };
+          },
+          results: function (data) {
+            return { results: data };
+          }
+        }
+      });
+      if (this.data.data.project) {
+        this.$("#projectId").select2('data', this.data.data.project);
+      }
 
       this.$("#topics").select2({
         placeholder: "Start typing to select a topic.",
@@ -291,6 +318,11 @@ define([
       var modelData = {
         title: this.$("#task-title").val(),
         description: this.$("#task-description").val()
+      };
+
+      var projectId = this.$("#projectId").select2('data');
+      if (projectId) {
+        modelData.projectId = projectId.id;
       }
 
       // Add new tags
