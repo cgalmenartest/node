@@ -10,6 +10,10 @@
           name: 'title',
           where: { state: 'public' }
         }
+      ],
+      include: [
+        'title',
+        'description'
       ]
     },
     'task': {

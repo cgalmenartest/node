@@ -236,6 +236,17 @@ input[type="submit"] {
 	border-radius: 3px;
 }
 
+.select2-result-description {
+	font-size: 11px;
+	height: 1.3em;
+	color: #606060;
+	overflow-y: hidden;
+}
+
+.select2-highlighted .select2-result-description {
+	color: #e0e0e0;
+}
+
 /*****************
 =  HEADERS
 ******************/

@@ -4,9 +4,10 @@ define([
   'backbone',
   'async',
   'utilities',
+  'marked',
   'markdown_editor',
   'text!task_edit_form_template'
-], function ($, _, Backbone, async, utilities, MarkdownEditor, TaskEditFormTemplate) {
+], function ($, _, Backbone, async, utilities, marked, MarkdownEditor, TaskEditFormTemplate) {
 
   var TaskEditFormView = Backbone.View.extend({
 
@@ -55,12 +56,13 @@ define([
     initializeSelect2: function () {
 
       var formatResult = function (object, container, query) {
-        if (!_.isUndefined(object.name)) {
-          return object.name;
-        } else if (!_.isUndefined(object.title)) {
-          return object.title;
+        var formatted = '<div class="select2-result-title">';
+        formatted += object.name || object.title;
+        formatted += '</div>';
+        if (!_.isUndefined(object.description)) {
+          formatted += '<div class="select2-result-description">' + marked(object.description) + '</div>';
         }
-        return 'Invalid selection';
+        return formatted;
       };
 
       this.$("#projectId").select2({
