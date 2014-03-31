@@ -57,8 +57,29 @@ define([
       this.action = options.action;
 
       this.model.trigger("project:model:fetch", this.model.id);
-      this.listenTo(this.model, "project:model:fetch:success", function (model) {
-        this.model = model;
+      this.listenTo(this.model, "project:model:fetch:success", function (projectModel) {
+        self.model = projectModel;
+        if (self.action == 'edit') {
+          var model = this.model.toJSON();
+          // check if the user owns the task
+          var owner = model.isOwner;
+          if (owner !== true) {
+            // if none of these apply, are they an admin?
+            if (window.cache.currentUser) {
+              if (window.cache.currentUser.isAdmin === true) {
+                owner = true;
+              }
+            }
+          }
+          // if not the owner, trigger the login dialog.
+          if (owner !== true) {
+            window.cache.userEvents.trigger("user:request:login", {
+              message: "You are not the owner of this project. <a class='link-backbone' href='/projects/" + model.id + "'>View the project instead.</a>",
+              disableClose: true
+            });
+            return;
+          }
+        }
         self.initializeItemView();
       });
 
