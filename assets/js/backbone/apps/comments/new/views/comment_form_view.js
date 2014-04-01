@@ -7,10 +7,14 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'jquery.caret',
+  'jquery.at',
   'utilities',
   'comment_collection',
-  'text!comment_form_template'
-], function ($, _, Backbone, utils, CommentCollection, CommentFormTemplate) {
+  'text!comment_form_template',
+  'text!comment_ac_template',
+  'text!comment_inline_template'
+], function ($, _, Backbone, jqCaret, jqAt, utils, CommentCollection, CommentFormTemplate, CommentAcTemplate, CommentInlineTemplate) {
 
   var CommentFormView = Backbone.View.extend({
 
@@ -24,14 +28,33 @@ define([
     },
 
     render: function () {
-      var data = { form: this.options },
-          template  = _.template(CommentFormTemplate, data);
+      var data = { form: this.options };
+      var template = _.template(CommentFormTemplate, data);
 
       if (this.options.topic) {
         this.$el.prepend(template).append("<div class='clearfix'></div>");
       } else {
-        this.$el.append(template)
+        this.$el.append(template);
       }
+
+      // var renderAutocomplete = function (tpl, data) {
+      //   return _.template(tpl, data);
+      // }
+
+      this.$(".comment-content").atwho({
+        at: '@',
+        search_key: 'value',
+        tpl: CommentAcTemplate,
+        insert_tpl: CommentInlineTemplate,
+        callbacks: {
+          tpl_eval: _.template,
+          remote_filter: function(query, callback) {
+            $.getJSON("/api/ac/inline", { q: query }, function (data) {
+              callback(data);
+            });
+          }
+        }
+      });
 
       return this;
     },
@@ -40,8 +63,10 @@ define([
       if (e.preventDefault) e.preventDefault();
 
       if ($(e.currentTarget).find(".comment-content").val() !== "") {
+        console.log('1');
         this.comment = $(e.currentTarget).find(".comment-content").text();
       } else {
+        console.log('2');
         this.comment = $(e.currentTarget).find(".comment-content:first-child").text();
       }
 

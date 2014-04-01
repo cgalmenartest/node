@@ -70,6 +70,10 @@ module.exports = {
               result[config.include[j]] = models[i][config.include[j]];
             }
           }
+          // create link for resource
+          if (config.link) {
+            result.link = config.link + models[i].id;
+          }
           results.push( result );
         }
         return done(err);
