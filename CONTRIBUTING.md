@@ -67,7 +67,7 @@ Before you submit your pull request consider the following guidelines:
      ```
 
 * Create your patch, **including appropriate test cases**.
-* Follow our [Coding Style](#coding-style).
+* Follow our [Code Style](#code-style).
 * Run the full Midas test suite, including `make test` and `make demo`,
   and ensure that all tests pass.
 * Commit your changes using a descriptive commit message that follows our
