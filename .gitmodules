@@ -37,6 +37,7 @@
 [submodule "assets/js/vendor/jquery-at"]
 	path = assets/js/vendor/jquery-at
 	url = https://github.com/ichord/At.js.git
-[submodule "assets/js/vendor/jquery-carat"]
-	path = assets/js/vendor/jquery-carat
+
+[submodule "assets/js/vendor/jquery-caret"]
+	path = assets/js/vendor/jquery-caret
 	url = https://github.com/ichord/Caret.js.git
