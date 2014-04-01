@@ -330,9 +330,12 @@ module.exports = {
    * @param reqId: the requester's id
    */
   getUser: function (userId, reqId, cb) {
+    if (!_.isFinite(userId)) {
+      return cb({ message: 'User ID must be a numeric value' }, null);
+    }
     User.findOneById(userId, function (err, user) {
-      delete user.deletedAt;
       if (err) { return cb(err, null); }
+      delete user.deletedAt;
       tagUtils.assemble({ userId: userId }, function (err, tags) {
         if (err) { return cb(err, null); }
         for (i in tags) {
