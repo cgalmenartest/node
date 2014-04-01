@@ -93,13 +93,13 @@ Before you submit your pull request consider the following guidelines:
     ```
 
 * In GitHub, send a pull request to `midas:devel`.
-* If we suggest changes then
+* If we suggest changes then:
   * Make the required updates.
   * Re-run the Midas test suite to ensure tests are still passing.
   * Rebase your branch and force push to your GitHub repository (this will update your Pull Request):
 
     ```shell
-    git rebase master -i
+    git rebase devel -i
     git push -f
     ```
 
@@ -116,10 +116,10 @@ from the main (upstream) repository:
     git push origin --delete my-fix-branch
     ```
 
-* Check out the master branch:
+* Check out the devel branch:
 
     ```shell
-    git checkout master -f
+    git checkout devel -f
     ```
 
 * Delete the local branch:
@@ -128,8 +128,8 @@ from the main (upstream) repository:
     git branch -D my-fix-branch
     ```
 
-* Update your master with the latest upstream version:
+* Update your devel with the latest upstream version:
 
     ```shell
-    git pull --ff upstream master
+    git pull --ff upstream devel
     ```
