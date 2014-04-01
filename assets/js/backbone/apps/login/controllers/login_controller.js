@@ -30,6 +30,7 @@ define([
         this.modalComponent.cleanup();
       }
 
+      // initialize the modal
       var disableClose = this.options.message.disableClose || false;
       this.modalComponent = new ModalComponent({
         el: this.el,
@@ -38,6 +39,7 @@ define([
         disableClose: disableClose
       }).render();
 
+      // put the login view inside the modal
       this.loginView = new LoginView({
         el: ".modal-template",
         login: Login,
