@@ -37,10 +37,6 @@ define([
         this.$el.append(template);
       }
 
-      // var renderAutocomplete = function (tpl, data) {
-      //   return _.template(tpl, data);
-      // }
-
       this.$(".comment-content").atwho({
         at: '@',
         search_key: 'value',
@@ -62,22 +58,14 @@ define([
     post: function (e) {
       if (e.preventDefault) e.preventDefault();
 
-      if ($(e.currentTarget).find(".comment-content").val() !== "") {
-        console.log('1');
-        this.comment = $(e.currentTarget).find(".comment-content").text();
-      } else {
-        console.log('2');
-        this.comment = $(e.currentTarget).find(".comment-content:first-child").text();
-      }
+      var commentHtml = this.$(".comment-content").html();
+      var commentText = this.$(".comment-content").text().trim();
 
       // abort if the comment is empty
-      if (!this.comment) {
+      if (!commentText) {
         this.$('.comment-alert-empty').show();
         return;
       }
-
-      if ($(e.currentTarget).find(".comment-content:first-child").children("a").attr("href") !== undefined)
-        this.wikiLink = _.escape($(e.currentTarget).find(".comment-content:first-child").children("a").attr("href"))
 
       var parentId;
 
@@ -86,7 +74,7 @@ define([
       }
 
       var data = {
-        comment   : this.comment,
+        comment   : commentHtml,
         topic     : false
       };
       data[this.options.target + 'Id'] = this.options[this.options.target + 'Id'];
