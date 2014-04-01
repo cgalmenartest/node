@@ -30,7 +30,9 @@ define([
         this.modalComponent.cleanup();
       }
 
-      var disableClose = this.options.message.disableClose || false;
+      if (!_.isUndefined(this.options.message)) {
+        var disableClose = this.options.message.disableClose || false;
+      }
       this.modalComponent = new ModalComponent({
         el: this.el,
         id: "login",
