@@ -6,11 +6,8 @@ define([
   'utilities',
   'popovers', /* Popovers,*/
   'modal_component',
-  'autocomplete',
   'text!projectowner_show_template'
-], function ($, _, async, Backbone, utils, Popovers, ModalComponent, autocomplete, ProjectownerShowTemplate) {
-
-  //if(_.isUndefined(popovers)){var popovers = new Popovers();}
+], function ($, _, async, Backbone, utils, Popovers, ModalComponent, ProjectownerShowTemplate) {
 
   var ProjectownerShowView = Backbone.View.extend({
 

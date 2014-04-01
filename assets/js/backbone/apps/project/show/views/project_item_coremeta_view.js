@@ -8,9 +8,8 @@ define([
   'markdown_editor',
   'popovers', /* Popovers,*/
   'modal_component',
-  'autocomplete',
   'text!project_item_coremeta_template'
-], function ($, _, async, Backbone, utils, marked, MarkdownEditor, Popovers, ModalComponent, autocomplete, ProjectItemCoreMetaTemplate) {
+], function ($, _, async, Backbone, utils, marked, MarkdownEditor, Popovers, ModalComponent, ProjectItemCoreMetaTemplate) {
 
   //if(_.isUndefined(popovers)){var popovers = new Popovers();}
 
