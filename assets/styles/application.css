@@ -922,6 +922,8 @@ li.border-left {
 	padding-top: 5px;
 	padding-bottom: 5px;
 	position: relative;
+	height: auto;
+	min-height: 30px;
 }
 
 .comment-item {
