@@ -51,10 +51,10 @@ chances of your issue being dealt with quickly:
 * **Motivation for or Use Case** - explain why this is a bug for you
 * **Midas Version(s)** - is it a regression?
 * **Browsers and Operating System** - is this a problem with all browsers or only IE8?
-* **Reproduce the error** - provide a live example, screenshot, or a unambiguous set of steps.
-* **Related issues** - has a similar issue been reported before?
+* **Reproduce the error** - provide a live example, screenshot, and/or a unambiguous set of steps. The more the better.
+* **Related issues** - has a similar issue been reported before?  Reference the related issues in the descrioption.
 * **Suggest a Fix** - if you can't fix the bug yourself, perhaps you can point to what might be
-  causing the problem (line of code or commit)
+  causing the problem (line of code or commit).  If you're requesting a feature, describe how the feature might work to resolve the user story.
 
 ### Submitting a Pull Request
 Before you submit your pull request consider the following guidelines:
