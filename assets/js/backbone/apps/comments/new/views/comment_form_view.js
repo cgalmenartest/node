@@ -37,7 +37,7 @@ define([
         this.$el.append(template);
       }
 
-      this.$(".comment-content").atwho({
+      this.$(".comment-input").atwho({
         at: '@',
         search_key: 'value',
         tpl: CommentAcTemplate,
@@ -58,8 +58,8 @@ define([
     post: function (e) {
       if (e.preventDefault) e.preventDefault();
 
-      var commentHtml = this.$(".comment-content").html();
-      var commentText = this.$(".comment-content").text().trim();
+      var commentHtml = this.$(".comment-input").html();
+      var commentText = this.$(".comment-input").text().trim();
 
       // abort if the comment is empty
       if (!commentText) {

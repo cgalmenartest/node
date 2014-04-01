@@ -918,14 +918,6 @@ li.border-left {
 	color: #858585;
 }
 
-.comment-content {
-	padding-top: 5px;
-	padding-bottom: 5px;
-	position: relative;
-	height: auto;
-	min-height: 30px;
-}
-
 .comment-item {
 	width: 100%;
 	overflow: hidden;
@@ -967,6 +959,18 @@ li.border-left {
 
 .comment-expand {
 	display: none;
+}
+
+.comment-input {
+	padding-top: 5px;
+	padding-bottom: 5px;
+	position: relative;
+	height: auto;
+	min-height: 30px;
+}
+
+form.comment-submit .input-group-btn {
+	vertical-align: bottom;
 }
 
 #comment-empty {
