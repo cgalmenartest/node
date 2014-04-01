@@ -72,7 +72,7 @@ Before you submit your pull request consider the following guidelines:
   and ensure that all tests pass.
 * Commit your changes using a descriptive commit message that follows our
   [commit message conventions](#commit-messages) and passes our commit message presubmit hook
-  `pre-commit` and `commit-msg` (see [git hooks](#git-hooks). Adherence to the [commit message conventions](#commit-messages)
+  `pre-commit` and `commit-msg` (see [git hooks](#git-hooks)). Adherence to the [commit message conventions](#commit-messages)
   is required to assist in generating release notes.
 
      ```shell
