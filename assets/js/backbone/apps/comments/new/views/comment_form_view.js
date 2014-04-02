@@ -80,12 +80,10 @@ define([
       }).on("inserted.atwho", function(event, $li) {
         // This is a hack to hide the space after inserting an element.
         var ids = self.$("span.atwho-view-flag > span:visible");
-        _.each(ids, function (id) {
-          // insert a non-breaking space after the inserted element, but not within it
-          // TODO:
-          console.log($(id));
-          console.log($(id).parent());
-        });
+        // insert a non-breaking space after the inserted element, but not within it
+        // this allows the user to delete that space if they want to, without deleting
+        // the referenced element
+        ids.parent().after('&nbsp;');
         ids.hide();
       });
 
