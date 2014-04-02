@@ -28,6 +28,7 @@ define([
     },
 
     render: function () {
+      var self = this;
       var data = { form: this.options };
       var template = _.template(CommentFormTemplate, data);
 
@@ -42,14 +43,48 @@ define([
         search_key: 'value',
         tpl: CommentAcTemplate,
         insert_tpl: CommentInlineTemplate,
+        limit: 10,
         callbacks: {
           tpl_eval: _.template,
-          remote_filter: function(query, callback) {
+          sorter: function (query, items, search_key) {
+            // don't sort, use the order from the server
+            return items;
+          },
+          highlighter: function (li, query) {
+            var regexp;
+            if (!query) {
+              return li;
+            }
+            // just want to find all case insensitive matches and replace with <strong>
+            // TODO:
+            regexp = new RegExp(">\\s*(\\w*)(" + query.replace("+", "\\+") + ")(\\w*)\\s*<", 'ig');
+            return li.replace(regexp, function(str, $1, $2, $3) {
+              return '> ' + $1 + '<strong>' + $2 + '</strong>' + $3 + ' <';
+            });
+          },
+          remote_filter: function (query, callback) {
+            // get data from the server
             $.getJSON("/api/ac/inline", { q: query }, function (data) {
+              _.each(data, function (d) {
+                // At.js expects the name to be set for the matcher fn
+                if (_.isUndefined(d.name)) {
+                  d.name = d.value;
+                }
+              });
               callback(data);
             });
           }
         }
+      }).on("inserted.atwho", function(event, $li) {
+        // This is a hack to hide the space after inserting an element.
+        var ids = self.$("span.atwho-view-flag > span:visible");
+        _.each(ids, function (id) {
+          // insert a non-breaking space after the inserted element, but not within it
+          // TODO:
+          console.log($(id));
+          console.log($(id).parent());
+        });
+        ids.hide();
       });
 
       return this;
