@@ -91,6 +91,7 @@ define([
     renderView: function (collection) {
       var self = this;
       this.parentMap = {};
+      this.topics = [];
       var data = {
         comments: collection.toJSON()[0].comments
       };
@@ -105,6 +106,7 @@ define([
         if (data.comments[i].topic === true) {
           depth[data.comments[i].id] = 0;
           data.comments[i]['depth'] = depth[data.comments[i].id];
+          this.topics.push(data);
         } else {
           depth[data.comments[i].id] = depth[data.comments[i].parentId] + 1;
           data.comments[i]['depth'] = depth[data.comments[i].id];
@@ -241,15 +243,17 @@ define([
         var countSpan = $(itemContainer).find('.comment-count-num')[0];
         $(countSpan).html(parseInt($(countSpan).text()) + 1);
       }
+      // set the depth based on the position in the tree
+      modelJson['depth'] = $(currentTarget).data('depth') + 1;
       // update the parentMap for sorting
       if (!_.isNull(modelJson.parentId)) {
         if (_.isUndefined(this.parentMap[modelJson.parentId])) {
           this.parentMap[modelJson.parentId] = [];
         }
         this.parentMap[modelJson.parentId].push(modelJson.id);
+      } else {
+        this.topics.push(modelJson);
       }
-      // set the depth based on the position in the tree
-      modelJson['depth'] = $(currentTarget).data('depth') + 1;
       // hide the empty placeholder, just in case it is still showing
       $("#comment-empty").hide();
       // render comment and UI addons
