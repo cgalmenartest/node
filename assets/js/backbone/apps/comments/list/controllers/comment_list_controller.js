@@ -2,12 +2,13 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'jquery_timeago',
   'popovers',
   'comment_collection',
   'comment_form_view',
   'comment_item_view',
   'text!comment_wrapper_template'
-], function ($, _, Backbone, Popovers, CommentCollection, CommentFormView, CommentItemView, CommentWrapper) {
+], function ($, _, Backbone, TimeAgo, Popovers, CommentCollection, CommentFormView, CommentItemView, CommentWrapper) {
 
   var popovers = new Popovers();
 
@@ -173,9 +174,15 @@ define([
         });
         self.commentForms.push(commentFV);
       }
+      return $("#comment-list-" + (comment.topic ? 'null' : comment.parentId));
     },
 
-    initializeCommentUIAdditions: function () {
+    initializeCommentUIAdditions: function ($comment) {
+      if (_.isUndefined($comment)) {
+        this.$("time.timeago").timeago();
+      } else {
+        $comment.find("time.timeago").timeago();
+      }
       popovers.popoverPeopleInit(".comment-user-link");
       popovers.popoverPeopleInit(".project-people-div");
     },
@@ -257,8 +264,8 @@ define([
       // hide the empty placeholder, just in case it is still showing
       $("#comment-empty").hide();
       // render comment and UI addons
-      self.renderComment(self, modelJson, self.collection, self.parentMap);
-      self.initializeCommentUIAdditions();
+      var $comment = self.renderComment(self, modelJson, self.collection, self.parentMap);
+      self.initializeCommentUIAdditions($comment);
 
       // Clear out the current div
       $(currentTarget).find("div[contentEditable=true]").text("");
