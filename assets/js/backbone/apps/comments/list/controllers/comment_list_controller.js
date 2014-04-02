@@ -21,6 +21,7 @@ define([
       "click .comment-contract"           : "topicContract",
       "mouseenter .comment-user-link"     : popovers.popoverPeopleOn,
       "click .comment-user-link"          : popovers.popoverClick,
+      "click .link-backbone"              : "link",
       "click a[href='#reply-to-comment']" : "reply"
     },
 
@@ -171,6 +172,13 @@ define([
       $(e.currentTarget).hide();
       $(target.find('.comment-expand')[0]).show();
       $(target.children('.comment-sublist-wrapper')[0]).slideToggle();
+    },
+
+    link: function (e) {
+      // stay within the backbone app rather than a browser reload
+      if (e.preventDefault) e.preventDefault();
+      var link = $(e.currentTarget).attr('href');
+      Backbone.history.navigate(link, { trigger: true });
     },
 
     reply: function (e) {
