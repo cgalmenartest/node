@@ -946,6 +946,10 @@ li.border-left {
 	display: none;
 }
 
+.comment-content {
+	position: relative;
+}
+
 .comment-expand, .comment-contract {
 	position: absolute;
 	top: 0;
