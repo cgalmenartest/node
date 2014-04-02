@@ -30,6 +30,10 @@
 
       <div class="comment-metadata">
         <time class="timeago comment-created-at" datetime="<%- createdAt %>"><%- createdAt %></time>
+        <% if (topic) { %>
+        &bull;&nbsp;
+        <span class="comment-count"><i class="icon-comments"></i> <span class="comment-count-num"><%- numChildren %></span> comments</span>
+        <% } %>
         <% if (depth == 1)  { %>
         <% if (currentUser) { %>
         &bull;
@@ -45,6 +49,6 @@
     <ul id="comment-list-<%= id %>"></ul>
   </div>
 
-  <div class="comment-form" <% if ((depth == 1) || (!currentUser)) { %>style="display: none;"<% } %> id="comment-form-<%= id %>"></div>
+  <div class="comment-form" <% if ((depth >= 1) || (!currentUser)) { %>style="display: none;"<% } %> id="comment-form-<%= id %>"></div>
 
 </li>
