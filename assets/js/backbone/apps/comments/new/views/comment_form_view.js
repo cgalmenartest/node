@@ -56,11 +56,13 @@ define([
               return li;
             }
             // just want to find all case insensitive matches and replace with <strong>
-            // TODO:
-            regexp = new RegExp(">\\s*(\\w*)(" + query.replace("+", "\\+") + ")(\\w*)\\s*<", 'ig');
-            return li.replace(regexp, function(str, $1, $2, $3) {
-              return '> ' + $1 + '<strong>' + $2 + '</strong>' + $3 + ' <';
-            });
+            // set up the query as a regular expression
+            var re = new RegExp('(' + query.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1") + ')', 'ig');
+            // parse the li string into a DOM node
+            var liDom = $.parseHTML(li);
+            var text = $(liDom[0]).text().replace(re, "<strong>$1</strong>");
+            $(liDom[0]).html(text);
+            return liDom[0];
           },
           remote_filter: function (query, callback) {
             // get data from the server
