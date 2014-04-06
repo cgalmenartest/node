@@ -34,10 +34,7 @@ define([
     update: function (data) {
       var self = this;
 
-      this.save({
-        title       : data['title'],
-        description : data['description']
-      }, {
+      this.save(data, {
         success: function (data) {
           self.trigger("task:update:success", data);
         }

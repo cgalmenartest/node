@@ -48,25 +48,6 @@ var getCurrentModelFromFormAttributes = function (collection, attr) {
 }
 
 /**
- * Input:
- * @model [OBJECT* instance] Model instance.
- * @field [OBJECT property] Field you want to focus on for unmarshaling.
- * @splitType [STRING] Split type for marshalling (Eg: ||, -, etc)
- *
- * Return: Nothing; Cleaned @field [OBJECT property] stored in model.value
- */
-var cleanStringFromUndefined = function (model, field, splitType) {
-  var data, compiledTemplate,
-      valueArray              = field.split(splitType),
-      lastStringInValueArray  = $.trim(valueArray[valueArray.length - 1]);
-
-  if (lastStringInValueArray === 'undefined') {
-    valueArray.pop(lastStringInValueArray)
-    model.value = valueArray.join()
-  }
-}
-
-/**
  * Completely remove a backbone view and all of its
  * references.  This is needed to destroy the view
  * and all of its listeners, in order to start
@@ -114,26 +95,6 @@ var clearContainer = function () {
  */
 var scrollTop = function () {
   $(window).scrollTop($(window).scrollTop());
-}
-
-/**
- * Add a method to the global Function object called "addSpinner",
- * which allows us to call the chained method "addSpinner" from any function
- * within the application.  Especially useful with render methods.
- * @param  {[Backbone View Instance]} self
- *
- * Return:
- * Attaches the spinner to the $el of the backbone view instance passed in, before that
- * view can actually set its $el, thereby dynamically allowing a spinner to exist with little effort.
- */
-var addSpinnerToFunctionPrototype = function (self) {
-  if (self) {
-    Function.prototype.addSpinner = function () {
-      self.$el.append("<i class='icon-spin icon-spinner'></i>")
-    }
-  } else {
-    throw new Error("Pass in a Backbone View class");
-  }
 }
 
 /**

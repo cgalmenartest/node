@@ -21,13 +21,14 @@ module.exports = {
       var b = JSON.parse(body);
       var search = b.query.search;
       for (var i = 0; i < search.length; i++) {
-          if (config.limit && (i >= config.limit)) {
-            break;
-          }
-          results.push( { value: search[i].title,
-                          field: 'title',
-                          target: config.target.toLowerCase()
-                        } );
+        if (config.limit && (i >= config.limit)) {
+          break;
+        }
+        results.push( { value: search[i].title,
+                        field: 'title',
+                        target: config.target.toLowerCase(),
+                        link: config.baseUrl + encodeURIComponent(search[i].title)
+                      } );
       }
       return cb(null, results);
     });

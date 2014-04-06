@@ -47,7 +47,12 @@ module.exports = {
   add: function (req, res) {
     if (req.route.method != 'post') { return res.send(400, { message: 'Unsupported operation.' } ); }
     var tag = _.extend(req.body || {}, req.params);
-    TagEntity.find({ where: { type: tag.type, like: { name: tag.name }}}, function (err, existingTags) {
+    // Trim whitespace
+    if (_.isUndefined(tag.name) || (_.isUndefined(tag.type))) {
+      return res.send(400, { message: 'Must specify tag name and type.' });
+    }
+    tag.name = tag.name.trim();
+    TagEntity.find({ where: { type: tag.type, name: tag.name }}, function (err, existingTags) {
       if (err) { return res.send(400, { message: 'Error looking up tag' }); }
       // check if an existing tag matches
       if (existingTags && existingTags.length > 0) {

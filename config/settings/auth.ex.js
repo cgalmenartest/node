@@ -7,7 +7,7 @@ module.exports = {
     linkedin : {
       clientId    : process.env.LINKEDIN_CLIENT_ID  || 'CLIENT_ID',
       clientSecret: process.env.LINKEDIN_CLIENT_SECRET || 'CLIENT_SECRET',
-      callbackUrl : process.env.LINKEDIN_CALLBACK_URL || 'http://localhost/api/auth/linkedin/callback'
+      callbackUrl : process.env.LINKEDIN_CALLBACK_URL || 'http://localhost/api/auth/callback/linkedin'
     },
     myusa : {
       clientId    : process.env.MYUSA_CLIENT_ID  || 'CLIENT_ID',

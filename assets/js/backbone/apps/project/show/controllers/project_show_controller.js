@@ -15,11 +15,10 @@ define([
   'comment_list_controller',
   'comment_form_view',
   'modal_component',
-  'modal_alert',
-  'autocomplete'
+  'modal_alert'
 ], function ($, _, async, Backbone, utils, Popovers, BaseController, ProjectItemView, ProjectItemCoreMetaView, ProjectownerShowView, AttachmentView,
   TaskListController, EventListController, CommentListController, CommentFormView,
-  ModalComponent, ModalAlert, autocomplete) {
+  ModalComponent, ModalAlert) {
 
   var popovers = new Popovers();
 
@@ -57,8 +56,29 @@ define([
       this.action = options.action;
 
       this.model.trigger("project:model:fetch", this.model.id);
-      this.listenTo(this.model, "project:model:fetch:success", function (model) {
-        this.model = model;
+      this.listenTo(this.model, "project:model:fetch:success", function (projectModel) {
+        self.model = projectModel;
+        if (self.action == 'edit') {
+          var model = this.model.toJSON();
+          // check if the user owns the task
+          var owner = model.isOwner;
+          if (owner !== true) {
+            // if none of these apply, are they an admin?
+            if (window.cache.currentUser) {
+              if (window.cache.currentUser.isAdmin === true) {
+                owner = true;
+              }
+            }
+          }
+          // if not the owner, trigger the login dialog.
+          if (owner !== true) {
+            window.cache.userEvents.trigger("user:request:login", {
+              message: "You are not the owner of this project. <a class='link-backbone' href='/projects/" + model.id + "'>View the project instead.</a>",
+              disableClose: true
+            });
+            return;
+          }
+        }
         self.initializeItemView();
       });
 
@@ -69,34 +89,6 @@ define([
         self.initializeHandlers();
         self.initializeLikes();
         self.initializeUI();
-      });
-    },
-
-    search: function () {
-      $(".comment-content").midasAutocomplete({
-        backboneEvents: true,
-        // If we are using backbone here, then a lot of these
-        // misc. AJAX options we are passing are unecessary.  So we should somehow
-        // manage that in an elegant way.
-        backbone: false,
-        apiEndpoint: '/api/ac/inline',
-        // the query param expects one api endpoint IE:
-        // /nested/endpoint?QUERYPARAM=$(".search").val()
-        // So it is not something that you can chain params onto.
-        // It expects you to send the data back as input data through that query param
-        // one character at a time.
-        queryParam: 'q',
-        type: 'POST',
-        contentType: 'json',
-
-        // The plugin will accept any trigger key'd in here, and then
-        // use that to start the search process.  if it doesn't exist it will not search.
-        trigger: "@",
-        searchResultsClass: ".search-result-wrapper",
-
-        success: function (data) {
-
-        }
       });
     },
 

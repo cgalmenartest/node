@@ -6,14 +6,17 @@ define([
   'underscore',
   'backbone',
   'utilities',
+  'markdown_editor',
+  'marked',
   'tag_show_view',
   'text!profile_show_template',
   'text!profile_email_template',
+  'json!login_config',
   'modal_component',
   'profile_activity_view',
   'profile_email_view'
-], function ($, async, jqIframe, jqFU, _, Backbone, utils,
-  TagShowView, ProfileTemplate, EmailTemplate, ModalComponent, PAView, EmailFormView) {
+], function ($, async, jqIframe, jqFU, _, Backbone, utils, MarkdownEditor, marked,
+  TagShowView, ProfileTemplate, EmailTemplate, Login, ModalComponent, PAView, EmailFormView) {
 
   var ProfileShowView = Backbone.View.extend({
 
@@ -23,9 +26,7 @@ define([
       "click #profile-edit"        : "profileEdit",
       "click #profile-cancel"      : "profileCancel",
       "click #like-button"         : "like",
-      "keyup #name, #username, #title, #bio" : "fieldModified",
-      "keyup #username"            : "checkUsername",
-      "click #username-button"     : "clickUsername",
+      "keyup #name, #title, #bio" : "fieldModified",
       "click #add-email"           : "addEmail",
       "click .email-remove"        : "removeEmail",
       "click .removeAuth"          : "removeAuth"
@@ -48,9 +49,13 @@ define([
 
     render: function () {
       var data = {
+        login: Login,
         data: this.model.toJSON(),
         edit: this.edit,
         saved: this.saved
+      }
+      if (data.data.bio) {
+        data.data.bioHtml = marked(data.data.bio);
       }
       var template = _.template(ProfileTemplate, data);
       this.$el.html(template);
@@ -62,6 +67,7 @@ define([
       this.initializeTags();
       this.initializePAView();
       this.initializeEmail();
+      this.initializeTextArea();
       this.updatePhoto();
       this.updateProfileEmail();
       return this;
@@ -335,9 +341,24 @@ define([
         $("#profile-emails").append(template);
       });
 
+      this.model.listenTo(this.model, "profile:email:error", function (data) {
+        // nothing to be done
+      });
+
       this.listenTo(this.model, "profile:email:delete", function (e) {
         $(e.currentTarget).parents('div.radio').remove();
       });
+    },
+
+    initializeTextArea: function () {
+      if (this.md) { this.md.cleanup(); }
+      this.md = new MarkdownEditor({
+        data: this.model.toJSON().bio,
+        el: ".markdown-edit",
+        id: 'bio',
+        placeholder: 'A short biography.',
+        rows: 6
+      }).render();
     },
 
     fieldModified: function (e) {
@@ -361,15 +382,10 @@ define([
 
     profileSubmit: function (e) {
       e.preventDefault();
-      if (!$("#username-button").hasClass('btn-success')) {
-        alert("Please pick a valid username.");
-        return;
-      }
       $("#profile-save, #submit").button('loading');
       setTimeout(function() { $("#profile-save, #submit").attr("disabled", "disabled") }, 0);
       var data = {
         name: $("#name").val(),
-        username: $("#username").val(),
         title: $("#title").val(),
         bio: $("#bio").val()
       };
@@ -392,25 +408,19 @@ define([
 
       // Pop up dialog box to create tag,
       // then put tag into the select box
-      if (_.isUndefined(this.emailModalComponent)) {
-        this.emailModalComponent = new ModalComponent({
-          el: "#container",
-          id: "addEmail",
-          modalTitle: "Add Email Address"
-        }).render();
-      }
-
-      if (!_.isUndefined(this.emailModalComponent)) {
-        if (this.emailFormView) {
-          this.emailFormView.cleanup();
-        }
-        this.emailFormView = new EmailFormView({
-          el: "#addEmail .modal-template",
-          model: self.model,
-          target: 'profile'
-        });
-        this.emailFormView.render();
-      }
+      if (this.emailFormView) this.emailFormView.cleanup();
+      if (this.emailModalComponent) this.emailModalComponent.cleanup();
+      this.emailModalComponent = new ModalComponent({
+        el: "#emailModal",
+        id: "addEmail",
+        modalTitle: "Add Email Address"
+      }).render();
+      this.emailFormView = new EmailFormView({
+        el: "#addEmail .modal-template",
+        model: self.model,
+        target: 'profile'
+      });
+      this.emailFormView.render();
     },
 
     removeEmail: function (e) {
@@ -425,37 +435,6 @@ define([
         self.model.trigger("profile:email:delete", e);
       });
 
-    },
-
-    checkUsername: function (e) {
-      var username = $("#username").val();
-      $("#username-button").removeClass('btn-success');
-      $("#username-button").removeClass('btn-danger');
-      $("#username-button").addClass('btn-default');
-      $("#username-check").removeClass('icon-ok');
-      $("#username-check").removeClass('icon-remove');
-      $("#username-check").addClass('icon-spin');
-      $("#username-check").addClass('icon-spinner');
-      $.ajax({
-        url: '/api/user/username/' + username,
-      }).done(function (data) {
-        $("#username-check").removeClass('icon-spin');
-        $("#username-check").removeClass('icon-spinner');
-        $("#username-button").removeClass('btn-default');
-        if (data) {
-          // username is take
-          $("#username-button").addClass('btn-danger');
-          $("#username-check").addClass('icon-remove');
-        } else {
-          // username is available
-          $("#username-button").addClass('btn-success');
-          $("#username-check").addClass('icon-ok');
-        }
-      });
-    },
-
-    clickUsername: function (e) {
-      e.preventDefault();
     },
 
     like: function (e) {
@@ -500,6 +479,7 @@ define([
       }
     },
     cleanup: function () {
+      if (this.md) { this.md.cleanup(); }
       if (this.tagView) { this.tagView.cleanup(); }
       if (this.projectView) { this.projectView.cleanup(); }
       if (this.taskView) { this.taskView.cleanup(); }

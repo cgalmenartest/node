@@ -17,11 +17,16 @@ require.config({
     'jquery_iframe'             : '../../vendor/jquery-file-upload/js/jquery.iframe-transport',
     'jquery.ui.widget'          : '../../vendor/jquery-file-upload/js/vendor/jquery.ui.widget',
     'jquery_fileupload'         : '../../vendor/jquery-file-upload/js/jquery.fileupload',
+    'jquery.selection'          : '../../vendor/jquery-selection/src/jquery.selection',
+    'jquery.caret'              : '../../vendor/jquery-caret/src/jquery.caret',
+    'jquery.at'                 : '../../vendor/jquery-at/dist/js/jquery.atwho',
     'underscore'                : '../../vendor/underscore',
     'backbone'                  : '../../vendor/backbone',
     'bootstrap'                 : '../../vendor/bootstrap',
     'bootstrap-datetimepicker'  : '../../vendor/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min',
     'async'                     : '../../vendor/async/lib/async',
+    'marked'                    : '../../vendor/marked/lib/marked',
+    'autolinker'                : '../../vendor/autolinker/dist/Autolinker',
 
     // ---------
     //= Mixins
@@ -166,6 +171,8 @@ require.config({
     'comment_model'             : '../entities/comments/comment_model',
     'comment_form_view'         : '../apps/comments/new/views/comment_form_view',
     'comment_form_template'     : '../apps/comments/new/templates/comment_form_template.html',
+    'comment_ac_template'       : '../apps/comments/new/templates/comment_ac_template.html',
+    'comment_inline_template'   : '../apps/comments/new/templates/comment_inline_template.html',
     'comment_item_view'         : '../apps/comments/list/views/comment_item_view',
 
     // ----------
@@ -178,6 +185,8 @@ require.config({
     'modal_wizard_component'    : '../components/modal_wizard',
     'modal_wizard_template'     : '../components/modal_wizard_template.html',
     'alert_template'            : '../components/alert_template.html',
+    'markdown_editor'           : '../components/markdown_editor',
+    'markdown_editor_template'  : '../components/markdown_editor_template.html',
     'autocomplete'              : '../mixins/autocomplete'
   },
 
@@ -186,6 +195,9 @@ require.config({
     'jquery_select2': {
       deps: ['jquery'],
       exports: 'select2'
+    },
+    'autolinker': {
+      exports: 'Autolinker'
     }
   }
 

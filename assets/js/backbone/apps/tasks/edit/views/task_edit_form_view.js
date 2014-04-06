@@ -4,8 +4,10 @@ define([
   'backbone',
   'async',
   'utilities',
+  'marked',
+  'markdown_editor',
   'text!task_edit_form_template'
-], function ($, _, Backbone, async, utilities, TaskEditFormTemplate) {
+], function ($, _, Backbone, async, utilities, marked, MarkdownEditor, TaskEditFormTemplate) {
 
   var TaskEditFormView = Backbone.View.extend({
 
@@ -24,7 +26,7 @@ define([
       });
     },
 
-    view: function () {
+    view: function (e) {
       if (e.preventDefault) e.preventDefault();
       Backbone.history.navigate('tasks/' + this.model.attributes.id, { trigger: true });
     },
@@ -48,13 +50,43 @@ define([
 
       // DOM now exists, begin select2 init
       this.initializeSelect2();
+      this.initializeTextArea();
     },
 
     initializeSelect2: function () {
 
       var formatResult = function (object, container, query) {
-        return object.name;
+        var formatted = '<div class="select2-result-title">';
+        formatted += object.name || object.title;
+        formatted += '</div>';
+        if (!_.isUndefined(object.description)) {
+          formatted += '<div class="select2-result-description">' + marked(object.description) + '</div>';
+        }
+        return formatted;
       };
+
+      this.$("#projectId").select2({
+        placeholder: "Select a project to associate",
+        multiple: false,
+        formatResult: formatResult,
+        formatSelection: formatResult,
+        allowClear: true,
+        ajax: {
+          url: '/api/ac/project',
+          dataType: 'json',
+          data: function (term) {
+            return {
+              q: term
+            };
+          },
+          results: function (data) {
+            return { results: data };
+          }
+        }
+      });
+      if (this.data.data.project) {
+        this.$("#projectId").select2('data', this.data.data.project);
+      }
 
       this.$("#topics").select2({
         placeholder: "Start typing to select a topic.",
@@ -156,6 +188,19 @@ define([
         width: '130px'
       });
 
+    },
+
+    initializeTextArea: function () {
+      if (this.md) { this.md.cleanup(); }
+      this.md = new MarkdownEditor({
+        data: this.model.toJSON().description,
+        el: ".markdown-edit",
+        id: 'task-description',
+        placeholder: 'Description of opportunity including goals, expected outcomes and deliverables.',
+        rows: 6,
+        maxlength: 1000,
+        validation: ['empty', 'count1000']
+      }).render();
     },
 
     submit: function (e) {
@@ -276,6 +321,11 @@ define([
       var modelData = {
         title: this.$("#task-title").val(),
         description: this.$("#task-description").val()
+      };
+
+      var projectId = this.$("#projectId").select2('data');
+      if (projectId) {
+        modelData.projectId = projectId.id;
       }
 
       // Add new tags
@@ -289,6 +339,7 @@ define([
     },
 
     cleanup: function () {
+      if (this.md) { this.md.cleanup(); }
       removeView(this);
     }
 

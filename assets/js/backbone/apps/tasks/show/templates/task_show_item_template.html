@@ -12,9 +12,17 @@
             <div class="edit-task-section">
 
               <h1><%= model.title %></h1>
+              <% if (!_.isUndefined(model.project)) { %>
+              <div class="task-project">
+                <a href="/projects/<%- model.projectId %>">
+                  <i class="icon-folder-close-alt"></i>
+                  <%- model.project.title %>
+                </a>
+              </div>
+              <% } %>
 
               <div class="task-show-description">
-                <%= model.description %>
+                <%= model.descriptionHtml %>
               </div>
 
               <div class="task-show-creation">

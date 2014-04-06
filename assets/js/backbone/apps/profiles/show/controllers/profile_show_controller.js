@@ -57,7 +57,10 @@ define([
       this.listenTo(this.model, "profile:fetch:error", function (model, response) {
         // if the user isn't logged in, trigger the login window
         if (response.status === 403) {
-          window.cache.userEvents.trigger("user:request:login", "You must be logged in to view profiles");
+          window.cache.userEvents.trigger("user:request:login", {
+            message: "You must be logged in to view profiles",
+            disableClose: false
+          });
         }
         var data = {
           alert: {

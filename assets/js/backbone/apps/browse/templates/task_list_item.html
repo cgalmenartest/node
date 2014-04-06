@@ -2,12 +2,12 @@
 
     <div class="task-list-title dotdotdot">
       <a href="#" class="task-link c1">
-        <%= item.title %>
+        <%- item.title %>
       </a>
     </div>
 
   <div class="task-list-description dotdotdot">
-    <%= item.description %>
+    <%= item.descriptionHtml %>
   </div>
 
   <div class="task-list-bottom border-top">
@@ -33,7 +33,7 @@
       </div>
       <div class="task-list-requestbox">
         <div class="task-list-requested">requested by</div>
-        <div class="task-list-name"><%= item.user.name %></div>
+        <div class="task-list-name"><%- item.user.name %></div>
         <% if (item.user.agency) { %>
         <div class="task-list-agency dotdotdot"><%= item.user.agency.tag.name %></div>
         <% } %>
