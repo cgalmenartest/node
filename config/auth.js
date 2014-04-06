@@ -48,11 +48,14 @@ passport.use('sspi', new LocalStrategy({
   },
   function (req, username, password, done) {
     // get username and domain from request
+    sails.log.debug('SSPI req object:', req.sspi);
     request.get({url: sails.config.auth.auth.sspi.contentUrl,
-                 json:true,
-                 qs: { username: username, domain: password }
+                 json: true,
+                 qs: { username: username, domain: req.sspi.domain }
                 }, function (err, req2, providerUsers) {
-      if (!providerUsers) { return done(null, false, { message: 'An error occurred while loading user information.' });}
+      if (!providerUsers) {
+        return done(null, false, { message: 'An error occurred while loading user information.' });
+      }
       var user = providerUsers.users.pop();
       user = user || {};
       // map fields to what passport expects for profiles

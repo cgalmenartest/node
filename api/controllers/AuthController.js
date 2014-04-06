@@ -14,7 +14,7 @@ var userUtils = require('../services/utils/user');
  */
 function authenticate(req, res, strategy, json) {
   if (req.user) {
-    passport.authorize(strategy, function(err, user, info)
+    passport.authorize(strategy, function (err, user, info)
     {
       if (json) {
         res.send(userUtils.cleanUser(req.user));
@@ -29,7 +29,7 @@ function authenticate(req, res, strategy, json) {
       }
     });
   } else {
-    passport.authenticate(strategy, function(err, user, info)
+    passport.authenticate(strategy, function (err, user, info)
     {
       if ((err) || (!user))
       {
@@ -55,15 +55,16 @@ function authenticate(req, res, strategy, json) {
       }
 
       // process additional sspi information if available
-      if (strategy === 'sspi') {
-        if (json === true) {
-          res.send(userUtils.cleanUser(user));
-        }
-        else {
-          res.redirect('/projects');
-        }
-        return;
-      }
+      // TODO: remove if sspi endpoint can be removed
+      // if (strategy === 'sspi') {
+      //   if (json === true) {
+      //     res.send(userUtils.cleanUser(user));
+      //   }
+      //   else {
+      //     res.redirect('/projects');
+      //   }
+      //   return;
+      // }
 
       req.logIn(user, function(err)
       {
@@ -113,6 +114,11 @@ module.exports = {
    * Authentication Provider for local and register username/password system
    */
   local: function(req, res) {
+    // Disable local logins when sspi is enabled; can allow bypassing of
+    // credentials through the sspi auto-login functionality
+    if (sails.config.auth.auth.sspi.enabled === true) {
+      return res.send(403, { message: 'Authentication method not supported. '});
+    }
     var json = false;
     if (req.param('json')) {
       json = true;
@@ -120,6 +126,11 @@ module.exports = {
     authenticate(req, res, 'local', json);
   },
   register: function(req, res) {
+    // Disable local logins when sspi is enabled; can allow bypassing of
+    // credentials through the sspi auto-login functionality
+    if (sails.config.auth.auth.sspi.enabled === true) {
+      return res.send(403, { message: 'Authentication method not supported. '});
+    }
     var json = false;
     req.register = true;
     if (req.param('json')) {
@@ -127,14 +138,19 @@ module.exports = {
     }
     authenticate(req, res, 'register', json);
   },
-  sspi: function(req, res) {
-    var json = false;
-    req.register = true;
-    if (req.param('json')) {
-      json = true;
-    }
-    authenticate(req, res, 'sspi', json);
-  },
+  // TODO: remove if SSPI endpoint can be removed
+  // sspi: function(req, res) {
+  //   // Only allow SSPI if it is explicitly enabled
+  //   if (sails.config.auth.auth.sspi.enabled !== true) {
+  //     return res.send(403, { message: 'Authentication method not supported. '});
+  //   }
+  //   var json = false;
+  //   req.register = true;
+  //   if (req.param('json')) {
+  //     json = true;
+  //   }
+  //   authenticate(req, res, 'sspi', json);
+  // },
 
   /**
    * Start the OAuth authentication process for a given strategy
@@ -168,6 +184,11 @@ module.exports = {
    * Logout user from session
    */
   logout: function (req,res) {
+    // Disable local logoout when sspi is enabled; User is not
+    // allowed to logout since SSPI provides auto login
+    if (sails.config.auth.auth.sspi.enabled === true) {
+      return res.send(403, { message: 'Authentication method not supported. '});
+    }
     // logout and redirect back to the app
     req.logout();
     if (req.param('json')) {
