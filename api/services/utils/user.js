@@ -313,7 +313,7 @@ module.exports = {
   cleanUser: function (user) {
     var u = {
       id: user.id,
-      username: user.username,
+      username: null,
       name: user.name,
       title: user.title,
       bio: user.bio,
@@ -330,8 +330,12 @@ module.exports = {
    * @param reqId: the requester's id
    */
   getUser: function (userId, reqId, cb) {
+    var self = this;
     User.findOneById(userId, function (err, user) {
       delete user.deletedAt;
+      if (userId != reqId) {
+        user = self.cleanUser(user);
+      }
       if (err) { return cb(err, null); }
       tagUtils.assemble({ userId: userId }, function (err, tags) {
         if (err) { return cb(err, null); }
