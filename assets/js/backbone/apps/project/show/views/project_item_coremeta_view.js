@@ -62,7 +62,7 @@ define([
         data: this.model.toJSON()
       };
       // convert description to html using markdown syntax
-      data.data.descriptionHtml = marked(data.data.description);
+      data.data.descriptionHtml = marked(data.data.description || '');
       var compiledTemplate = _.template(ProjectItemCoreMetaTemplate, data);
       this.$el.html(compiledTemplate);
 
