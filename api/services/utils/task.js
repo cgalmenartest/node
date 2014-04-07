@@ -6,6 +6,7 @@
  */
 var util = require('./project');
 var tagUtil = require('./tag');
+var userUtil = require('./user');
 
 var authorized = function (id, userId, cb) {
   Task.findOneById(id, function (err, task) {
@@ -90,10 +91,49 @@ var getVolunteers = function (task, cb) {
   });
 };
 
+/**
+ * Find tasks that meet a certain where criteria
+ * @param where query criteria, eg: { id: [5, 6, 7 ] } or { name: 'Title' }
+ * @return callback(error, tasks)
+ */
+var findTasks = function (where, cb) {
+  var self = this;
+  var w = where || {};
+  w.state = 'public';
+  Task.find()
+  .where(w)
+  .sort({'updatedAt': -1})
+  .exec(function (err, tasks) {
+    if (err) { return res.send(400, { message: 'Error looking up tasks.' }); }
+    // function for looking up user info
+    var lookupUser = function (task, done) {
+      userUtil.getUser(task.userId, null, function (err, user) {
+        if (err) { return done(err); }
+        task.user = {
+          name: user.name,
+          agency: user.agency
+        };
+        return done();
+      });
+    };
+    async.each(tasks, lookupUser, function (err) {
+      if (err) { return cb({ message: 'Error looking up user info.' }, null); }
+      async.each(tasks, self.getTags, function (err) {
+        if (err) { return cb({ message: 'Error looking up task tags.' }, null); }
+        async.each(tasks, self.getLikes, function (err) {
+          if (err) { return cb({ message: 'Error looking up task likes.' }, null); }
+          return cb(err, tasks);
+        });
+      });
+    })
+  });
+}
+
 module.exports = {
   authorized: authorized,
   getTags: getTags,
   getMetadata: getMetadata,
   getLikes: getLikes,
-  getVolunteers: getVolunteers
+  getVolunteers: getVolunteers,
+  findTasks: findTasks
 };
