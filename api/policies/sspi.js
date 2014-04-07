@@ -30,8 +30,8 @@ module.exports = function sspi (req, res, next) {
 
     // overwrite req.body to send username and password to passport for auth
     req.body = req.body || {};
-    req.body.username = credentials.user;
-    req.body.password = credentials.domain;
+    req.body.username = req.sspi.user;
+    req.body.password = req.sspi.domain;
     // try to authenticate with SSPI
     passport.authenticate('sspi', function (err, user, info)
     {
