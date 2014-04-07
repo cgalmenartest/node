@@ -14,7 +14,7 @@
               <h1><%= model.title %></h1>
               <% if (!_.isUndefined(model.project)) { %>
               <div class="task-project">
-                <a href="/projects/<%- model.projectId %>">
+                <a href="/projects/<%- model.projectId %>" class="link-backbone">
                   <i class="icon-folder-close-alt"></i>
                   <%- model.project.title %>
                 </a>
