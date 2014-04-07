@@ -2,7 +2,6 @@
 * Add userId into params for knowing who created them.
 */
 var _ = require('underscore');
-var request = require('request');
 var passport = require('passport');
 var userUtils = require('../services/utils/user');
 
