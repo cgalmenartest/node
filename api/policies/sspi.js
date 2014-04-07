@@ -13,7 +13,7 @@ module.exports = function sspi (req, res, next) {
     var result = {
       key: key
     };
-    var parts = key.split('\\',1);
+    var parts = key.split('\\');
     if (typeof parts[0] !== 'undefined') {
       result.domain = parts[0];
     }
