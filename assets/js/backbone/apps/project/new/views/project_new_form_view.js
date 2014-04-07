@@ -58,7 +58,7 @@ define([
       var data;
       data = {
         title       : this.$(".project-title-form").val(),
-        description : this.$(".project-description-form").val()
+        description : this.$("#project-form-description").val()
       };
 
       this.collection.trigger("project:save", data);
