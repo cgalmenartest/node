@@ -278,7 +278,15 @@ var validatePassword = function (username, password) {
  * @param e the event fired by jquery/backbone
  */
 var linkBackbone = function (e) {
+  // if meta or control is held, or if the middle mouse button is pressed,
+  // let the link process normally.
+  // eg: open a new tab or window based on the browser prefs
+  if ((e.metaKey === true) || (e.ctrlKey === true) || (e.which == 2)) {
+    return;
+  }
+  // otherwise contain the link within backbone
   if (e.preventDefault) e.preventDefault();
+  console.log(e);
   var href = $(e.currentTarget).attr('href');
   Backbone.history.navigate(href, { trigger: true });
 };
