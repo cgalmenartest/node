@@ -25,6 +25,7 @@ function search (target, req, res) {
   // store the result data
   var items = [];
   var itemIds = q.items;
+  var itemIdsAuthorized = [];
 
   // For each tag, find items associated with it
   var processTag = function (tagId, cb) {
@@ -51,8 +52,11 @@ function search (target, req, res) {
   // Get the item by checking if we're authorized to view it
   var check = function (id, cb) {
     checkFn(id, userId, function (err, item) {
-      if (!err && item) { items.push(item); }
-      cb();
+      if (!err && item) {
+        items.push(item);
+        itemIdsAuthorized.push(item.id);
+      }
+      cb(err);
     });
   };
 
@@ -65,8 +69,8 @@ function search (target, req, res) {
       // Perform item specific processing
       // Get task metadata
       if (target == 'tasks') {
-        async.each(items, taskUtil.getTags, function (err) {
-          if (err) { return res.send(400, { message: 'Error performing query.'}); }
+        taskUtil.findTasks({ id: itemIdsAuthorized }, function (err, items) {
+          if (err) { return res.send(400, { message: 'Error performing query.', error: err }); }
           return res.send(items);
         });
         return;

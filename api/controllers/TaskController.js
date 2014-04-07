@@ -25,32 +25,10 @@ module.exports = {
       });
       return;
     }
-    Task.find()
-    .where({ state: 'public' })
-    .sort({'updatedAt': -1})
-    .exec(function (err, tasks) {
-      if (err) { return res.send(400, { message: 'Error looking up tasks.' }); }
-      // function for looking up user info
-      var lookupUser = function (task, done) {
-        userUtil.getUser(task.userId, null, function (err, user) {
-          if (err) { return done(err); }
-          task.user = {
-            name: user.name,
-            agency: user.agency
-          };
-          return done();
-        });
-      };
-      async.each(tasks, lookupUser, function (err) {
-        if (err) { return res.send(400, { message: 'Error looking up user info.' }); }
-        async.each(tasks, taskUtil.getTags, function (err) {
-          if (err) { return res.send(400, { message: 'Error looking up task tags.' }); }
-          async.each(tasks, taskUtil.getLikes, function (err) {
-            if (err) { return res.send(400, { message: 'Error looking up task likes.' }); }
-            return res.send({ tasks: tasks });
-          });
-        });
-      })
+    // run the common task find query
+    taskUtil.findTasks({}, function (err, tasks) {
+      if (err) { return res.send(400, err); }
+      return res.send({ tasks: tasks });
     });
   },
 
