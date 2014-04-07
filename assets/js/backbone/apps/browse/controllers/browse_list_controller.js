@@ -22,8 +22,6 @@ define([
 
   Application.Browse.ListController = BaseController.extend({
 
-    el: "#container",
-
     events: {
       "click .project-link"   : "showProject",
       "click .project-background-image" : "showProject",

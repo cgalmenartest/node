@@ -55,6 +55,7 @@ define([
       this.cleanupChildren();
       this.browseListController = new BrowseListController({
         target: 'projects',
+        el: '#container',
         data: this.data
       });
     },
@@ -63,6 +64,7 @@ define([
       this.cleanupChildren();
       this.browseListController = new BrowseListController({
         target: 'tasks',
+        el: '#container',
         data: this.data
       });
     },
