@@ -56,10 +56,10 @@ module.exports = function sspi (req, res, next) {
             message: info.message
           });
         }
-        // if (typeof req.user != 'array')
-        // {
-        //   req.user = [req.user];
-        // }
+        if (typeof req.user != 'array')
+        {
+          req.user = [req.user];
+        }
         return next();
       });
     })(req, res, function (err) {
@@ -75,7 +75,7 @@ module.exports = function sspi (req, res, next) {
   if ((sails.config.auth.auth.sspi.enabled === true) && !req.isAuthenticated()) {
     authenticateSSPIUser();
   }
-  else{
+  else {
     return next();
   }
 };
