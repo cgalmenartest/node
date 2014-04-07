@@ -43,13 +43,14 @@ module.exports = {
   createLocalUser: function (username, password, userData, req, done) {
     var self = this;
     var updateAction = true;
-    if(typeof userData === 'function'){
+    // handle missing parameters
+    if (typeof userData === 'function'){
       done = userData;
       userData = {};
       req = {};
       updateAction = false;
     }
-    if(typeof req === 'function'){
+    if (typeof req === 'function'){
       done = req;
       req = {};
     }
@@ -69,9 +70,12 @@ module.exports = {
     }
     userData.password = password;
 
-    // ensure the username is a valid email address
-    if (validator.isEmail(userData.username) !== true) {
-      return done(null, false, { message: 'Email address is not valid.' });
+    // Run password validator (but only if SSPI is disabled)
+    if (sails.config.auth.auth.sspi.enabled !== true) {
+      // ensure the username is a valid email address
+      if (validator.isEmail(userData.username) !== true) {
+        return done(null, false, { message: 'Email address is not valid.' });
+      }
     }
     // Check if the username already exists
     this.findUser(userData.username, function (err, user) {
@@ -158,7 +162,7 @@ module.exports = {
               var email = {
                 userId: user['id'],
                 email: userData.username,
-              }
+              };
               // Store the email address
               // var tags = create_tag_obj(userData);
               // tagUtils.findOrCreateTags(user.id, tags, function (err, newTags) {
@@ -173,10 +177,11 @@ module.exports = {
         });
       }
       else {
-        if(updateAction && req.user){
-          // if this user is logged in, then we're adding a new
-          // service for them.  Update their user model fields if they
-          // aren't already set.
+        if (!updateAction) {
+          return done(null, false, { message: 'User already exists. Please log in instead.' });
+        }
+        if (req.user) {
+          // if this user is logged in, then we may be updating their information
           if (req.user[0].disabled === true) {
             return done(null, false, { message: 'Your account is disabled.' });
           }
@@ -198,110 +203,18 @@ module.exports = {
               if (err) { return done(null, false, { message: 'Unable to update user information.' }); }
               user_cb(null, req.user[0]);
             });
-          } else {
-            var tags = create_tag_obj(userData);
-            // Don't update the user's tags for now; need to deal with
-            // tags that exist, and replacements.
-            // tagUtils.findOrCreateTags(req.user[0].id, tags, function (err, newTags) {
-              user_cb(null, req.user[0]);
-            // });
           }
+          var tags = create_tag_obj(userData);
+          // Don't update the user's tags for now; need to deal with
+          // tags that exist, and replacements.
+          // tagUtils.findOrCreateTags(req.user[0].id, tags, function (err, newTags) {
+          user_cb(null, req.user[0]);
+          // });
         }
-        else if(!updateAction){
-          return done(null, false, { message: 'User already exists. Please log in instead.' });
-        }
-        else{
+        else {
           return done(null, user);
         }
       }
-
-
-
-      // if this user is logged in, then we're adding a new
-      // service for them.  Update their user model fields if they
-      // aren't already set.
-      // if(req.user){
-      //   if (req.user[0].disabled === true) {
-      //     return done(null, false, { message: 'Your account is disabled.' });
-      //   }
-      //   var update = false;
-      //   if (!req.user[0].photoId && !req.user[0].photoUrl && userData.photoUrl) {
-      //     req.user[0].photoUrl = userData.photoUrl;
-      //     update = true;
-      //   }
-      //   if (!req.user[0].bio && userData.bio) {
-      //     req.user[0].bio = userData.bio;
-      //     update = true;
-      //   }
-      //   if (!req.user[0].title && userData.title) {
-      //     req.user[0].title = userData.title;
-      //     update = true;
-      //   }
-      //   if (update === true) {
-      //     req.user[0].save(function (err) {
-      //       if (err) { return done(null, false, { message: 'Unable to update user information.' }); }
-      //       user_cb(null, req.user[0]);
-      //     });
-      //   } else { //if(updateAction){
-      //     var tags = create_tag_obj(userData);
-      //     // Don't update the user's tags for now; need to deal with
-      //     // tags that exist, and replacements.
-      //     // tagUtils.findOrCreateTags(req.user[0].id, tags, function (err, newTags) {
-      //       user_cb(null, req.user[0]);
-      //     // });
-      //   }
-      //   // else{
-      //   //   return done(null, false, { message: 'User already exists. Please log in instead.' });
-      //   // }
-      // }
-      // else{
-        // Check that the password meets validation rules
-        // var rules = self.validatePassword(userData.username, userData.password);
-        // var success = true;
-        // _.each(_.values(rules), function (v) {
-        //   success = success && v;
-        // });
-        // if (success !== true) {
-        //   return done(null, false, { message: 'Password does not meet password rules.' });
-        // }
-        // // Encrypt the password
-        // bcrypt.hash(userData.password, 10, function(err, hash) {
-        //   // Create and store the user
-        //   User.create(user).done(function (err, user) {
-        //     if (err) {
-        //       sails.log.debug('User creation error:', err);
-        //       return done(null, false, { message: 'Unable to create new user. Please try again.'});
-        //     }
-        //     sails.log.debug('User Created:', user);
-        //     var pwObj = {
-        //       userId: user.id,
-        //       password: hash
-        //     };
-        //     // Store the user's password with the bcrypt hash
-        //     UserPassword.create(pwObj).done(function (err, pwObj) {
-        //       if (err) { return done(null, false, { message: 'Unable to store password.'}); }
-        //       // if the username is an email address, store it
-        //       if (validator.isEmail(userData.username) !== true) {
-        //         // email validation failed, proceed
-        //         return done(null, user);
-        //       }
-        //       var email = {
-        //         userId: user['id'],
-        //         email: userData.username,
-        //       }
-        //       // Store the email address
-        //       UserEmail.create(email).done(function (err, email) {
-        //         if (err) { return done(null, false, { message: 'Unable to store user email address.' }); }
-        //         var tags = create_tag_obj(userData);
-        //         tagUtils.findOrCreateTags(user.id, tags, function (err, newTags) {
-        //           user_cb(null, user);
-        //         });
-        //         // return done(null, user);
-        //       });
-        //     });
-        //   });
-        // });
-      // }
     });
   },
 
