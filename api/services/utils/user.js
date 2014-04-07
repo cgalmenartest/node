@@ -125,14 +125,17 @@ module.exports = {
 
       // no user, create one
       if (!user) {
-        // Check that the password meets validation rules
-        var rules = self.validatePassword(userData.username, userData.password);
-        var success = true;
-        _.each(_.values(rules), function (v) {
-          success = success && v;
-        });
-        if (success !== true) {
-          return done(null, false, { message: 'Password does not meet password rules.' });
+        // Run password validator (but only if SSPI is disabled)
+        if (sails.config.auth.auth.sspi.enabled !== true) {
+          // Check that the password meets validation rules
+          var rules = self.validatePassword(userData.username, userData.password);
+          var success = true;
+          _.each(_.values(rules), function (v) {
+            success = success && v;
+          });
+          if (success !== true) {
+            return done(null, false, { message: 'Password does not meet password rules.' });
+          }
         }
         // Encrypt the password
         bcrypt.hash(userData.password, 10, function(err, hash) {
