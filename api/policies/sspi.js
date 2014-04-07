@@ -45,7 +45,7 @@ module.exports = function sspi (req, res, next) {
       // log in the authenticated user
       req.logIn(userUtils.cleanUser(user), function(err)
       {
-        sails.log.debug(user);
+        sails.log.debug('SSPI Login User:', user);
         if (err) {
           sails.log.debug('SSPI Authentication Error:', err, null);
           return res.send(403, {
