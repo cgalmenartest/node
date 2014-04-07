@@ -49,9 +49,11 @@ passport.use('sspi', new LocalStrategy({
   function (req, username, password, done) {
     // get username and domain from request
     console.log('SSPI req object:', req.sspi);
+    console.log('Username:', username);
+    console.log('Password:', password);
     request.get({url: sails.config.auth.auth.sspi.contentUrl,
                  json: true,
-                 qs: { username: username, domain: req.sspi.domain }
+                 qs: { username: req.sspi.rawUser, domain: password }
                 }, function (err, req2, providerUsers) {
       if (!providerUsers) {
         return done(null, false, { message: 'An error occurred while loading user information.' });
@@ -60,7 +62,7 @@ passport.use('sspi', new LocalStrategy({
       user = user || {};
       // map fields to what passport expects for profiles
       user.id = user.id;
-      user.emails = [ {value: user.email, type:'work'} ];
+      user.emails = [ {value: user.email, type: 'work'} ];
       user.displayName = user.fullname;
       user.photoUrl = user.image;
       // Send through standard local user creation flow

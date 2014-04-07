@@ -10,30 +10,29 @@ module.exports = function sspi (req, res, next) {
   // helper function that parses the domain and user value out of the credentials included in the header
   var parseCredentialHeader = function (key) {
     key = key || '';
-    var domain = '';
-    var user = '';
-    var parts = key.split('\\');
-    if (typeof parts[0] !== 'undefined')
-      domain = parts[0];
-    if (typeof parts[1] !== 'undefined')
-      user = parts[1] + '@' + sails.config.auth.auth.sspi.emailDomain;
-    return {
-      domain: domain,
-      user: user
+    key = key.trim();
+    var result = {
+      key: key
     };
+    var parts = key.split('\\',1);
+    if (typeof parts[0] !== 'undefined') {
+      result.domain = parts[0];
+    }
+    if (typeof parts[1] !== 'undefined') {
+      result.rawUser = parts[1];
+      result.user = parts[1] + '@' + sails.config.auth.auth.sspi.emailDomain;
+    }
+    return result;
   };
   // helper function that processes SSPI credentials passed into the header
   var authenticateSSPIUser = function () {
-    var credentials = parseCredentialHeader(req.headers[sails.config.auth.auth.sspi.header]);
-    var username = credentials.user;
-    var domain = credentials.domain;
-    var password = sails.config.auth.auth.sspi.globalPass;
+    req.sspi = parseCredentialHeader(req.headers[sails.config.auth.auth.sspi.header]);
+    // var password = sails.config.auth.auth.sspi.globalPass;
 
-    req.sspi = {
-      credentials: credentials,
-      user: username,
-      domain: domain
-    };
+    // overwrite req.body to send username and password to passport for auth
+    req.body = req.body || {};
+    req.body.username = credentials.user;
+    req.body.password = credentials.domain;
     // try to authenticate with SSPI
     passport.authenticate('sspi', function (err, user, info)
     {
@@ -61,7 +60,7 @@ module.exports = function sspi (req, res, next) {
       });
     })(req, res, function (err) {
       if (err) {
-        sails.log.error('Authentication Error:', err);
+        sails.log.error('SSPI Authentication Error:', err);
         return res.send(500, { message: "An internal error occurred while trying to authenticate.  Please try again later.", error: err });
       }
     });
