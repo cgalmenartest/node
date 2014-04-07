@@ -516,7 +516,6 @@ module.exports = {
           Like.findOne({ where: { userId: reqId, targetId: userId }}, function (err, like) {
             if (err) { return cb(err, null); }
             if (like) { user.like = true; }
-            sails.log.debug('User Get:', user);
             // stop here if the requester id is not the same as the user id
             if (userId != reqId) {
               return cb(null, user);
