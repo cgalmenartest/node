@@ -68,7 +68,6 @@ function authenticate(req, res, strategy, json) {
 
       req.logIn(user, function(err)
       {
-        sails.log.debug(user);
         if (err)
         {
           sails.log.debug('Authentication Error:', err, info);
