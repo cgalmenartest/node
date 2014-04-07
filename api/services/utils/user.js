@@ -462,7 +462,7 @@ module.exports = {
   cleanUser: function (user) {
     var u = {
       id: user.id,
-      username: user.username,
+      username: null,
       name: user.name,
       title: user.title,
       bio: user.bio,
@@ -479,12 +479,16 @@ module.exports = {
    * @param reqId: the requester's id
    */
   getUser: function (userId, reqId, cb) {
+    var self = this;
     if (!_.isFinite(userId)) {
       return cb({ message: 'User ID must be a numeric value' }, null);
     }
     User.findOneById(userId, function (err, user) {
       if (err) { return cb(err, null); }
       delete user.deletedAt;
+      if (userId != reqId) {
+        user = self.cleanUser(user);
+      }
       tagUtils.assemble({ userId: userId }, function (err, tags) {
         if (err) { return cb(err, null); }
         for (i in tags) {
