@@ -286,7 +286,6 @@ var linkBackbone = function (e) {
   }
   // otherwise contain the link within backbone
   if (e.preventDefault) e.preventDefault();
-  console.log(e);
   var href = $(e.currentTarget).attr('href');
   Backbone.history.navigate(href, { trigger: true });
 };
