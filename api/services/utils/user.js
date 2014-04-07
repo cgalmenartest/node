@@ -183,35 +183,38 @@ module.exports = {
         if (!updateAction) {
           return done(null, false, { message: 'User already exists. Please log in instead.' });
         }
-        if (req.user) {
+        if (user) {
           // if this user is logged in, then we may be updating their information
-          if (req.user[0].disabled === true) {
+          if (user.disabled === true) {
             return done(null, false, { message: 'Your account is disabled.' });
           }
           var update = false;
-          if (!req.user[0].photoId && !req.user[0].photoUrl && userData.photoUrl) {
-            req.user[0].photoUrl = userData.photoUrl;
+          if (!user.photoId && !user.photoUrl && userData.photoUrl) {
+            user.photoUrl = userData.photoUrl;
             update = true;
           }
-          if (!req.user[0].bio && userData.bio) {
-            req.user[0].bio = userData.bio;
+          if (!user.bio && userData.bio) {
+            user.bio = userData.bio;
             update = true;
           }
-          if (!req.user[0].title && userData.title) {
-            req.user[0].title = userData.title;
+          if (!user.title && userData.title) {
+            user.title = userData.title;
             update = true;
           }
           if (update === true) {
-            req.user[0].save(function (err) {
+            user.save(function (err) {
               if (err) { return done(null, false, { message: 'Unable to update user information.' }); }
-              user_cb(null, req.user[0]);
+              // don't update email addresses for local users
+              done(null, user);
             });
+            // don't continue execution if we're saving the user
+            return;
           }
           var tags = create_tag_obj(userData);
           // Don't update the user's tags for now; need to deal with
           // tags that exist, and replacements.
           // tagUtils.findOrCreateTags(req.user[0].id, tags, function (err, newTags) {
-          user_cb(null, req.user[0]);
+          done(null, user);
           // });
         }
         else {
