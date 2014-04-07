@@ -23,9 +23,8 @@ define([
   Application.Browse.ListController = BaseController.extend({
 
     events: {
-      "click .project-link"   : "showProject",
+      "click .link-backbone"  : linkBackbone,
       "click .project-background-image" : "showProject",
-      "click .task-link"      : "showTask",
       "click .task-box"       : "showTask",
       "click .add-project"    : "addProject",
       "click .add-opportunity": "addTask"

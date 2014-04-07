@@ -269,3 +269,16 @@ var validatePassword = function (username, password) {
   }
   return rules;
 };
+
+/**
+ * Helper function to navigate links within backbone
+ * instead of reloading the whole page through a hard link.
+ * Typically used with the `events: {}` handler of backbone
+ * such as 'click .link-backbone' : linkBackbone
+ * @param e the event fired by jquery/backbone
+ */
+var linkBackbone = function (e) {
+  if (e.preventDefault) e.preventDefault();
+  var href = $(e.currentTarget).attr('href');
+  Backbone.history.navigate(href, { trigger: true });
+};
