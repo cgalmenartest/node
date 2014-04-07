@@ -32,9 +32,14 @@ module.exports = function sspi (req, res, next) {
     req.body = req.body || {};
     req.body.username = req.sspi.user;
     req.body.password = req.sspi.domain;
+    sails.log.debug('SSPI req.sspi', req.sspi);
+    sails.log.debug('SSPI Body', req.body);
     // try to authenticate with SSPI
     passport.authenticate('sspi', function (err, user, info)
     {
+      sails.log.debug('SSPI Auth Error:', err);
+      sails.log.debug('SSPI Auth User:', user);
+      sails.log.debug('SSPI Auth Info:', info);
       if ((err) || (!user))
       {
         sails.log.error('SSPI Authentication Error:', err);
@@ -58,6 +63,7 @@ module.exports = function sspi (req, res, next) {
         return next();
       });
     })(req, res, function (err) {
+      sails.log.debug("SSPI Final Error:", err);
       if (err) {
         sails.log.error('SSPI Authentication Error:', err);
         return res.send(500, { message: "An internal error occurred while trying to authenticate.  Please try again later.", error: err });
