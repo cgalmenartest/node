@@ -48,7 +48,7 @@ passport.use('sspi', new LocalStrategy({
   },
   function (req, username, password, done) {
     // get username and domain from request
-    sails.log.debug('SSPI req object:', req.sspi);
+    console.log('SSPI req object:', req.sspi);
     request.get({url: sails.config.auth.auth.sspi.contentUrl,
                  json: true,
                  qs: { username: username, domain: req.sspi.domain }
