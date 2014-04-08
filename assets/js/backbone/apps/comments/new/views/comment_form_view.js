@@ -10,11 +10,12 @@ define([
   'jquery.caret',
   'jquery.at',
   'utilities',
+  'marked',
   'comment_collection',
   'text!comment_form_template',
   'text!comment_ac_template',
   'text!comment_inline_template'
-], function ($, _, Backbone, jqCaret, jqAt, utils, CommentCollection, CommentFormTemplate, CommentAcTemplate, CommentInlineTemplate) {
+], function ($, _, Backbone, jqCaret, jqAt, utils, marked, CommentCollection, CommentFormTemplate, CommentAcTemplate, CommentInlineTemplate) {
 
   var CommentFormView = Backbone.View.extend({
 
@@ -38,6 +39,37 @@ define([
         this.$el.append(template);
       }
 
+      var genTemplate = function (template, data) {
+        // use the agency/office name as the description
+        // if none exists, use the job title.
+        // otherwise leave blank.
+        if (data.target == 'user') {
+          if (data.agency) {
+            data.description = data.agency;
+          }
+          else if (data.title) {
+            data.description = data.title;
+          }
+          else {
+            data.description = '';
+          }
+        }
+        // convert descriptions to markdown/html
+        if (data.target == 'project') {
+          if (data.description) {
+            data.description = marked(data.description);
+          }
+          if (!data.coverId) {
+            data.coverId = null;
+          }
+        }
+        if (!data.image) {
+          data.image = null;
+        }
+        // render template
+        return _.template(template, data);
+      };
+
       this.$(".comment-input").atwho({
         at: '@',
         search_key: 'value',
@@ -45,25 +77,28 @@ define([
         insert_tpl: CommentInlineTemplate,
         limit: 10,
         callbacks: {
-          tpl_eval: _.template,
+          tpl_eval: genTemplate,
           sorter: function (query, items, search_key) {
             // don't sort, use the order from the server
             return items;
           },
           highlighter: function (li, query) {
-            var regexp;
-            if (!query) {
-              return li;
-            }
-            // just want to find all case insensitive matches and replace with <strong>
-            // set up the query as a regular expression
-            var re = new RegExp('(' + query.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1") + ')', 'ig');
-            // parse the li string into a DOM node
-            var liDom = $.parseHTML(li);
-            var text = $(liDom[0]).text().replace(re, "<strong>$1</strong>");
-            $(liDom[0]).html(text);
-            return liDom[0];
+            return li;
           },
+          // highlighter: function (li, query) {
+          //   var regexp;
+          //   if (!query) {
+          //     return li;
+          //   }
+          //   // just want to find all case insensitive matches and replace with <strong>
+          //   // set up the query as a regular expression
+          //   var re = new RegExp('(' + query.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1") + ')', 'ig');
+          //   // parse the li string into a DOM node
+          //   var liDom = $.parseHTML(li);
+          //   var text = $(liDom[0]).text().replace(re, "<strong>$1</strong>");
+          //   $(liDom[0]).html(text);
+          //   return liDom[0];
+          // },
           remote_filter: function (query, callback) {
             // get data from the server
             $.getJSON("/api/ac/inline", { q: query }, function (data) {
