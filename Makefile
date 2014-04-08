@@ -29,6 +29,7 @@ import:
 	-cp $(DIR)/config/local.js config/
 	-cp $(DIR)/config/settings/*.js config/settings/
 	-cp $(DIR)/assets/js/backbone/config/*.js assets/js/backbone/config/
+	-cp $(DIR)/assets/js/backbone/config/*.json assets/js/backbone/config/
 	-cp $(DIR)/assets/styles/*.css assets/styles/
 	-cp -R $(DIR)/assets/images/* assets/images/
 	-cp $(DIR)/assets/js/backbone/apps/footer/templates/footer_template.html assets/js/backbone/apps/footer/templates/footer_template.html
