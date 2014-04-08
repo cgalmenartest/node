@@ -40,6 +40,9 @@ define([
       }
 
       var genTemplate = function (template, data) {
+        if (!data) {
+          return '';
+        }
         // use the agency/office name as the description
         // if none exists, use the job title.
         // otherwise leave blank.
