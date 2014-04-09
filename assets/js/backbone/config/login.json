@@ -14,7 +14,7 @@
       "name": "MyUSA",
       "image": "/images/login/myusa.png",
       "endpoint": "/api/auth/oauth/myusa",
-      "params": { "scope": "profile" }
+      "params": { "scope": ["profile.email", "profile.title", "profile.first_name", "profile.middle_name", "profile.last_name"] }
     }
   },
   "local": {
