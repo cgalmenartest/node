@@ -33,7 +33,10 @@ function authenticate(req, res, strategy, json) {
     {
       if ((err) || (!user))
       {
-        var message = info.message;
+        var message = '';
+        if (info && info.message) {
+          message = info.message;
+        }
         // if local strategy, don't show user what actually happened for security purposes
         if (strategy === 'local') {
           message = 'Invalid email address or password.'

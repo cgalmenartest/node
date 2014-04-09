@@ -1011,22 +1011,55 @@ form.comment-submit .input-group-btn {
     font:bold;
 }
 .atwho-view ul {
-    /* width: 100px; */
     list-style:none;
-    padding:0;
-    margin:auto;
+    padding: 0;
+    margin: 0;
 }
 .atwho-view ul li {
     display: block;
-    padding: 5px 10px;
+    padding: 0;
+    margin: 0;
     border-bottom: 1px solid #DDD;
     cursor: pointer;
-    /* border-top: 1px solid #C8C8C8; */
+    max-height: 40px;
+    overflow: hidden;
 }
 .atwho-view small {
     font-size: smaller;
     color: #777;
     font-weight: normal;
+}
+
+.ac-container {
+	display: table;
+}
+.ac-content, .ac-image {
+	display: table-cell;
+	vertical-align: top
+}
+.ac-image {
+	width: 40px;
+	height: 40px;
+}
+.ac-content {
+	max-width: 500px;
+	padding-left: 5px;
+	padding-right: 10px;
+	overflow: hidden;
+}
+.ac-title {
+	font-size: 18px;
+	line-height: 23px;
+	max-height: 23px;
+}
+.ac-description {
+	font-size: 12px;
+	line-height: 15px;
+	max-height: 15px;
+	color: #808080;
+}
+.cur .ac-description {
+	color: #e0e0e0;
 }
 
 /*****************

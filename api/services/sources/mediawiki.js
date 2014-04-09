@@ -27,7 +27,8 @@ module.exports = {
         results.push( { value: search[i].title,
                         field: 'title',
                         target: config.target.toLowerCase(),
-                        link: config.baseUrl + encodeURIComponent(search[i].title)
+                        link: config.baseUrl + encodeURIComponent(search[i].title),
+                        image: '/images/ac/wikipedia.png'
                       } );
       }
       return cb(null, results);
