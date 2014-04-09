@@ -27,6 +27,10 @@ module.exports.policies = {
     '*': true
   },
 
+  MainController : {
+    '*': ['sspi']
+  },
+
   // Limit user controller view to just the /user endpoint
   UserController : {
     '*': false,
@@ -178,7 +182,7 @@ module.exports.policies = {
  * We'll make some educated guesses about whether our system will
  * consider this user someone who is nice to animals.
  *
- * Besides protecting rabbits (while a noble cause, no doubt), 
+ * Besides protecting rabbits (while a noble cause, no doubt),
  * here are a few other example use cases for policies:
  *
  *  + cookie-based authentication

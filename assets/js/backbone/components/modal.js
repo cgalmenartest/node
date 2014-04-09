@@ -42,7 +42,7 @@ define([
       if (e.preventDefault) e.preventDefault();
       // hide the modal, wait for it to close, then navigate
       $('#' + this.options.id).bind('hidden.bs.modal', function() {
-        Backbone.history.navigate($(e.currentTarget).attr('href'), { trigger: true });
+        linkBackbone(e);
       }).modal('hide');
     },
 

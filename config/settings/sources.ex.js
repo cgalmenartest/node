@@ -14,7 +14,8 @@
       include: [
         'title',
         'description'
-      ]
+      ],
+      link: '/projects/'
     },
     'task': {
       type: 'model',
@@ -24,21 +25,8 @@
           name: 'title',
           where: { state: 'public' }
         }
-      ]
-    },
-    'profile': {
-      type: 'model',
-      target: 'User',
-      fields: [
-        {
-          name: 'username',
-          limit: 5
-        },
-        {
-          name: 'name',
-          limit: 5
-        }
-      ]
+      ],
+      link: '/tasks/'
     },
     'user': {
       type: 'model',
@@ -48,7 +36,8 @@
           name: 'name',
           limit: 10
         }
-      ]
+      ],
+      link: '/profile/'
     },
     'tag': {
       type: 'model',
@@ -71,7 +60,8 @@
       type: 'mediawiki',
       target: 'wikipedia',
       limit: 5,
-      apiUrl: 'http://en.wikipedia.org/w/api.php?action=query&list=search&format=json&srprop=score&srsearch='
+      apiUrl: 'http://en.wikipedia.org/w/api.php?action=query&list=search&format=json&srprop=score&srsearch=',
+      baseUrl: 'http://en.wikipedia.org/wiki/'
     }
   },
   // Determine the autocomplete search order
@@ -80,9 +70,9 @@
   // attachments is for the attachment sidebar
   autocomplete: {
     'search': ['project', 'tag'],
-    'inline': ['profile', 'project', 'wikipedia'],
+    'inline': ['user', 'project', 'wikipedia'],
     'tag': ['tag'],
-    'attachments': ['profile', 'wikipedia'],
+    'attachments': ['user', 'wikipedia'],
     'user': ['user'],
     'project': ['project'],
     // these are sub-ids of search, for powering the browse view

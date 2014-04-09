@@ -34,3 +34,9 @@
 [submodule "assets/js/vendor/autolinker"]
 	path = assets/js/vendor/autolinker
 	url = https://github.com/gregjacobs/Autolinker.js.git
+[submodule "assets/js/vendor/jquery-at"]
+	path = assets/js/vendor/jquery-at
+	url = https://github.com/ichord/At.js.git
+[submodule "assets/js/vendor/jquery-caret"]
+	path = assets/js/vendor/jquery-caret
+	url = https://github.com/ichord/Caret.js.git

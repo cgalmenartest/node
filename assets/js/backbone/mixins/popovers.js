@@ -36,6 +36,10 @@ define([
       if (e.preventDefault) e.preventDefault();
       var target = $(e.currentTarget);
       var popover = target.data('bs.popover');
+      // if the data element isn't set or popovers not init'd, abort
+      if ((_.isUndefined(target.data('userid'))) || (_.isUndefined(popover))) {
+        return;
+      }
       target.popover('show');
       // Only load data if the popover hasn't previously been loaded
       if (popover.options.title == 'load') {

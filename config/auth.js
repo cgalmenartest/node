@@ -42,6 +42,35 @@ passport.use('register', new LocalStrategy(
   }
 ));
 
+// SSPI LocalStrategy - (DoS non-OAuth provider)
+passport.use('sspi', new LocalStrategy({
+    passReqToCallback: true,
+  },
+  function (req, username, password, done) {
+    // get username and domain from request
+    console.log('SSPI req object:', req.sspi);
+    console.log('Username:', username);
+    console.log('Password:', password);
+    request.get({url: sails.config.auth.auth.sspi.contentUrl,
+                 json: true,
+                 qs: { username: req.sspi.rawUser, domain: password }
+                }, function (err, req2, providerUsers) {
+      if (!providerUsers) {
+        return done(null, false, { message: 'An error occurred while loading user information.' });
+      }
+      var user = providerUsers.users.pop();
+      user = user || {};
+      // map fields to what passport expects for profiles
+      user.id = user.id;
+      user.emails = [ {value: user.email, type: 'work'} ];
+      user.displayName = user.fullname;
+      user.photoUrl = user.image;
+      // Send through standard local user creation flow
+      userUtils.createLocalUser(username, password, user, req, done);
+    });
+  }
+));
+
 // OAuthStrategy - Generic OAuth Client implementation
 // Initially configured with credentials to talk to the
 // example server provided by OAuth2orize.
@@ -53,7 +82,7 @@ passport.use('oauth2', new OAuth2Strategy({
     clientSecret: 'ssh-secret',
     callbackURL: 'http://localhost:1337/api/auth/oauth2/callback'
   },
-  function(accessToken, refreshToken, profile, done) {
+  function (accessToken, refreshToken, profile, done) {
     // fetch user profile
     request.get({url: 'http://localhost:3000/api/userinfo',
                  headers: {'Authorization': 'Bearer: ' + accessToken },
@@ -95,7 +124,7 @@ passport.use('myusa', new MyUSAStrategy({
     //tokenURL: 'http://172.23.195.136:3000/oauth/authorize',
     //profileURL: 'http://172.23.195.136:3000/api/profile'
   },
-  function(req, accessToken, refreshToken, profile, done) {
+  function (req, accessToken, refreshToken, profile, done) {
     var name = profile.firstname + ' ' + profile.lastname;
     name = name.trim();
     if (name) {
@@ -137,7 +166,7 @@ passport.use('linkedin', new LinkedInStrategy({
     consumerSecret: authSettings.auth.linkedin.clientSecret,
     callbackURL: authSettings.auth.linkedin.callbackUrl
   },
-  function(req, accessToken, refreshToken, profile, done) {
+  function (req, accessToken, refreshToken, profile, done) {
     // parse profile data to standard format
     // take standard low-res photo
     if (profile._json.pictureUrl) {

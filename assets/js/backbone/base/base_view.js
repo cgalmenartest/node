@@ -17,21 +17,10 @@ define([
   var BaseView = Backbone.View.extend({
 
     initialize: function () {
-      this.initializeFunctionPrototype();
-      this.initializeAjaxSpinnerOnRender();
-    },
-
-    initializeFunctionPrototype: function () {
-      addSpinnerToFunctionPrototype(this);
-    },
-
-    initializeAjaxSpinnerOnRender: function () {
-      this.render.addSpinner();
-      this.render();
     },
 
     cleanup: function () {
-      $(this.el).remove();
+      removeView(this);
     }
 
   });

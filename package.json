@@ -13,7 +13,7 @@
         "validator": "3.4.0",
         "passport": "0.2.x",
         "passport-local": "1.0.x",
-        "passport-myusa": "0.1.x",
+        "passport-myusa": "1.0.x",
         "passport-linkedin": "0.1.x",
         "passport-oauth": "1.0.x",
         "icalendar": "0.6.5",

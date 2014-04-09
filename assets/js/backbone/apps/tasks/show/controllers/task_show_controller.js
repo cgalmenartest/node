@@ -3,6 +3,7 @@ define([
   'underscore',
   'backbone',
   'popovers',
+  'utilities',
   'base_view',
   'comment_list_controller',
   'attachment_show_view',
@@ -11,7 +12,7 @@ define([
   'modal_component',
   'modal_alert',
   'task_edit_form_view'
-], function (Bootstrap, _, Backbone, Popovers, BaseView, CommentListController, AttachmentView, TaskItemView, TagShowView, ModalComponent, ModalAlert, TaskEditFormView) {
+], function (Bootstrap, _, Backbone, Popovers, utils, BaseView, CommentListController, AttachmentView, TaskItemView, TagShowView, ModalComponent, ModalAlert, TaskEditFormView) {
 
   var popovers = new Popovers();
 
@@ -27,6 +28,7 @@ define([
       'click #volunteered'              : 'volunteered',
       "click #task-close"               : "stateClose",
       "click #task-reopen"              : "stateReopen",
+      "click .link-backbone"            : linkBackbone,
       "mouseenter .project-people-div"  : popovers.popoverPeopleOn,
       "click .project-people-div"       : popovers.popoverClick
     },

@@ -40,36 +40,111 @@ module.exports = {
    * @param password will be bcrypt encrypted
    * @param done callback with form (null, user, error)
    */
-  createLocalUser: function (username, password, done) {
+  createLocalUser: function (username, password, userData, req, done) {
     var self = this;
-    // normalize username
-    username = username.toLowerCase();
-    // ensure the username is a valid email address
-    if (validator.isEmail(username) !== true) {
-      return done(null, false, { message: 'Email address is not valid.' });
+    var updateAction = true;
+    // handle missing parameters
+    if (typeof userData === 'function'){
+      done = userData;
+      userData = {};
+      req = {};
+      updateAction = false;
+    }
+    if (typeof req === 'function'){
+      done = req;
+      req = {};
+    }
+    userData = {
+      name: userData.displayName,
+      photoUrl: userData.photoUrl,
+      title: userData.title,
+      bio: userData.bio
+    };
+    if (userData.emails && (userData.emails.length > 0)) {
+      // normalize username
+      userData.username = userData.emails[0].value.toLowerCase();
+    }
+    else {
+      // normalize username
+      userData.username = username.toLowerCase();
+    }
+    userData.password = password;
+
+    // Run password validator (but only if SSPI is disabled)
+    if (sails.config.auth.auth.sspi.enabled !== true) {
+      // ensure the username is a valid email address
+      if (validator.isEmail(userData.username) !== true) {
+        return done(null, false, { message: 'Email address is not valid.' });
+      }
     }
     // Check if the username already exists
-    this.findUser(username, function (err, user) {
+    this.findUser(userData.username, function (err, user) {
       if (err) { return done(null, false, { message: 'Error looking up user' }); }
       // Look up user and check password hash
       var bcrypt = require('bcrypt');
-      // The user doesn't exist, so create an account for them
+
+      // Utility function that completes the local user creation/update process
+      // Creates user email and returns
+      function user_cb(err, user) {
+        // store login credentials
+        if (userData.emails && (userData.emails.length > 0)) {
+          var email = {
+            userId: user['id'],
+            email: userData.emails[0].value.toLowerCase(),
+          };
+          UserEmail.findOne(email, function (err, storedEmail) {
+            if (storedEmail) { return done(null, user); }
+            UserEmail.create(email).done(function (err, email) {
+              if (err) { return done(null, false, { message: 'Unable to store user email address.' }); }
+              sails.log.debug('Created Email:', email);
+              return done(null, user);
+            });
+          });
+        } else {
+          return done(null, user);
+        }
+      };
+
+      // Takes the userData object and creates a tag object from it
+      function create_tag_obj (userData) {
+        var result = {};
+        if (userData.skill) {
+          result.skill = userData.skill;
+        }
+        if (userData.topic) {
+          result.topic = userData.topic;
+        }
+        if (userData.location) {
+          result.location = [ userData.location ];
+        }
+        if (userData.company) {
+          result.agency = [ userData.company ];
+        }
+        return result;
+      };
+
+      // no user, create one
       if (!user) {
-        // Check that the password meets validation rules
-        var rules = self.validatePassword(username, password);
-        var success = true;
-        _.each(_.values(rules), function (v) {
-          success = success && v;
-        });
-        if (success !== true) {
-          return done(null, false, { message: 'Password does not meet password rules.' });
+        // Run password validator (but only if SSPI is disabled)
+        if (sails.config.auth.auth.sspi.enabled !== true) {
+          // Check that the password meets validation rules
+          var rules = self.validatePassword(userData.username, userData.password);
+          var success = true;
+          _.each(_.values(rules), function (v) {
+            success = success && v;
+          });
+          if (success !== true) {
+            return done(null, false, { message: 'Password does not meet password rules.' });
+          }
         }
         // Encrypt the password
-        bcrypt.hash(password, 10, function(err, hash) {
+        bcrypt.hash(userData.password, 10, function(err, hash) {
           // Create and store the user
-          User.create({
-            username: username,
-          }).done(function (err, user) {
+          var userCreateParam = {username: userData.username};
+          if(updateAction){
+            userCreateParam = userData;
+          }
+          User.create(userCreateParam).done(function (err, user) {
             if (err) {
               sails.log.debug('User creation error:', err);
               return done(null, false, { message: 'Unable to create new user. Please try again.'});
@@ -83,15 +158,19 @@ module.exports = {
             UserPassword.create(pwObj).done(function (err, pwObj) {
               if (err) { return done(null, false, { message: 'Unable to store password.'}); }
               // if the username is an email address, store it
-              if (validator.isEmail(username) !== true) {
+              if (validator.isEmail(userData.username) !== true) {
                 // email validation failed, proceed
                 return done(null, user);
               }
               var email = {
                 userId: user['id'],
-                email: username,
-              }
+                email: userData.username,
+              };
               // Store the email address
+              // var tags = create_tag_obj(userData);
+              // tagUtils.findOrCreateTags(user.id, tags, function (err, newTags) {
+              //   user_cb(null, user);
+              // });
               UserEmail.create(email).done(function (err, email) {
                 if (err) { return done(null, false, { message: 'Unable to store user email address.' }); }
                 return done(null, user);
@@ -99,8 +178,48 @@ module.exports = {
             });
           });
         });
-      } else {
-        return done(null, false, { message: 'User already exists. Please log in instead.' })
+      }
+      else {
+        if (!updateAction) {
+          return done(null, false, { message: 'User already exists. Please log in instead.' });
+        }
+        if (user) {
+          // if this user is logged in, then we may be updating their information
+          if (user.disabled === true) {
+            return done(null, false, { message: 'Your account is disabled.' });
+          }
+          var update = false;
+          if (!user.photoId && !user.photoUrl && userData.photoUrl) {
+            user.photoUrl = userData.photoUrl;
+            update = true;
+          }
+          if (!user.bio && userData.bio) {
+            user.bio = userData.bio;
+            update = true;
+          }
+          if (!user.title && userData.title) {
+            user.title = userData.title;
+            update = true;
+          }
+          if (update === true) {
+            user.save(function (err) {
+              if (err) { return done(null, false, { message: 'Unable to update user information.' }); }
+              // don't update email addresses for local users
+              done(null, user);
+            });
+            // don't continue execution if we're saving the user
+            return;
+          }
+          var tags = create_tag_obj(userData);
+          // Don't update the user's tags for now; need to deal with
+          // tags that exist, and replacements.
+          // tagUtils.findOrCreateTags(req.user[0].id, tags, function (err, newTags) {
+          done(null, user);
+          // });
+        }
+        else {
+          return done(null, user);
+        }
       }
     });
   },
@@ -112,9 +231,34 @@ module.exports = {
    * @param password will be bcrypt encrypted
    * @param done callback with form (null, user, error)
    */
-  findLocalUser: function (username, password, done) {
+  findLocalUser: function (username, password, userData, req, done) {
+    var updateAction = true;
+    if(typeof userData === 'function'){
+      done = userData;
+      userData = {};
+      updateAction = false;
+    }
+    if(typeof req === 'function'){
+      done = req;
+      req = {};
+    }
+    userData = {
+      name: userData.displayName,
+      photoUrl: userData.photoUrl,
+      title: userData.title,
+      bio: userData.bio
+    };
+    if (userData.emails && (userData.emails.length > 0)) {
+      // normalize username
+      userData.username = userData.emails[0].value.toLowerCase();
+    }
+    else {
+      // normalize username
+      userData.username = username.toLowerCase();
+    }
+    userData.password = password;
     // Check if the username already exists
-    this.findUser(username, function (err, user) {
+    this.findUser(userData.username, function (err, user) {
       if (err) { return done(null, false, { message: 'Error looking up user. Please try again.' }); }
       // Look up user and check password hash
       var bcrypt = require('bcrypt');
@@ -135,11 +279,22 @@ module.exports = {
           // If no password is set or there is an error, abort
           if (err || !pwObj || pwObj.length == 0) { return done(null, false, { message: 'Invalid email address or password.'}); }
           // Compare the passwords to check if it is correct
-          bcrypt.compare(password, pwObj[0].password, function (err, res) {
+          bcrypt.compare(userData.password, pwObj[0].password, function (err, res) {
             // Valid password
             if (res === true) {
               sails.log.debug('User Found:', user);
               user.passwordAttempts = 0;
+              if(updateAction){
+                if (!user.photoId && !user.photoUrl && userData.photoUrl) {
+                  user.photoUrl = userData.photoUrl;
+                }
+                if (!user.bio && userData.bio) {
+                  user.bio = userData.bio;
+                }
+                if (!user.title && userData.title) {
+                  user.title = userData.title;
+                }
+              }
               user.save(function (err) {
                 if (err) { return done(null, false, { message: 'An error occurred while logging on. Please try again.' }); }
                 return done(null, user);
@@ -331,12 +486,15 @@ module.exports = {
    */
   getUser: function (userId, reqId, cb) {
     var self = this;
+    if (!_.isFinite(userId)) {
+      return cb({ message: 'User ID must be a numeric value' }, null);
+    }
     User.findOneById(userId, function (err, user) {
+      if (err) { return cb(err, null); }
       delete user.deletedAt;
       if (userId != reqId) {
         user = self.cleanUser(user);
       }
-      if (err) { return cb(err, null); }
       tagUtils.assemble({ userId: userId }, function (err, tags) {
         if (err) { return cb(err, null); }
         for (i in tags) {
@@ -364,7 +522,6 @@ module.exports = {
           Like.findOne({ where: { userId: reqId, targetId: userId }}, function (err, like) {
             if (err) { return cb(err, null); }
             if (like) { user.like = true; }
-            sails.log.debug('User Get:', user);
             // stop here if the requester id is not the same as the user id
             if (userId != reqId) {
               return cb(null, user);
