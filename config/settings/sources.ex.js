@@ -37,6 +37,9 @@
           limit: 10
         }
       ],
+      include: [
+        'title'
+      ],
       link: '/profile/'
     },
     'tag': {
