@@ -70,7 +70,7 @@ module.exports = {
     }
     userData.password = password;
 
-    // Run password validator (but only if SSPI is disabled)
+    // Run username validator (but only if SSPI is disabled)
     if (sails.config.auth.auth.sspi.enabled !== true) {
       // ensure the username is a valid email address
       if (validator.isEmail(userData.username) !== true) {
