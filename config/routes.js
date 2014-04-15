@@ -79,40 +79,6 @@ module.exports.routes = {
     action: 'index'
   }
 
-  // // By default, your root route (aka home page) points to a view
-  // // located at `views/home/index.ejs`
-  // //
-  // // (This would also work if you had a file at: `/views/home.ejs`)
-  // '/': {
-  //   view: 'main/index'
-  // },
-
-  // // These routes are for backbone push state to work
-  // '/projects': {
-  //   view: 'main/index'
-  // },
-  // '/projects/:unknownRoute': {
-  //   view: 'main/index'
-  // },
-  // '/projects/:id/:unknownRoute': {
-  //   view: 'main/index'
-  // },
-  // '/tasks': {
-  //   view: 'main/index'
-  // },
-  // '/tasks/:unknownRoute': {
-  //   view: 'main/index'
-  // },
-  // '/tasks/:id/:unknownRoute': {
-  //   view: 'main/index'
-  // },
-  // '/profile': {
-  //   view: 'main/index'
-  // },
-  // '/profile/:unknownRoute': {
-  //   view: 'main/index'
-  // }
-
   /*
   // But what if you want your home page to display
   // a signup form located at `views/user/signup.ejs`?
