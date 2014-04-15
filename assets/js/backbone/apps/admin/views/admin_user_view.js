@@ -84,7 +84,12 @@ define([
 
     filter: function (e) {
       // get the input box value
-      var val = $(e.currentTarget).val();
+      var val = $(e.currentTarget).val().trim();
+      // if the filter is the same, don't do anything
+      if (val == this.q) {
+        return;
+      }
+      this.q = val;
       // hide the table and show the spinner
       this.$(".table-responsive").hide();
       this.$(".spinner").show();
