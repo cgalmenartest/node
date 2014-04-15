@@ -31,6 +31,11 @@ module.exports.policies = {
     '*': ['sspi']
   },
 
+  // Only admins can access the AdminController API
+  AdminController : {
+    '*': ['authenticated', 'admin']
+  },
+
   // Limit user controller view to just the /user endpoint
   UserController : {
     '*': false,

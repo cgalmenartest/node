@@ -38,6 +38,11 @@
             </a>
             <ul class="dropdown-menu" role="menu" aria-labelledby="navbar-profile">
               <li role="presentation"><a role="menuitem" class="nav-link" tabindex="-1" href="/profile">Profile</a></li>
+              <% if (user.isAdmin === true) { %>
+              <li role="presentation" class="divider"></li>
+              <li role="presentation"><a role="menuitem"
+                 tabindex="-1" href="/admin" class="nav-link">Administration</a></li>
+              <% } %>
               <% if (login.local.logout) { %>
               <li role="presentation" class="divider"></li>
               <li role="presentation"><a role="menuitem"

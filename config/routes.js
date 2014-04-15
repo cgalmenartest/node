@@ -69,6 +69,14 @@ module.exports.routes = {
   '/profile/:unknownRoute': {
     controller: 'main',
     action: 'find'
+  },
+  '/admin': {
+    controller: 'main',
+    action: 'find'
+  },
+  '/admin/:unknownRoute': {
+    controller: 'main',
+    action: 'find'
   }
 
   // // By default, your root route (aka home page) points to a view

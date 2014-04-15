@@ -1,0 +1,22 @@
+<ul class="pagination" data-filter="<% q %>">
+  <% if (page > 3) { %>
+  <li><a href="#">&laquo;</a></li>
+  <% } %>
+  <%
+  var start = Math.max(1, page-2);
+  var ceil = Math.ceil(count/trueLimit);
+  if (ceil < page + 2) {
+    start = Math.max(1, ceil - 4);
+  }
+  var max = Math.min(page + 2, ceil);
+  if ((ceil > 5) && ((page + 2) < 5)) {
+    max = 5;
+  }
+  %>
+  <% for (var i = start; i <= max; i++) { %>
+  <li <% if (i == page) { %>class="active"<% } %>><a class="page" data-page="<%- i %>" href="<%- urlbase %>?p=<%- i %>&q=<%- q %>"><%- i %> <% if (i == page) { %><span class="sr-only">(current)</span><% } %></a></li>
+  <% } %>
+  <% if (ceil > (page + 2)) { %>
+  <li><a href="#">&raquo;</a></li>
+  <% } %>
+</ul>

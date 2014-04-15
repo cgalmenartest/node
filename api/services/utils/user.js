@@ -465,7 +465,7 @@ module.exports = {
    * @param user the user object to clean
    * @return a new user object
    */
-  cleanUser: function (user) {
+  cleanUser: function (user, reqId) {
     var u = {
       id: user.id,
       username: null,
@@ -475,6 +475,10 @@ module.exports = {
       createdAt: user.createdAt,
       updatedAt: user.updatedAt
     };
+    // if the requestor is the same as the user, show admin status
+    if (user.id === reqId) {
+      u.isAdmin = user.isAdmin
+    }
     return u;
   },
 
@@ -493,7 +497,7 @@ module.exports = {
       if (err) { return cb(err, null); }
       delete user.deletedAt;
       if (userId != reqId) {
-        user = self.cleanUser(user);
+        user = self.cleanUser(user, reqId);
       }
       tagUtils.assemble({ userId: userId }, function (err, tags) {
         if (err) { return cb(err, null); }
