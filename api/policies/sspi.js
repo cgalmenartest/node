@@ -40,10 +40,14 @@ module.exports = function sspi (req, res, next) {
       sails.log.debug('SSPI Auth Error:', err);
       sails.log.debug('SSPI Auth User:', user);
       sails.log.debug('SSPI Auth Info:', info);
-      if ((err) || (!user))
-      {
+      if (err) {
         sails.log.error('SSPI Authentication Error:', err);
         return res.send(500, { message: "An internal error occurred while trying to authenticate.  Please try again later.", error: err });
+      }
+      // the account must be disabled
+      if (!user) {
+        req.alert = info;
+        return next();
       }
       // log in the authenticated user
       req.logIn(userUtils.cleanUser(user), function(err)

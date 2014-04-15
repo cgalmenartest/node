@@ -34,49 +34,49 @@ module.exports.routes = {
   // (This would also work if you had a file at: `/views/home.ejs`)
   '/': {
     controller: 'main',
-    action: 'find'
+    action: 'index'
   },
 
   // These routes are for backbone push state to work
   '/projects': {
     controller: 'main',
-    action: 'find'
+    action: 'index'
   },
   '/projects/:unknownRoute': {
     controller: 'main',
-    action: 'find'
+    action: 'index'
   },
   '/projects/:id/:unknownRoute': {
     controller: 'main',
-    action: 'find'
+    action: 'index'
   },
   '/tasks': {
     controller: 'main',
-    action: 'find'
+    action: 'index'
   },
   '/tasks/:unknownRoute': {
     controller: 'main',
-    action: 'find'
+    action: 'index'
   },
   '/tasks/:id/:unknownRoute': {
     controller: 'main',
-    action: 'find'
+    action: 'index'
   },
   '/profile': {
     controller: 'main',
-    action: 'find'
+    action: 'index'
   },
   '/profile/:unknownRoute': {
     controller: 'main',
-    action: 'find'
+    action: 'index'
   },
   '/admin': {
     controller: 'main',
-    action: 'find'
+    action: 'index'
   },
   '/admin/:unknownRoute': {
     controller: 'main',
-    action: 'find'
+    action: 'index'
   }
 
   // // By default, your root route (aka home page) points to a view
