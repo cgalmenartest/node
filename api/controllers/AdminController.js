@@ -21,23 +21,13 @@ module.exports = {
     var where = {};
 
     if (query) {
-      // just query name for now
+      // search by both name and username
       where = {
-        like: {
-          name: query
-        }
+        or: [
+          { like: { name: '%' + query + '%' }},
+          { like: { username: '%' + query + '%' }}
+        ]
       };
-      // There's a bug in waterline that prevents nested OR
-      // from expanding.  See:
-      // https://github.com/balderdashy/waterline/issues/116
-      // and
-      // https://github.com/balderdashy/sails-postgresql/issues/24
-      // where = {
-      //   or: [
-      //     { like: { name: query }},
-      //     { like: { username: query }}
-      //   ]
-      // };
     }
 
     // find users that meet this criteria
