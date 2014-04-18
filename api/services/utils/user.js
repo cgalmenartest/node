@@ -139,6 +139,7 @@ module.exports = {
         }
         // Encrypt the password
         bcrypt.hash(userData.password, 10, function(err, hash) {
+          if (err) { return done(null, false, { message: 'Unable to hash password.'}); }
           // Create and store the user
           var userCreateParam = {username: userData.username};
           if(updateAction){

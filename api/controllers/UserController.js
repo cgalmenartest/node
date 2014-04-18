@@ -6,6 +6,7 @@
  */
 var async = require('async');
 var _ = require('underscore');
+var bcrypt = require('bcrypt');
 var projUtils = require('../services/utils/project');
 var tagUtils = require('../services/utils/tag');
 var userUtils = require('../services/utils/user');
@@ -222,6 +223,66 @@ module.exports = {
     else {
       res.send(403, { message: 'Not authorized.' });
     }
+  },
+
+  /**
+   * Endpoint to reset a user's password.
+   * @param Reset object that contains:
+   *        {
+   *           id: userId,
+   *           password: newPassword
+   *        }
+   * Note that `id` is only allowed for administrators.
+   * If not an administrator, you can only reset your own
+   * password.
+   * @return true if the operation is successful, an error object if unsuccessful
+   */
+  resetPassword: function (req, res) {
+    // POST is the only supported method
+    if (req.route.method != 'post') { return res.send(400, {message:'Unsupported operation.'}) }
+    var userId = req.user[0].id;
+    // Allow administrators to set other users' passwords
+    if ((req.user.isAdmin === true) && (req.param('id'))) {
+      userId = req.param('id');
+    }
+
+    // check that a new password is provided
+    if (!req.param('password')) {
+      return res.send(400, { message: 'Password does not meet password rules.' });
+    }
+    var password = req.param('password');
+
+    // find the user
+    User.findOneById(userId, function (err, user) {
+      if (err) { return res.send(400, { message: 'User not found.' }); }
+      // Run password validator (but only if SSPI is disabled and not an admin)
+      if ((sails.config.auth.auth.sspi.enabled !== true) && (req.user[0].isAdmin !== true)) {
+        // Check that the password meets validation rules
+        var rules = userUtils.validatePassword(user.username, password);
+        var success = true;
+        _.each(_.values(rules), function (v) {
+          success = success && v;
+        });
+        if (success !== true) {
+          return res.send(400, { message: 'Password does not meet password rules.' });
+        }
+      }
+
+      // Encrypt the password
+      bcrypt.hash(password, 10, function(err, hash) {
+        if (err) { return res.send(400, { message: 'Unable to hash password.' }); }
+        var pwObj = {
+          userId: userId,
+          password: hash
+        };
+        // Store the user's password with the bcrypt hash
+        UserPassword.create(pwObj).done(function (err, pwObj) {
+          if (err) { return res.send(400, { message: 'Unable to store password.'}); }
+          return res.send(true);
+        });
+      });
+    });
+
   }
 
 };

@@ -3,10 +3,12 @@ define([
   'underscore',
   'backbone',
   'utilities',
+  'modal_component',
+  'admin_user_password_view',
   'text!admin_user_template',
   'text!admin_user_table',
   'text!admin_paginate'
-], function ($, _, Backbone, utils, AdminUserTemplate, AdminUserTable, Paginate) {
+], function ($, _, Backbone, utils, ModalComponent, AdminUserPasswordView, AdminUserTemplate, AdminUserTable, Paginate) {
 
   var AdminUserView = Backbone.View.extend({
 
@@ -16,6 +18,8 @@ define([
       "click .admin-user-rmadmin" : "adminRemove",
       "click .admin-user-enable"  : "adminEnable",
       "click .admin-user-disable" : "adminDisable",
+      "click .admin-user-unlock"  : "adminUnlock",
+      "click .admin-user-resetpw" : "resetPassword",
       "keyup #user-filter"        : "filter"
     },
 
@@ -166,6 +170,18 @@ define([
       });
     },
 
+    adminUnlock: function (e) {
+      if (e.preventDefault) e.preventDefault();
+      var t = $(e.currentTarget);
+      var id = $(t.parents('tr')[0]).data('id');
+      this.updateUser(t, {
+        id: id,
+        passwordAttempts: 0,
+        url: '/api/admin/unlock/' + id
+      });
+
+    },
+
     updateUser: function (t, data) {
       var self = this;
       var spinner = $($(t.parent()[0]).children('.btn-spin')[0])
@@ -197,6 +213,35 @@ define([
           }
         });
       }
+    },
+
+    resetPassword: function (e) {
+      if (e.preventDefault) e.preventDefault();
+      if (this.passwordView) { this.passwordView.cleanup(); }
+      if (this.modalComponent) this.modalComponent.cleanup();
+
+      var tr = $($(e.currentTarget).parents('tr')[0]);
+      var user = {
+        id: tr.data('id'),
+        name: $(tr.find('td.admin-table-name')[0]).text().trim()
+      };
+      console.log(user);
+
+      // set up the modal
+      this.modalComponent = new ModalComponent({
+        el: "#reset-password-container",
+        id: "reset-password-modal",
+        modalTitle: "Reset Password"
+      }).render();
+
+      // initialize the view inside the modal
+      this.passwordView = new AdminUserPasswordView({
+        el: ".modal-template",
+        user: user
+      }).render();
+
+      // render the modal
+      this.$("#reset-password-modal").modal('show');
     },
 
     cleanup: function () {
