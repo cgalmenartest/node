@@ -75,10 +75,35 @@ describe('user:', function() {
         assert.equal(response.statusCode, 200);
         var obj = JSON.parse(body);
         assert.equal(obj.username, conf.testUser.username);
-        // logout at end of test
-        request(conf.url + '/auth/logout', function (err, response, body) {
+        done();
+      });
+    });
+  });
+  it('reset password', function (done) {
+    request.post({ url: conf.url + '/user/resetPassword',
+                   form: { password: conf.testUser.password + "aBc", json: true },
+                 }, function (err, response, body) {
+      if (err) { return done(err); }
+      // Successful login or creation should result in a 200 unauthorized
+      assert.equal(response.statusCode, 200);
+      // check that the body is true
+      var b = JSON.parse(response.body);
+      assert.isTrue(b);
+      conf.testUser.password += "aBc";
+      // Check the new password works
+      request(conf.url + '/auth/logout', function (err, response, body) {
+        if (err) { return done(err); }
+        request.post({ url: conf.url + '/auth/local',
+                       form: { username: conf.testUser.username, password: conf.testUser.password, json: true },
+                     }, function (err, response, body) {
           if (err) { return done(err); }
-          done();
+          // Successful login or creation should result in a 200 unauthorized
+          assert.equal(response.statusCode, 200);
+          // logout at end of test
+          request(conf.url + '/auth/logout', function (err, response, body) {
+            if (err) { return done(err); }
+            done();
+          });
         });
       });
     });
