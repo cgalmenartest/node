@@ -7,8 +7,9 @@ define([
   'admin_user_password_view',
   'text!admin_user_template',
   'text!admin_user_table',
-  'text!admin_paginate'
-], function ($, _, Backbone, utils, ModalComponent, AdminUserPasswordView, AdminUserTemplate, AdminUserTable, Paginate) {
+  'text!admin_paginate',
+  'json!login_config'
+], function ($, _, Backbone, utils, ModalComponent, AdminUserPasswordView, AdminUserTemplate, AdminUserTable, Paginate, LoginConfig) {
 
   var AdminUserView = Backbone.View.extend({
 
@@ -38,7 +39,8 @@ define([
         return this;
       }
       var data = {
-
+        user: window.cache.currentUser,
+        login: LoginConfig
       };
       var template = _.template(AdminUserTemplate, data);
       this.$el.html(template);
@@ -57,6 +59,8 @@ define([
         self.limit = data.limit;
       }
       data.trueLimit = self.limit;
+      data.login = LoginConfig;
+      data.user = window.cache.currentUser;
       // render the table
       var template = _.template(AdminUserTable, data);
       // render the pagination
@@ -225,7 +229,6 @@ define([
         id: tr.data('id'),
         name: $(tr.find('td.admin-table-name')[0]).text().trim()
       };
-      console.log(user);
 
       // set up the modal
       this.modalComponent = new ModalComponent({

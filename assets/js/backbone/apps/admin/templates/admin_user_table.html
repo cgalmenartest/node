@@ -5,7 +5,9 @@
       <th>Name</th>
       <th>Email</th>
       <th class="admin-user-checkbox">Enabled</th>
+      <% if (login.local.enabled === true) { %>
       <th class="admin-user-checkbox">Password</th>
+      <% } %>
       <th class="admin-user-checkbox">Admin</th>
     </tr>
   </thead>
@@ -33,11 +35,13 @@
         <button type="button" class="btn btn-default btn-xs admin-user-disable" data-toggle="tooltip" data-placement="top" title="Disable" <% if (u.disabled === true) { %>style="display:none;"<% } %>><i class="icon-ok icon-green icon-center"></i></button>
         <button type="button" class="btn btn-default btn-xs btn-spin" style="display:none;"><i class="icon-spin icon-spinner icon-center"></i></button>
       </td>
+      <% if (login.local.enabled === true) { %>
       <td>
         <button type="button" class="btn btn-default btn-xs admin-user-resetpw" data-toggle="tooltip" data-placement="top" title="Reset Password"><i class="icon-ok icon-cog"></i></button>
         <button type="button" class="btn btn-default btn-xs admin-user-unlock" data-toggle="tooltip" data-placement="top" title="Unlock User (clear password attempts)" <% if (u.locked !== true) { %>style="display:none;"<% } %>><i class="icon-ok icon-red icon-lock"></i></button>
         <button type="button" class="btn btn-default btn-xs btn-spin" style="display:none;"><i class="icon-spin icon-spinner icon-center"></i></button>
       </td>
+      <% } %>
       <td>
         <button type="button" class="btn btn-default btn-xs admin-user-rmadmin" data-toggle="tooltip" data-placement="top" title="Remove Admin Priviledges" <% if (u.isAdmin !== true) { %>style="display:none;"<% } %>><i class="icon-ok icon-green icon-center"></i></button>
         <button type="button" class="btn btn-default btn-xs admin-user-mkadmin" data-toggle="tooltip" data-placement="top" title="Make Admin" <% if (u.isAdmin === true) { %>style="display:none;"<% } %>><i class="icon-remove-sign icon-red icon-center"></i></button>
