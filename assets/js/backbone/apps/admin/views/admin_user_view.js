@@ -15,6 +15,7 @@ define([
 
     events: {
       "click a.page"              : "clickPage",
+      "click .link-backbone"      : linkBackbone,
       "click .admin-user-mkadmin" : "adminCreate",
       "click .admin-user-rmadmin" : "adminRemove",
       "click .admin-user-enable"  : "adminEnable",
