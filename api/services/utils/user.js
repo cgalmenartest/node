@@ -267,6 +267,7 @@ module.exports = {
       if (!user) {
         return done(null, false, { message: 'Invalid email address or password.' });
       } else {
+        // Deny disabled users
         if (user.disabled === true) {
           sails.log.info('Disabled user login: ', user);
           return done(null, false, { message: 'Invalid email address or password.' });
@@ -283,6 +284,13 @@ module.exports = {
           bcrypt.compare(userData.password, pwObj[0].password, function (err, res) {
             // Valid password
             if (res === true) {
+              // Deny users that have exceeded their password attempts
+              if ((sails.config.auth.auth.local.passwordAttempts > 0) &&
+                  (user.passwordAttempts >= sails.config.auth.auth.local.passwordAttempts)) {
+                sails.log.info('Locked out user: ', user);
+                // TODO: insert link here to reset password
+                return done(null, false, { message: 'Your account has been locked, please reset your password.' });
+              }
               sails.log.debug('User Found:', user);
               user.passwordAttempts = 0;
               if(updateAction){
@@ -303,6 +311,12 @@ module.exports = {
             }
             // Invalid password
             else {
+              if ((sails.config.auth.auth.local.passwordAttempts > 0) &&
+                  (user.passwordAttempts >= sails.config.auth.auth.local.passwordAttempts)) {
+                sails.log.info('Locked out user: ', user);
+                // TODO: insert link here to reset password
+                return done(null, false, { message: 'Invalid email address or password.  If you have an account, you can reset your password.' });
+              }
               user.passwordAttempts++;
               user.save(function (err) {
                 if (err) { return done(null, false, { message: 'An error occurred while logging on. Please try again.' }); }

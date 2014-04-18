@@ -1,4 +1,4 @@
-var assert = require('assert');
+var assert = require('chai').assert;
 var conf = require('./helpers/config');
 var utils = require('./helpers/utils');
 var request;
@@ -75,8 +75,47 @@ describe('user:', function() {
         assert.equal(response.statusCode, 200);
         var obj = JSON.parse(body);
         assert.equal(obj.username, conf.testUser.username);
-        done();
+        // logout at end of test
+        request(conf.url + '/auth/logout', function (err, response, body) {
+          if (err) { return done(err); }
+          done();
+        });
       });
     });
+  });
+  it('lockout user', function (done) {
+    var count = 0;
+    async.whilst(
+      function () { return count < 7; },
+      function (callback) {
+        count++;
+        var extra = '';
+        if (count < 7) {
+          extra = 'baz';
+        }
+        request.post({ url: conf.url + '/auth/local',
+                       form: { username: conf.testUser.username, password: conf.testUser.password + extra, json: true },
+                     }, function (err, response, body) {
+          if (err) { return callback(err); }
+          // Unsuccessful login or creation should result in a 403
+          assert.equal(response.statusCode, 403);
+          var b = JSON.parse(response.body);
+          assert.isDefined(b.message);
+          if (count == 6) {
+            // still the wrong password but should be locked out
+            assert.include(b.message, 'If you have an account');
+          }
+          if (count == 7) {
+            // correct password but locked out
+            assert.include(b.message, 'Your account has been locked');
+          }
+          callback(err);
+        });
+      },
+      function (err) {
+        done(err);
+      }
+    );
+
   });
 });

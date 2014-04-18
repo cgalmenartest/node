@@ -38,9 +38,6 @@ function authenticate(req, res, strategy, json) {
           message = info.message;
         }
         // if local strategy, don't show user what actually happened for security purposes
-        if (strategy === 'local') {
-          message = 'Invalid email address or password.'
-        }
         sails.log.debug('Authentication Error:', err, info);
         if (json === true) {
           res.send(403, {
