@@ -12,7 +12,7 @@
         <% } else { %>
         <div id="project-header" style="background-image:url('/images/project_default.png');">
         <% } %>
-          <div class="btn btn-c2 fileinput-button" <% if (!data.isOwner || !edit) { %>style="display:none;"<% } %>>
+          <div class="btn btn-c2 fileinput-button" <% if (!(data.isOwner || user.isAdmin) || !edit) { %>style="display:none;"<% } %>>
             <i class="icon-camera icon-large" title="Change Cover Photo" id="fileupload-icon"></i>
             <input id="fileupload" type="file" name="files[]">
           </div>
@@ -53,7 +53,7 @@
             <span class="like-number" id="like-number"><%- data.likeCount %></span>
             <span class="like-plural" id="like-text" data-plural="likes" data-singular="like">likes</span>
           </div>
-          <div class="navbar-side <% if (data.isOwner) { %>border-bottom<% } %>">
+          <div class="navbar-side <% if (data.isOwner || user.isAdmin) { %>border-bottom<% } %>">
             <ul class="nav nav-pills nav-stacked">
               <li>
                 <a href="#" id="email"><i class="icon icon-envelope-alt"></i> <span class="box-icon-text">Share</span></a>
@@ -63,7 +63,7 @@
               </li>
             </ul>
           </div>
-          <% if (data.isOwner) { %>
+          <% if (data.isOwner || user.isAdmin) { %>
           <div class="navbar-side">
             <div id="modal-close"></div>
             <ul class="nav nav-pills nav-stacked">
@@ -101,7 +101,7 @@
       </div>
     </div>
 
-    <% if (!data.isOwner || !edit) { %>
+    <% if (!(data.isOwner || user.isAdmin) || !edit) { %>
     <div class="row">
       <div class="col-md-12 box">
         <div class="attachment-wrapper">
@@ -120,7 +120,7 @@
       </div>
     </div>
 
-    <% if (!data.isOwner || !edit) { %>
+    <% if (!(data.isOwner || user.isAdmin) || !edit) { %>
     <div class="row">
       <div class="col-md-12 sm-nopadding md-nopadding">
         <!-- BEGIN EVENTS -->
