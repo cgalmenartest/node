@@ -33,7 +33,7 @@ define([
           }
           // Build object for render
           self.data = {
-            user: window.cache.currentUser,
+            user: window.cache.currentUser || {},
             model: self.model.toJSON(),
             tags: self.tags
           };
