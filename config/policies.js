@@ -73,8 +73,8 @@ module.exports.policies = {
   ProjectController : {
     '*': ['authenticated', 'addUserId', 'project'],
     'find': ['authenticated', 'requireId', 'project'],
-    'update': ['authenticated', 'requireUserId', 'projectId'],
-    'destroy': ['authenticated', 'requireUserId', 'requireId', 'project']
+    'update': ['authenticated', 'requireUserId', 'projectId', 'ownerOrAdmin'],
+    'destroy': ['authenticated', 'requireUserId', 'requireId', 'project', 'ownerOrAdmin']
   },
 
   ProjectOwnerController : {
@@ -144,8 +144,8 @@ module.exports.policies = {
     'find': ['authenticated', 'task'],
     'findAllByProjectId': ['authenticated', 'requireId', 'project'],
     'create': ['authenticated', 'requireUserId', 'addUserId'],
-    'update': ['authenticated', 'requireUserId', 'projectId', 'taskId'],
-    'destroy': ['authenticated', 'requireUserId', 'requireId', 'task']
+    'update': ['authenticated', 'requireUserId', 'projectId', 'taskId', 'ownerOrAdmin'],
+    'destroy': ['authenticated', 'requireUserId', 'requireId', 'task', 'ownerOrAdmin']
   },
 
   AttachmentController: {
