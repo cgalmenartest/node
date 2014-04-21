@@ -21,8 +21,9 @@ define([
     },
 
     initialize: function (options) {
-      this.id = options.id;
+      this.options = options;
       this.routeId = options.id;
+      this.action = options.action;
       this.data = options.data;
       this.initializeProfileModelInstance();
     },
@@ -32,9 +33,9 @@ define([
 
       if (this.model) this.model.remove();
       this.model = new ProfileModel();
-      var fetchId = null;
-      if (this.id && this.id != 'edit') { fetchId = this.id; }
-      this.model.trigger("profile:fetch", fetchId);
+      // var fetchId = null;
+      // if (this.id && this.id != 'edit') { fetchId = this.id; }
+      this.model.trigger("profile:fetch", this.routeId);
       // process a successful model fetch, and display the model
       this.listenTo(this.model, "profile:fetch:success", function (model) {
         // @instance
@@ -81,10 +82,20 @@ define([
 
     initializeProfileViewInstance: function () {
       if (this.profileView) { this.profileView.cleanup(); }
+      // if ((this.action === 'edit') && (window.cache.currentUser) &&
+      //     (window.cache.currentUser.id !== this.model.toJSON().id) &&
+      //     (window.cache.currentUser.isAdmin !== true)) {
+      //   window.cache.userEvents.trigger("user:request:login", {
+      //     message: "You are not allowed to edit this profile",
+      //     disableClose: false
+      //   });
+      //   return;
+      // }
       this.profileView = new ProfileView({
         el: this.$el,
         model: this.model,
         routeId: this.routeId,
+        action: this.action,
         data: this.data
       }).render();
     },

@@ -66,6 +66,10 @@ module.exports.routes = {
     controller: 'main',
     action: 'index'
   },
+  '/profile/:id/:unknownRoute': {
+    controller: 'main',
+    action: 'index'
+  },
   '/profile/:unknownRoute': {
     controller: 'main',
     action: 'index'

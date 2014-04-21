@@ -1,7 +1,16 @@
 <div class="row">
 
-  <% if (data.isAdmin) { %>
-  <div class="alert alert-info">You are an administrator.</div>
+  <% if (user.isAdmin) { %>
+  <div class="alert alert-info">
+    You are an administrator.
+    <% if (user.id !== data.id) { %>
+      <% if (edit === true) { %>
+        <strong>You are editing another user's profile.</strong>
+      <% } else { %>
+        You are viewing another user's profile.
+      <% } %>
+    <% } %>
+  </div>
   <% } %>
 
   <% if (saved) { %>
@@ -14,7 +23,7 @@
     <div class="row">
       <div class="col-md-12 box project-header-wrapper">
         <div id="project-header" style="background-image:url('/api/user/photo/<%- data.id %>');">
-          <div class="btn btn-c2 fileinput-button" <% if (!(data.isOwner && edit)) { %>style="display:none;"<% } %>>
+          <div class="btn btn-c2 fileinput-button" <% if (!((data.isOwner || user.isAdmin) && edit)) { %>style="display:none;"<% } %>>
             <i class="icon-camera icon-large" title="Change Cover Photo" id="fileupload-icon"></i>
             <input id="fileupload" type="file" name="files[]">
           </div>
@@ -146,12 +155,12 @@
             <span class="like-number" id="like-number"><%- data.likeCount %></span>
             <span class="like-plural" id="like-text" data-plural="followers" data-singular="follower">followers</span>
           </div>
-          <div class="navbar-side <% if (data.isOwner) { %>border-bottom<% } %>">
+          <div class="navbar-side <% if (data.isOwner || user.isAdmin) { %>border-bottom<% } %>">
             <ul class="nav nav-pills nav-stacked">
               <li>
                 <a href="#" id="email"><i class="icon icon-envelope-alt"></i> <span class="box-icon-text">Share</span></a>
               </li>
-              <% if (data.isOwner) { %>
+              <% if (data.isOwner || user.isAdmin) { %>
               <li>
                 <a href="/api/event/ical/"><span class="glyphicon glyphicon-calendar"></span> <span class="box-icon-text">Calendar</span></a>
               </li>
@@ -160,7 +169,7 @@
           <div class="navbar-side">
               <ul class="nav nav-pills nav-stacked">
               <li>
-                <a href="#" id="profile-edit"><i class="icon-pencil"></i> <span class="box-icon-text">Edit Profile</span></a>
+                <a href="/profile/<%- data.id %>/edit" class="link-backbone"><i class="icon-pencil"></i> <span class="box-icon-text">Edit Profile</span></a>
               </li>
               <% } %>
             </ul>

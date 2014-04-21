@@ -29,6 +29,7 @@ define([
       'tasks/:id/:action(/)'      : 'showTask',
       'profile(/)'                : 'showProfile',
       'profile/:id(/)'            : 'showProfile',
+      'profile/:id(/)/:action'    : 'showProfile',
       'admin(/)'                  : 'showAdmin',
       'admin(/):action(/)'        : 'showAdmin'
     },
@@ -88,9 +89,15 @@ define([
       this.taskShowController = new TaskShowController({ model: model, router: this, id: id, action: action, data: this.data });
     },
 
-    showProfile: function (id) {
+    showProfile: function (id, action) {
       this.cleanupChildren();
-      this.profileShowController = new ProfileShowController({ id: id, data: this.data });
+      if (!action && id) {
+        if (id == 'edit') {
+          action = id;
+          id = window.cache.currentUser.id;
+        }
+      }
+      this.profileShowController = new ProfileShowController({ id: id, action: action, data: this.data });
     },
 
     showAdmin: function (action) {

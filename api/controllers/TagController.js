@@ -74,9 +74,9 @@ module.exports = {
     if (!tag.projectId) { tag.projectId = null; }
     if (!tag.taskId) { tag.taskId = null; }
     if (!tag.tagId) { return res.send(400, { message: "Must specify a tag id" }); }
-    if (tag.userId && (tag.userId != req.user[0].id)) { return res.send(403, { message: 'Not authorized.'}); }
+    if (tag.userId && (tag.userId != req.user[0].id) && (req.user[0].isAdmin !== true)) { return res.send(403, { message: 'Not authorized.'}); }
     // if neither are specified, associate with a user.
-    if (!tag.projectId && !tag.taskId) { tag.userId = req.user[0].id }
+    if (!tag.projectId && !tag.taskId && !tag.userId) { tag.userId = req.user[0].id }
     // check if the tag already exists
     Tag.findOne(
       { where:
@@ -111,7 +111,12 @@ module.exports = {
       // check if this user is authorized
       var checkAuthorization = function (err, item) {
         if (err) { return res.send(400, { message: err }); }
-        if (!err && !item) { return res.send(403, { message: 'Not authorized.'}); }
+        if (!err && !item) {
+          return res.send(403, { message: 'Not authorized.'});
+        }
+        if (!item.isOwner && (req.user[0].isAdmin !== true)) {
+          return res.send(403, { message: 'Not authorized.'});
+        }
         tag.destroy(function (err) {
           if (err) { return res.send(400, { message: 'Error destroying tag mapping' }); }
           return res.send(tag);
@@ -122,7 +127,7 @@ module.exports = {
       } else if (tag.taskId) {
         taskUtils.authorized(tag.taskId, req.user[0].id, checkAuthorization)
       } else {
-        checkAuthorization((!(req.user[0].id == tag.userId)), tag);
+        checkAuthorization((!((req.user[0].id == tag.userId) || (req.user[0].isAdmin === true))), tag);
       }
     });
   }

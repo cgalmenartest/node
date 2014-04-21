@@ -12,42 +12,58 @@ var tagUtils = require('../services/utils/tag');
 var userUtils = require('../services/utils/user');
 var validator = require('validator');
 
-var update = function (req, res) {
-  var user = req.user[0];
-  var params = _.extend(req.body || {}, req.params);
-  if (!_.isUndefined(params.name)) { user.name = params.name; }
-  if (!_.isUndefined(params.username)) { user.username = params.username; }
-  if (!_.isUndefined(params.photoId)) { user.photoId = params.photoId; }
-  if (!_.isUndefined(params.photoUrl)) { user.photoUrl = params.photoUrl; }
-  if (!_.isUndefined(params.title)) { user.title = params.title; }
-  if (!_.isUndefined(params.bio)) { user.bio = params.bio; }
-  // The main user object is being updated
-  if (user) {
-    sails.log.debug('User Update:', user);
-    user.save(function (err) {
-      if (err) { return res.send(400, {message:'Error while saving user.'}) }
-      // Check if a userauth was removed
-      if (params.auths) {
-        var checkAuth = function(auth, done) {
-          if (_.contains(params.auths, auth.provider)) {
-            return done();
-          }
-          auth.destroy(done);
-        };
-
-        UserAuth.findByUserId(req.user[0].id, function (err, auths) {
-          if (err) { return res.send(400, {message:'Error finding authorizations.'}); }
-          async.each(auths, checkAuth, function(err) {
-            if (err) { return res.send(400, {message:'Error finding authorizations.'}); }
-            user.auths = params.auths;
-            return res.send(user);
-          });
-        });
-      } else {
-        res.send(user);
-      }
-    });
+var getUserForUpdate = function (userId, reqUser, cb) {
+  if (userId == reqUser.id) {
+    return cb(null, reqUser);
   }
+  if (reqUser.isAdmin !== true) {
+    return cb({ message: "Not Authorized."}, null);
+  }
+  User.findOneById(userId, function (err, user) {
+    cb(err, user);
+  });
+};
+
+var update = function (req, res) {
+  var reqUser = req.user[0];
+  var userId = req.route.params.id || reqUser.id;
+  getUserForUpdate(userId, reqUser, function (err, user) {
+    if (err) { return res.send(403, err); }
+    var params = _.extend(req.body || {}, req.params);
+    if (!_.isUndefined(params.name)) { user.name = params.name; }
+    if (!_.isUndefined(params.username)) { user.username = params.username; }
+    if (!_.isUndefined(params.photoId)) { user.photoId = params.photoId; }
+    if (!_.isUndefined(params.photoUrl)) { user.photoUrl = params.photoUrl; }
+    if (!_.isUndefined(params.title)) { user.title = params.title; }
+    if (!_.isUndefined(params.bio)) { user.bio = params.bio; }
+    // The main user object is being updated
+    if (user) {
+      sails.log.debug('User Update:', user);
+      user.save(function (err) {
+        if (err) { return res.send(400, {message:'Error while saving user.'}) }
+        // Check if a userauth was removed
+        if (params.auths) {
+          var checkAuth = function(auth, done) {
+            if (_.contains(params.auths, auth.provider)) {
+              return done();
+            }
+            auth.destroy(done);
+          };
+
+          UserAuth.findByUserId(req.user[0].id, function (err, auths) {
+            if (err) { return res.send(400, {message:'Error finding authorizations.'}); }
+            async.each(auths, checkAuth, function(err) {
+              if (err) { return res.send(400, {message:'Error finding authorizations.'}); }
+              user.auths = params.auths;
+              return res.send(user);
+            });
+          });
+        } else {
+          res.send(user);
+        }
+      });
+    }
+  });
 };
 
 module.exports = {
@@ -103,7 +119,7 @@ module.exports = {
     }
     sails.services.utils.user['getUser'](userId, reqId, function (err, user) {
       // this will only be shown to logged in users.
-      if (err) { return res.send(400, { message: err }); }
+      if (err) { return res.send(400, err); }
       sails.log.debug('User Get:', user);
       res.send(user);
     });
