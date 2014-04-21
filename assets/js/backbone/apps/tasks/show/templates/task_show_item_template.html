@@ -60,7 +60,7 @@
               </li>
             </ul>
           </div>
-          <% if (model.isOwner) { %>
+          <% if (model.isOwner || user.isAdmin) { %>
           <div class="navbar-side <% if (user) { %>border-bottom<% } %>">
             <div id="modal-close"></div>
             <ul class="nav nav-pills nav-stacked">
