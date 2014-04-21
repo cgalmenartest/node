@@ -195,10 +195,7 @@ define([
       this.listenTo(self.model, "profile:tags:save", function (tags) {
         var removeTag = function(type, done) {
           if (self.model[type]) {
-            // if it is already stored, abort.
-            if (self.model[type].tagId) {
-              return done();
-            }
+            // delete the existing tag
             $.ajax({
               url: '/api/tag/' + self.model[type].tagId,
               type: 'DELETE',

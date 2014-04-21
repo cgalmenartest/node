@@ -105,6 +105,7 @@ module.exports = {
   // Override destroy to ensure owner has access to project
   destroy: function (req, res) {
     if (req.route.method != 'delete') { return res.send(400, { message: 'Unsupported operation.' } ); }    
+    var user = req.user[0];
     Tag.findOneById( req.params.id, function (err, tag) {
       if (err) { return res.send(400, { message: 'Error looking up tag' }); }
       if (!tag) { return res.send(404, { message: 'Tag not found'}); }
@@ -114,7 +115,12 @@ module.exports = {
         if (!err && !item) {
           return res.send(403, { message: 'Not authorized.'});
         }
-        if (!item.isOwner && (req.user[0].isAdmin !== true)) {
+        // for task and project tags, check that the item is owned by the logged in user
+        if (!_.isUndefined(item.isOwner) && (item.isOwner !== true) && (user.isAdmin !== true)) {
+          return res.send(403, { message: 'Not authorized.'});
+        }
+        // for user related tags, check if the tag belongs to the user
+        if (_.isUndefined(item.isOwner) && !_.isUndefined(item.userId) && (item.userId !== user.id) && (user.isAdmin !== true)) {
           return res.send(403, { message: 'Not authorized.'});
         }
         tag.destroy(function (err) {
@@ -123,11 +129,11 @@ module.exports = {
         });
       }
       if (tag.projectId) {
-        projUtils.authorized(tag.projectId, req.user[0].id, checkAuthorization)
+        projUtils.authorized(tag.projectId, user.id, checkAuthorization)
       } else if (tag.taskId) {
-        taskUtils.authorized(tag.taskId, req.user[0].id, checkAuthorization)
+        taskUtils.authorized(tag.taskId, user.id, checkAuthorization)
       } else {
-        checkAuthorization((!((req.user[0].id == tag.userId) || (req.user[0].isAdmin === true))), tag);
+        checkAuthorization((!((user.id == tag.userId) || (user.isAdmin === true))), tag);
       }
     });
   }
