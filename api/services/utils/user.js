@@ -526,10 +526,24 @@ module.exports = {
           delete tags[i].tag.updatedAt;
           delete tags[i].tag.deletedAt;
           if (tags[i].tag.type == 'agency') {
-            user.agency = tags[i];
+            if (!user.agency) {
+              user.agency = tags[i];
+            } else {
+              // always use the latest tag stored, in case multiple are stored
+              if (user.agency.createdAt < tags[i].createdAt) {
+                user.agency = tags[i];
+              }
+            }
           }
           if (tags[i].tag.type == 'location') {
-            user.location = tags[i];
+            if (!user.location) {
+              user.location = tags[i];
+            } else {
+              // always use the latest tag stored, in case multiple are stored
+              if (user.location.createdAt < tags[i].createdAt) {
+                user.location = tags[i];
+              }
+            }
           }
          }
         user.tags = tags;
