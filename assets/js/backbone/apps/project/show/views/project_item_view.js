@@ -104,6 +104,7 @@ define([
           url: "/api/file/create",
           dataType: 'text',
           acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+          formData: { 'type': 'image' },
           add: function (e, data) {
             $('#file-upload-progress-container').show();
             data.submit();
