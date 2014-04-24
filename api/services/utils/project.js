@@ -13,7 +13,9 @@ var authorized = function (id, userId, cb) {
       proj.owners = [];
       proj.isOwner = false;
       for (var i = 0; i < owners.length; i++) {
-        if (userId && (owners[i].userId == userId)) { proj.isOwner = true; }
+        if (userId && (owners[i].userId == userId)) {
+          proj.isOwner = true;
+        }
         proj.owners.push({ id: owners[i].id, userId: owners[i].userId });
       }
       // If project is public or public and closed/finished, continue

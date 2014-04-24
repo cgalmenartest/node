@@ -34,7 +34,7 @@ define([
       var data = {
         hostname: window.location.hostname,
         data: this.model.toJSON(),
-        user: window.cache.currentUser,
+        user: window.cache.currentUser || {},
         edit: this.edit
       };
 

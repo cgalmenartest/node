@@ -29,6 +29,7 @@
     },
     "devDependencies": {
         "mocha": "*",
+        "chai": "*",
         "grunt-contrib-requirejs": "~0.4.1",
         "grunt-contrib-cssmin": "*"
     },

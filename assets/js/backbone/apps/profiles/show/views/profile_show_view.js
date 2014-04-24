@@ -23,10 +23,10 @@ define([
     events: {
       "submit #profile-form"       : "profileSubmit",
       "click #profile-save"        : "profileSave",
-      "click #profile-edit"        : "profileEdit",
+      "click .link-backbone"       : linkBackbone,
       "click #profile-cancel"      : "profileCancel",
       "click #like-button"         : "like",
-      "keyup #name, #title, #bio" : "fieldModified",
+      "keyup #name, #title, #bio"  : "fieldModified",
       "click #add-email"           : "addEmail",
       "click .email-remove"        : "removeEmail",
       "click .removeAuth"          : "removeAuth"
@@ -36,10 +36,8 @@ define([
       this.options = options;
       this.data = options.data;
       this.edit = false;
-      if (this.options.routeId) {
-        if (this.options.routeId == 'edit') {
-          this.edit = true;
-        }
+      if (this.options.action == 'edit') {
+        this.edit = true;
       }
       if (this.data.saved) {
         this.saved = true;
@@ -51,6 +49,7 @@ define([
       var data = {
         login: Login,
         data: this.model.toJSON(),
+        user: window.cache.currentUser || {},
         edit: this.edit,
         saved: this.saved
       }
@@ -60,6 +59,7 @@ define([
       var template = _.template(ProfileTemplate, data);
       this.$el.html(template);
 
+      // initialize sub components
       this.initializeFileUpload();
       this.initializeForm();
       this.initializeSelect2();
@@ -128,6 +128,7 @@ define([
         model: this.model,
         el: '.tag-wrapper',
         target: 'profile',
+        targetId: 'userId',
         edit: this.edit,
         url: '/api/tag/findAllByUserId/'
       });
@@ -157,14 +158,17 @@ define([
     },
 
     updatePhoto: function () {
+      var self = this;
       this.model.on("profile:updatedPhoto", function (data) {
         var url = '/api/user/photo/' + data.attributes.id;
         // force the new image to be loaded
         $.get(url, function (data) {
           $("#project-header").css('background-image', "url('" + url + "')");
           $('#file-upload-progress-container').hide();
-          // notify listeners of the new user image
-          window.cache.userEvents.trigger("user:profile:photo:save", url);
+          // notify listeners of the new user image, but only for the current user
+          if (self.model.toJSON().id == window.cache.currentUser.id) {
+            window.cache.userEvents.trigger("user:profile:photo:save", url);
+          }
         });
       });
     },
@@ -173,11 +177,14 @@ define([
       var self = this;
 
       this.listenTo(self.model, "profile:save:success", function (data) {
-        $("#submit").button('success');
         // Bootstrap .button() has execution order issue since it
         // uses setTimeout to change the text of buttons.
         // make sure attr() runs last
-        window.cache.userEvents.trigger("user:profile:save", data.toJSON());
+        $("#submit").button('success');
+        // notify listeners if the current user has been updated
+        if (self.model.toJSON().id == window.cache.currentUser.id) {
+          window.cache.userEvents.trigger("user:profile:save", data.toJSON());
+        }
 
         var tags = [
           $("#company").select2('data'),
@@ -188,10 +195,7 @@ define([
       this.listenTo(self.model, "profile:tags:save", function (tags) {
         var removeTag = function(type, done) {
           if (self.model[type]) {
-            // if it is already stored, abort.
-            if (self.model[type].tagId) {
-              return done();
-            }
+            // delete the existing tag
             $.ajax({
               url: '/api/tag/' + self.model[type].tagId,
               type: 'DELETE',
@@ -215,6 +219,10 @@ define([
           var tagMap = {
             tagId: tag.id
           };
+          // if a different profile is being edited, add its userId
+          if (self.model.toJSON().id !== window.cache.currentUser.id) {
+            tagMap.userId = self.model.toJSON().id;
+          }
           $.ajax({
             url: '/api/tag',
             type: 'POST',
@@ -230,12 +238,12 @@ define([
           });
         });
       });
-      this.listenTo(self.model, "profile:tags:save:success", function (data) {
+      this.listenTo(self.model, "profile:tags:save:success", function (err) {
         setTimeout(function() { $("#profile-save, #submit").attr("disabled", "disabled") }, 0);
         $("#profile-save, #submit").removeClass("btn-primary");
         $("#profile-save, #submit").addClass("btn-success");
         self.data.saved = true;
-        Backbone.history.navigate('profile', { trigger: true });
+        Backbone.history.navigate('profile/' + self.model.toJSON().id, { trigger: true });
       });
       this.listenTo(self.model, "profile:save:fail", function (data) {
         $("#submit").button('fail');
@@ -367,12 +375,7 @@ define([
 
     profileCancel: function (e) {
       e.preventDefault();
-      Backbone.history.navigate('profile', { trigger: true });
-    },
-
-    profileEdit: function (e) {
-      e.preventDefault();
-      Backbone.history.navigate('profile/edit', { trigger: true });
+      Backbone.history.navigate('profile/' + this.model.toJSON().id, { trigger: true });
     },
 
     profileSave: function (e) {

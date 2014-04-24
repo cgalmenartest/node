@@ -34,76 +34,54 @@ module.exports.routes = {
   // (This would also work if you had a file at: `/views/home.ejs`)
   '/': {
     controller: 'main',
-    action: 'find'
+    action: 'index'
   },
 
   // These routes are for backbone push state to work
   '/projects': {
     controller: 'main',
-    action: 'find'
+    action: 'index'
   },
   '/projects/:unknownRoute': {
     controller: 'main',
-    action: 'find'
+    action: 'index'
   },
   '/projects/:id/:unknownRoute': {
     controller: 'main',
-    action: 'find'
+    action: 'index'
   },
   '/tasks': {
     controller: 'main',
-    action: 'find'
+    action: 'index'
   },
   '/tasks/:unknownRoute': {
     controller: 'main',
-    action: 'find'
+    action: 'index'
   },
   '/tasks/:id/:unknownRoute': {
     controller: 'main',
-    action: 'find'
+    action: 'index'
   },
   '/profile': {
     controller: 'main',
-    action: 'find'
+    action: 'index'
+  },
+  '/profile/:id/:unknownRoute': {
+    controller: 'main',
+    action: 'index'
   },
   '/profile/:unknownRoute': {
     controller: 'main',
-    action: 'find'
+    action: 'index'
+  },
+  '/admin': {
+    controller: 'main',
+    action: 'index'
+  },
+  '/admin/:unknownRoute': {
+    controller: 'main',
+    action: 'index'
   }
-
-  // // By default, your root route (aka home page) points to a view
-  // // located at `views/home/index.ejs`
-  // //
-  // // (This would also work if you had a file at: `/views/home.ejs`)
-  // '/': {
-  //   view: 'main/index'
-  // },
-
-  // // These routes are for backbone push state to work
-  // '/projects': {
-  //   view: 'main/index'
-  // },
-  // '/projects/:unknownRoute': {
-  //   view: 'main/index'
-  // },
-  // '/projects/:id/:unknownRoute': {
-  //   view: 'main/index'
-  // },
-  // '/tasks': {
-  //   view: 'main/index'
-  // },
-  // '/tasks/:unknownRoute': {
-  //   view: 'main/index'
-  // },
-  // '/tasks/:id/:unknownRoute': {
-  //   view: 'main/index'
-  // },
-  // '/profile': {
-  //   view: 'main/index'
-  // },
-  // '/profile/:unknownRoute': {
-  //   view: 'main/index'
-  // }
 
   /*
   // But what if you want your home page to display

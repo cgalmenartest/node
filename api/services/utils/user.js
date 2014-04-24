@@ -70,7 +70,7 @@ module.exports = {
     }
     userData.password = password;
 
-    // Run password validator (but only if SSPI is disabled)
+    // Run username validator (but only if SSPI is disabled)
     if (sails.config.auth.auth.sspi.enabled !== true) {
       // ensure the username is a valid email address
       if (validator.isEmail(userData.username) !== true) {
@@ -139,6 +139,7 @@ module.exports = {
         }
         // Encrypt the password
         bcrypt.hash(userData.password, 10, function(err, hash) {
+          if (err) { return done(null, false, { message: 'Unable to hash password.'}); }
           // Create and store the user
           var userCreateParam = {username: userData.username};
           if(updateAction){
@@ -266,6 +267,7 @@ module.exports = {
       if (!user) {
         return done(null, false, { message: 'Invalid email address or password.' });
       } else {
+        // Deny disabled users
         if (user.disabled === true) {
           sails.log.info('Disabled user login: ', user);
           return done(null, false, { message: 'Invalid email address or password.' });
@@ -282,6 +284,13 @@ module.exports = {
           bcrypt.compare(userData.password, pwObj[0].password, function (err, res) {
             // Valid password
             if (res === true) {
+              // Deny users that have exceeded their password attempts
+              if ((sails.config.auth.auth.local.passwordAttempts > 0) &&
+                  (user.passwordAttempts >= sails.config.auth.auth.local.passwordAttempts)) {
+                sails.log.info('Locked out user: ', user);
+                // TODO: insert link here to reset password
+                return done(null, false, { message: 'Your account has been locked, please reset your password.' });
+              }
               sails.log.debug('User Found:', user);
               user.passwordAttempts = 0;
               if(updateAction){
@@ -302,6 +311,12 @@ module.exports = {
             }
             // Invalid password
             else {
+              if ((sails.config.auth.auth.local.passwordAttempts > 0) &&
+                  (user.passwordAttempts >= sails.config.auth.auth.local.passwordAttempts)) {
+                sails.log.info('Locked out user: ', user);
+                // TODO: insert link here to reset password
+                return done(null, false, { message: 'Invalid email address or password.  If you have an account, you can reset your password.' });
+              }
               user.passwordAttempts++;
               user.save(function (err) {
                 if (err) { return done(null, false, { message: 'An error occurred while logging on. Please try again.' }); }
@@ -465,7 +480,7 @@ module.exports = {
    * @param user the user object to clean
    * @return a new user object
    */
-  cleanUser: function (user) {
+  cleanUser: function (user, reqId) {
     var u = {
       id: user.id,
       username: null,
@@ -475,6 +490,10 @@ module.exports = {
       createdAt: user.createdAt,
       updatedAt: user.updatedAt
     };
+    // if the requestor is the same as the user, show admin status
+    if (user.id === reqId) {
+      u.isAdmin = user.isAdmin
+    }
     return u;
   },
 
@@ -493,7 +512,7 @@ module.exports = {
       if (err) { return cb(err, null); }
       delete user.deletedAt;
       if (userId != reqId) {
-        user = self.cleanUser(user);
+        user = self.cleanUser(user, reqId);
       }
       tagUtils.assemble({ userId: userId }, function (err, tags) {
         if (err) { return cb(err, null); }
@@ -507,10 +526,24 @@ module.exports = {
           delete tags[i].tag.updatedAt;
           delete tags[i].tag.deletedAt;
           if (tags[i].tag.type == 'agency') {
-            user.agency = tags[i];
+            if (!user.agency) {
+              user.agency = tags[i];
+            } else {
+              // always use the latest tag stored, in case multiple are stored
+              if (user.agency.createdAt < tags[i].createdAt) {
+                user.agency = tags[i];
+              }
+            }
           }
           if (tags[i].tag.type == 'location') {
-            user.location = tags[i];
+            if (!user.location) {
+              user.location = tags[i];
+            } else {
+              // always use the latest tag stored, in case multiple are stored
+              if (user.location.createdAt < tags[i].createdAt) {
+                user.location = tags[i];
+              }
+            }
           }
          }
         user.tags = tags;

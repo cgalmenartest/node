@@ -323,7 +323,7 @@ h6 {
   background-color: #D63A25;
 }
 
-.navbar-brand {
+.navigation .navbar-brand {
   background-image: url(/images/logo.png);
   background-repeat: no-repeat;
   background-size: 256px 40px;

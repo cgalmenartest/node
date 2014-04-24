@@ -6,47 +6,64 @@
  */
 var async = require('async');
 var _ = require('underscore');
+var bcrypt = require('bcrypt');
 var projUtils = require('../services/utils/project');
 var tagUtils = require('../services/utils/tag');
 var userUtils = require('../services/utils/user');
 var validator = require('validator');
 
-var update = function (req, res) {
-  var user = req.user[0];
-  var params = _.extend(req.body || {}, req.params);
-  if (!_.isUndefined(params.name)) { user.name = params.name; }
-  if (!_.isUndefined(params.username)) { user.username = params.username; }
-  if (!_.isUndefined(params.photoId)) { user.photoId = params.photoId; }
-  if (!_.isUndefined(params.photoUrl)) { user.photoUrl = params.photoUrl; }
-  if (!_.isUndefined(params.title)) { user.title = params.title; }
-  if (!_.isUndefined(params.bio)) { user.bio = params.bio; }
-  // The main user object is being updated
-  if (user) {
-    sails.log.debug('User Update:', user);
-    user.save(function (err) {
-      if (err) { return res.send(400, {message:'Error while saving user.'}) }
-      // Check if a userauth was removed
-      if (params.auths) {
-        var checkAuth = function(auth, done) {
-          if (_.contains(params.auths, auth.provider)) {
-            return done();
-          }
-          auth.destroy(done);
-        };
-
-        UserAuth.findByUserId(req.user[0].id, function (err, auths) {
-          if (err) { return res.send(400, {message:'Error finding authorizations.'}); }
-          async.each(auths, checkAuth, function(err) {
-            if (err) { return res.send(400, {message:'Error finding authorizations.'}); }
-            user.auths = params.auths;
-            return res.send(user);
-          });
-        });
-      } else {
-        res.send(user);
-      }
-    });
+var getUserForUpdate = function (userId, reqUser, cb) {
+  if (userId == reqUser.id) {
+    return cb(null, reqUser);
   }
+  if (reqUser.isAdmin !== true) {
+    return cb({ message: "Not Authorized."}, null);
+  }
+  User.findOneById(userId, function (err, user) {
+    cb(err, user);
+  });
+};
+
+var update = function (req, res) {
+  var reqUser = req.user[0];
+  var userId = req.route.params.id || reqUser.id;
+  getUserForUpdate(userId, reqUser, function (err, user) {
+    if (err) { return res.send(403, err); }
+    var params = _.extend(req.body || {}, req.params);
+    if (!_.isUndefined(params.name)) { user.name = params.name; }
+    if (!_.isUndefined(params.username)) { user.username = params.username; }
+    if (!_.isUndefined(params.photoId)) { user.photoId = params.photoId; }
+    if (!_.isUndefined(params.photoUrl)) { user.photoUrl = params.photoUrl; }
+    if (!_.isUndefined(params.title)) { user.title = params.title; }
+    if (!_.isUndefined(params.bio)) { user.bio = params.bio; }
+    // The main user object is being updated
+    if (user) {
+      sails.log.debug('User Update:', user);
+      user.save(function (err) {
+        if (err) { return res.send(400, {message:'Error while saving user.'}) }
+        // Check if a userauth was removed
+        if (params.auths) {
+          var checkAuth = function(auth, done) {
+            if (_.contains(params.auths, auth.provider)) {
+              return done();
+            }
+            auth.destroy(done);
+          };
+
+          UserAuth.findByUserId(req.user[0].id, function (err, auths) {
+            if (err) { return res.send(400, {message:'Error finding authorizations.'}); }
+            async.each(auths, checkAuth, function(err) {
+              if (err) { return res.send(400, {message:'Error finding authorizations.'}); }
+              user.auths = params.auths;
+              return res.send(user);
+            });
+          });
+        } else {
+          res.send(user);
+        }
+      });
+    }
+  });
 };
 
 module.exports = {
@@ -102,7 +119,7 @@ module.exports = {
     }
     sails.services.utils.user['getUser'](userId, reqId, function (err, user) {
       // this will only be shown to logged in users.
-      if (err) { return res.send(400, { message: err }); }
+      if (err) { return res.send(400, err); }
       sails.log.debug('User Get:', user);
       res.send(user);
     });
@@ -222,6 +239,66 @@ module.exports = {
     else {
       res.send(403, { message: 'Not authorized.' });
     }
+  },
+
+  /**
+   * Endpoint to reset a user's password.
+   * @param Reset object that contains:
+   *        {
+   *           id: userId,
+   *           password: newPassword
+   *        }
+   * Note that `id` is only allowed for administrators.
+   * If not an administrator, you can only reset your own
+   * password.
+   * @return true if the operation is successful, an error object if unsuccessful
+   */
+  resetPassword: function (req, res) {
+    // POST is the only supported method
+    if (req.route.method != 'post') { return res.send(400, {message:'Unsupported operation.'}) }
+    var userId = req.user[0].id;
+    // Allow administrators to set other users' passwords
+    if ((req.user.isAdmin === true) && (req.param('id'))) {
+      userId = req.param('id');
+    }
+
+    // check that a new password is provided
+    if (!req.param('password')) {
+      return res.send(400, { message: 'Password does not meet password rules.' });
+    }
+    var password = req.param('password');
+
+    // find the user
+    User.findOneById(userId, function (err, user) {
+      if (err) { return res.send(400, { message: 'User not found.' }); }
+      // Run password validator (but only if SSPI is disabled and not an admin)
+      if ((sails.config.auth.auth.sspi.enabled !== true) && (req.user[0].isAdmin !== true)) {
+        // Check that the password meets validation rules
+        var rules = userUtils.validatePassword(user.username, password);
+        var success = true;
+        _.each(_.values(rules), function (v) {
+          success = success && v;
+        });
+        if (success !== true) {
+          return res.send(400, { message: 'Password does not meet password rules.' });
+        }
+      }
+
+      // Encrypt the password
+      bcrypt.hash(password, 10, function(err, hash) {
+        if (err) { return res.send(400, { message: 'Unable to hash password.' }); }
+        var pwObj = {
+          userId: userId,
+          password: hash
+        };
+        // Store the user's password with the bcrypt hash
+        UserPassword.create(pwObj).done(function (err, pwObj) {
+          if (err) { return res.send(400, { message: 'Unable to store password.'}); }
+          return res.send(true);
+        });
+      });
+    });
+
   }
 
 };

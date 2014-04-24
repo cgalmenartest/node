@@ -17,7 +17,7 @@ function authenticate(req, res, strategy, json) {
     passport.authorize(strategy, function (err, user, info)
     {
       if (json) {
-        res.send(userUtils.cleanUser(req.user));
+        res.send(userUtils.cleanUser(req.user, req.user.id));
       } else {
         res.redirect('/profile/edit');
       }
@@ -38,9 +38,6 @@ function authenticate(req, res, strategy, json) {
           message = info.message;
         }
         // if local strategy, don't show user what actually happened for security purposes
-        if (strategy === 'local') {
-          message = 'Invalid email address or password.'
-        }
         sails.log.debug('Authentication Error:', err, info);
         if (json === true) {
           res.send(403, {
@@ -56,18 +53,6 @@ function authenticate(req, res, strategy, json) {
       // process additional registration information if available
       if (strategy === 'register') {
       }
-
-      // process additional sspi information if available
-      // TODO: remove if sspi endpoint can be removed
-      // if (strategy === 'sspi') {
-      //   if (json === true) {
-      //     res.send(userUtils.cleanUser(user));
-      //   }
-      //   else {
-      //     res.redirect('/projects');
-      //   }
-      //   return;
-      // }
 
       req.logIn(user, function(err)
       {
@@ -86,7 +71,7 @@ function authenticate(req, res, strategy, json) {
         }
 
         if (json === true) {
-          res.send(userUtils.cleanUser(user));
+          res.send(userUtils.cleanUser(user, user.id));
         }
         else {
           res.redirect('/projects');

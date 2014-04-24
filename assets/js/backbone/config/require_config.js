@@ -176,6 +176,21 @@ require.config({
     'comment_item_view'         : '../apps/comments/list/views/comment_item_view',
 
     // ----------
+    //= Admin
+    // ----------
+    'admin_main_controller'     : '../apps/admin/controllers/admin_main_controller',
+    'admin_main_view'           : '../apps/admin/views/admin_main_view',
+    'admin_main_template'       : '../apps/admin/templates/admin_main_template.html',
+    'admin_user_view'           : '../apps/admin/views/admin_user_view',
+    'admin_user_password_view'  : '../apps/admin/views/admin_user_password_view',
+    'admin_user_template'       : '../apps/admin/templates/admin_user_template.html',
+    'admin_user_table'          : '../apps/admin/templates/admin_user_table.html',
+    'admin_user_password_template' : '../apps/admin/templates/admin_user_password.html',
+    'admin_tag_view'            : '../apps/admin/views/admin_tag_view',
+    'admin_tag_template'        : '../apps/admin/templates/admin_tag_template.html',
+    'admin_paginate'            : '../apps/admin/templates/admin_paginate.html',
+
+    // ----------
     //= Components
     // ----------
     'modal_component'           : '../components/modal',

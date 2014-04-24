@@ -6,7 +6,11 @@
  */
 
 module.exports = {
-	find: function(req, res) {
-    res.view('main/index');
-	}
+  index: function(req, res) {
+    // include data variables for the view passed by the policies
+    var data = {
+      alert: req.alert || null
+    };
+    res.view(data);
+  }
 }

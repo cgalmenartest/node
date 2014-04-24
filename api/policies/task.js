@@ -14,6 +14,7 @@ module.exports = function task (req, res, next) {
       if (!err && !task) { return res.send(403, { message: 'Not authorized.'}); }
       req.task = task;
       req.taskId = task.id;
+      req.isOwner = task.isOwner;
       next();
     });
   // no :id is specified, so continue

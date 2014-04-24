@@ -1,4 +1,4 @@
-var assert = require('assert');
+var assert = require('chai').assert;
 var conf = require('./helpers/config');
 var utils = require('./helpers/utils');
 var request;

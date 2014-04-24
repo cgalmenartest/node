@@ -47,7 +47,7 @@ define([
 					_this.trigger("profile:updatedPhoto", data);
 				},
 				error: function (data) {
-					console.log(data);
+					// an error occurred
 				}
 				});
 			});
@@ -64,7 +64,6 @@ define([
 				},
 				error: function (data) {
 					_this.trigger("profile:save:fail", data);
-					console.log(data);
 				}
 				});
 			});
@@ -80,7 +79,6 @@ define([
 				},
 				error: function (data) {
 					_this.trigger("profile:removeAuth:fail", data, id);
-					console.log(data);
 				} 
 				});
 			});
