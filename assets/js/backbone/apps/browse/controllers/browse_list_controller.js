@@ -111,7 +111,7 @@ define([
       if (this.modalComponent) this.modalComponent.cleanup();
 
       this.modalComponent = new ModalComponent({
-        el: "#container",
+        el: ".wrapper-addProject",
         id: "addProject",
         modalTitle: "Add Project"
       }).render();
