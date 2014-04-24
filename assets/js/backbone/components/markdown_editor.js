@@ -12,7 +12,7 @@
  *   placeholder: Textarea placeholder value - optional
  *   maxlength: Maximum characters for the text area - optional
  *   rows: Number of rows in the textarea - optional
- *   validation: List of strings for the data-validate attribute - optional
+ *   validate: List of strings for the data-validate attribute - optional
  *     example: ['empty', 'count400']
  */
 define([
@@ -67,7 +67,7 @@ define([
     render: function () {
       var data = {
         id: this.options.id,
-        validation: this.options.validation,
+        validate: this.options.validate,
         rows: this.options.rows,
         maxlength: this.options.maxlength,
         placeholder: this.options.placeholder,

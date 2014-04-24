@@ -27,7 +27,7 @@
   <% if (!_.isUndefined(rows)) { %>rows="<%= rows %>"<% } %>
   class="form-control validate"
   id="<%= id %>"
-  data-validate="<% if (!_.isUndefined(validation)) { %><%= validation.join(',') %><% } %>"
+  data-validate="<% if (!_.isUndefined(validate)) { %><%= validate.join(',') %><% } %>"
   <% if (!_.isUndefined(placeholder)) { %>placeholder="<%= placeholder %>"<% } %>
   ><%= data %></textarea>
 <div class="preview" style="display: none;"></div>

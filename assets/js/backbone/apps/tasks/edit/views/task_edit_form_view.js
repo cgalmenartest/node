@@ -199,7 +199,7 @@ define([
         placeholder: 'Description of opportunity including goals, expected outcomes and deliverables.',
         rows: 6,
         maxlength: 1000,
-        validation: ['empty', 'count1000']
+        validate: ['empty', 'count1000']
       }).render();
     },
 
