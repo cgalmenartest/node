@@ -62,7 +62,7 @@ define([
         dataType: 'text',
         acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
         add: function (e, data) {
-          self.$('#file-upload-progress-container').show();
+          self.$('.attachment-fileupload > .progress').show();
           data.submit();
         },
         progressall: function (e, data) {
@@ -101,7 +101,7 @@ define([
         fail: function (e, data) {
           // notify the user that the upload failed
           var message = data.errorThrown;
-          self.$('#file-upload-progress-container').hide();
+          self.$('.attachment-fileupload > .progress').hide();
           if (data.jqXHR.status == 413) {
             message = "The uploaded file exceeds the maximum file size.";
           }
