@@ -15,6 +15,8 @@ module.exports = {
     // get version information
     sails.config.version(function (v) {
       data.version = v;
+      // set cache headers to refresh every hour
+      res.set('Cache-Control', 'no-transform,public,max-age=3600,s-maxage=3600'); // HTTP 1.1.
       res.view(data);
     });
   }
