@@ -39,9 +39,13 @@ module.exports = {
     fields.layoutLocals,
     fields.template,
     fields.templateLocals,
-    function(err, html, text){
-      if(err){ sails.log.debug(err); cb(null, null); return false;}
-      if(fields.to && fields.from){
+    function (err, html, text){
+      if (err) {
+        sails.log.debug(err);
+        cb(null, null);
+        return;
+      }
+      if (fields.to && fields.from) {
         send(
         {
           to: fields.to,

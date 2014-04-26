@@ -1,4 +1,12 @@
-<h1>Project: <%- projectTitle %></h1>
-<p>Someone commented in your project! Click the link below to see the entire discussion.</p>
-<p><%- projectLink %></p>
-<p>New Comment: <%- callerComment  %></p>
+<p>Hello,</p>
+<p>Someone commented in your project! They said:</p>
+<blockquote>
+  <%- callerComment  %>
+</blockquote>
+<p class="center full-width">
+  <a href="<%= projectLink %>" class="btn btn-c2" bgcolor="39B7EA">View Project</a>
+</p>
+<p>Thanks!
+  <br/>
+  - The <%= globals.systemName %> Team
+</p>

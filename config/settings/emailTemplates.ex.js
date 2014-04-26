@@ -7,7 +7,7 @@ module.exports = {
       subject: 'Discussion Update',
       from: 'test@midas.com',
       templateLocals: { callerComment: '', parentComment: '', projectTitle: '', projectLink: '' },
-      layoutLocals: { footer: 'Brought to you by Midas' }
+      layoutLocals: { }
     },
     'projectCommentOwnerReply': {
       layout: 'default',
@@ -15,7 +15,7 @@ module.exports = {
       subject: 'Discussion Update',
       from: 'test@midas.com',
       templateLocals: { callerComment: '', parentComment: '', projectTitle: '', projectLink: '' },
-      layoutLocals: { footer: 'Brought to you by Midas' }
+      layoutLocals: { }
     },
     'taskCommentParentReply': {
       layout: 'default',
@@ -23,7 +23,7 @@ module.exports = {
       subject: 'Discussion Update',
       from: 'test@midas.com',
       templateLocals: { callerComment: '', parentComment: '', taskTitle: '', taskLink: '' },
-      layoutLocals: { footer: 'Brought to you by Midas' }
+      layoutLocals: { }
     },
     'taskCommentOwnerReply': {
       layout: 'default',
@@ -31,7 +31,7 @@ module.exports = {
       subject: 'Discussion Update',
       from: 'test@midas.com',
       templateLocals: { callerComment: '', parentComment: '', taskTitle: '', taskLink: '' },
-      layoutLocals: { footer: 'Brought to you by Midas' }
+      layoutLocals: { }
     },
     'taskVolunteerAddedOwnerReply': {
       layout: 'default',
@@ -39,7 +39,7 @@ module.exports = {
       subject: 'Volunteer Added',
       from: 'test@midas.com',
       templateLocals: { taskTitle: '', taskLink: '', profileLink: '', profileTitle: '', profileName: '', profileLocation: '', profileAgency: '' },
-      layoutLocals: { footer: 'Brought to you by Midas' }
+      layoutLocals: { }
     },
     'contactUserAboutProject': {
       layout: 'default',
@@ -47,7 +47,7 @@ module.exports = {
       subject: 'Take A Look At This Project',
       from: 'test@midas.com',
       templateLocals: { projectLink: '', projectTitle: '', projectDescription: '' },
-      layoutLocals: { footer: 'Brought to you by Midas' }
+      layoutLocals: { }
     },
     'contactUserAboutTask': {
       layout: 'default',
@@ -55,7 +55,7 @@ module.exports = {
       subject: 'Take A Look At This Opportunity',
       from: 'test@midas.com',
       templateLocals: { opportunityLink: '', opportunityTitle: '', opportunityDescription: '', opportunityMadlibs: '' },
-      layoutLocals: { footer: 'Brought to you by Midas' }
+      layoutLocals: { }
     },
     'contactUserAboutProfile': {
       layout: 'default',
@@ -63,7 +63,7 @@ module.exports = {
       subject: 'Take A Look At This Profile',
       from: 'test@midas.com',
       templateLocals: { profileLink: '', profileTitle: '', profileName: '', profileLocation: '', profileAgency: '' },
-      layoutLocals: { footer: 'Brought to you by Midas' }
+      layoutLocals: { }
     }
   },
 // email templates and the fields they expect
