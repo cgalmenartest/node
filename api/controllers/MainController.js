@@ -12,6 +12,10 @@ module.exports = {
       systemName: sails.config.systemName,
       alert: req.alert || null
     };
-    res.view(data);
+    // get version information
+    sails.config.version(function (v) {
+      data.version = v;
+      res.view(data);
+    });
   }
-}
+};
