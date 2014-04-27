@@ -113,22 +113,15 @@ function NotificationBuilder () {
         function (err, settings) {
           if(err){ sails.log.debug(err); done(null, [], audience); return false;}
           // combine global default fields with local fields to produce master fields list
-          synthesizeAndValidateFields(
-            params.data.audience[audience],
-            sails.config.notifications.audiences[audience],
-            sails.services.utils.lib['validateFields'],
-            function (err, fields) {
-              if(err){ sails.log.debug(err); done(null, [], audience); return false;}
-              // get recipient list and return it in callback
-              performServiceAction(
-                sails.services.audience[sails.config.notifications.audiences[audience].method],
-                // pass in master settings and fields
-                { settings: settings, fields: fields },
-                function (err, recipients) {
-                  if(err){ sails.log.debug(err); done(null, recipients, audience); return false;}
-                  done(null, recipients, audience);
-                }
-              );
+          var fields = params.data.audience[audience].fields;
+          // get recipient list and return it in callback
+          performServiceAction(
+            sails.services.audience[sails.config.notifications.audiences[audience].method],
+            // pass in master settings and fields
+            { settings: settings, fields: fields },
+            function (err, recipients) {
+              if(err){ sails.log.debug(err); done(null, recipients, audience); return false;}
+              done(null, recipients, audience);
             }
           );
         }
@@ -221,24 +214,17 @@ function NotificationBuilder () {
             function (err, settings) {
               if (err) { sails.log.debug(err); done(null); return false;}
               // combine global default fields with local fields to produce master fields list
-              synthesizeAndValidateFields(
-                localVars,
-                sails.config.notifications.preflights[preflightStrategy],
-                sails.services.utils.lib['validateFields'],
-                function (err, fields) {
+              var fields = localVars.fields;
+              // get generated delivery content and return it in callback
+              performServiceAction(
+                sails.services.preflight[sails.config.notifications.preflights[preflightStrategy].method],
+                // master fields and settings passed in
+                { settings: settings, fields: fields },
+                function (err, content) {
                   if (err) { sails.log.debug(err); done(null); return false;}
-                  // get generated delivery content and return it in callback
-                  performServiceAction(
-                    sails.services.preflight[sails.config.notifications.preflights[preflightStrategy].method],
-                    // master fields and settings passed in
-                    { settings: settings, fields: fields },
-                    function (err, content) {
-                      if (err) { sails.log.debug(err); done(null); return false;}
-                      // mix new delivery content in with existing content
-                      preflightContent = lib.deepExtend(preflightContent, content);
-                      done(err);
-                    }
-                  );
+                  // mix new delivery content in with existing content
+                  preflightContent = lib.deepExtend(preflightContent, content);
+                  done(err);
                 }
               );
             }
@@ -276,20 +262,13 @@ function NotificationBuilder () {
           function (err, settings) {
             if (err) { sails.log.debug(err); done(null, null); return false;}
             // combine global default fields with local fields to produce master fields list
-            synthesizeAndValidateFields(
-              localVars,
-              sails.config.notifications.deliveries[deliveryStrategy],
-              sails.services.utils.lib['validateFields'],
-              function (err, fields){
-                if (err) { sails.log.debug(err); done(null, null); return false;}
-                // goes ahead and persists the delivery model here, as the fields/settings produced in prior callback will still be in scope
-                generateDelivery(audience, notification, deliveryStrategy, content, function(err, delivery){
-                  if (err) { sails.log.debug(err); done(null, null); return false;}
-                  // makes use of master fields/settings in scope and dispatches the delivery
-                  registerDeliveryAsSent(delivery, { settings: settings, fields: fields }, done);
-                });
-              }
-            );
+            var fields = localVars.fields;
+            // goes ahead and persists the delivery model here, as the fields/settings produced in prior callback will still be in scope
+            generateDelivery(audience, notification, deliveryStrategy, content, function(err, delivery){
+              if (err) { sails.log.debug(err); done(null, null); return false;}
+              // makes use of master fields/settings in scope and dispatches the delivery
+              registerDeliveryAsSent(delivery, { settings: settings, fields: fields }, done);
+            });
           }
         );
       };
@@ -378,16 +357,6 @@ function NotificationBuilder () {
           done(err, settings);
         });
       }
-    };
-
-    /**
-     * private helper function that properly sets all fields and validates them based on service method
-     * @hostObject - object that contains a fields property
-     * @globalObject - global object that contains a fields property
-     * @validator - validation function to apply
-     */
-    function synthesizeAndValidateFields (hostObject, globalObject, validator, done) {
-      done(null, _.extend({}, hostObject.fields));
     };
 
     /**
