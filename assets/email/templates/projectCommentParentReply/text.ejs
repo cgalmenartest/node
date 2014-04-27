@@ -1,20 +1,14 @@
-Project: <%- projectTitle %>
-Someone replied to you! Click the link below to see the entire discussion.
-<%- projectLink %>
-Comment: <%- parentComment %>
-New Reply: <%- callerComment  %>
+Hello<% if (metadata.recipient.name) { %> <%= metadata.recipient.name %><% } %>,
 
-Hello,
+<% if (metadata.commentUser.name) { %><%= metadata.commentUser.name %><% } else { %>Someone<% } %> replied to your comment.  They said:
 
-Someone replied to your comment.  They said:
-
-> <%- callerComment  %>
+> <%- callerComment.trim()  %>
 
 In reply to your comment:
 
-> <%- parentComment %>
+> <%- parentComment.trim() %>
 
-View the full discussion at <%= projectLink %>
+View the discussion at <%= projectLink %>
 
 Thanks!
 - The <%= globals.systemName %> Team
