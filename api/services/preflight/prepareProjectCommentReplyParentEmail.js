@@ -13,7 +13,7 @@ module.exports = {
   execute: function (fields, settings, cb) {
     var content = {};
     // set all default global locals for email
-    content.fields = _.extend({}, sails.services.utils.emailTemplate['generateEmailLocals']('projectCommentParentReply'));
+    content.fields = _.extend({}, sails.services.utils.emailTemplate['generateEmailLocals'](settings.emailName));
     content.fields.metadata = sails.services.utils.emailTemplate['addGlobals'](fields.metadata || {});
     // look up primary email address for this user
     userUtils.findPrimaryEmail(fields.recipientId, function (err, userEmail) {
@@ -73,4 +73,4 @@ module.exports = {
       });
     });
   }
-}
+};
