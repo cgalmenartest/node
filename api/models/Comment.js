@@ -43,6 +43,7 @@ module.exports = {
     // content of the comment
     value: 'STRING'
   },
+
   // for the sake of alerting owners and parent commenters
   afterCreate: function (values, cb){
     var params = {};
