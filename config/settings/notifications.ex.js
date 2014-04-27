@@ -157,9 +157,10 @@
           defaultValue: null,
           validation: null
         }
-
       },
-      settings: {}
+      settings: {
+        emailName: 'projectCommentParentReply'
+      }
     },
     'projectCommentReplyOwnerPrepare': {
       name: 'projectCommentReplyOwnerPrepare',
@@ -179,97 +180,10 @@
           defaultValue: null,
           validation: null
         }
-
       },
-      settings: {}
-    },
-    'projectCommentReplyParentPrepare': {
-      name: 'projectCommentReplyParentPrepare',
-      method: 'prepareProjectCommentReplyParentEmail',
-      fields: {
-        callerId: {
-          name: 'callerId',
-          required: true,
-          type: 'INTEGER',
-          defaultValue: null,
-          validation: null
-        },
-        recipientId: {
-          name: 'recipientId',
-          required: true,
-          type: 'INTEGER',
-          defaultValue: null,
-          validation: null
-        }
-
-      },
-      settings: {}
-    },
-    'projectCommentReplyOwnerPrepare': {
-      name: 'projectCommentReplyOwnerPrepare',
-      method: 'prepareProjectCommentReplyOwnerEmail',
-      fields: {
-        callerId: {
-          name: 'callerId',
-          required: true,
-          type: 'INTEGER',
-          defaultValue: null,
-          validation: null
-        },
-        recipientId: {
-          name: 'recipientId',
-          required: true,
-          type: 'INTEGER',
-          defaultValue: null,
-          validation: null
-        }
-
-      },
-      settings: {}
-    },
-    'taskCommentReplyParentPrepare': {
-      name: 'taskCommentReplyParentPrepare',
-      method: 'prepareTaskCommentReplyParentEmail',
-      fields: {
-        callerId: {
-          name: 'callerId',
-          required: true,
-          type: 'INTEGER',
-          defaultValue: null,
-          validation: null
-        },
-        recipientId: {
-          name: 'recipientId',
-          required: true,
-          type: 'INTEGER',
-          defaultValue: null,
-          validation: null
-        }
-
-      },
-      settings: {}
-    },
-    'taskCommentReplyOwnerPrepare': {
-      name: 'taskCommentReplyOwnerPrepare',
-      method: 'prepareTaskCommentReplyOwnerEmail',
-      fields: {
-        callerId: {
-          name: 'callerId',
-          required: true,
-          type: 'INTEGER',
-          defaultValue: null,
-          validation: null
-        },
-        recipientId: {
-          name: 'recipientId',
-          required: true,
-          type: 'INTEGER',
-          defaultValue: null,
-          validation: null
-        }
-
-      },
-      settings: {}
+      settings: {
+        emailName: 'projectCommentOwnerReply'
+      }
     },
     'taskCommentReplyParentPrepare': {
       name: 'taskCommentReplyParentPrepare',
