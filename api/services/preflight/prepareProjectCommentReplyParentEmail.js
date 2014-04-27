@@ -6,6 +6,7 @@
  */
 var _ = require('underscore');
 var userUtils = require('../utils/user');
+var commentUtils = require('../utils/comment');
 
 module.exports = {
   // don't modify delivery content
@@ -13,7 +14,7 @@ module.exports = {
     var content = {};
     // set all default global locals for email
     content.fields = _.extend({}, sails.services.utils.emailTemplate['generateEmailLocals']('projectCommentParentReply'));
-    content.settings = {};
+    content.fields.metadata = sails.services.utils.emailTemplate['addGlobals'](fields.metadata || {});
     // look up primary email address for this user
     userUtils.findPrimaryEmail(fields.recipientId, function (err, userEmail) {
       if (err) { sails.log.debug(err); cb(null, content); return false; }
@@ -23,31 +24,35 @@ module.exports = {
       else {
         content.fields.to = null;
       }
-      Comment.find({ id: fields.callerId }).done(function (err, comments) {
+      // store userEmail object as metadata
+      content.fields.metadata.userEmail = userEmail;
+      // Get the comment object
+      Comment.findOneById(fields.callerId).done(function (err, callComment) {
         if (err) { sails.log.debug(err); cb(null, content); return false; }
-        var callComment = comments.pop();
-        if(callComment){
-          Comment.find({ id: callComment.parentId }).done(function (err, comments) {
+        content.fields.metadata.comment = callComment;
+        if (callComment) {
+          // Get the parent comment object
+          Comment.findOneById(callComment.parentId).done(function (err, parComment) {
             if (err) { sails.log.debug(err); cb(null, content); return false; }
-            var parComment = comments.pop();
+            content.fields.metadata.parentComment = parComment;
             if (parComment) {
-              User.find({id: callComment.userId}).done(function (err, users) {
+              // Get information about the user who created the comment
+              User.findOneById(callComment.userId).done(function (err, user) {
                 if (err) { sails.log.debug(err); cb(null, content); return false; }
-                var user = users.pop();
+                content.fields.metadata.commentUser = user;
                 if (user) {
-                  Project.find({id: parComment.projectId}).done(function (err, projects) {
+                  // Get information about the project
+                  Project.findOneById(parComment.projectId).done(function (err, project) {
                     if (err) { sails.log.debug(err); cb(null, content); return false; }
-                    var project = projects.pop();
+                    content.fields.metadata.project = project;
                     if (project) {
-                      content.fields.layout = 'default';
-                      content.fields.template = 'projectCommentParentReply';
                       content.fields.from = sails.config['systemEmail'];
-                      content.fields.subject = (user.name ? user.name : "Somebody") + " replied to you! Click the link below to see the entire discussion";
+                      content.fields.subject = _.template(content.fields.subject, content.fields.metadata);
                       content.fields.templateLocals = content.fields.templateLocals || {};
-                      content.fields.templateLocals.parentComment = parComment.value;
-                      content.fields.templateLocals.callerComment = callComment.value;
+                      content.fields.templateLocals.parentComment = commentUtils.cleanComment(parComment.value);
+                      content.fields.templateLocals.callerComment = commentUtils.cleanComment(callComment.value);
                       content.fields.templateLocals.projectTitle = project.title;
-                      content.fields.templateLocals.projectLink = sails.config['httpProtocol'] + '://' + sails.config['hostName'] + '/projects/' + project.id;
+                      content.fields.templateLocals.projectLink = content.fields.metadata.globals.urlPrefix + '/projects/' + project.id;
                     }
                     cb(err, content);
                   });

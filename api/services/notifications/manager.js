@@ -208,6 +208,10 @@ function NotificationBuilder () {
           // local parameter preflight settings and fields transferred over to a new object to be modified
           var localVars = _.extend({}, params.data.audience[audience].strategy[strategyName].preflight[preflightStrategy]);
           localVars.fields = localVars.fields || {};
+          // add the recipient's user info to the metadata
+          localVars.fields.metadata = {
+            recipient: recipient
+          };
           // recipientId and callerId added to fields for convenience, as they will almost always come in handy
           localVars.fields.recipientId = recipient.id;
           localVars.fields.callerId = notification.callerId;
@@ -215,21 +219,21 @@ function NotificationBuilder () {
           sythesizeSettings(
             localVars,
             sails.config.notifications.preflights[preflightStrategy],
-            function (err, settings){
+            function (err, settings) {
               if (err) { sails.log.debug(err); done(null); return false;}
               // combine global default fields with local fields to produce master fields list
               synthesizeAndValidateFields(
                 localVars,
                 sails.config.notifications.preflights[preflightStrategy],
                 sails.services.utils.lib['validateFields'],
-                function (err, fields){
+                function (err, fields) {
                   if (err) { sails.log.debug(err); done(null); return false;}
                   // get generated delivery content and return it in callback
                   performServiceAction(
                     sails.services.preflight[sails.config.notifications.preflights[preflightStrategy].method],
                     // master fields and settings passed in
                     { settings: settings, fields: fields },
-                    function (err, content){
+                    function (err, content) {
                       if (err) { sails.log.debug(err); done(null); return false;}
                       // mix new delivery content in with existing content
                       preflightContent = lib.deepExtend(preflightContent, content);
@@ -384,15 +388,7 @@ function NotificationBuilder () {
      * @validator - validation function to apply
      */
     function synthesizeAndValidateFields (hostObject, globalObject, validator, done) {
-      var localFields, globalFields;
-      hostObject.fields = hostObject.fields || {};
-      globalObject.fields = globalObject.fields || {};
-      localFields = _.extend({}, hostObject.fields);
-      globalFields = _.extend({}, globalObject.fields);
-      // validate that local fields are appropriate given configuration definition
-      validator(localFields, globalFields, function (err, fields){
-        done(err, fields);
-      });
+      done(null, _.extend({}, hostObject.fields));
     };
 
     /**

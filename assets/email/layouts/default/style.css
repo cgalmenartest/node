@@ -28,6 +28,9 @@
   padding: 10px;
   width: 100%;
 }
+.content a {
+  color: #606060;
+}
 .center {
   text-align: center;
 }
@@ -53,6 +56,8 @@ blockquote {
   background-color: #F04F24;
   color: #fff;
 }
+.content a.btn-c2,
+a.btn-c2,
 .btn-c2 {
   border-color: #297BB5;
   background-color: #39B7EA;

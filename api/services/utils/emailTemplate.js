@@ -21,13 +21,12 @@ function addGlobals (input) {
  * files and returning them
  */
 function prepareTemplate (dir, name, locals, cb) {
-  // console.log(name, locals);
   emailTemplates(dir, function (err, template) {
     if (!err) {
       // this returns err, html, text
       template(name, locals, cb);
     }
-    else{
+    else {
       cb(err, null, null);
     }
   });
@@ -36,9 +35,17 @@ function prepareTemplate (dir, name, locals, cb) {
  * call prepareTemplate on content first, then ready this content
  * as a local variable of the outer layout, then call prepare template on layout
  */
-function prepareLayout (layout, layoutLocals, content, contentLocals, cb) {
-  var contentRender = prepareTemplate(sails.config.emailTemplateDirectories.templateDir, content, addGlobals(contentLocals), function(err, innerHTML, innerText){
-    if(!err){
+function prepareLayout (fields, cb) {
+  // use helper variables to split up fields for template functions
+  var layout = fields.layout;
+  var layoutLocals = fields.layoutLocals || {};
+  layoutLocals.metadata = fields.metadata || {};
+  var content = fields.template;
+  var contentLocals = fields.templateLocals || {};
+  contentLocals.metadata = fields.metadata || {};
+  // render the inner template first
+  var contentRender = prepareTemplate(sails.config.emailTemplateDirectories.templateDir, content, addGlobals(contentLocals), function (err, innerHTML, innerText) {
+    if (!err) {
       // get rid of newline characters
       var newlineReg = /\r?\n|\r/gi ;
       // strip out external html and body tags from inner portion, as the layout will add these
@@ -72,6 +79,7 @@ function generateEmailLocals (email) {
 };
 
 module.exports = {
+  addGlobals: addGlobals,
   prepareTemplate: prepareTemplate,
   prepareLayout: prepareLayout,
   verifyTemplate: verifyTemplate,

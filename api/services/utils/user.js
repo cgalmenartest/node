@@ -58,10 +58,10 @@ module.exports = {
         .sort({ createdAt: -1 })
         .done(function (err, userEmail) {
           if (err) { return done(err, null); }
-          return done(userEmail);
+          return done(null, userEmail);
         });
       } else {
-        return done(userEmail);
+        return done(null, userEmail);
       }
     });
   },

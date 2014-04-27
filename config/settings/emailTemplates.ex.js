@@ -4,8 +4,7 @@ module.exports = {
     'projectCommentParentReply': {
       layout: 'default',
       template: 'projectCommentParentReply',
-      subject: 'Discussion Update',
-      from: 'test@midas.com',
+      subject: '<% if (commentUser.name) { %><%= commentUser.name %><% } else { %>Somebody<% } %> replied to your comment on <%= globals.systemName %>',
       templateLocals: { callerComment: '', parentComment: '', projectTitle: '', projectLink: '' },
       layoutLocals: { }
     },
@@ -13,7 +12,6 @@ module.exports = {
       layout: 'default',
       template: 'projectCommentOwnerReply',
       subject: 'Discussion Update',
-      from: 'test@midas.com',
       templateLocals: { callerComment: '', parentComment: '', projectTitle: '', projectLink: '' },
       layoutLocals: { }
     },
@@ -21,7 +19,6 @@ module.exports = {
       layout: 'default',
       template: 'taskCommentParentReply',
       subject: 'Discussion Update',
-      from: 'test@midas.com',
       templateLocals: { callerComment: '', parentComment: '', taskTitle: '', taskLink: '' },
       layoutLocals: { }
     },
@@ -29,7 +26,6 @@ module.exports = {
       layout: 'default',
       template: 'taskCommentOwnerReply',
       subject: 'Discussion Update',
-      from: 'test@midas.com',
       templateLocals: { callerComment: '', parentComment: '', taskTitle: '', taskLink: '' },
       layoutLocals: { }
     },
@@ -37,7 +33,6 @@ module.exports = {
       layout: 'default',
       template: 'taskVolunteerAddedOwnerReply',
       subject: 'Volunteer Added',
-      from: 'test@midas.com',
       templateLocals: { taskTitle: '', taskLink: '', profileLink: '', profileTitle: '', profileName: '', profileLocation: '', profileAgency: '' },
       layoutLocals: { }
     },
@@ -45,7 +40,6 @@ module.exports = {
       layout: 'default',
       template: 'contactUserAboutProject',
       subject: 'Take A Look At This Project',
-      from: 'test@midas.com',
       templateLocals: { projectLink: '', projectTitle: '', projectDescription: '' },
       layoutLocals: { }
     },
@@ -53,7 +47,6 @@ module.exports = {
       layout: 'default',
       template: 'contactUserAboutTask',
       subject: 'Take A Look At This Opportunity',
-      from: 'test@midas.com',
       templateLocals: { opportunityLink: '', opportunityTitle: '', opportunityDescription: '', opportunityMadlibs: '' },
       layoutLocals: { }
     },
@@ -61,7 +54,6 @@ module.exports = {
       layout: 'default',
       template: 'contactUserAboutProfile',
       subject: 'Take A Look At This Profile',
-      from: 'test@midas.com',
       templateLocals: { profileLink: '', profileTitle: '', profileName: '', profileLocation: '', profileAgency: '' },
       layoutLocals: { }
     }
