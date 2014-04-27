@@ -1,13 +1,10 @@
 /**
  * Source definition for
  *
- * @module    :: audience.js
- * @description :: defines service functions that return collections of users
+ * @module    :: utils.js
+ * @description :: Utilities for audience finders
  */
- var util = require('util');
- var events = require('events');
- var _ = require('underscore');
- var async = require('async');
+var _ = require('underscore');
 
 // convenience function that accepts a collection of entities with a property "userId" (must be exact) and returns a collection of those users
 function convertToUsers (err, userIdPropertyCollection, cb) {
@@ -26,9 +23,5 @@ function convertToUsers (err, userIdPropertyCollection, cb) {
 };
 
 module.exports = {
-
-  execute: function (fields, settings, cb) {
-
-  }
-
-}
+  convertToUsers: convertToUsers
+};
