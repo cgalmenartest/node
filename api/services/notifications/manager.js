@@ -54,7 +54,6 @@ var notificationBuilder = new NotificationBuilder();
  *    notifications: [ <output> ],
  *    deliveries: [ <output> ]
  * @cb - callback function that accepts error as parameter 1 and the modified params object as parameter 2
- * @isCBShortCircuited - is completion of notification not critical to continuation of execution?
  */
 function NotificationBuilder () {
   this.notify = function notify (params, cb) {
@@ -108,24 +107,24 @@ function NotificationBuilder () {
     function populateRecipients (audience, done) {
       params.data.audience[audience] = params.data.audience[audience] || {};
       // combine global default settings with local settings to produce master settings list
-      sythesizeSettings(
+      synthesizeSettings(
         params.data.audience[audience],
         sails.config.notifications.audiences[audience],
-        function (err, settings){
+        function (err, settings) {
           if(err){ sails.log.debug(err); done(null, [], audience); return false;}
           // combine global default fields with local fields to produce master fields list
           synthesizeAndValidateFields(
             params.data.audience[audience],
             sails.config.notifications.audiences[audience],
             sails.services.utils.lib['validateFields'],
-            function (err, fields){
+            function (err, fields) {
               if(err){ sails.log.debug(err); done(null, [], audience); return false;}
               // get recipient list and return it in callback
               performServiceAction(
                 sails.services.audience[sails.config.notifications.audiences[audience].method],
                 // pass in master settings and fields
                 { settings: settings, fields: fields },
-                function (err, recipients){
+                function (err, recipients) {
                   if(err){ sails.log.debug(err); done(null, recipients, audience); return false;}
                   done(null, recipients, audience);
                 }
@@ -216,7 +215,7 @@ function NotificationBuilder () {
           localVars.fields.recipientId = recipient.id;
           localVars.fields.callerId = notification.callerId;
           // combine global default settings with local settings to produce master settings list
-          sythesizeSettings(
+          synthesizeSettings(
             localVars,
             sails.config.notifications.preflights[preflightStrategy],
             function (err, settings) {
@@ -264,7 +263,7 @@ function NotificationBuilder () {
         // mix-in results of preflight functions
         localVars = lib.deepExtend(content, localVars);
         // combine global default settings with local settings to produce master settings list
-        sythesizeSettings(
+        synthesizeSettings(
           localVars,
           sails.config.notifications.deliveries[deliveryStrategy],
           // include user settings template to find and incorporate appropriate global overrides
@@ -341,7 +340,7 @@ function NotificationBuilder () {
      * @globalObject - global object that contains a settings property
      * @userSettingTemplate - optional property that contains a match for user settings
      */
-    function sythesizeSettings (hostObject, globalObject, userSettingTemplate, done) {
+    function synthesizeSettings (hostObject, globalObject, userSettingTemplate, done) {
       var settings, localSettings, globalSettings;
       // ensure both parameter objects have proper form
       hostObject.settings = hostObject.settings || {};
