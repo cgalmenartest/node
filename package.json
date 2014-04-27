@@ -6,7 +6,7 @@
     "dependencies": {
         "sails": "0.9.8",
         "async": "0.2.9",
-        "grunt": "0.4.2",
+        "grunt": "0.4.3",
         "ejs": "0.8.5",
         "underscore": "1.x",
         "optimist": "0.4.0",
