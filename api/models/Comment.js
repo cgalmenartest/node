@@ -97,7 +97,7 @@ module.exports = {
     else {
       throw new Error('projectId or taskId must be defined');
     }
-    noteUtils.notifier.notify(params, true, cb);
+    noteUtils.notifier.notify(params, cb);
   }
 
 };
