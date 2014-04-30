@@ -141,7 +141,7 @@
   preflights: {
     'projectCommentReplyParentPrepare': {
       name: 'projectCommentReplyParentPrepare',
-      method: 'prepareProjectCommentReplyParentEmail',
+      method: 'prepareProjectCommentReplyEmail',
       fields: {
         callerId: {
           name: 'callerId',
@@ -164,7 +164,7 @@
     },
     'projectCommentReplyOwnerPrepare': {
       name: 'projectCommentReplyOwnerPrepare',
-      method: 'prepareProjectCommentReplyOwnerEmail',
+      method: 'prepareProjectCommentReplyEmail',
       fields: {
         callerId: {
           name: 'callerId',

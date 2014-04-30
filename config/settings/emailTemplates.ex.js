@@ -11,7 +11,7 @@ module.exports = {
     'projectCommentOwnerReply': {
       layout: 'default',
       template: 'projectCommentOwnerReply',
-      subject: 'Discussion Update',
+      subject: '<%= project.title %> has a new <% if (parentComment) { %>comment<% } else { %>discussion<% } %> on <%= globals.systemName %>',
       templateLocals: { callerComment: '', parentComment: '', projectTitle: '', projectLink: '' },
       layoutLocals: { }
     },
