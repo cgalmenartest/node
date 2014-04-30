@@ -3,29 +3,29 @@ module.exports = {
   emails: {
     'projectCommentParentReply': {
       layout: 'default',
-      template: 'projectCommentParentReply',
+      template: 'commentParentReply',
       subject: '<% if (commentUser.name) { %><%= commentUser.name %><% } else { %>Somebody<% } %> replied to your comment on <%= globals.systemName %>',
       templateLocals: { callerComment: '', parentComment: '', projectTitle: '', projectLink: '' },
       layoutLocals: { }
     },
     'projectCommentOwnerReply': {
       layout: 'default',
-      template: 'projectCommentOwnerReply',
-      subject: '<%= project.title %> has a new <% if (parentComment) { %>comment<% } else { %>discussion<% } %> on <%= globals.systemName %>',
+      template: 'commentOwnerReply',
+      subject: '<%= project.title %> <% if (parentComment) { %>has a new comment<% } else { %>has a new discussion<% } %> on <%= globals.systemName %>',
       templateLocals: { callerComment: '', parentComment: '', projectTitle: '', projectLink: '' },
       layoutLocals: { }
     },
     'taskCommentParentReply': {
       layout: 'default',
-      template: 'taskCommentParentReply',
+      template: 'commentParentReply',
       subject: '<% if (commentUser.name) { %><%= commentUser.name %><% } else { %>Somebody<% } %> replied to your comment on <%= globals.systemName %>',
       templateLocals: { callerComment: '', parentComment: '', taskTitle: '', taskLink: '' },
       layoutLocals: { }
     },
     'taskCommentOwnerReply': {
       layout: 'default',
-      template: 'taskCommentOwnerReply',
-      subject: '<%= task.title %> has a new <% if (parentComment) { %>comment<% } else { %>discussion<% } %> on <%= globals.systemName %>',
+      template: 'commentOwnerReply',
+      subject: '<%= task.title %> <% if (parentComment) { %>has a new comment<% } else { %>has a new discussion<% } %> on <%= globals.systemName %>',
       templateLocals: { callerComment: '', parentComment: '', taskTitle: '', taskLink: '' },
       layoutLocals: { }
     },
