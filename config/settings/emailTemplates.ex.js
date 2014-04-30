@@ -18,14 +18,14 @@ module.exports = {
     'taskCommentParentReply': {
       layout: 'default',
       template: 'taskCommentParentReply',
-      subject: 'Discussion Update',
+      subject: '<% if (commentUser.name) { %><%= commentUser.name %><% } else { %>Somebody<% } %> replied to your comment on <%= globals.systemName %>',
       templateLocals: { callerComment: '', parentComment: '', taskTitle: '', taskLink: '' },
       layoutLocals: { }
     },
     'taskCommentOwnerReply': {
       layout: 'default',
       template: 'taskCommentOwnerReply',
-      subject: 'Discussion Update',
+      subject: '<%= task.title %> has a new <% if (parentComment) { %>comment<% } else { %>discussion<% } %> on <%= globals.systemName %>',
       templateLocals: { callerComment: '', parentComment: '', taskTitle: '', taskLink: '' },
       layoutLocals: { }
     },

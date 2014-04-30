@@ -38,11 +38,19 @@ module.exports = {
           User.findOneById(callComment.userId).done(function (err, user) {
             if (err) { sails.log.debug(err); cb(null, content); return false; }
             content.fields.metadata.commentUser = user;
-            // Get information about the project
-            Project.findOneById(callComment.projectId).done(function (err, project) {
+            // Get information about the project or task
+            var model = Project;
+            var modelName = 'project';
+            var modelId = callComment.projectId;
+            if (callComment.taskId) {
+              model = Task;
+              modelName = 'task';
+              modelId = callComment.taskId;
+            }
+            model.findOneById(modelId).done(function (err, obj) {
               if (err) { sails.log.debug(err); cb(null, content); return false; }
-              content.fields.metadata.project = project;
-              if (project) {
+              content.fields.metadata[modelName] = obj;
+              if (obj) {
                 content.fields.from = sails.config['systemEmail'];
                 content.fields.subject = _.template(content.fields.subject, content.fields.metadata);
                 content.fields.templateLocals = content.fields.templateLocals || {};
@@ -52,8 +60,8 @@ module.exports = {
                   content.fields.templateLocals.parentComment = '';
                 }
                 content.fields.templateLocals.callerComment = commentUtils.cleanComment(callComment.value);
-                content.fields.templateLocals.projectTitle = project.title;
-                content.fields.templateLocals.projectLink = content.fields.metadata.globals.urlPrefix + '/projects/' + project.id;
+                content.fields.templateLocals.title = obj.title;
+                content.fields.templateLocals.link = content.fields.metadata.globals.urlPrefix + '/' + modelName + 's/' + obj.id;
               }
               cb(err, content);
             });

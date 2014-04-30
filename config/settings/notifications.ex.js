@@ -141,7 +141,7 @@
   preflights: {
     'projectCommentReplyParentPrepare': {
       name: 'projectCommentReplyParentPrepare',
-      method: 'prepareProjectCommentReplyEmail',
+      method: 'prepareCommentReplyEmail',
       fields: {
         callerId: {
           name: 'callerId',
@@ -164,7 +164,7 @@
     },
     'projectCommentReplyOwnerPrepare': {
       name: 'projectCommentReplyOwnerPrepare',
-      method: 'prepareProjectCommentReplyEmail',
+      method: 'prepareCommentReplyEmail',
       fields: {
         callerId: {
           name: 'callerId',
@@ -187,7 +187,7 @@
     },
     'taskCommentReplyParentPrepare': {
       name: 'taskCommentReplyParentPrepare',
-      method: 'prepareTaskCommentReplyParentEmail',
+      method: 'prepareCommentReplyEmail',
       fields: {
         callerId: {
           name: 'callerId',
@@ -203,13 +203,14 @@
           defaultValue: null,
           validation: null
         }
-
       },
-      settings: {}
+      settings: {
+        emailName: 'taskCommentParentReply'
+      }
     },
     'taskCommentReplyOwnerPrepare': {
       name: 'taskCommentReplyOwnerPrepare',
-      method: 'prepareTaskCommentReplyOwnerEmail',
+      method: 'prepareCommentReplyEmail',
       fields: {
         callerId: {
           name: 'callerId',
@@ -225,9 +226,10 @@
           defaultValue: null,
           validation: null
         }
-
       },
-      settings: {}
+      settings: {
+        emailName: 'taskCommentOwnerReply'
+      }
     },
     'taskVolunteerOwnerPrepare': {
       name: 'taskVolunteerOwnerPrepare',
