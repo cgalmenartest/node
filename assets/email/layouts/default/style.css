@@ -3,7 +3,7 @@
   border-color: #c0c0c0;
   border-radius: 3px;
   border-style: solid;
-  width: 100%;
+  width: 96%;
   color: #606060;
   font-size: 18px;
   margin-left: 10px;
@@ -19,7 +19,7 @@
 }
 
 .logo {
-  width: 100%;
+  width: 96%;
   padding: 10px;
   border-bottom: solid 1px #c0c0c0;
 }
@@ -35,7 +35,7 @@
   text-align: center;
 }
 .full-width {
-  width: 100%;
+  width: 96%;
 }
 
 blockquote {
@@ -70,7 +70,7 @@ a.btn-c2,
 }
 
 .footer {
-  width: 100%;
+  width: 96%;
   background-color: #f0f0f0;
   color: #808080;
   padding: 10px;
