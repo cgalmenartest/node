@@ -3,7 +3,8 @@
   border-color: #c0c0c0;
   border-radius: 3px;
   border-style: solid;
-  width: 96%;
+  width: 100%;
+  max-width: 600px;
   color: #606060;
   font-size: 18px;
   margin-left: 10px;
@@ -19,7 +20,8 @@
 }
 
 .logo {
-  width: 96%;
+  width: 100%;
+  max-width: 600px;
   padding: 10px;
   border-bottom: solid 1px #c0c0c0;
 }
@@ -27,6 +29,7 @@
 .content {
   padding: 10px;
   width: 100%;
+  max-width: 600px;
 }
 .content a {
   color: #606060;
@@ -35,7 +38,8 @@
   text-align: center;
 }
 .full-width {
-  width: 96%;
+  width: 100%;
+  max-width: 600px;
 }
 
 blockquote {
@@ -70,7 +74,8 @@ a.btn-c2,
 }
 
 .footer {
-  width: 96%;
+  width: 100%;
+  max-width: 600px;
   background-color: #f0f0f0;
   color: #808080;
   padding: 10px;
