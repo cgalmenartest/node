@@ -66,7 +66,7 @@ passport.use('sspi', new LocalStrategy({
       user.displayName = user.fullname;
       user.photoUrl = user.image;
       user.skill = user.skills.tags;
-      user.topic = user.perstags.tags;
+      user.topic = user.proftags.tags;
       // user.location = '';
       // user.company = '';
       // check if the settings should be overwritten
