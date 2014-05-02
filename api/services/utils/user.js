@@ -40,7 +40,7 @@ module.exports = {
    * @param password will be bcrypt encrypted
    * @param done callback with form (null, user, error)
    */
-  createLocalUser: function (username, password, userData, req, done) {
+  createLocalUser: function (username, password, _userData, req, done) {
     var self = this;
     var updateAction = true;
     // handle missing parameters
@@ -54,21 +54,14 @@ module.exports = {
       done = req;
       req = {};
     }
-    userData = {
-      name: userData.displayName,
-      photoUrl: userData.photoUrl,
-      title: userData.title,
-      bio: userData.bio
+    var userData = {
+      name: _userData.displayName,
+      photoUrl: _userData.photoUrl,
+      title: _userData.title,
+      bio: _userData.bio,
+      username: username.toLowerCase(),
+      password: password
     };
-    if (userData.emails && (userData.emails.length > 0)) {
-      // normalize username
-      userData.username = userData.emails[0].value.toLowerCase();
-    }
-    else {
-      // normalize username
-      userData.username = username.toLowerCase();
-    }
-    userData.password = password;
 
     // Run username validator (but only if SSPI is disabled)
     if (sails.config.auth.auth.sspi.enabled !== true) {
@@ -83,42 +76,20 @@ module.exports = {
       // Look up user and check password hash
       var bcrypt = require('bcrypt');
 
-      // Utility function that completes the local user creation/update process
-      // Creates user email and returns
-      function user_cb(err, user) {
-        // store login credentials
-        if (userData.emails && (userData.emails.length > 0)) {
-          var email = {
-            userId: user['id'],
-            email: userData.emails[0].value.toLowerCase(),
-          };
-          UserEmail.findOne(email, function (err, storedEmail) {
-            if (storedEmail) { return done(null, user); }
-            UserEmail.create(email).done(function (err, email) {
-              if (err) { return done(null, false, { message: 'Unable to store user email address.' }); }
-              sails.log.debug('Created Email:', email);
-              return done(null, user);
-            });
-          });
-        } else {
-          return done(null, user);
-        }
-      };
-
       // Takes the userData object and creates a tag object from it
-      function create_tag_obj (userData) {
+      function create_tag_obj (userObj) {
         var result = {};
-        if (userData.skill && userData.skill.length > 0) {
-          result.skill = userData.skill;
+        if (userObj.skill && userObj.skill.length > 0) {
+          result.skill = userObj.skill;
         }
-        if (userData.topic && userData.topic.length > 0) {
-          result.topic = userData.topic;
+        if (userObj.topic && userObj.topic.length > 0) {
+          result.topic = userObj.topic;
         }
-        if (userData.location) {
-          result.location = [ userData.location ];
+        if (userObj.location) {
+          result.location = [ userObj.location ];
         }
-        if (userData.company) {
-          result.agency = [ userData.company ];
+        if (userObj.company) {
+          result.agency = [ userObj.company ];
         }
         return result;
       };
@@ -168,10 +139,10 @@ module.exports = {
                 email: userData.username,
               };
               // Store the email address
-              var tags = create_tag_obj(userData);
+              var tags = create_tag_obj(_userData);
               UserEmail.create(email).done(function (err, email) {
                 if (err) { return done(null, false, { message: 'Unable to store user email address.', err: err }); }
-                sails.log.debug("Tags:", tags);
+                sails.log.debug("Tags1:", tags);
                 tagUtils.findOrCreateTags(user.id, tags, function (err, newTags) {
                   if (err) { return done(null, false, { message: 'Unabled to create tags', err: err }); }
                   return done(null, user);
@@ -212,8 +183,8 @@ module.exports = {
             // don't continue execution if we're saving the user
             return;
           }
-          var tags = create_tag_obj(userData);
-          sails.log.debug("Tags:", tags);
+          var tags = create_tag_obj(_userData);
+          sails.log.debug("Tags2:", tags);
           // Only update user tags if `overwrite` is turned on
           tagUtils.findOrCreateTags(user.id, tags, function (err, newTags) {
             done(err, user);
