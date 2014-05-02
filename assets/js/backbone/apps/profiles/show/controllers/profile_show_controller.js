@@ -36,10 +36,10 @@ define([
       this.model = new ProfileModel();
 
       // prevent directly editing profiles when disabled
-      if ((login.profile.edit === false) && (this.action == 'edit')) {
+      if ((Login.profile.edit === false) && (this.action == 'edit')) {
         var data = {
           alert: {
-            message: "<strong>Direct editing of profiles is disabled.</strong>  <a href=\"" + login.profile.editUrl + "\" title=\"Edit Profile\">Click here to edit your profile</a>"
+            message: "<strong>Direct editing of profiles is disabled.</strong>  <a href=\"" + Login.profile.editUrl + "\" title=\"Edit Profile\">Click here to edit your profile</a>"
           }
         };
         var template = _.template(AlertTemplate, data)
