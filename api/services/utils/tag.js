@@ -95,7 +95,7 @@ var findOrCreateTags = function (userId, tags, done) {
           };
           // find or create the tag.  If it already exists,
           // don't want to create a duplicate.
-          Tag.findOrCreate(t, t, function (err, newTag) {
+          Tag.findOrCreate(tag, tag, function (err, newTag) {
             if (err) { return cbTag(err); }
             resultTags.push(newTag);
             cbTag();
