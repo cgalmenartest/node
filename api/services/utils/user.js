@@ -108,10 +108,10 @@ module.exports = {
       // Takes the userData object and creates a tag object from it
       function create_tag_obj (userData) {
         var result = {};
-        if (userData.skill) {
+        if (userData.skill && userData.skill.length > 0) {
           result.skill = userData.skill;
         }
-        if (userData.topic) {
+        if (userData.topic && userData.topic.length > 0) {
           result.topic = userData.topic;
         }
         if (userData.location) {
@@ -190,16 +190,16 @@ module.exports = {
             return done(null, false, { message: 'Your account is disabled.' });
           }
           var update = false;
-          if (!user.photoId && !user.photoUrl && userData.photoUrl) {
-            user.photoUrl = userData.photoUrl;
+          if (user.overwrite || (!user.photoId && !user.photoUrl && userData.photoUrl)) {
+            user.photoUrl = userData.photoUrl || null;
             update = true;
           }
-          if (!user.bio && userData.bio) {
-            user.bio = userData.bio;
+          if (user.overwrite || (!user.bio && userData.bio)) {
+            user.bio = userData.bio || null;
             update = true;
           }
-          if (!user.title && userData.title) {
-            user.title = userData.title;
+          if (user.overwrite || (!user.title && userData.title)) {
+            user.title = userData.title || null;
             update = true;
           }
           if (update === true) {
@@ -212,11 +212,10 @@ module.exports = {
             return;
           }
           var tags = create_tag_obj(userData);
-          // Don't update the user's tags for now; need to deal with
-          // tags that exist, and replacements.
-          // tagUtils.findOrCreateTags(req.user[0].id, tags, function (err, newTags) {
-          done(null, user);
-          // });
+          // Only update user tags if `overwrite` is turned on
+          tagUtils.findOrCreateTags(req.user[0].id, tags, function (err, newTags) {
+            done(err, user);
+          });
         }
         else {
           return done(null, user);
@@ -393,10 +392,10 @@ module.exports = {
         // Takes the providerUser object and creates a tag object from it
         function create_tag_obj (providerUser) {
           var result = {};
-          if (providerUser.skill) {
+          if (providerUser.skill && providerUser.skill.length > 0) {
             result.skill = providerUser.skill;
           }
-          if (providerUser.topic) {
+          if (providerUser.topic && providerUser.topic.length > 0) {
             result.topic = providerUser.topic;
           }
           if (providerUser.location) {
@@ -416,16 +415,16 @@ module.exports = {
             return done(null, false, { message: 'Your account is disabled.' });
           }
           var update = false;
-          if (!req.user[0].photoId && !req.user[0].photoUrl && providerUser.photoUrl) {
-            req.user[0].photoUrl = providerUser.photoUrl;
+          if (providerUser.overwrite || (!req.user[0].photoId && !req.user[0].photoUrl && providerUser.photoUrl)) {
+            req.user[0].photoUrl = providerUser.photoUrl || null;
             update = true;
           }
-          if (!req.user[0].bio && providerUser.bio) {
-            req.user[0].bio = providerUser.bio;
+          if (providerUser.overwrite || (!req.user[0].bio && providerUser.bio)) {
+            req.user[0].bio = providerUser.bio || null;
             update = true;
           }
-          if (!req.user[0].title && providerUser.title) {
-            req.user[0].title = providerUser.title;
+          if (providerUser.overwrite || (!req.user[0].title && providerUser.title)) {
+            req.user[0].title = providerUser.title || null;
             update = true;
           }
           if (update === true) {
@@ -435,11 +434,10 @@ module.exports = {
             });
           } else {
             var tags = create_tag_obj(providerUser);
-            // Don't update the user's tags for now; need to deal with
-            // tags that exist, and replacements.
-            // tagUtils.findOrCreateTags(req.user[0].id, tags, function (err, newTags) {
-              user_cb(null, req.user[0]);
-            // });
+            // Only update user tags if `overwrite` is turned on
+            tagUtils.findOrCreateTags(req.user[0].id, tags, function (err, newTags) {
+              user_cb(err, req.user[0]);
+            });
           }
         }
         // create user because the user is not logged in

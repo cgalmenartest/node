@@ -55,8 +55,8 @@ var findOrCreateTags = function (userId, tags, done) {
     // process a particular tag name of a given type
     var processTag = function (tagname, cbTag) {
       TagEntity.findOne()
-      .where({ type: type.toLowerCase() })
-      .where({ name: tagname.toLowerCase() })
+      .where({ type: type.toLowerCase().trim() })
+      .where({ name: tagname.toLowerCase().trim() })
       .exec(function (err, t) {
         if (err) { return cbTag(err); }
         // if the tag entity doesn't exist, create it
@@ -68,8 +68,8 @@ var findOrCreateTags = function (userId, tags, done) {
           }
           // Otherwise continue and create the tag entity
           var tagEntity = {
-            type: type,
-            name: tagname
+            type: type.trim(),
+            name: tagname.trim()
           };
           // The entity doesn't exist, so create it.
           TagEntity.create(tagEntity, function (err, t) {

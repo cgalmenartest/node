@@ -65,6 +65,14 @@ passport.use('sspi', new LocalStrategy({
       user.emails = [ {value: user.email, type: 'work'} ];
       user.displayName = user.fullname;
       user.photoUrl = user.image;
+      user.skill = [];
+      user.topic = [];
+      user.location = '';
+      user.company = '';
+      // check if the settings should be overwritten
+      if (sails.config.auth.auth.sspi.overwrite === true) {
+        user.overwrite = true;
+      }
       // Send through standard local user creation flow
       userUtils.createLocalUser(username, password, user, req, done);
     });
