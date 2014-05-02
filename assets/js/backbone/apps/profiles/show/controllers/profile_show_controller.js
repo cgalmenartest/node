@@ -5,8 +5,9 @@ define([
   'base_controller',
   'profile_model',
   'profile_show_view',
+  'json!login_config',
   'text!alert_template'
-], function ($, _, Backbone, BaseController, ProfileModel, ProfileView, AlertTemplate) {
+], function ($, _, Backbone, BaseController, ProfileModel, ProfileView, Login, AlertTemplate) {
 
   Application.Controller.Profile = BaseController.extend({
 
@@ -33,6 +34,18 @@ define([
 
       if (this.model) this.model.remove();
       this.model = new ProfileModel();
+
+      // prevent directly editing profiles when disabled
+      if ((login.profile.edit === false) && (this.action == 'edit')) {
+        var data = {
+          alert: {
+            message: "<strong>Direct editing of profiles is disabled.</strong>  <a href=\"" + login.profile.editUrl + "\" title=\"Edit Profile\">Click here to edit your profile</a>"
+          }
+        };
+        var template = _.template(AlertTemplate, data)
+        this.$el.html(template);
+        return;
+      }
       // var fetchId = null;
       // if (this.id && this.id != 'edit') { fetchId = this.id; }
       this.model.trigger("profile:fetch", this.routeId);
@@ -76,7 +89,7 @@ define([
           }
         }
         var template = _.template(AlertTemplate, data)
-        this.$el.html(template);
+        self.$el.html(template);
       });
     },
 

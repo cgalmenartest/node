@@ -27,5 +27,9 @@
     "enabled": true,
     "name": "Terms and Conditions",
     "link": "https://18f.gsa.gov/"
+  },
+  "profile": {
+    "edit": true,
+    "editUrl": null
   }
 }
