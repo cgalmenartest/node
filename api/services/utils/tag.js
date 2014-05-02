@@ -52,6 +52,7 @@ var findOrCreateTags = function (userId, tags, done) {
   //   type2: [v4] }
   // Process the types first, and then each tag name
   var processType = function (type, cbType) {
+    sails.log.debug("Type:", type);
     // process a particular tag name of a given type
     var processTag = function (tagname, cbTag) {
       TagEntity.findOne()

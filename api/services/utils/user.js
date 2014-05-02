@@ -168,13 +168,14 @@ module.exports = {
                 email: userData.username,
               };
               // Store the email address
-              // var tags = create_tag_obj(userData);
-              // tagUtils.findOrCreateTags(user.id, tags, function (err, newTags) {
-              //   user_cb(null, user);
-              // });
+              var tags = create_tag_obj(userData);
               UserEmail.create(email).done(function (err, email) {
-                if (err) { return done(null, false, { message: 'Unable to store user email address.' }); }
-                return done(null, user);
+                if (err) { return done(null, false, { message: 'Unable to store user email address.', err: err }); }
+                sails.log.debug("Tags:", tags);
+                tagUtils.findOrCreateTags(user.id, tags, function (err, newTags) {
+                  if (err) { return done(null, false, { message: 'Unabled to create tags', err: err }); }
+                  return done(null, user);
+                });
               });
             });
           });
@@ -212,8 +213,9 @@ module.exports = {
             return;
           }
           var tags = create_tag_obj(userData);
+          sails.log.debug("Tags:", tags);
           // Only update user tags if `overwrite` is turned on
-          tagUtils.findOrCreateTags(req.user[0].id, tags, function (err, newTags) {
+          tagUtils.findOrCreateTags(user.id, tags, function (err, newTags) {
             done(err, user);
           });
         }
