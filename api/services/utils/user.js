@@ -44,9 +44,9 @@ module.exports = {
     var self = this;
     var updateAction = true;
     // handle missing parameters
-    if (typeof userData === 'function'){
-      done = userData;
-      userData = {};
+    if (typeof _userData === 'function'){
+      done = _userData;
+      _userData = {};
       req = {};
       updateAction = false;
     }
