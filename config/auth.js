@@ -67,8 +67,6 @@ passport.use('sspi', new LocalStrategy({
       user.photoUrl = user.image;
       user.skill = user.skills.tags;
       user.topic = user.proftags.tags;
-      // user.location = '';
-      // user.company = '';
       // check if the settings should be overwritten
       if (sails.config.auth.auth.sspi.overwrite === true) {
         user.overwrite = true;

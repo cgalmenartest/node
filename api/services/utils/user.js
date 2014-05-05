@@ -73,13 +73,13 @@ module.exports = {
    * @param password will be bcrypt encrypted
    * @param done callback with form (null, user, error)
    */
-  createLocalUser: function (username, password, _userData, req, done) {
+  createLocalUser: function (username, password, providerUser, req, done) {
     var self = this;
     var updateAction = true;
     // handle missing parameters
-    if (typeof _userData === 'function'){
-      done = _userData;
-      _userData = {};
+    if (typeof providerUser === 'function'){
+      done = providerUser;
+      providerUser = {};
       req = {};
       updateAction = false;
     }
@@ -88,10 +88,10 @@ module.exports = {
       req = {};
     }
     var userData = {
-      name: _userData.displayName,
-      photoUrl: _userData.photoUrl,
-      title: _userData.title,
-      bio: _userData.bio,
+      name: providerUser.displayName,
+      photoUrl: providerUser.photoUrl,
+      title: providerUser.title,
+      bio: providerUser.bio,
       username: username.toLowerCase(),
       password: password
     };
@@ -172,7 +172,7 @@ module.exports = {
                 email: userData.username,
               };
               // Store the email address
-              var tags = create_tag_obj(_userData);
+              var tags = create_tag_obj(providerUser);
               UserEmail.create(email).done(function (err, email) {
                 if (err) { return done(null, false, { message: 'Unable to store user email address.', err: err }); }
                 tagUtils.findOrCreateTags(user.id, tags, function (err, newTags) {
@@ -188,64 +188,65 @@ module.exports = {
         if (!updateAction) {
           return done(null, false, { message: 'User already exists. Please log in instead.' });
         }
-        if (user) {
-          // if this user is logged in, then we may be updating their information
-          if (user.disabled === true) {
-            return done(null, false, { message: 'Your account is disabled.' });
-          }
-          var update = false;
-          if (user.overwrite || (!user.photoId && !user.photoUrl && userData.photoUrl)) {
-            user.photoUrl = userData.photoUrl || null;
-            update = true;
-          }
-          if (user.overwrite || (!user.bio && userData.bio)) {
-            user.bio = userData.bio || null;
-            update = true;
-          }
-          if (user.overwrite || (!user.title && userData.title)) {
-            user.title = userData.title || null;
-            update = true;
-          }
+        // if this user is logged in, then we may be updating their information
+        if (user.disabled === true) {
+          return done(null, false, { message: 'Your account is disabled.' });
+        }
+        var update = false;
+        if (providerUser.overwrite || (!user.photoId && !user.photoUrl && userData.photoUrl)) {
+          user.photoUrl = userData.photoUrl || null;
+          update = true;
+        }
+        if (providerUser.overwrite || (!user.bio && userData.bio)) {
+          user.bio = userData.bio || null;
+          update = true;
+        }
+        if (providerUser.overwrite || (!user.title && userData.title)) {
+          user.title = userData.title || null;
+          update = true;
+        }
 
-          var checkTagUpdate = function (cbTagUpdate) {
-            // abort if overwrite is turned off
-            if (user.overwrite !== true) {
-              return cbTagUpdate(null);
+        var checkTagUpdate = function (cbTagUpdate) {
+          // abort if overwrite is turned off
+          if (providerUser.overwrite !== true) {
+            sails.log.debug('NO OVERWRITE');
+            return cbTagUpdate(null);
+          }
+          sails.log.debug('OVERWRITE');
+          var tags = create_tag_obj(providerUser);
+          // Only update user tags if `overwrite` is turned on
+          tagUtils.findOrCreateTags(user.id, tags, function (err, newTags) {
+            sails.log.debug('New Tags:', newTags);
+            if (err) { return done(null, false, { message: 'Unable to find or create tags.', err: err }); }
+            // Get the ids of the current tags
+            var newTagIds = [];
+            for (var i in newTags) {
+              newTagIds.push(newTags[i].id);
             }
-            var tags = create_tag_obj(_userData);
-            // Only update user tags if `overwrite` is turned on
-            tagUtils.findOrCreateTags(user.id, tags, function (err, newTags) {
-              if (err) { return done(null, false, { message: 'Unable to find or create tags.', err: err }); }
-              // Get the ids of the current tags
-              var newTagIds = [];
-              for (var i in newTags) {
-                newTagIds.push(newTags[i].id);
-              }
-              // Prune old tags
-              tagUtils.pruneTags(user.id, newTagIds, function (err, removedTags) {
-                cbTagUpdate(err);
-              });
+            // Prune old tags
+            tagUtils.pruneTags(user.id, newTagIds, function (err, removedTags) {
+              sails.log.debug('Prune Tags:', removedTags);
+              cbTagUpdate(err);
             });
-          };
+          });
+        };
 
-          if (update === true) {
-            user.save(function (err) {
-              if (err) { return done(null, false, { message: 'Unable to update user information.' }); }
-              // check if tags should be updated
-              checkTagUpdate(function (err) {
-                return done(err, user);
-              });
-            });
-          // user object has not been updated, check tags
-          } else {
+        if (update === true) {
+          sails.log.debug('UPDATE');
+          user.save(function (err) {
+            if (err) { return done(null, false, { message: 'Unable to update user information.' }); }
             // check if tags should be updated
             checkTagUpdate(function (err) {
               return done(err, user);
             });
-          }
-        }
-        else {
-          return done(null, user);
+          });
+        // user object has not been updated, check tags
+        } else {
+          sails.log.debug('NO UPDATE');
+          // check if tags should be updated
+          checkTagUpdate(function (err) {
+            return done(err, user);
+          });
         }
       }
     });
