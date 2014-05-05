@@ -85,7 +85,7 @@ module.exports = function sspi (req, res, next) {
       // the current date/time
       var now = new Date();
       // the scheduled expiration of the current session
-      var expiry = new Date(req.session.createdAt.getTime() + sails.config.auth.auth.sspi.sessionExpiration);
+      var expiry = new Date(new Date(req.session.createdAt).getTime() + sails.config.auth.auth.sspi.sessionExpiration);
       // check if the expiration already occurred, and if so set expired.
       if (expiry < now) {
         expired = true;
