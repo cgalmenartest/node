@@ -8,4 +8,4 @@ module.exports = {
   execute: function (fields, settings, cb) {
     User.find({}).done(cb);
   }
-}
+};

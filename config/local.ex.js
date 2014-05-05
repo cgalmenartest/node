@@ -24,6 +24,8 @@
 var fs = require('fs');
 
 module.exports = {
+  // The name of the system, as should appear in emails and the <html> <title> tag
+  systemName: 'midas',
   // 'http' or 'https'
   httpProtocol: 'http',
   // hostName defines the domain upon which your app will be deployed (e.g. 'localhost:1337', for development)

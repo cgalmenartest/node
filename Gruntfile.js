@@ -139,7 +139,7 @@ module.exports = function (grunt) {
           name: 'app',
           baseUrl: "assets/js/backbone/app",
           mainConfigFile: "assets/js/backbone/config/require_config.js",
-          out: "assets/prod/js/midas.js",
+          out: "assets/prod/js/midas-<%= pkg.version %>.js",
           paths: {
             requireLib: "../../vendor/require"
           },
@@ -151,7 +151,7 @@ module.exports = function (grunt) {
     cssmin: {
       combine: {
         files: {
-          'assets/prod/css/midas.css': [
+          'assets/prod/css/midas-<%= pkg.version %>.css': [
             'assets/styles/bootstrap.css',
             'assets/styles/font-awesome/css/font-awesome.min.css',
             'assets/styles/font-custom/css/style.css',
@@ -173,6 +173,7 @@ module.exports = function (grunt) {
         src: ['*.css', '!*.min.css'],
         dest: 'assets/prod/css/',
         ext: '.min.css',
+        extDot: 'last',
         options: {
           report: 'min'
         }

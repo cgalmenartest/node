@@ -5,9 +5,10 @@ define([
   'base_controller',
   'profile_model',
   'profile_show_view',
+  'profile_settings_view',
   'json!login_config',
   'text!alert_template'
-], function ($, _, Backbone, BaseController, ProfileModel, ProfileView, Login, AlertTemplate) {
+], function ($, _, Backbone, BaseController, ProfileModel, ProfileView, ProfileSettingsView, Login, AlertTemplate) {
 
   Application.Controller.Profile = BaseController.extend({
 
@@ -95,26 +96,29 @@ define([
 
     initializeProfileViewInstance: function () {
       if (this.profileView) { this.profileView.cleanup(); }
-      // if ((this.action === 'edit') && (window.cache.currentUser) &&
-      //     (window.cache.currentUser.id !== this.model.toJSON().id) &&
-      //     (window.cache.currentUser.isAdmin !== true)) {
-      //   window.cache.userEvents.trigger("user:request:login", {
-      //     message: "You are not allowed to edit this profile",
-      //     disableClose: false
-      //   });
-      //   return;
-      // }
-      this.profileView = new ProfileView({
-        el: this.$el,
-        model: this.model,
-        routeId: this.routeId,
-        action: this.action,
-        data: this.data
-      }).render();
+      if (this.settingsView) { this.settingsView.cleanup(); }
+      if (this.action == 'settings') {
+        this.settingsView = new ProfileSettingsView({
+          el: this.$el,
+          model: this.model,
+          routeId: this.routeId,
+          action: this.action,
+          data: this.data
+        }).render();
+      } else {
+        this.profileView = new ProfileView({
+          el: this.$el,
+          model: this.model,
+          routeId: this.routeId,
+          action: this.action,
+          data: this.data
+        }).render();
+      }
     },
 
     cleanup: function() {
       if (this.profileView) { this.profileView.cleanup(); }
+      if (this.settingsView) { this.settingsView.cleanup(); }
       removeView(this);
     }
 

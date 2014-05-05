@@ -34,6 +34,39 @@ module.exports = {
   },
 
   /**
+   * Get the preferred email address for a user
+   *
+   * @param id userId of the user's email to look up
+   * @param done callback with the form (err, emailObj)
+   *        where emailObj is a UserEmail model
+   */
+  findPrimaryEmail: function (id, done) {
+    // find the latest email with the `isPrimary` flag set
+    // (usually done via an update statement)
+    UserEmail.findOne()
+    .where({ userId: id })
+    .where({ isPrimary: true })
+    .sort({ updatedAt: -1 })
+    .done(function (err, userEmail) {
+      if (err) { return done(err, null); }
+      // if there's no results from `isPrimary`, get the
+      // last email address added
+      if (!userEmail) {
+        // look up the most recent email
+        UserEmail.findOne()
+        .where({ userId: id })
+        .sort({ createdAt: -1 })
+        .done(function (err, userEmail) {
+          if (err) { return done(err, null); }
+          return done(null, userEmail);
+        });
+      } else {
+        return done(null, userEmail);
+      }
+    });
+  },
+
+  /**
    * Create a user based on their username and password.
    *
    * @param username

@@ -154,6 +154,8 @@ require.config({
     'profile_show_view'         : '../apps/profiles/show/views/profile_show_view',
     'profile_show_controller'   : '../apps/profiles/show/controllers/profile_show_controller',
     'profile_show_template'     : '../apps/profiles/show/templates/profile_show_template.html',
+    'profile_settings_view'     : '../apps/profiles/show/views/profile_settings_view',
+    'profile_settings_template' : '../apps/profiles/show/templates/profile_settings_template.html',
     'profile_email_template'    : '../apps/profiles/show/templates/profile_email_template.html',
     'profile_email_view'        : '../apps/profiles/email/views/profile_email_view',
     'profile_email_form_template': '../apps/profiles/email/templates/profile_email_form.html',
