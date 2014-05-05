@@ -25,6 +25,9 @@ module.exports = {
       emailDomain : 'state.gov',
       header      : 'x_remote_user',
       globalPass  : 'AbAbAb12!@',
+      // re-authenticate on hard reload after this many milliseconds
+      sessionExpiration : 60*60*1000,
+      // overwrite existing profile fields
       overwrite   : true,
       enabled     : false
     }
