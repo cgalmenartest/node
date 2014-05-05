@@ -32,7 +32,7 @@ module.exports = {
     'taskVolunteerAddedOwnerReply': {
       layout: 'default',
       template: 'taskVolunteerAddedOwnerReply',
-      subject: 'Volunteer Added',
+      subject: '<% if (volunteer.name) { %><%= volunteer.name %><% } else { %>Someone<% } %> has volunteered for <%= task.title %> on <%= globals.systemName %>',
       templateLocals: { taskTitle: '', taskLink: '', profileLink: '', profileTitle: '', profileName: '', profileLocation: '', profileAgency: '' },
       layoutLocals: { }
     },

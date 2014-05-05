@@ -258,7 +258,9 @@
         }
 
       },
-      settings: {}
+      settings: {
+        emailName: 'taskVolunteerAddedOwnerReply'
+      }
     },
     'bypass': {
       name: 'bypass',

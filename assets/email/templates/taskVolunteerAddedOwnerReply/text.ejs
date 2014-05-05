@@ -1,6 +1,16 @@
-Opportunity: <%- taskTitle %>
-Congratulations! <%- profileTitle %> / <%- profileName %> has applied to work on the opportunity <%- taskTitle %>.
-<%- taskLink %>
-View the volunteer's profile at: <%- profileLink %>
-Volunteer Agency: <%- profileAgency %>
-Volunteer Location: <%- profileLocation  %>
+Hello<% if (metadata.recipient.name) { %> <%= metadata.recipient.name %><% } %>,
+
+<% if (profileName) { %><%= profileName %><% } else { %>Someone<% } %> has volunteered for <%= taskTitle %>
+
+Here is more information about your volunteer:
+
+<%- profileName %>
+<%- profileLink %><% if (profileTitle) { %>
+<%= profileTitle %><% } %><% if (profileAgency) { %>
+<%= profileAgency %><% } %><% if (profileLocation) { %>
+<%= profileLocation %><% } %>
+
+View the opportunity at <%= taskLink %>
+
+Thanks!
+- The <%= globals.systemName %> Team
