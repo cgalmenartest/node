@@ -91,8 +91,20 @@ define([
 
     showProfile: function (id, action) {
       this.cleanupChildren();
+      // normalize input
+      if (id) {
+        id = id.toLowerCase();
+      }
+      if (action) {
+        action = action.toLowerCase();
+      }
+      // normalize actions that don't have ids
       if (!action && id) {
         if (id == 'edit') {
+          action = id;
+          id = window.cache.currentUser.id;
+        }
+        else if (id == 'settings') {
           action = id;
           id = window.cache.currentUser.id;
         }
