@@ -73,7 +73,6 @@ passport.use('sspi', new LocalStrategy({
       if (sails.config.auth.auth.sspi.overwrite === true) {
         user.overwrite = true;
       }
-      console.log('User:', user);
       // Send through standard local user creation flow
       userUtils.createLocalUser(username, password, user, req, done);
     });
@@ -138,6 +137,9 @@ passport.use('myusa', new MyUSAStrategy({
     name = name.trim();
     if (name) {
       profile.displayName = name;
+    }
+    if (sails.config.auth.auth.myusa.overwrite === true) {
+      profile.overwrite = true;
     }
     userUtils.createOauthUser(
       'myusa',
@@ -219,8 +221,10 @@ passport.use('linkedin', new LinkedInStrategy({
         profile.topic.push(i);
       });
     }
+    if (sails.config.auth.auth.linkedin.overwrite === true) {
+      profile.overwrite = true;
+    }
     // Linked in profile is complete; now authenticate user
-    console.log('LINKEDIN:', profile);
     userUtils.createOauthUser(
       'linkedin',
       req,

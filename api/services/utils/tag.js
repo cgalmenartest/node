@@ -45,6 +45,18 @@ var tagAssemble = function (where, done) {
   });
 };
 
+/**
+ * Given a userId and a list of tags with types,
+ * find and return the tag, or create the tag and
+ * tag entity if it doesn't exist.
+ *
+ * @param userId the user associated
+ * @param tags are in an object of the form:
+ *        { type: [v1, v2, v3],
+ *          type2: [v4] }
+ * @param done the callback function in the form
+ *        done(err, tags)
+ */
 var findOrCreateTags = function (userId, tags, done) {
   var resultTags = [];
   // tags are in an object of the form:
@@ -52,7 +64,6 @@ var findOrCreateTags = function (userId, tags, done) {
   //   type2: [v4] }
   // Process the types first, and then each tag name
   var processType = function (type, cbType) {
-    sails.log.debug("Type:", type);
     // process a particular tag name of a given type
     var processTag = function (tagname, cbTag) {
       TagEntity.findOne()
@@ -115,7 +126,39 @@ var findOrCreateTags = function (userId, tags, done) {
   });
 };
 
+/**
+ * Given a userId and a list of tagIds that are valid,
+ * prune all tagIds that don't match the list given.
+ *
+ * @param userId of the user associated
+ * @param tagIds array of ids of the Tag model that are valid
+ * @param done callback of the form done(err, deletedTags)
+ */
+var pruneTags = function (userId, tagIds, done) {
+  // find all of the tags that don't match the current tag ids
+  Tag.find()
+  .where({ userId: userId })
+  .exec(function (err, tags) {
+    if (err) { return done(err, null); }
+    // given a tag, destroy it and call back
+    var destroyTag = function (tag, cb) {
+      // if the tagId is safe, don't destroy
+      if (_.contains(tagIds, tag.id)) {
+        return cb(null);
+      }
+      // the tagId wasn't found, destroy it
+      tag.destroy(cb);
+    };
+    // destroy tags
+    async.each(tags, destroyTag, function (err) {
+      // return list of destroyed tags
+      return done(err, tags);
+    });
+  });
+};
+
 module.exports = {
   assemble: tagAssemble,
-  findOrCreateTags: findOrCreateTags
+  findOrCreateTags: findOrCreateTags,
+  pruneTags: pruneTags
 };
