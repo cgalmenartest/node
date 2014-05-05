@@ -64,10 +64,12 @@ module.exports = function sspi (req, res, next) {
         {
           req.user = [req.user];
         }
+        // set the session creation time
+        req.session.createdAt = new Date();
         return next();
       });
     })(req, res, function (err) {
-      sails.log.debug("SSPI Final Error:", err);
+      sails.log.debug('SSPI Final Error:', err);
       if (err) {
         sails.log.error('SSPI Authentication Error:', err);
         return res.send(500, { message: "An internal error occurred while trying to authenticate.  Please try again later.", error: err });
@@ -76,8 +78,24 @@ module.exports = function sspi (req, res, next) {
   };
   // Check if SSPI is enabled; if so, process.  If not, continue to the
   // next middleware policy
-  if ((sails.config.auth.auth.sspi.enabled === true) && !req.isAuthenticated()) {
-    authenticateSSPIUser();
+  if (sails.config.auth.auth.sspi.enabled === true) {
+    var expired = false;
+    // a session already exists
+    if (req.session.createdAt) {
+      // the current date/time
+      var now = new Date();
+      // the scheduled expiration of the current session
+      var expiry = new Date(new Date(req.session.createdAt).getTime() + sails.config.auth.auth.sspi.sessionExpiration);
+      // check if the expiration already occurred, and if so set expired.
+      if (expiry < now) {
+        expired = true;
+      }
+    }
+    if (!req.session.createdAt || !req.isAuthenticated() || (expired === true)) {
+      req.session.createdAt = null;
+      req.logout();
+      authenticateSSPIUser();
+    }
   }
   else {
     return next();

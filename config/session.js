@@ -17,6 +17,11 @@ module.exports.session = {
   // forcing them to log in again. 
   secret: '0fa32505a53e70cd2b5626d70dd15b6c'
 
+  // Set the cookie maximum age (timeout).  If this is not set, then cookies
+  // will persist forever.
+  // cookie: {
+  //   maxAge: 60 * 60 * 1000  // example: 60 mins in miliseconds
+  // }
 
   // In production, uncomment the following lines to set up a shared redis session store
   // that can be shared across multiple Sails.js servers

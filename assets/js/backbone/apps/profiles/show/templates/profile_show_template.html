@@ -171,7 +171,11 @@
           <div class="navbar-side">
               <ul class="nav nav-pills nav-stacked">
               <li>
+                <% if (login.profile.edit === true) { %>
                 <a href="/profile/<%- data.id %>/edit" class="link-backbone"><i class="icon-pencil"></i> <span class="box-icon-text">Edit Profile</span></a>
+                <% } else if (login.profile.editUrl) { %>
+                <a href="<%= login.profile.editUrl %>" target="_blank"><i class="icon-pencil"></i> <span class="box-icon-text">Edit Profile</span></a>
+                <% } %>
               </li>
               <% } %>
             </ul>

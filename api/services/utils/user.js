@@ -73,13 +73,13 @@ module.exports = {
    * @param password will be bcrypt encrypted
    * @param done callback with form (null, user, error)
    */
-  createLocalUser: function (username, password, userData, req, done) {
+  createLocalUser: function (username, password, providerUser, req, done) {
     var self = this;
     var updateAction = true;
     // handle missing parameters
-    if (typeof userData === 'function'){
-      done = userData;
-      userData = {};
+    if (typeof providerUser === 'function'){
+      done = providerUser;
+      providerUser = {};
       req = {};
       updateAction = false;
     }
@@ -87,21 +87,14 @@ module.exports = {
       done = req;
       req = {};
     }
-    userData = {
-      name: userData.displayName,
-      photoUrl: userData.photoUrl,
-      title: userData.title,
-      bio: userData.bio
+    var userData = {
+      name: providerUser.displayName,
+      photoUrl: providerUser.photoUrl,
+      title: providerUser.title,
+      bio: providerUser.bio,
+      username: username.toLowerCase(),
+      password: password
     };
-    if (userData.emails && (userData.emails.length > 0)) {
-      // normalize username
-      userData.username = userData.emails[0].value.toLowerCase();
-    }
-    else {
-      // normalize username
-      userData.username = username.toLowerCase();
-    }
-    userData.password = password;
 
     // Run username validator (but only if SSPI is disabled)
     if (sails.config.auth.auth.sspi.enabled !== true) {
@@ -116,42 +109,20 @@ module.exports = {
       // Look up user and check password hash
       var bcrypt = require('bcrypt');
 
-      // Utility function that completes the local user creation/update process
-      // Creates user email and returns
-      function user_cb(err, user) {
-        // store login credentials
-        if (userData.emails && (userData.emails.length > 0)) {
-          var email = {
-            userId: user['id'],
-            email: userData.emails[0].value.toLowerCase(),
-          };
-          UserEmail.findOne(email, function (err, storedEmail) {
-            if (storedEmail) { return done(null, user); }
-            UserEmail.create(email).done(function (err, email) {
-              if (err) { return done(null, false, { message: 'Unable to store user email address.' }); }
-              sails.log.debug('Created Email:', email);
-              return done(null, user);
-            });
-          });
-        } else {
-          return done(null, user);
-        }
-      };
-
       // Takes the userData object and creates a tag object from it
-      function create_tag_obj (userData) {
+      function create_tag_obj (userObj) {
         var result = {};
-        if (userData.skill) {
-          result.skill = userData.skill;
+        if (userObj.skill && userObj.skill.length > 0) {
+          result.skill = userObj.skill;
         }
-        if (userData.topic) {
-          result.topic = userData.topic;
+        if (userObj.topic && userObj.topic.length > 0) {
+          result.topic = userObj.topic;
         }
-        if (userData.location) {
-          result.location = [ userData.location ];
+        if (userObj.location) {
+          result.location = [ userObj.location ];
         }
-        if (userData.company) {
-          result.agency = [ userData.company ];
+        if (userObj.company) {
+          result.agency = [ userObj.company ];
         }
         return result;
       };
@@ -201,13 +172,13 @@ module.exports = {
                 email: userData.username,
               };
               // Store the email address
-              // var tags = create_tag_obj(userData);
-              // tagUtils.findOrCreateTags(user.id, tags, function (err, newTags) {
-              //   user_cb(null, user);
-              // });
+              var tags = create_tag_obj(providerUser);
               UserEmail.create(email).done(function (err, email) {
-                if (err) { return done(null, false, { message: 'Unable to store user email address.' }); }
-                return done(null, user);
+                if (err) { return done(null, false, { message: 'Unable to store user email address.', err: err }); }
+                tagUtils.findOrCreateTags(user.id, tags, function (err, newTags) {
+                  if (err) { return done(null, false, { message: 'Unabled to create tags', err: err }); }
+                  return done(null, user);
+                });
               });
             });
           });
@@ -217,42 +188,65 @@ module.exports = {
         if (!updateAction) {
           return done(null, false, { message: 'User already exists. Please log in instead.' });
         }
-        if (user) {
-          // if this user is logged in, then we may be updating their information
-          if (user.disabled === true) {
-            return done(null, false, { message: 'Your account is disabled.' });
-          }
-          var update = false;
-          if (!user.photoId && !user.photoUrl && userData.photoUrl) {
-            user.photoUrl = userData.photoUrl;
-            update = true;
-          }
-          if (!user.bio && userData.bio) {
-            user.bio = userData.bio;
-            update = true;
-          }
-          if (!user.title && userData.title) {
-            user.title = userData.title;
-            update = true;
-          }
-          if (update === true) {
-            user.save(function (err) {
-              if (err) { return done(null, false, { message: 'Unable to update user information.' }); }
-              // don't update email addresses for local users
-              done(null, user);
-            });
-            // don't continue execution if we're saving the user
-            return;
-          }
-          var tags = create_tag_obj(userData);
-          // Don't update the user's tags for now; need to deal with
-          // tags that exist, and replacements.
-          // tagUtils.findOrCreateTags(req.user[0].id, tags, function (err, newTags) {
-          done(null, user);
-          // });
+        // if this user is logged in, then we may be updating their information
+        if (user.disabled === true) {
+          return done(null, false, { message: 'Your account is disabled.' });
         }
-        else {
-          return done(null, user);
+        var update = false;
+        if (providerUser.overwrite || (!user.photoId && !user.photoUrl && userData.photoUrl)) {
+          user.photoUrl = userData.photoUrl || null;
+          update = true;
+        }
+        if (providerUser.overwrite || (!user.bio && userData.bio)) {
+          user.bio = userData.bio || null;
+          update = true;
+        }
+        if (providerUser.overwrite || (!user.title && userData.title)) {
+          user.title = userData.title || null;
+          update = true;
+        }
+
+        var checkTagUpdate = function (cbTagUpdate) {
+          // abort if overwrite is turned off
+          if (providerUser.overwrite !== true) {
+            sails.log.debug('NO OVERWRITE');
+            return cbTagUpdate(null);
+          }
+          sails.log.debug('OVERWRITE');
+          var tags = create_tag_obj(providerUser);
+          // Only update user tags if `overwrite` is turned on
+          tagUtils.findOrCreateTags(user.id, tags, function (err, newTags) {
+            sails.log.debug('New Tags:', newTags);
+            if (err) { return done(null, false, { message: 'Unable to find or create tags.', err: err }); }
+            // Get the ids of the current tags
+            var newTagIds = [];
+            for (var i in newTags) {
+              newTagIds.push(newTags[i].id);
+            }
+            // Prune old tags
+            tagUtils.pruneTags(user.id, newTagIds, function (err, removedTags) {
+              sails.log.debug('Prune Tags:', removedTags);
+              cbTagUpdate(err);
+            });
+          });
+        };
+
+        if (update === true) {
+          sails.log.debug('UPDATE');
+          user.save(function (err) {
+            if (err) { return done(null, false, { message: 'Unable to update user information.' }); }
+            // check if tags should be updated
+            checkTagUpdate(function (err) {
+              return done(err, user);
+            });
+          });
+        // user object has not been updated, check tags
+        } else {
+          sails.log.debug('NO UPDATE');
+          // check if tags should be updated
+          checkTagUpdate(function (err) {
+            return done(err, user);
+          });
         }
       }
     });
@@ -372,6 +366,48 @@ module.exports = {
    * @param done callback when finished with arguments (null, user, error)
    */
   createOauthUser: function (provider, req, tokens, providerUser, done) {
+    // Helper function to takes the providerUser object
+    // and create a tag object from it
+    var create_tag_obj = function (inputUser) {
+      var result = {};
+      if (inputUser.skill && inputUser.skill.length > 0) {
+        result.skill = inputUser.skill;
+      }
+      if (inputUser.topic && inputUser.topic.length > 0) {
+        result.topic = inputUser.topic;
+      }
+      if (inputUser.location) {
+        result.location = [ inputUser.location ];
+      }
+      if (inputUser.company) {
+        result.agency = [ inputUser.company ];
+      }
+      return result;
+    };
+
+    // Helper function to check if the tags should be updated, and
+    // if so, go ahead and update/prune the tags
+    var checkTagUpdate = function (userId, inputUser, cbTagUpdate) {
+      // abort if overwrite is turned off
+      if (inputUser.overwrite !== true) {
+        return cbTagUpdate(null);
+      }
+      var tags = create_tag_obj(inputUser);
+      // Only update user tags if `overwrite` is turned on
+      tagUtils.findOrCreateTags(userId, tags, function (err, newTags) {
+        if (err) { return done(null, false, { message: 'Unable to find or create tags.', err: err }); }
+        // Get the ids of the current tags
+        var newTagIds = [];
+        for (var i in newTags) {
+          newTagIds.push(newTags[i].id);
+        }
+        // Prune old tags
+        tagUtils.pruneTags(userId, newTagIds, function (err, removedTags) {
+          cbTagUpdate(err);
+        });
+      });
+    };
+
     // check if the remote credentials match an existing user
     UserAuth.find({ where: { providerId: providerUser.id, provider: provider } }, function (err, userAuth) {
       if (!userAuth) { userAuth = []; }
@@ -391,7 +427,7 @@ module.exports = {
 
         // Utility function that completes the oauth user creation/update process
         // Stores the credentials and the user's other profile data
-        function user_cb(err, user) {
+        var user_cb = function(err, user) {
           var creds = {
             userId: user['id'],
             provider: provider,
@@ -423,24 +459,6 @@ module.exports = {
           });
         };
 
-        // Takes the providerUser object and creates a tag object from it
-        function create_tag_obj (providerUser) {
-          var result = {};
-          if (providerUser.skill) {
-            result.skill = providerUser.skill;
-          }
-          if (providerUser.topic) {
-            result.topic = providerUser.topic;
-          }
-          if (providerUser.location) {
-            result.location = [ providerUser.location ];
-          }
-          if (providerUser.company) {
-            result.agency = [ providerUser.company ];
-          }
-          return result;
-        };
-
         // if this user is logged in, then we're adding a new
         // service for them.  Update their user model fields if they
         // aren't already set.
@@ -449,30 +467,33 @@ module.exports = {
             return done(null, false, { message: 'Your account is disabled.' });
           }
           var update = false;
-          if (!req.user[0].photoId && !req.user[0].photoUrl && providerUser.photoUrl) {
-            req.user[0].photoUrl = providerUser.photoUrl;
+          if (providerUser.overwrite || (!req.user[0].photoId && !req.user[0].photoUrl && providerUser.photoUrl)) {
+            req.user[0].photoUrl = providerUser.photoUrl || null;
             update = true;
           }
-          if (!req.user[0].bio && providerUser.bio) {
-            req.user[0].bio = providerUser.bio;
+          if (providerUser.overwrite || (!req.user[0].bio && providerUser.bio)) {
+            req.user[0].bio = providerUser.bio || null;
             update = true;
           }
-          if (!req.user[0].title && providerUser.title) {
-            req.user[0].title = providerUser.title;
+          if (providerUser.overwrite || (!req.user[0].title && providerUser.title)) {
+            req.user[0].title = providerUser.title || null;
             update = true;
           }
+
           if (update === true) {
             req.user[0].save(function (err) {
               if (err) { return done(null, false, { message: 'Unable to update user information.' }); }
-              user_cb(null, req.user[0]);
+              // check if tags should be updated
+              checkTagUpdate(req.user[0].id, providerUser, function (err) {
+                return user_cb(err, req.user[0]);
+              });
             });
+          // user object has not been updated, check tags
           } else {
-            var tags = create_tag_obj(providerUser);
-            // Don't update the user's tags for now; need to deal with
-            // tags that exist, and replacements.
-            // tagUtils.findOrCreateTags(req.user[0].id, tags, function (err, newTags) {
-              user_cb(null, req.user[0]);
-            // });
+            // check if tags should be updated
+            checkTagUpdate(req.user[0].id, providerUser, function (err) {
+              return user_cb(err, req.user[0]);
+            });
           }
         }
         // create user because the user is not logged in
@@ -500,7 +521,36 @@ module.exports = {
           User.findOneById(userAuth['userId'], function (err, user) {
             if (!user || err) { return done(null, false, { message: 'Error looking up user.' }); }
             sails.log.debug('User Found:', user);
-            return done(null, user);
+
+            var update = false;
+            if (providerUser.overwrite || (user.photoId && !user.photoUrl && providerUser.photoUrl)) {
+              user.photoUrl = providerUser.photoUrl || null;
+              update = true;
+            }
+            if (providerUser.overwrite || (!user.bio && providerUser.bio)) {
+              user.bio = providerUser.bio || null;
+              update = true;
+            }
+            if (providerUser.overwrite || (!user.title && providerUser.title)) {
+              user.title = providerUser.title || null;
+              update = true;
+            }
+
+            if (update === true) {
+              user.save(function (err) {
+                if (err) { return done(null, false, { message: 'Unable to update user information.' }); }
+                // check if tags should be updated
+                checkTagUpdate(user.id, providerUser, function (err) {
+                  return done(err, user);
+                });
+              });
+            // user object has not been updated, check tags
+            } else {
+              // check if tags should be updated
+              checkTagUpdate(user.id, providerUser, function (err) {
+                return done(err, user);
+              });
+            }
           });
         });
       }
