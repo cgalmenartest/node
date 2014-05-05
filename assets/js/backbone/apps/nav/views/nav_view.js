@@ -11,8 +11,8 @@ define([
   var NavView = Backbone.View.extend({
 
     events: {
-      'click .navbar-brand'   : 'home',
-      'click .nav-link'       : 'link',
+      'click .navbar-brand'   : linkBackbone,
+      'click .nav-link'       : linkBackbone,
       'click .login'          : 'loginClick',
       'click .logout'         : 'logout'
     },
@@ -65,17 +65,6 @@ define([
         $(".nav li").removeClass("active");
         $(this).addClass("active");
       });
-    },
-
-    home: function (e) {
-      if (e.preventDefault) e.preventDefault();
-      Backbone.history.navigate('', { trigger: true });
-    },
-
-    link: function (e) {
-      if (e.preventDefault) e.preventDefault();
-      var link = $(e.currentTarget).attr('href').slice(1);
-      Backbone.history.navigate(link, { trigger: true });
     },
 
     loginClick: function (e) {
