@@ -1,4 +1,5 @@
 {
+  "signin": true,
   "oauth": [
     "linkedin",
     "myusa"
@@ -14,7 +15,7 @@
       "name": "MyUSA",
       "image": "/images/login/myusa.png",
       "endpoint": "/api/auth/oauth/myusa",
-      "params": { "scope": "profile" }
+      "params": { "scope": ["profile.email", "profile.title", "profile.first_name", "profile.middle_name", "profile.last_name"] }
     }
   },
   "local": {
@@ -26,5 +27,9 @@
     "enabled": true,
     "name": "Terms and Conditions",
     "link": "https://18f.gsa.gov/"
+  },
+  "profile": {
+    "edit": true,
+    "editUrl": null
   }
 }

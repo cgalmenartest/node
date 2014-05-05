@@ -43,6 +43,7 @@ module.exports = {
     // content of the comment
     value: 'STRING'
   },
+
   // for the sake of alerting owners and parent commenters
   afterCreate: function (values, cb){
     var params = {};
@@ -97,7 +98,7 @@ module.exports = {
     else {
       throw new Error('projectId or taskId must be defined');
     }
-    noteUtils.notifier.notify(params, true, cb);
+    noteUtils.notifier.notify(params, cb);
   }
 
 };

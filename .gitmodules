@@ -25,3 +25,18 @@
 [submodule "assets/js/vendor/requirejs-plugins"]
 	path = assets/js/vendor/requirejs-plugins
 	url = https://github.com/millermedeiros/requirejs-plugins.git
+[submodule "assets/js/vendor/marked"]
+	path = assets/js/vendor/marked
+	url = https://github.com/chjj/marked.git
+[submodule "assets/js/vendor/jquery-selection"]
+	path = assets/js/vendor/jquery-selection
+	url = https://github.com/madapaja/jquery.selection.git
+[submodule "assets/js/vendor/autolinker"]
+	path = assets/js/vendor/autolinker
+	url = https://github.com/gregjacobs/Autolinker.js.git
+[submodule "assets/js/vendor/jquery-at"]
+	path = assets/js/vendor/jquery-at
+	url = https://github.com/ichord/At.js.git
+[submodule "assets/js/vendor/jquery-caret"]
+	path = assets/js/vendor/jquery-caret
+	url = https://github.com/ichord/Caret.js.git

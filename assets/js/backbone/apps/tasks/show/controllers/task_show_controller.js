@@ -3,6 +3,7 @@ define([
   'underscore',
   'backbone',
   'popovers',
+  'utilities',
   'base_view',
   'comment_list_controller',
   'attachment_show_view',
@@ -11,7 +12,7 @@ define([
   'modal_component',
   'modal_alert',
   'task_edit_form_view'
-], function (Bootstrap, _, Backbone, Popovers, BaseView, CommentListController, AttachmentView, TaskItemView, TagShowView, ModalComponent, ModalAlert, TaskEditFormView) {
+], function (Bootstrap, _, Backbone, Popovers, utils, BaseView, CommentListController, AttachmentView, TaskItemView, TagShowView, ModalComponent, ModalAlert, TaskEditFormView) {
 
   var popovers = new Popovers();
 
@@ -27,6 +28,7 @@ define([
       'click #volunteered'              : 'volunteered',
       "click #task-close"               : "stateClose",
       "click #task-reopen"              : "stateReopen",
+      "click .link-backbone"            : linkBackbone,
       "mouseenter .project-people-div"  : popovers.popoverPeopleOn,
       "click .project-people-div"       : popovers.popoverClick
     },
@@ -39,6 +41,32 @@ define([
     },
 
     initializeEdit: function () {
+      var model = this.model.toJSON();
+      // check if the user owns the task
+      var owner = model.isOwner;
+      if (owner !== true) {
+        // if they don't own the task, do they own the project?
+        if (!_.isUndefined(model.project)) {
+          if (model.project.isOwner === true) {
+            owner = true;
+          }
+        }
+        // if none of these apply, are they an admin?
+        if (window.cache.currentUser) {
+          if (window.cache.currentUser.isAdmin === true) {
+            owner = true;
+          }
+        }
+      }
+      // if not the owner, trigger the login dialog.
+      if (owner !== true) {
+        window.cache.userEvents.trigger("user:request:login", {
+          message: "You are not the owner of this opportunity. <a class='link-backbone' href='/tasks/" + model.id + "'>View the opportunity instead.</a>",
+          disableClose: true
+        });
+        return;
+      }
+
       if (this.taskEditFormView) this.taskEditFormView.cleanup();
       this.taskEditFormView = new TaskEditFormView({
         el: '.edit-task-section',

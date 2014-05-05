@@ -17,11 +17,16 @@ require.config({
     'jquery_iframe'             : '../../vendor/jquery-file-upload/js/jquery.iframe-transport',
     'jquery.ui.widget'          : '../../vendor/jquery-file-upload/js/vendor/jquery.ui.widget',
     'jquery_fileupload'         : '../../vendor/jquery-file-upload/js/jquery.fileupload',
+    'jquery.selection'          : '../../vendor/jquery-selection/src/jquery.selection',
+    'jquery.caret'              : '../../vendor/jquery-caret/src/jquery.caret',
+    'jquery.at'                 : '../../vendor/jquery-at/dist/js/jquery.atwho',
     'underscore'                : '../../vendor/underscore',
     'backbone'                  : '../../vendor/backbone',
     'bootstrap'                 : '../../vendor/bootstrap',
     'bootstrap-datetimepicker'  : '../../vendor/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min',
     'async'                     : '../../vendor/async/lib/async',
+    'marked'                    : '../../vendor/marked/lib/marked',
+    'autolinker'                : '../../vendor/autolinker/dist/Autolinker',
 
     // ---------
     //= Mixins
@@ -149,6 +154,8 @@ require.config({
     'profile_show_view'         : '../apps/profiles/show/views/profile_show_view',
     'profile_show_controller'   : '../apps/profiles/show/controllers/profile_show_controller',
     'profile_show_template'     : '../apps/profiles/show/templates/profile_show_template.html',
+    'profile_settings_view'     : '../apps/profiles/show/views/profile_settings_view',
+    'profile_settings_template' : '../apps/profiles/show/templates/profile_settings_template.html',
     'profile_email_template'    : '../apps/profiles/show/templates/profile_email_template.html',
     'profile_email_view'        : '../apps/profiles/email/views/profile_email_view',
     'profile_email_form_template': '../apps/profiles/email/templates/profile_email_form.html',
@@ -166,7 +173,24 @@ require.config({
     'comment_model'             : '../entities/comments/comment_model',
     'comment_form_view'         : '../apps/comments/new/views/comment_form_view',
     'comment_form_template'     : '../apps/comments/new/templates/comment_form_template.html',
+    'comment_ac_template'       : '../apps/comments/new/templates/comment_ac_template.html',
+    'comment_inline_template'   : '../apps/comments/new/templates/comment_inline_template.html',
     'comment_item_view'         : '../apps/comments/list/views/comment_item_view',
+
+    // ----------
+    //= Admin
+    // ----------
+    'admin_main_controller'     : '../apps/admin/controllers/admin_main_controller',
+    'admin_main_view'           : '../apps/admin/views/admin_main_view',
+    'admin_main_template'       : '../apps/admin/templates/admin_main_template.html',
+    'admin_user_view'           : '../apps/admin/views/admin_user_view',
+    'admin_user_password_view'  : '../apps/admin/views/admin_user_password_view',
+    'admin_user_template'       : '../apps/admin/templates/admin_user_template.html',
+    'admin_user_table'          : '../apps/admin/templates/admin_user_table.html',
+    'admin_user_password_template' : '../apps/admin/templates/admin_user_password.html',
+    'admin_tag_view'            : '../apps/admin/views/admin_tag_view',
+    'admin_tag_template'        : '../apps/admin/templates/admin_tag_template.html',
+    'admin_paginate'            : '../apps/admin/templates/admin_paginate.html',
 
     // ----------
     //= Components
@@ -178,6 +202,8 @@ require.config({
     'modal_wizard_component'    : '../components/modal_wizard',
     'modal_wizard_template'     : '../components/modal_wizard_template.html',
     'alert_template'            : '../components/alert_template.html',
+    'markdown_editor'           : '../components/markdown_editor',
+    'markdown_editor_template'  : '../components/markdown_editor_template.html',
     'autocomplete'              : '../mixins/autocomplete'
   },
 
@@ -186,6 +212,9 @@ require.config({
     'jquery_select2': {
       deps: ['jquery'],
       exports: 'select2'
+    },
+    'autolinker': {
+      exports: 'Autolinker'
     }
   }
 

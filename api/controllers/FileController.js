@@ -35,9 +35,7 @@ module.exports = {
         res.set('Content-Type', f.mimeType);
         res.set('Content-disposition', 'attachment; filename=' + f.name);
         // Don't let browsers cache the response
-        res.set('Cache-Control', 'no-cache, no-store, must-revalidate'); // HTTP 1.1.
-        res.set('Pragma', 'no-cache'); // HTTP 1.0.
-        res.set('Expires', '0'); // Proxies.
+        res.set('Cache-Control', 'no-transform,public,max-age=300,s-maxage=900'); // HTTP 1.1.
         return res.send(f.data);
       });
     } else {
@@ -74,7 +72,15 @@ module.exports = {
             if (err || !size) {
               return done({ message: 'Error with file: it is probably not an image. ', error: err });
             }
-            if (size.width == size.height) {
+            var newCrop = Math.min(size.width, size.height);
+            var newSize = Math.min(newCrop, 712);
+            gm(f.data, 'photo.jpg')
+            .crop(newCrop, newCrop, ((size.width - newCrop) / 2), ((size.height - newCrop) / 2))
+            .resize(newSize, newSize)
+            .noProfile()
+            .toBuffer(function (err, buffer) {
+              f.data = buffer;
+              f.size = buffer.length;
               sails.log.debug('Create File:', f);
               File.create(f, function(err, newFile) {
                 if (err || !newFile) { return done({ message:'Error storing file.', error: err }); }
@@ -82,11 +88,39 @@ module.exports = {
                 results.push(newFile);
                 return done();
               });
-              return;
+            });
+          });
+        } else if (req.param('type') == 'image') {
+          // resize the image so that it isn't massive
+          gm(f.data, 'photo.jpg')
+          .size(function (err, size) {
+            if (err || !size) {
+              return done({ message: 'Error with file: it is probably not an image. ', error: err });
             }
-            var newSize = Math.min(size.width, size.height);
+            var width = null;
+            var height = null;
+            // width is longer
+            sails.log.debug(size);
+            if (size.width > size.height) {
+              if (size.height > 712) {
+                height = 712;
+                sails.log.debug('height');
+              }
+            }
+            // height is longer
+            else {
+              if (size.width > 712) {
+                width = 712;
+                sails.log.debug('width');
+              }
+            }
+            if ((width === null) && (height === null)) {
+              width = size.width;
+            }
+            sails.log.debug(width + ' x ' + height);
             gm(f.data, 'photo.jpg')
-            .crop(newSize, newSize, ((size.width - newSize) / 2), ((size.height - newSize) / 2))
+            .resize(width, height)
+            .noProfile()
             .toBuffer(function (err, buffer) {
               f.data = buffer;
               f.size = buffer.length;

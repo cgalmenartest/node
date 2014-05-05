@@ -34,7 +34,7 @@ define([
       var data = {
         hostname: window.location.hostname,
         data: this.model.toJSON(),
-        user: window.cache.currentUser,
+        user: window.cache.currentUser || {},
         edit: this.edit
       };
 
@@ -104,13 +104,14 @@ define([
           url: "/api/file/create",
           dataType: 'text',
           acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+          formData: { 'type': 'image' },
           add: function (e, data) {
-            $('#file-upload-progress-container').show();
+            self.$('#file-upload-progress-container').show();
             data.submit();
           },
           progressall: function (e, data) {
             var progress = parseInt(data.loaded / data.total * 100, 10);
-            $('#file-upload-progress').css(
+            self.$('#file-upload-progress').css(
               'width',
               progress + '%'
             );
@@ -125,6 +126,16 @@ define([
               var result = JSON.parse($(data.result).text());
             }
             self.model.trigger("project:update:photoId", result[0]);
+          },
+          fail: function (e, data) {
+            // notify the user that the upload failed
+            var message = data.errorThrown;
+            self.$('#file-upload-progress-container').hide();
+            if (data.jqXHR.status == 413) {
+              message = "The uploaded file exceeds the maximum file size.";
+            }
+            self.$("#file-upload-alert").html(message)
+            self.$("#file-upload-alert").show();
           }
       });
 

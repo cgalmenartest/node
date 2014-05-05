@@ -27,6 +27,15 @@ module.exports.policies = {
     '*': true
   },
 
+  MainController : {
+    '*': ['sspi']
+  },
+
+  // Only admins can access the AdminController API
+  AdminController : {
+    '*': ['authenticated', 'admin']
+  },
+
   // Limit user controller view to just the /user endpoint
   UserController : {
     '*': false,
@@ -37,7 +46,8 @@ module.exports.policies = {
     'find': ['authenticated', 'requireUserId'],
     'activities': ['authenticated'],
     'disable': ['authenticated', 'requireId', 'requireUserId'],
-    'enable': ['authenticated', 'requireId', 'requireUserId', 'admin']
+    'enable': ['authenticated', 'requireId', 'requireUserId', 'admin'],
+    'resetPassword': ['authenticated', 'requireUserId']
   },
 
   UserEmailController : {
@@ -63,8 +73,8 @@ module.exports.policies = {
   ProjectController : {
     '*': ['authenticated', 'addUserId', 'project'],
     'find': ['authenticated', 'requireId', 'project'],
-    'update': ['authenticated', 'requireUserId', 'projectId'],
-    'destroy': ['authenticated', 'requireUserId', 'requireId', 'project']
+    'update': ['authenticated', 'requireUserId', 'requireId', 'project', 'ownerOrAdmin'],
+    'destroy': ['authenticated', 'requireUserId', 'requireId', 'project', 'ownerOrAdmin']
   },
 
   ProjectOwnerController : {
@@ -107,7 +117,7 @@ module.exports.policies = {
   TagController : {
     '*': ['authenticated'],
     'find': false,
-    'create': ['authenticated', 'requireUserId', 'projectId', 'taskId'],
+    'create': ['authenticated', 'requireUserId', 'projectId', 'taskId', 'ownerOrAdmin'],
     'update': false,
     'destroy': ['authenticated', 'requireUserId', 'requireId'],
     'add': ['authenticated', 'requireUserId'],
@@ -134,8 +144,8 @@ module.exports.policies = {
     'find': ['authenticated', 'task'],
     'findAllByProjectId': ['authenticated', 'requireId', 'project'],
     'create': ['authenticated', 'requireUserId', 'addUserId'],
-    'update': ['authenticated', 'requireUserId', 'projectId', 'taskId'],
-    'destroy': ['authenticated', 'requireUserId', 'requireId', 'task']
+    'update': ['authenticated', 'requireUserId', 'requireId', 'projectId', 'task', 'ownerOrAdmin'],
+    'destroy': ['authenticated', 'requireUserId', 'requireId', 'task', 'ownerOrAdmin']
   },
 
   AttachmentController: {
@@ -178,7 +188,7 @@ module.exports.policies = {
  * We'll make some educated guesses about whether our system will
  * consider this user someone who is nice to animals.
  *
- * Besides protecting rabbits (while a noble cause, no doubt), 
+ * Besides protecting rabbits (while a noble cause, no doubt),
  * here are a few other example use cases for policies:
  *
  *  + cookie-based authentication

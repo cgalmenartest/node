@@ -6,26 +6,27 @@ define([
   'underscore',
   'backbone',
   'utilities',
+  'markdown_editor',
+  'marked',
   'tag_show_view',
   'text!profile_show_template',
   'text!profile_email_template',
+  'json!login_config',
   'modal_component',
   'profile_activity_view',
   'profile_email_view'
-], function ($, async, jqIframe, jqFU, _, Backbone, utils,
-  TagShowView, ProfileTemplate, EmailTemplate, ModalComponent, PAView, EmailFormView) {
+], function ($, async, jqIframe, jqFU, _, Backbone, utils, MarkdownEditor, marked,
+  TagShowView, ProfileTemplate, EmailTemplate, Login, ModalComponent, PAView, EmailFormView) {
 
   var ProfileShowView = Backbone.View.extend({
 
     events: {
       "submit #profile-form"       : "profileSubmit",
       "click #profile-save"        : "profileSave",
-      "click #profile-edit"        : "profileEdit",
+      "click .link-backbone"       : linkBackbone,
       "click #profile-cancel"      : "profileCancel",
       "click #like-button"         : "like",
-      "keyup #name, #username, #title, #bio" : "fieldModified",
-      "keyup #username"            : "checkUsername",
-      "click #username-button"     : "clickUsername",
+      "keyup #name, #title, #bio"  : "fieldModified",
       "click #add-email"           : "addEmail",
       "click .email-remove"        : "removeEmail",
       "click .removeAuth"          : "removeAuth"
@@ -35,10 +36,8 @@ define([
       this.options = options;
       this.data = options.data;
       this.edit = false;
-      if (this.options.routeId) {
-        if (this.options.routeId == 'edit') {
-          this.edit = true;
-        }
+      if (this.options.action == 'edit') {
+        this.edit = true;
       }
       if (this.data.saved) {
         this.saved = true;
@@ -48,13 +47,19 @@ define([
 
     render: function () {
       var data = {
+        login: Login,
         data: this.model.toJSON(),
+        user: window.cache.currentUser || {},
         edit: this.edit,
         saved: this.saved
+      }
+      if (data.data.bio) {
+        data.data.bioHtml = marked(data.data.bio);
       }
       var template = _.template(ProfileTemplate, data);
       this.$el.html(template);
 
+      // initialize sub components
       this.initializeFileUpload();
       this.initializeForm();
       this.initializeSelect2();
@@ -62,6 +67,7 @@ define([
       this.initializeTags();
       this.initializePAView();
       this.initializeEmail();
+      this.initializeTextArea();
       this.updatePhoto();
       this.updateProfileEmail();
       return this;
@@ -76,12 +82,12 @@ define([
           acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
           formData: { 'type': 'image_square' },
           add: function (e, data) {
-            $('#file-upload-progress-container').show();
+            self.$('#file-upload-progress-container').show();
             data.submit();
           },
           progressall: function (e, data) {
             var progress = parseInt(data.loaded / data.total * 100, 10);
-            $('#file-upload-progress').css(
+            self.$('#file-upload-progress').css(
               'width',
               progress + '%'
             );
@@ -96,6 +102,16 @@ define([
               var result = JSON.parse($(data.result).text());
             }
             self.model.trigger("profile:updateWithPhotoId", result[0]);
+          },
+          fail: function (e, data) {
+            // notify the user that the upload failed
+            var message = data.errorThrown;
+            self.$('#file-upload-progress-container').hide();
+            if (data.jqXHR.status == 413) {
+              message = "The uploaded file exceeds the maximum file size.";
+            }
+            self.$("#file-upload-alert").html(message)
+            self.$("#file-upload-alert").show();
           }
       });
 
@@ -122,6 +138,7 @@ define([
         model: this.model,
         el: '.tag-wrapper',
         target: 'profile',
+        targetId: 'userId',
         edit: this.edit,
         url: '/api/tag/findAllByUserId/'
       });
@@ -151,14 +168,17 @@ define([
     },
 
     updatePhoto: function () {
+      var self = this;
       this.model.on("profile:updatedPhoto", function (data) {
         var url = '/api/user/photo/' + data.attributes.id;
         // force the new image to be loaded
         $.get(url, function (data) {
           $("#project-header").css('background-image', "url('" + url + "')");
           $('#file-upload-progress-container').hide();
-          // notify listeners of the new user image
-          window.cache.userEvents.trigger("user:profile:photo:save", url);
+          // notify listeners of the new user image, but only for the current user
+          if (self.model.toJSON().id == window.cache.currentUser.id) {
+            window.cache.userEvents.trigger("user:profile:photo:save", url);
+          }
         });
       });
     },
@@ -167,11 +187,14 @@ define([
       var self = this;
 
       this.listenTo(self.model, "profile:save:success", function (data) {
-        $("#submit").button('success');
         // Bootstrap .button() has execution order issue since it
         // uses setTimeout to change the text of buttons.
         // make sure attr() runs last
-        window.cache.userEvents.trigger("user:profile:save", data.toJSON());
+        $("#submit").button('success');
+        // notify listeners if the current user has been updated
+        if (self.model.toJSON().id == window.cache.currentUser.id) {
+          window.cache.userEvents.trigger("user:profile:save", data.toJSON());
+        }
 
         var tags = [
           $("#company").select2('data'),
@@ -182,10 +205,7 @@ define([
       this.listenTo(self.model, "profile:tags:save", function (tags) {
         var removeTag = function(type, done) {
           if (self.model[type]) {
-            // if it is already stored, abort.
-            if (self.model[type].tagId) {
-              return done();
-            }
+            // delete the existing tag
             $.ajax({
               url: '/api/tag/' + self.model[type].tagId,
               type: 'DELETE',
@@ -209,6 +229,10 @@ define([
           var tagMap = {
             tagId: tag.id
           };
+          // if a different profile is being edited, add its userId
+          if (self.model.toJSON().id !== window.cache.currentUser.id) {
+            tagMap.userId = self.model.toJSON().id;
+          }
           $.ajax({
             url: '/api/tag',
             type: 'POST',
@@ -224,12 +248,12 @@ define([
           });
         });
       });
-      this.listenTo(self.model, "profile:tags:save:success", function (data) {
+      this.listenTo(self.model, "profile:tags:save:success", function (err) {
         setTimeout(function() { $("#profile-save, #submit").attr("disabled", "disabled") }, 0);
         $("#profile-save, #submit").removeClass("btn-primary");
         $("#profile-save, #submit").addClass("btn-success");
         self.data.saved = true;
-        Backbone.history.navigate('profile', { trigger: true });
+        Backbone.history.navigate('profile/' + self.model.toJSON().id, { trigger: true });
       });
       this.listenTo(self.model, "profile:save:fail", function (data) {
         $("#submit").button('fail');
@@ -335,9 +359,24 @@ define([
         $("#profile-emails").append(template);
       });
 
+      this.model.listenTo(this.model, "profile:email:error", function (data) {
+        // nothing to be done
+      });
+
       this.listenTo(this.model, "profile:email:delete", function (e) {
         $(e.currentTarget).parents('div.radio').remove();
       });
+    },
+
+    initializeTextArea: function () {
+      if (this.md) { this.md.cleanup(); }
+      this.md = new MarkdownEditor({
+        data: this.model.toJSON().bio,
+        el: ".markdown-edit",
+        id: 'bio',
+        placeholder: 'A short biography.',
+        rows: 6
+      }).render();
     },
 
     fieldModified: function (e) {
@@ -346,12 +385,7 @@ define([
 
     profileCancel: function (e) {
       e.preventDefault();
-      Backbone.history.navigate('profile', { trigger: true });
-    },
-
-    profileEdit: function (e) {
-      e.preventDefault();
-      Backbone.history.navigate('profile/edit', { trigger: true });
+      Backbone.history.navigate('profile/' + this.model.toJSON().id, { trigger: true });
     },
 
     profileSave: function (e) {
@@ -361,15 +395,10 @@ define([
 
     profileSubmit: function (e) {
       e.preventDefault();
-      if (!$("#username-button").hasClass('btn-success')) {
-        alert("Please pick a valid username.");
-        return;
-      }
       $("#profile-save, #submit").button('loading');
       setTimeout(function() { $("#profile-save, #submit").attr("disabled", "disabled") }, 0);
       var data = {
         name: $("#name").val(),
-        username: $("#username").val(),
         title: $("#title").val(),
         bio: $("#bio").val()
       };
@@ -392,25 +421,19 @@ define([
 
       // Pop up dialog box to create tag,
       // then put tag into the select box
-      if (_.isUndefined(this.emailModalComponent)) {
-        this.emailModalComponent = new ModalComponent({
-          el: "#container",
-          id: "addEmail",
-          modalTitle: "Add Email Address"
-        }).render();
-      }
-
-      if (!_.isUndefined(this.emailModalComponent)) {
-        if (this.emailFormView) {
-          this.emailFormView.cleanup();
-        }
-        this.emailFormView = new EmailFormView({
-          el: "#addEmail .modal-template",
-          model: self.model,
-          target: 'profile'
-        });
-        this.emailFormView.render();
-      }
+      if (this.emailFormView) this.emailFormView.cleanup();
+      if (this.emailModalComponent) this.emailModalComponent.cleanup();
+      this.emailModalComponent = new ModalComponent({
+        el: "#emailModal",
+        id: "addEmail",
+        modalTitle: "Add Email Address"
+      }).render();
+      this.emailFormView = new EmailFormView({
+        el: "#addEmail .modal-template",
+        model: self.model,
+        target: 'profile'
+      });
+      this.emailFormView.render();
     },
 
     removeEmail: function (e) {
@@ -425,37 +448,6 @@ define([
         self.model.trigger("profile:email:delete", e);
       });
 
-    },
-
-    checkUsername: function (e) {
-      var username = $("#username").val();
-      $("#username-button").removeClass('btn-success');
-      $("#username-button").removeClass('btn-danger');
-      $("#username-button").addClass('btn-default');
-      $("#username-check").removeClass('icon-ok');
-      $("#username-check").removeClass('icon-remove');
-      $("#username-check").addClass('icon-spin');
-      $("#username-check").addClass('icon-spinner');
-      $.ajax({
-        url: '/api/user/username/' + username,
-      }).done(function (data) {
-        $("#username-check").removeClass('icon-spin');
-        $("#username-check").removeClass('icon-spinner');
-        $("#username-button").removeClass('btn-default');
-        if (data) {
-          // username is take
-          $("#username-button").addClass('btn-danger');
-          $("#username-check").addClass('icon-remove');
-        } else {
-          // username is available
-          $("#username-button").addClass('btn-success');
-          $("#username-check").addClass('icon-ok');
-        }
-      });
-    },
-
-    clickUsername: function (e) {
-      e.preventDefault();
     },
 
     like: function (e) {
@@ -500,6 +492,7 @@ define([
       }
     },
     cleanup: function () {
+      if (this.md) { this.md.cleanup(); }
       if (this.tagView) { this.tagView.cleanup(); }
       if (this.projectView) { this.projectView.cleanup(); }
       if (this.taskView) { this.taskView.cleanup(); }

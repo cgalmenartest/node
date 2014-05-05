@@ -46,7 +46,13 @@ define([
       }
 
       var renderTag = function (tag) {
-        var templData = { data: self.model.toJSON(), tags: self.tags, tag: tag, edit: self.edit };
+        var templData = {
+          data: self.model.toJSON(),
+          tags: self.tags,
+          tag: tag,
+          edit: self.edit,
+          user: window.cache.currentUser || {}
+        };
         var compiledTemplate = _.template(TagTemplate, templData);
         var tagDom = $("." + tag.tag.type).children(".tags");
         tagDom.append(compiledTemplate);
@@ -119,7 +125,8 @@ define([
       var data = {
         data: this.model.toJSON(),
         tags: this.tags,
-        edit: this.edit
+        edit: this.edit,
+        user: window.cache.currentUser || {}
       };
       var template = _.template(TagShowTemplate, data);
       this.$el.html(template);

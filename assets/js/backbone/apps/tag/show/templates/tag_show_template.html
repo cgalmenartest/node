@@ -1,4 +1,4 @@
-<% if (data.isOwner && edit) { %>
+<% if ((data.isOwner || user.isAdmin) && edit) { %>
 <div class="row">
   <div class="col-lg-12 select-tags">
     <input type="hidden" id="input-tags" style="width: 100%"/>
@@ -8,7 +8,7 @@
   <div class="col-lg-12 select-tags-buttons">
     <div class="pull-right">
       <a href="#createTag" id="tag-create" class="btn btn-sm btn-c0" data-toggle="modal">Create Tag</a>
-      <button id="tag-save" class="btn btn-sm btn-c2">Add Tags</button>
+      <button id="tag-save" class="btn btn-sm btn-c2">Save Tags</button>
     </div>
   </div>
 </div>

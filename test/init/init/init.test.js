@@ -1,4 +1,4 @@
-var assert = require('assert');
+var assert = require('chai').assert;
 var _ = require('underscore');
 var async = require('async');
 var conf = require('./config');

@@ -236,6 +236,21 @@ input[type="submit"] {
 	border-radius: 3px;
 }
 
+.select2-result-description {
+	font-size: 11px;
+	max-height: 2.5em;
+	color: #606060;
+	overflow-y: hidden;
+}
+
+.select2-highlighted .select2-result-description {
+	color: #e0e0e0;
+}
+
+.select2-result-description p {
+	margin: -1px 0;
+}
+
 /*****************
 =  HEADERS
 ******************/
@@ -298,6 +313,74 @@ ul.nav-search > li {
 	display: block;
 }
 
+/*
+=  NAVBAR ADMIN
+*/
+@media (min-width: 768px) {
+  .admin .navbar-collapse {
+    height: auto;
+    border-top: 0;
+    box-shadow: none;
+    max-height: none;
+    padding-left:0;
+    padding-right:0;
+  }
+  .admin .navbar-collapse.collapse {
+    display: block !important;
+    width: auto !important;
+    padding-bottom: 0;
+    overflow: visible !important;
+  }
+  .admin .navbar-collapse.in {
+    overflow-x: visible;
+  }
+
+	.admin.navbar
+	{
+		max-width:300px;
+		margin-right: 0;
+		margin-left: 0;
+	}
+
+	.admin .navbar-nav,
+	.admin .navbar-nav > li,
+	.admin .navbar-left,
+	.admin .navbar-right,
+	.admin .navbar-header
+	{float:none !important;}
+
+	.admin .navbar-right .dropdown-menu {left:0;right:auto;}
+	.admin .navbar-collapse .navbar-nav.navbar-right:last-child {
+    margin-right: 0;
+	}
+}
+
+.admin .navbar-toggle {
+	margin-top: 8px;
+}
+
+.admin-container .pagination {
+	margin: 0;
+}
+
+.admin-container .fullwidth {
+	width: 100%;
+}
+
+.admin-user-checkbox {
+	width: 15px;
+}
+
+.admin-user-id {
+	width: 10px;
+}
+
+.admin-container .spinner {
+	font-size: 28px;
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
+
 /*****************
 =  LOGIN
 ******************/
@@ -349,6 +432,20 @@ ul.password-rules {
 ******************/
 .green {
 	color: #a0d468;
+}
+
+.icon-green {
+	color: #51a351;
+}
+
+.icon-red {
+	color: #bd362f;
+}
+
+.icon-center {
+	width: 12px;
+	display: inline-block;
+	text-align: center;
 }
 
 .gold {
@@ -688,10 +785,6 @@ body > .popover {
 	right: 10px;
 }
 
-#project-owners-show {
-	margin-top: 10px;
-}
-
 /*****************
 =  TAGS
 ******************/
@@ -897,16 +990,7 @@ li.border-left {
 .comment-metadata {
 	font-size: 10px;
 	padding-top: 3px;
-}
-
-.comment-created-at {
 	color: #858585;
-}
-
-.comment-content {
-	padding-top: 5px;
-	padding-bottom: 5px;
-	position: relative;
 }
 
 .comment-item {
@@ -937,6 +1021,10 @@ li.border-left {
 	display: none;
 }
 
+.comment-content {
+	position: relative;
+}
+
 .comment-expand, .comment-contract {
 	position: absolute;
 	top: 0;
@@ -952,9 +1040,104 @@ li.border-left {
 	display: none;
 }
 
+.comment-input {
+	padding-top: 5px;
+	padding-bottom: 5px;
+	position: relative;
+	height: auto;
+	min-height: 30px;
+}
+
+form.comment-submit .input-group-btn {
+	vertical-align: bottom;
+}
+
 #comment-empty {
 	padding-top: 10px;
 	padding-bottom: 10px;
+}
+
+/*****************
+=  AUTOCOMPLETE
+******************/
+.atwho-view {
+    position:absolute;
+    top: 0;
+    left: 0;
+    display: none;
+    margin-top: 18px;
+    background: white;
+    border: 1px solid #DDD;
+    border-radius: 3px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    min-width: 120px;
+    z-index: 10;
+}
+
+.atwho-view .cur {
+    background: #3366FF;
+    color: white;
+}
+.atwho-view .cur small {
+    color: white;
+}
+.atwho-view strong {
+    color: #3366FF;
+}
+.atwho-view .cur strong {
+    color: white;
+    font:bold;
+}
+.atwho-view ul {
+    list-style:none;
+    padding: 0;
+    margin: 0;
+}
+.atwho-view ul li {
+    display: block;
+    padding: 0;
+    margin: 0;
+    border-bottom: 1px solid #DDD;
+    cursor: pointer;
+    max-height: 40px;
+    overflow: hidden;
+}
+.atwho-view small {
+    font-size: smaller;
+    color: #777;
+    font-weight: normal;
+}
+
+.ac-container {
+	display: table;
+}
+.ac-content, .ac-image {
+	display: table-cell;
+	vertical-align: top
+}
+.ac-image {
+	width: 40px;
+	height: 40px;
+}
+.ac-content {
+	max-width: 500px;
+	padding-left: 5px;
+	padding-right: 10px;
+	overflow: hidden;
+}
+.ac-title {
+	font-size: 18px;
+	line-height: 23px;
+	max-height: 23px;
+}
+.ac-description {
+	font-size: 12px;
+	line-height: 15px;
+	max-height: 15px;
+	color: #808080;
+}
+.cur .ac-description {
+	color: #e0e0e0;
 }
 
 /*****************
@@ -1050,6 +1233,13 @@ li.border-left {
 	font-size: 16px;
 	font-weight: 400;
 	line-height: 1.8em;
+}
+
+.task-project {
+	margin-top: -10px;
+	margin-bottom: 10px;
+	padding-left: 5px;
+	font-weight: bold;
 }
 
 .task-description {
@@ -1167,4 +1357,27 @@ ul.task-tags > li {
 .attachment-name > .timeago {
 	font-size: 10px;
 	color: #666;
+}
+
+/*****************
+= MARKDOWN EDITOR
+******************/
+.markdown-edit > .btn-toolbar {
+	margin-bottom: 10px;
+}
+
+.markdown-edit .help {
+	font-size: 12px;
+	padding-bottom: 5px;
+	display: none;
+}
+
+.markdown-edit > .preview {
+	border-style: solid none;
+	border-width: 1px 0;
+	border-color: #e0e0e0;
+}
+
+.markdown-edit textarea.form-control {
+	width: 100%;
 }

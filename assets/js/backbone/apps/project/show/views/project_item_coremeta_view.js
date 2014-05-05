@@ -4,11 +4,12 @@ define([
   'async',
   'backbone',
   'utilities',
+  'marked',
+  'markdown_editor',
   'popovers', /* Popovers,*/
   'modal_component',
-  'autocomplete',
   'text!project_item_coremeta_template'
-], function ($, _, async, Backbone, utils, Popovers, ModalComponent, autocomplete, ProjectItemCoreMetaTemplate) {
+], function ($, _, async, Backbone, utils, marked, MarkdownEditor, Popovers, ModalComponent, ProjectItemCoreMetaTemplate) {
 
   //if(_.isUndefined(popovers)){var popovers = new Popovers();}
 
@@ -35,6 +36,7 @@ define([
       this.options = options;
       this.data = options.data;
       this.action = options.action;
+      this.user = window.cache.currentUser || {};
       this.edit = false;
       if (this.options.action) {
         if (this.options.action == 'edit') {
@@ -43,6 +45,7 @@ define([
       }
 
       this.model.on("project:coremeta:show:rendered", function () {
+        self.initializeTextArea();
         self.initializeToggledElements();
       });
 
@@ -55,9 +58,12 @@ define([
     },
 
     render: function () {
-      var compiledTemplate,
-      data = { data: this.model.toJSON() };
-      compiledTemplate = _.template(ProjectItemCoreMetaTemplate, data);
+      var data = {
+        data: this.model.toJSON()
+      };
+      // convert description to html using markdown syntax
+      data.data.descriptionHtml = marked(data.data.description || '');
+      var compiledTemplate = _.template(ProjectItemCoreMetaTemplate, data);
       this.$el.html(compiledTemplate);
 
       this.model.trigger("project:coremeta:show:rendered", data);
@@ -65,9 +71,20 @@ define([
       return this;
     },
 
-    initializeToggledElements: function(){
+    initializeTextArea: function () {
+      if (this.md) { this.md.cleanup(); }
+      this.md = new MarkdownEditor({
+        data: this.model.toJSON().description,
+        el: ".markdown-edit",
+        id: 'project-edit-form-description',
+        rows: 6,
+        validate: ['empty', 'count400']
+      }).render();
+    },
+
+    initializeToggledElements: function() {
       var self = this;
-      if (this.model.attributes.isOwner && this.edit){
+      if ((this.model.attributes.isOwner || this.user.isAdmin) && this.edit){
         self.$('#project-coremeta-form').show();
         self.$('#project-coremeta-show').hide();
       }
@@ -82,7 +99,7 @@ define([
 
     saveCoreMeta: function (e){
       if (e.preventDefault) e.preventDefault();
-      if (!this.model.attributes.isOwner && this.edit) return false;
+      if (!(this.model.attributes.isOwner || this.user.isAdmin) && this.edit) return false;
 
       // validate the form fields
       var validateIds = ['#project-edit-form-title', '#project-edit-form-description'];
@@ -114,6 +131,7 @@ define([
     //= Utility Methods
     // ---------------------
     cleanup: function() {
+      if (this.md) { this.md.cleanup(); }
       removeView(this);
     }
 

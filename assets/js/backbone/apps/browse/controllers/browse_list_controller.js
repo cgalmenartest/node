@@ -22,12 +22,9 @@ define([
 
   Application.Browse.ListController = BaseController.extend({
 
-    el: "#container",
-
     events: {
-      "click .project-link"   : "showProject",
+      "click .link-backbone"  : linkBackbone,
       "click .project-background-image" : "showProject",
-      "click .task-link"      : "showTask",
       "click .task-box"       : "showTask",
       "click .add-project"    : "addProject",
       "click .add-opportunity": "addTask"
@@ -114,7 +111,7 @@ define([
       if (this.modalComponent) this.modalComponent.cleanup();
 
       this.modalComponent = new ModalComponent({
-        el: "#container",
+        el: ".wrapper-addProject",
         id: "addProject",
         modalTitle: "Add Project"
       }).render();
@@ -134,14 +131,15 @@ define([
 
       this.taskModel = new TaskModel();
       this.modalWizardComponent = new ModalWizardComponent({
-        el: "#addTask",
+        el: ".wrapper-addTask",
+        id: "addTask",
         modalTitle: 'New Opportunity',
         model: this.taskModel,
         collection: this.tasksCollection,
         modelName: 'task',
-        data: function() { return {
-          title: $("#task-title").val(),
-          description: $("#task-description").val(),
+        data: function (parent) { return {
+          title: parent.$("#task-title").val(),
+          description: parent.$("#task-description").val(),
           // these tasks are orphaned
           projectId: null
         } }

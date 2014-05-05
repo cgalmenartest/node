@@ -9,7 +9,7 @@
   <div class="col-lg-12 ">
     <form action="" class="form-inline comment-submit <% if (form.topic) { %>comment-form-topic<% } %>" role="form" data-depth="<%= form.depth %>">
       <div class="input-group">
-        <div class="comment comment-content form-control input-sm" contentEditable="true"></div>
+        <div class="comment-input form-control input-sm" contentEditable="true"></div>
         <span class="input-group-btn">
           <input class="btn btn-c2 btn-sm" type="submit" value="<% if (form.topic) { %> Start Topic <% } else if (form.depth == 1) { %> Reply <% } else { %>Add Comment<% } %>">
         </span>

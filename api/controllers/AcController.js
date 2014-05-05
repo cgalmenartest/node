@@ -8,6 +8,7 @@ var _ = require('underscore');
 var async = require('async');
 
 var runSearch = function(type, q, params, cb) {
+  var prelim = {};
   var results = [];
 
   var callSource = function(source, done) {
@@ -18,7 +19,8 @@ var runSearch = function(type, q, params, cb) {
     // Run the query and add the results
     actor.query(q, params, src, function(err, r) {
       if (!err) {
-        results = results.concat(r || []);
+        // preliminarily record the results
+        prelim[source] = r;
       }
       done(err);
     });
@@ -26,6 +28,11 @@ var runSearch = function(type, q, params, cb) {
 
   // Iterate through each source and query it, compiling the results
   async.each(sails.config.sources.autocomplete[type], callSource, function(err) {
+    // put the results in the order specified in the config
+    // since async may get the results of each fn in random order
+    _.each(sails.config.sources.autocomplete[type], function (source) {
+      results = results.concat(prelim[source] || []);
+    });
     cb(err, results);
   });
 
@@ -97,6 +104,14 @@ module.exports = {
   user: function (req, res) {
     if (!req.param('q')) { return res.send([]); }
     runSearch('user', req.param('q'), req.query, function (err, results) {
+      if (err) { return res.send(400, { message: 'Error performing search' }); }
+      return res.send(results);
+    });
+  },
+
+  project: function (req, res) {
+    if (!req.param('q')) { return res.send([]); }
+    runSearch('project', req.param('q'), req.query, function (err, results) {
       if (err) { return res.send(400, { message: 'Error performing search' }); }
       return res.send(results);
     });

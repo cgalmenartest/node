@@ -6,12 +6,12 @@
   <% } %>
   </div>
   <div class="project-title">
-    <a href="" class="project-link c1">
+    <a href="/projects/<%- item.id %>" class="link-backbone c1">
       <%- item.title %>
     </a>
   </div>
   <div class="project-list-description">
-    <%- item.description %>
+    <%= item.descriptionHtml %>
   </div>
 
   <div class="project-list-bottom-wrapper border-top">

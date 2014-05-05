@@ -7,10 +7,15 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'jquery.caret',
+  'jquery.at',
   'utilities',
+  'marked',
   'comment_collection',
-  'text!comment_form_template'
-], function ($, _, Backbone, utils, CommentCollection, CommentFormTemplate) {
+  'text!comment_form_template',
+  'text!comment_ac_template',
+  'text!comment_inline_template'
+], function ($, _, Backbone, jqCaret, jqAt, utils, marked, CommentCollection, CommentFormTemplate, CommentAcTemplate, CommentInlineTemplate) {
 
   var CommentFormView = Backbone.View.extend({
 
@@ -24,14 +29,101 @@ define([
     },
 
     render: function () {
-      var data = { form: this.options },
-          template  = _.template(CommentFormTemplate, data);
+      var self = this;
+      var data = { form: this.options };
+      var template = _.template(CommentFormTemplate, data);
 
       if (this.options.topic) {
         this.$el.prepend(template).append("<div class='clearfix'></div>");
       } else {
-        this.$el.append(template)
+        this.$el.append(template);
       }
+
+      var genTemplate = function (template, data) {
+        if (!data) {
+          return '';
+        }
+        // use the agency/office name as the description
+        // if none exists, use the job title.
+        // otherwise leave blank.
+        if (data.target == 'user') {
+          if (data.agency) {
+            data.description = data.agency;
+          }
+          else if (data.title) {
+            data.description = data.title;
+          }
+          else {
+            data.description = '';
+          }
+        }
+        // convert descriptions to markdown/html
+        if (data.target == 'project') {
+          if (data.description) {
+            data.description = marked(data.description);
+          }
+          if (!data.coverId) {
+            data.coverId = null;
+          }
+        }
+        if (!data.image) {
+          data.image = null;
+        }
+        // render template
+        return _.template(template, data);
+      };
+
+      this.$(".comment-input").atwho({
+        at: '@',
+        search_key: 'value',
+        tpl: CommentAcTemplate,
+        insert_tpl: CommentInlineTemplate,
+        limit: 10,
+        callbacks: {
+          tpl_eval: genTemplate,
+          sorter: function (query, items, search_key) {
+            // don't sort, use the order from the server
+            return items;
+          },
+          highlighter: function (li, query) {
+            return li;
+          },
+          // highlighter: function (li, query) {
+          //   var regexp;
+          //   if (!query) {
+          //     return li;
+          //   }
+          //   // just want to find all case insensitive matches and replace with <strong>
+          //   // set up the query as a regular expression
+          //   var re = new RegExp('(' + query.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1") + ')', 'ig');
+          //   // parse the li string into a DOM node
+          //   var liDom = $.parseHTML(li);
+          //   var text = $(liDom[0]).text().replace(re, "<strong>$1</strong>");
+          //   $(liDom[0]).html(text);
+          //   return liDom[0];
+          // },
+          remote_filter: function (query, callback) {
+            // get data from the server
+            $.getJSON("/api/ac/inline", { q: query }, function (data) {
+              _.each(data, function (d) {
+                // At.js expects the name to be set for the matcher fn
+                if (_.isUndefined(d.name)) {
+                  d.name = d.value;
+                }
+              });
+              callback(data);
+            });
+          }
+        }
+      }).on("inserted.atwho", function(event, $li) {
+        // This is a hack to hide the space after inserting an element.
+        var ids = self.$("span.atwho-view-flag > span:visible");
+        // insert a non-breaking space after the inserted element, but not within it
+        // this allows the user to delete that space if they want to, without deleting
+        // the referenced element
+        ids.parent().after('&nbsp;');
+        ids.hide();
+      });
 
       return this;
     },
@@ -39,20 +131,14 @@ define([
     post: function (e) {
       if (e.preventDefault) e.preventDefault();
 
-      if ($(e.currentTarget).find(".comment-content").val() !== "") {
-        this.comment = $(e.currentTarget).find(".comment-content").text();
-      } else {
-        this.comment = $(e.currentTarget).find(".comment-content:first-child").text();
-      }
+      var commentHtml = this.$(".comment-input").html();
+      var commentText = this.$(".comment-input").text().trim();
 
       // abort if the comment is empty
-      if (!this.comment) {
+      if (!commentText) {
         this.$('.comment-alert-empty').show();
         return;
       }
-
-      if ($(e.currentTarget).find(".comment-content:first-child").children("a").attr("href") !== undefined)
-        this.wikiLink = _.escape($(e.currentTarget).find(".comment-content:first-child").children("a").attr("href"))
 
       var parentId;
 
@@ -61,7 +147,7 @@ define([
       }
 
       var data = {
-        comment   : this.comment,
+        comment   : commentHtml,
         topic     : false
       };
       data[this.options.target + 'Id'] = this.options[this.options.target + 'Id'];

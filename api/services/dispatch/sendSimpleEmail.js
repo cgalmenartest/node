@@ -16,7 +16,7 @@ function transport () {
 // dispatch the email
 function send (locals, html, text, cb) {
   var t = transport();
-  if(sails.config.dkimEnabled)
+  if (sails.config.dkimEnabled)
   {
     t.useDKIM(sails.config.dkim);
   }
@@ -35,24 +35,29 @@ module.exports = {
   // send an email with basic email properties
   execute: function (fields, settings, cb) {
     sails.services.utils['emailTemplate'].prepareLayout(
-    fields.layout,
-    fields.layoutLocals,
-    fields.template,
-    fields.templateLocals,
-    function(err, html, text){
-      if(err){ sails.log.debug(err); cb(null, null); return false;}
-      if(fields.to && fields.from){
-        send(
-        {
-          to: fields.to,
-          subject: fields.subject,
-          from: fields.from
-        },
-        html, text, cb);
+      fields,
+      function (err, html, text) {
+        // sails.log.debug("Email Fields", fields);
+        // sails.log.debug("Email Settings", settings);
+        // sails.log.debug("Email Metadata", fields.metadata);
+        if (err) {
+          sails.log.debug(err);
+          cb(null, null);
+          return;
+        }
+        if (fields.to && fields.from) {
+          send(
+          {
+            to: fields.to,
+            subject: fields.subject,
+            from: fields.from
+          },
+          html, text, cb);
+        }
+        else{
+          cb(null, null);
+        }
       }
-      else{
-        cb(null, null);
-      }
-    });
+    );
   }
 };

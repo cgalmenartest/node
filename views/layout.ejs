@@ -6,7 +6,7 @@
     <!-- Viewport mobile tag for sensible mobile support -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-    <title><%- title %></title>
+    <title><%- systemName %></title>
 
     <!-- <script type="text/javascript" src="/js/vendor/sails/socket.io.js"></script> -->
     <!-- then beef it up with some convenience logic for talking to Sails.js -->
@@ -15,7 +15,7 @@
     <!-- <script type="text/javascript" src="/js/vendor/sails/app.js"></script> -->
 
     <script type="text/javascript">
-    version = <%- JSON.stringify(sails.config.version()) %>;
+    version = <%- JSON.stringify(version) %>;
     <% if (req.user) { %>
     backendUser = <%- JSON.stringify(req.user[0]) %>;
     <% } else { %>
@@ -57,8 +57,8 @@
 
     <% } else { %>
 
-    <script type="text/javascript" src="/prod/js/midas.js"></script>
-    <link rel="stylesheet" type="text/css" href="/prod/css/midas.css" />
+    <script type="text/javascript" src="/prod/js/midas-<%= version.version %>.js"></script>
+    <link rel="stylesheet" type="text/css" href="/prod/css/midas-<%= version.version %>.min.css" />
 
     <% } %>
 
