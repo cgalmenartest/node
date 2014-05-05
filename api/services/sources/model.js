@@ -70,6 +70,18 @@ module.exports = {
               result[config.include[j]] = models[i][config.include[j]];
             }
           }
+          // create link for resource
+          if (config.link) {
+            result.link = config.link + models[i].id;
+          }
+          // add image link for projects
+          if ((config.target == 'Project') && (result.coverId)) {
+            result.image = '/api/file/get/' + models[i].coverId;
+          }
+          if (config.target == 'User') {
+            result.image = '/api/user/photo/' + models[i].id;
+          }
+
           results.push( result );
         }
         return done(err);

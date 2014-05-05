@@ -23,8 +23,8 @@ define([
       "submit #event-form"      : "post"
     },
 
-    initialize: function () {
-      this.options = _.extend(this.options, this.defaults);
+    initialize: function (options) {
+      this.options = options;
     },
 
     initializeTimeZone: function () {

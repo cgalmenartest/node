@@ -2,9 +2,9 @@
 
 <div class="modal-body padding-bottom-none" id="login-view">
 
-  <% if (message) { %>
+  <% if (message && !_.isUndefined(message.message)) { %>
   <div class="alert alert-warning">
-    <%= message %>
+    <%= message.message %>
   </div>
   <% } %>
 

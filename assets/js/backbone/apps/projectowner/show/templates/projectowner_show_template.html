@@ -6,26 +6,20 @@
   </h2>
 </div>
 
-<div id="project-owners-form" class="box-pad-lr owner-form-toggle">
-  <form action class="" role="form">
-
+<div id="project-owners-form" class="box-pad-lr box-pad-t owner-form-toggle">
+  <form class="" role="form">
     <div class="form-group">
-    <!--<label for="participants" class="col-lg-3 control-label">Participants</label>-->
-      <!--<div class="participant-form form-control input-sm select2-input" id="participant-text" contenteditable="true"></div>-->
-      <div class="col-lg-9">
-        <input style="width: 100%" id="owners" name="owners" type="hidden" value=" Add Owner " />
-      </div>
+      <input style="width: 100%" id="owners" name="owners" type="hidden" value="Add Owner"/>
     </div>
-
   </form>
 </div>
 
-<div id="project-owners-show" class="box-pad-lr owner-form-toggle">
+<div id="project-owners-show" class="box-pad-lr box-pad-t owner-form-toggle">
   <% if (data.owners) { %>
     <% for (var i = 0; i < data.owners.length; i++) { %>
     <div class="project-people-div" data-userid="<%= data.owners[i].userId %>">
       <img src="/api/user/photo/<%= data.owners[i].userId %>" class="project-people"/>
-      <% if (data.isOwner && (data.owners[i].userId != cache.currentUser.id) && data.edit) { %>
+      <% if ((data.isOwner || user.isAdmin) && (data.owners[i].userId != cache.currentUser.id) && data.edit) { %>
       <a href="#" class="delete-projectowner project-owner-delete glyphicon glyphicon-remove"  id="delete-projectowner-<%= data.owners[i].id %>" data-uid="<%= data.owners[i].userId %>" data-poid="<%= data.owners[i].id %>">
       </a>
       <% } %>

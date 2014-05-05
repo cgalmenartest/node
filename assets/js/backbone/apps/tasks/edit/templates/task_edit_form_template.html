@@ -11,10 +11,19 @@
     <h2 class="box-pad-t">
       Opportunity Description
     </h2>
-    <textarea name="" id="task-description" class="form-control validate" placeholder="Description of opportunity including goals, expected outcomes and deliverables." rows="4" maxlength="400" data-validate="empty,count400"><%= data.description %></textarea>
+    <div class="markdown-edit"></div>
     <span class="help-block error-empty" style="display:none;">You must enter a description for this opportunity</span>
-    <span class="help-block error-count400" style="display:none;">The description of the opportunity must be less than 400 characters.</span>
+    <span class="help-block error-count1000" style="display:none;">The description of the opportunity must be less than 1000 characters.</span>
   </div>
+  <hr />
+
+  This opportunity belongs to the project:
+  <div class="row">
+    <div class="col-md-12">
+      <input type="hidden" id="projectId" class="task-skills fullwidth" />
+    </div>
+  </div>
+
   <hr />
 
   <div class="task-edit-description">

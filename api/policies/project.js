@@ -14,6 +14,7 @@ module.exports = function project (req, res, next) {
       if (!err && !proj) { return res.send(403, { message: 'Not authorized.'}); }
       req.proj = proj;
       req.projectId = proj.id;
+      req.isOwner = proj.isOwner;
       next();
     });
   // no :id is specified, so continue

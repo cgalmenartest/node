@@ -24,12 +24,16 @@ define([
     },
 
     render: function () {
+      var self = this;
       var data = {
         login: this.options.login,
         message: this.options.message
       };
       var template = _.template(LoginTemplate, data);
       this.$el.html(template);
+      setTimeout(function () {
+        self.$("#username").focus();
+      }, 500);
       return this;
     },
 

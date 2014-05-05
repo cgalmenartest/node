@@ -4,10 +4,11 @@ define([
   'backbone',
   'async',
   'utilities',
+  'marked',
   'tag_config',
   'text!project_list_item',
   'text!task_list_item'
-], function ($, _, Backbone, async, utils, TagConfig, ProjectListItem, TaskListItem) {
+], function ($, _, Backbone, async, utils, marked, TagConfig, ProjectListItem, TaskListItem) {
 
   var BrowseListView = Backbone.View.extend({
 
@@ -38,6 +39,9 @@ define([
         }
         if (this.options.collection[l].tags) {
           item.tags = this.organizeTags(this.options.collection[l].tags);
+        }
+        if (this.options.collection[l].description) {
+          item.item.descriptionHtml = marked(this.options.collection[l].description);
         }
         var compiledTemplate = '';
         if (this.options.target == 'projects') {

@@ -62,12 +62,12 @@ define([
         dataType: 'text',
         acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
         add: function (e, data) {
-          $('#file-upload-progress-container').show();
+          self.$('.attachment-fileupload > .progress').show();
           data.submit();
         },
         progressall: function (e, data) {
           var progress = parseInt(data.loaded / data.total * 100, 10);
-          $('.attachment-fileupload .progress-bar').css(
+          self.$('.attachment-fileupload .progress-bar').css(
             'width',
             progress + '%'
           );
@@ -94,9 +94,19 @@ define([
             dataType: 'json',
             contentType: 'application/json'
           }).done(function (attachment) {
-            $('.attachment-fileupload > .progress').hide();
+            self.$('.attachment-fileupload > .progress').hide();
             self.renderNewAttachment(result[0], attachment);
           });
+        },
+        fail: function (e, data) {
+          // notify the user that the upload failed
+          var message = data.errorThrown;
+          self.$('.attachment-fileupload > .progress').hide();
+          if (data.jqXHR.status == 413) {
+            message = "The uploaded file exceeds the maximum file size.";
+          }
+          self.$("#file-upload-alert > span").html(message)
+          self.$("#file-upload-alert").show();
         }
       });
 

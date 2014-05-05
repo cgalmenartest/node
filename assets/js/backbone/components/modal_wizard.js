@@ -48,12 +48,10 @@ define([
     },
 
     render: function () {
-      var data = {}
-      if (this.options) {
-        data = {
-          modalTitle: this.options.modalTitle
-        };
-      }
+      var data = {
+        id: this.options.id,
+        modalTitle: this.options.modalTitle
+      };
       var compiledTemplate = _.template(ModalWizardTemplate, data);
       this.$el.html(compiledTemplate);
       return this;
@@ -159,12 +157,12 @@ define([
     submit: function (e) {
       if (e.preventDefault) e.preventDefault();
 
-      var d = this.options.data();
+      var d = this.options.data(this);
       var abort = false;
       // pass the data to the view
       if (this.childSubmit) {
         // if submit returns true, abort modal processing
-        abort = this.childSubmit(e, $(".current"));
+        abort = this.childSubmit(e, this.$(".current"));
       }
 
       if (abort === true) {

@@ -33,33 +33,54 @@ module.exports.routes = {
   //
   // (This would also work if you had a file at: `/views/home.ejs`)
   '/': {
-    view: 'main/index'
+    controller: 'main',
+    action: 'index'
   },
 
   // These routes are for backbone push state to work
   '/projects': {
-    view: 'main/index'
+    controller: 'main',
+    action: 'index'
   },
   '/projects/:unknownRoute': {
-    view: 'main/index'
+    controller: 'main',
+    action: 'index'
   },
   '/projects/:id/:unknownRoute': {
-    view: 'main/index'
+    controller: 'main',
+    action: 'index'
   },
   '/tasks': {
-    view: 'main/index'
+    controller: 'main',
+    action: 'index'
   },
   '/tasks/:unknownRoute': {
-    view: 'main/index'
+    controller: 'main',
+    action: 'index'
   },
   '/tasks/:id/:unknownRoute': {
-    view: 'main/index'
+    controller: 'main',
+    action: 'index'
   },
   '/profile': {
-    view: 'main/index'
+    controller: 'main',
+    action: 'index'
+  },
+  '/profile/:id/:unknownRoute': {
+    controller: 'main',
+    action: 'index'
   },
   '/profile/:unknownRoute': {
-    view: 'main/index'
+    controller: 'main',
+    action: 'index'
+  },
+  '/admin': {
+    controller: 'main',
+    action: 'index'
+  },
+  '/admin/:unknownRoute': {
+    controller: 'main',
+    action: 'index'
   }
 
   /*

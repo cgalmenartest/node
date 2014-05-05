@@ -1,8 +1,19 @@
-<div class="modal fade" id="<%- id %>">
+<div class="modal fade"
+  id="<%- id %>"
+  role="dialog"
+  aria-hidden="true"
+  tabindex="-1"
+  <% if (disableClose === true) { %>
+  data-backdrop="static"
+  data-keyboard="false"
+  <% } %>
+  >
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
+        <% if (disableClose !== true) { %>
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <% } %>
         <h4 class="modal-title"><%- modalTitle %></h4>
       </div>
 

@@ -1,5 +1,6 @@
 var _ = require('underscore');
 var async = require('async');
+var S = require('string');
 
 /**
  * Gets all the comments given a particular
@@ -80,7 +81,17 @@ var commentParentThreadAssemble = function(comment, where, done){
   }
 };
 
+// updates a comment so that it can be rendered in email or outside the app
+var cleanComment = function (comment) {
+  // remove all HTML
+  comment = S(comment).stripTags().s;
+  // replace non breaking spaces with regular spaces
+  comment = comment.replace(/&nbsp;/gi, " ");
+  return comment;
+};
+
 module.exports = {
   commentAssemble: commentAssemble,
-  commentParentThreadAssemble: commentParentThreadAssemble
-}
+  commentParentThreadAssemble: commentParentThreadAssemble,
+  cleanComment: cleanComment
+};

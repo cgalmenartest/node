@@ -6,11 +6,8 @@ define([
   'utilities',
   'popovers', /* Popovers,*/
   'modal_component',
-  'autocomplete',
   'text!projectowner_show_template'
-], function ($, _, async, Backbone, utils, Popovers, ModalComponent, autocomplete, ProjectownerShowTemplate) {
-
-  //if(_.isUndefined(popovers)){var popovers = new Popovers();}
+], function ($, _, async, Backbone, utils, Popovers, ModalComponent, ProjectownerShowTemplate) {
 
   var ProjectownerShowView = Backbone.View.extend({
 
@@ -35,6 +32,7 @@ define([
       this.options = options;
       this.data = options.data;
       this.action = options.action;
+      this.user = window.cache.currentUser || {};
       if (this.options.action) {
         if (this.options.action == 'edit') {
           this.edit = true;
@@ -57,7 +55,10 @@ define([
 
     render: function () {
       var compiledTemplate;
-      var data = { data: this.model.toJSON() };
+      var data = {
+        data: this.model.toJSON(),
+        user: this.user
+      };
       data.data.edit = this.edit;
       compiledTemplate = _.template(ProjectownerShowTemplate, data);
       this.$el.html(compiledTemplate);
@@ -68,7 +69,7 @@ define([
 
     initializeOwnerSelect2: function () {
       var self = this;
-      if (this.model.attributes.isOwner && this.edit){
+      if ((this.model.attributes.isOwner || this.user.isAdmin) && this.edit){
         var formatResult = function (object, container, query) {
           return object.name;
         };
@@ -111,16 +112,13 @@ define([
     },
 
     toggleOwners : function(e){
-      if (!this.model.attributes.isOwner  && this.edit) return false;
+      if (!(this.model.attributes.isOwner || this.user.isAdmin) && this.edit) return false;
       $('.owner-form-toggle').toggle(400);
     },
 
-
-
-
     saveOwners : function(e){
       if (e.preventDefault) e.preventDefault();
-      if (!this.model.attributes.isOwner  && this.edit) return false;
+      if (!(this.model.attributes.isOwner || this.user.isAdmin) && this.edit) return false;
       var self = this;
 
       var pId = self.model.attributes.id;
@@ -155,7 +153,7 @@ define([
     },
 
     removeOwner: function(e) {
-      if(e.stopPropagation()) e.stopPropagation();
+      if (e.stopPropagation()) e.stopPropagation();
       if (e.preventDefault) e.preventDefault();
       $(e.currentTarget).off("mouseenter");
       $('.popover').remove();
@@ -164,7 +162,7 @@ define([
       var uId = $(e.currentTarget).data('uid');
       var self = this;
 
-      if(typeof cache !== "undefined" && uId !== cache.currentUser.id)
+      if (typeof cache !== "undefined" && uId !== cache.currentUser.id)
       {
         $.ajax({
           url: '/api/projectowner/' + pOId,

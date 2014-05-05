@@ -11,8 +11,11 @@ define([
   'profile_show_controller',
   'task_model',
   'task_show_controller',
-  'task_edit_form_view'
-], function ($, _, Backbone, utils, NavView, FooterView, BrowseListController, ProjectModel, ProjectShowController, ProfileShowController, TaskModel, TaskShowController, TaskEditFormView) {
+  'task_edit_form_view',
+  'admin_main_controller'
+], function ($, _, Backbone, utils, NavView, FooterView, BrowseListController,
+  ProjectModel, ProjectShowController, ProfileShowController, TaskModel,
+  TaskShowController, TaskEditFormView, AdminMainController) {
 
   var BrowseRouter = Backbone.Router.extend({
 
@@ -25,7 +28,10 @@ define([
       'tasks/:id(/)'              : 'showTask',
       'tasks/:id/:action(/)'      : 'showTask',
       'profile(/)'                : 'showProfile',
-      'profile/:id(/)'            : 'showProfile'
+      'profile/:id(/)'            : 'showProfile',
+      'profile/:id(/)/:action'    : 'showProfile',
+      'admin(/)'                  : 'showAdmin',
+      'admin(/):action(/)'        : 'showAdmin'
     },
 
     data: { saved: false },
@@ -55,6 +61,7 @@ define([
       this.cleanupChildren();
       this.browseListController = new BrowseListController({
         target: 'projects',
+        el: '#container',
         data: this.data
       });
     },
@@ -63,6 +70,7 @@ define([
       this.cleanupChildren();
       this.browseListController = new BrowseListController({
         target: 'tasks',
+        el: '#container',
         data: this.data
       });
     },
@@ -81,9 +89,35 @@ define([
       this.taskShowController = new TaskShowController({ model: model, router: this, id: id, action: action, data: this.data });
     },
 
-    showProfile: function (id) {
+    showProfile: function (id, action) {
       this.cleanupChildren();
-      this.profileShowController = new ProfileShowController({ id: id, data: this.data });
+      // normalize input
+      if (id) {
+        id = id.toLowerCase();
+      }
+      if (action) {
+        action = action.toLowerCase();
+      }
+      // normalize actions that don't have ids
+      if (!action && id) {
+        if (id == 'edit') {
+          action = id;
+          id = window.cache.currentUser.id;
+        }
+        else if (id == 'settings') {
+          action = id;
+          id = window.cache.currentUser.id;
+        }
+      }
+      this.profileShowController = new ProfileShowController({ id: id, action: action, data: this.data });
+    },
+
+    showAdmin: function (action) {
+      this.cleanupChildren();
+      this.adminMainController = new AdminMainController({
+        el: "#container",
+        action: action
+      });
     }
 
   });

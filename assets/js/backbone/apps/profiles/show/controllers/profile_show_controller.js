@@ -5,8 +5,10 @@ define([
   'base_controller',
   'profile_model',
   'profile_show_view',
+  'profile_settings_view',
+  'json!login_config',
   'text!alert_template'
-], function ($, _, Backbone, BaseController, ProfileModel, ProfileView, AlertTemplate) {
+], function ($, _, Backbone, BaseController, ProfileModel, ProfileView, ProfileSettingsView, Login, AlertTemplate) {
 
   Application.Controller.Profile = BaseController.extend({
 
@@ -21,8 +23,9 @@ define([
     },
 
     initialize: function (options) {
-      this.id = options.id;
+      this.options = options;
       this.routeId = options.id;
+      this.action = options.action;
       this.data = options.data;
       this.initializeProfileModelInstance();
     },
@@ -32,9 +35,21 @@ define([
 
       if (this.model) this.model.remove();
       this.model = new ProfileModel();
-      var fetchId = null;
-      if (this.id && this.id != 'edit') { fetchId = this.id; }
-      this.model.trigger("profile:fetch", fetchId);
+
+      // prevent directly editing profiles when disabled
+      if ((Login.profile.edit === false) && (this.action == 'edit')) {
+        var data = {
+          alert: {
+            message: "<strong>Direct editing of profiles is disabled.</strong>  <a href=\"" + Login.profile.editUrl + "\" title=\"Edit Profile\">Click here to edit your profile</a>"
+          }
+        };
+        var template = _.template(AlertTemplate, data)
+        this.$el.html(template);
+        return;
+      }
+      // var fetchId = null;
+      // if (this.id && this.id != 'edit') { fetchId = this.id; }
+      this.model.trigger("profile:fetch", this.routeId);
       // process a successful model fetch, and display the model
       this.listenTo(this.model, "profile:fetch:success", function (model) {
         // @instance
@@ -57,7 +72,10 @@ define([
       this.listenTo(this.model, "profile:fetch:error", function (model, response) {
         // if the user isn't logged in, trigger the login window
         if (response.status === 403) {
-          window.cache.userEvents.trigger("user:request:login", "You must be logged in to view profiles");
+          window.cache.userEvents.trigger("user:request:login", {
+            message: "You must be logged in to view profiles",
+            disableClose: false
+          });
         }
         var data = {
           alert: {
@@ -72,22 +90,35 @@ define([
           }
         }
         var template = _.template(AlertTemplate, data)
-        this.$el.html(template);
+        self.$el.html(template);
       });
     },
 
     initializeProfileViewInstance: function () {
       if (this.profileView) { this.profileView.cleanup(); }
-      this.profileView = new ProfileView({
-        el: this.$el,
-        model: this.model,
-        routeId: this.routeId,
-        data: this.data
-      }).render();
+      if (this.settingsView) { this.settingsView.cleanup(); }
+      if (this.action == 'settings') {
+        this.settingsView = new ProfileSettingsView({
+          el: this.$el,
+          model: this.model,
+          routeId: this.routeId,
+          action: this.action,
+          data: this.data
+        }).render();
+      } else {
+        this.profileView = new ProfileView({
+          el: this.$el,
+          model: this.model,
+          routeId: this.routeId,
+          action: this.action,
+          data: this.data
+        }).render();
+      }
     },
 
     cleanup: function() {
       if (this.profileView) { this.profileView.cleanup(); }
+      if (this.settingsView) { this.settingsView.cleanup(); }
       removeView(this);
     }
 

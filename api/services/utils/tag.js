@@ -45,6 +45,18 @@ var tagAssemble = function (where, done) {
   });
 };
 
+/**
+ * Given a userId and a list of tags with types,
+ * find and return the tag, or create the tag and
+ * tag entity if it doesn't exist.
+ *
+ * @param userId the user associated
+ * @param tags are in an object of the form:
+ *        { type: [v1, v2, v3],
+ *          type2: [v4] }
+ * @param done the callback function in the form
+ *        done(err, tags)
+ */
 var findOrCreateTags = function (userId, tags, done) {
   var resultTags = [];
   // tags are in an object of the form:
@@ -55,8 +67,8 @@ var findOrCreateTags = function (userId, tags, done) {
     // process a particular tag name of a given type
     var processTag = function (tagname, cbTag) {
       TagEntity.findOne()
-      .where({ type: type.toLowerCase() })
-      .where({ name: tagname.toLowerCase() })
+      .where({ type: type.toLowerCase().trim() })
+      .where({ name: tagname.toLowerCase().trim() })
       .exec(function (err, t) {
         if (err) { return cbTag(err); }
         // if the tag entity doesn't exist, create it
@@ -68,8 +80,8 @@ var findOrCreateTags = function (userId, tags, done) {
           }
           // Otherwise continue and create the tag entity
           var tagEntity = {
-            type: type,
-            name: tagname
+            type: type.trim(),
+            name: tagname.trim()
           };
           // The entity doesn't exist, so create it.
           TagEntity.create(tagEntity, function (err, t) {
@@ -94,7 +106,7 @@ var findOrCreateTags = function (userId, tags, done) {
           };
           // find or create the tag.  If it already exists,
           // don't want to create a duplicate.
-          Tag.findOrCreate(t, t, function (err, newTag) {
+          Tag.findOrCreate(tag, tag, function (err, newTag) {
             if (err) { return cbTag(err); }
             resultTags.push(newTag);
             cbTag();
@@ -114,7 +126,39 @@ var findOrCreateTags = function (userId, tags, done) {
   });
 };
 
+/**
+ * Given a userId and a list of tagIds that are valid,
+ * prune all tagIds that don't match the list given.
+ *
+ * @param userId of the user associated
+ * @param tagIds array of ids of the Tag model that are valid
+ * @param done callback of the form done(err, deletedTags)
+ */
+var pruneTags = function (userId, tagIds, done) {
+  // find all of the tags that don't match the current tag ids
+  Tag.find()
+  .where({ userId: userId })
+  .exec(function (err, tags) {
+    if (err) { return done(err, null); }
+    // given a tag, destroy it and call back
+    var destroyTag = function (tag, cb) {
+      // if the tagId is safe, don't destroy
+      if (_.contains(tagIds, tag.id)) {
+        return cb(null);
+      }
+      // the tagId wasn't found, destroy it
+      tag.destroy(cb);
+    };
+    // destroy tags
+    async.each(tags, destroyTag, function (err) {
+      // return list of destroyed tags
+      return done(err, tags);
+    });
+  });
+};
+
 module.exports = {
   assemble: tagAssemble,
-  findOrCreateTags: findOrCreateTags
+  findOrCreateTags: findOrCreateTags,
+  pruneTags: pruneTags
 };
