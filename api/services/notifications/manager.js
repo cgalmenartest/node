@@ -54,17 +54,11 @@ var notificationBuilder = new NotificationBuilder();
  *    notifications: [ <output> ],
  *    deliveries: [ <output> ]
  * @cb - callback function that accepts error as parameter 1 and the modified params object as parameter 2
- * @isCBShortCircuited - is completion of notification not critical to continuation of execution?
  */
 function NotificationBuilder () {
-  this.notify = function notify(params, isCBShortCircuited, cb){
-    if(typeof isCBShortCircuited === 'function'){
-      cb = isCBShortCircuited;
-      isCBShortCircuited = false;
-    }
-    if(isCBShortCircuited){
-      cb(null);
-    }
+  this.notify = function notify (params, cb) {
+    // allow execution to continue first, then notify
+    cb(null);
     // these are unique to this notify call
     var actionID, createdDate, action;
     // preconfiguring param structure
@@ -83,20 +77,20 @@ function NotificationBuilder () {
     // find audience for action, then create notifications for each audience member, then send deliveries for each notification.
     // first fork in the execution path
     // Structure is far from ideal, but it must be done this way to get around the cumbersome single parameter restriction in the async library's "each" function
-    async.each(Object.keys(sails.config.notifications.triggerRoutes[params.trigger.action].audience), startNotify, function(err){
-      if(!isCBShortCircuited){
-        // call callback now and continue execution
-        cb(null);
+    async.each(Object.keys(sails.config.notifications.triggerRoutes[params.trigger.action].audience), startNotify, function (err) {
+      if (err) {
+        // log the notificaiton error
+        sails.log.warning("Notification Error:", err);
       }
     });
 
     function startNotify (audience, done) {
       // get subscriber list for action
-      populateRecipients(audience, function(err, recipients, audience){
+      populateRecipients(audience, function (err, recipients, audience){
         // begin the delivery process, will fork execution into a fan of callbacks for each Notification and again for each delivery
         function finishNotify (recipient, fin) {
           // make Notification model for each recipient
-          generateNotifications(audience, recipient, function(err, notification, audience, recipient){
+          generateNotifications(audience, recipient, function (err, notification, audience, recipient){
             // kick off delivery process for each recipient, will end up forking execution again for each delivery
             deliverNotification(audience, notification, recipient, fin);
           });
@@ -113,28 +107,21 @@ function NotificationBuilder () {
     function populateRecipients (audience, done) {
       params.data.audience[audience] = params.data.audience[audience] || {};
       // combine global default settings with local settings to produce master settings list
-      sythesizeSettings(
+      synthesizeSettings(
         params.data.audience[audience],
         sails.config.notifications.audiences[audience],
-        function(err, settings){
+        function (err, settings) {
           if(err){ sails.log.debug(err); done(null, [], audience); return false;}
           // combine global default fields with local fields to produce master fields list
-          synthesizeAndValidateFields(
-            params.data.audience[audience],
-            sails.config.notifications.audiences[audience],
-            sails.services.utils.lib['validateFields'],
-            function(err, fields){
-              if(err){ sails.log.debug(err); done(null, [], audience); return false;}
-              // get recipient list and return it in callback
-              performServiceAction(
-                sails.services.audience[sails.config.notifications.audiences[audience].method],
-                // pass in master settings and fields
-                { settings: settings, fields: fields },
-                function(err, recipients){
-                  if(err){ sails.log.debug(err); done(null, recipients, audience); return false;}
-                  done(null, recipients, audience);
-                }
-              );
+          var fields = params.data.audience[audience].fields;
+          // get recipient list and return it in callback
+          performServiceAction(
+            sails.services.audience[sails.config.notifications.audiences[audience].method],
+            // pass in master settings and fields
+            { settings: settings, fields: fields },
+            function (err, recipients) {
+              if(err){ sails.log.debug(err); done(null, recipients, audience); return false;}
+              done(null, recipients, audience);
             }
           );
         }
@@ -146,7 +133,7 @@ function NotificationBuilder () {
      * @audience - name of audience
      * @user - user to whom the notification is being related (recipient)
      */
-    function generateNotifications(audience, user, done){
+    function generateNotifications (audience, user, done) {
       // persists notification representation, then return it in callback
       Notification.create({
         callerType: params.trigger.callerType,
@@ -158,8 +145,12 @@ function NotificationBuilder () {
         createdDate: createdDate,
         localParams: JSON.stringify(params.data.audience[audience]),
         globalParams: JSON.stringify(sails.config.notifications.triggerRoutes[params.trigger.action].audience[audience])
-      }).done(function(err, newNotification){
-        if(err){ sails.log.debug(err); done(null, newNotification, audience, user); return false;}
+      }).done(function (err, newNotification){
+        if (err) {
+          sails.log.debug(err);
+          done(null, newNotification, audience, user);
+          return false;
+        }
         done(null, newNotification, audience, user);
       });
     };
@@ -197,7 +188,7 @@ function NotificationBuilder () {
         strategy.preflight = strategy.preflight || [];
         // This performs all preflight activity required for final delivery, then calls that delivery function on callback
         // fourth and final fork in the execution path
-        async.each(strategy.preflight, preparePreflight, function(err){
+        async.each(strategy.preflight, preparePreflight, function (err) {
           prepareDelivery(audience, notification, recipient, strategyName, strategy.delivery, preflightContent, done);
         });
         /**
@@ -209,34 +200,31 @@ function NotificationBuilder () {
           // local parameter preflight settings and fields transferred over to a new object to be modified
           var localVars = _.extend({}, params.data.audience[audience].strategy[strategyName].preflight[preflightStrategy]);
           localVars.fields = localVars.fields || {};
+          // add the recipient's user info to the metadata
+          localVars.fields.metadata = {
+            recipient: recipient
+          };
           // recipientId and callerId added to fields for convenience, as they will almost always come in handy
           localVars.fields.recipientId = recipient.id;
           localVars.fields.callerId = notification.callerId;
           // combine global default settings with local settings to produce master settings list
-          sythesizeSettings(
+          synthesizeSettings(
             localVars,
             sails.config.notifications.preflights[preflightStrategy],
-            function(err, settings){
-              if(err){ sails.log.debug(err); done(null); return false;}
+            function (err, settings) {
+              if (err) { sails.log.debug(err); done(null); return false;}
               // combine global default fields with local fields to produce master fields list
-              synthesizeAndValidateFields(
-                localVars,
-                sails.config.notifications.preflights[preflightStrategy],
-                sails.services.utils.lib['validateFields'],
-                function(err, fields){
-                  if(err){ sails.log.debug(err); done(null); return false;}
-                  // get generated delivery content and return it in callback
-                  performServiceAction(
-                    sails.services.preflight[sails.config.notifications.preflights[preflightStrategy].method],
-                    // master fields and settings passed in
-                    { settings: settings, fields: fields },
-                    function(err, content){
-                      if(err){ sails.log.debug(err); done(null); return false;}
-                      // mix new delivery content in with existing content
-                      preflightContent = lib.deepExtend(preflightContent, content);
-                      done(err);
-                    }
-                  );
+              var fields = localVars.fields;
+              // get generated delivery content and return it in callback
+              performServiceAction(
+                sails.services.preflight[sails.config.notifications.preflights[preflightStrategy].method],
+                // master fields and settings passed in
+                { settings: settings, fields: fields },
+                function (err, content) {
+                  if (err) { sails.log.debug(err); done(null); return false;}
+                  // mix new delivery content in with existing content
+                  preflightContent = lib.deepExtend(preflightContent, content);
+                  done(err);
                 }
               );
             }
@@ -261,7 +249,7 @@ function NotificationBuilder () {
         // mix-in results of preflight functions
         localVars = lib.deepExtend(content, localVars);
         // combine global default settings with local settings to produce master settings list
-        sythesizeSettings(
+        synthesizeSettings(
           localVars,
           sails.config.notifications.deliveries[deliveryStrategy],
           // include user settings template to find and incorporate appropriate global overrides
@@ -272,22 +260,15 @@ function NotificationBuilder () {
             delivery: deliveryStrategy
           },
           function (err, settings) {
-            if(err){ sails.log.debug(err); done(null, null); return false;}
+            if (err) { sails.log.debug(err); done(null, null); return false;}
             // combine global default fields with local fields to produce master fields list
-            synthesizeAndValidateFields(
-              localVars,
-              sails.config.notifications.deliveries[deliveryStrategy],
-              sails.services.utils.lib['validateFields'],
-              function(err, fields){
-                if(err){ sails.log.debug(err); done(null, null); return false;}
-                // goes ahead and persists the delivery model here, as the fields/settings produced in prior callback will still be in scope
-                generateDelivery(audience, notification, deliveryStrategy, content, function(err, delivery){
-                  if(err){ sails.log.debug(err); done(null, null); return false;}
-                  // makes use of master fields/settings in scope and dispatches the delivery
-                  registerDeliveryAsSent(delivery, { settings: settings, fields: fields }, done);
-                });
-              }
-            );
+            var fields = localVars.fields;
+            // goes ahead and persists the delivery model here, as the fields/settings produced in prior callback will still be in scope
+            generateDelivery(audience, notification, deliveryStrategy, content, function(err, delivery){
+              if (err) { sails.log.debug(err); done(null, null); return false;}
+              // makes use of master fields/settings in scope and dispatches the delivery
+              registerDeliveryAsSent(delivery, { settings: settings, fields: fields }, done);
+            });
           }
         );
       };
@@ -305,8 +286,8 @@ function NotificationBuilder () {
           notificationId: notification.id,
           deliveryType: deliveryType,
           content: JSON.stringify(content)
-        }).done(function(err, delivery){
-          if(err){ sails.log.debug(err); done(null, delivery); return false; }
+        }).done(function (err, delivery){
+          if (err) { sails.log.debug(err); done(null, delivery); return false; }
           done(err, delivery);
         });
       };
@@ -322,7 +303,7 @@ function NotificationBuilder () {
           sails.services.dispatch[sails.config.notifications.deliveries[delivery.deliveryType].method],
           paramObject,
           function (err, response) {
-            if(err){ sails.log.debug(err); done(null); return false; }
+            if (err) { sails.log.debug(err); done(null); return false; }
             // update delivery to reflect its completed status
             delivery.isDelivered = true;
             delivery.deliveryDate = new Date();
@@ -338,7 +319,7 @@ function NotificationBuilder () {
      * @globalObject - global object that contains a settings property
      * @userSettingTemplate - optional property that contains a match for user settings
      */
-    function sythesizeSettings (hostObject, globalObject, userSettingTemplate, done) {
+    function synthesizeSettings (hostObject, globalObject, userSettingTemplate, done) {
       var settings, localSettings, globalSettings;
       // ensure both parameter objects have proper form
       hostObject.settings = hostObject.settings || {};
@@ -359,12 +340,12 @@ function NotificationBuilder () {
           userId: userSettingTemplate.userId,
           context: JSON.stringify({ action: userSettingTemplate.action, audience: userSettingTemplate.audience, delivery: userSettingTemplate.delivery })
         }).done(function (err, settings) {
-          if(err){ sails.log.debug(err); done(null, settings); return false;}
+          if (err) { sails.log.debug(err); done(null, settings); return false;}
           userSettingObject = {};
           userSettingObject[userSettingTemplate.actionType] = {};
           userSettingObject[userSettingTemplate.actionType].audience = {};
           userSettingObject[userSettingTemplate.actionType].audience[userSettingTemplate.audience] = {};
-          _.each(settings, function(userSetting){
+          _.each(settings, function (userSetting) {
             userSettingObject[userSettingTemplate.actionType].audience[userSettingTemplate.audience][userSetting.key] =  userSetting.value;
           });
           // setting priority is local > user > global
@@ -376,24 +357,6 @@ function NotificationBuilder () {
           done(err, settings);
         });
       }
-    };
-
-    /**
-     * private helper function that properly sets all fields and validates them based on service method
-     * @hostObject - object that contains a fields property
-     * @globalObject - global object that contains a fields property
-     * @validator - validation function to apply
-     */
-    function synthesizeAndValidateFields (hostObject, globalObject, validator, done) {
-      var localFields, globalFields;
-      hostObject.fields = hostObject.fields || {};
-      globalObject.fields = globalObject.fields || {};
-      localFields = _.extend({}, hostObject.fields);
-      globalFields = _.extend({}, globalObject.fields);
-      // validate that local fields are appropriate given configuration definition
-      validator(localFields, globalFields, function(err, fields){
-        done(err, fields);
-      });
     };
 
     /**

@@ -6,7 +6,7 @@
     "dependencies": {
         "sails": "0.9.8",
         "async": "0.2.9",
-        "grunt": "0.4.2",
+        "grunt": "0.4.3",
         "ejs": "0.8.5",
         "underscore": "1.x",
         "optimist": "0.4.0",
@@ -19,7 +19,7 @@
         "icalendar": "0.6.5",
         "node-uuid": "1.4.x",
         "bcrypt": "0.7.7",
-        "request": "2.x",
+        "string": "~1.8.1",
         "gm": "~1.14.2",
         "nodemailer": "0.6.x",
         "email-templates": "~0.1.5",
@@ -30,6 +30,7 @@
     "devDependencies": {
         "mocha": "*",
         "chai": "*",
+        "request": "2.x",
         "grunt-contrib-requirejs": "~0.4.1",
         "grunt-contrib-cssmin": "*"
     },

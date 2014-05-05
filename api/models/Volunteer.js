@@ -5,7 +5,8 @@
  * @description :: Stores volunteer information for tasks
  *
  */
- var noteUtils = require('../services/notifications/manager');
+var noteUtils = require('../services/notifications/manager');
+
 module.exports = {
 
   attributes: {
@@ -45,7 +46,7 @@ module.exports = {
       }
     };
 
-    noteUtils.notifier.notify(params, true, cb);
+    noteUtils.notifier.notify(params, cb);
   }
 
 };

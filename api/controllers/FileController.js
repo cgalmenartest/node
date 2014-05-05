@@ -35,9 +35,7 @@ module.exports = {
         res.set('Content-Type', f.mimeType);
         res.set('Content-disposition', 'attachment; filename=' + f.name);
         // Don't let browsers cache the response
-        res.set('Cache-Control', 'no-cache, no-store, must-revalidate'); // HTTP 1.1.
-        res.set('Pragma', 'no-cache'); // HTTP 1.0.
-        res.set('Expires', '0'); // Proxies.
+        res.set('Cache-Control', 'no-transform,public,max-age=300,s-maxage=900'); // HTTP 1.1.
         return res.send(f.data);
       });
     } else {

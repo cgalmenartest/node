@@ -3,67 +3,59 @@ module.exports = {
   emails: {
     'projectCommentParentReply': {
       layout: 'default',
-      template: 'projectCommentParentReply',
-      subject: 'Discussion Update',
-      from: 'test@midas.com',
+      template: 'commentParentReply',
+      subject: '<% if (commentUser.name) { %><%= commentUser.name %><% } else { %>Somebody<% } %> replied to your comment on <%= globals.systemName %>',
       templateLocals: { callerComment: '', parentComment: '', projectTitle: '', projectLink: '' },
-      layoutLocals: { footer: 'Brought to you by Midas' }
+      layoutLocals: { }
     },
     'projectCommentOwnerReply': {
       layout: 'default',
-      template: 'projectCommentOwnerReply',
-      subject: 'Discussion Update',
-      from: 'test@midas.com',
+      template: 'commentOwnerReply',
+      subject: '<%= project.title %> <% if (parentComment) { %>has a new comment<% } else { %>has a new discussion<% } %> on <%= globals.systemName %>',
       templateLocals: { callerComment: '', parentComment: '', projectTitle: '', projectLink: '' },
-      layoutLocals: { footer: 'Brought to you by Midas' }
+      layoutLocals: { }
     },
     'taskCommentParentReply': {
       layout: 'default',
-      template: 'taskCommentParentReply',
-      subject: 'Discussion Update',
-      from: 'test@midas.com',
+      template: 'commentParentReply',
+      subject: '<% if (commentUser.name) { %><%= commentUser.name %><% } else { %>Somebody<% } %> replied to your comment on <%= globals.systemName %>',
       templateLocals: { callerComment: '', parentComment: '', taskTitle: '', taskLink: '' },
-      layoutLocals: { footer: 'Brought to you by Midas' }
+      layoutLocals: { }
     },
     'taskCommentOwnerReply': {
       layout: 'default',
-      template: 'taskCommentOwnerReply',
-      subject: 'Discussion Update',
-      from: 'test@midas.com',
+      template: 'commentOwnerReply',
+      subject: '<%= task.title %> <% if (parentComment) { %>has a new comment<% } else { %>has a new discussion<% } %> on <%= globals.systemName %>',
       templateLocals: { callerComment: '', parentComment: '', taskTitle: '', taskLink: '' },
-      layoutLocals: { footer: 'Brought to you by Midas' }
+      layoutLocals: { }
     },
     'taskVolunteerAddedOwnerReply': {
       layout: 'default',
       template: 'taskVolunteerAddedOwnerReply',
-      subject: 'Volunteer Added',
-      from: 'test@midas.com',
+      subject: '<% if (volunteer.name) { %><%= volunteer.name %><% } else { %>Someone<% } %> has volunteered for <%= task.title %> on <%= globals.systemName %>',
       templateLocals: { taskTitle: '', taskLink: '', profileLink: '', profileTitle: '', profileName: '', profileLocation: '', profileAgency: '' },
-      layoutLocals: { footer: 'Brought to you by Midas' }
+      layoutLocals: { }
     },
     'contactUserAboutProject': {
       layout: 'default',
       template: 'contactUserAboutProject',
       subject: 'Take A Look At This Project',
-      from: 'test@midas.com',
       templateLocals: { projectLink: '', projectTitle: '', projectDescription: '' },
-      layoutLocals: { footer: 'Brought to you by Midas' }
+      layoutLocals: { }
     },
     'contactUserAboutTask': {
       layout: 'default',
       template: 'contactUserAboutTask',
       subject: 'Take A Look At This Opportunity',
-      from: 'test@midas.com',
       templateLocals: { opportunityLink: '', opportunityTitle: '', opportunityDescription: '', opportunityMadlibs: '' },
-      layoutLocals: { footer: 'Brought to you by Midas' }
+      layoutLocals: { }
     },
     'contactUserAboutProfile': {
       layout: 'default',
       template: 'contactUserAboutProfile',
       subject: 'Take A Look At This Profile',
-      from: 'test@midas.com',
       templateLocals: { profileLink: '', profileTitle: '', profileName: '', profileLocation: '', profileAgency: '' },
-      layoutLocals: { footer: 'Brought to you by Midas' }
+      layoutLocals: { }
     }
   },
 // email templates and the fields they expect
