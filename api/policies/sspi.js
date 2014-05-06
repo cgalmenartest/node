@@ -50,7 +50,7 @@ module.exports = function sspi (req, res, next) {
         return next();
       }
       // log in the authenticated user
-      req.logIn(userUtils.cleanUser(user), function(err)
+      req.logIn(user, function(err)
       {
         sails.log.debug('SSPI Login User:', user);
         if (err) {
