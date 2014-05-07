@@ -144,6 +144,7 @@ define([
       }).fail(function (error) {
         var d = JSON.parse(error.responseText);
         self.$("#forgot-error").html(d.message);
+        self.$("#forgot-error").show();
       });
     },
 
