@@ -125,19 +125,6 @@ module.exports = {
     }
     authenticate(req, res, 'register', json);
   },
-  // TODO: remove if SSPI endpoint can be removed
-  // sspi: function(req, res) {
-  //   // Only allow SSPI if it is explicitly enabled
-  //   if (sails.config.auth.auth.sspi.enabled !== true) {
-  //     return res.send(403, { message: 'Authentication method not supported. '});
-  //   }
-  //   var json = false;
-  //   req.register = true;
-  //   if (req.param('json')) {
-  //     json = true;
-  //   }
-  //   authenticate(req, res, 'sspi', json);
-  // },
 
   /**
    * Start the OAuth authentication process for a given strategy
