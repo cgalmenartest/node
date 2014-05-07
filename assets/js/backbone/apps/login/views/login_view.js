@@ -16,7 +16,8 @@ define([
       'keyup #rpassword'               : 'checkPassword',
       'blur #rpassword'                : 'checkPassword',
       'submit #login-password-form'    : 'submitLogin',
-      'submit #registration-form'      : 'submitRegister'
+      'submit #registration-form'      : 'submitRegister',
+      'submit #forgot-form'            : 'submitForgot'
     },
 
     initialize: function (options) {
@@ -120,6 +121,29 @@ define([
         var d = JSON.parse(error.responseText);
         self.$("#registration-error").html(d.message);
         self.$("#registration-error").show();
+      });
+    },
+
+    submitForgot: function (e) {
+      var self = this;
+      if (e.preventDefault) e.preventDefault();
+      var data = {
+        username: this.$("#fusername").val()
+      };
+      // Post the registration request to the server
+      $.ajax({
+        url: '/api/auth/forgot',
+        type: 'POST',
+        data: data
+      }).done(function (success) {
+        // Set the user object and trigger the user login event
+        this.$("#forgot-view").hide();
+        this.$("#forgot-footer").hide();
+        this.$("#forgot-done-view").show();
+        this.$("#forgot-done-footer").show();
+      }).fail(function (error) {
+        var d = JSON.parse(error.responseText);
+        self.$("#forgot-error").html(d.message);
       });
     },
 
