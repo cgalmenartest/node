@@ -12,7 +12,7 @@ var userUtils = require('../services/utils/user');
  * logins or by OAuth authentication + REST profile from
  * remote server.
  */
-function authenticate(req, res, strategy, json) {
+function authenticate (req, res, strategy, json) {
   if (req.user) {
     passport.authorize(strategy, function (err, user, info)
     {
@@ -54,7 +54,7 @@ function authenticate(req, res, strategy, json) {
       if (strategy === 'register') {
       }
 
-      req.logIn(user, function(err)
+      req.logIn(user, function (err)
       {
         if (err)
         {
@@ -91,7 +91,7 @@ module.exports = {
   /**
    * View login options
    */
-  index: function(req, res) {
+  index: function (req, res) {
     // if the user is logged in, redirect them back to the app
     if (req.user) { res.redirect('/'); return; }
     res.view();
@@ -100,7 +100,7 @@ module.exports = {
   /**
    * Authentication Provider for local and register username/password system
    */
-  local: function(req, res) {
+  local: function (req, res) {
     // Disable local logins when sspi is enabled; can allow bypassing of
     // credentials through the sspi auto-login functionality
     if (sails.config.auth.auth.sspi.enabled === true) {
@@ -112,7 +112,7 @@ module.exports = {
     }
     authenticate(req, res, 'local', json);
   },
-  register: function(req, res) {
+  register: function (req, res) {
     // Disable local logins when sspi is enabled; can allow bypassing of
     // credentials through the sspi auto-login functionality
     if (sails.config.auth.auth.sspi.enabled === true) {
@@ -124,6 +124,26 @@ module.exports = {
       json = true;
     }
     authenticate(req, res, 'register', json);
+  },
+  forgot: function (req, res) {
+    var email = req.param('username');
+    if (!email) {
+      return res.send(400, { message: 'You must enter an email address. '});
+    }
+    userUtils.forgotPassword(email, function (err, token) {
+      if (err) {
+        return res.send(400, err);
+      }
+      var result = {
+        success: true,
+        email: email
+      };
+      // send the token back to test that it is working
+      if (process.env.NODE_ENV == 'test') {
+        result.token = token.token;
+      }
+      return res.send(result);
+    });
   },
 
   /**
