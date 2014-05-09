@@ -1,4 +1,4 @@
-midas [![Build Status](https://travis-ci.org/18F/midas.png?branch=master)](https://travis-ci.org/Innovation-Toolkit/midas) [![Dependency Status](https://gemnasium.com/Innovation-Toolkit/midas.png)](https://gemnasium.com/Innovation-Toolkit/midas)
+midas [![Build Status](https://travis-ci.org/18F/midas.png?branch=master)](https://travis-ci.org/18F/midas) [![Dependency Status](https://gemnasium.com/Innovation-Toolkit/midas.png)](https://gemnasium.com/Innovation-Toolkit/midas)
 =====
 
 Midas is a platform that facilitates collaborative work worldwide.  Individuals can create projects, propose working groups, or assemble "tiger teams" to act on their ideas.  Anyone can also post tasks online and people with the requisite skills can respond and complete the task.
