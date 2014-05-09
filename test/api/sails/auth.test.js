@@ -4,12 +4,12 @@ var utils = require('./helpers/utils');
 var request;
 
 describe('auth:', function() {
-  before(function (done) {
+  before(function () {
     request = utils.init();
-    utils.login(request, function(err) {
-      if (err) { return done(err); }
-      done();
-    });
+  //   utils.login(request, function(err) {
+  //     if (err) { return done(err); }
+  //     done();
+  //   });
   });
 
   it('no data', function (done) {
@@ -36,6 +36,17 @@ describe('auth:', function() {
       done(err);
     });
   });
+  it('valid email but no user account', function (done) {
+    request.post({ url: conf.url + '/auth/forgot',
+                   form: { username: 'midasuser@innovationgov.com' },
+                 }, function (err, response, body) {
+      assert.equal(response.statusCode, 200);
+      var b = JSON.parse(body);
+      assert.equal(b.success, true);
+      assert.isUndefined(b.token);
+      done(err);
+    });
+  });
   it('request password reset', function (done) {
     request.post({ url: conf.url + '/auth/forgot',
                    form: { username: conf.defaultUser.username },
@@ -50,14 +61,32 @@ describe('auth:', function() {
       done(err);
     });
   });
-  it('valid email but no user account', function (done) {
+  it('check token', function (done) {
     request.post({ url: conf.url + '/auth/forgot',
-                   form: { username: 'midasuser@innovationgov.com' },
+                   form: { username: conf.defaultUser.username },
                  }, function (err, response, body) {
       assert.equal(response.statusCode, 200);
       var b = JSON.parse(body);
       assert.equal(b.success, true);
-      assert.isUndefined(b.token);
+      // check that token is included
+      assert.isDefined(b.token);
+      request.post({ url: conf.url + '/auth/checkToken',
+                     form: { token: b.token },
+                   }, function (err, response, body) {
+        assert.equal(response.statusCode, 200);
+        var b = JSON.parse(body);
+        assert.isTrue(b);
+        done(err);
+      });
+    });
+  });
+  it('invalid token', function (done) {
+    request.post({ url: conf.url + '/auth/checkToken',
+                   form: { token: '2o3948kjdsflksjsksjdfklsjdf' },
+                 }, function (err, response, body) {
+      assert.equal(response.statusCode, 200);
+      var b = JSON.parse(body);
+      assert.isFalse(b);
       done(err);
     });
   });

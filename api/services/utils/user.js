@@ -402,6 +402,38 @@ module.exports = {
   },
 
   /**
+   * Check if a token is a valid token for resetting a user's password.
+   *
+   * @return cb of the form (err, true if valid, token object)
+   */
+  checkToken: function (token, cb) {
+    token = token.toLowerCase().trim();
+    // compute the maximum token expiration time
+    var expiry = new Date();
+    expiry.setTime(expiry.getTime() - sails.config.auth.auth.local.tokenExpiration);
+    UserPasswordReset.find()
+    .where({ token: token })
+    .where({ createdAt:
+      {
+        '>': expiry
+      }
+    })
+    .done(function (err, tokens) {
+      if (err) { return cb(err, false, null); }
+      var valid = false;
+      var validToken = null;
+      for (var i in tokens) {
+        if (tokens[i].token == token) {
+          valid = true;
+          validToken = tokens[i];
+          break;
+        }
+      }
+      cb(null, valid, validToken);
+    });
+  },
+
+  /**
    * Create a user using OAuth Credentials
    *
    * @param provider the provider information from passport

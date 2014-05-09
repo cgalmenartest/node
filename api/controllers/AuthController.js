@@ -145,6 +145,24 @@ module.exports = {
       return res.send(result);
     });
   },
+  /**
+   * Check if a token is a valid token for resetting a user's password.
+   *
+   * @return true if the token is valid, false otherwise
+   */
+  checkToken: function (req, res) {
+    var token = req.route.params.id;
+    if (!token) {
+      token = req.param('token');
+    }
+    if (!token) {
+      return res.send(400, { message: 'Must provide a token for validation.' });
+    }
+    userUtils.checkToken(token, function (err, valid, validToken) {
+      if (err) { return res.send(400, { message: 'Error looking up token.', err:err }); }
+      res.send(valid);
+    });
+  },
 
   /**
    * Start the OAuth authentication process for a given strategy
