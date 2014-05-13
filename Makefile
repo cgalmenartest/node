@@ -13,9 +13,13 @@ copy-config:
 	-cp config/local.js config/local.js.bak
 	-cp config/settings/auth.js config/settings/auth.js.bak
 	-cp config/settings/sources.js config/settings/sources.js.bak
+	-cp config/settings/notifications.js config/settings/notifications.js.bak
+	-cp config/settings/emailTemplates.js config/settings/emailTemplates.js.bak
 	cp config/local.ex.js config/local.js
 	cp config/settings/auth.ex.js config/settings/auth.js
 	cp config/settings/sources.ex.js config/settings/sources.js
+	-cp config/settings/notifications.ex.js config/settings/notifications.js
+	-cp config/settings/emailTemplates.ex.js config/settings/emailTemplates.js
 
 restore-config:
 	rm config/local.js
@@ -24,6 +28,8 @@ restore-config:
 	-mv config/local.js.bak config/local.js
 	-mv config/settings/auth.js.bak config/settings/auth.js
 	-mv config/settings/sources.js.bak config/settings/sources.js
+	-mv config/settings/notifications.js.bak config/settings/notifications.js
+	-mv config/settings/emailTemplates.js.bak config/settings/emailTemplates.js
 
 import:
 	-cp $(DIR)/config/local.js config/
