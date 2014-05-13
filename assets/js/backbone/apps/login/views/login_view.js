@@ -137,10 +137,10 @@ define([
         data: data
       }).done(function (success) {
         // Set the user object and trigger the user login event
-        this.$("#forgot-view").hide();
-        this.$("#forgot-footer").hide();
-        this.$("#forgot-done-view").show();
-        this.$("#forgot-done-footer").show();
+        self.$("#forgot-view").hide();
+        self.$("#forgot-footer").hide();
+        self.$("#forgot-done-view").show();
+        self.$("#forgot-done-footer").show();
       }).fail(function (error) {
         var d = JSON.parse(error.responseText);
         self.$("#forgot-error").html(d.message);
