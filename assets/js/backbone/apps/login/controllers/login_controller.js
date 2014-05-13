@@ -76,6 +76,8 @@ define([
       this.$("#registration-footer").show();
       this.$("#forgot-view").hide();
       this.$("#forgot-footer").hide();
+      this.$("#forgot-done-view").hide();
+      this.$("#forgot-done-footer").hide();
     },
 
     showLogin: function (e) {
@@ -86,6 +88,8 @@ define([
       this.$("#registration-footer").hide();
       this.$("#forgot-view").hide();
       this.$("#forgot-footer").hide();
+      this.$("#forgot-done-view").hide();
+      this.$("#forgot-done-footer").hide();
     },
 
     showForgot: function (e) {
@@ -96,6 +100,8 @@ define([
       this.$("#registration-footer").hide();
       this.$("#login-view").hide();
       this.$("#login-footer").hide();
+      this.$("#forgot-done-view").hide();
+      this.$("#forgot-done-footer").hide();
     },
 
     // ---------------------
