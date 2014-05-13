@@ -3,6 +3,7 @@ var validator = require('validator');
 var async = require('async');
 var projUtils = require('./project');
 var tagUtils = require('./tag');
+var noteUtils = require('../notifications/manager');
 
 module.exports = {
 
@@ -394,9 +395,29 @@ module.exports = {
         };
         UserPasswordReset.create(token, function (err, newToken) {
           if (err) { return cb({ message: 'Error creating a reset password token.', err: err }); }
-          // TODO: generate notification
-          cb(null, newToken);
-        })
+          // Generate a notification email to the user
+          var params = {
+            trigger: {
+              callerType: 'UserPasswordReset',
+              callerId: newToken.id,
+              token: newToken.token,
+              action: 'userPasswordReset'
+            },
+            data: {
+              audience: {
+                'user': {
+                  fields: {
+                    userId: user.id
+                  }
+                }
+              }
+            }
+          };
+          noteUtils.notifier.notify(params, function (err) {
+            // pass the token back
+            cb(err, newToken);
+          });
+        });
       });
     });
   },
