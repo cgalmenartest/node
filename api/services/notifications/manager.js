@@ -248,6 +248,14 @@ function NotificationBuilder () {
         localVars.settings = localVars.settings || {};
         // mix-in results of preflight functions
         localVars = lib.deepExtend(content, localVars);
+        // check if the recipient is the same as the initiator;
+        // if so, supress sending emails to yourself
+        if (localVars && localVars.fields && (recipient.id === localVars.fields.initiatorId)) {
+          // oohlala: The recipient is the same person as the initiator
+          // supress the delivery since clearly they know what they did.
+          done(null, null);
+          return false;
+        }
         // combine global default settings with local settings to produce master settings list
         synthesizeSettings(
           localVars,
