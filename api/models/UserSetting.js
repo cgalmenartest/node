@@ -21,7 +21,7 @@ module.exports = {
     key: 'STRING',
     // value of the setting
     value: 'STRING',
-    // Future soft-delete functionalirt
+    // Future soft-delete functionality
     isActive: {
       'type': 'BOOLEAN',
       'defaultsTo': true,
