@@ -75,7 +75,7 @@ need to `npm link` in order for everything to function properly.
 
 ### Clone the git repository.
 
-     git clone https://github.com/Innovation-Toolkit/midas.git
+     git clone https://github.com/18F/midas.git
      cd midas
 
 ### Install global node packages
