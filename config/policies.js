@@ -105,6 +105,7 @@ module.exports.policies = {
   },
 
   EventController : {
+    '*': false,
     'create': ['authenticated', 'requireUserId', 'addUserId', 'projectId', 'eventUuid'],
     'update': ['authenticated', 'requireUserId', 'projectId'],
     'findAllByProjectId': ['authenticated', 'addUserId', 'requireId', 'project'],
