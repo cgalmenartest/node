@@ -1,7 +1,13 @@
-<img align="left" src="/api/user/photo/<%- data.id %>" class="project-people-popover"/>
-<div class="popover-person">
-  <div class="title"><%- data.name %></div>
-  <% if (data.title) { %><i class="icon-briefcase"></i> <%- data.title %><br/><% } %>
-  <% if (data.agency) { %><i class="icon-library"></i> <%- data.agency.tag.name %><br/><% } %>
-  <% if (data.location) { %><span class="glyphicon glyphicon-map-marker"></span> <%- data.location.tag.name %><br/><% } %>
+<div class="popover-table">
+  <div class="popover-row">
+    <div class="popover-cell-left">
+      <img align="left" src="/api/user/photo/<%- data.id %>" class="popover-image"/>
+    </div>
+    <div class="popover-cell-right popover-person">
+      <div class="title"><a class="link-backbone" href="/profile/<%- data.id %>"><%- data.name %></a></div>
+      <% if (data.title) { %><div class="text-line"><i class="icon-briefcase"></i> <%- data.title %></div><% } %>
+      <% if (data.agency) { %><div class="text-line"><i class="icon-library"></i> <%- data.agency.tag.name %></div><% } %>
+      <% if (data.location) { %><div class="text-line"><span class="glyphicon glyphicon-map-marker"></span> <%- data.location.tag.name %></div><% } %>
+    </div>
+  </div>
 </div>

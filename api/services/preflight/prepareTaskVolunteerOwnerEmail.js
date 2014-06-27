@@ -30,6 +30,8 @@ module.exports = {
         if (err) { sails.log.debug(err); cb(null, content); return false;}
         // store the task in the metadata
         content.fields.metadata.task = task;
+        // Get the initiator userId
+        content.fields.initiatorId = task.userId;
         // Get user info for volunteerId on behalf of recipientId (protect privacy)
         sails.services.utils.user['getUser'](fields.volunteerId, fields.recipientId, function (err, volunteer) {
           if (err) { sails.log.debug(err); return cb(err, content); }

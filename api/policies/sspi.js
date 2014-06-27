@@ -95,6 +95,8 @@ module.exports = function sspi (req, res, next) {
       req.session.createdAt = null;
       req.logout();
       authenticateSSPIUser();
+    } else {
+      return next();
     }
   }
   else {
