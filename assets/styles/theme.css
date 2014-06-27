@@ -3,7 +3,7 @@
  */
 h1 {
   font-size: 48px;
-  color: #F04F24;
+  color: #dd361a;
 }
 
 h2 {
@@ -25,7 +25,7 @@ h3 {
 }
 
 h4 {
-  color: #F04F24;
+  color: #dd361a;
   font-size: 18px;
   font-weight: 700;
 }
@@ -40,8 +40,12 @@ h6 {
   font-size: 10px;
 }
 
+footer a {
+  color: #216aa9;
+}
+
 .border-left {
-  border-color: #F04F24;
+  border-color: #dd361a;
 }
 
 /**
@@ -63,15 +67,15 @@ h6 {
 }
 
 .c1 {
-  color: #F04F24;
+  color: #dd361a;
 }
 
 .c1-border {
-  border-color: #F04F24;
+  border-color: #dd361a;
 }
 
 .c1-bg {
-  background-color: #F04F24;
+  background-color: #dd361a;
 }
 
 .c2 {
@@ -163,7 +167,7 @@ h6 {
 }
 
 .btn-c1 {
-  background-color: #F04F24;
+  background-color: #dd361a;
   color: #fff;
 }
 
