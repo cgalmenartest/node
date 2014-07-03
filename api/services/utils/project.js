@@ -1,4 +1,5 @@
 var async = require('async');
+var userUtil = require('./user');
 
 /**
  * Determine if a user has access to project
@@ -34,19 +35,10 @@ var authorized = function (id, userId, cb) {
 var getMetadata = function(proj, user, cb) {
   proj.like = false;
 
-  // look up the name of an owner and include it in the objection
-  var getOwnerName = function (ownerObj, done) {
-    User.findOneById(ownerObj.userId, function (err, owner) {
-      if (err) { return done(err); }
-      ownerObj.name = owner.name;
-      return done();
-    });
-  };
-
   Like.countByProjectId( proj.id, function (err, likes) {
     if (err) { return cb(err, proj); }
     proj.likeCount = likes;
-    async.each(proj.owners, getOwnerName, function (err) {
+    async.each(proj.owners, userUtil.addUserName, function (err) {
       if (err) { return cb(err, proj); }
       if (!user) {
         return cb(null, proj);

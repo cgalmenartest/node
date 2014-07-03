@@ -4,6 +4,7 @@
  * If both err and task are null, then task
  * was found but access is denied.
  */
+var async = require('async');
 var util = require('./project');
 var tagUtil = require('./tag');
 var userUtil = require('./user');
@@ -50,19 +51,25 @@ var getTags = function (task, cb) {
 var getMetadata = function(task, user, cb) {
   task.like = false;
   task.volunteer = false;
-  Like.countByTaskId(task.id, function (err, likes) {
+  // get owner information
+  task.owner = { userId: task.userId };
+  userUtil.addUserName(task.owner, function (err) {
     if (err) { return cb(err, task); }
-    task.likeCount = likes;
-    if (!user) {
-      return cb(null, task);
-    }
-    Like.findOne({ where: { userId: user.id, taskId: task.id }}, function (err, like) {
+    // Get like information for the task
+    Like.countByTaskId(task.id, function (err, likes) {
       if (err) { return cb(err, task); }
-      if (like) { task.like = true; }
-      Volunteer.findOne({ where: { userId: user.id, taskId: task.id }}, function (err, v) {
-        if (err) { return cb(err, task); }
-        if (v) { task.volunteer = true; }
+      task.likeCount = likes;
+      if (!user) {
         return cb(null, task);
+      }
+      Like.findOne({ where: { userId: user.id, taskId: task.id }}, function (err, like) {
+        if (err) { return cb(err, task); }
+        if (like) { task.like = true; }
+        Volunteer.findOne({ where: { userId: user.id, taskId: task.id }}, function (err, v) {
+          if (err) { return cb(err, task); }
+          if (v) { task.volunteer = true; }
+          return cb(null, task);
+        });
       });
     });
   });
@@ -84,10 +91,12 @@ var getVolunteers = function (task, cb) {
   .sort('createdAt')
   .exec(function (err, vols) {
     if (err) { return cb(err); }
-    for (var i in vols) {
-      task.volunteers.push(vols[i].userId);
-    }
-    cb();
+    async.each(vols, userUtil.addUserName, function (err) {
+      for (var i in vols) {
+        task.volunteers.push({ id: vols[i].id, userId: vols[i].userId, name: vols[i].name });
+      }
+      cb();
+    });
   });
 };
 
