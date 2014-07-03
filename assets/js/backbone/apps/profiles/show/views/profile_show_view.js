@@ -375,6 +375,7 @@ define([
         el: ".markdown-edit",
         id: 'bio',
         placeholder: 'A short biography.',
+        title: 'Biography',
         rows: 6
       }).render();
     },

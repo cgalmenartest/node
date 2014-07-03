@@ -669,6 +669,20 @@ module.exports = {
   },
 
   /**
+   * Look up the name of a user and include it in the originating object.
+   * The user's name is stored in the originating object.
+   * @param user an object that includes userId for the user
+   * @param done called when finished with syntax done(err).
+   */
+  addUserName: function (ownerObj, done) {
+    User.findOneById(ownerObj.userId, function (err, owner) {
+      if (err) { return done(err); }
+      ownerObj.name = owner.name;
+      return done();
+    });
+  },
+
+  /**
    * Validate a password based on OWASP password rules.
    * @param username the user's name or email
    * @param password the user's proposed password
