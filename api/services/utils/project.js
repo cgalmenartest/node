@@ -1,3 +1,5 @@
+var async = require('async');
+
 /**
  * Determine if a user has access to project
  * Callback: function(err, proj)
@@ -31,16 +33,28 @@ var authorized = function (id, userId, cb) {
 
 var getMetadata = function(proj, user, cb) {
   proj.like = false;
+
+  // look up the name of an owner and include it in the objection
+  var getOwnerName = function (ownerObj, done) {
+    User.findOneById(ownerObj.userId, function (err, owner) {
+      if (err) { return done(err); }
+      ownerObj.name = owner.name;
+      return done();
+    });
+  };
+
   Like.countByProjectId( proj.id, function (err, likes) {
     if (err) { return cb(err, proj); }
     proj.likeCount = likes;
-    if (!user) {
-      return cb(null, proj);
-    }
-    Like.findOne({ where: { userId: user.id, projectId: proj.id }}, function (err, like) {
+    async.each(proj.owners, getOwnerName, function (err) {
       if (err) { return cb(err, proj); }
-      if (like) { proj.like = true; }
-      return cb(null, proj);
+      if (!user) {
+        return cb(null, proj);
+      }
+      Like.findOne({ where: { userId: user.id, projectId: proj.id }}, function (err, like) {
+        if (err) { return cb(err, proj); }
+        if (like) { proj.like = true; }
+      });
     });
   });
 };
