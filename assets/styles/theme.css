@@ -190,7 +190,7 @@ footer a {
 
 .btn-c1:hover,
 .btn-c1.hover {
-  background-color: #D63A25;
+  background-color: #E74024;
   color: #fff;
   /*border-color: #007D3D;*/
   /*color: #007D3D;*/
@@ -201,7 +201,7 @@ footer a {
 }
 
 .btn-c2 {
-  background-color: #39B7EA;
+  background-color: #007eb1;
   color: #fff;
   font-weight: bold;
 }
@@ -215,7 +215,7 @@ footer a {
 
 .btn-c2:hover,
 .btn-c2.hover {
-  background-color: #297BB5;
+  background-color: #39B7EA;
   color: #fff;
   /*border-color: #BE471B;*/
   /*color: #BE471B;*/
