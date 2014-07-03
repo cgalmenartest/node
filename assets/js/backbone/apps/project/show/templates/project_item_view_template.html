@@ -14,7 +14,7 @@
         <% } %>
           <div class="btn btn-c2 fileinput-button" <% if (!(data.isOwner || user.isAdmin) || !edit) { %>style="display:none;"<% } %>>
             <i class="icon-camera icon-large" title="Change Cover Photo" id="fileupload-icon"></i>
-            <input id="fileupload" type="file" name="files[]">
+            <input id="fileupload" type="file" name="files[]" title="Change Cover Photo">
           </div>
         </div>
         <div id="file-upload-progress-container" style="display: none;" class="progress progress-striped active">
