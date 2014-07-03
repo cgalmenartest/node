@@ -193,6 +193,10 @@ module.exports = {
           return done(null, false, { message: 'Your account is disabled.' });
         }
         var update = false;
+        if (providerUser.overwrite || (!user.name && userData.name)) {
+          user.name = userData.name || null;
+          update = true;
+        }
         if (providerUser.overwrite || (!user.photoId && !user.photoUrl && userData.photoUrl)) {
           user.photoUrl = userData.photoUrl || null;
           update = true;
