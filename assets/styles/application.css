@@ -873,13 +873,15 @@ ul.tags > li {
   font-size: 22px;
   vertical-align: text-bottom;
   text-decoration: none;
+  padding: 0;
+  margin: 0;
 }
 
 span.like-button > .gold {
   color: #f2e187;
 }
 
-a.like-button:hover {
+button.like-button:hover {
   text-decoration: none;
 }
 
@@ -1021,7 +1023,7 @@ li.border-left {
 .comment-metadata {
   font-size: 10px;
   padding-top: 3px;
-  color: #858585;
+  color: #767676;
 }
 
 .comment-item {

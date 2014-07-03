@@ -40,10 +40,20 @@ h6 {
   font-size: 10px;
 }
 
+/**
+ * For 508 compliance
+ */
+a {
+  color: #317ab9;
+}
+
 footer a {
   color: #216aa9;
 }
 
+/**
+ * Borders
+ */
 .border-left {
   border-color: #dd361a;
 }
@@ -353,7 +363,7 @@ footer a {
 }
 
 .navbar-default .navbar-brand {
-  color: #e74024;
+  color: #dd361a;
 }
 
 .navbar-default .navbar-brand:hover,
@@ -363,17 +373,17 @@ footer a {
 }
 
 .navbar-default .navbar-text {
-  color: #e74024;
+  color: #dd361a;
 }
 
 .navbar-default .navbar-nav > li > a {
-  color: #e74024;
+  color: #dd361a;
   text-shadow: none;
 }
 
 .navbar-default .navbar-nav > li > a:hover,
 .navbar-default .navbar-nav > li > a:focus {
-  color: #e74024;
+  color: #dd361a;
   background-color: transparent;
 }
 
@@ -390,7 +400,7 @@ footer a {
 }
 
 .navbar .nav .divider-vertical {
-  background-color: #e74024;
+  background-color: #dd361a;
 }
 .navbar-brand,
 .navbar-nav > li > a {
