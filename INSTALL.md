@@ -128,25 +128,20 @@ Then run the normal npm package installer
 
      npm install
 
-### Copy the main settings files and edit them
+### Copy the main settings files
 
      cd config
      cp local.ex.js local.js
-     vi local.js
 
-### Copy and edit the backend module configuration files
+### Copy the backend module configuration files
 
      cd config/settings
-     cp auth.ex.js auth.js
-     cp sources.ex.js sources.js
-     cp tags.ex.js tags.js
-     vi auth.js
-     vi sources.js
-     vi tags.js
+     for file in *.ex.js; do cp "$file" "${file/ex./}"; done
 
-### Edit the front-end configuration files
 
-Tag configuration:
+### Optional: Edit the configuration files
+
+It is not necessary to edit any config files to run the demo locally.  You may optionally edit the config files that you made copies of above, or the front-end configuration:
 
      cd assets/js/backbone/config
      vi tag.js
