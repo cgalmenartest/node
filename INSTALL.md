@@ -17,7 +17,7 @@ Note instructions to start postgres manually or st startup, if desired
 
 Start the postgres console acting on the midas database with: `psql midas`
 
-    CREATE USER midas WITH PASSWORD 'midas’
+    CREATE USER midas WITH PASSWORD 'midas';
     GRANT ALL PRIVILEGES ON DATABASE midas to midas;
     ALTER SCHEMA public OWNER TO midas;
     \q
