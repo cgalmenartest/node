@@ -111,8 +111,7 @@ need to `npm link` in order for everything to function properly.
 
      git clone https://github.com/18f/midas.git
      cd midas
-     git submodule init
-     git submodule update
+     git submodule update --init
 
 ### Install global node packages
 
