@@ -75,6 +75,26 @@ describe('auth:', function() {
                    }, function (err, response, body) {
         assert.equal(response.statusCode, 200);
         var b = JSON.parse(body);
+        assert.ok(b);
+        assert.isDefined(b.token);
+        done(err);
+      });
+    });
+  });
+  it('reset password', function (done) {
+    request.post({ url: conf.url + '/auth/forgot',
+                   form: { username: conf.defaultUser.username },
+                 }, function (err, response, body) {
+      assert.equal(response.statusCode, 200);
+      var b = JSON.parse(body);
+      assert.equal(b.success, true);
+      // check that token is included
+      assert.isDefined(b.token);
+      request.post({ url: conf.url + '/auth/reset',
+                     form: { token: b.token, password: conf.defaultUser.password },
+                   }, function (err, response, body) {
+        assert.equal(response.statusCode, 200);
+        var b = JSON.parse(body);
         assert.isTrue(b);
         done(err);
       });
@@ -84,9 +104,7 @@ describe('auth:', function() {
     request.post({ url: conf.url + '/auth/checkToken',
                    form: { token: '2o3948kjdsflksjsksjdfklsjdf' },
                  }, function (err, response, body) {
-      assert.equal(response.statusCode, 200);
-      var b = JSON.parse(body);
-      assert.isFalse(b);
+      assert.equal(response.statusCode, 403);
       done(err);
     });
   });
