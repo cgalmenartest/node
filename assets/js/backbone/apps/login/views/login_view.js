@@ -3,9 +3,10 @@ define([
   'underscore',
   'backbone',
   'utilities',
+  'login_password_view',
   'text!login_template',
   'modal_component'
-], function ($, _, Backbone, utils, LoginTemplate, ModalComponent) {
+], function ($, _, Backbone, utils, LoginPasswordView, LoginTemplate, ModalComponent) {
 
   var LoginView = Backbone.View.extend({
 
@@ -32,6 +33,9 @@ define([
       };
       var template = _.template(LoginTemplate, data);
       this.$el.html(template);
+      this.loginPasswordView = new LoginPasswordView({
+        el: this.$(".password-view")
+      }).render();
       setTimeout(function () {
         self.$("#username").focus();
       }, 500);
@@ -190,6 +194,7 @@ define([
     },
 
     cleanup: function () {
+      if (this.loginPasswordView) { this.loginPasswordView.cleanup(); }
       removeView(this);
     },
   });

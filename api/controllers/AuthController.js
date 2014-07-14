@@ -160,7 +160,61 @@ module.exports = {
     }
     userUtils.checkToken(token, function (err, valid, validToken) {
       if (err) { return res.send(400, { message: 'Error looking up token.', err:err }); }
-      res.send(valid);
+      if (valid === true) {
+        User.findOneById(validToken.userId, function (err, validUser) {
+          if (err) { return res.send(400, { message: 'Error looking up user.', err:err }); }
+          validToken.email = validUser.username;
+          return res.send(validToken);
+        });
+        return;
+      }
+      return res.send(403, { message: 'This is not a valid token.'} );
+    });
+  },
+  /**
+   * Reset a user's password
+   * The input to this must be a valid code and a new valid password
+   */
+  reset: function (req, res) {
+    var token = req.param('token');
+    var password = req.param('password');
+    if (!token) {
+      return res.send(400, { message: 'Must provide a token for validation.' });
+    }
+    userUtils.checkToken(token, function (err, valid, validToken) {
+      if (err) { return res.send(400, { message: 'Error looking up token.', err:err }); }
+      if (valid !== true) { return res.send(403, { message: 'This is not a valid token.'} ); }
+      var bcrypt = require('bcrypt');
+      // look up the user
+      User.findOneById(validToken.userId, function (err, validUser) {
+        if (err) { return res.send(400, { message: 'Error looking up user.', err:err }); }
+        // validate the password rules
+        var rules = userUtils.validatePassword(validUser.username, password);
+        var success = true;
+        _.each(_.values(rules), function (v) {
+          success = success && v;
+        });
+        if (success !== true) {
+          return res.send(400, { message: 'Password does not meet password rules.' });
+        }
+        // Encrypt the password
+        bcrypt.hash(password, 10, function(err, hash) {
+          if (err) { return res.send(400, { message: 'Unable to hash password.'}); }
+          var newPassword = {
+            userId: validToken.userId,
+            password: hash
+          };
+          UserPassword.create(newPassword, function (err, newPasswordObj) {
+            if (err) { return res.send(400, { message: 'Error storing new password.'}); }
+            // destroy the existing token
+            validToken.destroy(function (err) {
+              if (err) { return res.send(400, { message: 'Error destroying existing token'}); }
+              // success, return true
+              return res.send(true);
+            })
+          });
+        });
+      });
     });
   },
 
