@@ -25,7 +25,7 @@
         <div id="project-header" style="background-image:url('/api/user/photo/<%- data.id %>');">
           <div class="btn btn-c2 fileinput-button" <% if (!((data.isOwner || user.isAdmin) && edit)) { %>style="display:none;"<% } %>>
             <i class="icon-camera icon-large" title="Change Cover Photo" id="fileupload-icon"></i>
-            <input id="fileupload" type="file" name="files[]">
+            <input id="fileupload" type="file" name="files[]" title="Upload Photo">
           </div>
         </div>
         <div id="file-upload-progress-container" style="display: none;" class="progress progress-striped active">
@@ -53,7 +53,7 @@
       <form class="form-horizontal" role="form" id="profile-form">
         <h1>
           <div class="form-group">
-            <input type="text" class="form-control input-lg" id="name" name="name" placeholder="Your Full Name" value="<% if (data.name) { %><%- data.name %><% } %>"/>
+            <input type="text" class="form-control input-lg" id="name" name="name" placeholder="Your Full Name" value="<% if (data.name) { %><%- data.name %><% } %>" title="Your Full Name"/>
           </div>
         </h1>
 

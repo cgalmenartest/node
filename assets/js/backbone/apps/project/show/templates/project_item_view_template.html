@@ -14,13 +14,13 @@
         <% } %>
           <div class="btn btn-c2 fileinput-button" <% if (!(data.isOwner || user.isAdmin) || !edit) { %>style="display:none;"<% } %>>
             <i class="icon-camera icon-large" title="Change Cover Photo" id="fileupload-icon"></i>
-            <input id="fileupload" type="file" name="files[]">
+            <input id="fileupload" type="file" name="files[]" title="Change Cover Photo">
           </div>
         </div>
         <div id="file-upload-progress-container" style="display: none;" class="progress progress-striped active">
           <div id="file-upload-progress" class="progress-bar" style="width: 0"></div>
         </div>
-        <div id="file-upload-alert" class="alert alert-warning" style="display:none;">
+        <div class="file-upload-alert alert alert-warning" style="display:none;">
         </div>
       </div>
     </div>
@@ -42,13 +42,13 @@
 
           <div class="navbar-side like-row border-bottom">
             <% if (user) { %>
-            <a href="#" id="like-button" class="like-button">
+            <button id="like-button" class="btn btn-link like-button" title="Click to Like or Unlike">
             <% } else { %>
             <span class="like-button">
             <% } %>
               <i id="like-button-icon" class="icon icon-star-empty icon-large gold"></i>
             <% if (user) { %>
-            </a>
+            </button>
             <% } else { %>
             </span>
             <% } %>

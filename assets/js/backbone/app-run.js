@@ -16,6 +16,9 @@ define([
       if (!_.isUndefined(backendUser)) {
         window.cache.currentUser = backendUser;
       }
+      if (!_.isUndefined(systemName)) {
+        window.cache.system.name = systemName;
+      }
 
       // Create a user events handler
       _.extend(window.cache.userEvents, Backbone.Events);

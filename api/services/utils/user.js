@@ -202,6 +202,10 @@ module.exports = {
           return done(null, false, { message: 'Your account is disabled.' });
         }
         var update = false;
+        if (providerUser.overwrite || (!user.name && userData.name)) {
+          user.name = userData.name || null;
+          update = true;
+        }
         if (providerUser.overwrite || (!user.photoId && !user.photoUrl && userData.photoUrl)) {
           user.photoUrl = userData.photoUrl || null;
           update = true;
@@ -759,6 +763,20 @@ module.exports = {
           });
         });
       });
+    });
+  },
+
+  /**
+   * Look up the name of a user and include it in the originating object.
+   * The user's name is stored in the originating object.
+   * @param user an object that includes userId for the user
+   * @param done called when finished with syntax done(err).
+   */
+  addUserName: function (ownerObj, done) {
+    User.findOneById(ownerObj.userId, function (err, owner) {
+      if (err) { return done(err); }
+      ownerObj.name = owner.name;
+      return done();
     });
   },
 
