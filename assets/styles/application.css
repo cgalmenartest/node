@@ -468,6 +468,14 @@ ul.password-rules {
 =  PROFILES
 ******************/
 
+.profile-reset h1 {
+  font-size: 1.8em;
+}
+
+.profile-reset.error {
+  color: #c12e2a;
+}
+
 /*****************
 =  PROJECTS
 ******************/

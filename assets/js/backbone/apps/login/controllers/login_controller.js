@@ -14,7 +14,10 @@ define([
 
     events: {
       "click #register-cancel"   : "showLogin",
-      "click #login-register"    : "showRegister"
+      "click #login-register"    : "showRegister",
+      "click #forgot-done-cancel": "showLogin",
+      "click #forgot-cancel"     : "showLogin",
+      "click #forgot-password"   : "showForgot"
     },
 
     initialize: function ( options ) {
@@ -48,6 +51,8 @@ define([
         message: this.options.message
       }).render();
       this.$("#registration-view").hide();
+      this.$("#forgot-view").hide();
+      this.$("#forgot-done-view").hide();
       $("#login").modal('show');
 
       self.listenTo(window.cache.userEvents, "user:login", function (user) {
@@ -69,6 +74,10 @@ define([
       this.$("#login-footer").hide();
       this.$("#registration-view").show();
       this.$("#registration-footer").show();
+      this.$("#forgot-view").hide();
+      this.$("#forgot-footer").hide();
+      this.$("#forgot-done-view").hide();
+      this.$("#forgot-done-footer").hide();
     },
 
     showLogin: function (e) {
@@ -77,6 +86,22 @@ define([
       this.$("#login-footer").show();
       this.$("#registration-view").hide();
       this.$("#registration-footer").hide();
+      this.$("#forgot-view").hide();
+      this.$("#forgot-footer").hide();
+      this.$("#forgot-done-view").hide();
+      this.$("#forgot-done-footer").hide();
+    },
+
+    showForgot: function (e) {
+      if (e.preventDefault) e.preventDefault();
+      this.$("#forgot-view").show();
+      this.$("#forgot-footer").show();
+      this.$("#registration-view").hide();
+      this.$("#registration-footer").hide();
+      this.$("#login-view").hide();
+      this.$("#login-footer").hide();
+      this.$("#forgot-done-view").hide();
+      this.$("#forgot-done-footer").hide();
     },
 
     // ---------------------

@@ -5,6 +5,7 @@
  * @description :: Reset tokens for allowing a user to reset their password
  * @docs		:: http://sailsjs.org/#!documentation/models
  */
+var uuid = require('node-uuid');
 
 module.exports = {
 
@@ -15,6 +16,11 @@ module.exports = {
     // Generated token, valid for a period of time
     token: 'STRING'
 
+  },
+  beforeCreate: function (values, cb) {
+    // generate a unique token based on uuid
+    values.token = uuid.v4();
+    cb(null, values);
   }
 
 };

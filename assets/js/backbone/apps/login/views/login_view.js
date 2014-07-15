@@ -3,9 +3,10 @@ define([
   'underscore',
   'backbone',
   'utilities',
+  'login_password_view',
   'text!login_template',
   'modal_component'
-], function ($, _, Backbone, utils, LoginTemplate, ModalComponent) {
+], function ($, _, Backbone, utils, LoginPasswordView, LoginTemplate, ModalComponent) {
 
   var LoginView = Backbone.View.extend({
 
@@ -16,7 +17,8 @@ define([
       'keyup #rpassword'               : 'checkPassword',
       'blur #rpassword'                : 'checkPassword',
       'submit #login-password-form'    : 'submitLogin',
-      'submit #registration-form'      : 'submitRegister'
+      'submit #registration-form'      : 'submitRegister',
+      'submit #forgot-form'            : 'submitForgot'
     },
 
     initialize: function (options) {
@@ -31,6 +33,9 @@ define([
       };
       var template = _.template(LoginTemplate, data);
       this.$el.html(template);
+      this.loginPasswordView = new LoginPasswordView({
+        el: this.$(".password-view")
+      }).render();
       setTimeout(function () {
         self.$("#username").focus();
       }, 500);
@@ -123,6 +128,30 @@ define([
       });
     },
 
+    submitForgot: function (e) {
+      var self = this;
+      if (e.preventDefault) e.preventDefault();
+      var data = {
+        username: this.$("#fusername").val()
+      };
+      // Post the registration request to the server
+      $.ajax({
+        url: '/api/auth/forgot',
+        type: 'POST',
+        data: data
+      }).done(function (success) {
+        // Set the user object and trigger the user login event
+        self.$("#forgot-view").hide();
+        self.$("#forgot-footer").hide();
+        self.$("#forgot-done-view").show();
+        self.$("#forgot-done-footer").show();
+      }).fail(function (error) {
+        var d = JSON.parse(error.responseText);
+        self.$("#forgot-error").html(d.message);
+        self.$("#forgot-error").show();
+      });
+    },
+
     checkUsername: function (e) {
       var username = $("#rusername").val();
       $.ajax({
@@ -165,6 +194,7 @@ define([
     },
 
     cleanup: function () {
+      if (this.loginPasswordView) { this.loginPasswordView.cleanup(); }
       removeView(this);
     },
   });
