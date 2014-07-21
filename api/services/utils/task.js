@@ -113,7 +113,7 @@ var findTasks = function (where, cb) {
   .where(w)
   .sort({'updatedAt': -1})
   .exec(function (err, tasks) {
-    if (err) { return res.send(400, { message: 'Error looking up tasks.' }); }
+    if (err) { return cb({ message: 'Error looking up tasks.' }, null); }
     // function for looking up user info
     var lookupUser = function (task, done) {
       userUtil.getUser(task.userId, null, function (err, user) {
@@ -125,10 +125,13 @@ var findTasks = function (where, cb) {
         return done();
       });
     };
+    // get user info
     async.each(tasks, lookupUser, function (err) {
       if (err) { return cb({ message: 'Error looking up user info.' }, null); }
+      // get tag info
       async.each(tasks, self.getTags, function (err) {
         if (err) { return cb({ message: 'Error looking up task tags.' }, null); }
+        // get likes
         async.each(tasks, self.getLikes, function (err) {
           if (err) { return cb({ message: 'Error looking up task likes.' }, null); }
           return cb(err, tasks);
