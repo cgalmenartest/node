@@ -45,7 +45,7 @@ module.exports = {
   },
 
   // for the sake of alerting owners and parent commenters
-  afterCreate: function (values, cb){
+  afterCreate: function (values, cb) {
     var params = {};
     // comment applies to a project
     if(values.projectId){

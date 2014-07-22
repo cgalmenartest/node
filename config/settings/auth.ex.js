@@ -7,6 +7,8 @@ module.exports = {
     local : {
       // number of attempts before locking out the user
       passwordAttempts : 5,
+      // expire password reset tokens after this many milliseconds
+      tokenExpiration  : 60*60*1000
     },
     linkedin : {
       clientId    : process.env.LINKEDIN_CLIENT_ID  || 'CLIENT_ID',

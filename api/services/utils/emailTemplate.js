@@ -1,6 +1,6 @@
 var util            = require("util");
 var events          = require("events");
-var _               = require('underscore');
+var _               = require('lodash');
 var async           = require('async');
 var emailTemplates  = require('email-templates');
 
@@ -37,12 +37,14 @@ function prepareTemplate (dir, name, locals, cb) {
  */
 function prepareLayout (fields, cb) {
   // use helper variables to split up fields for template functions
+  // Deep clone each set of fields, since emailTemplates often pops into
+  // a different context
   var layout = fields.layout;
-  var layoutLocals = fields.layoutLocals || {};
-  layoutLocals.metadata = fields.metadata || {};
+  var layoutLocals = _.cloneDeep(fields.layoutLocals || {});
+  layoutLocals.metadata = _.cloneDeep(fields.metadata || {});
   var content = fields.template;
-  var contentLocals = fields.templateLocals || {};
-  contentLocals.metadata = fields.metadata || {};
+  var contentLocals = _.cloneDeep(fields.templateLocals || {});
+  contentLocals.metadata = _.cloneDeep(fields.metadata || {});
   // render the inner template first
   var contentRender = prepareTemplate(sails.config.emailTemplateDirectories.templateDir, content, addGlobals(contentLocals), function (err, innerHTML, innerText) {
     if (!err) {

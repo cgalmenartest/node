@@ -1,7 +1,7 @@
 {
     "name": "midas",
     "private": true,
-    "version": "0.0.11",
+    "version": "0.0.12",
     "description": "Innovation platform providing collaboration and crowdsourcing tools",
     "dependencies": {
         "sails": "0.9.8",
@@ -9,6 +9,7 @@
         "grunt": "0.4.3",
         "ejs": "0.8.5",
         "underscore": "1.x",
+        "lodash": "~2.4.1",
         "optimist": "0.4.0",
         "validator": "3.4.0",
         "passport": "0.2.x",
@@ -41,11 +42,11 @@
     "main": "app.js",
     "repository": {
         "type": "git",
-        "url": "https://github.com/Innovation-Toolkit/midas.git"
+        "url": "https://github.com/18F/midas.git"
     },
     "scripts": {
         "test": "make test"
     },
-    "bugs": "https://github.com/Innovation-Toolkit/midas/issues",
+    "bugs": "https://github.com/18F/midas/issues",
     "license": "MIT"
 }

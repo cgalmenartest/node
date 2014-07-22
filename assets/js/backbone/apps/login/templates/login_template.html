@@ -1,5 +1,4 @@
 <form class="form-horizontal" role="form" id="login-password-form">
-
 <div class="modal-body padding-bottom-none" id="login-view">
 
   <% if (message && !_.isUndefined(message.message)) { %>
@@ -76,39 +75,7 @@
       <span class="help-block error-button" style="display:none;">The email address is not valid or is already in use.</span>
     </div>
 
-    <div class="row">
-      <div class="col-sm-9 sm-nopadding">
-        <div class="form-group">
-          <label for="rpassword" class="control-label">Password</label>
-          <input type="password" class="form-control validate" id="rpassword" name="password" placeholder="Password" data-validate="empty,password,confirm"/>
-          <span class="help-block error-empty" style="display:none;">You must enter a password.</span>
-          <span class="help-block error-password" style="display:none;">Your password does not meet password rules.</span>
-          <span class="help-block error-confirm" style="display:none;">Your password does not match the password entered below.</span>
-        </div>
-        <div class="form-group">
-          <label for="rpassword-confirm" class="control-label">Confirm Password</label>
-          <input type="password" class="form-control" id="rpassword-confirm" placeholder="Confirm Password"/>
-        </div>
-      </div>
-      <div class="col-sm-3 nopadding">
-        <div class="password-rules-title">
-          Must Contain:
-        </div>
-        <ul class="password-rules">
-          <li class="success rule-username"><i class="icon icon-ok"></i> Not your email</li>
-          <li class="error rule-username"><i class="icon icon-remove"></i> Not your email</li>
-          <li class="success rule-length"><i class="icon icon-ok"></i> 8 characters or more</li>
-          <li class="error rule-length"><i class="icon icon-remove"></i> 8 characters or more</li>
-          <li class="success rule-upper"><i class="icon icon-ok"></i> Uppercase</li>
-          <li class="error rule-upper"><i class="icon icon-remove"></i> Uppercase</li>
-          <li class="success rule-lower"><i class="icon icon-ok"></i> Lowercase</li>
-          <li class="error rule-lower"><i class="icon icon-remove"></i> Lowercase</li>
-          <li class="success rule-number"><i class="icon icon-ok"></i> A Number</li>
-          <li class="error rule-number"><i class="icon icon-remove"></i> A Number</li>
-          <li class="success rule-symbol"><i class="icon icon-ok"></i> A Symbol</li>
-          <li class="error rule-symbol"><i class="icon icon-remove"></i> A Symbol</li>
-        </ul>
-      </div>
+    <div class="password-view">
     </div>
 
     <div class="checkbox">
@@ -139,3 +106,53 @@
   </div>
 </div>
 </form>
+
+<form role="form" id="forgot-form">
+<div class="modal-body padding-bottom-none" id="forgot-view">
+    <h2>Reset Your Password</h2>
+
+    <p>Please enter your email address and we'll send you a link to reset your password</p>
+
+    <div class="form-group">
+      <label for="fusername" class="control-label">Email Address</label>
+      <input type="text" class="form-control validate" id="fusername" name="username" placeholder="Email Address" data-validate="button"/>
+    </div>
+    <div class="form-group margin-bottom-none">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="alert alert-danger" id="forgot-error" style="display:none;"></div>
+        </div>
+      </div>
+    </div>
+</div>
+<div class="modal-footer modal-footer-grey" id="forgot-footer" style="display:none;">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="pull-right">
+        <button type="button" id="forgot-cancel" class="btn btn-c0">Cancel</button>
+        <button type="submit" class="btn btn-c2">Reset Password</button>
+      </div>
+    </div>
+  </div>
+</div>
+</form>
+
+<div class="modal-body padding-bottom-none" id="forgot-done-view">
+    <h2>Reset Your Password</h2>
+
+    <p>
+      Thank you! An email will arrive shortly with a link to reset your password.
+    </p>
+    <p>
+      If you don't receive an email shortly, check your spam folder.
+    </p>
+</div>
+<div class="modal-footer modal-footer-grey" id="forgot-done-footer" style="display:none;">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="pull-right">
+        <button type="button" id="forgot-done-cancel" class="btn btn-c2">Return to Login</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -161,10 +161,6 @@ define([
 
       var currentTarget = e.currentTarget;
       this.collection.trigger("comment:save", data, currentTarget);
-
-      if (this.options.topic) {
-        this.$el.hide();
-      }
     },
 
     cleanup: function () {

@@ -30,6 +30,8 @@ module.exports = {
       Comment.findOneById(fields.callerId).done(function (err, callComment) {
         if (err) { sails.log.debug(err); cb(null, content); return false; }
         content.fields.metadata.comment = callComment;
+        // Get the initiator userId
+        content.fields.initiatorId = callComment.userId;
         // Get the parent comment object
         Comment.findOneById(callComment.parentId).done(function (err, parComment) {
           if (err) { sails.log.debug(err); cb(null, content); return false; }

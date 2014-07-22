@@ -16,17 +16,8 @@ module.exports.policies = {
   // see api/policies/authenticated.js
   '*': ['authenticated', 'addUserId'],
 
-  // whitelist the auth and main controllers
-  'auth':
-  {
-    '*': true
-  },
-
-  'main':
-  {
-    '*': true
-  },
-
+  // Main rendering controller
+  // Passes sspi policy through for auto-login systems
   MainController : {
     '*': ['sspi']
   },
@@ -34,6 +25,11 @@ module.exports.policies = {
   // Only admins can access the AdminController API
   AdminController : {
     '*': ['authenticated', 'admin']
+  },
+
+  // Auth controller can be accessed by anyone
+  AuthController : {
+    '*': true
   },
 
   // Limit user controller view to just the /user endpoint
@@ -105,6 +101,8 @@ module.exports.policies = {
   },
 
   EventController : {
+    '*': false,
+    'find': ['authenticated'],
     'create': ['authenticated', 'requireUserId', 'addUserId', 'projectId', 'eventUuid'],
     'update': ['authenticated', 'requireUserId', 'projectId'],
     'findAllByProjectId': ['authenticated', 'addUserId', 'requireId', 'project'],

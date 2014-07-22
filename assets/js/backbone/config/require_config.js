@@ -71,7 +71,9 @@ require.config({
     // ----------
     'login_config'              : '../config/login.json',
     'login_view'                : '../apps/login/views/login_view',
+    'login_password_view'       : '../apps/login/views/login_password_view',
     'login_template'            : '../apps/login/templates/login_template.html',
+    'login_password_template'   : '../apps/login/templates/login_password_template.html',
     'login_controller'          : '../apps/login/controllers/login_controller',
 
     // ----------
@@ -156,6 +158,8 @@ require.config({
     'profile_show_template'     : '../apps/profiles/show/templates/profile_show_template.html',
     'profile_settings_view'     : '../apps/profiles/show/views/profile_settings_view',
     'profile_settings_template' : '../apps/profiles/show/templates/profile_settings_template.html',
+    'profile_reset_view'        : '../apps/profiles/show/views/profile_reset_view',
+    'profile_reset_template'    : '../apps/profiles/show/templates/profile_reset_template.html',
     'profile_email_template'    : '../apps/profiles/show/templates/profile_email_template.html',
     'profile_email_view'        : '../apps/profiles/email/views/profile_email_view',
     'profile_email_form_template': '../apps/profiles/email/templates/profile_email_form.html',

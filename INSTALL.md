@@ -109,7 +109,7 @@ need to `npm link` in order for everything to function properly.
 
 ### Clone the git repository.
 
-     git clone https://github.com/18f/midas.git
+     git clone https://github.com/18F/midas.git
      cd midas
      git submodule update --init
 
