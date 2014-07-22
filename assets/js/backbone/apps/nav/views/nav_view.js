@@ -53,7 +53,7 @@ define([
 
     render: function () {
       var self = this;
-      this.doRender({ user: window.cache.currentUser });
+      this.doRender({ user: window.cache.currentUser, systemName: window.cache.system.name });
       return this;
     },
 

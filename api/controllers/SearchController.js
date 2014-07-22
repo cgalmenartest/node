@@ -29,7 +29,7 @@ function search (target, req, res) {
 
   // For each tag, find items associated with it
   var processTag = function (tagId, cb) {
-    var where = {}
+    var where = {};
     var t = target.substr(0, target.length - 1);
     where[t + 'Id'] = { not: null };
     Tag.find()
@@ -66,9 +66,14 @@ function search (target, req, res) {
     // Get the details of each item
     async.each(itemIds, check, function (err) {
       if (err) { return res.send(400, { message: 'Error performing query.'}); }
+      // if there's no matching items (task or project), return an empty array
+      if (itemIdsAuthorized.length === 0) {
+        return res.send([]);
+      }
       // Perform item specific processing
       // Get task metadata
       if (target == 'tasks') {
+        // Look up task metadata
         taskUtil.findTasks({ id: itemIdsAuthorized }, function (err, items) {
           if (err) { return res.send(400, { message: 'Error performing query.', error: err }); }
           return res.send(items);

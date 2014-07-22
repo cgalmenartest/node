@@ -12,7 +12,7 @@ var userUtils = require('../services/utils/user');
  * logins or by OAuth authentication + REST profile from
  * remote server.
  */
-function authenticate(req, res, strategy, json) {
+function authenticate (req, res, strategy, json) {
   if (req.user) {
     passport.authorize(strategy, function (err, user, info)
     {
@@ -54,7 +54,7 @@ function authenticate(req, res, strategy, json) {
       if (strategy === 'register') {
       }
 
-      req.logIn(user, function(err)
+      req.logIn(user, function (err)
       {
         if (err)
         {
@@ -91,7 +91,7 @@ module.exports = {
   /**
    * View login options
    */
-  index: function(req, res) {
+  index: function (req, res) {
     // if the user is logged in, redirect them back to the app
     if (req.user) { res.redirect('/'); return; }
     res.view();
@@ -100,7 +100,7 @@ module.exports = {
   /**
    * Authentication Provider for local and register username/password system
    */
-  local: function(req, res) {
+  local: function (req, res) {
     // Disable local logins when sspi is enabled; can allow bypassing of
     // credentials through the sspi auto-login functionality
     if (sails.config.auth.auth.sspi.enabled === true) {
@@ -112,7 +112,7 @@ module.exports = {
     }
     authenticate(req, res, 'local', json);
   },
-  register: function(req, res) {
+  register: function (req, res) {
     // Disable local logins when sspi is enabled; can allow bypassing of
     // credentials through the sspi auto-login functionality
     if (sails.config.auth.auth.sspi.enabled === true) {
@@ -125,19 +125,98 @@ module.exports = {
     }
     authenticate(req, res, 'register', json);
   },
-  // TODO: remove if SSPI endpoint can be removed
-  // sspi: function(req, res) {
-  //   // Only allow SSPI if it is explicitly enabled
-  //   if (sails.config.auth.auth.sspi.enabled !== true) {
-  //     return res.send(403, { message: 'Authentication method not supported. '});
-  //   }
-  //   var json = false;
-  //   req.register = true;
-  //   if (req.param('json')) {
-  //     json = true;
-  //   }
-  //   authenticate(req, res, 'sspi', json);
-  // },
+  forgot: function (req, res) {
+    var email = req.param('username');
+    if (!email) {
+      return res.send(400, { message: 'You must enter an email address. '});
+    }
+    userUtils.forgotPassword(email, function (err, token) {
+      if (err) {
+        return res.send(400, err);
+      }
+      var result = {
+        success: true,
+        email: email
+      };
+      // send the token back to test that it is working
+      if (process.env.NODE_ENV == 'test') {
+        result.token = token.token;
+      }
+      return res.send(result);
+    });
+  },
+  /**
+   * Check if a token is a valid token for resetting a user's password.
+   *
+   * @return true if the token is valid, false otherwise
+   */
+  checkToken: function (req, res) {
+    var token = req.route.params.id;
+    if (!token) {
+      token = req.param('token');
+    }
+    if (!token) {
+      return res.send(400, { message: 'Must provide a token for validation.' });
+    }
+    userUtils.checkToken(token, function (err, valid, validToken) {
+      if (err) { return res.send(400, { message: 'Error looking up token.', err:err }); }
+      if (valid === true) {
+        User.findOneById(validToken.userId, function (err, validUser) {
+          if (err) { return res.send(400, { message: 'Error looking up user.', err:err }); }
+          validToken.email = validUser.username;
+          return res.send(validToken);
+        });
+        return;
+      }
+      return res.send(403, { message: 'This is not a valid token.'} );
+    });
+  },
+  /**
+   * Reset a user's password
+   * The input to this must be a valid code and a new valid password
+   */
+  reset: function (req, res) {
+    var token = req.param('token');
+    var password = req.param('password');
+    if (!token) {
+      return res.send(400, { message: 'Must provide a token for validation.' });
+    }
+    userUtils.checkToken(token, function (err, valid, validToken) {
+      if (err) { return res.send(400, { message: 'Error looking up token.', err:err }); }
+      if (valid !== true) { return res.send(403, { message: 'This is not a valid token.'} ); }
+      var bcrypt = require('bcrypt');
+      // look up the user
+      User.findOneById(validToken.userId, function (err, validUser) {
+        if (err) { return res.send(400, { message: 'Error looking up user.', err:err }); }
+        // validate the password rules
+        var rules = userUtils.validatePassword(validUser.username, password);
+        var success = true;
+        _.each(_.values(rules), function (v) {
+          success = success && v;
+        });
+        if (success !== true) {
+          return res.send(400, { message: 'Password does not meet password rules.' });
+        }
+        // Encrypt the password
+        bcrypt.hash(password, 10, function(err, hash) {
+          if (err) { return res.send(400, { message: 'Unable to hash password.'}); }
+          var newPassword = {
+            userId: validToken.userId,
+            password: hash
+          };
+          UserPassword.create(newPassword, function (err, newPasswordObj) {
+            if (err) { return res.send(400, { message: 'Error storing new password.'}); }
+            // destroy the existing token
+            validToken.destroy(function (err) {
+              if (err) { return res.send(400, { message: 'Error destroying existing token'}); }
+              // success, return true
+              return res.send(true);
+            })
+          });
+        });
+      });
+    });
+  },
 
   /**
    * Start the OAuth authentication process for a given strategy

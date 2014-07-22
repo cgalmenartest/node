@@ -1,6 +1,7 @@
 var conf = require('./config');
 var fs = require('fs');
 var request = require('request');
+var _ = require('underscore');
 
 module.exports = {
   init: function(keepDb) {
@@ -9,13 +10,18 @@ module.exports = {
     return r;
   },
 
-  login: function (request, cb) {
+  login: function (request, user, cb) {
+    // handle variable length arguments
+    if (_.isFunction(user)) {
+      cb = user;
+      user = conf.defaultUser;
+    }
     // logout first
     request.get({ url: conf.url + '/auth/logout' }, function (err, response, body) {
       if (err) { return cb(err); }
       // then login
       request.post({ url: conf.url + '/auth/local',
-                     form: { username: conf.username, password: conf.password, json: true },
+                     form: { username: user.username, password: user.password, json: true },
                    }, function (err, response, body) {
         var getUser = function (cb) {
           request(conf.url + '/user', function (err, response, body) {
@@ -29,7 +35,7 @@ module.exports = {
         if (response.statusCode == 403) {
           // this could be because the user isn't registered; try to register
           request.post({ url: conf.url + '/auth/register',
-                         form: { username: conf.username, password: conf.password, json: true },
+                         form: { username: user.username, password: user.password, json: true },
                        }, function (err, response, body) {
             if (err) { return cb(err); }
             getUser(cb);

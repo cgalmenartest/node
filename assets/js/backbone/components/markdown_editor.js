@@ -71,6 +71,7 @@ define([
         rows: this.options.rows,
         maxlength: this.options.maxlength,
         placeholder: this.options.placeholder,
+        title: this.options.title,
         data: this.options.data
       };
       var template = _.template(EditorTemplate, data);

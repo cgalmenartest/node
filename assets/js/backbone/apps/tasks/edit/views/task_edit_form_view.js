@@ -197,6 +197,7 @@ define([
         el: ".markdown-edit",
         id: 'task-description',
         placeholder: 'Description of opportunity including goals, expected outcomes and deliverables.',
+        title: 'Opportunity Description',
         rows: 6,
         maxlength: 1000,
         validate: ['empty', 'count1000']

@@ -211,15 +211,15 @@
           </div>
           <div class="box-main" id="task-volunteers">
             <div class="project-people-div" data-userid="<%= model.userId %>">
-              <img src="/api/user/photo/<%= model.userId %>" class="project-people"/>
+              <img src="/api/user/photo/<%= model.userId %>" class="project-people" alt="<%= model.owner.name %>"/>
             </div>
             <div class="project-people-space">
               <div class="bar">
               </div>
             </div>
             <% _.each(model.volunteers, function (v) { %>
-            <div class="project-people-div" data-userid="<%= v %>">
-              <img src="/api/user/photo/<%= v %>" class="project-people"/>
+            <div class="project-people-div" data-userid="<%= v.userId %>">
+              <img src="/api/user/photo/<%= v.userId %>" class="project-people" alt="<%= v.name %>"/>
             </div>
             <% }); %>
           </div>

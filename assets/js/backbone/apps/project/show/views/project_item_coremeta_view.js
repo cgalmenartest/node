@@ -77,6 +77,7 @@ define([
         data: this.model.toJSON().description,
         el: ".markdown-edit",
         id: 'project-edit-form-description',
+        title: 'Project Description',
         rows: 6,
         validate: ['empty', 'count400']
       }).render();

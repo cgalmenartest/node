@@ -29,5 +29,6 @@
   id="<%= id %>"
   data-validate="<% if (!_.isUndefined(validate)) { %><%= validate.join(',') %><% } %>"
   <% if (!_.isUndefined(placeholder)) { %>placeholder="<%= placeholder %>"<% } %>
+  <% if (!_.isUndefined(title)) { %>title="<%= title %>"<% } %>
   ><%= data %></textarea>
 <div class="preview" style="display: none;"></div>

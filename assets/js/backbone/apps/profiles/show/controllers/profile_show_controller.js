@@ -6,9 +6,10 @@ define([
   'profile_model',
   'profile_show_view',
   'profile_settings_view',
+  'profile_reset_view',
   'json!login_config',
   'text!alert_template'
-], function ($, _, Backbone, BaseController, ProfileModel, ProfileView, ProfileSettingsView, Login, AlertTemplate) {
+], function ($, _, Backbone, BaseController, ProfileModel, ProfileView, ProfileSettingsView, ProfileResetView, Login, AlertTemplate) {
 
   Application.Controller.Profile = BaseController.extend({
 
@@ -27,7 +28,27 @@ define([
       this.routeId = options.id;
       this.action = options.action;
       this.data = options.data;
-      this.initializeProfileModelInstance();
+      this.initializeController();
+    },
+
+    initializeController: function () {
+      // Clean up previous views
+      if (this.profileView) { this.profileView.cleanup(); }
+      if (this.settingsView) { this.settingsView.cleanup(); }
+      if (this.profileResetView) { this.profileResetView.cleanup(); }
+      // If the action does not require the profile model, display that action
+      if (this.routeId == 'reset') {
+        this.profileResetView = new ProfileResetView({
+          el: this.$el,
+          routeId: this.routeId,
+          action: this.action,
+          data: this.data
+        }).render();
+      }
+      // otherwise load the profile model and display the appropriate view
+      else {
+        this.initializeProfileModelInstance();
+      }
     },
 
     initializeProfileModelInstance: function () {
@@ -95,8 +116,6 @@ define([
     },
 
     initializeProfileViewInstance: function () {
-      if (this.profileView) { this.profileView.cleanup(); }
-      if (this.settingsView) { this.settingsView.cleanup(); }
       if (this.action == 'settings') {
         this.settingsView = new ProfileSettingsView({
           el: this.$el,

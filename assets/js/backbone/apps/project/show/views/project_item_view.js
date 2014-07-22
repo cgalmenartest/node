@@ -134,8 +134,8 @@ define([
             if (data.jqXHR.status == 413) {
               message = "The uploaded file exceeds the maximum file size.";
             }
-            self.$("#file-upload-alert").html(message)
-            self.$("#file-upload-alert").show();
+            self.$(".file-upload-alert").html(message)
+            self.$(".file-upload-alert").show();
           }
       });
 

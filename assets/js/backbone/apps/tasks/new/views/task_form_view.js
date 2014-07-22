@@ -101,12 +101,10 @@ define([
       var template = _.template(TaskFormTemplate, { tags: this.tagSources })
       this.$el.html(template);
       this.initializeSelect2();
+      this.initializeTextArea();
 
       // Important: Hide all non-currently opened sections of wizard.
-      // TODO: Move this to the modalWizard js.
       this.$("section:not(.current)").hide();
-
-      this.initializeTextArea();
 
       // Return this for chaining.
       return this;
@@ -140,6 +138,8 @@ define([
       self.$("#skills").select2({
         placeholder: "Start typing to select a skill.",
         multiple: true,
+        // this width setting is a hack to prevent placeholder from getting cut off
+        width: "556px",
         formatResult: formatResult,
         formatSelection: formatResult,
         ajax: {
@@ -161,6 +161,8 @@ define([
       self.$("#topics").select2({
         placeholder: "Start typing to select a topic.",
         multiple: true,
+        // this width setting is a hack to prevent placeholder from getting cut off
+        width: "556px",
         formatResult: formatResult,
         formatSelection: formatResult,
         ajax: {
@@ -182,6 +184,8 @@ define([
       self.$("#location").select2({
         placeholder: "Start typing to select a location.",
         multiple: true,
+        // this width setting is a hack to prevent placeholder from getting cut off
+        width: "556px",
         formatResult: formatResult,
         formatSelection: formatResult,
         ajax: {
@@ -242,6 +246,7 @@ define([
         el: ".markdown-edit",
         id: 'task-description',
         placeholder: 'Description of opportunity including goals, expected outcomes and deliverables.',
+        title: 'Opportunity Description',
         rows: 6,
         maxlength: 1000,
         validate: ['empty', 'count1000']

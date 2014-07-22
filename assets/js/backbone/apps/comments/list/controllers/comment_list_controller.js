@@ -37,6 +37,10 @@ define([
 
       // Populating the DOM after a comment was created.
       this.listenTo(this.commentCollection, "comment:save:success", function (model, modelJson, currentTarget) {
+        if (modelJson.topic) {
+          // cleanup the topic form
+          if (this.topicForm) this.topicForm.cleanup();
+        }
         self.addNewCommentToDom(modelJson, currentTarget);
       });
 

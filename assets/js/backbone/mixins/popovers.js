@@ -4,8 +4,9 @@ define([
   'backbone',
   'base_component',
   'bootstrap',
+  'utilities',
   'text!popover_profile'
-], function ($, _, Backbone, BaseComponent, Bootstrap, PopoverProfile) {
+], function ($, _, Backbone, BaseComponent, Bootstrap, utils, PopoverProfile) {
 
   Application.Component.Popovers = BaseComponent.extend({
 
@@ -23,7 +24,7 @@ define([
           var _this = this;
           var timeoutFn = function () {
             if (!$(".popover:hover").length) {
-                $(_this).popover("hide")
+              $(_this).popover("hide");
             } else {
               setTimeout(timeoutFn, 100);
             }
@@ -49,6 +50,10 @@ define([
           popover.options.content = template;
           popover.setContent();
           popover.$tip.addClass(popover.options.placement);
+          // handle links in the popovers
+          $(".popover").on('click', ".link-backbone", function (e) {
+            linkBackbone(e);
+          });
         });
       }
     },

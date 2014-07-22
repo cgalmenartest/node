@@ -35,6 +35,7 @@ define([
         el: ".markdown-edit",
         id: 'project-form-description',
         placeholder: 'A description of your project that explains the focus, objectives, and deliverables.',
+        title: 'Project Description',
         rows: 6,
         validate: ['empty', 'count400']
       }).render();
