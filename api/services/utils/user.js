@@ -1,7 +1,6 @@
 var _ = require('underscore');
 var validator = require('validator');
 var async = require('async');
-var projUtils = require('./project');
 var tagUtils = require('./tag');
 var noteUtils = require('../notifications/manager');
 
