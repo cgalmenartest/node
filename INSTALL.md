@@ -9,6 +9,7 @@ The instructions have been tested on 10.9.2, but earlier versions likely work.  
 In the Terminal:
 
     brew install postgresql
+    brew install graphicsmagick 
 
 Note instructions to start postgres manually or st startup, if desired
 

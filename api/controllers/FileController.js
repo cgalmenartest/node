@@ -145,7 +145,7 @@ module.exports = {
       });
     };
 
-    async.each(req.files, processFile, function (err) {
+    async.each(req.files.files, processFile, function (err) {
       if (err) {
         return res.send(400, err);
       }
