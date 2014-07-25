@@ -39,20 +39,13 @@ describe('project:', function() {
         if (err) { return done(err); }
         assert.equal(response.statusCode, 200);
         var b = JSON.parse(body);
-        /**
-        // check that the values passed in are the same as those passed back
-        assert.equal(draftEvent.title, b.title);
-        assert.equal(draftEvent.description, b.description);
-        assert.equal(draftEvent.location, b.location);
-        assert.equal(draftEvent.projectId, b.projectId);
-        // make sure the automatically populated fields get set
-        assert(b.id);
-        assert(b.userId);
-        assert(b.uuid);
-        assert(b.status);
-        // make sure you've RSVP'd
-        assert.equal(b.rsvp, true);
-        **/
+        // check that the values returned are correct 
+        assert.equal(b.title, draftProject.title);
+        assert.equal(b.description, draftProject.description);
+        assert.equal(b.userId, draftProject.userId);
+        assert.equal(b.id, draftProject.id);
+        assert.equal(b.state, "draft");
+        assert.equal(b.like, false);
         done();
       });
     });
@@ -66,15 +59,15 @@ describe('project:', function() {
     });
 
     it('view draft project', function (done) {
-      request.get({ url: conf.url + '/event/' + confirmedEvent.id },
+      request.get({ url: conf.url + '/Project/' + confirmedProject.id },
                   function(err, response, body) {
         if (err) { return done(err); }
         var b = JSON.parse(body);
         // check that the values passed in are the same as those passed back
-        assert.equal(confirmedEvent.title, b.title);
-        assert.equal(confirmedEvent.description, b.description);
-        assert.equal(confirmedEvent.location, b.location);
-        assert.equal(confirmedEvent.projectId, b.projectId);
+        assert.equal(confirmedProject.title, b.title);
+        assert.equal(confirmedProject.description, b.description);
+        assert.equal(confirmedProject.location, b.location);
+        assert.equal(confirmedProject.projectId, b.projectId);
         // make sure the automatically populated fields get set
         assert(b.id);
         assert(b.userId);
@@ -88,7 +81,7 @@ describe('project:', function() {
     });
 
     it('view denied', function(done) {
-      request.get({ url: conf.url + '/event/' + draftEvent.id },
+      request.get({ url: conf.url + '/Project/' + draftProject.id },
                   function(err, response, body) {
         // access should be denied
         assert.equal(response.statusCode, 403);
