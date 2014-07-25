@@ -54,8 +54,22 @@ describe('project:', function() {
         assert.equal(b.like, false);
       });
       done();
-
     });
+
+    it('view public project', function (done) {
+      request.get({ url: conf.url + '/project/' + publicProject.id },
+                  function (err, response, body) {
+        if (err) { return done(err); }
+        assert.equal(response.statusCode, 200);
+        var b = JSON.parse(body);
+        // check that the values returned are correct 
+        assertProject(b, publicProject)
+        assert.equal(b.like, false);
+      });
+      done();
+    });
+
+
   });
   
   describe('logged out:', function () {
@@ -69,6 +83,19 @@ describe('project:', function() {
                   function (err, response, body) {
         if (err) { return done(err); }
         assert.equal(response.statusCode, 403);
+      });
+      done();
+    });
+
+    it('view public project', function (done) {
+      request.get({ url: conf.url + '/project/' + publicProject.id },
+                  function (err, response, body) {
+        if (err) { return done(err); }
+        assert.equal(response.statusCode, 200);
+        var b = JSON.parse(body);
+        // check that the values returned are correct 
+        assertProject(b, publicProject)
+        assert.equal(b.like, false);
       });
       done();
     });
