@@ -78,7 +78,14 @@ module.exports = {
       url: conf.url + '/file'
     }, function (err, response, body) {
       if (err) return cb(err, null);
+      // posting a file doesn't actually return JSON, if successful
+      if (body[0] != '{') {
+        pre = '<textarea data-type="application/json">';
+        post = '</textarea>';
+        body = body.slice(pre.length, post.length * -1)
+      }
       var b = JSON.parse(body);
+      if (b.status == 500) return cb(new Error("500 Error from POST", b));
       return cb(null, b);
     });
     var form = r.form();
