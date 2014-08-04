@@ -1,7 +1,7 @@
 midas [![Build Status](https://travis-ci.org/18F/midas.png?branch=master)](https://travis-ci.org/18F/midas) [![Dependency Status](https://gemnasium.com/Innovation-Toolkit/midas.png)](https://gemnasium.com/Innovation-Toolkit/midas)
 =====
 
-Goal: to foster innovation across team boundaries by connecting motivated people to identify challenges and implement solutions.
+Goal: to foster innovation across team boundaries by connecting individuals who identify challenges and then work collaboratively to implement solutions.
 
 Midas is a platform that facilitates collaborative work worldwide.  Individuals can create projects, propose working groups, or assemble "tiger teams" to act on their ideas.  Anyone can also post tasks online and people with the requisite skills can respond and complete the task.
 
