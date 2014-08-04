@@ -14,7 +14,8 @@ The Midas platform provides collaboration and crowdsourcing tools, developed in 
 
 ## Installation
 
-For installation instructions, read [INSTALL.md](INSTALL.md).
+For installation instructions, read the [Installation Guide](INSTALL.md).
+
 
 ## Contributing
 
@@ -24,6 +25,8 @@ See our [Contribution Guide](CONTRIBUTING.md).
 
 ## License
 
-This project constitutes an original work of the United States Government.
+This project is in the public domain within the United States, and
+copyright and related rights in the work worldwide are waived through
+the [CC0 1.0 Universal public domain dedication](https://creativecommons.org/publicdomain/zero/1.0/).
 
-You may use this project under the MIT License.
+For more information, see [license](LICENSE.md).
