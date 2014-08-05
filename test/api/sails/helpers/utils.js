@@ -29,6 +29,8 @@ module.exports = {
             if (response.statusCode !== 200) {
               cb('Error: Login unsuccessful. ' + body)
             }
+            var b = JSON.parse(body);
+            user.obj = b;
             cb(null);
           });
         }
