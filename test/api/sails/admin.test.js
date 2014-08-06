@@ -107,17 +107,18 @@ describe('admin:', function () {
           if (err) { return done(err); }
           // try to change the user's password
           request.post({ url: conf.url + '/user/resetPassword',
-                         form: { userId: conf.testPasswordResetUser.obj.id,
+                         form: { id: conf.testPasswordResetUser.obj.id,
                           password: conf.testPasswordResetUser.newpassword }
                        }, function (err, response, body) {
+            if (err) { return done(err); }
             assert.equal(response.statusCode, 200);
             var b = JSON.parse(body);
             assert.isTrue(b);
             // try to log in with the user's new password
             conf.testPasswordResetUser.password = conf.testPasswordResetUser.newpassword;
-            utils.login(request, conf.adminUser, function (err) {
+            utils.login(request, conf.testPasswordResetUser, function (err) {
               // if successful, err will be null
-              done(err);
+              return done(err);
             });
           });
         });
