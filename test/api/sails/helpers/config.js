@@ -14,6 +14,11 @@ module.exports = {
     'username': 'admin@midascrowd.com',
     'password': 'Adm1nTest123$#'
   },
+  'testPasswordResetUser': {
+    'username': 'testreset@midascrowd.com',
+    'password': 'Test123$',
+    'newpassword': 'FooBar123#'
+  },
   'url': 'http://localhost:1337/api',
   'sails': {
       log: {
