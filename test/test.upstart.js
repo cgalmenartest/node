@@ -29,7 +29,6 @@ before(function(done) {
       'default': 'disk'
     }
   }
-  console.log(config)
   // Lift Sails and store the app reference
   require('sails').lift(config, function(e, s) {
     sails = s;
