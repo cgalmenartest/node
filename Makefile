@@ -3,6 +3,7 @@
 MOCHA_OPTS= --timeout 60000
 REPORTER = spec
 DIR = .
+NODE_ENV = development
 
 build:
 	grunt build
@@ -49,16 +50,18 @@ test-api:
 	@NODE_ENV=test ./node_modules/.bin/mocha \
 		--reporter $(REPORTER) \
 		$(MOCHA_OPTS) \
-		--recursive test/api
+		--recursive test
 
 demo:
-	@NODE_ENV=test ./node_modules/.bin/mocha \
+	@NODE_ENV=$(NODE_ENV) ./node_modules/.bin/mocha \
 		--reporter $(REPORTER) \
 		$(MOCHA_OPTS) \
+		test/test.upstart.js  \
 		--recursive test/demo
 
 init:
-	@NODE_ENV=test ./node_modules/.bin/mocha \
+	@NODE_ENV=$(NODE_ENV) ./node_modules/.bin/mocha \
 		--reporter $(REPORTER) \
 		$(MOCHA_OPTS) \
+		test/test.upstart.js  \
 		--recursive test/init
