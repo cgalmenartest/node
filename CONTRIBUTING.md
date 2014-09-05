@@ -14,6 +14,20 @@ with this waiver of copyright interest.
 
 This project follows the [git flow](http://nvie.com/posts/a-successful-git-branching-model/) branching model of product development.
 
+### Testing
+
+To run all the tests:
+```make test```
+
+For testing in Midas, we are using:
+* [mocha](http://visionmedia.github.io/mocha/) test framework
+* [chai](http://chaijs.com/) assertion library
+* [request](https://github.com/mikeal/request) to make http calls for testing API endpoints
+
+The following command will execute a single test file in the application context:
+```NODE_ENV=test ./node_modules/.bin/mocha test/test.upstart.js test/api/sails/tag.test.js```
+
+
 ### Backbone
 
 - [Midas Backbone Best Practices](https://github.com/Innovation-Toolkit/midas/wiki/Backbone-Best-Practices).  Some basic hints on development in Backbone for Midas.
