@@ -13,11 +13,11 @@ describe('demo:', function() {
   });
 
   it('users', function (done) {
-    var process = function (user, done) {
+    var process = function (user_attrs, done) {
       // create/login as user
-      utils.login(request, user.username, user.password, function (err) {
+      utils.login(request, user_attrs.username, user_attrs.password, function (err, user) {
         if (err) return done(err);
-        utils.user_put(request, user, function (err, userObj) {
+        utils.user_put(request, user.id, user_attrs, function (err, userObj) {
           console.log('user created:', userObj.name);
           user.obj = userObj;
           user.id = userObj.id;
