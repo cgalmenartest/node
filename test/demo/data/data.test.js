@@ -17,17 +17,11 @@ describe('demo:', function() {
       // create/login as user
       utils.login(request, user.username, user.password, function (err) {
         if (err) return done(err);
-        // add photo
-        utils.file_create(request, user.photo, true, function (err, fileObj) {
-          // update user profile
-          if (err) return done(err);
-          user.photoId = fileObj.id;
-          utils.user_put(request, user, function (err, userObj) {
-            console.log('user created:', userObj.name);
-            user.obj = userObj;
-            user.id = userObj.id;
-            return done(err);
-          });
+        utils.user_put(request, user, function (err, userObj) {
+          console.log('user created:', userObj.name);
+          user.obj = userObj;
+          user.id = userObj.id;
+          return done(err);
         });
       });
     };
@@ -133,14 +127,10 @@ describe('demo:', function() {
         if (!proj.cover) return done();
         utils.login(request, user.username, user.password, function (err) {
           if (err) return done(err);
-          utils.file_create(request, proj.cover, false, function (err, fileObj) {
+          utils.proj_put(request, proj, function (err, projObj) {
             if (err) return done(err);
-            proj.coverId = fileObj.id;
-            utils.proj_put(request, proj, function (err, projObj) {
-              if (err) return done(err);
-              proj.obj = projObj;
-              done(err);
-            });
+            proj.obj = projObj;
+            done(err);
           });
         });
       };
