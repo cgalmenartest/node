@@ -46,6 +46,7 @@ var getMetadata = function(proj, user, cb) {
       Like.findOne({ where: { userId: user.id, projectId: proj.id }}, function (err, like) {
         if (err) { return cb(err, proj); }
         if (like) { proj.like = true; }
+        return cb(err, proj);
       });
     });
   });

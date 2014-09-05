@@ -27,9 +27,11 @@ module.exports = {
           request(conf.url + '/user', function (err, response, body) {
             if (err) { return cb(err); }
             if (response.statusCode !== 200) {
-              cb('Error: Login unsuccessful. ' + body)
+              return cb('Error: Login unsuccessful. ' + body)
             }
-            cb(null);
+            var b = JSON.parse(body);
+            user.obj = b;
+            return cb(null);
           });
         }
         if (response.statusCode == 403) {
@@ -38,10 +40,10 @@ module.exports = {
                          form: { username: user.username, password: user.password, json: true },
                        }, function (err, response, body) {
             if (err) { return cb(err); }
-            getUser(cb);
+            return getUser(cb);
           });
         } else {
-          getUser(cb);
+          return getUser(cb);
         }
       });
     });

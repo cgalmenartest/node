@@ -35,7 +35,7 @@ describe('user:', function() {
   it('logout', function (done) {
     request(conf.url + '/auth/logout', function (err, response, body) {
       if (err) { return done(err); }
-      // Not logged in users should get a 403
+      // it redirects for browser
       assert(response.statusCode === 302);
       request(conf.url + '/user', function (err, response, body) {
         if (err) { return done(err); }
@@ -50,7 +50,7 @@ describe('user:', function() {
                    form: { username: conf.testUser.username, password: conf.testUser.password + 'baz', json: true },
                  }, function (err, response, body) {
       if (err) { return done(err); }
-      // Successful login or creation should result in a 302 redirect
+      // Unsuccessful logins should result in a 403 NOT AUTHORIZED http error
       assert.equal(response.statusCode, 403);
       // Check if the user is logged in
       request(conf.url + '/user', function (err, response, body) {

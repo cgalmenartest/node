@@ -42,7 +42,7 @@ module.exports = {
       return res.send(400, {message: 'Abiguous file; please use file id.'});
     }
   },
-  
+
   create: function(req, res) {
     sails.log.debug('CREATE FILE!');
     // Create only accepts post

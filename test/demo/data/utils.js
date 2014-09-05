@@ -22,9 +22,9 @@ module.exports = {
           request(conf.url + '/user', function (err, response, body) {
             if (err) { return cb(err); }
             if (response.statusCode !== 200) {
-              cb('Error: Login unsuccessful. ' + body)
+              return cb('Error: Login unsuccessful. ' + body)
             }
-            cb(null);
+            return cb(null);
           });
         }
         if (response.statusCode == 403) {
@@ -33,6 +33,9 @@ module.exports = {
                          form: { username: username, password: password, json: true },
                        }, function (err, response, body) {
             if (err) { return cb(err); }
+            if (response.statusCode !== 200) {
+              return cb('Error: Register unsuccessful. ' + body)
+            }
             getUser(cb);
           });
         } else {
@@ -78,9 +81,17 @@ module.exports = {
       url: conf.url + '/file'
     }, function (err, response, body) {
       if (err) return cb(err, null);
+      // posting a file doesn't actually return JSON, if successful
+      if (body[0] != '{') {
+        pre = '<textarea data-type="application/json">';
+        post = '</textarea>';
+        body = body.slice(pre.length, post.length * -1)
+      }
       var b = JSON.parse(body);
+      if (b.status == 500) return cb(new Error("500 Error from POST", b));
       return cb(null, b);
     });
+
     var form = r.form();
     if (square === true) {
       form.append('type', 'image_square');
