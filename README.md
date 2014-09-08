@@ -20,8 +20,11 @@ Read more about Midas in our [introductory blog post](http://18fblog.tumblr.com/
 
 For installation instructions, read the [Installation Guide](INSTALL.md).
 
+## Get Involved
 
-## Contributing
+Join our [Google Group](https://groups.google.com/forum/#!forum/midascrowd)
+
+### Contributing
 
 Have an issue to report or a pull request to submit? Want to start your own development?
 
