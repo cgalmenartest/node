@@ -24,11 +24,13 @@ module.exports = {
             if (response.statusCode !== 200) {
               return cb('Error: Login unsuccessful. ' + body)
             }
-            return cb(null);
+            var b = JSON.parse(body);
+            return cb(null, b);
           });
         }
         if (response.statusCode == 403) {
           // this could be because the user isn't registered; try to register
+          // console.log('register user: '+username);
           request.post({ url: conf.url + '/auth/register',
                          form: { username: username, password: password, json: true },
                        }, function (err, response, body) {
@@ -55,10 +57,10 @@ module.exports = {
     });
   },
 
-  user_put: function (request, user, cb) {
+  user_put: function (request, id, user_attrs, cb) {
     var r = request.put({
-      url: conf.url + '/user/' + user.id,
-      body: JSON.stringify(user)
+      url: conf.url + '/user/' + id,
+      body: JSON.stringify(user_attrs)
     }, function(err, response, body) {
       if (err) { return cb(err, null); }
       var b = JSON.parse(body);
