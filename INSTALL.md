@@ -168,10 +168,14 @@ Then run the normal npm package installer
 
 #### Copy the main settings files
 
+from the root of the midas directory:
+
      cd config
      cp local.ex.js local.js
 
 #### Copy the backend module configuration files
+
+from the root of the midas directory:
 
      cd config/settings
      for file in *.ex.js; do cp "$file" "${file/ex./}"; done
@@ -183,7 +187,7 @@ Then run the normal npm package installer
 
 #### Optional: Edit the configuration files
 
-It is not necessary to edit any config files to run the demo locally.  You may optionally edit the config files that you made copies of above, or the front-end configuration:
+It is not necessary to edit any config files to run the demo locally.  You may optionally edit the config files that you made copies of above, or the front-end configuration (from the root directory):
 
      cd assets/js/backbone/config
      vi tag.js
@@ -201,6 +205,8 @@ Then initialize the database with:
 If you'd like to include a sample project, also run:
 
      make demo
+
+Now you are ready to rock!
 
 ---------------------------------------
 
