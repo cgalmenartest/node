@@ -193,6 +193,23 @@ It is not necessary to edit any config files to run the demo locally.  You may o
 
 `login.json` specifies the login options available on the frontend, and must have a corresponding backend component or configuration enabled (see `config/settings/auth.ex.js`).
 
+#### Setup the database
+Then initialize the database with:
+
+     make init
+
+If you'd like to include a sample project, also run:
+
+     make demo
+
+---------------------------------------
+
+## For development
+
+    sails lift
+
+## For production
+
 #### Compile production JS and CSS (from the midas git folder)
 
      make build
@@ -206,14 +223,6 @@ Alternatively, you can also run:
 The database needs to be populated with the tag defaults for your application's configuration.
 
 Edit the configuration file at `test/init/init/config.js` to match your tags in `assets/js/backbone/components/tag.js`
-
-Then initialize the database with:
-
-     make init
-
-If you'd like to include a sample project, also run:
-
-     make demo
 
 ### Start the forever server (from the midas git folder)
 
