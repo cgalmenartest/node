@@ -212,7 +212,18 @@ Now you are ready to rock!
 
 ## For development
 
+Run the tests (all should pass)
+
+    make test
+
+Run the server
+
     sails lift
+
+Go to [http://localhost:1337](http://localhost:1337) to see the app
+
+Check out the [Contributor's Guide](CONTRIBUTING.md) for next steps
+
 
 ## For production
 
