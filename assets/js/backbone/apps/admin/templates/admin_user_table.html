@@ -25,10 +25,10 @@
         <%- u.id %>
       </td>
       <td class="admin-table-name">
-        <a class="link-backbone" href="/profile/<%- u.id %>"><%- u.name %></a>
+        <%- u.name %>
       </td>
       <td class="admin-table-username">
-        <%- u.username %>
+        <a class="link-backbone" href="/profile/<%- u.id %>"><%- u.username %></a>
       </td>
       <td>
         <button type="button" class="btn btn-default btn-xs admin-user-enable" data-toggle="tooltip" data-placement="top" title="Enable" <% if (u.disabled !== true) { %>style="display:none;"<% } %>><i class="icon-remove-sign icon-red icon-center"></i></button>
