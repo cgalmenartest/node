@@ -29,7 +29,7 @@ restore-config:
 	rm config/local.js
 	rm config/settings/auth.js
 	rm config/settings/sources.js
-	mv assets/js/backbone/config/login.json.bak assets/js/backbone/config/login.json
+	-mv assets/js/backbone/config/login.json.bak assets/js/backbone/config/login.json
 	-mv config/local.js.bak config/local.js
 	-mv config/settings/auth.js.bak config/settings/auth.js
 	-mv config/settings/sources.js.bak config/settings/sources.js
