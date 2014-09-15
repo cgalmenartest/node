@@ -11,11 +11,13 @@ build:
 check: test
 
 copy-config:
+	-cp assets/js/backbone/config/login.json assets/js/backbone/config/login.json.bak
 	-cp config/local.js config/local.js.bak
 	-cp config/settings/auth.js config/settings/auth.js.bak
 	-cp config/settings/sources.js config/settings/sources.js.bak
 	-cp config/settings/notifications.js config/settings/notifications.js.bak
 	-cp config/settings/emailTemplates.js config/settings/emailTemplates.js.bak
+	-cp assets/js/backbone/config/login.ex.json assets/js/backbone/config/login.json
 	cp config/local.ex.js config/local.js
 	cp config/settings/auth.ex.js config/settings/auth.js
 	cp config/settings/sources.ex.js config/settings/sources.js
@@ -23,9 +25,11 @@ copy-config:
 	-cp config/settings/emailTemplates.ex.js config/settings/emailTemplates.js
 
 restore-config:
+	rm assets/js/backbone/config/login.json
 	rm config/local.js
 	rm config/settings/auth.js
 	rm config/settings/sources.js
+	mv assets/js/backbone/config/login.json.bak assets/js/backbone/config/login.json
 	-mv config/local.js.bak config/local.js
 	-mv config/settings/auth.js.bak config/settings/auth.js
 	-mv config/settings/sources.js.bak config/settings/sources.js
@@ -33,6 +37,7 @@ restore-config:
 	-mv config/settings/emailTemplates.js.bak config/settings/emailTemplates.js
 
 import:
+	-cp $(DIR)/assets/js/backbone/config/login.json assets/js/backbone/config/login.json
 	-cp $(DIR)/config/local.js config/
 	-cp $(DIR)/config/settings/*.js config/settings/
 	-cp $(DIR)/assets/js/backbone/config/*.js assets/js/backbone/config/
