@@ -159,7 +159,7 @@ define([
     initializeListeners: function() {
       var self = this;
 
-      self.on("newTaskTagSaveDone", function (){
+      self.on("task:tags:save:done", function (){
 
         var modelData = {
           title: this.$("#task-title").val(),
@@ -229,7 +229,7 @@ define([
           }, 
           function(err) {
           if (err) return next(err);
-            self.trigger("newTaskTagSaveDone");
+            self.trigger("task:tags:save:done");
           }
         );
       diff = this.tagFactory.createDiff(oldTags, tags);
