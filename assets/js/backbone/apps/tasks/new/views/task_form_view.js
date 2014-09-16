@@ -7,8 +7,9 @@ define([
     'utilities',
     'markdown_editor',
     'tasks_collection',
-    'text!task_form_template'
-], function ($, Bootstrap, _, Backbone, async, utilities, MarkdownEditor, TasksCollection, TaskFormTemplate) {
+    'text!task_form_template',
+    'tag_factory'
+], function ($, Bootstrap, _, Backbone, async, utilities, MarkdownEditor, TasksCollection, TaskFormTemplate, TagFactory) {
 
   var TaskFormView = Backbone.View.extend({
 
@@ -22,6 +23,10 @@ define([
     initialize: function (options) {
       this.options = _.extend(options, this.defaults);
       this.tasks = this.options.tasks;
+      this.tagFactory = new TagFactory();
+      this.data = {};
+      this.data.newTag = {};
+      this.data.newItemTags = [];
       this.initializeSelect2Data();
       this.initializeListeners();
     },
@@ -50,51 +55,92 @@ define([
 
     initializeListeners: function() {
       var self = this;
+      
+      _.extend(this, Backbone.Events);
 
-      this.listenTo(this.tasks, "task:save:success", function (taskId) {
+      self.on('newTagSaveDone',function (){
 
-        var addTag = function (tag, done) {
-          if (!tag || !tag.id) return done();
-          // if (tag.tagId) return done();
+        tags         = [];
+        var tempTags = [];
 
-          var tagMap = {
-            taskId: taskId,
-            tagId: tag.id
+        //get newly created tags from big three types
+        _.each(self.data.newItemTags, function(newItemTag){
+          tags.push(newItemTag);
+        });
+
+        tempTags.push.apply(tempTags,self.$("#topics").select2('data'));
+        tempTags.push.apply(tempTags,self.$("#skills").select2('data'));
+        if (self.$("#task-location").select2('data').id == 'true') {
+          tempTags.push.apply(tempTags,self.$("#location").select2('data'));
+        }
+        
+        //see if there are any previously created big three tags and add them to the tag array
+        _.each(tempTags,function(tempTag){
+            if ( tempTag.id !== tempTag.name ){
+            tags.push(tempTag);
           }
+        });
 
-          $.ajax({
-            url: '/api/tag',
-            type: 'POST',
-            data: tagMap,
-            success: function (data) {
-              done();
-            },
-            error: function (err) {
-              done(err);
-            }
-          });
-        };
-
-        // Gather tags for submission after the task is created
-        tags = [];
-        tags.push.apply(tags, self.$("#topics").select2('data'));
-        tags.push.apply(tags, self.$("#skills").select2('data'));
+        //existing tags not part of big three
         tags.push(self.$("#skills-required").select2('data'));
         tags.push(self.$("#people").select2('data'));
         tags.push(self.$("#time-required").select2('data'));
         tags.push(self.$("#time-estimate").select2('data'));
         tags.push(self.$("#length").select2('data'));
+        
+        async.forEach(
+          tags,
+          function(tag, callback){
+            //diffAdd,self.model.attributes.id,"taskId",callback
+            return self.tagFactory.addTag(tag,self.tempTaskId,"taskId",callback);
+          },
+          function(err){
+            self.model.trigger("task:modal:hide");
+            self.model.trigger("task:tags:save:success", err);
+          }
+        );
+      });
 
-        if (self.$("#task-location").select2('data').id == 'true') {
-          tags.push.apply(tags, self.$("#location").select2('data'));
-        }
 
-        async.each(tags, addTag, function (err) {
-          self.model.trigger("task:modal:hide");
-          return self.model.trigger("task:tags:save:success", err);
-        });
+      this.listenTo(this.tasks,"task:save:success", function (taskId){
+        //the only concern here is to add newly created tags which is only available in the three items below
+        //
+
+        self.tempTaskId = taskId;
+
+        var newTags = [];
+
+        newTags = newTags.concat(self.$("#topics").select2('data'),self.$("#skills").select2('data'),self.$("#location").select2('data'));
+        
+        async.forEach(
+          newTags, 
+          function(newTag, callback) { 
+            return self.tagFactory.addTagEntities(newTag,self,callback);
+          }, 
+          function(err) {
+            if (err) return next(err);
+            self.trigger("newTagSaveDone");
+          }
+        );
 
       });
+    },
+
+    getTagsFromPage: function () {
+
+      // Gather tags for submission after the task is created
+      tags = {
+        topic: this.$("#topics").select2('data'),
+        skill: this.$("#skills").select2('data'),
+        location: this.$("#location").select2('data'),
+        'task-skills-required': [ this.$("#skills-required").select2('data') ],
+        'task-people': [ this.$("#people").select2('data') ],
+        'task-time-required': [ this.$("#time-required").select2('data') ],
+        'task-time-estimate': [ this.$("#time-estimate").select2('data') ],
+        'task-length': [ this.$("#length").select2('data') ]
+      };
+
+      return tags;
     },
 
     render: function () {
@@ -128,80 +174,10 @@ define([
     initializeSelect2: function () {
       var self = this;
 
-      var formatResult = function (obj, container, query) {
-        return obj.name;
-      };
-
-      // ------------------------------ //
-      //  DROP DOWNS REQUIRING A FETCH  //
-      // ------------------------------ //
-      self.$("#skills").select2({
-        placeholder: "Start typing to select a skill.",
-        multiple: true,
-        // this width setting is a hack to prevent placeholder from getting cut off
-        width: "556px",
-        formatResult: formatResult,
-        formatSelection: formatResult,
-        ajax: {
-          url: '/api/ac/tag',
-          dataType: 'json',
-          data: function (term) {
-            return {
-              type: 'skill',
-              q: term
-            };
-          },
-          results: function (data) {
-            return { results: data }
-          }
-        }
-      });
-
-      // Topics select 2
-      self.$("#topics").select2({
-        placeholder: "Start typing to select a topic.",
-        multiple: true,
-        // this width setting is a hack to prevent placeholder from getting cut off
-        width: "556px",
-        formatResult: formatResult,
-        formatSelection: formatResult,
-        ajax: {
-          url: '/api/ac/tag',
-          dataType: 'json',
-          data: function (term) {
-            return {
-              type: 'topic',
-              q: term
-            };
-          },
-          results: function (data) {
-            return { results: data }
-          }
-        }
-      });
-
-      // Topics select 2
-      self.$("#location").select2({
-        placeholder: "Start typing to select a location.",
-        multiple: true,
-        // this width setting is a hack to prevent placeholder from getting cut off
-        width: "556px",
-        formatResult: formatResult,
-        formatSelection: formatResult,
-        ajax: {
-          url: '/api/ac/tag',
-          dataType: 'json',
-          data: function (term) {
-            return {
-              type: 'location',
-              q: term
-            };
-          },
-          results: function (data) {
-            return { results: data }
-          }
-        }
-      });
+      self.tagFactory.createTagDropDown({type:"skill",selector:"#skills"});
+      self.tagFactory.createTagDropDown({type:"topic",selector:"#topics"});
+      self.tagFactory.createTagDropDown({type:"location",selector:"#location"});
+      
       self.$(".el-specific-location").hide();
 
       // ------------------------------ //

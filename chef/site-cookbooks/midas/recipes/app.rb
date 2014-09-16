@@ -9,15 +9,25 @@ end
 
 git node.midas.deploy_dir do
   repository node.midas.git_repo
-  revision node.midas.git_branch
+  checkout_branch node.midas.git_branch
+  revision node.midas.git_revision
   enable_submodules true
   action :sync
+end
+
+# client config
+execute 'client config' do
+ command <<-HERE
+  cp -n login.ex.json login.json
+ HERE
+  cwd "#{node.midas.deploy_dir}/assets/js/backbone/config/"
 end
 
 execute 'install code dependencies' do 
   command <<-HERE
     npm install -g grunt-cli
     npm install -g forever 
+    forever stop app.js --prod
     npm link sails-postgresql
     npm install
     make build
@@ -25,19 +35,20 @@ execute 'install code dependencies' do
   cwd node.midas.deploy_dir
 end
 
-execute 'config' do
+execute 'server config' do
  command <<-HERE
-  cp local.ex.js local.js
+  cp -n local.ex.js local.js
  HERE
   cwd "#{node.midas.deploy_dir}/config"
 end
 
-bash 'settings' do
+bash 'server config/settings' do
  code <<-HERE
-  for file in *.ex.js; do cp "$file" "${file/ex./}"; done
+  for file in *.ex.js; do cp -n "$file" "${file/ex./}"; done
  HERE
   cwd "#{node.midas.deploy_dir}/config/settings"
 end
+
 
 file "#{node.midas.nginx_conf_dir}/#{node.midas.nginx_default}" do
   action :delete
@@ -51,7 +62,6 @@ end
 bash 'startup' do
  code <<-HERE
     make init
-    make demo
     forever start app.js --prod
  HERE
   cwd node.midas.deploy_dir
