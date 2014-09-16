@@ -8,6 +8,7 @@ var async = require('async');
 var _ = require('underscore');
 var bcrypt = require('bcrypt');
 var projUtils = require('../services/utils/project');
+var taskUtils = require('../services/utils/task');
 var tagUtils = require('../services/utils/tag');
 var userUtils = require('../services/utils/user');
 var validator = require('validator');
@@ -139,54 +140,97 @@ module.exports = {
       reqId = req.route.params.id;
     }
     var projects = [];
+    var tasks = [];
+    var volTasks = [];
     // Get projects owned by this user
-    ProjectOwner.find()
-    .where({ userId: reqId })
-    .exec(function (err, ownerList) {
-      var projIds = [];
-      // Get each project that the current user is authorized to see
-      var getProject = function(projId, done) {
-        projUtils.authorized(projId, userId, function (err, proj) {
-          if (proj) {
-            // delete unnecessary data from projects
-            delete proj['deletedAt'];
-            projects.push(proj);
+    async.parallel([
+      function(callback) {
+        ProjectOwner.find()
+        .where({ userId: reqId })
+        .exec(function (err, ownerList) {
+          var projIds = [];
+          // Get each project that the current user is authorized to see
+          var getProject = function(projId, done) {
+            projUtils.authorized(projId, userId, function (err, proj) {
+              if (proj) {
+                // delete unnecessary data from projects
+                delete proj['deletedAt'];
+                projects.push(proj);
+              }
+              done(err);
+            });
+          };
+          for (var i in ownerList) {
+            projIds.push(ownerList[i].projectId);
           }
-          done(err);
-        });
-      };
-      for (var i in ownerList) {
-        projIds.push(ownerList[i].projectId);
-      }
 
-      // Grab each of the projects
-      async.each(projIds, getProject, function (err) {
-        if (err) { return res.send(400, { message: 'Error looking up projects.'}); }
-        // Then grab the project metadata
-        var getMetadata = function(proj, done) {
-          projUtils.getMetadata(proj, userId, function (err, newProj) {
-            if (!err) {
-              proj = newProj;
-            }
-            return done(err);
+          // Grab each of the projects
+          async.each(projIds, getProject, function (err) {
+            if (err) { return res.send(400, { message: 'Error looking up projects.'}); }
+            // Then grab the project metadata
+            var getMetadata = function(proj, done) {
+              projUtils.getMetadata(proj, userId, function (err, newProj) {
+                if (!err) {
+                  proj = newProj;
+                }
+                return done(err);
+              });
+            };
+            var getTaskMetadata = function(task, done) {
+              taskUtils.getMetadata(task, userId, function(err, newTask) {
+                if (!err) {
+                  tasks.push(newTask);
+                }
+                return done(err);
+              });
+            };
+            async.each(projects, getMetadata, function (err) {
+              if (err) { return res.send(400, { message: 'Error looking up projects.'}); }
+              // find tasks that user owns
+              Task.find()
+              .where({ userId: reqId })
+              .exec(function (err, taskList) {
+                if (err) { return res.send(400, { message: 'Error looking up tasks.'}); }
+                async.each(taskList, getTaskMetadata, function (err) {
+                  callback(err);
+                });
+              });
+            })
           });
-        };
-        async.each(projects, getMetadata, function (err) {
-          if (err) { return res.send(400, { message: 'Error looking up projects.'}); }
-          // find tasks that user owns
-          Task.find()
-          .where({ userId: reqId })
-          .exec(function (err, tasks) {
-            if (err) { return res.send(400, { message: 'Error looking up tasks.'}); }
-            return res.send({
-              projects: projects,
-              tasks: tasks
+        });
+      },
+      // find tasks that the user has volunteered for
+      function(callback) {
+        var getTask = function(vol, done) {
+          Task.findOne()
+          .where({ id: vol.taskId })
+          .exec(function(err, taskEntry) {
+            taskUtils.getMetadata(taskEntry, userId, function(err, newTask) {
+              if (!err) {
+                volTasks.push(newTask);
+              }
+              return done(err);
             });
           });
-        })
+        };
+        Volunteer.find()
+        .where({ userId: reqId })
+        .exec(function (err, volList) {
+          if (err) { return res.send(400, { message: 'Error looking up volunteered tasks.'}); }
+          async.each(volList, getTask, function(err) {
+            if (err) { return res.send(400, { message: 'Error looking up volunteered tasks.'}); }
+            callback(err);
+          });
+        });
+      }],
+      function(err) {
+        if (err) { return res.send(400, { message: 'Error looking up tasks or projects.'}); }
+        return res.send({
+          projects: projects,
+          tasks: tasks,
+          volTasks: volTasks
+        });
       });
-
-    });
   },
 
   photo: function(req, res) {
