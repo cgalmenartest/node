@@ -176,6 +176,10 @@ Then run the normal npm package installer
      cd config/settings
      for file in *.ex.js; do cp "$file" "${file/ex./}"; done
 
+#### Copy the client configuration files
+
+     cd assets/js/backbone/config/
+     cp login.ex.json login.json
 
 #### Optional: Edit the configuration files
 
@@ -183,11 +187,11 @@ It is not necessary to edit any config files to run the demo locally.  You may o
 
      cd assets/js/backbone/config
      vi tag.js
-     vi login.js
+     vi login.json
 
 `tag.js` specifies the tags that the frontend understands and stores in the backend.
 
-`login.js` specifies the login options available on the frontend, and must have a corresponding backend component or configuration enabled (see `config/settings/auth.ex.js`).
+`login.json` specifies the login options available on the frontend, and must have a corresponding backend component or configuration enabled (see `config/settings/auth.ex.js`).
 
 #### Compile production JS and CSS (from the midas git folder)
 
