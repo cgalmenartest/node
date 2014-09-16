@@ -66,7 +66,7 @@ define([
     	//  tag -- array of tag objects to add
     	//  --- NYI ---
     	//  project or task id - string
-      // TODO: abstract the below if-else to a different function so this funciton jsut takes an array tag ids
+      // TODO: abstract the below if-else to a different function so this funciton just takes an array tag ids
 
       var tagMap = {};
       tagMap[modelType] = modelId;
