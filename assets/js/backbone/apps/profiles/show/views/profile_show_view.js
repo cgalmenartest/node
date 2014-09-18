@@ -148,6 +148,7 @@ define([
     initializePAView: function () {
       if (this.projectView) { this.projectView.cleanup(); }
       if (this.taskView) { this.taskView.cleanup(); }
+      if (this.volView) { this.volView.cleanup(); }
       $.ajax('/api/user/activities/' + this.model.attributes.id).done(function (data) {
         this.projectView = new PAView({
           model: this.model,
@@ -158,11 +159,18 @@ define([
         this.projectView.render();
         this.taskView = new PAView({
           model: this.model,
-          el: '.task-activity-wrapper',
+          el: '.task-createdactivity-wrapper',
           target: 'task',
           data: data.tasks
         });
         this.taskView.render();
+        this.volView = new PAView({
+          model: this.model,
+          el: '.task-activity-wrapper',
+          target: 'task',
+          data: data.volTasks
+        });
+        this.volView.render();
 
       });
     },
@@ -497,6 +505,7 @@ define([
       if (this.tagView) { this.tagView.cleanup(); }
       if (this.projectView) { this.projectView.cleanup(); }
       if (this.taskView) { this.taskView.cleanup(); }
+      if (this.volView) { this.volView.cleanup(); }
       removeView(this);
     },
 
