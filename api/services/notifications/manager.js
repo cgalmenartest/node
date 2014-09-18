@@ -331,6 +331,9 @@ function NotificationBuilder () {
       var settings, localSettings, globalSettings;
       // ensure both parameter objects have proper form
       hostObject.settings = hostObject.settings || {};
+      if (_.isUndefined(globalObject)) {
+        globalObject = {};
+      }
       globalObject.settings = globalObject.settings || {};
       settings = {};
       localSettings = _.extend({}, hostObject.settings);
