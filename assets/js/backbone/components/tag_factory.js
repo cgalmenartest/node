@@ -65,19 +65,20 @@ define([
     	//assumes
     	//  tag -- array of tag objects to add
     	//  --- NYI ---
-    	//  projet or task id - string
+    	//  project or task id - string
+      // TODO: abstract the below if-else to a different function so this funciton just takes an array tag ids
 
       var tagMap = {};
       tagMap[modelType] = modelId;
 
       if ( _.isFinite(tag) ){  
           // --- NYI ---
-          // or proecjt id
+          // or project id
         
           tagMap.tagId = tag;
       } else {
           // --- NYI ---
-          // or proecjt id
+          // or project id
 
           tagMap.tagId = tag.id;
       }
@@ -102,8 +103,6 @@ define([
           placeholder: "Start typing to select a "+options.type,
           minimumInputLength: 2,
           multiple: true,
-          // this width setting is a hack to prevent placeholder from getting cut off
-          //width: "556px",
           width: "500px",
           formatResult: function (obj, container, query) {
             return obj.name;
