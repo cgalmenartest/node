@@ -174,7 +174,7 @@
         'taskOwners': {
           strategy: {
             'contactTaskOwnersOnVolunteerEmail': {
-              preflight: ['preflightTaskVolunteerOwnerEmail'],
+              preflight: ['preflightTaskVolunteerOwner'],
               delivery: 'sendSimpleEmail'
             }
           }
