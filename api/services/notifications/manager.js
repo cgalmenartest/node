@@ -199,11 +199,18 @@ function NotificationBuilder () {
           params.data.audience[audience].strategy[strategyName].preflight[preflightStrategy] = params.data.audience[audience].strategy[strategyName].preflight[preflightStrategy] || {};
           // local parameter preflight settings and fields transferred over to a new object to be modified
           var localVars = _.extend({}, params.data.audience[audience].strategy[strategyName].preflight[preflightStrategy]);
+          
+          
           localVars.fields = localVars.fields || {};
+
           // add the recipient's user info to the metadata
           localVars.fields.metadata = {
             recipient: recipient
           };
+
+          //add the fields from the trigger event (if any) so they are available for preflight
+          localVars.fields.metadata.modelTrigger = params.data.audience[audience].fields || null;
+
           // recipientId and callerId added to fields for convenience, as they will almost always come in handy
           localVars.fields.recipientId = recipient.id;
           localVars.fields.callerId = notification.callerId;

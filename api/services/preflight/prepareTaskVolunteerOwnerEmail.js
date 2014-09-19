@@ -31,11 +31,11 @@ module.exports = {
         // store the task in the metadata
         content.fields.metadata.task = task;
         
-        content.fields.volunteerId = params.data.audience[audience].fields.volunteerId || null;
+        content.fields.volunteerId = content.fields.metadata.modelTrigger.volunteerId || null;
         // for a volunteer this the volunteer id otherwise it will never not match
-        content.fields.initiatorId = fields.volunteerId;
+        content.fields.initiatorId = content.fields.metadata.modelTrigger.volunteerId || null;
         // Get user info for volunteerId on behalf of recipientId (protect privacy)
-        sails.services.utils.user['getUser'](fields.volunteerId, fields.recipientId, function (err, volunteer) {
+        sails.services.utils.user['getUser'](content.fields.volunteerId, fields.recipientId, function (err, volunteer) {
           if (err) { sails.log.debug(err); return cb(err, content); }
           // store the volunteer info
           content.fields.metadata.volunteer = volunteer;
