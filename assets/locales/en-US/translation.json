@@ -1,0 +1,25 @@
+{
+  "app" : {
+    "name" : "Fair Trade",
+    "sponsor" : "IDEA Lab",
+    "sponsorDescription" : "an entity run out of the Office of the Deputy Secretary of HHS that is working towards a more modern and effective government"
+  },
+  "Project": "Work Group",
+  "Project_plural": "Work Groups",
+  "Project_indefinite": "A Work Group",
+  "Project_plural_indefinite": "Work Groups",
+
+  "Task" : "Opportunity",
+  "Task_plural" : "Opportunities",
+  "Task_indefinite" : "An Opportunity",
+  "Task_plural_indefinite": "Opportunities",
+
+  "org" : {
+    "acronym" : "HHS",
+    "name" : "Department of Health and Human Services",
+    "office" : "IDEA Lab",
+    "parentOffice" : "Office of the Deputy Secretary"
+  },
+
+  "Browse" : "Browse"
+}

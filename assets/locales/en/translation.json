@@ -1,0 +1,35 @@
+{
+  "app" : {
+    "name" : "midas",
+    "sponsor" : "18F",
+    "sponsorDescription" : "an organization within the General Services Administration that builds effective, user-centric digital services focused on the interaction between government & the people it serves."
+   },
+  "Project": "Project",
+  "Project_plural": "Projects",
+  "Project_indefinite": "a Project",
+  "Project_plural_indefinite": "some Projects",
+  "a_Project": "a Project",
+  "A_Project": "A Project",
+  "A_Project_Owner" : "A Project Owner",
+  "project" : "project",
+  "project_plural" : "projects",
+
+  "Task" : "Task",
+  "Task_plural" : "Tasks",
+  "Task_indefinite" : "a Task",
+  "Task_plural_indefinite": "some Tasks",
+  "a_Task" : "a Task",
+  "A_Task" : "A Task",
+  "A_Task_Owner" : "A Task Owner",
+  "task" : "task",
+  "task_plural" : "task",
+
+  "login_or_register" : "Log in or Register here.",
+
+  "org" : {
+    "acronym" : "GSA",
+    "name" : "General Services Administration"
+  },
+
+  "Browse" : "Browse"
+}

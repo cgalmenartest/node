@@ -40,3 +40,6 @@
 [submodule "assets/js/vendor/jquery-caret"]
 	path = assets/js/vendor/jquery-caret
 	url = https://github.com/ichord/Caret.js.git
+[submodule "assets/js/vendor/i18next"]
+	path = assets/js/vendor/i18next
+	url = https://github.com/i18next/i18next.git

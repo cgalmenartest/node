@@ -17,6 +17,7 @@
 module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-jsonlint');
 
   /**
    * CSS files to inject in order
@@ -449,6 +450,12 @@ module.exports = function (grunt) {
        ************************************/
     },
 
+    jsonlint : {
+      sample: {
+        src:['assets/locales/*/*.json']
+      }
+    },
+
     watch: {
       api: {
 
@@ -477,7 +484,8 @@ module.exports = function (grunt) {
     'clean:dev',
     'jst:dev',
     'less:dev',
-    'copy:dev'
+    'copy:dev',
+    'jsonlint'
   ]);
 
   grunt.registerTask('linkAssets', [
@@ -495,6 +503,8 @@ module.exports = function (grunt) {
   grunt.registerTask('build', [
     // compile the js
     'requirejs',
+    // Check validity of JSON files.
+    'jsonlint',
     // compile the css
     'cssmin',
     // copy fonts

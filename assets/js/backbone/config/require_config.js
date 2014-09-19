@@ -27,6 +27,12 @@ require.config({
     'async'                     : '../../vendor/async/lib/async',
     'marked'                    : '../../vendor/marked/lib/marked',
     'autolinker'                : '../../vendor/autolinker/dist/Autolinker',
+    'i18n'                      : '../../vendor/i18next/i18next.amd.withJQuery',
+
+    // ---------
+    // Internationalization configuration for the client side.
+    // ---------
+    'i18n_config'               : '../config/i18n.json',
 
     // ---------
     //= Mixins
@@ -65,6 +71,19 @@ require.config({
     // ----------
     'footer_view'               : '../apps/footer/views/footer_view',
     'footer_template'           : '../apps/footer/templates/footer_template.html',
+
+    // ----------
+    //= Home
+    // ----------
+    'home_view'               : '../apps/home/views/home_view',
+    'home_template'           : '../apps/home/templates/home_template.html',
+    'home_controller'          : '../apps/home/controllers/home_controller',
+
+    // ----------
+    //= About
+    // ----------
+    'about_view'               : '../apps/about/views/about_view',
+    'about_template'           : '../apps/about/templates/about_template.html',
 
     // ----------
     //= Login
