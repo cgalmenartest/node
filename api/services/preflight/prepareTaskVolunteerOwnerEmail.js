@@ -31,7 +31,7 @@ module.exports = {
         // store the task in the metadata
         content.fields.metadata.task = task;
         
-        localVars.fields.volunteerId = params.data.audience[audience].fields.volunteerId || null;
+        content.fields.volunteerId = params.data.audience[audience].fields.volunteerId || null;
         // for a volunteer this the volunteer id otherwise it will never not match
         content.fields.initiatorId = fields.volunteerId;
         // Get user info for volunteerId on behalf of recipientId (protect privacy)
