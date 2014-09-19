@@ -13,6 +13,7 @@ define([
     events: {
       'click .oauth-link'              : 'link',
       'keyup #rusername'               : 'checkUsername',
+      'change #rusername'              : 'checkUsername',
       'click #rusername-button'        : 'clickUsername',
       'keyup #rpassword'               : 'checkPassword',
       'blur #rpassword'                : 'checkPassword',
