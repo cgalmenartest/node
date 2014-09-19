@@ -31,7 +31,8 @@ module.exports = {
         // store the task in the metadata
         content.fields.metadata.task = task;
         // Get the initiator userId
-        content.fields.initiatorId = task.userId;
+        // for a volunteer this the volunteer id otherwise it will never not match
+        content.fields.initiatorId = fields.volunteerId;
         // Get user info for volunteerId on behalf of recipientId (protect privacy)
         sails.services.utils.user['getUser'](fields.volunteerId, fields.recipientId, function (err, volunteer) {
           if (err) { sails.log.debug(err); return cb(err, content); }

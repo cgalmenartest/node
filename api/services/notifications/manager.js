@@ -207,6 +207,8 @@ function NotificationBuilder () {
           // recipientId and callerId added to fields for convenience, as they will almost always come in handy
           localVars.fields.recipientId = recipient.id;
           localVars.fields.callerId = notification.callerId;
+
+          localVars.fields.volunteerId = params.data.audience[audience].fields.volunteerId || 0;
           // combine global default settings with local settings to produce master settings list
           synthesizeSettings(
             localVars,
