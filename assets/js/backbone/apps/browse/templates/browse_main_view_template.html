@@ -3,7 +3,9 @@
 
 <div class="row search-row">
   <div class="col-md-3 col-md-push-9 browse-buttons">
+    <% if (ui.project.show) { %>
     <a href="#addProject" class="btn btn-c2 add-project" data-toggle="modal" style="<% if (!user) { %>display: none;<% } %>"><i class="icon-plus"></i> Project</a>
+    <% } %>
     <a href="#addTask" class="btn btn-c2 add-opportunity" data-toggle="modal" style="<% if (!user) { %>display: none;<% } %>"><i class="icon-plus"></i> Opportunity</a>
   </div>
   <div class="col-md-9 col-md-pull-3">

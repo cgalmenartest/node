@@ -4,13 +4,16 @@ define([
   'underscore',
   'backbone',
   'utilities',
+  'json!ui_config',
   'jquery_dotdotdot',
   'popovers',
   'tag_config',
   'browse_list_view',
   'text!browse_main_template',
   'text!browse_search_tag'
-], function ($, select2, _, Backbone, utils, dotdotdot, Popovers, TagConfig, BrowseListView, BrowseMainTemplate, BrowseSearchTag) {
+], function ($, select2, _, Backbone, utils, UIConfig,
+            dotdotdot, Popovers, TagConfig,
+            BrowseListView, BrowseMainTemplate, BrowseSearchTag) {
 
   var popovers = new Popovers();
 
@@ -30,7 +33,8 @@ define([
 
     render: function () {
       var options = {
-        user: window.cache.currentUser
+        user: window.cache.currentUser,
+        ui: UIConfig
       };
       this.compiledTemplate = _.template(BrowseMainTemplate, options)
       this.$el.html(this.compiledTemplate);

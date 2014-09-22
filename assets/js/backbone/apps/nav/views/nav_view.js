@@ -2,12 +2,15 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'i18n',
   'utilities',
+  'i18n',
+  'json!ui_config',
   'json!login_config',
   'login_controller',
   'text!nav_template'
-], function ($, _, Backbone, i18n, utils, Login, LoginController, NavTemplate) {
+], function ($, _, Backbone, utils, 
+            i18n, UIConfig, 
+            Login, LoginController, NavTemplate) {
 
   var NavView = Backbone.View.extend({
 
@@ -60,6 +63,7 @@ define([
 
     doRender: function (data) {
       data.login = Login;
+      data.ui = UIConfig;
       var template = _.template(NavTemplate, data);
       this.$el.html(template);
       this.$el.i18n();

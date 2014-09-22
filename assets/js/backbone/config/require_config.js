@@ -61,6 +61,11 @@ require.config({
     'base_view'                 : '../base/base_view',
 
     // ----------
+    //= UI Config
+    // ----------
+    'ui_config'              : '../config/ui.json',
+
+    // ----------
     //= Navigation
     // ----------
     'nav_view'                  : '../apps/nav/views/nav_view',
