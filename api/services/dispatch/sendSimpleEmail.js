@@ -15,10 +15,8 @@ function transport () {
 
 // dispatch the email
 function send (locals, html, text, cb) {
-  sails.log.debug('--------- send ---------')
-  sails.log.debug(locals)
-  sails.log.debug('- text -')
-  sails.log.debug(text)
+  sails.log.debug('send: locals',locals)
+  sails.log.debug('send: text', text)
   var t = transport();
   if (sails.config.dkimEnabled)
   {

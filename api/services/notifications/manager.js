@@ -279,9 +279,9 @@ function NotificationBuilder () {
             // combine global default fields with local fields to produce master fields list
             var fields = localVars.fields;
             // goes ahead and persists the delivery model here, as the fields/settings produced in prior callback will still be in scope
-            sails.log.debug('audience:'+audience+', deliveryStrategy:'+deliveryStrategy)
-            sails.log.debug('--------- prepareDelivery: notification ---------')
-            sails.log.debug(notification)
+            sails.log.debug('prepareDelivery deliveryStrategy:', deliveryStrategy);
+            sails.log.debug('audience:', audience);
+            sails.log.debug('notification:', notification)
             generateDelivery(audience, notification, deliveryStrategy, content, function(err, delivery){
               if (err) { sails.log.debug(err); done(null, null); return false;}
               // makes use of master fields/settings in scope and dispatches the delivery
