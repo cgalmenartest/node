@@ -11,7 +11,7 @@ module.exports = {
     var fields = _.extend({}, sails.services.utils.emailTemplate['generateEmailLocals'](req.query.email));
     for (property in req.query) {
       if (property !== 'email') {
-        fields[property] = req.query[property];
+        fields.templateLocals[property] = req.query[property];
       }
     }
     // call layout generator function to produce the text for the href string
