@@ -96,9 +96,6 @@ module.exports = function (sails) {
         if (supportedLngs in sails.config.i18next) {
           initOptions.supportedLngs = sails.config.i18next.supportedLngs;
         }
-        if (useCookie in sails.config.i18next.config) {
-          initOptions.useCookie = sails.config.i18next.config.useCookie;
-        }
       }
 
       i18next.init(initOptions);
