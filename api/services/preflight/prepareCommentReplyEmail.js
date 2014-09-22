@@ -54,7 +54,7 @@ module.exports = {
               content.fields.metadata[modelName] = obj;
               if (obj) {
                 content.fields.from = sails.config['systemEmail'];
-                content.fields.subject = _.template(content.fields.subject, content.fields.metadata);
+                content.fields.subject = _.template(content.fields.subject)(content.fields.metadata);
                 content.fields.templateLocals = content.fields.templateLocals || {};
                 if (parComment) {
                   content.fields.templateLocals.parentComment = commentUtils.cleanComment(parComment.value);

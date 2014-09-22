@@ -41,7 +41,7 @@ module.exports = {
           content.fields.metadata.volunteer = volunteer;
           // set the email fields
           content.fields.from = sails.config['systemEmail'];
-          content.fields.subject = _.template(content.fields.subject, content.fields.metadata);
+          content.fields.subject = _.template(content.fields.subject)(content.fields.metadata);
           // Set template local variables for task metadata
           content.fields.templateLocals = content.fields.templateLocals || {};
           content.fields.templateLocals.taskTitle = task.title;
