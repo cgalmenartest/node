@@ -30,7 +30,7 @@ module.exports = {
         if (err) { sails.log.debug(err); cb(null, content); return false; }
         content.fields.metadata.token = token;
         content.fields.from = sails.config['systemEmail'];
-        content.fields.subject = _.template(content.fields.subject, content.fields.metadata);
+        content.fields.subject = _.template(content.fields.subject)(content.fields.metadata);
         content.fields.templateLocals = content.fields.templateLocals || {};
         content.fields.templateLocals.token = token.token;
         content.fields.templateLocals.link = content.fields.metadata.globals.urlPrefix + '/profile/reset/' + token.token;
