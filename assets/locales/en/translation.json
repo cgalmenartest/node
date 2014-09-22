@@ -1,9 +1,4 @@
 {
-  "app" : {
-    "name" : "midas",
-    "sponsor" : "18F",
-    "sponsorDescription" : "an organization within the General Services Administration that builds effective, user-centric digital services focused on the interaction between government & the people it serves."
-   },
   "Project": "Project",
   "Project_plural": "Projects",
   "Project_indefinite": "a Project",
@@ -22,14 +17,34 @@
   "A_Task" : "A Task",
   "A_Task_Owner" : "A Task Owner",
   "task" : "task",
-  "task_plural" : "task",
+  "task_plural" : "tasks",
 
-  "login_or_register" : "Log in or Register here.",
+  "like" : "like",
+  "like_plural" : "likes",
 
-  "org" : {
-    "acronym" : "GSA",
-    "name" : "General Services Administration"
+  "volunteer" : "volunteer",
+  "volunteer_plural" : "volunteers",
+
+  "Browse" : "Browse",
+
+  "commonAPI" : {
+    "unsupported" : "Unsupported operation."
   },
 
-  "Browse" : "Browse"
+  "projectAPI" : {
+    "errMsg" : {
+      "lookup" : "'Error looking up $t(project).",
+      "lookup_plural" : "Error looking up $t(project_plural).",
+      "count" : "Error looking up $t(project) counts.",
+      "create" : "Error creating $t(project).",
+      "ownerStore" : "Error storing $t(project) owner."
+    }
+  },
+
+  "taskAPI" : {
+    "errMsg" : {
+      "likes" : "Error looking up $(task) $(like_plural).",
+      "volunteers" : "Error looking up $t(task) $t(volunteer_plural)."
+    }
+  }
 }

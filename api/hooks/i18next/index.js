@@ -21,13 +21,6 @@ module.exports = function (sails) {
 
   return {
 
-    //Defaults for server side only, and only including the options
-    //that need to be overridden from the module default.
-    defaults: {
-        resGetPath : '/assets/locales/__lng__/__ns__.json',
-        resSetPath: '/assets/locales/__lng__/__ns__.json'
-    },
-
     routes: {
 
       before: {
@@ -41,56 +34,74 @@ module.exports = function (sails) {
 
       var initOptions = {};
 
-
       // Only include options that are explicitly set.
-      if (sails.config.i18next.cookieName) {
-        initOptions.cookieName = sails.config.i18next.cookieName;
-      }
-      if (sails.config.i18next.debug) {
-        initOptions.debug = sails.config.i18next.debug;
-      }
-      if (sails.config.i18next.detectLngFromHeaders) {
-        initOptions.detectLngFromHeaders = sails.config.i18next.detectLngFromHeaders;
-      }
-      if (sails.config.i18next.detectLngFromPath) {
-        initOptions.detectLngFromPath = sails.config.i18next.detectLngFromPath;
-      }
-      if (sails.config.i18next.detectLngQS) {
-        initOptions.detectLngQS = sails.config.i18next.detectLngQS;
-      }
-      if (sails.config.i18next.dynamicLoad) {
-        initOptions.dynamicLoad = sails.config.i18next.dynamicLoad;
-      }
-      if (sails.config.i18next.fallbackLng) {
-        initOptions.fallbackLng = sails.config.i18next.fallbackLng;
-      }
-      if (sails.config.i18next.lng) {
-        initOptions.lng = sails.config.i18next.lng;
-      }
-      if (sails.config.i18next.load) {
-        initOptions.load = sails.config.i18next.load;
-      }
-      if (sails.config.i18next.ns) {
-        initOptions.ns = sails.config.i18next.ns;
-      }
-      if (sails.config.i18next.resGetPath) {
-        initOptions.resGetPath = sails.config.appPath + sails.config.i18next.resGetPath;
-      }
-      if (sails.config.i18next.resSetPath) {
-        initOptions.resSetPath = sails.config.appPath + sails.config.i18next.resSetPath;
-      }
-      if (sails.config.i18next.saveMissing) {
-        initOptions.saveMissing = sails.config.i18next.saveMissing;
-      }
-      if (sails.config.i18next.supportedLngs) {
-        initOptions.supportedLngs = sails.config.i18next.supportedLngs;
-      }
-      if (sails.config.i18next.useCookie) {
-        initOptions.useCookie = sails.config.i18next.useCookie;
+      if (i18next in sails.config) {
+        if (config in sails.config.i18next) {
+          if (cookieDomain in sails.config.i18next.config) {
+            initOptions.cookieDomain = sails.config.i18next.config.cookieDomain;
+          }
+          if (cookieName in sails.config.i18next.config) {
+            initOptions.cookieName = sails.config.i18next.config.cookieName;
+          }
+          if (dynamicLoad in sails.config.i18next.config) {
+            initOptions.dynamicLoad = sails.config.i18next.config.dynamicLoad;
+          }
+          if (fallbackLng in sails.config.i18next.config) {
+            initOptions.fallbackLng = sails.config.i18next.config.fallbackLng;
+          }
+          if (lng in sails.config.i18next.config) {
+            initOptions.lng = sails.config.i18next.config.lng;
+          }
+          if (load in sails.config.i18next.config) {
+            initOptions.load = sails.config.i18next.config.load;
+          }
+          if (ns in sails.config.i18next.config) {
+            initOptions.ns = sails.config.i18next.config.ns;
+          }
+          if (saveMissing in sails.config.i18next.config) {
+            initOptions.saveMissing = sails.config.i18next.config.saveMissing;
+          }
+          if (useCookie in sails.config.i18next.config) {
+            initOptions.useCookie = sails.config.i18next.config.useCookie;
+          }
+        }
+        if (debug in sails.config.i18next) {
+          initOptions.debug = sails.config.i18next.debug;
+        }
+        if (detectLngFromHeaders in sails.config.i18next) {
+          initOptions.detectLngFromHeaders = sails.config.i18next.detectLngFromHeaders;
+        }
+        if (detectLngFromPath in sails.config.i18next) {
+          initOptions.detectLngFromPath = sails.config.i18next.detectLngFromPath;
+        }
+        if (detectLngQS in sails.config.i18next.config) {
+          initOptions.detectLngQS = sails.config.i18next.config.detectLngQS;
+        }
+        if (resGetPath in sails.config.i18next) {
+          // Assume the absolute path is compiled from the application path and the path
+          // specified in the settings for the server side.
+          // Note: This path is typically derived from the resGetPath specified for the
+          // client, since that path is relative to the home URL for the application.
+          // To Do: Check for existence of the file at the specified path, falling back
+          // to a relative path if needed.
+          initOptions.resGetPath = sails.config.appPath + sails.config.i18next.resGetPath;
+        }
+        if (resSetPath in sails.config.i18next) {
+          // Assume the absolute path is compiled from the application path and the
+          // path specified in the settings for the server side.
+          // To Do: Check for existence of the file as specified, falling back to
+          // a relative path if needed.
+          initOptions.resSetPath = sails.config.appPath + sails.config.i18next.resSetPath;
+        }
+        if (supportedLngs in sails.config.i18next) {
+          initOptions.supportedLngs = sails.config.i18next.supportedLngs;
+        }
+        if (useCookie in sails.config.i18next.config) {
+          initOptions.useCookie = sails.config.i18next.config.useCookie;
+        }
       }
 
       i18next.init(initOptions);
-      i18next.registerAppHelper(sails);
 
       cb();
     }
