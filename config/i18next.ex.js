@@ -1,5 +1,5 @@
 // import i18next configuration
-var config = require('../../assets/js/backbone/config/i18n.json');
+var config = require('../assets/js/backbone/config/i18n.json');
 
 module.exports = {
   // INTERNATIONALIZATION SETTINGS

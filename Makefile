@@ -14,18 +14,18 @@ copy-config:
 	-cp assets/js/backbone/config/login.json assets/js/backbone/config/login.json.bak
 	-cp assets/js/backbone/config/i18n.json assets/js/backbone/config/i18n.json.bak
 	-cp config/local.js config/local.js.bak
+	-cp config/i18next.js config/i18next.js.bak
 	-cp config/settings/auth.js config/settings/auth.js.bak
 	-cp config/settings/sources.js config/settings/sources.js.bak
 	-cp config/settings/notifications.js config/settings/notifications.js.bak
 	-cp config/settings/emailTemplates.js config/settings/emailTemplates.js.bak
-	-cp config/settings/i18next.js config/settings/i18next.js.bak
-	-cp assets/js/backbone/config/login.ex.json assets/js/backbone/config/login.json
+	cp assets/js/backbone/config/login.ex.json assets/js/backbone/config/login.json
 	cp config/local.ex.js config/local.js
+	cp config/i18next.ex.js config/i18next.js
 	cp config/settings/auth.ex.js config/settings/auth.js
 	cp config/settings/sources.ex.js config/settings/sources.js
 	-cp config/settings/notifications.ex.js config/settings/notifications.js
 	-cp config/settings/emailTemplates.ex.js config/settings/emailTemplates.js
-	cp config/settings/i18next.ex.js config/settings/i18next.js
 
 restore-config:
 	rm assets/js/backbone/config/login.json
@@ -33,7 +33,7 @@ restore-config:
 	rm config/local.js
 	rm config/settings/auth.js
 	rm config/settings/sources.js
-	rm config/settings/i18next.js
+	rm config/i18next.js
 	-mv assets/js/backbone/config/login.json.bak assets/js/backbone/config/login.json
 	-mv assets/js/backbone/config/i18n.json.bak assets/js/backbone/config/i18n.json
 	-mv config/local.js.bak config/local.js
@@ -41,10 +41,11 @@ restore-config:
 	-mv config/settings/sources.js.bak config/settings/sources.js
 	-mv config/settings/notifications.js.bak config/settings/notifications.js
 	-mv config/settings/emailTemplates.js.bak config/settings/emailTemplates.js
-	-mv config/settings/i18next.js.bak config/settings/i18next.js
+	-mv config/i18next.js.bak config/i18next.js
 
 import:
 	-cp $(DIR)/config/local.js config/
+	-cp $(DIR)/config/i18next.js config/
 	-cp $(DIR)/config/settings/*.js config/settings/
 	-cp $(DIR)/assets/js/backbone/config/*.js assets/js/backbone/config/
 	-cp $(DIR)/assets/js/backbone/config/*.json assets/js/backbone/config/

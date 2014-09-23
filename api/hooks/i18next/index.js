@@ -21,6 +21,15 @@ module.exports = function (sails) {
 
   return {
 
+    // Default options for server side only.
+    // May be overridden in config/settings/i18next.js
+    defaults : {
+      i18next : {
+        resGetPath : '/assets/locales/__lng__/__ns__.json',
+        resSetPath : '/assets/locales/add/__lng__/__ns__.json'
+      }
+    },
+
     routes: {
 
       before: {
@@ -69,29 +78,34 @@ module.exports = function (sails) {
           initOptions.debug = sails.config.i18next.debug;
         }
         if (detectLngFromHeaders in sails.config.i18next) {
-          initOptions.detectLngFromHeaders = sails.config.i18next.detectLngFromHeaders;
+          initOptions.detectLngFromHeaders =
+            sails.config.i18next.detectLngFromHeaders;
         }
         if (detectLngFromPath in sails.config.i18next) {
-          initOptions.detectLngFromPath = sails.config.i18next.detectLngFromPath;
+          initOptions.detectLngFromPath =
+            sails.config.i18next.detectLngFromPath;
         }
         if (detectLngQS in sails.config.i18next.config) {
           initOptions.detectLngQS = sails.config.i18next.config.detectLngQS;
         }
         if (resGetPath in sails.config.i18next) {
-          // Assume the absolute path is compiled from the application path and the path
-          // specified in the settings for the server side.
-          // Note: This path is typically derived from the resGetPath specified for the
-          // client, since that path is relative to the home URL for the application.
-          // To Do: Check for existence of the file at the specified path, falling back
-          // to a relative path if needed.
-          initOptions.resGetPath = sails.config.appPath + sails.config.i18next.resGetPath;
+          // Assume the absolute path is compiled from the application path
+          // and the path specified in the settings for the server side.
+          // Note: This path is typically derived from the resGetPath
+          // specified for the client, since that path is relative to the
+          // home URL for the application.
+          // To Do: Check for existence of the file at the specified path,
+          // falling back to a relative path if needed.
+          initOptions.resGetPath =
+            sails.config.appPath + sails.config.i18next.resGetPath;
         }
         if (resSetPath in sails.config.i18next) {
-          // Assume the absolute path is compiled from the application path and the
-          // path specified in the settings for the server side.
-          // To Do: Check for existence of the file as specified, falling back to
-          // a relative path if needed.
-          initOptions.resSetPath = sails.config.appPath + sails.config.i18next.resSetPath;
+          // Assume the absolute path is compiled from the application path
+          // and the path specified in the settings for the server side.
+          // To Do: Check for existence of the file as specified, falling back
+          // to a relative path if needed.
+          initOptions.resSetPath =
+            sails.config.appPath + sails.config.i18next.resSetPath;
         }
         if (supportedLngs in sails.config.i18next) {
           initOptions.supportedLngs = sails.config.i18next.supportedLngs;
@@ -100,7 +114,7 @@ module.exports = function (sails) {
 
       i18next.init(initOptions);
 
-      cb();
+      return cb();
     }
 
   };
