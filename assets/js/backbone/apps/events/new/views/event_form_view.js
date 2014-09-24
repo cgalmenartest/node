@@ -86,7 +86,7 @@ define([
       // get the start time by rounding the current time to the nearest 30 minutes
       var coeff = 1000 * 60 * 30;
       var startTime = new Date();  //or use any other date
-      startTime = new Date(Math.round(startTime.getTime() / coeff) * coeff)
+      startTime = new Date(Math.ceil(startTime.getTime() / coeff) * coeff)
       // the initial end time should be 1 hour after the initial start time
       var endTime = new Date(startTime.getTime() + 1000*60*60);
       $('#event-start-time').timepicker('setTime', startTime);
