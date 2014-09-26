@@ -9,13 +9,15 @@ var _ = require('underscore');
 
 var util = require('../services/utils/project');
 
+var i18n = require('i18next');
+
 module.exports = {
 
   find: function(req, res) {
     // Find a given project and return the full information including owners.
     // Look up the number of likes and whether this user liked it.
     util.getMetadata(req.proj, (req.user ? req.user[0] : null), function (err, proj) {
-      if (err) { return res.send(400, { message: 'Error looking up project.' }); }
+      if (err) { return res.send(400, { message: i18n.t('projectAPI.errMsg.lookup','Error looking up project.') }); }
       return res.send(proj);
     });
   },
@@ -27,13 +29,13 @@ module.exports = {
     var state = req.param('state', 'public');
 
     function processProjects (err, projects) {
-      if (err) return res.send(400, { message: 'Error looking up projects.'});
+      if (err) return res.send(400, { message: i18n.t('projectAPI.errMsg.lookup_plural','Error looking up projects.')});
       // also include projects where you are an owner
       if (!req.user) {
         return res.send({ projects: projects });
       }
       ProjectOwner.find({ where: { userId: req.user[0].id }}).done(function (err, myprojects) {
-        if (err) return res.send(400, { message: 'Error looking up projects.'});
+        if (err) return res.send(400, { message: i18n.t('projectAPI.errMsg.lookup_plural')});
         var projIds = [];
         var myprojIds = [];
         // Get all of the active project IDs
@@ -51,10 +53,10 @@ module.exports = {
         }
         // Get the projects that I have access to but are draft
         Project.find({ 'where': { 'id': myprojIds, 'state': 'draft' }}).done(function (err, myprojects) {
-          if (err) return res.send(400, { message: 'Error looking up projects.'});
+          if (err) return res.send(400, { message: i18n.t('projectAPI.ErrMsg.lookup_plural')});
           var finalprojects = projects.concat(myprojects);
           async.each(myprojects, util.addCounts, function (err) {
-            if (err) return res.send(400, { message: 'Error looking up project counts.'});
+            if (err) return res.send(400, { message: i18n.t('projectAPI.errMsg.count','Error looking up project counts.')});
             return res.send({ projects: finalprojects });
           });
         })
@@ -67,7 +69,7 @@ module.exports = {
     }
     else {
       Project.find({ where: { 'state': state }}).done( function (err, projects) {
-        if (err) return res.send(400, { message: 'Error looking up projects.'});
+        if (err) return res.send(400, { message: i18n.t('projectAPI.errMsg.lookup_plural')});
         async.each(projects, util.addCounts, function (err) {
           return processProjects(err, projects);
         });
@@ -76,15 +78,15 @@ module.exports = {
   },
 
   create: function (req, res) {
-    if (req.route.method != 'post') { return res.send(400, { message: 'Unsupported operation.' } ); }
+    if (req.route.method != 'post') { return res.send(400, { message: i18n.t('commonAPI.unsupported','Unsupported operation.') } ); }
     var proj = _.extend(req.body || {}, req.params);
     Project.create(proj, function (err, newProj) {
-      if (err) { return res.send(400, { message: 'Error creating project.' } ); }
+      if (err) { return res.send(400, { message: i18n.t('projectAPI.errMsg.create','Error creating project.') } ); }
       // Associate the user that created this project with the project
       ProjectOwner.create({ projectId: newProj.id,
                             userId: req.user[0].id
                           }, function (err, projOwner) {
-        if (err) { return res.send(400, { message: 'Error storing project owner.' } ); }
+        if (err) { return res.send(400, { message: i18n.t('projectAPI.errMsg.ownerStore','Error storing project owner.') } ); }
         newProj.owners = [ projOwner ];
         return res.send(newProj);
       });

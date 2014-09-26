@@ -1,0 +1,50 @@
+{
+  "Project": "Project",
+  "Project_plural": "Projects",
+  "Project_indefinite": "a Project",
+  "Project_plural_indefinite": "some Projects",
+  "a_Project": "a Project",
+  "A_Project": "A Project",
+  "A_Project_Owner" : "A Project Owner",
+  "project" : "project",
+  "project_plural" : "projects",
+
+  "Task" : "Opportunity",
+  "Task_plural" : "Opportunities",
+  "Task_indefinite" : "an Opportunity",
+  "Task_plural_indefinite": "some Opportunities",
+  "a_Task" : "an Opportunity",
+  "A_Task" : "An Opportunity",
+  "A_Task_Owner" : "An Opportunity Owner",
+  "task" : "opportunity",
+  "task_plural" : "opportunities",
+
+  "like" : "like",
+  "like_plural" : "likes",
+
+  "volunteer" : "volunteer",
+  "volunteer_plural" : "volunteers",
+
+  "Browse" : "Browse",
+
+  "commonAPI" : {
+    "unsupported" : "Unsupported operation."
+  },
+
+  "projectAPI" : {
+    "errMsg" : {
+      "lookup" : "'Error looking up $t(project).",
+      "lookup_plural" : "Error looking up $t(project_plural).",
+      "count" : "Error looking up $t(project) counts.",
+      "create" : "Error creating $t(project).",
+      "ownerStore" : "Error storing $t(project) owner."
+    }
+  },
+
+  "taskAPI" : {
+    "errMsg" : {
+      "likes" : "Error looking up $(task) $(like_plural).",
+      "volunteers" : "Error looking up $t(task) $t(volunteer_plural)."
+    }
+  }
+}

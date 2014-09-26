@@ -27,6 +27,12 @@ require.config({
     'async'                     : '../../vendor/async/lib/async',
     'marked'                    : '../../vendor/marked/lib/marked',
     'autolinker'                : '../../vendor/autolinker/dist/Autolinker',
+    'i18n'                      : '../../vendor/i18next/i18next.amd.withJQuery',
+
+    // ---------
+    // Internationalization configuration for the client side.
+    // ---------
+    'i18n_config'               : '../config/i18n.json',
 
     // ---------
     //= Mixins

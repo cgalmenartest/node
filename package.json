@@ -26,14 +26,16 @@
         "email-templates": "~0.1.5",
         "git-rev": "0.2.x",
         "sails-disk": "~0.9.0",
-        "sails-postgresql": "~0.9.5"
+        "sails-postgresql": "~0.9.5",
+        "i18next": "~1.7.4"
     },
     "devDependencies": {
         "mocha": "*",
         "chai": "*",
         "request": "2.x",
         "grunt-contrib-requirejs": "~0.4.1",
-        "grunt-contrib-cssmin": "*"
+        "grunt-contrib-cssmin": "*",
+        "grunt-jsonlint" : "*"
     },
     "scripts": {
         "start": "node app.js",

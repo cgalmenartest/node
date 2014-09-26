@@ -1,0 +1,50 @@
+{
+  "Project": "Project",
+  "Project_plural": "Projects",
+  "Project_indefinite": "a Project",
+  "Project_plural_indefinite": "some Projects",
+  "a_Project": "a Project",
+  "A_Project": "A Project",
+  "A_Project_Owner" : "A Project Owner",
+  "project" : "project",
+  "project_plural" : "projects",
+
+  "Task" : "Task",
+  "Task_plural" : "Tasks",
+  "Task_indefinite" : "a Task",
+  "Task_plural_indefinite": "some Tasks",
+  "a_Task" : "a Task",
+  "A_Task" : "A Task",
+  "A_Task_Owner" : "A Task Owner",
+  "task" : "task",
+  "task_plural" : "tasks",
+
+  "like" : "like",
+  "like_plural" : "likes",
+
+  "volunteer" : "volunteer",
+  "volunteer_plural" : "volunteers",
+
+  "Browse" : "Browse",
+
+  "commonAPI" : {
+    "unsupported" : "Unsupported operation."
+  },
+
+  "projectAPI" : {
+    "errMsg" : {
+      "lookup" : "'Error looking up $t(project).",
+      "lookup_plural" : "Error looking up $t(project_plural).",
+      "count" : "Error looking up $t(project) counts.",
+      "create" : "Error creating $t(project).",
+      "ownerStore" : "Error storing $t(project) owner."
+    }
+  },
+
+  "taskAPI" : {
+    "errMsg" : {
+      "likes" : "Error looking up $(task) $(like_plural).",
+      "volunteers" : "Error looking up $t(task) $t(volunteer_plural)."
+    }
+  }
+}
