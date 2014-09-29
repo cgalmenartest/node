@@ -168,10 +168,14 @@ Then run the normal npm package installer
 
 #### Copy the main settings files
 
+from the root of the midas directory:
+
      cd config
      cp local.ex.js local.js
 
 #### Copy the backend module configuration files
+
+from the root of the midas directory:
 
      cd config/settings
      for file in *.ex.js; do cp "$file" "${file/ex./}"; done
@@ -183,7 +187,7 @@ Then run the normal npm package installer
 
 #### Optional: Edit the configuration files
 
-It is not necessary to edit any config files to run the demo locally.  You may optionally edit the config files that you made copies of above, or the front-end configuration:
+It is not necessary to edit any config files to run the demo locally.  You may optionally edit the config files that you made copies of above, or the front-end configuration (from the root directory):
 
      cd assets/js/backbone/config
      vi tag.js
@@ -192,6 +196,36 @@ It is not necessary to edit any config files to run the demo locally.  You may o
 `tag.js` specifies the tags that the frontend understands and stores in the backend.
 
 `login.json` specifies the login options available on the frontend, and must have a corresponding backend component or configuration enabled (see `config/settings/auth.ex.js`).
+
+#### Setup the database
+Then initialize the database with:
+
+     make init
+
+If you'd like to include a sample project, also run:
+
+     make demo
+
+Now you are ready to rock!
+
+---------------------------------------
+
+## For development
+
+Run the tests (all should pass)
+
+    make test
+
+Run the server
+
+    sails lift
+
+Go to [http://localhost:1337](http://localhost:1337) to see the app
+
+Check out the [Contributor's Guide](CONTRIBUTING.md) for next steps
+
+
+## For production
 
 #### Compile production JS and CSS (from the midas git folder)
 
@@ -206,14 +240,6 @@ Alternatively, you can also run:
 The database needs to be populated with the tag defaults for your application's configuration.
 
 Edit the configuration file at `test/init/init/config.js` to match your tags in `assets/js/backbone/components/tag.js`
-
-Then initialize the database with:
-
-     make init
-
-If you'd like to include a sample project, also run:
-
-     make demo
 
 ### Start the forever server (from the midas git folder)
 
