@@ -19,6 +19,7 @@ node_modules
 
 # Ignore the configuration files
 config/local.js
+config/i18next.js
 config/settings/auth.js
 config/settings/sources.js
 config/settings/tags.js
