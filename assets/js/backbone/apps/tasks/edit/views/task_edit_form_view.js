@@ -2,13 +2,14 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'async',
   'utilities',
+  'json!ui_config',
+  'async',
   'marked',
   'markdown_editor',
   'text!task_edit_form_template',
   'tag_factory'
-], function ($, _, Backbone, async, utilities, marked, MarkdownEditor, TaskEditFormTemplate, TagFactory) {
+], function ($, _, Backbone, utilities, UIConfig, async, marked, MarkdownEditor, TaskEditFormTemplate, TagFactory) {
 
   var TaskEditFormView = Backbone.View.extend({
 
@@ -48,7 +49,8 @@ define([
         newTags: [],
         newItemTags: [],
         tags: this.options.tags,
-        madlibTags: this.options.madlibTags
+        madlibTags: this.options.madlibTags,
+        ui: UIConfig
       };
 
       compiledTemplate = _.template(TaskEditFormTemplate, this.data);

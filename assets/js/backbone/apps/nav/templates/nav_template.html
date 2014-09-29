@@ -13,6 +13,7 @@
     <div class="navbar-collapse collapse pull-right">
       <ul class="nav navbar-nav">
 
+        <% if (ui.project.show) { %>
         <li class="projects">
           <a href="/projects" class="nav-link">
             <i class="icon-rocket"></i>
@@ -20,6 +21,7 @@
             <span class="navbar-title-big" data-i18n="Project_plural">Projects</span>
           </a>
         </li>
+        <% } %>
         <li class="tasks">
           <a href="/tasks" class="nav-link">
             <i class="icon-tags"></i>

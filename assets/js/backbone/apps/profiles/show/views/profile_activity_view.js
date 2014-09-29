@@ -1,11 +1,13 @@
 define([
   'jquery',
-  'async',
   'underscore',
   'backbone',
   'utilities',
+  'json!ui_config',
+  'async',
   'text!profile_activity_template'
-], function ($, async, _, Backbone, utils, ActTemplate) {
+], function ($,  _, Backbone, utils, UIConfig,
+             async, ActTemplate) {
 
   var ProfileActivityView = Backbone.View.extend({
 
@@ -23,6 +25,7 @@ define([
         return new Date(b.createdAt) - new Date(a.createdAt);
       });
       var data = {
+        ui: UIConfig,
         target: this.options.target,
         data: results,
         count: {}
