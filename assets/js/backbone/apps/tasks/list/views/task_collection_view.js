@@ -4,8 +4,9 @@ define([
 	'backbone',
 	'utilities',
 	'async',
+	'marked',
 	'text!task_list_template'
-], function ($, _, Backbone, utils, async, TaskListTemplate) {
+], function ($, _, Backbone, utils, async, marked, TaskListTemplate) {
 
 	var TasksCollectionView = Backbone.View.extend({
 
@@ -46,6 +47,9 @@ define([
 		},
 
 		render: function () {
+			_.each(this.tasksJson.tasks, function(task) {
+				task.description = marked(task.description);
+			});
 			this.compiledTemplate = _.template(TaskListTemplate, this.tasksJson);
 			this.$el.html(this.compiledTemplate);
 
