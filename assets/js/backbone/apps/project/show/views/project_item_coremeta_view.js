@@ -79,7 +79,7 @@ define([
         id: 'project-edit-form-description',
         title: 'Project Description',
         rows: 6,
-        validate: ['empty', 'count400']
+        validate: ['empty']
       }).render();
     },
 
