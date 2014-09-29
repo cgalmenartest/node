@@ -209,7 +209,7 @@ module.exports = function (grunt) {
         {
           expand: true,
           cwd: './assets',
-          src: ['prod/**/*', 'js/vendor/**/*', 'images/**/*'],
+          src: ['prod/**/*', 'js/vendor/**/*', 'images/**/*','locales/**/*'],
           dest: '.tmp/public'
         }
         ]
@@ -452,7 +452,7 @@ module.exports = function (grunt) {
 
     jsonlint : {
       sample: {
-        src:['assets/locales/*/*.json']
+        src:['assets/locales/**/*.json']
       }
     },
 
