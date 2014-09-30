@@ -3,12 +3,13 @@ define([
   'underscore',
   'backbone',
   'utilities',
+  'json!ui_config',
   'async',
   'marked',
   'jquery_timeago',
   'base_view',
   'text!task_show_template'
-], function (Bootstrap, _, Backbone, utils, async, marked, TimeAgo, BaseView, TaskShowTemplate) {
+], function (Bootstrap, _, Backbone, utils, UIConfig, async, marked, TimeAgo, BaseView, TaskShowTemplate) {
 
   var TaskItemView = BaseView.extend({
 
@@ -49,6 +50,7 @@ define([
 
     render: function (self) {
       self.getTagData(self, function () {
+        self.data.ui = UIConfig;
         var compiledTemplate = _.template(TaskShowTemplate, self.data);
         self.$el.html(compiledTemplate);
         $("time.timeago").timeago();
