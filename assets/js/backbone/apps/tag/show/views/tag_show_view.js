@@ -53,10 +53,10 @@ define([
     initializeSelect2: function () {
       var self = this;
 
-      self.tagFactory.createTagDropDown({type:"skill",selector:"#tag_skill",width:"350px"});
-      self.tagFactory.createTagDropDown({type:"topic",selector:"#tag_topic",width:"350px"});
-      self.tagFactory.createTagDropDown({type:"location",selector:"#tag_location",width:"350px"});
-      self.tagFactory.createTagDropDown({type:"agency",selector:"#tag_agency",width:"350px"});
+      self.tagFactory.createTagDropDown({type:"skill",selector:"#tag_skill",width: "100%"});
+      self.tagFactory.createTagDropDown({type:"topic",selector:"#tag_topic",width: "100%"});
+      self.tagFactory.createTagDropDown({type:"location",selector:"#tag_location",width: "100%"});
+      self.tagFactory.createTagDropDown({type:"agency",selector:"#tag_agency",width: "100%"});
       self.model.trigger("profile:input:changed");
     },
 
