@@ -38,6 +38,9 @@ define([
 
       this.initializeTaskItemView();
       this.initializeChildren();
+
+      //load user settings so they are available as needed
+      this.getUserSettings(window.cache.currentUser.id);
     },
 
     initializeEdit: function () {
@@ -231,6 +234,67 @@ define([
         });
       }
     },
+    getUserSettings: function (userId) {
+      //does this belong somewhere else?
+      //
+
+      $.ajax({
+        url: '/api/usersetting/'+userId,
+        type: 'GET',
+        dataType: 'json'
+      })
+      .success(function(data){
+        _.each(data,function(setting){
+          //save active settings to the current user object
+          console.log("setting",setting);
+          if ( setting.isActive ){
+            window.cache.currentUser[setting.key]=setting;
+          }
+        });
+      });
+    },
+    deleteSupervisorEmail: function(userId){
+      var self = this;
+
+      var targetId = window.cache.currentUser.supervisorEmail.id;
+
+      if ( userId ){
+        $.ajax({
+          url: '/api/usersetting/'+targetId,
+          type: 'DELETE',
+          dataType: 'json'
+        })
+      }
+    },
+    saveSupervisorEmail: function(userId){
+      var self = this;
+
+      //is current value the same as the saved value? if so do nothing
+      var newValue = $('#userSuperVisorEmail').val() || null;
+      if ( typeof window.cache.currentUser.supervisorEmail != 'undefined' ){
+        var oldValue = window.cache.currentUser.supervisorEmail.value;
+      } else {
+        var oldValue = null
+      }
+
+      if ( newValue == oldValue ){ return true; }
+
+      //else save newValue
+      //we're saving, so first delete previous value
+      if ( oldValue ) { self.deleteSupervisorEmail(userId); }
+
+      //then save newValue
+      $.ajax({
+          url: '/api/usersetting/',
+          type: 'POST',
+          dataType: 'json',
+          data: {
+            userId: userId,
+            key: 'supervisorEmail',
+            value: newValue
+          }
+        });
+    },
 
     volunteer: function (e) {
       if (e.preventDefault) e.preventDefault();
@@ -245,13 +309,29 @@ define([
         modalTitle: "Do you want to volunteer?"
       }).render();
 
+    if ( window.cache.currentUser.supervisorEmail ){
+       //not assigning as null because null injected into the modalContent var shows as a literal value
+       //    when what we want is nothing if value is null
+        var supervisorEmail = window.cache.currentUser.supervisorEmail.value ;
+      } else {
+        var supervisorEmail = "";
+      }
+
+    console.log("sup email",window.cache.currentUser);
+    if ( true ) {
+        var modalContent = '<p>I understand it is my responsibility to confirm supervisor approval prior to committing to an opportunity.</p><p>Once you volunteer for an opportunity, you will not be able to cancel your commitment to volunteer.</p><p>Below, enter the email address of your supervisor so that they may be notified of your interest in this opportunity. If you\'ve previously volunteered, the last supervisor email your provided is shown.<br/><input type="text" id="userSuperVisorEmail" placeholder="Enter an email address" value="'+supervisorEmail+'"/>';
+      } else {
+        var modalContent = '<p>I understand it is my responsibility to confirm supervisor approval prior to committing to an opportunity.</p><p>Once you volunteer for an opportunity, you will not be able to cancel your commitment to volunteer.</p>';
+      }
+
       this.modalAlert = new ModalAlert({
         el: "#check-volunteer .modal-template",
         modalDiv: '#check-volunteer',
-        content: '<p>I understand it is my responsibility to confirm supervisor approval prior to committing to an opportunity.</p><p>Once you volunteer for an opportunity, you will not be able to cancel your commitment to volunteer.</p>',
+        content: modalContent,
         cancel: 'Cancel',
         submit: 'I Agree',
         callback: function (e) {
+          self.saveSupervisorEmail(window.cache.currentUser.id);
           // user clicked the submit button
           $.ajax({
             url: '/api/volunteer/',
