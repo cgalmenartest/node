@@ -20,9 +20,16 @@ module.exports = {
       if (err) { sails.log.debug(err); cb(null, content); return false; }
       if (userEmail) {
         content.fields.to = userEmail.email;
-      }
-      else {
-        content.fields.to = null;
+      } else {
+        if ( fields.recipientId == 99999999 ){
+          userUtils.getUserSettings(content.fields.metadata.modelTrigger.volunteerId,function(err,settingsObj){
+            if ( settingsObj ){
+              content.fields.to = settingsObj.supervisorEmail.value || '';
+            }
+          });
+        } else {
+          content.fields.to = null;
+        }
       }
       // store userEmail object as metadata
       content.fields.metadata.userEmail = userEmail;
@@ -30,20 +37,16 @@ module.exports = {
         if (err) { sails.log.debug(err); cb(null, content); return false;}
         // store the task in the metadata
         content.fields.metadata.task = task;
-        
         content.fields.volunteerId = content.fields.metadata.modelTrigger.volunteerId || null;
         // for a volunteer this the volunteer id otherwise it will never not match
         content.fields.initiatorId = content.fields.metadata.modelTrigger.volunteerId || null;
         // Get user info for volunteerId on behalf of recipientId (protect privacy)
-        console.log("teeeeeee",content.fields.volunteerId, fields.recipientId);
         sails.services.utils.user['getUser'](content.fields.volunteerId, fields.recipientId, function (err, volunteer) {
           if (err) { sails.log.debug(err); return cb(err, content); }
           // store the volunteer info
           content.fields.metadata.volunteer = volunteer;
           // set the email fields
           content.fields.from = sails.config['systemEmail'];
-          console.log("ppppppp",content.fields.subject);
-
           content.fields.subject = _.template(content.fields.subject)(content.fields.metadata);
           // Set template local variables for task metadata
           content.fields.templateLocals = content.fields.templateLocals || {};
