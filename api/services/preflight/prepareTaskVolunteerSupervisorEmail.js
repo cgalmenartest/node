@@ -21,10 +21,11 @@ module.exports = {
       if (userEmail) {
         content.fields.to = userEmail.email;
       } else {
-        if ( fields.recipientId == 99999999 ){
+        if ( fields.recipientId == 0 ){
           userUtils.getUserSettings(content.fields.metadata.modelTrigger.volunteerId,function(err,settingsObj){
             if ( settingsObj ){
               content.fields.to = settingsObj.supervisorEmail.value || '';
+              content.fields.metadata.recipient.name = settingsObj.supervisorName.value || '';
             }
           });
         } else {
@@ -36,6 +37,7 @@ module.exports = {
       Task.findOneById(fields.callerId).done(function (err, task) {
         if (err) { sails.log.debug(err); cb(null, content); return false;}
         // store the task in the metadata
+        console.log("task dump", task);
         content.fields.metadata.task = task;
         content.fields.volunteerId = content.fields.metadata.modelTrigger.volunteerId || null;
         // for a volunteer this the volunteer id otherwise it will never not match
@@ -51,6 +53,7 @@ module.exports = {
           // Set template local variables for task metadata
           content.fields.templateLocals = content.fields.templateLocals || {};
           content.fields.templateLocals.taskTitle = task.title;
+          content.fields.templateLocals.taskDescription = task.description;
           content.fields.templateLocals.taskLink = content.fields.metadata.globals.urlPrefix  + '/tasks/' + task.id;
           content.fields.templateLocals.profileLink = content.fields.metadata.globals.urlPrefix  + '/profile/' + volunteer.id;
           content.fields.templateLocals.profileTitle = (volunteer.title ? volunteer.title : "");

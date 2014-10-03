@@ -253,6 +253,55 @@ define([
         });
       });
     },
+
+    deleteUserSettingByKey: function(settingKey) {
+      //this function expects the entire row from usersetting in the form
+      //     window.cache.currentUser[settingKey] = {}
+
+      var self = this;
+
+      console.log("current user dump",window.cache.currentUser, settingKey);
+      //if not set skip
+      var targetId =  ( window.cache.currentUser[settingKey] ) ? window.cache.currentUser[settingKey].id : null ;
+
+      if ( targetId ){
+        $.ajax({
+          url: '/api/usersetting/'+targetId,
+          type: 'DELETE',
+          dataType: 'json'
+        })
+      }
+
+    },
+
+    saveUserSettingByKey: function(userId, options) {
+      //this function expects the entire row from usersetting in the form
+      //     window.cache.currentUser[settingKey] = {}
+
+      var self = this;
+
+      //are values the same, stop
+      if ( options.newValue == options.oldValue ) { return true; }
+
+      //if delete old is set, delete exisitng value
+      //   default is delete
+      if ( !options.deleteOld ){
+        console.log("DELETE CHECK");
+        self.deleteUserSettingByKey(options.settingKey);
+      }
+
+      $.ajax({
+          url: '/api/usersetting/',
+          type: 'POST',
+          dataType: 'json',
+          data: {
+            userId: userId,
+            key: options.settingKey,
+            value: options.newValue
+          }
+        });
+    },
+
     deleteSupervisorEmail: function(userId){
       var self = this;
 
@@ -309,17 +358,13 @@ define([
         modalTitle: "Do you want to volunteer?"
       }).render();
 
-    if ( window.cache.currentUser.supervisorEmail ){
-       //not assigning as null because null injected into the modalContent var shows as a literal value
-       //    when what we want is nothing if value is null
-        var supervisorEmail = window.cache.currentUser.supervisorEmail.value ;
-      } else {
-        var supervisorEmail = "";
-      }
-
-    console.log("sup email",window.cache.currentUser);
+    //not assigning as null because null injected into the modalContent var shows as a literal value
+    //    when what we want is nothing if value is null
+    var supervisorEmail = ( window.cache.currentUser.supervisorEmail ) ? window.cache.currentUser.supervisorEmail.value  : "";
+    var supervisorName = ( window.cache.currentUser.supervisorName ) ? window.cache.currentUser.supervisorName.value : "";
+    //TODO: this should be a ui.config check
     if ( true ) {
-        var modalContent = '<p>I understand it is my responsibility to confirm supervisor approval prior to committing to an opportunity.</p><p>Once you volunteer for an opportunity, you will not be able to cancel your commitment to volunteer.</p><p>Below, enter the email address of your supervisor so that they may be notified of your interest in this opportunity. If you\'ve previously volunteered, the last supervisor email your provided is shown.<br/><input type="text" id="userSuperVisorEmail" placeholder="Enter an email address" value="'+supervisorEmail+'"/>';
+        var modalContent = '<p>I understand it is my responsibility to confirm supervisor approval prior to committing to an opportunity.</p><p>Once you volunteer for an opportunity, you will not be able to cancel your commitment to volunteer.</p><p>Below, enter the name and email address of your supervisor so that they may be notified of your interest in this opportunity. If you\'ve previously volunteered, the last supervisor email your provided is shown.<br/><input type="text" id="userSuperVisorName" placeholder="Enter a name" value="'+supervisorName+'"/> &nbsp; <input type="text" id="userSuperVisorEmail" placeholder="Enter an email address" value="'+supervisorEmail+'"/>';
       } else {
         var modalContent = '<p>I understand it is my responsibility to confirm supervisor approval prior to committing to an opportunity.</p><p>Once you volunteer for an opportunity, you will not be able to cancel your commitment to volunteer.</p>';
       }
@@ -331,7 +376,8 @@ define([
         cancel: 'Cancel',
         submit: 'I Agree',
         callback: function (e) {
-          self.saveSupervisorEmail(window.cache.currentUser.id);
+          self.saveUserSettingByKey(window.cache.currentUser.id,{settingKey:"supervisorEmail",newValue: $('#userSuperVisorEmail').val(),oldValue: supervisorEmail});
+          self.saveUserSettingByKey(window.cache.currentUser.id,{settingKey:"supervisorName",newValue: $('#userSuperVisorName').val(),oldValue: supervisorName});
           // user clicked the submit button
           $.ajax({
             url: '/api/volunteer/',
