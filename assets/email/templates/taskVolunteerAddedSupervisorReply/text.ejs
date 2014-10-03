@@ -1,8 +1,9 @@
 Hello<% if (metadata.recipient.name) { %> <%= metadata.recipient.name %><% } %>,
 
-<% if (profileName) { %><%= profileName %><% } else { %>Someone<% } %> has volunteered for <%= taskTitle %>
-CONGRATS ON BEING A SUPER SUPERVISOR
-Here is more information about your volunteer:
+<% if (profileName) { %><%= profileName %><% } else { %>Someone<% } %> has volunteered for <%= taskTitle %> and indicated that you should be notified.
+
+<%- taskTitle %>
+<%- taskDescription %>
 
 <%- profileName %>
 <%- profileLink %><% if (profileTitle) { %>

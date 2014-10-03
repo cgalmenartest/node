@@ -21,7 +21,7 @@ module.exports = {
     isAdmin: false,
     disabled: true,
     passwordAttempts: 0,
-    id: 99999999,
+    id: 0,
     createdAt: 'Mon Sep 22 2014 15:56:17 GMT-0400 (EDT)',
     updatedAt: 'Mon Sep 22 2014 15:56:23 GMT-0400 (EDT)'
 	}];
