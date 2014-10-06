@@ -1,0 +1,16 @@
+<div class="col-md-12 sm-nopadding md-nopadding">
+  <h2><i class="icon-user"></i><span class="box-icon-text">Users</span></h2>
+  <ul class="metrics">
+    <li>Quantity: <%- users.count %></li>
+    <li>Who have created tasks: <%- users.withTasks %></li>
+  </ul>
+  <h2><i class="icon-tags"></i><span class="box-icon-text">Tasks</span></h2>
+  <ul class="metrics">
+    <li>Total Created: <%- tasks.count %></li>
+    <li>With Volunteers: <%- tasks.withVolunteers %></li>
+  </ul>
+  <h2><i class="icon-rocket"></i><span class="box-icon-text">Projects</span></h2>
+  <ul class="metrics">
+    <li>Total Created: <%- projects.count %></li>
+  </ul>
+</div>
