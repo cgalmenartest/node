@@ -24,7 +24,7 @@
     "logout": true
   },
   "terms": {
-    "enabled": true,
+    "enabled": false,
     "name": "Terms and Conditions",
     "link": "https://18f.gsa.gov/"
   },
