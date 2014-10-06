@@ -41,3 +41,7 @@ For more information, see [license](LICENSE.md).
 ## Screenshots
 
 ![screen shot 2014-10-06 at 3 17 53 pm](https://cloud.githubusercontent.com/assets/633088/4531895/555718c4-4d8e-11e4-8960-9585b2adb640.png)
+  
+  
+![screen shot 2014-10-06 at 3 43 43 pm](https://cloud.githubusercontent.com/assets/633088/4532245/294ef4d8-4d91-11e4-8fb9-f2b43bbedcca.png)
+  
