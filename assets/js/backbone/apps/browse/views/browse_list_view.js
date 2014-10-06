@@ -52,10 +52,6 @@ define([
       }
     },
 
-    limitDotDotDot: function (start,limit) {
-
-    },
-
     render: function () {
 
       //settings for infinite scroll
@@ -76,7 +72,6 @@ define([
         var start = 0;
       }
 
-      this.limitDotDotDot(start,limit);
       for ( i = start; i < limit; i++ ){
 
       if ( typeof this.options.collection[i] == 'undefined' ){ break; }
