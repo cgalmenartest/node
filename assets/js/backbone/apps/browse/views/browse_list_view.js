@@ -7,9 +7,10 @@ define([
   'json!ui_config',
   'marked',
   'tag_config',
+  'jquery_dotdotdot',
   'text!project_list_item',
   'text!task_list_item'
-], function ($, _, Backbone, async, utils, UIConfig, marked, TagConfig, ProjectListItem, TaskListItem) {
+], function ($, _, Backbone, async, utils, UIConfig, marked, TagConfig, dotdotdot, ProjectListItem, TaskListItem) {
 
   var BrowseListView = Backbone.View.extend({
 
@@ -46,7 +47,13 @@ define([
       if ( (this.options.collection.length / this.data.page) > 1 && Math.ceil(this.options.collection.length / this.data.pageSize) >= this.data.page && currentScrollPos + buffer > currentMaxHeight ){
         this.data.page += 1;
         this.render();
+        $(".dotactive").dotdotdot();
+        $(".dotactive").removeClass("dotactive");
       }
+    },
+
+    limitDotDotDot: function (start,limit) {
+
     },
 
     render: function () {
@@ -69,6 +76,7 @@ define([
         var start = 0;
       }
 
+      this.limitDotDotDot(start,limit);
       for ( i = start; i < limit; i++ ){
 
       if ( typeof this.options.collection[i] == 'undefined' ){ break; }

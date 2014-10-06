@@ -3,7 +3,7 @@
     "show": true
   },
   "browse": {
-    "pageSize" : 27,
+    "pageSize" : 18,
     "useInfiniteScroll" : true
   }
 }
