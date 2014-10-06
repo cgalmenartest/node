@@ -51,6 +51,7 @@ define([
 
     render: function () {
 
+      //settings for infinite scroll
       if ( UIConfig.browse.useInfiniteScroll ) {
         if ( this.data.page == 1 ){
           var start = 0;
@@ -82,34 +83,6 @@ define([
         }
         if (this.options.collection[i].description) {
           item.item.descriptionHtml = marked(this.options.collection[i].description);
-        }
-        var compiledTemplate = '';
-        if (this.options.target == 'projects') {
-          compiledTemplate = _.template(ProjectListItem, item);
-        } else {
-          compiledTemplate = _.template(TaskListItem, item);
-        }
-        this.$el.append(compiledTemplate);
-      }
-
-      return this;
-    },
-
-    render_old: function () {
-      // render each item
-
-    for (var l in this.options.collection) {
-        var item = {
-          item: this.options.collection[l],
-          user: window.cache.currentUser,
-          tagConfig: TagConfig,
-          tagShow: ['location', 'skill', 'topic', 'task-time-estimate', 'task-time-required']
-        }
-        if (this.options.collection[l].tags) {
-          item.tags = this.organizeTags(this.options.collection[l].tags);
-        }
-        if (this.options.collection[l].description) {
-          item.item.descriptionHtml = marked(this.options.collection[l].description);
         }
         var compiledTemplate = '';
         if (this.options.target == 'projects') {
