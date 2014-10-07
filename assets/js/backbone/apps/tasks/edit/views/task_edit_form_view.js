@@ -96,12 +96,16 @@ define([
         this.$("#projectId").select2('data', this.data.data.project);
       }
 
-      this.tagFactory.createTagDropDown({type:"skill",selector:"#task_tag_skills",width: "100%"});
+      this.tagFactory.createTagDropDown({
+        type:"skill",selector:"#task_tag_skills",width: "100%", tokenSeparators: [","]
+      });
       if (this.data['madlibTags'].skill) {
         this.$("#task_tag_skills").select2('data', this.data['madlibTags'].skill);
       }
 
-      this.tagFactory.createTagDropDown({type:"topic",selector:"#task_tag_topics",width: "100%"});
+      this.tagFactory.createTagDropDown({
+        type:"topic", selector: "#task_tag_topics", width: "100%", tokenSeparators: [","]
+      });
       if (this.data['madlibTags'].topic) {
         this.$("#task_tag_topics").select2('data', this.data['madlibTags'].topic);
       }
@@ -110,7 +114,7 @@ define([
       if (this.data['madlibTags'].location) {
         this.$("#task_tag_location").select2('data', this.data['madlibTags'].location);
       }
-   
+
       $("#skills-required").select2({
         placeholder: "required/not-required",
         width: '200px'
@@ -214,19 +218,19 @@ define([
       if (abort === true) {
         return;
       }
-      
+
       //var types = ["task-skills-required", "task-time-required", "task-people", "task-length", "task-time-estimate", "skill", "topic", "location"];
       tags = this.getTagsFromPage();
       oldTags = this.getOldTags();
-    
+
       newTags = [];
       newTags = newTags.concat(self.$("#task_tag_topics").select2('data'),self.$("#task_tag_skills").select2('data'),self.$("#task_tag_location").select2('data'));
 
         async.forEach(
-          newTags, 
-          function(newTag, callback) { 
+          newTags,
+          function(newTag, callback) {
             self.tagFactory.addTagEntities(newTag,self,callback);
-          }, 
+          },
           function(err) {
           if (err) return next(err);
             self.trigger("task:tags:save:done");
@@ -234,7 +238,7 @@ define([
         );
       diff = this.tagFactory.createDiff(oldTags, tags);
 
-      if ( diff.remove.length > 0 ) { 
+      if ( diff.remove.length > 0 ) {
         async.each(diff.remove, self.tagFactory.removeTag, function (err) {
           // do nothing for now
         });
