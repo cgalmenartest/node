@@ -16,9 +16,10 @@ define([
   'modal_component',
   'profile_activity_view',
   'profile_email_view',
+  'i18n',
   'tag_factory'
 ], function ($,  _, Backbone, utils, UIConfig, async, jqIframe, jqFU, MarkdownEditor, marked,
-  TagShowView, ProfileTemplate, EmailTemplate, Login, ModalComponent, PAView, EmailFormView,TagFactory) {
+  TagShowView, ProfileTemplate, EmailTemplate, Login, ModalComponent, PAView, EmailFormView, i18n, TagFactory) {
 
   var ProfileShowView = Backbone.View.extend({
 
@@ -64,6 +65,7 @@ define([
       }
       var template = _.template(ProfileTemplate, data);
       this.$el.html(template);
+      this.$el.i18n();
 
       // initialize sub components
       this.initializeFileUpload();

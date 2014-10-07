@@ -10,10 +10,11 @@ define([
   'tag_config',
   'browse_list_view',
   'text!browse_main_template',
-  'text!browse_search_tag'
+  'text!browse_search_tag',
+  'i18n'
 ], function ($, select2, _, Backbone, utils, UIConfig,
             dotdotdot, Popovers, TagConfig,
-            BrowseListView, BrowseMainTemplate, BrowseSearchTag) {
+            BrowseListView, BrowseMainTemplate, BrowseSearchTag, i18n) {
 
   var popovers = new Popovers();
 
@@ -38,6 +39,7 @@ define([
       };
       this.compiledTemplate = _.template(BrowseMainTemplate, options)
       this.$el.html(this.compiledTemplate);
+      this.$el.i18n();
 
       this.initializeSearch();
 

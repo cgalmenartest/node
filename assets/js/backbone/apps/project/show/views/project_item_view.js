@@ -9,8 +9,9 @@ define([
   'utilities',
   'text!project_show_template',
   'tag_show_view',
-  'tag_factory'
-], function ($, jqIframe, jqFU, select2, _, Backbone, async, utils, ProjectShowTemplate, TagShowView,TagFactory) {
+  'tag_factory',
+  'i18n'
+], function ($, jqIframe, jqFU, select2, _, Backbone, async, utils, ProjectShowTemplate, TagShowView,TagFactory, i18n) {
 
   var ProjectShowView = Backbone.View.extend({
 
@@ -44,6 +45,7 @@ define([
 
       compiledTemplate = _.template(ProjectShowTemplate, data);
       this.$el.html(compiledTemplate);
+      this.$el.i18n();
 
       this.initializeToggle();
       this.initializeTagFactory();
@@ -140,10 +142,10 @@ define([
 
     initializeToggle: function () {
       if(this.edit){
-        this.$('#editProject').find('.box-icon-text').html('View Project');
+        this.$('#editProject').find('.box-icon-text').html('View ' + i18n.t('Project'));
       }
       else{
-        this.$('#editProject').find('.box-icon-text').html('Edit Project');
+        this.$('#editProject').find('.box-icon-text').html('Edit ' + i18n.t('Project'));
       }
     },
 

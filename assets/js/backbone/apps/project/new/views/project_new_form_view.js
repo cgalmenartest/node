@@ -6,8 +6,9 @@ define([
     'utilities',
     'markdown_editor',
     'project_collection',
-    'text!project_form_template'
-], function ($, Bootstrap, _, Backbone, utils, MarkdownEditor, ProjectsCollection, ProjectFormTemplate) {
+    'text!project_form_template',
+    'i18n'
+], function ($, Bootstrap, _, Backbone, utils, MarkdownEditor, ProjectsCollection, ProjectFormTemplate, i18n) {
 
   var ProjectFormView = Backbone.View.extend({
 
@@ -20,7 +21,10 @@ define([
     render: function () {
       var template = _.template(ProjectFormTemplate);
       this.$el.html(template);
+      
+      this.$el.i18n();
       this.initializeTextArea();
+      this.$(".btn-add-project").val('Add ' + i18n.t('Project'));
       return this;
     },
 
@@ -34,8 +38,8 @@ define([
         data: '',
         el: ".markdown-edit",
         id: 'project-form-description',
-        placeholder: 'A description of your project that explains the focus, objectives, and deliverables.',
-        title: 'Project Description',
+        placeholder: 'A description of your ' + i18n.t('project') + ' that explains the focus, objectives, and deliverables.',
+        title: i18n.t('Project') + ' Description',
         rows: 6,
         validate: ['empty']
       }).render();

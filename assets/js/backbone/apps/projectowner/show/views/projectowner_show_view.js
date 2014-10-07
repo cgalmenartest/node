@@ -6,8 +6,9 @@ define([
   'utilities',
   'popovers', /* Popovers,*/
   'modal_component',
+  'i18n',
   'text!projectowner_show_template'
-], function ($, _, async, Backbone, utils, Popovers, ModalComponent, ProjectownerShowTemplate) {
+], function ($, _, async, Backbone, utils, Popovers, ModalComponent, i18n, ProjectownerShowTemplate) {
 
   var ProjectownerShowView = Backbone.View.extend({
 
@@ -62,6 +63,7 @@ define([
       data.data.edit = this.edit;
       compiledTemplate = _.template(ProjectownerShowTemplate, data);
       this.$el.html(compiledTemplate);
+      this.$el.i18n();
 
       this.model.trigger("projectowner:show:rendered", data);
       return this;
@@ -77,7 +79,7 @@ define([
         var oldOwnerIds = _.map(oldOwners, function(owner){ return owner.userId }) || [];
 
         self.$("#owners").select2({
-          placeholder: 'Add Project Owners',
+          placeholder: 'Add ' + i18n.t('Project') + ' Owners',
           multiple: true,
           formatResult: formatResult,
           formatSelection: formatResult,
