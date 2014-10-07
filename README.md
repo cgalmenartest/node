@@ -14,7 +14,7 @@ Midas is a platform that facilitates collaborative work worldwide.  Individuals 
 
 The Midas platform provides collaboration and crowdsourcing tools, developed in Node.js.
 
-Read more about Midas in our [introductory blog post](http://18fblog.tumblr.com/post/91952641466/midas-a-marketplace-for-innovation-in-government).
+Read more about Midas in our [introductory blog post](https://18f.gsa.gov/2014/07/16/midas-a-marketplace-for-innovation-in-government/).
 
 ## Installation
 
