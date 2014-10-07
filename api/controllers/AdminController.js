@@ -55,7 +55,59 @@ module.exports = {
           users: users,
           q: query
         });
-      })
+      });
+    });
+  },
+
+  /**
+   * Retrieve metrics not tied to a particular user 
+   * eg: /api/admin/metrics
+   */
+  metrics: function (req, res) {
+    var metrics = {
+      users: {
+        count: 0,
+        withTasks: 0
+      },
+      tasks: {
+        count: 0,
+        withVolunteers: 0
+      },
+      projects: {
+        count: 0
+      }
+    };
+
+    User.count().exec(function(err, userCount) {
+      if (err) { return res.send(400, { message: 'An error occurred looking up user metrics.', error: err }); }
+      metrics.users.count = userCount;
+      Task.find().sort('userId').exec(function(err, tasks) {
+        if (err) { return res.send(400, { message: 'An error occurred looking up task metrics.', error: err }); }
+        metrics.tasks.count = tasks.length;
+        var lastId = -1;
+        for(var i = 0; i < metrics.tasks.count; i++) {
+          if (tasks[i].userId !== lastId) {
+            metrics.users.withTasks++;
+            lastId = tasks[i].userId;
+          }
+        }
+        Volunteer.find().sort('taskId').exec(function(err, vols) {
+          if (err) { return res.send(400, { message: 'An error occurred looking up task metrics.', error: err }); }
+          lastId = -1;
+          for (var j = 0; j < vols.length; j++) {
+            if (vols[j].taskId !== lastId) {
+              metrics.tasks.withVolunteers++;
+              lastId = vols[j].taskId;
+            }
+          }
+          Project.count().exec(function(err, projectCount) {
+            if (err) { return res.send(400, { message: 'An error occurred looking up project metrics.', error: err }); }
+            metrics.projects.count = projectCount;
+            sails.log.debug(metrics);
+            return res.send(metrics);
+          });
+        });
+      });
     });
   },
 

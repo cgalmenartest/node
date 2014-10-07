@@ -206,6 +206,9 @@ require.config({
     'admin_tag_view'            : '../apps/admin/views/admin_tag_view',
     'admin_tag_template'        : '../apps/admin/templates/admin_tag_template.html',
     'admin_paginate'            : '../apps/admin/templates/admin_paginate.html',
+    'admin_dashboard_view'      : '../apps/admin/views/admin_dashboard_view',
+    'admin_dashboard_template'  : '../apps/admin/templates/admin_dashboard_template.html',
+    'admin_dashboard_table'     : '../apps/admin/templates/admin_dashboard_table.html',
 
     // ----------
     //= Components

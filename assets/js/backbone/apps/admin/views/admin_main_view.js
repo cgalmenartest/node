@@ -5,8 +5,9 @@ define([
   'utilities',
   'admin_user_view',
   'admin_tag_view',
+  'admin_dashboard_view',
   'text!admin_main_template',
-], function ($, _, Backbone, utils, AdminUserView, AdminTagView, AdminMainTemplate) {
+], function ($, _, Backbone, utils, AdminUserView, AdminTagView, AdminDashboardView, AdminMainTemplate) {
 
   var AdminMainView = Backbone.View.extend({
 
@@ -49,6 +50,12 @@ define([
         }
         this.hideOthers();
         this.adminTagView.render();
+      } else if (target == 'dashboard') {
+        if (!this.adminDashboardView) {
+          this.initializeAdminDashboardView();
+        }
+        this.hideOthers();
+        this.adminDashboardView.render();
       }
     },
 
@@ -80,9 +87,19 @@ define([
       });
     },
 
+    initializeAdminDashboardView: function () {
+      if (this.adminDashboardView) {
+        this.adminDashboardView.cleanup();
+      }
+      this.adminDashboardView = new AdminDashboardView({
+        el: "#admin-dashboard"
+      });
+    },
+
     cleanup: function () {
       if (this.adminUserView) this.adminUserView.cleanup();
       if (this.adminTagView) this.adminTagView.cleanup();
+      if (this.adminDashboardView) this.adminDashboardView.cleanup();
       removeView(this);
     },
   });
