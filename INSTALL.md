@@ -48,7 +48,10 @@ In the Terminal:
     brew install postgresql
     brew install graphicsmagick
 
-Note instructions to start postgres manually or st startup, if desired
+When Homebrew is done installing Postgres, follow the instructions at the end
+to start Postgres.
+
+Next, create the `midas` database:
 
     initdb /usr/local/var/postgresql
     createdb midas
@@ -70,7 +73,7 @@ Then back to the command-line:
     npm install
     npm link
 
-Then follow platform-independent steps below starting at [clone the git repository](#clone-the-git-repository)
+Then follow platform-independent steps below starting at [clone the git repository](#clone-the-git-repository).
 
 
 ### Linux (Ubuntu 12.04 LTS)
@@ -134,10 +137,10 @@ AND modify `pg_hba.conf`:
 
 #### Clone Forked Libraries
 
-This project uses forked repositories and libaries, which you will
-need to `npm link` in order for everything to function properly.
-
-[sails-postgresql](https://github.com/Innovation-Toolkit/sails-postgresql). Forked to provide soft deletes and support binary objects.
+This project uses a forked version of
+[sails-postgresql](https://github.com/Innovation-Toolkit/sails-postgresql) to
+provide soft deletes and support for binary objects. Clone it and run the
+commands below to set everything up properly.
 
      git clone https://github.com/Innovation-Toolkit/sails-postgresql.git
      cd sails-postgresql
@@ -168,19 +171,21 @@ Then run the normal npm package installer
 
 #### Copy the main settings files
 
-from the root of the midas directory:
+From the root of the midas directory:
 
      cd config
      cp local.ex.js local.js
 
 #### Copy the backend module configuration files
 
-from the root of the midas directory:
+From the root of the midas directory:
 
      cd config/settings
      for file in *.ex.js; do cp "$file" "${file/ex./}"; done
 
 #### Copy the client configuration files
+
+From the root of the midas directory:
 
      cd assets/js/backbone/config/
      cp login.ex.json login.json
@@ -198,7 +203,7 @@ It is not necessary to edit any config files to run the demo locally.  You may o
 `login.json` specifies the login options available on the frontend, and must have a corresponding backend component or configuration enabled (see `config/settings/auth.ex.js`).
 
 #### Setup the database
-Then initialize the database with:
+From the root of the midas directory, initialize the database:
 
      make init
 
@@ -219,6 +224,15 @@ Run the tests (all should pass)
 Run the server
 
     sails lift
+
+If you get `command not found: sails`, install sails manually:
+
+    npm install sails -g
+
+Then try running the server:
+
+    sails lift
+
 
 Go to [http://localhost:1337](http://localhost:1337) to see the app
 
