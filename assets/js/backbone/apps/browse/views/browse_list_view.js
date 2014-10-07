@@ -42,7 +42,7 @@ define([
     scrollCheck: function(e) {
       var currentScrollPos = $(window).scrollTop();
       var currentMaxHeight = $('#container').height();
-      var buffer           = 400;
+      var buffer           = 600;
 
       if ( (this.options.collection.length / this.data.page) > 1 && Math.ceil(this.options.collection.length / this.data.pageSize) >= this.data.page && currentScrollPos + buffer > currentMaxHeight ){
         this.data.page += 1;
