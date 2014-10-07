@@ -135,7 +135,7 @@ module.exports.policies = {
 
   TagEntityController : {
     // Purely for administrative functions
-    '*': 'admin'
+    '*': 'authenticated'
   },
 
   TaskController : {
