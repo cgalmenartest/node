@@ -1,17 +1,9 @@
-Hello<% if (metadata.recipient.name) { %> <%= metadata.recipient.name %><% } %>,
+Dear <%= metadata.recipient.name %>,
 
-<% if (profileName) { %><%= profileName %><% } else { %>Someone<% } %> has volunteered for <%= taskTitle %> and indicated that you should be notified.
+Your employee, <%- profileName %>, just offered to assist a Department of State colleague by volunteering for the <%- taskTitle %> project on CrowdWork. This project is expected to take <%- taskTimeEstimate %> over a period of <%- taskLength %>. It is sponsored by <%- requestorName %>.
 
-<%- taskTitle %>
-<%- taskDescription %>
+CrowdWork is an innovative new crowdsourcing platform was developed as a collaboration between HR and eDiplomacy as a way to provide FAST officers employees with opportunities to expand their in-cone experiences or functional specialties. It also provides mentors additional avenues to work with their mentees.
 
-<%- profileName %>
-<%- profileLink %><% if (profileTitle) { %>
-<%= profileTitle %><% } %><% if (profileAgency) { %>
-<%= profileAgency %><% } %><% if (profileLocation) { %>
-<%= profileLocation %><% } %>
+If you’d like to learn more about the work your employee has volunteered to perform, visit this site: <%= taskLink %>. If you have questions about Crowdwork, please write to crowdwork@state.gov.
 
-View the opportunity at <%= taskLink %>
-
-Thanks!
-- The <%= globals.systemName %> Team
+Thank you for supporting your employee!
