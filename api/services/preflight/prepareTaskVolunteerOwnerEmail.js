@@ -35,15 +35,12 @@ module.exports = {
         // for a volunteer this the volunteer id otherwise it will never not match
         content.fields.initiatorId = content.fields.metadata.modelTrigger.volunteerId || null;
         // Get user info for volunteerId on behalf of recipientId (protect privacy)
-        console.log("teeeeeee",content.fields.volunteerId, fields.recipientId);
         sails.services.utils.user['getUser'](content.fields.volunteerId, fields.recipientId, function (err, volunteer) {
           if (err) { sails.log.debug(err); return cb(err, content); }
           // store the volunteer info
           content.fields.metadata.volunteer = volunteer;
           // set the email fields
           content.fields.from = sails.config['systemEmail'];
-          console.log("ppppppp",content.fields.subject);
-
           content.fields.subject = _.template(content.fields.subject)(content.fields.metadata);
           // Set template local variables for task metadata
           content.fields.templateLocals = content.fields.templateLocals || {};

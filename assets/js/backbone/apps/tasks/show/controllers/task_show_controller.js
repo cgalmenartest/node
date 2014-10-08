@@ -11,8 +11,9 @@ define([
   'tag_show_view',
   'modal_component',
   'modal_alert',
-  'task_edit_form_view'
-], function (Bootstrap, _, Backbone, Popovers, utils, BaseView, CommentListController, AttachmentView, TaskItemView, TagShowView, ModalComponent, ModalAlert, TaskEditFormView) {
+  'task_edit_form_view',
+  'json!ui_config'
+], function (Bootstrap, _, Backbone, Popovers, utils, BaseView, CommentListController, AttachmentView, TaskItemView, TagShowView, ModalComponent, ModalAlert, TaskEditFormView, UIConfig) {
 
   var popovers = new Popovers();
 
@@ -286,7 +287,6 @@ define([
       //if delete old is set, delete exisitng value
       //   default is delete
       if ( !options.deleteOld ){
-        console.log("DELETE CHECK");
         self.deleteUserSettingByKey(options.settingKey);
       }
 
@@ -298,49 +298,6 @@ define([
             userId: userId,
             key: options.settingKey,
             value: options.newValue
-          }
-        });
-    },
-
-    deleteSupervisorEmail: function(userId){
-      var self = this;
-
-      var targetId = window.cache.currentUser.supervisorEmail.id;
-
-      if ( userId ){
-        $.ajax({
-          url: '/api/usersetting/'+targetId,
-          type: 'DELETE',
-          dataType: 'json'
-        })
-      }
-    },
-    saveSupervisorEmail: function(userId){
-      var self = this;
-
-      //is current value the same as the saved value? if so do nothing
-      var newValue = $('#userSuperVisorEmail').val() || null;
-      if ( typeof window.cache.currentUser.supervisorEmail != 'undefined' ){
-        var oldValue = window.cache.currentUser.supervisorEmail.value;
-      } else {
-        var oldValue = null
-      }
-
-      if ( newValue == oldValue ){ return true; }
-
-      //else save newValue
-      //we're saving, so first delete previous value
-      if ( oldValue ) { self.deleteSupervisorEmail(userId); }
-
-      //then save newValue
-      $.ajax({
-          url: '/api/usersetting/',
-          type: 'POST',
-          dataType: 'json',
-          data: {
-            userId: userId,
-            key: 'supervisorEmail',
-            value: newValue
           }
         });
     },
@@ -358,12 +315,11 @@ define([
         modalTitle: "Do you want to volunteer?"
       }).render();
 
-    //not assigning as null because null injected into the modalContent var shows as a literal value
-    //    when what we want is nothing if value is null
-    var supervisorEmail = ( window.cache.currentUser.supervisorEmail ) ? window.cache.currentUser.supervisorEmail.value  : "";
-    var supervisorName = ( window.cache.currentUser.supervisorName ) ? window.cache.currentUser.supervisorName.value : "";
-    //TODO: this should be a ui.config check
-    if ( true ) {
+      if ( UIConfig.supervisorEmail.useSupervisorEmail ) {
+        //not assigning as null because null injected into the modalContent var shows as a literal value
+        //    when what we want is nothing if value is null
+        var supervisorEmail = ( window.cache.currentUser.supervisorEmail ) ? window.cache.currentUser.supervisorEmail.value  : "";
+        var supervisorName = ( window.cache.currentUser.supervisorName ) ? window.cache.currentUser.supervisorName.value : "";
         var modalContent = '<p>I understand it is my responsibility to confirm supervisor approval prior to committing to an opportunity.</p><p>Once you volunteer for an opportunity, you will not be able to cancel your commitment to volunteer.</p><p>Below, enter the name and email address of your supervisor so that they may be notified of your interest in this opportunity. If you\'ve previously volunteered, the last supervisor email your provided is shown.<br/><input type="text" id="userSuperVisorName" placeholder="Enter a name" value="'+supervisorName+'"/> &nbsp; <input type="text" id="userSuperVisorEmail" placeholder="Enter an email address" value="'+supervisorEmail+'"/>';
       } else {
         var modalContent = '<p>I understand it is my responsibility to confirm supervisor approval prior to committing to an opportunity.</p><p>Once you volunteer for an opportunity, you will not be able to cancel your commitment to volunteer.</p>';
@@ -376,8 +332,10 @@ define([
         cancel: 'Cancel',
         submit: 'I Agree',
         callback: function (e) {
-          self.saveUserSettingByKey(window.cache.currentUser.id,{settingKey:"supervisorEmail",newValue: $('#userSuperVisorEmail').val(),oldValue: supervisorEmail});
-          self.saveUserSettingByKey(window.cache.currentUser.id,{settingKey:"supervisorName",newValue: $('#userSuperVisorName').val(),oldValue: supervisorName});
+          if ( UIConfig.supervisorEmail.useSupervisorEmail ) {
+            self.saveUserSettingByKey(window.cache.currentUser.id,{settingKey:"supervisorEmail",newValue: $('#userSuperVisorEmail').val(),oldValue: supervisorEmail});
+            self.saveUserSettingByKey(window.cache.currentUser.id,{settingKey:"supervisorName",newValue: $('#userSuperVisorName').val(),oldValue: supervisorName});
+          }
           // user clicked the submit button
           $.ajax({
             url: '/api/volunteer/',
