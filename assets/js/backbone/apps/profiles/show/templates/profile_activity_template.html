@@ -9,7 +9,7 @@
       <% if ((count.open > 0) || (count.public > 0)) { %>
         <thead>
           <tr>
-            <th>Project</th>
+            <th data-i18n="<%= targetCapitalized %>">Project</th>
             <th>Created</th>
             <th>Likes</th>
           </tr>
@@ -34,7 +34,7 @@
       <% } else { %>
         <tbody>
           <tr>
-            <td>No <%= target %>s</td>
+            <td>No <%= targetsFriendly %></td>
           </tr>
         </tbody>
       <% } %>
@@ -45,7 +45,7 @@
       <% if ((count.closed > 0)) { %>
         <thead>
           <tr>
-            <th>Project</th>
+            <th data-i18n="<%= targetCapitalized %>">Project</th>
             <th>Created</th>
             <th>Likes</th>
           </tr>
@@ -68,7 +68,7 @@
       <% } else { %>
         <tbody>
           <tr>
-            <td>No <%= target %>s</td>
+            <td>No <%= targetsFriendly %></td>
           </tr>
         </tbody>
       <% } %>

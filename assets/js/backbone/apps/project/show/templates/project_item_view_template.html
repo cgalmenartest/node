@@ -1,5 +1,5 @@
 <!-- ALERTS -->
-<div class="alert alert-danger" id="alert-closed" style="<% if (data.state != 'closed') { %>display: none;<% } %>">This project is <strong>closed</strong>.  It is no longer active, and no more modifications may be made.</div>
+<div class="alert alert-danger" id="alert-closed" style="<% if (data.state != 'closed') { %>display: none;<% } %>">This <span data-i18n="project">project</span> is <strong>closed</strong>.  It is no longer active, and no more modifications may be made.</div>
 
 <div class="row">
   <div class="col-sm-4 col-md-4 col-lg-4 project-sidebar md-nopadding-right sm-nopadding">
@@ -70,17 +70,17 @@
             <div id="modal-close"></div>
             <ul class="nav nav-pills nav-stacked">
               <li>
-                <a href="#" id="editProject"><i class="icon-pencil"></i> <span class="box-icon-text">Edit Project</span></a>
+                <a href="#" id="editProject"><i class="icon-pencil"></i> <span class="box-icon-text">Edit <span data-i18n="Project">Project</span></span></a>
               </li>
               <li id="li-project-close" style="<% if (data.state == 'closed') { %>display: none;<% } %>">
-                <a href="#" id="project-close"><i class="icon-remove-sign"></i> <span class="box-icon-text">Close Project</span></a>
+                <a href="#" id="project-close"><i class="icon-remove-sign"></i> <span class="box-icon-text">Close <span data-i18n="Project">Project</span></span></a>
               </li>
               <li id="li-project-reopen" style="<% if (data.state != 'closed') { %>display: none;<% } %>">
-                <a href="#" id="project-reopen"><i class="icon-share-alt"></i> <span class="box-icon-text">Reopen Project</span></a>
+                <a href="#" id="project-reopen"><i class="icon-share-alt"></i> <span class="box-icon-text">Reopen <span data-i18n="Project">Project</span></span></a>
               </li>
               <!--
               <li>
-                <a href="#" id="project-delete"><i class="icon-trash"></i> <span class="box-icon-text">Delete Project</span></a>
+                <a href="#" id="project-delete"><i class="icon-trash"></i> <span class="box-icon-text">Delete <span data-i18n="Project">Project</span></span></a>
               </li>
               -->
             </ul>

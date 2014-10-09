@@ -1,8 +1,9 @@
 define([
   'jquery',
+  'bootstrap',
   'underscore',
   'backbone',
-  'bootstrap',
+  'i18n',
   'utilities',
   'base_controller',
   'browse_main_view',
@@ -14,7 +15,7 @@ define([
   'modal_wizard_component',
   'modal_component'
 ], function (
-  $, _, Backbone, Bootstrap, utils, BaseController,
+  $, Bootstrap, _, Backbone, i18n, utils, BaseController,
   BrowseMainView, ProjectsCollection, TasksCollection, TaskModel,
   ProjectFormView, TaskFormView, ModalWizardComponent, ModalComponent) {
 
@@ -113,7 +114,7 @@ define([
       this.modalComponent = new ModalComponent({
         el: ".wrapper-addProject",
         id: "addProject",
-        modalTitle: "Add Project"
+        modalTitle: "Add " + i18n.t("Project")
       }).render();
 
       this.projectFormView = new ProjectFormView({
@@ -133,7 +134,7 @@ define([
       this.modalWizardComponent = new ModalWizardComponent({
         el: ".wrapper-addTask",
         id: "addTask",
-        modalTitle: 'New Opportunity',
+        modalTitle: 'New ' + i18n.t('Opportunity'),
         model: this.taskModel,
         collection: this.tasksCollection,
         modelName: 'task',

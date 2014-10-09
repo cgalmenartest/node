@@ -3,6 +3,7 @@ define([
   'jquery_select2',
   'underscore',
   'backbone',
+  'i18n',
   'utilities',
   'json!ui_config',
   'jquery_dotdotdot',
@@ -11,7 +12,7 @@ define([
   'browse_list_view',
   'text!browse_main_template',
   'text!browse_search_tag'
-], function ($, select2, _, Backbone, utils, UIConfig,
+], function ($, select2, _, Backbone, i18n, utils, UIConfig,
             dotdotdot, Popovers, TagConfig,
             BrowseListView, BrowseMainTemplate, BrowseSearchTag) {
 
@@ -38,6 +39,7 @@ define([
       };
       this.compiledTemplate = _.template(BrowseMainTemplate, options)
       this.$el.html(this.compiledTemplate);
+      this.$el.i18n();
 
       this.initializeSearch();
 

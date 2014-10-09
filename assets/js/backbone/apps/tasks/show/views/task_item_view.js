@@ -2,6 +2,7 @@ define([
   'bootstrap',
   'underscore',
   'backbone',
+  'i18n',
   'utilities',
   'json!ui_config',
   'async',
@@ -9,7 +10,7 @@ define([
   'jquery_timeago',
   'base_view',
   'text!task_show_template'
-], function (Bootstrap, _, Backbone, utils, UIConfig, async, marked, TimeAgo, BaseView, TaskShowTemplate) {
+], function (Bootstrap, _, Backbone, i18n, utils, UIConfig, async, marked, TimeAgo, BaseView, TaskShowTemplate) {
 
   var TaskItemView = BaseView.extend({
 
@@ -53,6 +54,7 @@ define([
         self.data.ui = UIConfig;
         var compiledTemplate = _.template(TaskShowTemplate, self.data);
         self.$el.html(compiledTemplate);
+        self.$el.i18n();
         $("time.timeago").timeago();
         self.updateTaskEmail();
         self.model.trigger('task:show:render:done');
