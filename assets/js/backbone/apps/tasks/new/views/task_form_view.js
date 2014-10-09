@@ -69,10 +69,10 @@ define([
           tags.push(newItemTag);
         });
 
-        tempTags.push.apply(tempTags,self.$("#topics").select2('data'));
-        tempTags.push.apply(tempTags,self.$("#skills").select2('data'));
+        tempTags.push.apply(tempTags,self.$("#task_tag_topics").select2('data'));
+        tempTags.push.apply(tempTags,self.$("#task_tag_skills").select2('data'));
         if (self.$("#task-location").select2('data').id == 'true') {
-          tempTags.push.apply(tempTags,self.$("#location").select2('data'));
+          tempTags.push.apply(tempTags,self.$("#task_tag_location").select2('data'));
         }
         
         //see if there are any previously created big three tags and add them to the tag array
@@ -111,7 +111,7 @@ define([
 
         var newTags = [];
 
-        newTags = newTags.concat(self.$("#topics").select2('data'),self.$("#skills").select2('data'),self.$("#location").select2('data'));
+        newTags = newTags.concat(self.$("#task_tag_topics").select2('data'),self.$("#task_tag_skills").select2('data'),self.$("#task_tag_location").select2('data'));
         
         async.forEach(
           newTags, 
@@ -131,9 +131,9 @@ define([
 
       // Gather tags for submission after the task is created
       tags = {
-        topic: this.$("#topics").select2('data'),
-        skill: this.$("#skills").select2('data'),
-        location: this.$("#location").select2('data'),
+        topic: this.$("#task_tag_topics").select2('data'),
+        skill: this.$("#task_tagskills").select2('data'),
+        location: this.$("#task_tag_location").select2('data'),
         'task-skills-required': [ this.$("#skills-required").select2('data') ],
         'task-people': [ this.$("#people").select2('data') ],
         'task-time-required': [ this.$("#time-required").select2('data') ],
@@ -176,9 +176,9 @@ define([
     initializeSelect2: function () {
       var self = this;
 
-      self.tagFactory.createTagDropDown({type:"skill",selector:"#skills"});
-      self.tagFactory.createTagDropDown({type:"topic",selector:"#topics"});
-      self.tagFactory.createTagDropDown({type:"location",selector:"#location"});
+      self.tagFactory.createTagDropDown({type:"skill",selector:"#task_tag_skills",width: "100%"});
+      self.tagFactory.createTagDropDown({type:"topic",selector:"#task_tag_topics",width: "100%"});
+      self.tagFactory.createTagDropDown({type:"location",selector:"#task_tag_location",width: "100%"});
       
       self.$(".el-specific-location").hide();
 

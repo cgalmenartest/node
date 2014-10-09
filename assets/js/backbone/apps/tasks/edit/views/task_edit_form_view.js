@@ -96,21 +96,20 @@ define([
         this.$("#projectId").select2('data', this.data.data.project);
       }
 
-      this.tagFactory.createTagDropDown({type:"skill",selector:"#skills",width: "100%"});
+      this.tagFactory.createTagDropDown({type:"skill",selector:"#task_tag_skills",width: "100%"});
       if (this.data['madlibTags'].skill) {
-        this.$("#skills").select2('data', this.data['madlibTags'].skill);
+        this.$("#task_tag_skills").select2('data', this.data['madlibTags'].skill);
       }
 
-      this.tagFactory.createTagDropDown({type:"topic",selector:"#topics",width: "100%"});
+      this.tagFactory.createTagDropDown({type:"topic",selector:"#task_tag_topics",width: "100%"});
       if (this.data['madlibTags'].topic) {
-        this.$("#topics").select2('data', this.data['madlibTags'].topic);
+        this.$("#task_tag_topics").select2('data', this.data['madlibTags'].topic);
       }
 
-      this.tagFactory.createTagDropDown({type:"location",selector:"#location",width: "100%"});
+      this.tagFactory.createTagDropDown({type:"location",selector:"#task_tag_location",width: "100%"});
       if (this.data['madlibTags'].location) {
-        this.$("#location").select2('data', this.data['madlibTags'].location);
+        this.$("#task_tag_location").select2('data', this.data['madlibTags'].location);
       }
-
    
       $("#skills-required").select2({
         placeholder: "required/not-required",
@@ -221,7 +220,7 @@ define([
       oldTags = this.getOldTags();
     
       newTags = [];
-      newTags = newTags.concat(self.$("#topics").select2('data'),self.$("#skills").select2('data'),self.$("#location").select2('data'));
+      newTags = newTags.concat(self.$("#task_tag_topics").select2('data'),self.$("#task_tag_skills").select2('data'),self.$("#task_tag_location").select2('data'));
 
         async.forEach(
           newTags, 
@@ -246,9 +245,9 @@ define([
 
       // Gather tags for submission after the task is created
       var tags = [];
-      tags.push.apply(tags,this.$("#topics").select2('data'));
-      tags.push.apply(tags,this.$("#skills").select2('data'));
-      tags.push.apply(tags,this.$("#location").select2('data'));
+      tags.push.apply(tags,this.$("#task_tag_topics").select2('data'));
+      tags.push.apply(tags,this.$("#task_tag_skills").select2('data'));
+      tags.push.apply(tags,this.$("#task_tag_location").select2('data'));
       tags.push.apply(tags,[this.$("#skills-required").select2('data')]);
       tags.push.apply(tags,[this.$("#people").select2('data')]);
       tags.push.apply(tags,[this.$("#time-required").select2('data')]);
