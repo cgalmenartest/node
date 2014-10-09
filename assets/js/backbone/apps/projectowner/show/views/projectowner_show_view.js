@@ -1,14 +1,14 @@
 define([
   'jquery',
   'underscore',
-  'async',
   'backbone',
+  'i18n',
   'utilities',
+  'async',
   'popovers', /* Popovers,*/
   'modal_component',
-  'i18n',
   'text!projectowner_show_template'
-], function ($, _, async, Backbone, utils, Popovers, ModalComponent, i18n, ProjectownerShowTemplate) {
+], function ($, _, Backbone, i18n, utils, async, Popovers, ModalComponent, ProjectownerShowTemplate) {
 
   var ProjectownerShowView = Backbone.View.extend({
 

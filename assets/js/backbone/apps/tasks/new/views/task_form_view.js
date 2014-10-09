@@ -4,12 +4,13 @@ define([
     'underscore',
     'backbone',
     'async',
+    'i18n',
     'utilities',
     'markdown_editor',
     'tasks_collection',
     'text!task_form_template',
     'tag_factory'
-], function ($, Bootstrap, _, Backbone, async, utilities, MarkdownEditor, TasksCollection, TaskFormTemplate, TagFactory) {
+], function ($, Bootstrap, _, Backbone, async, i18n, utilities, MarkdownEditor, TasksCollection, TaskFormTemplate, TagFactory) {
 
   var TaskFormView = Backbone.View.extend({
 
@@ -151,6 +152,7 @@ define([
 
       // Important: Hide all non-currently opened sections of wizard.
       this.$("section:not(.current)").hide();
+      this.$el.i18n();
 
       // Return this for chaining.
       return this;
@@ -221,8 +223,8 @@ define([
         data: '',
         el: ".markdown-edit",
         id: 'task-description',
-        placeholder: 'Description of opportunity including goals, expected outcomes and deliverables.',
-        title: 'Opportunity Description',
+        placeholder: 'Description of ' + i18n.t('task') + ' including goals, expected outcomes and deliverables.',
+        title: i18n.t('Task') + ' Description',
         rows: 6,
         validate: ['empty']
       }).render();

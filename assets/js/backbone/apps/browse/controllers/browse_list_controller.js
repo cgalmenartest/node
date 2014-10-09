@@ -1,8 +1,9 @@
 define([
   'jquery',
+  'bootstrap',
   'underscore',
   'backbone',
-  'bootstrap',
+  'i18n',
   'utilities',
   'base_controller',
   'browse_main_view',
@@ -12,12 +13,11 @@ define([
   'project_form_view',
   'task_form_view',
   'modal_wizard_component',
-  'modal_component',
-  'i18n'
+  'modal_component'
 ], function (
-  $, _, Backbone, Bootstrap, utils, BaseController,
+  $, Bootstrap, _, Backbone, i18n, utils, BaseController,
   BrowseMainView, ProjectsCollection, TasksCollection, TaskModel,
-  ProjectFormView, TaskFormView, ModalWizardComponent, ModalComponent, i18n) {
+  ProjectFormView, TaskFormView, ModalWizardComponent, ModalComponent) {
 
   Application.Browse = {};
 

@@ -3,6 +3,7 @@ define([
   'jquery_select2',
   'underscore',
   'backbone',
+  'i18n',
   'utilities',
   'json!ui_config',
   'jquery_dotdotdot',
@@ -10,11 +11,10 @@ define([
   'tag_config',
   'browse_list_view',
   'text!browse_main_template',
-  'text!browse_search_tag',
-  'i18n'
-], function ($, select2, _, Backbone, utils, UIConfig,
+  'text!browse_search_tag'
+], function ($, select2, _, Backbone, i18n, utils, UIConfig,
             dotdotdot, Popovers, TagConfig,
-            BrowseListView, BrowseMainTemplate, BrowseSearchTag, i18n) {
+            BrowseListView, BrowseMainTemplate, BrowseSearchTag) {
 
   var popovers = new Popovers();
 

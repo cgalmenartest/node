@@ -8,7 +8,7 @@
       <div class="row">
         <div class="col-md-12">
           <input type="text" id="task-title" class="fullwidth form-control validate" placeholder="A short description of the problem." data-validate="empty,count100"/>
-          <span class="help-block error-empty" style="display:none;">You must enter a title for this opportunity</span>
+          <span class="help-block error-empty" style="display:none;">You must enter a title for this <span data-i18n="task">opportunity</span></span>
           <span class="help-block error-count100" style="display:none;">The short description of the problem must be less than 100 characters.</span>
         </div>
       </div>
@@ -27,7 +27,7 @@
       </select>
 
       <label for="topics">
-        to work on an opportunity about these topics:
+        to work on an <span data-i18n="task">opportunity</span> about these topics:
       </label>
       <div class="row">
         <div class="col-md-12">
@@ -48,7 +48,7 @@
         <% }); %>
       </select>
       <label for="skills">
-        to complete this opportunity:
+        to complete this <span data-i18n="task">opportunity</span>:
       </label>
       <div class="row">
         <div class="col-md-12">
@@ -62,7 +62,7 @@
   <section id="section-3">
     <div class="form-group fullwidth">
       <label for="time-estimate">
-        The opportunity will require
+        The <span data-i18n="task">opportunity</span> will require
       </label>
       <select id="time-estimate" class="dropdown">
         <% _.each(tags['task-time-estimate'], function (timeEstimate) { %>
@@ -116,12 +116,12 @@
   <section id="section-4">
     <div class="form-group fullwidth">
       <label for="task-description">
-        Describe the opportunity details, including goals, expected outcomes and deliverables.
+        Describe the <span data-i18n="task">opportunity</span> details, including goals, expected outcomes and deliverables.
       </label>
       <div class="row">
         <div class="col-md-12">
           <div class="markdown-edit"></div>
-          <span class="help-block error-empty" style="display:none;">You must enter a description for this opportunity</span>
+          <span class="help-block error-empty" style="display:none;">You must enter a description for this <span data-i18n="task">opportunity</span></span>
         </div>
       </div>
     </div>

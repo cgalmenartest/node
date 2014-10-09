@@ -3,12 +3,12 @@ define([
     'bootstrap',
     'underscore',
     'backbone',
+    'i18n',
     'utilities',
     'markdown_editor',
     'project_collection',
-    'text!project_form_template',
-    'i18n'
-], function ($, Bootstrap, _, Backbone, utils, MarkdownEditor, ProjectsCollection, ProjectFormTemplate, i18n) {
+    'text!project_form_template'
+], function ($, Bootstrap, _, Backbone, i18n, utils, MarkdownEditor, ProjectsCollection, ProjectFormTemplate) {
 
   var ProjectFormView = Backbone.View.extend({
 

@@ -1,5 +1,5 @@
 <!-- ALERTS -->
-<div class="alert alert-danger" id="alert-closed" style="<% if (model.state != 'closed') { %>display: none;<% } %>">This opportunity is <strong>closed</strong>.  It is no longer active, and no more modifications may be made.</div>
+<div class="alert alert-danger" id="alert-closed" style="<% if (model.state != 'closed') { %>display: none;<% } %>">This <span data-i18n="task">opportunity</span> is <strong>closed</strong>.  It is no longer active, and no more modifications may be made.</div>
 
 <div class="row">
 
@@ -26,7 +26,7 @@
               </div>
 
               <div class="task-show-creation">
-                Opportunity created <time class="timeago" datetime="<%- model.createdAt %>"><%- model.createdAt %></time>
+                <span data-i18n="Task">Opportunity</span> created <time class="timeago" datetime="<%- model.createdAt %>"><%- model.createdAt %></time>
                 <% if (model.createdAt != model.updatedAt) { %>
                 and updated <time class="timeago" datetime="<%- model.updatedAt %>"><%- model.updatedAt %></time>
                 <% } %>
@@ -65,20 +65,20 @@
             <div id="modal-close"></div>
             <ul class="nav nav-pills nav-stacked">
               <li class="li-task-edit">
-                <a href="#" id="task-edit"><i class="icon-pencil"></i> <span class="box-icon-text">Edit Opportunity</span></a>
+                <a href="#" id="task-edit"><i class="icon-pencil"></i> <span class="box-icon-text">Edit <span data-i18n="Task">Opportunity</span></span></a>
               </li>
               <li class="li-task-view" style="display: none;">
-                <a href="#" id="task-view"><i class="icon-pencil"></i> <span class="box-icon-text">View Opportunity</span></a>
+                <a href="#" id="task-view"><i class="icon-pencil"></i> <span class="box-icon-text">View <span data-i18n="Task">Opportunity</span></span></a>
               </li>
               <li id="li-task-close" style="<% if (model.state == 'closed') { %>display: none;<% } %>">
-                <a href="#" id="task-close"><i class="icon-remove-sign"></i> <span class="box-icon-text">Close Opportunity</span></a>
+                <a href="#" id="task-close"><i class="icon-remove-sign"></i> <span class="box-icon-text">Close <span data-i18n="Task">Opportunity</span></span></a>
               </li>
               <li id="li-task-reopen" style="<% if (model.state != 'closed') { %>display: none;<% } %>">
                 <a href="#" id="task-reopen"><i class="icon-share-alt"></i> <span class="box-icon-text">Reopen</span></a>
               </li>
               <!--
               <li>
-                <a href="#" id="task-delete"><i class="icon-trash"></i> <span class="box-icon-text">Delete Opportunity</span></a>
+                <a href="#" id="task-delete"><i class="icon-trash"></i> <span class="box-icon-text">Delete <span data-i18n="Task">Opportunity</span></span></a>
               </li>
               -->
             </ul>
@@ -115,7 +115,7 @@
               </strong>
 
             <% if (madlibTags.topic) { %>
-            to work on an opportunity about:
+            to work on an <span data-i18n="task">opportunity</span> about:
               <strong>
                     <% _.each(madlibTags.topic, function (t, i) { %>
                     <% if (i > 0) { %>
@@ -137,7 +137,7 @@
                 <% } %>
               </strong>
 
-            to complete this opportunity:
+            to complete this <span data-i18n="task">opportunity</span>:
               <strong>
                 <% if (madlibTags.skill) { %>
                   <% _.each(madlibTags.skill, function (s, i) { %>
@@ -152,7 +152,7 @@
               </strong>.
 
 
-            The opportunity will require
+            The <span data-i18n="task">opportunity</span> will require
               <strong>
                 <% if (madlibTags['task-time-estimate']) { %>
                   <%= madlibTags['task-time-estimate'][0].name %>
@@ -191,7 +191,7 @@
               <%= s.name %>
               <% }) %>
             </strong>
-            to complete this opportunity.
+            to complete this <span data-i18n="task">opportunity</span>.
             <% } else { %>
             The volunteer(s) can be located worldwide.
             <% } %>

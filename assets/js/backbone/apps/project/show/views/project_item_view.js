@@ -5,13 +5,13 @@ define([
   'jquery_select2',
   'underscore',
   'backbone',
-  'async',
+  'i18n',
   'utilities',
+  'async',
   'text!project_show_template',
   'tag_show_view',
   'tag_factory',
-  'i18n'
-], function ($, jqIframe, jqFU, select2, _, Backbone, async, utils, ProjectShowTemplate, TagShowView,TagFactory, i18n) {
+], function ($, jqIframe, jqFU, select2, _, Backbone, i18n, utils, async, ProjectShowTemplate, TagShowView, TagFactory) {
 
   var ProjectShowView = Backbone.View.extend({
 
