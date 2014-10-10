@@ -3,6 +3,9 @@ DEPENDENCIES
     git: git@github.com:opscode-cookbooks/apt.git
     revision: e3436c3c5b053dc80358608ef2122d0d0aa609e0
   build-essential
+  citadel
+    git: https://github.com/dlapiduz/citadel.git
+    revision: feed3aed1fd4ecb12bbccf0d3ac53fdd73ccf6c1
   midas
     path: site-cookbooks/midas
   nginx
@@ -22,9 +25,12 @@ GRAPH
     rsyslog (>= 0.0.0)
   build-essential (2.0.6)
   chef_handler (1.1.6)
+  citadel (1.0.2)
   midas (0.0.1)
+    citadel (>= 0.0.0)
     nodejs (>= 0.0.0)
     postgresql (>= 0.0.0)
+    user (>= 0.0.0)
   nginx (2.7.4)
     apt (~> 2.2)
     bluepill (~> 2.3)
@@ -45,6 +51,7 @@ GRAPH
     build-essential (>= 0.0.0)
     yum (~> 3.0)
     yum-epel (>= 0.0.0)
+  user (0.3.0)
   windows (1.34.2)
     chef_handler (>= 0.0.0)
   yum (3.2.2)
