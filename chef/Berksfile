@@ -6,4 +6,4 @@ cookbook 'nginx'
 cookbook 'nodejs'
 cookbook 'apt', git: 'git@github.com:opscode-cookbooks/apt.git'
 cookbook 'build-essential'
-
+cookbook 'citadel', git: 'https://github.com/dlapiduz/citadel.git'

@@ -1,7 +1,19 @@
 
+include_recipe 'midas::ec2_vars'
+include_recipe 'user'
+
+# set up user and group
+group node.midas.group
+
+user_account node.midas.user do
+  gid node.midas.group
+  action :create
+end
+
+
 directory node.midas.deploy_dir do
-#  owner node.midas.user
-#  group node.midas.group
+  owner node.midas.user
+  group node.midas.group
   recursive true
   mode 0770
   action :create
@@ -12,43 +24,70 @@ git node.midas.deploy_dir do
   checkout_branch node.midas.git_branch
   revision node.midas.git_revision
   enable_submodules true
+  user node.midas.user
+  group node.midas.group
   action :sync
+end
+
+template  "#{node.midas.deploy_dir}/config/local.js" do
+  source "local.js.erb"
+  variables(
+    app_id: node.midas.app_id,
+    app_host: node.midas.app_host,
+    app_environment: node.midas.environment,
+    db_host: node.midas.database.hostname,
+    db_user: node.midas.database.username,
+    db_password: node.midas.database.password,
+    db_name: node.midas.database.name,
+    app_system_email: node.midas.system_email,
+    email_host: node.midas.email.hostname,
+    email_user: node.midas.email.username,
+    email_password: node.midas.email.password,
+    email_port: node.midas.email.port,
+    email_secure: node.midas.email.secure
+  )
+end
+
+template  "#{node.midas.deploy_dir}/config/settings/auth.js" do
+  source "auth.js.erb"
+  variables(
+    app_host: node.midas.app_host,
+    linkedin_client_id: node.midas.linkedin.client_id,
+    linkedin_client_secret: node.midas.linkedin.secret,
+    myusa_client_id: node.midas.myusa.client_id,
+    myusa_client_secret: node.midas.myusa.secret
+  )
 end
 
 # client config
 execute 'client config' do
- command <<-HERE
-  cp -n login.ex.json login.json
- HERE
-  cwd "#{node.midas.deploy_dir}/assets/js/backbone/config/"
+ command "cp -n login.ex.json login.json"
+ cwd "#{node.midas.deploy_dir}/assets/js/backbone/config/"
+end
+
+npm_packages = ['grunt-cli']
+
+npm_packages.each do |np|
+  nodejs_npm np
 end
 
 execute 'install code dependencies' do 
   command <<-HERE
-    npm install -g grunt-cli
-    npm install -g forever 
-    forever stop app.js --prod
     npm link sails-postgresql
     npm install
-    make build
   HERE
   cwd node.midas.deploy_dir
 end
 
-execute 'server config' do
- command <<-HERE
-  cp -n local.ex.js local.js
- HERE
-  cwd "#{node.midas.deploy_dir}/config"
+execute 'build assets' do 
+  command "make build"
+  cwd node.midas.deploy_dir
 end
 
 bash 'server config/settings' do
- code <<-HERE
-  for file in *.ex.js; do cp -n "$file" "${file/ex./}"; done
- HERE
+  code "for file in *.ex.js; do cp -n \"$file\" \"${file/ex./}\"; done"
   cwd "#{node.midas.deploy_dir}/config/settings"
 end
-
 
 file "#{node.midas.nginx_conf_dir}/#{node.midas.nginx_default}" do
   action :delete
@@ -59,12 +98,23 @@ link "#{node.midas.nginx_conf_dir}/midas.conf" do
   action :create
 end
 
-bash 'startup' do
- code <<-HERE
-    make init
-    forever start app.js --prod
- HERE
+execute 'run make init' do
+  command "make init && touch /tmp/midas_init"
   cwd node.midas.deploy_dir
+  creates "/tmp/midas_init"
+end
+
+template "/etc/init/midas.conf" do
+  source "midas.upstart.erb"
+  variables(
+    working_dir: node.midas.deploy_dir,
+    app_user: node.midas.user,
+  )
+end
+
+service "midas" do
+  provider Chef::Provider::Service::Upstart
+  action   [:enable, :start]
 end
 
 service "nginx" do
