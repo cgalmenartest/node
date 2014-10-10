@@ -9,7 +9,6 @@ var utils = require('./utils');
 var UIConfig = require('../../../assets/js/backbone/config/ui.json');
 module.exports = {
   execute: function (fields, email, cb) {
-  console.log("UICONFIG",UIConfig);
   if ( UIConfig.supervisorEmail.useSupervisorEmail ) {
     var supervisor = [
     {
