@@ -3,92 +3,421 @@
   // service functions called to produce the given audience
   audiences : {
     'everyone' : {
-      method: 'findAllUsers'
+      name: 'everyone',
+      method: 'findAllUsers',
+      fields: {},
+      settings: {}
     },
     'user' : {
-      method: 'findUser'
+      name: 'user',
+      method: 'findUser',
+      fields: {
+        'userId' : {
+          name: 'userId',
+          required: true,
+          type: 'INTEGER',
+          defaultValue: null,
+          validation: null
+        }
+      },
+      settings: {}
     },
-    // project audiences
     'projectOwners' : {
-      method: 'findProjectOwners'
+      name: 'projectOwners',
+      method: 'findProjectOwners',
+      fields: {
+        'projectId' : {
+          name: 'projectId',
+          required: true,
+          type: 'INTEGER',
+          defaultValue: null,
+          validation: null
+        }
+      },
+      settings: {}
     },
     'projectParticipants' : {
-      method: 'findProjectParticipants'
+      name: 'projectParticipants',
+      method: 'findProjectParticipants',
+      fields: {
+        'projectId' : {
+          name: 'projectId',
+          required: true,
+          type: 'INTEGER',
+          defaultValue: null,
+          validation: null
+        }
+      },
+      settings: {}
     },
     'projectLikers' : {
-      method: 'findProjectLikers'
+      name: 'projectLikers',
+      method: 'findProjectLikers',
+      fields: {
+        'projectId' : {
+          name: 'projectId',
+          required: true,
+          type: 'INTEGER',
+          defaultValue: null,
+          validation: null
+        }
+      },
+      settings: {}
     },
     'projectThreadCommenters' : {
-      method: 'findProjectThreadParentCommenters'
+      name: 'projectThreadCommenters',
+      method: 'findProjectThreadParentCommenters',
+      fields: {
+        'commentId' : {
+          name: 'commentId',
+          required: true,
+          type: 'INTEGER',
+          defaultValue: null,
+          validation: null
+        }
+      },
+      settings: {}
     },
-    // task audiences
     'taskOwners' : {
-      method: 'findTaskOwners'
+      name: 'taskOwners',
+      method: 'findTaskOwners',
+      fields: {
+        'taskId' : {
+          name: 'taskId',
+          required: true,
+          type: 'INTEGER',
+          defaultValue: null,
+          validation: null
+        }
+      },
+      settings: {}
+    },
+    'volunteerSupervisor' : {
+      name: 'volunteerSupervisor',
+      method: 'findVolunteerSupervisor',
+      fields: {
+        'taskId' : {
+          name: 'taskId',
+          required: true,
+          type: 'INTEGER',
+          defaultValue: null,
+          validation: null
+        }
+      },
+      settings: {}
     },
     'taskParticipants' : {
-      method: 'findTaskParticipants'
+      name: 'taskParticipants',
+      method: 'findTaskParticipants',
+      fields: {
+        'taskId' : {
+          name: 'taskId',
+          required: true,
+          type: 'INTEGER',
+          defaultValue: null,
+          validation: null
+        }
+      },
+      settings: {}
     },
     'taskLikers' : {
-      method: 'findTaskLikers'
+      name: 'taskLikers',
+      method: 'findTaskLikers',
+      fields: {
+        'taskId' : {
+          name: 'taskId',
+          required: true,
+          type: 'INTEGER',
+          defaultValue: null,
+          validation: null
+        }
+      },
+      settings: {}
     },
     'taskThreadCommenters' : {
-      method: 'findTaskThreadParentCommenters'
+      name: 'taskThreadCommenters',
+      method: 'findTaskThreadParentCommenters',
+      fields: {
+        'commentId' : {
+          name: 'commentId',
+          required: true,
+          type: 'INTEGER',
+          defaultValue: null,
+          validation: null
+        }
+      },
+      settings: {}
     }
   },
   // Defines preflight delivery-building functions
   preflights: {
-    'preflightProjectCommentReplyParent': {
+    'projectCommentReplyParentPrepare': {
+      name: 'projectCommentReplyParentPrepare',
       method: 'prepareCommentReplyEmail',
+      fields: {
+        callerId: {
+          name: 'callerId',
+          required: true,
+          type: 'INTEGER',
+          defaultValue: null,
+          validation: null
+        },
+        recipientId: {
+          name: 'recipientId',
+          required: true,
+          type: 'INTEGER',
+          defaultValue: null,
+          validation: null
+        }
+      },
       settings: {
         emailName: 'projectCommentParentReply'
       }
     },
-    'preflightProjectCommentReplyOwner': {
+    'projectCommentReplyOwnerPrepare': {
+      name: 'projectCommentReplyOwnerPrepare',
       method: 'prepareCommentReplyEmail',
+      fields: {
+        callerId: {
+          name: 'callerId',
+          required: true,
+          type: 'INTEGER',
+          defaultValue: null,
+          validation: null
+        },
+        recipientId: {
+          name: 'recipientId',
+          required: true,
+          type: 'INTEGER',
+          defaultValue: null,
+          validation: null
+        }
+      },
       settings: {
         emailName: 'projectCommentOwnerReply'
       }
     },
-    'preflightTaskCommentReplyParent': {
+    'taskCommentReplyParentPrepare': {
+      name: 'taskCommentReplyParentPrepare',
       method: 'prepareCommentReplyEmail',
+      fields: {
+        callerId: {
+          name: 'callerId',
+          required: true,
+          type: 'INTEGER',
+          defaultValue: null,
+          validation: null
+        },
+        recipientId: {
+          name: 'recipientId',
+          required: true,
+          type: 'INTEGER',
+          defaultValue: null,
+          validation: null
+        }
+      },
       settings: {
         emailName: 'taskCommentParentReply'
       }
     },
-    'preflightTaskCommentReplyOwner': {
+    'taskCommentReplyOwnerPrepare': {
       name: 'taskCommentReplyOwnerPrepare',
       method: 'prepareCommentReplyEmail',
+      fields: {
+        callerId: {
+          name: 'callerId',
+          required: true,
+          type: 'INTEGER',
+          defaultValue: null,
+          validation: null
+        },
+        recipientId: {
+          name: 'recipientId',
+          required: true,
+          type: 'INTEGER',
+          defaultValue: null,
+          validation: null
+        }
+      },
       settings: {
         emailName: 'taskCommentOwnerReply'
       }
     },
-    'preflightTaskVolunteerOwner': {
+    'taskVolunteerOwnerPrepare': {
+      name: 'taskVolunteerOwnerPrepare',
       method: 'prepareTaskVolunteerOwnerEmail',
+      fields: {
+        callerId: {
+          name: 'callerId',
+          required: true,
+          type: 'INTEGER',
+          defaultValue: null,
+          validation: null
+        },
+        recipientId: {
+          name: 'recipientId',
+          required: true,
+          type: 'INTEGER',
+          defaultValue: null,
+          validation: null
+        },
+        volunteerId: {
+          name: 'volunteerId',
+          required: true,
+          type: 'INTEGER',
+          defaultValue: null,
+          validation: null
+        }
+      },
       settings: {
         emailName: 'taskVolunteerAddedOwnerReply'
       }
     },
-    'preflightUserPasswordReset': {
-      method: 'prepareUserPasswordResetEmail',
+    'taskVolunteerSupervisorPrepare': {
+      name: 'taskVolunteerSupervisorPrepare',
+      method: 'prepareTaskVolunteerSupervisorEmail',
+      fields: {
+        callerId: {
+          name: 'callerId',
+          required: true,
+          type: 'INTEGER',
+          defaultValue: null,
+          validation: null
+        },
+        recipientId: {
+          name: 'recipientId',
+          required: true,
+          type: 'INTEGER',
+          defaultValue: null,
+          validation: null
+        },
+        volunteerId: {
+          name: 'volunteerId',
+          required: true,
+          type: 'INTEGER',
+          defaultValue: null,
+          validation: null
+        },
+      },
       settings: {
-        emailName: 'userPasswordResetEmail'
-      }
+          emailName: 'taskVolunteerAddedSupervisorReply'
+        }
     },
     'bypass': {
       name: 'bypass',
       method: 'passThrough',
+      fields: {},
       settings: {}
     }
   },
-  // defines delivery functions
+// defines delivery functions
   deliveries: {
     'sendSimpleEmail': {
       name: 'sendSimpleEmail',
-      method: 'sendSimpleEmail'
+      method: 'sendSimpleEmail',
+      fields: {
+        to: {
+          name: 'to',
+          required: true,
+          type: 'STRING',
+          defaultValue: null,
+          validation: null
+        },
+        from: {
+          name: 'from',
+          required: true,
+          type: 'STRING',
+          defaultValue: null,
+          validation: null
+        },
+        subject: {
+          name: 'subject',
+          required: true,
+          type: 'STRING',
+          defaultValue: null,
+          validation: null
+        },
+        layout: {
+          name: 'layout',
+          required: false,
+          type: 'STRING',
+          defaultValue: 'default',
+          validation: null
+        },
+        layoutLocals: {
+          name: 'layoutLocals',
+          required: false,
+          type: 'OBJECT',
+          defaultValue: {},
+          validation: null
+        },
+        template: {
+          name: 'template',
+          required: true,
+          type: 'STRING',
+          defaultValue: 'default',
+          validation: null
+        },
+        templateLocals: {
+          name: 'templateLocals',
+          required: false,
+          type: 'OBJECT',
+          defaultValue: {},
+          validation: null
+        }
+      },
+      settings: {
+        'globalBlast': {
+          audience: {
+            'everyone': {
+              frequency: 'immediate'
+            }
+          }
+        },
+        'directUserEmailRequestFromCard': {
+          audience: {
+            'user': {
+              frequency: 'immediate'
+            }
+          }
+        },
+        'projectCommentAdded': {
+          audience: {
+            'projectOwners': {
+              frequency: 'immediate'
+            },
+            'projectThreadCommenters': {
+              frequency: 'immediate'
+            }
+          }
+        },
+        'taskCommentAdded': {
+          audience: {
+            'taskOwners': {
+              frequency: 'immediate'
+            },
+            'taskThreadCommenters': {
+              frequency: 'immediate'
+            }
+          }
+        },
+        'taskVolunteerAdded': {
+          audience: {
+            'taskOwners': {
+              frequency: 'immediate'
+            },
+            'volunteerSupervisor': {
+              frequency: 'immediate'
+            }
+          }
+        }
+      }
     },
     'bypass': {
       name: 'bypass',
-      method: 'bypass'
+      method: 'bypass',
+      fields: {},
+      settings: {}
     }
   },
   // defines trigger route configuration to respond correctly to action triggers
@@ -117,24 +446,12 @@
         }
       }
     },
-    'userPasswordReset': {
-      audience:{
-        'user': {
-          strategy: {
-            'userPasswordReset': {
-              preflight: ['preflightUserPasswordReset'],
-              delivery: 'sendSimpleEmail'
-            }
-          }
-        }
-      }
-    },
     'projectCommentAdded': {
       audience:{
         'projectOwners': {
           strategy: {
             'contactProjectOwnersOnCommentEmail': {
-              preflight: ['preflightProjectCommentReplyOwner'],
+              preflight: ['projectCommentReplyOwnerPrepare'],
               delivery: 'sendSimpleEmail'
             }
           }
@@ -142,7 +459,7 @@
         'projectThreadCommenters': {
           strategy: {
             'contactProjectCommentParentOnCommentEmail': {
-              preflight: ['preflightProjectCommentReplyParent'],
+              preflight: ['projectCommentReplyParentPrepare'],
               delivery: 'sendSimpleEmail'
             }
           }
@@ -154,7 +471,7 @@
         'taskOwners': {
           strategy: {
             'contactTaskOwnersOnCommentEmail': {
-              preflight: ['preflightTaskCommentReplyOwner'],
+              preflight: ['taskCommentReplyOwnerPrepare'],
               delivery: 'sendSimpleEmail'
             }
           }
@@ -162,7 +479,7 @@
         'taskThreadCommenters': {
           strategy: {
             'contactTaskCommentParentOnCommentEmail': {
-              preflight: ['preflightTaskCommentReplyParent'],
+              preflight: ['taskCommentReplyParentPrepare'],
               delivery: 'sendSimpleEmail'
             }
           }
@@ -174,7 +491,15 @@
         'taskOwners': {
           strategy: {
             'contactTaskOwnersOnVolunteerEmail': {
-              preflight: ['preflightTaskVolunteerOwner'],
+              preflight: ['taskVolunteerOwnerPrepare'],
+              delivery: 'sendSimpleEmail'
+            }
+          }
+        },
+        'volunteerSupervisor': {
+          strategy: {
+            'contactVolunteerSupervisorOnVolunteerEmail': {
+              preflight: ['taskVolunteerSupervisorPrepare'],
               delivery: 'sendSimpleEmail'
             }
           }
