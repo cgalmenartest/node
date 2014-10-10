@@ -4,17 +4,12 @@
  * @module    :: audience.js
  * @description :: defines service function that returns the volunteer supervisor email
  */
-//var $ = require('jquery');
 var _ = require('underscore');
 var utils = require('./utils');
-var fs    = require('fs');
-//var UIConfig = require('/assets/js/backbone/config/ui.json');
-
+var UIConfig = require('../../../assets/js/backbone/config/ui.json');
 module.exports = {
   execute: function (fields, email, cb) {
-  //placeholder while rest is worked out
-
-  var UIConfig = JSON.parse(fs.readFileSync('assets/js/backbone/config/ui.json', 'utf8'));
+  console.log("UICONFIG",UIConfig);
   if ( UIConfig.supervisorEmail.useSupervisorEmail ) {
     var supervisor = [
     {
