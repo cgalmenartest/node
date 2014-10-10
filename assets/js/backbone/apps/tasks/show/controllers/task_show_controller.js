@@ -41,7 +41,7 @@ define([
       this.initializeChildren();
 
       //load user settings so they are available as needed
-      this.getUserSettings(window.cache.currentUser.id);
+      this.getUserSettings(window.cache.currentUser);
     },
 
     initializeEdit: function () {
@@ -258,10 +258,8 @@ define([
     deleteUserSettingByKey: function(settingKey) {
       //this function expects the entire row from usersetting in the form
       //     window.cache.currentUser[settingKey] = {}
-
       var self = this;
 
-      console.log("current user dump",window.cache.currentUser, settingKey);
       //if not set skip
       var targetId =  ( window.cache.currentUser[settingKey] ) ? window.cache.currentUser[settingKey].id : null ;
 
@@ -278,7 +276,6 @@ define([
     saveUserSettingByKey: function(userId, options) {
       //this function expects the entire row from usersetting in the form
       //     window.cache.currentUser[settingKey] = {}
-
       var self = this;
 
       //are values the same, stop

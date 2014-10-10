@@ -56,8 +56,12 @@ module.exports.policies = {
   },
 
   UserSettingController : {
-    '*': true
+    //'*': ['authenticated', 'requireUserId', 'addUserId'],
+    //'findAllByUserId': true
+    '*': ['authenticated', 'requireUserId', 'addUserId'],
+    'destroy': ['authenticated', 'requireUserId', 'requireId','userSettingIdMatch']
   },
+
   // Disable the index blueprints for FileController due to security concerns
   FileController : {
     'index': false,

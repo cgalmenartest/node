@@ -3,6 +3,6 @@
     "show": true
   },
   "supervisorEmail": {
-	"useSupervisorEmail": false
+	"useSupervisorEmail": true
   }
 }
