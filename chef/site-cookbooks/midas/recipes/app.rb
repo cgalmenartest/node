@@ -71,22 +71,25 @@ npm_packages.each do |np|
   nodejs_npm np
 end
 
-execute 'install code dependencies' do 
+execute 'install code dependencies' do
   command <<-HERE
     npm link sails-postgresql
     npm install
   HERE
   cwd node.midas.deploy_dir
+  user node.midas.user
 end
 
-execute 'build assets' do 
+execute 'build assets' do
   command "make build"
   cwd node.midas.deploy_dir
+  user node.midas.user
 end
 
 bash 'server config/settings' do
   code "for file in *.ex.js; do cp -n \"$file\" \"${file/ex./}\"; done"
   cwd "#{node.midas.deploy_dir}/config/settings"
+  user node.midas.user
 end
 
 file "#{node.midas.nginx_conf_dir}/#{node.midas.nginx_default}" do
@@ -96,12 +99,14 @@ end
 link "#{node.midas.nginx_conf_dir}/midas.conf" do
   to "#{node.midas.deploy_dir}/#{node.midas.nginx_conf_source}"
   action :create
+  owner node.midas.user
 end
 
 execute 'run make init' do
   command "make init && touch /tmp/midas_init"
   cwd node.midas.deploy_dir
   creates "/tmp/midas_init"
+  user node.midas.user
 end
 
 template "/etc/init/midas.conf" do
