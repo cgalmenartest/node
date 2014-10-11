@@ -3,6 +3,9 @@
     "show": true
   },
   "supervisorEmail": {
-	"useSupervisorEmail": true
+	  "useSupervisorEmail": true
+  },
+  "home": {
+    "logged_in_path": "/projects"
   }
 }
