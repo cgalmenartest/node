@@ -67,6 +67,28 @@ module.exports = {
   },
 
   /**
+   * Fetch usersettings
+   *
+   * @param userId
+   * @param done call back, returns settings as an object ( settings.key=obj )
+   *             this way properties are accesible thusly settings.supervisorEmail.value
+   *             and they can be deleted easily because the id is present
+   */
+  getUserSettings: function (userId, done){
+    var userSetting = {};
+
+    UserSetting.findByUserId(userId)
+      .done(function(err,settings){
+        if (err) { return done(err, null); }
+        _.each(settings,function(setting){
+          userSetting[setting.key]=setting;
+        });
+
+        return done(null,userSetting);
+      });
+  },
+
+  /**
    * Create a user based on their username and password.
    *
    * @param username

@@ -11,8 +11,9 @@ define([
   'tag_show_view',
   'modal_component',
   'modal_alert',
-  'task_edit_form_view'
-], function (Bootstrap, _, Backbone, Popovers, utils, BaseView, CommentListController, AttachmentView, TaskItemView, TagShowView, ModalComponent, ModalAlert, TaskEditFormView) {
+  'task_edit_form_view',
+  'json!ui_config'
+], function (Bootstrap, _, Backbone, Popovers, utils, BaseView, CommentListController, AttachmentView, TaskItemView, TagShowView, ModalComponent, ModalAlert, TaskEditFormView, UIConfig) {
 
   var popovers = new Popovers();
 
@@ -38,6 +39,9 @@ define([
 
       this.initializeTaskItemView();
       this.initializeChildren();
+
+      //load user settings so they are available as needed
+      this.getUserSettings(window.cache.currentUser);
     },
 
     initializeEdit: function () {
@@ -231,6 +235,69 @@ define([
         });
       }
     },
+    getUserSettings: function (userId) {
+      //does this belong somewhere else?
+      //
+
+      $.ajax({
+        url: '/api/usersetting/'+userId,
+        type: 'GET',
+        dataType: 'json'
+      })
+      .success(function(data){
+        _.each(data,function(setting){
+          //save active settings to the current user object
+          console.log("setting",setting);
+          if ( setting.isActive ){
+            window.cache.currentUser[setting.key]=setting;
+          }
+        });
+      });
+    },
+
+    deleteUserSettingByKey: function(settingKey) {
+      //this function expects the entire row from usersetting in the form
+      //     window.cache.currentUser[settingKey] = {}
+      var self = this;
+
+      //if not set skip
+      var targetId =  ( window.cache.currentUser[settingKey] ) ? window.cache.currentUser[settingKey].id : null ;
+
+      if ( targetId ){
+        $.ajax({
+          url: '/api/usersetting/'+targetId,
+          type: 'DELETE',
+          dataType: 'json'
+        })
+      }
+
+    },
+
+    saveUserSettingByKey: function(userId, options) {
+      //this function expects the entire row from usersetting in the form
+      //     window.cache.currentUser[settingKey] = {}
+      var self = this;
+
+      //are values the same, stop
+      if ( options.newValue == options.oldValue ) { return true; }
+
+      //if delete old is set, delete exisitng value
+      //   default is delete
+      if ( !options.deleteOld ){
+        self.deleteUserSettingByKey(options.settingKey);
+      }
+
+      $.ajax({
+          url: '/api/usersetting/',
+          type: 'POST',
+          dataType: 'json',
+          data: {
+            userId: userId,
+            key: options.settingKey,
+            value: options.newValue
+          }
+        });
+    },
 
     volunteer: function (e) {
       if (e.preventDefault) e.preventDefault();
@@ -245,13 +312,27 @@ define([
         modalTitle: "Do you want to volunteer?"
       }).render();
 
+      if ( UIConfig.supervisorEmail.useSupervisorEmail ) {
+        //not assigning as null because null injected into the modalContent var shows as a literal value
+        //    when what we want is nothing if value is null
+        var supervisorEmail = ( window.cache.currentUser.supervisorEmail ) ? window.cache.currentUser.supervisorEmail.value  : "";
+        var supervisorName = ( window.cache.currentUser.supervisorName ) ? window.cache.currentUser.supervisorName.value : "";
+        var modalContent = '<p>Thank you for volunteering. Please be sure you have the availability and expertise to support this opportunity to completion. We will notify your supervisor of your interest in this project so that he or she is aware that you plan to include this work during your regularly scheduled work week to support Department colleagues and projects. Kudos to you!</p><p>Please enter  the name and email address of your supervisor below. If you’ve previously volunteered, the last supervisor email you provided is shown. Please update it if necessary.</p><input type="text" id="userSuperVisorName" placeholder="Supervisor Name" value="'+supervisorName+'"/> &nbsp; <input type="text" id="userSuperVisorEmail" placeholder="Supervisor email address" value="'+supervisorEmail+'"/>';
+      } else {
+        var modalContent = '<p>I understand it is my responsibility to confirm supervisor approval prior to committing to an opportunity.</p><p>Once you volunteer for an opportunity, you will not be able to cancel your commitment to volunteer.</p>';
+      }
+
       this.modalAlert = new ModalAlert({
         el: "#check-volunteer .modal-template",
         modalDiv: '#check-volunteer',
-        content: '<p>I understand it is my responsibility to confirm supervisor approval prior to committing to an opportunity.</p><p>Once you volunteer for an opportunity, you will not be able to cancel your commitment to volunteer.</p>',
+        content: modalContent,
         cancel: 'Cancel',
         submit: 'I Agree',
         callback: function (e) {
+          if ( UIConfig.supervisorEmail.useSupervisorEmail ) {
+            self.saveUserSettingByKey(window.cache.currentUser.id,{settingKey:"supervisorEmail",newValue: $('#userSuperVisorEmail').val(),oldValue: supervisorEmail});
+            self.saveUserSettingByKey(window.cache.currentUser.id,{settingKey:"supervisorName",newValue: $('#userSuperVisorName').val(),oldValue: supervisorName});
+          }
           // user clicked the submit button
           $.ajax({
             url: '/api/volunteer/',

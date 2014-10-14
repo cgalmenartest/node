@@ -33,6 +33,12 @@ module.exports = {
                 taskId: values.taskId,
                 volunteerId: values.userId
             }
+          },
+          'volunteerSupervisor': {
+            fields: {
+              taskId: values.taskId,
+              volunteerId: values.userId
+            }
           }
         }
       }
