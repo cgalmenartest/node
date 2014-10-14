@@ -17,7 +17,7 @@ define([
     el: "#task-list-wrapper",
 
     events: {
-      "blur .validate"        : "v",
+      "change .validate"        : "v",
       "change #task-location" : "locationChange"
     },
 
