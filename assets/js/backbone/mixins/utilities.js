@@ -211,7 +211,7 @@ var validate = function (e) {
       return;
     }
     if ( o== 'emaildomain'){
-      var domain = $(e.currentTarget).data('email-domain');
+      var domain = $(e.currentTarget).data('emaildomain');
       if ( val != "" && val.indexOf("@") >= 2 ){
         var bits = val.split("@");
         if ( bits[1] != domain ){

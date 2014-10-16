@@ -148,6 +148,8 @@ require.config({
     'task_show_controller'      : '../apps/tasks/show/controllers/task_show_controller',
     'task_edit_form_view'       : '../apps/tasks/edit/views/task_edit_form_view',
     'task_edit_form_template'   : '../apps/tasks/edit/templates/task_edit_form_template.html',
+    'volunteer_supervisor_notify_template' : '../apps/tasks/show/templates/volunteer_supervisor_notify_template.html',
+    'volunteer_text_template'   : '../apps/tasks/show/templates/volunteer_text_template.html',
 
     // ----------
     //= Events
