@@ -63,16 +63,16 @@ npm_packages.each do |np|
   nodejs_npm np
 end
 
-user 'midas' do
+user node.midas.user do
   supports :manage_home => true
-  home '/home/midas'
+  home node.midas.user_home
 end
 
 nodejs_npm 'midas' do
   path node.midas.deploy_dir
   json true
-  user 'midas'
-  group 'midas'
+  user node.midas.user
+  group node.midas.group
 end
 
 

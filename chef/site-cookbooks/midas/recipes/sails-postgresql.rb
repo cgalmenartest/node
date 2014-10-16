@@ -1,8 +1,8 @@
-package_dir = "/home/midas/sails-postgresql"
+package_dir = "#{node.midas.user_home}/sails-postgresql"
 
-user 'midas' do
+user node.midas.user do
   supports :manage_home => true
-  home '/home/midas'
+  home node.midas.user_home
 end
 
 git package_dir do
@@ -15,8 +15,8 @@ end
 nodejs_npm 'sails-postgresql' do
   path package_dir
   json true
-  user 'midas'
-  group 'midas'
+  user node.midas.user
+  group node.midas.group
 end
 
 execute 'link sails-postgresql' do
