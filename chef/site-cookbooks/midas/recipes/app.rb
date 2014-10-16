@@ -1,14 +1,6 @@
 
 include_recipe 'midas::ec2_vars'
-include_recipe 'user'
 
-# set up user and group
-group node.midas.group
-
-user_account node.midas.user do
-  gid node.midas.group
-  action :create
-end
 
 
 directory node.midas.deploy_dir do
@@ -71,10 +63,22 @@ npm_packages.each do |np|
   nodejs_npm np
 end
 
-execute 'install code dependencies' do
+user 'midas' do
+  supports :manage_home => true
+  home '/home/midas'
+end
+
+nodejs_npm 'midas' do
+  path node.midas.deploy_dir
+  json true
+  user 'midas'
+  group 'midas'
+end
+
+
+execute 'install sails-postgresql' do
   command <<-HERE
     npm link sails-postgresql
-    npm install
   HERE
   cwd node.midas.deploy_dir
   user node.midas.user

@@ -1,19 +1,27 @@
-package_dir = "/opt/node-packages/sails-postgresql"
+package_dir = "/home/midas/sails-postgresql"
 
-directory package_dir do
-  recursive true
+user 'midas' do
+  supports :manage_home => true
+  home '/home/midas'
 end
 
 git package_dir do
   repository "https://github.com/Innovation-Toolkit/sails-postgresql.git"
   revision 'bytea'
   action :sync
+  user 'midas'
 end
 
-execute "install sails-postgresql" do
+nodejs_npm 'sails-postgresql' do
+  path package_dir
+  json true
+  user 'midas'
+  group 'midas'
+end
+
+execute 'link sails-postgresql' do
   command <<-HERE
-    npm install
-    npm link
+    sudo npm link
   HERE
   cwd package_dir
 end
