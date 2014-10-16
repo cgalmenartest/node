@@ -17,7 +17,7 @@ define([
       this.options = options;
     },
 
-    render: function (options) {
+    render: function () {
       var template = _.template(ModalTemplate, this.options);
       this.$el.html(template);
       $(this.options.modalDiv).modal('show');
