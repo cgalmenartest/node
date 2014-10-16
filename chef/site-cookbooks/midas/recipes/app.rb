@@ -1,7 +1,4 @@
-
 include_recipe 'midas::ec2_vars'
-
-
 
 directory node.midas.deploy_dir do
   owner node.midas.user
@@ -20,6 +17,8 @@ git node.midas.deploy_dir do
   group node.midas.group
   action :sync
 end
+
+include_recipe 'midas::node_modules'
 
 template  "#{node.midas.deploy_dir}/config/local.js" do
   source "local.js.erb"
@@ -55,33 +54,6 @@ end
 execute 'client config' do
  command "cp -n login.ex.json login.json"
  cwd "#{node.midas.deploy_dir}/assets/js/backbone/config/"
-end
-
-npm_packages = ['grunt-cli']
-
-npm_packages.each do |np|
-  nodejs_npm np
-end
-
-user node.midas.user do
-  supports :manage_home => true
-  home node.midas.user_home
-end
-
-nodejs_npm 'midas' do
-  path node.midas.deploy_dir
-  json true
-  user node.midas.user
-  group node.midas.group
-end
-
-
-execute 'install sails-postgresql' do
-  command <<-HERE
-    npm link sails-postgresql
-  HERE
-  cwd node.midas.deploy_dir
-  user node.midas.user
 end
 
 execute 'build assets' do
