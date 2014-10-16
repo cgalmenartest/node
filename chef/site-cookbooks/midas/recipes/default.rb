@@ -1,3 +1,6 @@
+user_account 'ubuntu' do
+    ssh_keygen true
+end
 
 # set up user and group
 include_recipe 'user'
