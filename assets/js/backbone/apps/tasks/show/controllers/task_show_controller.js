@@ -22,6 +22,8 @@ define([
     el: "#container",
 
     events: {
+      'keyup .validate'                 : 'v',
+      'change .validate'                : 'v',
       'click #task-edit'                : 'edit',
       'click #task-view'                : 'view',
       "click #like-button"              : 'like',
@@ -42,6 +44,7 @@ define([
 
       //load user settings so they are available as needed
       this.getUserSettings(window.cache.currentUser);
+
     },
 
     initializeEdit: function () {
@@ -183,6 +186,18 @@ define([
       });
     },
 
+    v: function (e) {
+      var result = validate(e);
+      if ( UIConfig.supervisorEmail.useSupervisorEmail ) {
+        if ( !result  && !$(".supervisor-email-parent").hasClass("has-error") && !$(".supervisor-name-parent").hasClass("has-error") ) {
+          $(UIConfig.supervisorEmail.submitTargetElement).prop("disabled",false);
+        } else {
+          $(UIConfig.supervisorEmail.submitTargetElement).prop("disabled",true);
+        }
+      }
+      return result;
+    },
+
     edit: function (e) {
       if (e.preventDefault) e.preventDefault();
       this.initializeEdit();
@@ -304,6 +319,7 @@ define([
       var self = this;
       var child = $(e.currentTarget).children("#like-button-icon");
 
+
       if (this.modalAlert) { this.modalAlert.cleanup(); }
       if (this.modalComponent) { this.modalComponent.cleanup(); }
       this.modalComponent = new ModalComponent({
@@ -317,7 +333,7 @@ define([
         //    when what we want is nothing if value is null
         var supervisorEmail = ( window.cache.currentUser.supervisorEmail ) ? window.cache.currentUser.supervisorEmail.value  : "";
         var supervisorName = ( window.cache.currentUser.supervisorName ) ? window.cache.currentUser.supervisorName.value : "";
-        var modalContent = '<p>Thank you for volunteering. Please be sure you have the availability and expertise to support this opportunity to completion. We will notify your supervisor of your interest in this project so that he or she is aware that you plan to include this work during your regularly scheduled work week to support Department colleagues and projects. Kudos to you!</p><p>Please enter  the name and email address of your supervisor below. If you’ve previously volunteered, the last supervisor email you provided is shown. Please update it if necessary.</p><input type="text" id="userSuperVisorName" placeholder="Supervisor Name" value="'+supervisorName+'"/> &nbsp; <input type="text" id="userSuperVisorEmail" placeholder="Supervisor email address" value="'+supervisorEmail+'"/>';
+        var modalContent = '<div class="form-group has-error"><p>Thank you for volunteering. Please be sure you have the availability and expertise to support this opportunity to completion. We will notify your supervisor of your interest in this project so that he or she is aware that you plan to include this work during your regularly scheduled work week to support Department colleagues and projects. Kudos to you!</p><p>Please enter  the name and email address of your supervisor below. If you’ve previously volunteered, the last supervisor email you provided is shown. Please update it if necessary.</p><span class="form-group supervisor-name-parent"><input type="text" id="userSuperVisorName" class="validate" data-validate="empty" placeholder="Supervisor Name" value="'+supervisorName+'"/><span class="help-block error-email error-empty" style="display:none;">You must enter a name to proceed.</span></span> &nbsp; <span class="form-group supervisor-email-parent"><input type="text" id="userSuperVisorEmail" placeholder="Supervisor email address" class="validate" data-validate="empty,email,emaildomain" data-email-domain="state.gov" value="'+supervisorEmail+'"/><span class="help-block error-email error-empty error-emaildomain" style="display:none;">You must enter a valid State Department email address to proceed.</span></span>';
       } else {
         var modalContent = '<p>I understand it is my responsibility to confirm supervisor approval prior to committing to an opportunity.</p><p>Once you volunteer for an opportunity, you will not be able to cancel your commitment to volunteer.</p>';
       }
@@ -349,6 +365,26 @@ define([
           });
         }
       }).render();
+
+    if ( UIConfig.supervisorEmail.useSupervisorEmail ) {
+        //determine the state of the submit button at render
+        var hasError = false;
+          if ( supervisorEmail == "" ){
+            $(".supervisor-email-parent").addClass("has-error");
+            hasError = true;
+          }
+          if ( supervisorName == "" ){
+            $(".supervisor-name-parent").addClass("has-error");
+            hasError = true;
+          }
+        if ( hasError ){
+          $("#submit").prop("disabled",true);
+        } else {
+          //there is a value in both fields so trigger validation to decide
+          //     state of submit button
+          $(".validate").keyup();
+        }
+      }
     },
 
     volunteered: function (e) {

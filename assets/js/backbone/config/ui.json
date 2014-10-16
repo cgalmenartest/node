@@ -3,7 +3,9 @@
     "show": true
   },
   "supervisorEmail": {
-	  "useSupervisorEmail": true
+	  "useSupervisorEmail": false,
+	  "disableSubmitAtRender": true,
+	  "submitTargetElement"  : "#submit"
   },
   "home": {
     "logged_in_path": "/projects"

@@ -17,10 +17,14 @@ define([
       this.options = options;
     },
 
-    render: function () {
+    render: function (options) {
+      var disableSubmitAtRender = ( typeof options == 'undefined' ) ? false : options.disableSubmitAtRender;
       var template = _.template(ModalTemplate, this.options);
       this.$el.html(template);
       $(this.options.modalDiv).modal('show');
+      if ( disableSubmitAtRender ){
+        $(options.submitTargetElement).prop("disabled", true);
+      }
       return this;
     },
 
