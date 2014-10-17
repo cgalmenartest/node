@@ -120,6 +120,12 @@ var organizeTags = function (tags) {
  * variable in the HTML tag called `data-validate` with the
  * validation options that you want to enforce.
  *
+ * email is only meant to allow the value is generally email shaped
+ *    it is not bullet proof
+ *
+ * emaildomain requires a data-emaildomain variable in the HTML tag
+ *    it will validate against the value there
+ *
  * The input should be in a `form-group` component,
  * and the component should have a .help-text element
  * with a class `.error-[code]` where [code] is the
@@ -179,6 +185,43 @@ var validate = function (e) {
       } else {
         $(parent).find('.error-' + o).hide();
       }
+    }
+    if (o == 'email'){
+      var correctLength = false;
+      if ( val != "" && val.indexOf("@") >= 2 ){
+        var bits = val.split("@");
+        var addrBits = bits[1].split(".");
+        if ( addrBits.length >=2 ) {
+          for (i=0; i<addrBits.length; i++ ){
+            if ( addrBits[i].length < 2 ){
+              correctLength = false;
+              break;
+            } else {
+              correctLength = true;
+            }
+          }
+        }
+      }
+      if ( !correctLength || bits[0].length < 2 ) {
+        $(parent).find('.error-email').show();
+        result = true;
+      } else {
+        $(parent).find('.error-email').hide();
+      }
+      return;
+    }
+    if ( o== 'emaildomain'){
+      var domain = $(e.currentTarget).data('emaildomain');
+      if ( val != "" && val.indexOf("@") >= 2 ){
+        var bits = val.split("@");
+        if ( bits[1] != domain ){
+          $(parent).find('.error-emaildomain').show();
+          result = true;
+        } else {
+          $(parent).find('.error-emaildomain').hide();
+        }
+      }
+      return;
     }
   });
   if (result === true) {
