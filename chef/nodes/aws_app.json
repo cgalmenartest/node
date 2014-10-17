@@ -11,6 +11,15 @@
     "bucket" : "18f-secure-vars",
     "encryption_key" : "%SECURE_KEY%"
   },
+  "users" : {
+    "id"        : "ubuntu",
+    "home"      : "/home/ubuntu",
+    "groups"    : ["ubuntu"],
+    "ssh_keys"  : [
+"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDHQfDLC40oWOSQWrUWTPIBD1NRYeWNCJdFn6fkJ3FMaQE0AFPGWfpzil7XOb+ihVHflEF5G4lO9YuMU5D49XANK9eKVqbfTGRJnjiByb2B08z5+FS81lLGtikpiq/+pqUdoyQgFXTjLkH7soKTOwrJx5YjNMUUspfgNihSFLxHjTgUNAu9VDz261fHZZVU4spf/3/ch1GPlDP8eCcm7SDGs2iGPziDi9ti7vFXAtEsl5Zivvff+oUnFdFIu0CdnUhOsl2vzRyVj5ZzhR+3NGseO6MpvVuzsOiG25d21BrdYterUY3gHopkk6Dvsla9AI8uSu2dvmMaaI+Miq9+pucL diego.lapiduz@gsa.gov",
+"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC3PFRHvMwfUPGdydGItI8eX4F8vM7VLuBh7PbCR94RYQSbUQ5iloeKe4zEYIRh7SQ2v5GsmjJvbjIw0uHY/2ztfMBZXyAZET0q8TxoAIzKGMj2zBU3aFJoidiObY0iB0GblSDBJl3Avrc3W0lcJiCkWkNOojuJS0UntsUDt7ix7VQzS3IrNCxfQV0KBkHAnknNbE9/DthAZwxsNAeZgwaNa9MsCZXJAvqgFhvhSnDaHRaRtbAUqkS4YFg0J9aHVkZh59I+f+gCT6Bho2skY0BxhbR/mxouH5IIUH21fVqpzYB0/6NsekTcfoUFQygRouX+PXTG3blLszAb4lG3B8mL midas-test"
+    ]
+  },
   "github_key" : "%GITHUB_KEY%",
   "run_list": [
     "midas"

@@ -16,6 +16,7 @@ git node.midas.deploy_dir do
   user node.midas.user
   group node.midas.group
   action :sync
+  timeout 1800
 end
 
 include_recipe 'midas::node_modules'
