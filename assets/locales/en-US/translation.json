@@ -32,6 +32,15 @@
     "unsupported" : "Unsupported operation."
   },
 
+  "login" : {
+    "toscheckbox": "Yes, I agree to the "
+  },
+
+  "volunteerModal": {
+    "notify_supervisor": "I understand it is my responsibility to confirm supervisor approval prior to committing to an opportunity.",
+    "cant_cancel": "Once you volunteer for an opportunity, you will not be able to cancel your commitment to volunteer."
+  },
+
   "projectAPI" : {
     "errMsg" : {
       "lookup" : "'Error looking up $t(project).",

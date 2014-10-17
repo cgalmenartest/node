@@ -3,9 +3,10 @@ define([
   'bootstrap',
   'underscore',
   'backbone',
+  'i18n',
   'utilities',
   'text!modal_alert_template'
-], function ($, Bootstrap, _, Backbone, utils, ModalTemplate) {
+], function ($, Bootstrap, _, Backbone, i18n, utils, ModalTemplate) {
 
   var ModalAlert = Backbone.View.extend({
 
@@ -20,6 +21,7 @@ define([
     render: function () {
       var template = _.template(ModalTemplate, this.options);
       this.$el.html(template);
+      this.$el.i18n();
       $(this.options.modalDiv).modal('show');
       return this;
     },
