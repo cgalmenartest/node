@@ -28,6 +28,12 @@
 
   "Browse" : "Browse",
 
+  "home" : {
+    "headline" : "Hassle Free Collaboration",
+    "subhead" : "Work with other federal employees on projects you are passionate about.",
+    "calltoaction" : "Get Started Today"
+  },
+
   "commonAPI" : {
     "unsupported" : "Unsupported operation."
   },
