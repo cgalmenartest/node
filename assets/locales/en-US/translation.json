@@ -37,6 +37,12 @@
     "cantCancel": "Once you volunteer for an opportunity, you will not be able to cancel your commitment to volunteer."
   },
 
+  "home" : {
+    "headline" : "Hassle Free Collaboration",
+    "subhead" : "Work with other federal employees on projects you are passionate about.",
+    "callToAction" : "Get Started Today"
+  },
+
   "commonAPI" : {
     "unsupported" : "Unsupported operation."
   },
