@@ -1,49 +1,49 @@
 {
   "Project": "Project",
-  "Project_plural": "Projects",
-  "Project_indefinite": "a Project",
-  "Project_plural_indefinite": "some Projects",
-  "a_Project": "a Project",
-  "A_Project": "A Project",
-  "A_Project_Owner" : "A Project Owner",
+  "ProjectPlural": "Projects",
+  "ProjectIndefinite": "a Project",
+  "ProjectPluralIndefinite": "some Projects",
+  "aProject": "a Project",
+  "AProject": "A Project",
+  "AProjectOwner" : "A Project Owner",
   "project" : "project",
-  "project_plural" : "projects",
+  "projectPlural" : "projects",
 
   "Task" : "Task",
-  "Task_plural" : "Tasks",
-  "Task_indefinite" : "a Task",
-  "Task_plural_indefinite": "some Tasks",
-  "a_Task" : "a Task",
-  "A_Task" : "A Task",
-  "A_Task_Owner" : "A Task Owner",
+  "TaskPlural" : "Tasks",
+  "TaskIndefinite" : "a Task",
+  "TaskPluralIndefinite": "some Tasks",
+  "aTask" : "a Task",
+  "ATask" : "A Task",
+  "ATaskOwner" : "A Task Owner",
   "task" : "task",
-  "task_plural" : "tasks",
+  "taskPlural" : "tasks",
 
   "like" : "like",
-  "like_plural" : "likes",
+  "likePlural" : "likes",
 
   "volunteer" : "volunteer",
-  "volunteer_plural" : "volunteers",
+  "volunteerPlural" : "volunteers",
 
   "Browse" : "Browse",
 
-  "commonAPI" : {
-    "unsupported" : "Unsupported operation."
-  },
-
-  "login" : {
-    "toscheckbox": "Yes, I agree to the "
+  "loginModal" : {
+    "tosCheckbox": "Yes, I agree to the "
   },
 
   "volunteerModal": {
-    "notify_supervisor": "I understand it is my responsibility to confirm supervisor approval prior to committing to an opportunity.",
-    "cant_cancel": "Once you volunteer for an opportunity, you will not be able to cancel your commitment to volunteer."
+    "notifySupervisor": "I understand it is my responsibility to confirm supervisor approval prior to committing to an opportunity.",
+    "cantCancel": "Once you volunteer for an opportunity, you will not be able to cancel your commitment to volunteer."
+  },
+
+  "commonAPI" : {
+    "unsupported" : "Unsupported operation."
   },
  
   "projectAPI" : {
     "errMsg" : {
       "lookup" : "'Error looking up $t(project).",
-      "lookup_plural" : "Error looking up $t(project_plural).",
+      "lookupPlural" : "Error looking up $t(projectPlural).",
       "count" : "Error looking up $t(project) counts.",
       "create" : "Error creating $t(project).",
       "ownerStore" : "Error storing $t(project) owner."
@@ -52,8 +52,8 @@
 
   "taskAPI" : {
     "errMsg" : {
-      "likes" : "Error looking up $(task) $(like_plural).",
-      "volunteers" : "Error looking up $t(task) $t(volunteer_plural)."
+      "likes" : "Error looking up $(task) $(likePlural).",
+      "volunteers" : "Error looking up $t(task) $t(volunteerPlural)."
     }
   }
 }
