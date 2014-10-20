@@ -214,7 +214,7 @@ var validate = function (e) {
       var domain = $(e.currentTarget).data('emaildomain');
       if ( val != "" && val.indexOf("@") >= 2 ){
         var bits = val.split("@");
-        if ( bits[1]toLowerCase().trim() != domaintoLowerCase().trim() ){
+        if ( bits[1] != domain ){
           $(parent).find('.error-emaildomain').show();
           result = true;
         } else {

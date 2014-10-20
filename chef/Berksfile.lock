@@ -13,7 +13,6 @@ DEPENDENCIES
   postgresql
     git: https://github.com/phlipper/chef-postgresql.git
     revision: 8438360775ce239627878dddded9cfde72e2d3ff
-  user
 
 GRAPH
   7-zip (1.0.2)
