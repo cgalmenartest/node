@@ -3,9 +3,7 @@
   "ProjectPlural": "Projects",
   "ProjectIndefinite": "a Project",
   "ProjectPluralIndefinite": "some Projects",
-  "aProject": "a Project",
-  "AProject": "A Project",
-  "AProjectOwner" : "A Project Owner",
+  "ProjectOwnerIndefinite" : "A Project Owner",
   "project" : "project",
   "projectPlural" : "projects",
 
@@ -13,9 +11,7 @@
   "TaskPlural" : "Tasks",
   "TaskIndefinite" : "a Task",
   "TaskPluralIndefinite": "some Tasks",
-  "aTask" : "a Task",
-  "ATask" : "A Task",
-  "ATaskOwner" : "A Task Owner",
+  "TaskOwnerIndefinite" : "A Task Owner",
   "task" : "task",
   "taskPlural" : "tasks",
 
