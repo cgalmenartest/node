@@ -56,12 +56,6 @@ execute 'client config' do
  cwd "#{node.midas.deploy_dir}/assets/js/backbone/config/"
 end
 
-execute 'build assets' do
-  command "make build"
-  cwd node.midas.deploy_dir
-  user node.midas.user
-end
-
 bash 'server config/settings' do
   code "for file in *.ex.js; do cp -n \"$file\" \"${file/ex./}\"; done"
   cwd "#{node.midas.deploy_dir}/config/settings"
@@ -95,6 +89,12 @@ unless node.midas.config_repo.nil?
     cwd node.midas.deploy_dir
   end
 
+end
+
+execute 'build assets' do
+  command "make build"
+  cwd node.midas.deploy_dir
+  user node.midas.user
 end
 
 execute 'run make init' do
