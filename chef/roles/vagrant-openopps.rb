@@ -14,8 +14,7 @@ override_attributes(
     nginx_default: "default",
     nginx_conf_source: "tools/nginx/sites-enabled.default",
     config_repo: "https://github.com/18F/midas-open-opportunities.git",
-    config_name: "open-opportunities",
-    
+    config_name: "open-opportunities"
   }
 )
 

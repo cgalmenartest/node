@@ -79,7 +79,7 @@ link "#{node.midas.nginx_conf_dir}/midas.conf" do
 end
 
 unless node.midas.config_repo.nil?
-  git node.midas.config_dir do
+  git "#{node.midas.config_dir}/#{node.midas.config_name}" do
     repository node.midas.config_repo
     checkout_branch node.midas.git_branch
     name node.midas.config_name
