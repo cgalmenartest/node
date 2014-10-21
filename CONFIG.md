@@ -25,3 +25,17 @@ edit ```assets/js/backbone/config/ui.json``` which allows customization of UI fe
   }
 }
 ```
+
+## Bulk Import of Tag Data
+
+Bulk import of tags can be done via ```tagTool``` in the tools directory. It can be called like:
+```
+node tools\tagtool\tagtool.js <tagType> <tagFile>
+<tagType>: location, agency, topic, skill, etc
+<tagFile>: Filepath/name of file containing newline delimited tags one per line.
+```
+Database configuration for the tool is pulled from config/local.js. Duplicate tags will not be inserted.
+
+tagTool can also be run from ```grunt```. Running ```grunt initTags``` will run the tool for all files with a .txt extension in tools\tagtool, using the file's name (without extension) as the ```tagType```. 
+
+
