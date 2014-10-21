@@ -5,15 +5,14 @@ define([
   'backbone',
   'utilities',
   'json!ui_config',
-  'jquery_dotdotdot',
   'popovers',
   'tag_config',
   'browse_list_view',
   'text!browse_main_template',
   'text!browse_search_tag'
 ], function ($, select2, _, Backbone, utils, UIConfig,
-            dotdotdot, Popovers, TagConfig,
-            BrowseListView, BrowseMainTemplate, BrowseSearchTag) {
+            Popovers, TagConfig,
+            BrowseListView, BrowseMainTemplate, BrowseSearchTag ) {
 
   var popovers = new Popovers();
 
@@ -153,7 +152,6 @@ define([
       $("#browse-search-spinner").hide();
       $("#browse-list").show();
       this.browseListView.render();
-      $(".dotdotdot").dotdotdot();
       popovers.popoverPeopleInit(".project-people-div");
     },
 

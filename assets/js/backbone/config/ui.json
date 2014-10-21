@@ -4,6 +4,6 @@
   },
   "browse": {
     "pageSize" : 27,
-    "useInfiniteScroll" : false
+    "useInfiniteScroll" : true
   }
 }
