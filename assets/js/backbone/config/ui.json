@@ -10,6 +10,6 @@
   },
   "browse": {
     "pageSize" : 27,
-    "useInfiniteScroll" : true
+    "useInfiniteScroll" : false
   }
 }
