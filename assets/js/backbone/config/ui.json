@@ -2,6 +2,12 @@
   "project": {
     "show": true
   },
+  "supervisorEmail": {
+	  "useSupervisorEmail": false
+  },
+  "home": {
+    "logged_in_path": "/projects"
+  },
   "browse": {
     "pageSize" : 27,
     "useInfiniteScroll" : true
