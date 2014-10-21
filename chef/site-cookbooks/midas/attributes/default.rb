@@ -13,6 +13,10 @@ default.midas.app_host = "localhost:1337"
 default.midas.environment = "production"
 default.midas.system_email = "midas@midas.midas"
 
+default.midas.config_repo = nil
+default.midas.config_revision = "master"
+default.midas.config_name = "midas-config"
+default.midas.config_dir = node.midas.user_home
 
 default.midas.database.username = 'midas'
 default.midas.database.password = 'midas'

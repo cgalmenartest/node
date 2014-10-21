@@ -64,6 +64,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision "chef_solo" do |chef|
     chef.cookbooks_path = "chef/site-cookbooks"
+    chef.verbose_logging = true;
+    chef.log_level = "debug";
     chef.roles_path = "chef/roles"
     chef.data_bags_path = "chef/data_bags"
     chef.json = JSON.parse(Pathname(__FILE__).dirname.join('chef', 'nodes', 'localhost.json').read)

@@ -56,12 +56,6 @@ execute 'client config' do
  cwd "#{node.midas.deploy_dir}/assets/js/backbone/config/"
 end
 
-execute 'build assets' do
-  command "make build"
-  cwd node.midas.deploy_dir
-  user node.midas.user
-end
-
 bash 'server config/settings' do
   code "for file in *.ex.js; do cp -n \"$file\" \"${file/ex./}\"; done"
   cwd "#{node.midas.deploy_dir}/config/settings"
@@ -76,6 +70,31 @@ link "#{node.midas.nginx_conf_dir}/midas.conf" do
   to "#{node.midas.deploy_dir}/#{node.midas.nginx_conf_source}"
   action :create
   owner node.midas.user
+end
+
+unless node.midas.config_repo.nil?
+  git "#{node.midas.config_dir}/#{node.midas.config_name}" do
+    repository node.midas.config_repo
+    checkout_branch node.midas.git_branch
+    name node.midas.config_name
+    revision node.midas.config_revision
+    enable_submodules true
+    user node.midas.user
+    group node.midas.group
+    action :sync
+  end
+
+  execute 'run make import' do
+    command  "make import DIR=#{node.midas.config_dir}/#{node.midas.config_name}"
+    cwd node.midas.deploy_dir
+  end
+
+end
+
+execute 'build assets' do
+  command "make build"
+  cwd node.midas.deploy_dir
+  user node.midas.user
 end
 
 execute 'run make init' do

@@ -29,7 +29,7 @@ If you are modifying vagrant or chef setup, then you can configure to pull from 
 ```
   "midas": {
     "git_repo": "https://github.com/myrepo/midas.git",
-    "git_branch": "devel-mybranch"
+    "git_revision": "devel-mybranch"
   }
 ```
 
