@@ -14,6 +14,10 @@
  * http://gruntjs.com/configuring-tasks
  */
 
+var fs = require('fs'),
+    path = require('path'),
+    exec = require('child_process').exec;
+
 module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
@@ -516,34 +520,26 @@ module.exports = function (grunt) {
   grunt.registerTask('prod', [
     'clean:prod',
     'copy:prod'
-    // 'clean:dev',
-    // 'jst:dev',
-    // 'less:dev',
-    // 'copy:dev',
-    // 'concat',
-    // 'uglify',
-    // 'cssmin',
-    // 'sails-linker:prodJs',
-    // 'sails-linker:prodStyles',
-    // 'sails-linker:devTpl',
-    // 'sails-linker:prodJsJADE',
-    // 'sails-linker:prodStylesJADE',
-    // 'sails-linker:devTplJADE'
   ]);
 
-  // When API files are changed:
-  // grunt.event.on('watch', function(action, filepath) {
-  //   grunt.log.writeln(filepath + ' has ' + action);
-
-  //   // Send a request to a development-only endpoint on the server
-  //   // which will reuptake the file that was changed.
-  //   var baseurl = grunt.option('baseurl');
-  //   var gruntSignalRoute = grunt.option('signalpath');
-  //   var url = baseurl + gruntSignalRoute + '?action=' + action + '&filepath=' + filepath;
-
-  //   require('http').get(url)
-  //   .on('error', function(e) {
-  //     console.error(filepath + ' has ' + action + ', but could not signal the Sails.js server: ' + e.message);
-  //   });
-  // });
+  grunt.registerTask('initTags', 'load tag data', function() {
+    var done = this.async();
+    var toolPath = "tools/tagtool";
+    fs.readdir(toolPath, function (err, files) {
+      if (err) {
+          throw err;
+      }
+      files.map(function (file) {
+          return path.join(toolPath, file);
+      }).filter(function (file) {
+          return fs.statSync(file).isFile() &&
+                 path.extname(file) === ('.txt');
+      }).forEach(function (file) {
+          var cmd = 'node ' + toolPath + '/tagtool.js ' + path.basename(file, '.txt') + ' ' +  file;
+          grunt.log.write('Adding tags from ' + file).ok();
+          exec(cmd);
+      });
+      done();
+    });
+  });
 };
