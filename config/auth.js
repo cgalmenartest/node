@@ -122,9 +122,9 @@ passport.use('myusa', new MyUSAStrategy({
     clientSecret: authSettings.auth.myusa.clientSecret,
     callbackURL: authSettings.auth.myusa.callbackUrl,
     // Initially use staging.my.usa.gov until app approved for production
-    authorizationURL: 'https://qa.my.usa.gov/oauth/authorize',
-    tokenURL: 'https://qa.my.usa.gov/oauth/authorize',
-    profileURL: 'https://qa.my.usa.gov/api/profile'
+    authorizationURL: 'https://myusa-staging.18f.us/oauth/authorize',
+    tokenURL: 'https://myusa-staging.18f.us/oauth/authorize',
+    profileURL: 'https://myusa-staging.18f.us/api/profile'
     // For testing:
     //authorizationURL: 'http://172.23.195.136:3000/oauth/authorize',
     //tokenURL: 'http://172.23.195.136:3000/oauth/authorize',
