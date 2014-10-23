@@ -1355,6 +1355,11 @@ ul.task-tags > li {
 /**********************************
 =  TASKS INFINITE SCROLL OVERFLOW
 ***********************************/
+  .task-single-overflow {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap
+  }
 
   .task-desc-overflow-multi{
     overflow: hidden;
