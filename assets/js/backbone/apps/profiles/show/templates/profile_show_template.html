@@ -24,7 +24,7 @@
       <div class="col-md-12 box project-header-wrapper">
         <div id="project-header" style="background-image:url('/api/user/photo/<%- data.id %>');">
           <div class="btn btn-c2 fileinput-button" <% if (!((data.isOwner || user.isAdmin) && edit)) { %>style="display:none;"<% } %>>
-            <i class="icon-camera icon-large" title="Change Cover Photo" id="fileupload-icon"></i>
+            <i class="fa fa-camera fa-lg" title="Change Cover Photo" id="fileupload-icon"></i>
             <input id="fileupload" type="file" name="files[]" title="Upload Photo">
           </div>
         </div>
@@ -109,9 +109,9 @@
                 </div>
                 <div class="col-xs-4 col-sm-3 col-md-3">
                   <% if (_.contains(data.auths, a)) { %>
-                  <a href="#" class="btn btn-danger btn-sm removeAuth pull-right" data-service="<%= a %>"><span class="glyphicon glyphicon-remove"></span> Disconnect</a>
+                  <a href="#" class="btn btn-danger btn-sm removeAuth pull-right" data-service="<%= a %>"><span class="fa fa-remove"></span> Disconnect</a>
                   <% } else { %>
-                  <a href="<%= login.config[a].endpoint %>" class="btn btn-success btn-sm pull-right"><span class="glyphicon glyphicon-plus"></span> Connect</a>
+                  <a href="<%= login.config[a].endpoint %>" class="btn btn-success btn-sm pull-right"><span class="fa fa-plus"></span> Connect</a>
                   <% } %>
                   <!-- <%= login.config[a].name %> -->
                 </div>
@@ -125,7 +125,7 @@
             <div class="pull-right">
               <a href="#" class="btn btn-c0" id="profile-cancel">Discard Changes</a>
 
-              <button id="submit" type="submit" class="btn btn-c2" disabled="disabled" data-loading-text="<i class='icon-spinner icon-spin'></i> Saving..." data-success-text="Saved!" data-fail-text="Save Failed.">Save Profile</button>
+              <button id="submit" type="submit" class="btn btn-c2" disabled="disabled" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Saving..." data-success-text="Saved!" data-fail-text="Save Failed.">Save Profile</button>
             </div>
           </div>
         </div>
@@ -138,9 +138,9 @@
         <div class="box box-main">
           <h1><% if (data.name) { %><%- data.name %><% } else { %><%- data.username %><% } %></h1>
 
-          <div class="profile-jobtitle"><% if (data.title) { %><i class="icon-briefcase"></i> <span class="box-icon-text"><%- data.title %></span><% } %></div>
+          <div class="profile-jobtitle"><% if (data.title) { %><i class="fa fa-briefcase"></i> <span class="box-icon-text"><%- data.title %></span><% } %></div>
           <div class="profile-company"><% if (data.agency) { %><i class="icon-library"></i> <span class="box-icon-text"><%- data.agency.tag.name %></span><% } %></div>
-          <div class="profile-location"><% if (data.location) { %><span class="glyphicon glyphicon-map-marker"></span> <span class="box-icon-text"><%- data.location.tag.name %></span><% } %></div>
+          <div class="profile-location"><% if (data.location) { %><span class="fa fa-map-marker"></span> <span class="box-icon-text"><%- data.location.tag.name %></span><% } %></div>
 
           <div class="profile-bio box-pad-t">
             <% if (data.bioHtml) { %><%= data.bioHtml %><% } else { %>This person doesn't have a bio yet.<% } %>
@@ -152,7 +152,7 @@
 
           <div class="navbar-side like-row border-bottom">
             <a href="#" id="like-button" class="like-button">
-              <i id="like-button-icon" class="icon icon-star-empty icon-large gold"></i>
+              <i id="like-button-icon" class="fa fa-star-o fa-lg gold"></i>
             </a>
             <span class="like-number" id="like-number"><%- data.likeCount %></span>
             <span class="like-plural" id="like-text" data-plural="followers" data-singular="follower">followers</span>
@@ -160,11 +160,11 @@
           <div class="navbar-side <% if (data.isOwner || user.isAdmin) { %>border-bottom<% } %>">
             <ul class="nav nav-pills nav-stacked">
               <li>
-                <a href="#" id="email"><i class="icon icon-envelope-alt"></i> <span class="box-icon-text">Share</span></a>
+                <a href="#" id="email"><i class="fa fa-envelope-o"></i> <span class="box-icon-text">Share</span></a>
               </li>
               <% if (data.isOwner || user.isAdmin) { %>
               <li>
-                <a href="/api/event/ical/"><span class="glyphicon glyphicon-calendar"></span> <span class="box-icon-text">Calendar</span></a>
+                <a href="/api/event/ical/"><span class="fa fa-calendar"></span> <span class="box-icon-text">Calendar</span></a>
               </li>
             </ul>
           </div>
@@ -172,9 +172,9 @@
               <ul class="nav nav-pills nav-stacked">
               <li>
                 <% if (login.profile.edit === true) { %>
-                <a href="/profile/<%- data.id %>/edit" class="link-backbone"><i class="icon-pencil"></i> <span class="box-icon-text">Edit Profile</span></a>
+                <a href="/profile/<%- data.id %>/edit" class="link-backbone"><i class="fa fa-pencil"></i> <span class="box-icon-text">Edit Profile</span></a>
                 <% } else if (login.profile.editUrl) { %>
-                <a href="<%= login.profile.editUrl %>" target="_blank"><i class="icon-pencil"></i> <span class="box-icon-text">Edit Profile</span></a>
+                <a href="<%= login.profile.editUrl %>" target="_blank"><i class="fa fa-pencil"></i> <span class="box-icon-text">Edit Profile</span></a>
                 <% } %>
               </li>
               <% } %>

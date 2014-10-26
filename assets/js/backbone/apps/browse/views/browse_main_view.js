@@ -50,9 +50,9 @@ define([
       var name = object.name || object.title;
       var icon = this.tagIcon[object.type];
       if (object.target == 'project') {
-        icon = 'icon-folder-close-alt';
+        icon = 'fa fa-folder-o';
       } else if (object.target == 'task') {
-        icon = 'icon-tag';
+        icon = 'fa fa-tag';
       }
       return '<i class="' + icon + '"></i> <span class="box-icon-text">' + name + '</span>';
     },

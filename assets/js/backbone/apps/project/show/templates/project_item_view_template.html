@@ -13,7 +13,7 @@
         <div id="project-header" style="background-image:url('/images/project_default.png');">
         <% } %>
           <div class="btn btn-c2 fileinput-button" <% if (!(data.isOwner || user.isAdmin) || !edit) { %>style="display:none;"<% } %>>
-            <i class="icon-camera icon-large" title="Change Cover Photo" id="fileupload-icon"></i>
+            <i class="fa fa-camera fa-lg" title="Change Cover Photo" id="fileupload-icon"></i>
             <input id="fileupload" type="file" name="files[]" title="Change Cover Photo">
           </div>
         </div>
@@ -46,7 +46,7 @@
             <% } else { %>
             <span class="like-button">
             <% } %>
-              <i id="like-button-icon" class="icon icon-star-empty icon-large gold"></i>
+              <i id="like-button-icon" class="fa fa-star-o fa-lg gold"></i>
             <% if (user) { %>
             </button>
             <% } else { %>
@@ -58,10 +58,10 @@
           <div class="navbar-side <% if (data.isOwner || user.isAdmin) { %>border-bottom<% } %>">
             <ul class="nav nav-pills nav-stacked">
               <li>
-                <a href="#" id="email"><i class="icon icon-envelope-alt"></i> <span class="box-icon-text">Share</span></a>
+                <a href="#" id="email"><i class="fa fa-envelope-o"></i> <span class="box-icon-text">Share</span></a>
               </li>
               <li>
-                <a href="webcal://<%- hostname %>/api/event/ical/<%- data.id %>"><span class="glyphicon glyphicon-calendar"></span> <span class="box-icon-text">Calendar</span></a>
+                <a href="webcal://<%- hostname %>/api/event/ical/<%- data.id %>"><span class="fa fa-calendar"></span> <span class="box-icon-text">Calendar</span></a>
               </li>
             </ul>
           </div>
@@ -70,17 +70,17 @@
             <div id="modal-close"></div>
             <ul class="nav nav-pills nav-stacked">
               <li>
-                <a href="#" id="editProject"><i class="icon-pencil"></i> <span class="box-icon-text">Edit <span data-i18n="Project">Project</span></span></a>
+                <a href="#" id="editProject"><i class="fa fa-pencil"></i> <span class="box-icon-text">Edit <span data-i18n="Project">Project</span></span></a>
               </li>
               <li id="li-project-close" style="<% if (data.state == 'closed') { %>display: none;<% } %>">
-                <a href="#" id="project-close"><i class="icon-remove-sign"></i> <span class="box-icon-text">Close <span data-i18n="Project">Project</span></span></a>
+                <a href="#" id="project-close"><i class="fa fa-times-circle"></i> <span class="box-icon-text">Close <span data-i18n="Project">Project</span></span></a>
               </li>
               <li id="li-project-reopen" style="<% if (data.state != 'closed') { %>display: none;<% } %>">
-                <a href="#" id="project-reopen"><i class="icon-share-alt"></i> <span class="box-icon-text">Reopen <span data-i18n="Project">Project</span></span></a>
+                <a href="#" id="project-reopen"><i class="fa fa-share"></i> <span class="box-icon-text">Reopen <span data-i18n="Project">Project</span></span></a>
               </li>
               <!--
               <li>
-                <a href="#" id="project-delete"><i class="icon-trash"></i> <span class="box-icon-text">Delete <span data-i18n="Project">Project</span></span></a>
+                <a href="#" id="project-delete"><i class="fa fa-trash-o"></i> <span class="box-icon-text">Delete <span data-i18n="Project">Project</span></span></a>
               </li>
               -->
             </ul>

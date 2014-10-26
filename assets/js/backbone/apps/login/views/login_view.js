@@ -162,16 +162,16 @@ define([
       }).done(function (data) {
         $("#rusername-button").removeClass('btn-success');
         $("#rusername-button").removeClass('btn-danger');
-        $("#rusername-check").removeClass('icon-ok');
-        $("#rusername-check").removeClass('icon-remove');
+        $("#rusername-check").removeClass('fa fa-check');
+        $("#rusername-check").removeClass('fa fa-times');
         if (data) {
           // username is taken
           $("#rusername-button").addClass('btn-danger');
-          $("#rusername-check").addClass('icon-remove');
+          $("#rusername-check").addClass('fa fa-times');
         } else {
           // username is available
           $("#rusername-button").addClass('btn-success');
-          $("#rusername-check").addClass('icon-ok');
+          $("#rusername-check").addClass('fa fa-check');
         }
       });
     },

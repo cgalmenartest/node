@@ -6,7 +6,7 @@
     <a href="/api/file/get/<%= a.file.id %>" class="file-link" data-id="<%= a.file.id %>">
       <%= a.file.name %>
       <% if (user && ((a.userId == a.userId) || owner)) { %>
-      <a href="#" class="file-delete" data-id="<%= a.id %>"><i class="icon-remove"></i></a>
+      <a href="#" class="file-delete" data-id="<%= a.id %>"><i class="fa fa-remove"></i></a>
       <% } %>
       <br/>
       <time class="timeago" datetime="<%- a.createdAt %>"><%- a.createdAt %></time>
