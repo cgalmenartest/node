@@ -16,9 +16,13 @@ define([
     initialize: function (options) {
       var self = this;
 
+      var pageSize = 27;
+      if (UIConfig.browse && UIConfig.browse.pageSize)
+        pageSize = UIConfig.browse.pageSize;
+
       this.options = options;
       this.data = {
-        pageSize: UIConfig.browse.pageSize,
+        pageSize: pageSize,
         page: 1
       }
       $(window).on('scroll',function(e){
@@ -52,7 +56,7 @@ define([
     render: function () {
 
       //settings for infinite scroll
-      if ( UIConfig.browse.useInfiniteScroll ) {
+      if ( UIConfig.browse && UIConfig.browse.useInfiniteScroll ) {
         if ( this.data.page == 1 ){
           var start = 0;
         } else {
