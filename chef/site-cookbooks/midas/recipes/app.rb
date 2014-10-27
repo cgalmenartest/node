@@ -87,6 +87,7 @@ unless node.midas.config_repo.nil?
   execute 'run make import' do
     command  "make import DIR=#{node.midas.config_dir}/#{node.midas.config_name}"
     cwd node.midas.deploy_dir
+    user node.midas.user
   end
 
 end
