@@ -4,9 +4,9 @@
 <div class="row search-row">
   <div class="col-md-3 col-md-push-9 browse-buttons">
     <% if (ui.project.show) { %>
-    <a href="#addProject" class="btn btn-c2 add-project" data-toggle="modal" style="<% if (!user) { %>display: none;<% } %>"><i class="icon-plus"></i> <span data-i18n="Project">Project</span></a>
+    <a href="#addProject" class="btn btn-c2 add-project" data-toggle="modal" style="<% if (!user) { %>display: none;<% } %>"><i class="fa fa-plus"></i> <span data-i18n="Project">Project</span></a>
     <% } %>
-    <a href="#addTask" class="btn btn-c2 add-opportunity" data-toggle="modal" style="<% if (!user) { %>display: none;<% } %>"><i class="icon-plus"></i> <span data-i18n="Task">Opportunity</span></a>
+    <a href="#addTask" class="btn btn-c2 add-opportunity" data-toggle="modal" style="<% if (!user) { %>display: none;<% } %>"><i class="fa fa-plus"></i> <span data-i18n="Task">Opportunity</span></a>
   </div>
   <div class="col-md-9 col-md-pull-3">
     <form class="form-horizontal" role="form" id="search-form">
@@ -43,7 +43,7 @@
       </div>
       <div class="box-pad-lr search-clear" style="display: none;">
         <div class="align-right">
-          <a href="#" id="search-clear" class="btn btn-sm btn-c0"><i class="icon-remove"></i> Clear Search Criteria</a>
+          <a href="#" id="search-clear" class="btn btn-sm btn-c0"><i class="fa fa-remove"></i> Clear Search Criteria</a>
         </div>
       </div>
     </div>
@@ -51,7 +51,7 @@
 
   <div class="col-md-9 col-md-pull-3">
     <div id="browse-search-spinner" class="fullwidth text-center">
-      Loading... <i class="icon-spinner icon-spin"></i>
+      Loading... <i class="fa fa-spinner fa-spin"></i>
     </div>
     <ul id="browse-list">
     </ul>

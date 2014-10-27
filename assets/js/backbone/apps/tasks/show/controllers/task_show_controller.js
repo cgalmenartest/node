@@ -141,8 +141,8 @@ define([
         $("#like-text").text($("#like-text").data('plural'));
       }
       if (this.model.attributes.like) {
-        $("#like-button-icon").removeClass('icon-star-empty');
-        $("#like-button-icon").addClass('icon-star');
+        $("#like-button-icon").removeClass('fa fa-star-o');
+        $("#like-button-icon").addClass('fa fa-star');
       }
     },
 
@@ -209,9 +209,9 @@ define([
       var child = $(e.currentTarget).children("#like-button-icon");
       var likenumber = $("#like-number");
       // Not yet liked, initiate like
-      if (child.hasClass('icon-star-empty')) {
-        child.removeClass('icon-star-empty');
-        child.addClass('icon-star');
+      if (child.hasClass('fa-star-o')) {
+        child.removeClass('fa-star-o');
+        child.addClass('fa-star');
         likenumber.text(parseInt(likenumber.text()) + 1);
         if (parseInt(likenumber.text()) === 1) {
           $("#like-text").text($("#like-text").data('singular'));
@@ -228,8 +228,8 @@ define([
       }
       // Liked, initiate unlike
       else {
-        child.removeClass('icon-star');
-        child.addClass('icon-star-empty');
+        child.removeClass('fa-star');
+        child.addClass('fa-star-empty');
         likenumber.text(parseInt(likenumber.text()) - 1);
         if (parseInt(likenumber.text()) === 1) {
           $("#like-text").text($("#like-text").data('singular'));

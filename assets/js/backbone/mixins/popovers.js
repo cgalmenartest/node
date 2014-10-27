@@ -18,7 +18,7 @@ define([
           html: 'true',
           title: 'load',
           container: 'body',
-          content: '<div class="popover-spinner"><div class="loading">Fetching Information</div><i class="icon-spinner icon-spin"></i></div>',
+          content: '<div class="popover-spinner"><div class="loading">Fetching Information</div><i class="fa fa-spinner fa-spin"></i></div>',
           template: '<div class="popover"><div class="arrow"></div><h3 class="popover-title" style="display:none; visibility:hidden"></h3><div class="popover-content"></div></div>'
         }).on("mouseleave", function () {
           var _this = this;

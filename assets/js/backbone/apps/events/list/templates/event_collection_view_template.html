@@ -25,7 +25,7 @@
   <div class="event border-left" data-id="<%= event.id %>">
     <% if (user) { %>
     <div class="event-button pull-right">
-      <button class="btn btn-c2 btn-sm rsvp data-event-flag-<%= event.rsvp %>" data-going-text="<i class='icon-ok'></i> I'm going" data-rsvp-text="RSVP" data-hover-text="Cancel RSVP"><% if (event.rsvp) { %><i class='icon-ok'></i> I'm going<% } else { %>RSVP<% } %></button>
+      <button class="btn btn-c2 btn-sm rsvp data-event-flag-<%= event.rsvp %>" data-going-text="<i class='fa fa-check'></i> I'm going" data-rsvp-text="RSVP" data-hover-text="Cancel RSVP"><% if (event.rsvp) { %><i class='fa fa-check'></i> I'm going<% } else { %>RSVP<% } %></button>
     </div>
     <% } %>
     <div class="event-title">
@@ -35,7 +35,7 @@
       <%- event.description %>
     </div>
     <div class="event-tag">
-      <i class="icon-calendar"></i>
+      <i class="fa fa-calendar"></i>
       <span class="box-icon-text">
       <!-- day -->
       <% var st = new Date(event.start); var et = new Date(event.end); %>
@@ -51,13 +51,13 @@
       </span>
     </div>
     <div class="event-tag">
-      <span class="glyphicon glyphicon-map-marker"></span>
+      <span class="fa fa-map-marker"></span>
       <span class="box-icon-text">
       <%= event.location %>
       </span>
     </div>
     <div class="event-tag">
-      <span class="event-icon-center"><i class="icon-male"></i></span>
+      <span class="event-icon-center"><i class="fa fa-male"></i></span>
       <span class="box-icon-text event-people">
         <span class="event-people-number"><%= event.rsvps.length %></span>
         <span class="event-people-text" data-plural="people" data-singular="person">
