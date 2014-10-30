@@ -23,6 +23,11 @@
 
   "Browse" : "Browse",
 
+  "taskPage" : {
+    "volunteerButton" : "Volunteer",
+    "volunteeredButton" : "Volunteered!"
+  },
+
   "loginModal" : {
     "tosCheckbox": "Yes, I agree to the "
   },
