@@ -33,7 +33,7 @@ define([
       "click #like-button"              : 'like',
       'click #volunteer'                : 'volunteer',
       'click #volunteered'              : 'volunteered',
-      "click #task-close"               : "stateClose",
+      "click #task-close"               : "stateChange",
       "click #task-reopen"              : "stateReopen",
       "click .link-backbone"            : linkBackbone,
       "mouseenter .project-people-div"  : popovers.popoverPeopleOn,
@@ -368,13 +368,13 @@ define([
       // Not able to un-volunteer, so do nothing
     },
 
-    stateClose: function (e) {
+    stateChange: function (e) {
       if (e.preventDefault) e.preventDefault();
       var self = this;
 
       if (this.modalAlert) { this.modalAlert.cleanup(); }
       if (this.modalComponent) { this.modalComponent.cleanup(); }
-      var states = [{value:"public",state:"Open"},{value:"closed",state:"Closed"},{value:"archived",state:"Archived"},{value:"assigned",state:"Assigned"},{value:"completed",state:"Completed"}];
+      var states = [{value:"open",state:"Open"},{value:"assigned",state:"Assigned"},{value:"archived",state:"Archived"},{value:"completed",state:"Completed"}];
       var modalContent = _.template(ChangeStateTemplate,{model:self.model,states: states});
       this.modalComponent = new ModalComponent({
         el: "#modal-close",

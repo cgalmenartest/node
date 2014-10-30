@@ -61,9 +61,6 @@ define([
       this.collection.fetch({
         url: '/api/task/findAllByProjectId/' + parseInt(this.options.projectId),
         success: function (collection) {
-          collection.each(function(task){
-            if ( task.attributes.state == "public" ){ task.attributes.state = "open"; }
-          });
           self.tasks = collection;
           self.renderTaskCollectionView()
         }
