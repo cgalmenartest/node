@@ -390,7 +390,6 @@ define([
         submit: 'Change '+i18n.t("Task")+' State',
         callback: function (e) {
           // user clicked the submit button
-          console.log("radio test ",$('input[name=opportunityState]:checked').val());
           self.model.trigger("task:update:state", $('input[name=opportunityState]:checked').val());
         }
       }).render();
