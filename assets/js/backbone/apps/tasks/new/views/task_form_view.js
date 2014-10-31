@@ -176,9 +176,9 @@ define([
     initializeSelect2: function () {
       var self = this;
 
-      self.tagFactory.createTagDropDown({type:"skill",selector:"#task_tag_skills",width: "100%"});
-      self.tagFactory.createTagDropDown({type:"topic",selector:"#task_tag_topics",width: "100%"});
-      self.tagFactory.createTagDropDown({type:"location",selector:"#task_tag_location",width: "100%"});
+      self.tagFactory.createTagDropDown({type:"skill",selector:"#task_tag_skills",width: "100%",tokenSeparators: [","]});
+      self.tagFactory.createTagDropDown({type:"topic",selector:"#task_tag_topics",width: "100%",tokenSeparators: [","]});
+      self.tagFactory.createTagDropDown({type:"location",selector:"#task_tag_location",width: "100%",tokenSeparators: [","]});
       
       self.$(".el-specific-location").hide();
 
