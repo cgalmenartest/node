@@ -8,7 +8,7 @@ module.exports = {
     // Current state of the task
     state: {
         type: 'STRING',
-        defaultsTo: 'public'
+        defaultsTo: 'open'
     },
     // user id of the task owner
     userId: 'INTEGER',

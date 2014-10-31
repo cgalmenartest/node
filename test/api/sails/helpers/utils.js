@@ -49,11 +49,11 @@ module.exports = {
     });
   },
 
-  createProject: function(request, public, cb) {
-    if (!public) {
+  createProject: function(request, open, cb) {
+    if (!open) {
       conf.project.state = 'draft';
     } else {
-      conf.project.state = 'public';
+      conf.project.state = 'open';
     }
     request.post({ url: conf.url + '/project',
                    body: JSON.stringify(conf.project)

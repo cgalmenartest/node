@@ -98,7 +98,7 @@ module.exports = {
   },
   projects: [
     {
-      state: 'public',
+      state: 'open',
       title: 'Robert\'s Rebellion',
       description: 'Robert\'s Rebellion was a civil war amongst the Great Houses of Westeros that took place approximately seventeen years before the TV series began, and lasted about one year. It displaced the royal House Targaryen and saw most of its members wiped out, with only two survivors who fled into exile across the sea. House Baratheon became the new royal house after the war\'s conclusion.',
       cover: 'assets/projects/roberts_rebellion.png',
@@ -151,7 +151,7 @@ module.exports = {
       ],
       tasks: [
         {
-          state: 'public',
+          state: 'open',
           title: 'Kidnap the Targaryen heirs',
           description: 'Viserys and Daenerys are at Dragonstone.  To keep the Targaryens from regaining the Iron Throne, the child heirs must be captured and returned to King\'s landing.'
         }

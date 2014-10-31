@@ -26,7 +26,7 @@ module.exports = {
   // a familiar findAll method.
   findAll: function (req, res) {
     // allow state to be set with a query parameter
-    var state = req.param('state', 'public');
+    var state = req.param('state', 'open');
 
     function processProjects (err, projects) {
       if (err) return res.send(400, { message: i18n.t('projectAPI.errMsg.lookupPlural','Error looking up projects.')});

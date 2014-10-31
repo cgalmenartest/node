@@ -393,7 +393,7 @@ define([
 
     stateReopen: function (e) {
       if (e.preventDefault) e.preventDefault();
-      this.model.trigger("task:update:state", 'public');
+      this.model.trigger("task:update:state", 'open');
     },
 
     cleanup: function () {

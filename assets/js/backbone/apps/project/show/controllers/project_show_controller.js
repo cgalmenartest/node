@@ -218,7 +218,7 @@ define([
 
     stateReopen: function (e) {
       if (e.preventDefault) e.preventDefault();
-      this.model.trigger("project:update:state", 'public');
+      this.model.trigger("project:update:state", 'open');
     },
 
     like: function (e) {
