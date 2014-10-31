@@ -11,5 +11,6 @@
   "browse": {
     "pageSize" : 27,
     "useInfiniteScroll" : false
-  }
+  },
+  "states" : [{"value": "open","state":"Open"},{"value":"assigned","state":"Assigned"},{"value": "completed","state":"Completed"},{"value":"archived","state":"Archived"}]
 }

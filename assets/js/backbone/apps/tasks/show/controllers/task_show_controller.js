@@ -374,7 +374,7 @@ define([
 
       if (this.modalAlert) { this.modalAlert.cleanup(); }
       if (this.modalComponent) { this.modalComponent.cleanup(); }
-      var states = [{value:"open",state:"Open"},{value:"assigned",state:"Assigned"},{value:"archived",state:"Archived"},{value:"completed",state:"Completed"}];
+      var states = UIConfig.states;
       var modalContent = _.template(ChangeStateTemplate,{model:self.model,states: states});
       this.modalComponent = new ModalComponent({
         el: "#modal-close",
