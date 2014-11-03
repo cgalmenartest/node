@@ -43,10 +43,10 @@ tagTool can also be run from ```grunt```. Running ```grunt initTags``` will run 
 
 The state of a Project or Opportunity controls it's visibility in certain views and what funcitonality is available. The states currently supported are:
 
-*Open - open for volunteering and discussions, this is the default state
-*Assigned - a volunteer has been assigned, discussion is still open
-*Archived - closed in a incomplete or unstarted state, no volunteers or discussion
-*Completed - closed in a finished state, no volunteers or discussion
+* Open - open for volunteering and discussions, this is the default state
+* Assigned - a volunteer has been assigned, discussion is still open
+* Archived - closed in a incomplete or unstarted state, no volunteers or discussion
+* Completed - closed in a finished state, no volunteers or discussion
 
 These states are listed in ```assets/js/backbone/config/ui.json```.
 ```"states" :
