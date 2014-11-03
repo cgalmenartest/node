@@ -56,6 +56,7 @@ These states are listed in ```assets/js/backbone/config/ui.json```.
 		 "label": "Open"
 		},...
 ```
+
 Changing the value of label is largely cosmetic as it is used to drive drop downs and other display information. If you change the value of value and do not change code to support it midas will behave in an inconsitent manner.
 
 When upgrading Midas from versions prior to .21 you need to run ```./tools/postgres/rename-public-to-open-state.sh``` to update any existing projects or opportunities.
