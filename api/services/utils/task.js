@@ -19,20 +19,20 @@ var authorized = function (id, userId, cb) {
     }
     // If not the owner, check if there is a project
     if (!task.projectId) {
-      if ((task.state === 'public') || (task.state == 'closed') || (userId == task.userId)) {
+      if ((task.state === 'open') || (task.state == 'closed') || (userId == task.userId)) {
         return cb(null, task);
       }
       return cb(null, null);
     }
     // check if the user is authorized for the project
-    // or the project is public
+    // or the project is open
     util.authorized(task.projectId, userId, function (err, proj) {
       if (err) { return cb(err, null); }
       if (!err && !proj) { return cb(null, null); }
       task.project = proj;
       // user has access to the project, but is not the task owner
       // check the task state to make sure it is publicly accessible
-      if ((task.state === 'public') || (task.state == 'closed') || (task.isOwner === true)) {
+      if ((task.state === 'open') || (task.state == 'closed') || (task.isOwner === true)) {
         return cb(null, task);
       }
       // In any other state, you have to be the owner.  Denied.
@@ -108,7 +108,7 @@ var getVolunteers = function (task, cb) {
 var findTasks = function (where, cb) {
   var self = this;
   var w = where || {};
-  w.state = 'public';
+  w.state = 'open';
   Task.find()
   .where(w)
   .sort({'updatedAt': -1})

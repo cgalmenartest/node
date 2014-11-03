@@ -53,7 +53,7 @@ module.exports = {
               Project.find().where({id: projIds}).exec(function(err, projects) {
                 if (err) { done('Failed to retrieve projects ' +  err);}
                 async.each(projects, function(project, cb) {
-                  if (project.state === "public") {
+                  if (project.state === "open") {
                     user.projectsCreatedOpen++;
                     cb();
                   }
@@ -78,7 +78,7 @@ module.exports = {
             if (err) { done('Failed to retrieve tasks' + err);}
             if (tasks.count !== 0) {
               async.each(tasks, function(task, cb) {
-                if (task.state === "public") {
+                if (task.state === "open") {
                   user.tasksCreatedOpen++;
                   cb();
                 } else if (task.state === "closed") {
@@ -107,7 +107,7 @@ module.exports = {
               Task.find().where({id: taskIds}).exec(function(err, tasks) {
                 if (err) { done('Failed to retrieve tasks for volunteers ' +  err);}
                 async.each(tasks, function(task, cb) {
-                  if (task.state === "public") {
+                  if (task.state === "open") {
                     user.volCountOpen++;
                     cb();
                   }

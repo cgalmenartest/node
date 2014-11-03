@@ -21,8 +21,8 @@ var authorized = function (id, userId, cb) {
         }
         proj.owners.push({ id: owners[i].id, userId: owners[i].userId });
       }
-      // If project is public or public and closed/finished, continue
-      if ((proj.state === 'public') || (proj.state === 'closed') || (proj.isOwner)) {
+      // If project is open and closed/finished, continue
+      if ((proj.state === 'open') || (proj.state === 'closed') || (proj.isOwner)) {
         return cb(null, proj);
       }
       else {
