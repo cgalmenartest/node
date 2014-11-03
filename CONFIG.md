@@ -49,7 +49,8 @@ The state of a Project or Opportunity controls it's visibility in certain views 
 * Completed - closed in a finished state, no volunteers or discussion
 
 These states are listed in ```assets/js/backbone/config/ui.json```.
-```"states" :
+```
+"states" :
 		{
 		 "value": "open",
 		 "state": "Open"
