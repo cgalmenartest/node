@@ -28,6 +28,7 @@ define([
       this.data = {};
       this.data.newTag = {};
       this.data.newItemTags = [];
+      this.data.existingTags = [];
       this.initializeSelect2Data();
       this.initializeListeners();
     },
@@ -82,13 +83,10 @@ define([
           }
         });
 
-        //existing tags not part of big three
-        tags.push(self.$("#skills-required").select2('data'));
-        tags.push(self.$("#people").select2('data'));
-        tags.push(self.$("#time-required").select2('data'));
-        tags.push(self.$("#time-estimate").select2('data'));
-        tags.push(self.$("#length").select2('data'));
-        
+        _.each(this.data.existingTags, function(tempTag) {
+            tags.push(tempTag);
+        });
+
         async.forEach(
           tags,
           function(tag, callback){
@@ -102,12 +100,18 @@ define([
         );
       });
 
-
       this.listenTo(this.tasks,"task:save:success", function (taskId){
         //the only concern here is to add newly created tags which is only available in the three items below
         //
 
         self.tempTaskId = taskId;
+
+        // save the tags from the drop downs
+        this.data.existingTags.push(self.$("#skills-required").select2('data'));
+        this.data.existingTags.push(self.$("#people").select2('data'));
+        this.data.existingTags.push(self.$("#time-required").select2('data'));
+        this.data.existingTags.push(self.$("#time-estimate").select2('data'));
+        this.data.existingTags.push(self.$("#length").select2('data'));
 
         var newTags = [];
 
