@@ -43,9 +43,14 @@ define([
       return this;
     },
 
-loginClick: function (e) {
+    loginClick: function (e) {
       if (e.preventDefault) e.preventDefault();
-      this.login();
+      if (window.cache.currentUser) {
+        // we're already logged in
+        Backbone.history.navigate(UIConfig.home.logged_in_path, { trigger: true });
+      } else {
+        this.login();
+      }
     },
 
     login: function (message) {
