@@ -19,6 +19,7 @@ copy-config:
 	-cp config/settings/sources.js config/settings/sources.js.bak
 	-cp config/settings/notifications.js config/settings/notifications.js.bak
 	-cp config/settings/emailTemplates.js config/settings/emailTemplates.js.bak
+	-cp config/settings/analytics.js config/settings/analytics.js.bak
 	cp assets/js/backbone/config/login.ex.json assets/js/backbone/config/login.json
 	cp config/local.ex.js config/local.js
 	cp config/i18next.ex.js config/i18next.js
@@ -26,6 +27,7 @@ copy-config:
 	cp config/settings/sources.ex.js config/settings/sources.js
 	-cp config/settings/notifications.ex.js config/settings/notifications.js
 	-cp config/settings/emailTemplates.ex.js config/settings/emailTemplates.js
+	-cp config/settings/analytics.ex.js config/settings/analytics.js
 
 restore-config:
 	rm assets/js/backbone/config/login.json
@@ -33,6 +35,7 @@ restore-config:
 	rm config/local.js
 	rm config/settings/auth.js
 	rm config/settings/sources.js
+	rm config/settings/analytics.js
 	rm config/i18next.js
 	-mv assets/js/backbone/config/login.json.bak assets/js/backbone/config/login.json
 	-mv assets/js/backbone/config/i18n.json.bak assets/js/backbone/config/i18n.json
@@ -41,6 +44,7 @@ restore-config:
 	-mv config/settings/sources.js.bak config/settings/sources.js
 	-mv config/settings/notifications.js.bak config/settings/notifications.js
 	-mv config/settings/emailTemplates.js.bak config/settings/emailTemplates.js
+	-mv config/settings/analytics.js.bak config/settings/analytics.js
 	-mv config/i18next.js.bak config/i18next.js
 
 import:
