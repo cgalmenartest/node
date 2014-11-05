@@ -29,7 +29,7 @@ define([
         ui: UIConfig,
         target: this.options.target,
         targetFriendly: i18n.t(this.options.target),
-        targetsFriendly: i18n.t(this.options.target + '_plural'),
+        targetsFriendly: i18n.t(this.options.target + 'Plural'),
         targetCapitalized: this.options.target.charAt(0).toUpperCase() + this.options.target.slice(1),
         data: results,
         count: {}
