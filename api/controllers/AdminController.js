@@ -57,7 +57,7 @@ module.exports = {
                     user.projectsCreatedOpen++;
                     cb();
                   }
-                  else if (project.state === "closed") {
+                  else {
                     user.projectsCreatedClosed++;
                     cb();
                   }
@@ -81,7 +81,7 @@ module.exports = {
                 if (task.state === "open") {
                   user.tasksCreatedOpen++;
                   cb();
-                } else if (task.state === "closed") {
+                } else {
                   user.tasksCreatedClosed++;
                   cb();
                 }
@@ -111,7 +111,7 @@ module.exports = {
                     user.volCountOpen++;
                     cb();
                   }
-                  else if (task.state === "closed") {
+                  else {
                     user.volCountClosed++;
                     cb();
                   }
@@ -127,7 +127,7 @@ module.exports = {
           callback(null);
         });
     };
-
+    
     // find users that meet this criteria
     User.find()
     .where(where)
@@ -141,7 +141,6 @@ module.exports = {
         async.each(users, addUserMetrics, function(err) {
           if (err) { res.send(400, { message: 'Error retrieving metrics for users.', err: err}); }
           // return a paginated object
-          sails.log.debug(users);
           return res.send({
             page: page,
             limit: Math.min(users.length, limit),
@@ -198,7 +197,6 @@ module.exports = {
           Project.count().exec(function(err, projectCount) {
             if (err) { return res.send(400, { message: 'An error occurred looking up project metrics.', error: err }); }
             metrics.projects.count = projectCount;
-            sails.log.debug(metrics);
             return res.send(metrics);
           });
         });
