@@ -131,7 +131,7 @@ module.exports = {
     // find users that meet this criteria
     User.find()
     .where(where)
-    .sort('id')
+    .sort({ createdAt: 'desc' })
     .paginate({ page: page, limit: limit})
     .exec(function (err, users) {
       if (err) { return res.send(400, { message: 'Error looking up users', err: err}); }
