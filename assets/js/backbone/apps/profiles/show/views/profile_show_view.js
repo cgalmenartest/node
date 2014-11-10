@@ -127,12 +127,12 @@ define([
     updateProfileEmail: function(){
       var self = this;
       $.ajax({
-        url: '/api/email/makeURL?email=contactUserAboutProfile&subject=Check Out "'+ self.model.attributes.name + '"' +
+        url: encodeURI('/api/email/makeURL?email=contactUserAboutProfile&subject=Check Out "'+ self.model.attributes.name + '"' +
         '&profileTitle=' + (self.model.attributes.title || '') +
         '&profileLink=' + window.location.protocol + "//" + window.location.host + "" + window.location.pathname +
         '&profileName=' + (self.model.attributes.name || '') +
         '&profileLocation=' + (self.model.attributes.location ? self.model.attributes.location.tag.name : '') +
-        '&profileAgency=' + (self.model.agency ? self.model.agency.name : ''),
+        '&profileAgency=' + (self.model.agency ? self.model.agency.name : '')),
         type: 'GET'
       }).done( function (data) {
         self.$('#email').attr('href', data);
