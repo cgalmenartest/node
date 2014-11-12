@@ -6,7 +6,7 @@
       <th>Email</th>
       <th>Projects Created (open / closed)</th>
       <th>Tasks Created (open / assigned / completed / archived)</th>
-      <th>Volunteer (open / closed)</th>
+      <th>Volunteer (open / assigned / completed / archived)</th>
       <th class="admin-user-checkbox">Enabled</th>
       <% if (login.local.enabled === true) { %>
       <th class="admin-user-checkbox">Password</th>
@@ -44,8 +44,8 @@
       <% } %>
       </td>
       <td class="admin-table-volunteer">
-      <% if (u.volCountOpen !== 0 || u.volCountClosed !== 0) { %>
-        <a class="link-backbone" href="/profile/<%- u.id %>"><%- u.volCountOpen %> / <%- u.volCountClosed %></a>
+      <% if (u.volCountOpen !== 0 || u.volCountAssigned !== 0 || u.volCountCompleted !== 0 || u.volCountArchived !== 0) { %>
+        <a class="link-backbone" href="/profile/<%- u.id %>"><%- u.volCountOpen %> / <%- u.volCountAssigned %> / <%- u.volCountCompleted %> / <%- u.volCountArchived %></a>
       <% } %>
       </td>
       <td>
