@@ -31,7 +31,7 @@ define([
 
     routeTarget: function (target) {
       if (!target) {
-        target = 'user';
+        target = 'dashboard';
       }
       var t = $((this.$("[data-target=" + target + "]"))[0]);
       // remove active classes
