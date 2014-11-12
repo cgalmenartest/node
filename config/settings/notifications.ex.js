@@ -74,6 +74,12 @@
         emailName: 'userPasswordResetEmail'
       }
     },
+    'preflightWelcomeUser': {
+      method: 'prepareWelcomeUserEmail',
+      settings: {
+        emailName: 'welcomeUser'
+      }
+    },
     'bypass': {
       name: 'bypass',
       method: 'passThrough',
@@ -123,6 +129,18 @@
           strategy: {
             'userPasswordReset': {
               preflight: ['preflightUserPasswordReset'],
+              delivery: 'sendSimpleEmail'
+            }
+          }
+        }
+      }
+    },
+    'welcomeUser': {
+      audience:{
+        'user': {
+          strategy: {
+            'welcomeUser': {
+              preflight: ['preflightWelcomeUser'],
               delivery: 'sendSimpleEmail'
             }
           }
