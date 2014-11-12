@@ -73,16 +73,24 @@ module.exports = {
         // add task counts
         function(done) {
           user.tasksCreatedOpen = 0;
-          user.tasksCreatedClosed = 0;
+          user.tasksCreatedAssigned = 0;
+          user.tasksCreatedCompleted= 0;
+          user.tasksCreatedArchived = 0;
           Task.find().where({userId:user.id}).exec(function(err, tasks) {
             if (err) { done('Failed to retrieve tasks' + err);}
             if (tasks.count !== 0) {
               async.each(tasks, function(task, cb) {
-                if (task.state === "open") {
-                  user.tasksCreatedOpen++;
+                if (task.state === "assigned") {
+                  user.tasksCreatedAssigned++;
+                  cb();
+                } else if (task.state === "completed") {
+                  user.tasksCreatedCompleted++;
+                  cb();
+                } else if (task.state === "archived") {
+                  user.tasksCreatedArchived++;
                   cb();
                 } else {
-                  user.tasksCreatedClosed++;
+                  user.tasksCreatedOpen++;
                   cb();
                 }
               }, function(err) {
