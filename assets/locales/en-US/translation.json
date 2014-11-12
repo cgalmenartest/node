@@ -32,7 +32,8 @@
   },
 
   "loginModal" : {
-    "tosCheckbox": "Yes, I agree to the "
+    "tosCheckbox": "Yes, I agree to the ",
+    "emailAddress": "Email Address"
   },
 
   "volunteerModal": {
