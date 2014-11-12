@@ -310,57 +310,61 @@ define([
 
     volunteer: function (e) {
       if (e.preventDefault) e.preventDefault();
-      var self = this;
-      var child = $(e.currentTarget).children("#like-button-icon");
-
-      if (this.modalAlert) { this.modalAlert.cleanup(); }
-      if (this.modalComponent) { this.modalComponent.cleanup(); }
-      this.modalComponent = new ModalComponent({
-        el: "#modal-volunteer",
-        id: "check-volunteer",
-        modalTitle: "Do you want to volunteer?"
-      }).render();
-
-      if ( UIConfig.supervisorEmail.useSupervisorEmail ) {
-        //not assigning as null because null injected into the modalContent var shows as a literal value
-        //    when what we want is nothing if value is null
-        var supervisorEmail = ( window.cache.currentUser.supervisorEmail ) ? window.cache.currentUser.supervisorEmail.value  : "";
-        var supervisorName = ( window.cache.currentUser.supervisorName ) ? window.cache.currentUser.supervisorName.value : "";
-        var validateBeforeSubmit = true;
-        var modalContent = _.template(VolunteerSupervisorNotifyTemplate,{supervisorEmail: supervisorEmail,supervisorName: supervisorName});
+      if (!window.cache.currentUser) {
+        window.cache.userEvents.trigger("user:request:login");
       } else {
-        validateBeforeSubmit = false;
-        var modalContent = _.template(VolunteerTextTemplate,{});
-      }
+        var self = this;
+        var child = $(e.currentTarget).children("#like-button-icon");
 
-      this.modalAlert = new ModalAlert({
-        el: "#check-volunteer .modal-template",
-        modalDiv: '#check-volunteer',
-        content: modalContent,
-        cancel: 'Cancel',
-        submit: 'I Agree',
-        validateBeforeSubmit: validateBeforeSubmit,
-        callback: function (e) {
-          if ( UIConfig.supervisorEmail.useSupervisorEmail ) {
-            self.saveUserSettingByKey(window.cache.currentUser.id,{settingKey:"supervisorEmail",newValue: $('#userSuperVisorEmail').val(),oldValue: supervisorEmail});
-            self.saveUserSettingByKey(window.cache.currentUser.id,{settingKey:"supervisorName",newValue: $('#userSuperVisorName').val(),oldValue: supervisorName});
-          }
-          // user clicked the submit button
-          $.ajax({
-            url: '/api/volunteer/',
-            type: 'POST',
-            data: {
-              taskId: self.model.attributes.id
-            }
-          }).done( function (data) {
-            $('.volunteer-true').show();
-            $('.volunteer-false').hide();
-            var html = '<div class="project-people-div" data-userid="' + data.userId + '"><img src="/api/user/photo/' + data.userId + '" class="project-people"/></div>';
-            $('#task-volunteers').append(html);
-            popovers.popoverPeopleInit(".project-people-div");
-          });
+        if (this.modalAlert) { this.modalAlert.cleanup(); }
+        if (this.modalComponent) { this.modalComponent.cleanup(); }
+        this.modalComponent = new ModalComponent({
+          el: "#modal-volunteer",
+          id: "check-volunteer",
+          modalTitle: "Do you want to volunteer?"
+        }).render();
+
+        if ( UIConfig.supervisorEmail.useSupervisorEmail ) {
+          //not assigning as null because null injected into the modalContent var shows as a literal value
+          //    when what we want is nothing if value is null
+          var supervisorEmail = ( window.cache.currentUser.supervisorEmail ) ? window.cache.currentUser.supervisorEmail.value  : "";
+          var supervisorName = ( window.cache.currentUser.supervisorName ) ? window.cache.currentUser.supervisorName.value : "";
+          var validateBeforeSubmit = true;
+          var modalContent = _.template(VolunteerSupervisorNotifyTemplate,{supervisorEmail: supervisorEmail,supervisorName: supervisorName});
+        } else {
+          validateBeforeSubmit = false;
+          var modalContent = _.template(VolunteerTextTemplate,{});
         }
-      }).render();
+
+        this.modalAlert = new ModalAlert({
+          el: "#check-volunteer .modal-template",
+          modalDiv: '#check-volunteer',
+          content: modalContent,
+          cancel: 'Cancel',
+          submit: 'I Agree',
+          validateBeforeSubmit: validateBeforeSubmit,
+          callback: function (e) {
+            if ( UIConfig.supervisorEmail.useSupervisorEmail ) {
+              self.saveUserSettingByKey(window.cache.currentUser.id,{settingKey:"supervisorEmail",newValue: $('#userSuperVisorEmail').val(),oldValue: supervisorEmail});
+              self.saveUserSettingByKey(window.cache.currentUser.id,{settingKey:"supervisorName",newValue: $('#userSuperVisorName').val(),oldValue: supervisorName});
+            }
+            // user clicked the submit button
+            $.ajax({
+              url: '/api/volunteer/',
+              type: 'POST',
+              data: {
+                taskId: self.model.attributes.id
+              }
+            }).done( function (data) {
+              $('.volunteer-true').show();
+              $('.volunteer-false').hide();
+              var html = '<div class="project-people-div" data-userid="' + data.userId + '"><img src="/api/user/photo/' + data.userId + '" class="project-people"/></div>';
+              $('#task-volunteers').append(html);
+              popovers.popoverPeopleInit(".project-people-div");
+            });
+          }
+        }).render();
+      }
     },
 
     volunteered: function (e) {
