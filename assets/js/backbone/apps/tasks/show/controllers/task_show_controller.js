@@ -321,7 +321,7 @@ define([
         this.modalComponent = new ModalComponent({
           el: "#modal-volunteer",
           id: "check-volunteer",
-          modalTitle: "Do you want to volunteer?"
+          modalTitle: i18n.t("volunteerModal.title")
         }).render();
 
         if ( UIConfig.supervisorEmail.useSupervisorEmail ) {
@@ -340,8 +340,8 @@ define([
           el: "#check-volunteer .modal-template",
           modalDiv: '#check-volunteer',
           content: modalContent,
-          cancel: 'Cancel',
-          submit: 'I Agree',
+          cancel: i18n.t('volunteerModal.cancel'),
+          submit: i18n.t('volunteerModal.ok'),
           validateBeforeSubmit: validateBeforeSubmit,
           callback: function (e) {
             if ( UIConfig.supervisorEmail.useSupervisorEmail ) {
