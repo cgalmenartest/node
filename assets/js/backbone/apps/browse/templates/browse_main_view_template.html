@@ -27,11 +27,17 @@
 
   <div class="col-md-3 col-md-push-9 box">
     <div class="border-bottom box-pad-lr">
-      <h2>Search Criteria</h2>
+      <h2>Filters</h2>
     </div>
     <div class="box-pad-t">
-      <div id="search-none" class="box-pad-lr">
-        No criteria specified.
+      <div class="box-pad-lr">
+        <% _.each(ui.states, function (t) { %>
+          <input type='checkbox' name='state<%- t.label %>' class='stateFilter' value='<%- t.value %>'
+            <% if ( t.value == "open" ) {%>
+              <%- checked="checked" %>
+            <% } %>
+            > <%- t.label %> <br/>
+        <% }); %>
       </div>
       <div id="search-projs-wrapper" class="box-pad-lr">
         <ul id="search-projs" class="nav nav-pills nav-stacked nav-search">

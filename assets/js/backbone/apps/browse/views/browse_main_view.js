@@ -146,10 +146,13 @@ define([
     renderList: function (collection) {
       // create a new view for the returned data
       if (this.browseListView) { this.browseListView.cleanup(); }
+
+      var filteredCollection = this.applyStateFilters(collection);
+
       this.browseListView = new BrowseListView({
         el: '#browse-list',
         target: this.options.target,
-        collection: collection,
+        collection: filteredCollection,
       });
       $("#browse-search-spinner").hide();
       $("#browse-list").show();
@@ -189,6 +192,23 @@ define([
         // render the search results
         self.renderList(data);
       });
+    },
+
+    applyStateFilters: function (data) {
+      if ( !_.isObject(data) ){ return data; }
+      var keepers = [];
+      //get check stateFilter inputs
+      var inputs = $(".stateFilter:checked");
+
+      _.each(data,function(item){
+        _.each(inputs,function(test){
+           if ( item.state == test.value ){
+             keepers.push(item);
+           }
+        });
+      });
+
+      return keepers;
     },
 
     searchTagRemove: function (e) {
