@@ -73,30 +73,43 @@ module.exports = {
         // add task counts
         function(done) {
           user.tasksCreatedOpen = 0;
-          user.tasksCreatedClosed = 0;
-          Task.find().where({userId:user.id}).exec(function(err, tasks) {
-            if (err) { done('Failed to retrieve tasks' + err);}
-            if (tasks.count !== 0) {
-              async.each(tasks, function(task, cb) {
-                if (task.state === "open") {
-                  user.tasksCreatedOpen++;
-                  cb();
-                } else {
-                  user.tasksCreatedClosed++;
-                  cb();
-                }
-              }, function(err) {
-                done(null);
+          user.tasksCreatedAssigned = 0;
+          user.tasksCreatedCompleted = 0;
+          user.tasksCreatedArchived = 0;
+          async.parallel([
+            function(cb) {
+              Task.countByState("open").where({userId:user.id}).exec(function(err, openCount) {
+                user.tasksCreatedOpen = openCount;
+                cb();
               });
-            } else {
+            },
+            function(cb) {
+              Task.countByState("assigned").where({userId:user.id}).exec(function(err, assignedCount) {
+                user.tasksCreatedAssigned = assignedCount;
+                cb();
+              });
+            },
+            function(cb) {
+              Task.countByState("completed").where({userId:user.id}).exec(function(err, completedCount) {
+                user.tasksCreatedCompleted = completedCount;
+                cb();
+              });
+            },
+            function(cb) {
+              Task.countByState("archived").where({userId:user.id}).exec(function(err, archivedCount) {
+                user.tasksCreatedArchived = archivedCount;
+                cb();
+              });
+            }], function(err) {
               done(null);
-            }
-          });
+            });
         },
         // add volunteer counts
         function(done) {
           user.volCountOpen = 0;
-          user.volCountClosed = 0;
+          user.volCountAssigned= 0;
+          user.volCountCompleted = 0;
+          user.volCountArchived = 0;
           Volunteer.find().where({userId:user.id}).exec(function(err, volunteers) {
             if (err) { done('Failed to retrieve volunteers ' +  err);}
             if (volunteers.length !== 0) {
@@ -111,8 +124,19 @@ module.exports = {
                     user.volCountOpen++;
                     cb();
                   }
+                  else if (task.state === "assigned") {
+                    user.volCountAssigned++;
+                    cb();
+                  }
+                  else if (task.state === "completed") {
+                    user.volCountCompleted++;
+                    cb();
+                  }
+                  else if (task.state === "archived") {
+                    user.volCountArchived++;
+                    cb();
+                  }
                   else {
-                    user.volCountClosed++;
                     cb();
                   }
                 }, function(err) {
