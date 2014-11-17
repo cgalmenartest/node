@@ -2,12 +2,13 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'i18n',
   'utilities',
   'modal_component',
   'text!admin_dashboard_template',
   'text!admin_dashboard_table',
   'json!login_config'
-], function ($, _, Backbone, utils, ModalComponent, AdminDashboardTemplate, AdminDashboardTable, LoginConfig) {
+], function ($, _, Backbone, i18n, utils, ModalComponent, AdminDashboardTemplate, AdminDashboardTable, LoginConfig) {
 
   var AdminDashboardView = Backbone.View.extend({
 
@@ -43,6 +44,7 @@ define([
     renderMetrics: function (self, data) {
       var template = _.template(AdminDashboardTable, data);
       self.$(".metric-block").html(template);
+      this.$el.i18n();
       // hide spinner and show results
       self.$(".spinner").hide();
       self.$(".metric-block").show();

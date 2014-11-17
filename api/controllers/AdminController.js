@@ -165,7 +165,10 @@ module.exports = {
       },
       tasks: {
         count: 0,
-        withVolunteers: 0
+        open: 0,
+        assigned: 0,
+        completed: 0,
+        archived: 0
       },
       projects: {
         count: 0
@@ -183,6 +186,15 @@ module.exports = {
           if (tasks[i].userId !== lastId) {
             metrics.users.withTasks++;
             lastId = tasks[i].userId;
+          }
+          if (tasks[i].state === "open") {
+            metrics.tasks.open++;
+          } else if (tasks[i].state === "assigned") {
+            metrics.tasks.assigned++;
+          } else if (tasks[i].state === "completed") {
+            metrics.tasks.completed++;
+          } else if (tasks[i].state === "archived") {
+            metrics.tasks.archived++;
           }
         }
         Volunteer.find().sort('taskId').exec(function(err, vols) {
