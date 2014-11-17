@@ -4,6 +4,29 @@ var async = require('async');
 var tagUtils = require('./tag');
 var noteUtils = require('../notifications/manager');
 
+var sendWelcomeEmail = function(done, user) { 
+  // Generate a notification email to the user
+  var params = {
+    trigger: {
+      callerType: 'UserEmail',
+      callerId: user.id,
+      action: 'welcomeUser'
+    },
+    data: {
+      audience: {
+        'user': {
+          fields: {
+            userId: user.id
+          }
+        }
+      }
+    }
+  };
+  noteUtils.notifier.notify(params, function (err) {
+    done(err, user);
+  });
+}
+
 module.exports = {
 
   /**
@@ -207,7 +230,8 @@ module.exports = {
                 if (err) { return done(null, false, { message: 'Unable to store user email address.', err: err }); }
                 tagUtils.findOrCreateTags(user.id, tags, function (err, newTags) {
                   if (err) { return done(null, false, { message: 'Unabled to create tags', err: err }); }
-                  return done(null, user);
+                  // Generate welcome email
+                  sendWelcomeEmail(done, user);
                 });
               });
             });
@@ -627,7 +651,9 @@ module.exports = {
             var tags = create_tag_obj(providerUser);
             // Update the user's tags
             tagUtils.findOrCreateTags(user.id, tags, function (err, newTags) {
-              user_cb(null, user);
+              if (err) { return done(null, false, { message: 'Unabled to create tags', err: err }); }
+              // Generate a notification email to the user
+              sendWelcomeEmail(done, user);
             });
           });
         }
