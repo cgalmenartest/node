@@ -10,7 +10,6 @@ var sendWelcomeEmail = function(done, user) {
     trigger: {
       callerType: 'UserEmail',
       callerId: user.id,
-      token: user.token,
       action: 'welcomeUser'
     },
     data: {
