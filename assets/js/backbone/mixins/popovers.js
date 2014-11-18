@@ -52,6 +52,7 @@ define([
           popover.$tip.addClass(popover.options.placement);
           // handle links in the popovers
           $(".popover").on('click', ".link-backbone", function (e) {
+            target.popover('hide');
             linkBackbone(e);
           });
         });
