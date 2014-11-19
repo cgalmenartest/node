@@ -3,13 +3,14 @@ define([
   'underscore',
   'async',
   'backbone',
+  'i18n',
   'utilities',
   'marked',
   'markdown_editor',
   'popovers', /* Popovers,*/
   'modal_component',
   'text!project_item_coremeta_template'
-], function ($, _, async, Backbone, utils, marked, MarkdownEditor, Popovers, ModalComponent, ProjectItemCoreMetaTemplate) {
+], function ($, _, async, Backbone, i18n, utils, marked, MarkdownEditor, Popovers, ModalComponent, ProjectItemCoreMetaTemplate) {
 
   //if(_.isUndefined(popovers)){var popovers = new Popovers();}
 
@@ -71,6 +72,7 @@ define([
       data.data.descriptionHtml = marked(data.data.description || '');
       var compiledTemplate = _.template(ProjectItemCoreMetaTemplate, data);
       this.$el.html(compiledTemplate);
+      this.$el.i18n();
       this.model.trigger("project:coremeta:show:rendered", data);
 
       return this;
