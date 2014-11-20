@@ -20,12 +20,13 @@ define([
   var BrowseMainView = Backbone.View.extend({
 
     events: {
-      "submit #search-form"       : "search",
-      "click .search-tag-remove"  : "searchTagRemove",
-      "click .search-clear"       : "searchClear",
-      "change .stateFilter"       : "searchTagRemove",
+      "submit #search-form"             : "search",
+      "click .search-tag-remove"        : "searchTagRemove",
+      "click .search-clear"             : "searchClear",
+      "change .stateFilter"             : "searchTagRemove",
       "mouseenter .project-people-div"  : popovers.popoverPeopleOn,
-      "click      .project-people-div"  : popovers.popoverClick
+      "click      .project-people-div"  : popovers.popoverClick,
+      "keyup .select2-container"        : "submitOnEnter"
     },
 
     initialize: function (options) {
@@ -85,7 +86,19 @@ define([
         placeholder: 'I\'m looking for...',
         multiple: true,
         formatResult: formatResult,
-        formatSelection: formatResult,
+        formatSelection: function(object,container,query) {
+            //null object.target to remove the task / project icons that get readded when terms go
+            //     to the search box on the right
+            object.target = null;
+            object.type   = object.name || object.title;
+            object.id     = object.name || object.title;
+            object.value  = object.name || object.title;
+            object.unmatched = true;
+            return object.name || object.title;
+        },
+        createSearchChoice: function (term) {
+            return { unmatched: true,id: term, value: term, name: "<b>"+term+"</b> <i>click to text search for this value.</i>" };
+        },
         ajax: {
           url: '/api/ac/search/' + self.options.target,
           dataType: 'json',
@@ -99,7 +112,18 @@ define([
             return { results: data };
           }
         }
-      });
+      }).on("select2-selecting", function (e){
+          if ( e.choice.hasOwnProperty("unmatched") && e.choice.unmatched ){
+            //remove the hint before adding it to the list
+            e.choice.name = e.val;
+          }
+        });
+    },
+
+    submitOnEnter: function (e) {
+      if(e.keyCode === 13) {
+        this.search(e);
+      }
     },
 
     search: function (e) {
@@ -174,11 +198,12 @@ define([
       var data = {
         items: [],
         tags: [],
+        freeText: [],
         target: self.options.target
       };
       _.each(terms, function (t) {
-        if (t.target == 'tagentity') {
-          data.tags.push(t.id);
+        if ( t.unmatched ) {
+          data.freeText.push(t.value);
         } else {
           data.items.push(t.id);
         }
