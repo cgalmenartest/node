@@ -108,7 +108,6 @@ var getVolunteers = function (task, cb) {
 var findTasks = function (where, cb) {
   var self = this;
   var w = where || {};
-  w.state = 'open';
   Task.find()
   .where(w)
   .sort({'updatedAt': -1})
