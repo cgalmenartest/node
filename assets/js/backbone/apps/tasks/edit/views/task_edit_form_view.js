@@ -195,7 +195,6 @@ define([
         };
 
         var project = this.$("#projectId").select2('data');
-        console.log('project', project);
         if (project) {
           modelData.projectId = project.id;
         } else {
