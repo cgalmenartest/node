@@ -23,6 +23,7 @@ define([
       "submit #search-form"       : "search",
       "click .search-tag-remove"  : "searchTagRemove",
       "click .search-clear"       : "searchClear",
+      "change .stateFilter"       : "searchTagRemove",
       "mouseenter .project-people-div"  : popovers.popoverPeopleOn,
       "click      .project-people-div"  : popovers.popoverClick
     },
@@ -215,13 +216,22 @@ define([
       if (e.preventDefault) e.preventDefault();
 
       var self = this;
-      var parent = $(e.currentTarget).parents('li')[0];
-      var id = $(parent).data('id');
-      var type = $($(e.currentTarget).parents('ul')[0]).attr('id');
-      var project = false;
 
-      if (type == 'search-projs') {
-        project = true;
+      if ( $(e.currentTarget).hasClass("stateFilter") ){
+        if ( $("#search-tags").length > 0 ) {
+          var parent = $("#search-tags");
+          var id = "search-tags";
+          var project = false;
+        }
+      } else {
+        var parent = $(e.currentTarget).parents('li')[0];
+        var id = $(parent).data('id');
+        var type = $($(e.currentTarget).parents('ul')[0]).attr('id');
+        var project = false;
+
+        if (type == 'search-projs') {
+          project = true;
+        }
       }
 
       for (i in self.searchTerms) {
@@ -235,7 +245,10 @@ define([
           }
         }
       }
-      parent.remove();
+
+      if ( !$(e.currentTarget).hasClass("stateFilter") ){
+        parent.remove();
+      }
       if (self.searchTerms.length == 0) {
         $("#search-none").show();
         $(".search-clear").hide();
