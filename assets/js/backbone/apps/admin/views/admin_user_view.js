@@ -2,6 +2,7 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'i18n',
   'utilities',
   'modal_component',
   'admin_user_password_view',
@@ -9,7 +10,7 @@ define([
   'text!admin_user_table',
   'text!admin_paginate',
   'json!login_config'
-], function ($, _, Backbone, utils, ModalComponent, AdminUserPasswordView, AdminUserTemplate, AdminUserTable, Paginate, LoginConfig) {
+], function ($, _, Backbone, i18n, utils, ModalComponent, AdminUserPasswordView, AdminUserTemplate, AdminUserTable, Paginate, LoginConfig) {
 
   var AdminUserView = Backbone.View.extend({
 
@@ -72,6 +73,7 @@ define([
       // hide spinner and show results
       self.$(".spinner").hide();
       self.$(".table-responsive").show();
+      self.$el.i18n();
     },
 
     clickPage: function (e) {

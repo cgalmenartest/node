@@ -4,8 +4,9 @@
       <th class="admin-user-id">#</th>
       <th>Name</th>
       <th>Email</th>
-      <th>Projects Created (open / closed)</th>
-      <th>Tasks Created (open / assigned / completed / archived)</th>
+      <th>Created At</th>
+      <th><span data-i18n="ProjectPlural">Projects</span> (open / closed)</th>
+      <th><span data-i18n="TaskPlural">Tasks</span> (open / assigned / completed / archived)</th>
       <th>Volunteer (open / assigned / completed / archived)</th>
       <th class="admin-user-checkbox">Enabled</th>
       <% if (login.local.enabled === true) { %>
@@ -33,13 +34,20 @@
       <td class="admin-table-username">
         <a class="link-backbone" href="/profile/<%- u.id %>"><%- u.username %></a>
       </td>
+      <td class="admin-table-createdat">
+        <!-- day -->
+        <% var created = new Date(u.createdAt); %>
+        <%= created.toLocaleDateString() %>
+        <!-- time -->
+        <%= created.toLocaleTimeString() %>
+      </td>
       <td class="admin-table-projects">
       <% if (u.projectsCreatedOpen !== 0 || u.projectsCreatedClosed !== 0) { %>
         <a class="link-backbone" href="/profile/<%- u.id %>"><%- u.projectsCreatedOpen %> / <%- u.projectsCreatedClosed %></a>
       <% } %>
       </td>
       <td class="admin-table-tasks">
-      <% if (u.tasksCreatedOpen !== 0 || u.tasksCreatedAssigned !== 0 || u.tasksCreatedCompleted !== 0 || u.tasksCreatedAssigned !== 0) { %>
+      <% if (u.tasksCreatedOpen !== 0 || u.tasksCreatedAssigned !== 0 || u.tasksCreatedCompleted !== 0 || u.tasksCreatedArchived !== 0) { %>
         <a class="link-backbone" href="/profile/<%- u.id %>"><%- u.tasksCreatedOpen %> / <%- u.tasksCreatedAssigned %> / <%- u.tasksCreatedCompleted %> / <%- u.tasksCreatedArchived %></a>
       <% } %>
       </td>
