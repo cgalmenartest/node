@@ -7,8 +7,7 @@
       target: 'Project',
       fields: [
         {
-          name: 'title',
-          where: { state: 'public' }
+          name: 'title'
         }
       ],
       include: [
@@ -22,8 +21,7 @@
       target: 'Task',
       fields: [
         {
-          name: 'title',
-          where: { state: 'public' }
+          name: 'title'
         }
       ],
       link: '/tasks/'
