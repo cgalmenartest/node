@@ -105,6 +105,7 @@ module.exports.policies = {
   VolunteerController : {
     '*': false,
     'create': ['authenticated', 'requireUserId', 'addUserId'],
+    'destroy': ['authenticated', 'requireId', 'ownerOrAdmin'],
   },
 
   EventController : {

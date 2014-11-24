@@ -15,9 +15,10 @@ define([
   var TaskEditFormView = Backbone.View.extend({
 
     events: {
-      'blur .validate'        : 'v',
-      'click #task-view'      : 'view',
-      'submit #task-edit-form': 'submit'
+      'blur .validate'         : 'v',
+      'click #task-view'       : 'view',
+      'submit #task-edit-form' : 'submit',
+      'click .delete-volunteer': 'removeVolunteer'
     },
 
     initialize: function (options) {
@@ -305,6 +306,36 @@ define([
 
       return oldTags;
     },
+
+    removeVolunteer: function(e) {
+      if (e.stopPropagation()) e.stopPropagation();
+      if (e.preventDefault) e.preventDefault();
+      $(e.currentTarget).off("mouseenter");
+      $('.popover').remove();
+
+      var vId = $(e.currentTarget).data('vid');
+      var uId = $(e.currentTarget).data('uid');
+      var self = this;
+
+      if (typeof cache !== "undefined")
+      {
+        $.ajax({
+          url: '/api/volunteer/' + vId,
+          type: 'DELETE',
+        }).done(function (data) {
+            // done();
+        });
+      }
+
+      var oldVols = this.model.attributes.volunteers || [];
+      var unchangedVols = _.filter(oldVols, function(vol){ return ( vol.id !== vId ); } , this)  || [];
+      this.data.data.volunteers = unchangedVols;
+      $('[data-userid="' + uId + '"]').remove();
+      if (this.data && this.data.data && this.data.data.volunteers && this.data.data.volunteers.length === 0) {
+        $('#volunteer-list').remove();
+      }
+    },
+
 
     cleanup: function () {
       if (this.md) { this.md.cleanup(); }

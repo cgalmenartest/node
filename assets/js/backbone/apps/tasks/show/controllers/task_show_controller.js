@@ -101,12 +101,14 @@ define([
         self.initializeHandlers();
         self.initializeLikes();
 
+        if (window.cache.currentUser) {
+          self.initializeVolunteers();
+        }
+
         if (self.options.action == 'edit') {
           self.initializeEdit();
+          popovers.popoverPeopleInit(".project-people-div");
         } else {
-          if (window.cache.currentUser) {
-            self.initializeVolunteers();
-          }
           popovers.popoverPeopleInit(".project-people-div");
           if (self.commentListController) self.commentListController.cleanup();
           self.commentListController = new CommentListController({

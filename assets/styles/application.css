@@ -719,7 +719,7 @@ a.search-tag-remove:hover {
 }
 
 /* project owner styles */
-a.delete-projectowner {
+a.delete-projectowner, a.delete-volunteer {
   position: absolute;
   right: -2px;
   top: -2px;
