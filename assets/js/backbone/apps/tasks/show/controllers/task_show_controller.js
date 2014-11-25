@@ -36,6 +36,7 @@ define([
       "click #task-close"               : "stateChange",
       "click #task-reopen"              : "stateReopen",
       "click .link-backbone"            : linkBackbone,
+      "click .delete-volunteer"         : 'removeVolunteer',
       "mouseenter .project-people-div"  : popovers.popoverPeopleOn,
       "click .project-people-div"       : popovers.popoverClick
     },
@@ -81,6 +82,7 @@ define([
       if (this.taskEditFormView) this.taskEditFormView.cleanup();
       this.taskEditFormView = new TaskEditFormView({
         el: '.edit-task-section',
+        elVolunteer: '#task-volunteers',
         edit: true,
         taskId: this.model.attributes.id,
         model: this.model,
@@ -199,6 +201,7 @@ define([
     edit: function (e) {
       if (e.preventDefault) e.preventDefault();
       this.initializeEdit();
+      popovers.popoverPeopleInit(".project-people-div");
       Backbone.history.navigate('tasks/' + this.model.id + '/edit');
     },
 
@@ -360,7 +363,12 @@ define([
             }).done( function (data) {
               $('.volunteer-true').show();
               $('.volunteer-false').hide();
-              var html = '<div class="project-people-div" data-userid="' + data.userId + '"><img src="/api/user/photo/' + data.userId + '" class="project-people"/></div>';
+              var html = '<div class="project-people-div" data-userid="' + data.userId + '" data-voluserid="' + data.userId + '"><img src="/api/user/photo/' + data.userId + '" class="project-people"/>';
+              console.log('DATA here', self);
+              if (self.options.action === "edit") {
+                html += '<a href="#" class="delete-volunteer volunteer-delete fa fa-times"  id="delete-volunteer-' + data.id + '" data-uid="' + data.userId + '" data-vid="' +  data.id + '"></a>';
+              }
+              html += '</div>';
               $('#task-volunteers').append(html);
               popovers.popoverPeopleInit(".project-people-div");
             });
@@ -372,6 +380,36 @@ define([
     volunteered: function (e) {
       if (e.preventDefault) e.preventDefault();
       // Not able to un-volunteer, so do nothing
+    },
+
+    removeVolunteer: function(e) {
+      if (e.stopPropagation()) e.stopPropagation();
+      if (e.preventDefault) e.preventDefault();
+      $(e.currentTarget).off("mouseenter");
+      $('.popover').remove();
+
+      var vId = $(e.currentTarget).data('vid');
+      var uId = $(e.currentTarget).data('uid');
+      var self = this;
+
+      if (typeof cache !== "undefined")
+      {
+        $.ajax({
+          url: '/api/volunteer/' + vId,
+          type: 'DELETE',
+        }).done(function (data) {
+            // done();
+        });
+      }
+
+      var oldVols = this.model.attributes.volunteers || [];
+      var unchangedVols = _.filter(oldVols, function(vol){ return ( vol.id !== vId ); } , this)  || [];
+      this.model.attributes.volunteers = unchangedVols;
+      $('[data-voluserid="' + uId + '"]').remove();
+      if (window.cache.currentUser.id === uId) {
+        $('.volunteer-false').show();
+        $('.volunteer-true').hide();
+      }
     },
 
     stateChange: function (e) {

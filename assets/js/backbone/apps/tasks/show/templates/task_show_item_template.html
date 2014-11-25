@@ -203,7 +203,7 @@
 
     <div class="row">
       <div class="col-md-12 sm-nopadding md-nopadding">
-        <div class="box task-view">
+        <div class="box task-both">
           <div class="box-pad-lr border-bottom">
             <h2>Requestor and Volunteers
             </h2>
@@ -217,7 +217,7 @@
               </div>
             </div>
             <% _.each(model.volunteers, function (v) { %>
-            <div class="project-people-div" data-userid="<%= v.userId %>">
+            <div class="project-people-div" data-userid="<%= v.userId %>" data-voluserid="<%= v.userId %>">
               <img src="/api/user/photo/<%= v.userId %>" class="project-people" alt="<%= v.name %>"/>
             </div>
             <% }); %>
