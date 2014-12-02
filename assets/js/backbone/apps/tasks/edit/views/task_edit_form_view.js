@@ -9,15 +9,16 @@ define([
   'marked',
   'markdown_editor',
   'text!task_edit_form_template',
+  'text!volunteer_edit_form_template',
   'tag_factory'
-], function ($, _, Backbone, i18n, utilities, UIConfig, async, marked, MarkdownEditor, TaskEditFormTemplate, TagFactory) {
+], function ($, _, Backbone, i18n, utilities, UIConfig, async, marked, MarkdownEditor, TaskEditFormTemplate, VolunteerEditFormTemplate, TagFactory) {
 
   var TaskEditFormView = Backbone.View.extend({
 
     events: {
-      'blur .validate'        : 'v',
-      'click #task-view'      : 'view',
-      'submit #task-edit-form': 'submit'
+      'blur .validate'         : 'v',
+      'click #task-view'       : 'view',
+      'submit #task-edit-form' : 'submit'
     },
 
     initialize: function (options) {
@@ -42,7 +43,7 @@ define([
     },
 
     render: function () {
-      var compiledTemplate;
+      var compiledTemplate, volunteerTemplate;
 
       this.data = {
         data: this.model.toJSON(),
@@ -54,9 +55,15 @@ define([
         ui: UIConfig
       };
 
+      volunteerTemplate = _.template(VolunteerEditFormTemplate, this.data);
+      //$(this.options.elVolunteer).remove();
+      $(this.options.elVolunteer).html(volunteerTemplate);
+      $(this.options.elVolunteer).i18n();
+
       compiledTemplate = _.template(TaskEditFormTemplate, this.data);
       this.$el.html(compiledTemplate);
       this.$el.i18n();
+
       // DOM now exists, begin select2 init
       this.initializeSelect2();
       this.initializeTextArea();
@@ -305,7 +312,7 @@ define([
 
       return oldTags;
     },
-
+    
     cleanup: function () {
       if (this.md) { this.md.cleanup(); }
       removeView(this);
