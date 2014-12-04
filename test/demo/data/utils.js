@@ -6,7 +6,7 @@ var path = require('path');
 module.exports = {
   init: function () {
     var j = request.jar();
-    var r = request.defaults({ jar: j, followRedirect: false });
+    var r = request.defaults({ jar: j, followRedirect: false, timeout: 120000 });
     return r;
   },
 
