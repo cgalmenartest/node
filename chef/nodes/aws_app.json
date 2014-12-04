@@ -5,7 +5,8 @@
       "hostname" : "%DB_HOST%",
       "username" : "%DB_USER%",
       "password" : "%DB_PASS%"
-    }
+    },
+    "git_revision": "devel"
   },
   "citadel" : {
     "bucket" : "18f-secure-vars",
