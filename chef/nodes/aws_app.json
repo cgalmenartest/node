@@ -1,5 +1,6 @@
 {
   "midas": {
+    "environment":"staging",
     "database": {
       "name" : "%DB_NAME%",
       "hostname" : "%DB_HOST%",
