@@ -1,7 +1,7 @@
 name "vagrant"
 description "Vagrant with midas and its dependencies"
 
-run_list "recipe[apt]", "recipe[build-essential::default]", "nginx", "midas"
+run_list "recipe[apt]", "recipe[build-essential::default]", "nginx", "midas::db", "midas"
 
 default_attributes( 
   postgresql: { version: '9.3' },
