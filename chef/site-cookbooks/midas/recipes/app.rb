@@ -84,6 +84,8 @@ unless node.midas.config_repo.nil?
     action :sync
   end
 
+  log "make import #{node.midas.config_dir}/#{node.midas.config_name}"
+
   execute 'run make import' do
     command  "make import DIR=#{node.midas.config_dir}/#{node.midas.config_name}"
     cwd node.midas.deploy_dir
