@@ -72,12 +72,14 @@
               <li>
                 <a href="#" id="editProject"><i class="fa fa-pencil"></i> <span class="box-icon-text">Edit <span data-i18n="Project">Project</span></span></a>
               </li>
+              <% if ( !edit ) { %>
               <li id="li-project-close" style="<% if (data.state == 'closed') { %>display: none;<% } %>">
                 <a href="#" id="project-close"><i class="fa fa-times-circle"></i> <span class="box-icon-text">Close <span data-i18n="Project">Project</span></span></a>
               </li>
               <li id="li-project-reopen" style="<% if (data.state != 'closed') { %>display: none;<% } %>">
                 <a href="#" id="project-reopen"><i class="fa fa-share"></i> <span class="box-icon-text">Reopen <span data-i18n="Project">Project</span></span></a>
               </li>
+              <% } %>
               <!--
               <li>
                 <a href="#" id="project-delete"><i class="fa fa-trash-o"></i> <span class="box-icon-text">Delete <span data-i18n="Project">Project</span></span></a>
