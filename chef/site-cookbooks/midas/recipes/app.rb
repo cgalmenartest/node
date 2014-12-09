@@ -1,4 +1,5 @@
 include_recipe 'midas::ec2_vars'
+include_recipe 'postgresql::client'
 
 directory node.midas.deploy_dir do
   owner node.midas.user
@@ -105,6 +106,7 @@ execute 'run make init' do
   cwd node.midas.deploy_dir
   creates "/tmp/midas_init"
   user node.midas.user
+  only_if "psql -U #{node.midas.database.username} -c \"select * from pg_tables where schemaname='midas'\" | grep -c \"(0 rows)\""
 end
 
 template "/etc/init/midas.conf" do
