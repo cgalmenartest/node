@@ -48,18 +48,8 @@ restore-config:
 	-mv config/i18next.js.bak config/i18next.js
 
 import:
-	-cp $(DIR)/config/local.js config/
-	-cp $(DIR)/config/i18next.js config/
-	-cp $(DIR)/config/settings/*.js config/settings/
-	-cp $(DIR)/assets/js/backbone/config/*.js assets/js/backbone/config/
-	-cp $(DIR)/assets/js/backbone/config/*.json assets/js/backbone/config/
-	-cp -R $(DIR)/assets/locales/* assets/locales/
-	-cp $(DIR)/assets/styles/*.css assets/styles/
-	-cp -R $(DIR)/assets/images/* assets/images/
-	-cp $(DIR)/assets/js/backbone/apps/footer/templates/footer_template.html assets/js/backbone/apps/footer/templates/footer_template.html
-	-cp $(DIR)/test/init/init/config.js test/init/init/config.js
-	-cp $(DIR)/test/demo/data/config.js test/demo/data/config.js
-	-cp -R $(DIR)/test/demo/data/assets/* test/demo/data/assets
+	-cp -v $(DIR)/exclude.txt exclude.txt
+	rsync -av --exclude-from=exclude.txt $(DIR)/* .
 
 test: copy-config test-api restore-config
 
