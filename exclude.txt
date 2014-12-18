@@ -1,0 +1,5 @@
+.git/*
+LICENCE
+LICENCE.md
+README.md
+exclude.txt
