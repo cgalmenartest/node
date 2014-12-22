@@ -95,6 +95,10 @@
       s.parentNode.insertBefore(g,s); })();
     </script>
   <% } %>
+
+  <% if (sails.config.analytics && sails.config.analytics.dap && sails.config.analytics.dap.enabled == true) { %>
+    <script id="_fed_an_ua_tag" type="text/javascript" src="<%= sails.config.analytics.dap.source%>"></script>
+  <% } %>
   </body>
 
 </html>
