@@ -27,6 +27,7 @@
         "git-rev": "0.2.x",
         "sails-disk": "~0.10.0",
         "sails-postgresql": "~0.10.9",
+        "sails-build-dictionary": "0.10.1",
         "i18next": "~1.7.4"
     },
     "devDependencies": {
