@@ -1,6 +1,7 @@
 var assert = require('chai').assert;
 var conf = require('./helpers/config');
 var utils = require('./helpers/utils');
+var async = require('async');
 var request;
 
 describe('user:', function() {
