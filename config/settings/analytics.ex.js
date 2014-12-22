@@ -9,5 +9,9 @@ module.exports = {
     enabled: false,
     host: '',
     key: ''
+  },
+  dap: {
+    enabled: false,
+    source: ''
   }
 };
