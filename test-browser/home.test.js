@@ -9,7 +9,7 @@ var system = require('system');
 
 describe('Home page', function() {
   before(function() {
-    casper.start('http://'+system.env.TEST_SERVER, function afterStart() {
+    casper.start(system.env.TEST_ROOT, function afterStart() {
       this.options = {
         verbose: true,
         logLevel: "debug",
@@ -38,7 +38,7 @@ describe('Home page', function() {
     casper.then(function() {
       casper.waitForText('Opportunities', function waitForTextOpportunities() {
         casper.click('.tasks .nav-link[href]')
-        assert.equal(casper.getCurrentUrl(), 'http://localhost:1337/tasks');
+        assert.equal(casper.getCurrentUrl(), system.env.TEST_ROOT + '/tasks');
       })
     });
   });

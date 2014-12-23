@@ -5,7 +5,7 @@ REPORTER = spec
 DIR = .
 NODE_ENV = development
 
-export TEST_SERVER ?= localhost:1337
+export TEST_ROOT ?= http://localhost:1337
 
 
 build:
