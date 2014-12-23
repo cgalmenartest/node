@@ -65,6 +65,24 @@ test: copy-config test-api restore-config
 
 test-all: copy-config test-all-current-config restore-config
 
+start: server.PID
+
+server.PID:
+	sails lift & echo $$! > $@;
+	sleep 5
+
+stop: server.PID
+	kill `cat $<` && rm $<
+
+.PHONY: start stop server.PID
+
+test-browser: copy-config test-browser-current-config-with-server restore-config
+
+test-browser-current-config-with-server: start test-browser-current-config stop
+
+test-browser-current-config:
+	mocha-casperjs test-browser/* || true
+
 test-all-current-config:
 	@NODE_ENV=test ./node_modules/.bin/mocha \
 		--reporter $(REPORTER) \

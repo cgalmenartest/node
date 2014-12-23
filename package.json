@@ -32,6 +32,8 @@
     "devDependencies": {
         "mocha": "*",
         "chai": "*",
+        "mocha-casperjs": "^0.5.3",
+        "casper-chai": "^0.2.1",
         "request": "2.x",
         "grunt-contrib-requirejs": "~0.4.1",
         "grunt-contrib-cssmin": "*",
