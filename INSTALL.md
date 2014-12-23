@@ -67,9 +67,9 @@ Then back to the command-line:
 
     brew install nodejs
 
-    git clone https://github.com/Innovation-Toolkit/sails-postgresql.git
+    git clone https://github.com/18F/sails-postgresql.git
     cd sails-postgresql
-    git checkout bytea
+    git checkout softdelete
     npm install
     npm link
 
@@ -138,13 +138,13 @@ AND modify `pg_hba.conf`:
 #### Clone Forked Libraries
 
 This project uses a forked version of
-[sails-postgresql](https://github.com/Innovation-Toolkit/sails-postgresql) to
-provide soft deletes and support for binary objects. Clone it and run the
-commands below to set everything up properly.
+[sails-postgresql](https://github.com/18F/sails-postgresql) to
+provide soft deletes. Clone it and run the commands below to set
+everything up properly.
 
-     git clone https://github.com/Innovation-Toolkit/sails-postgresql.git
+     git clone https://github.com/18F/sails-postgresql.git
      cd sails-postgresql
-     git checkout bytea
+     git checkout softdelete
      npm install
      sudo npm link
 
