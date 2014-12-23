@@ -5,6 +5,9 @@ REPORTER = spec
 DIR = .
 NODE_ENV = development
 
+export TEST_ROOT ?= http://localhost:1337
+
+
 build:
 	grunt build
 
@@ -54,6 +57,24 @@ import:
 test: copy-config test-api restore-config
 
 test-all: copy-config test-all-current-config restore-config
+
+start: server.PID
+
+server.PID:
+	sails lift & echo $$! > $@;
+	sleep 5
+
+stop: server.PID
+	kill `cat $<` && rm $<
+
+.PHONY: start stop server.PID
+
+test-browser: copy-config test-browser-current-config-with-server restore-config
+
+test-browser-current-config-with-server: start test-browser-current-config stop
+
+test-browser-current-config:
+	./node_modules/mocha-casperjs/bin/mocha-casperjs test-browser/*.js || true
 
 test-all-current-config:
 	@NODE_ENV=test ./node_modules/.bin/mocha \
