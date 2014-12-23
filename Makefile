@@ -5,6 +5,9 @@ REPORTER = spec
 DIR = .
 NODE_ENV = development
 
+export TEST_SERVER ?= localhost:1337
+
+
 build:
 	grunt build
 
@@ -81,7 +84,7 @@ test-browser: copy-config test-browser-current-config-with-server restore-config
 test-browser-current-config-with-server: start test-browser-current-config stop
 
 test-browser-current-config:
-	mocha-casperjs test-browser/* || true
+	./node_modules/mocha-casperjs/bin/mocha-casperjs test-browser/*.js || true
 
 test-all-current-config:
 	@NODE_ENV=test ./node_modules/.bin/mocha \

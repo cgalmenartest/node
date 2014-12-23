@@ -4,9 +4,12 @@ var assert = chai.assert;
 var casper_chai = require('casper-chai');
 chai.use(casper_chai);
 
-describe('Google searching', function() {
+// access environment vars
+var system = require('system');
+
+describe('Home page', function() {
   before(function() {
-    casper.start('http://localhost:1337', function afterStart() {
+    casper.start('http://'+system.env.TEST_SERVER, function afterStart() {
       this.options = {
         verbose: true,
         logLevel: "debug",
@@ -15,12 +18,11 @@ describe('Google searching', function() {
       this.on('remote.message', function(message) {
         this.log('browser console.log ==> ' + message);
       });
-
     }).viewport(1000,1000).userAgent('Mozilla/5.0')
 
   })
 
-  it('should be success', function() {
+  it('should have success status', function() {
     casper.then(function() {
       assert.equal(casper.currentHTTPStatus,200);
     })
