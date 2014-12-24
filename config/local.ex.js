@@ -124,6 +124,8 @@ module.exports = {
   },
 
   // system email address (from address)
-  systemEmail: 'test@midas.com'
+  systemEmail: 'test@midas.com',
 
+  // Is New Relic configured for this server?
+  newrelicEnabled: false
 };
