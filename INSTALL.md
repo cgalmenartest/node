@@ -238,6 +238,12 @@ Go to [http://localhost:1337](http://localhost:1337) to see the app
 
 Check out the [Contributor's Guide](CONTRIBUTING.md) for next steps
 
+#### Troubleshooting
+On Mac OSX, you may receive a stream of
+
+    Error: EMFILE, too many open files
+
+messages after running `sails lift`. This is an issue with OSX and Grunt; there are directions to fix the issue [here](https://github.com/gruntjs/grunt-contrib-copy/issues/21) or [here](http://unix.stackexchange.com/questions/108174/how-to-persist-ulimit-settings-in-osx-mavericks).
 
 ## For production
 
