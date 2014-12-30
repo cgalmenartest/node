@@ -67,9 +67,9 @@ Then back to the command-line:
 
     brew install nodejs
 
-    git clone https://github.com/Innovation-Toolkit/sails-postgresql.git
+    git clone https://github.com/18F/sails-postgresql.git
     cd sails-postgresql
-    git checkout bytea
+    git checkout softdelete
     npm install
     npm link
 
@@ -138,13 +138,13 @@ AND modify `pg_hba.conf`:
 #### Clone Forked Libraries
 
 This project uses a forked version of
-[sails-postgresql](https://github.com/Innovation-Toolkit/sails-postgresql) to
-provide soft deletes and support for binary objects. Clone it and run the
-commands below to set everything up properly.
+[sails-postgresql](https://github.com/18F/sails-postgresql) to
+provide soft deletes. Clone it and run the commands below to set
+everything up properly.
 
-     git clone https://github.com/Innovation-Toolkit/sails-postgresql.git
+     git clone https://github.com/18F/sails-postgresql.git
      cd sails-postgresql
-     git checkout bytea
+     git checkout softdelete
      npm install
      sudo npm link
 
@@ -238,6 +238,12 @@ Go to [http://localhost:1337](http://localhost:1337) to see the app
 
 Check out the [Contributor's Guide](CONTRIBUTING.md) for next steps
 
+#### Troubleshooting
+On Mac OSX, you may receive a stream of
+
+    Error: EMFILE, too many open files
+
+messages after running `sails lift`. This is an issue with OSX and Grunt; there are directions to fix the issue [here](https://github.com/gruntjs/grunt-contrib-copy/issues/21) or [here](http://unix.stackexchange.com/questions/108174/how-to-persist-ulimit-settings-in-osx-mavericks).
 
 ## For production
 

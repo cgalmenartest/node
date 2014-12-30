@@ -469,7 +469,9 @@ module.exports = function (grunt) {
       assets: {
 
         // Assets to watch:
-        files: ['assets/**/*'],
+        // NOTE: The second entry in this array is to work around a bug related to the
+        // number of folders watched.
+        files: ['assets/**/*', '!assets/js/vendor/**/*'],
 
         // When assets are changed:
         tasks: ['compileAssets', 'linkAssets']
