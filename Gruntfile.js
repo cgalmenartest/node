@@ -242,6 +242,17 @@ module.exports = function (grunt) {
           dest: 'assets/prod/fonts'
         }
         ]
+      },
+      csssupport: {
+        files: [
+        {
+          expand: true,
+          flatten: true,
+          cwd: './assets',
+          src: ['js/vendor/select2/*.png', 'js/vendor/select2/*.gif'],
+          dest: 'assets/prod/css'
+        }
+        ]
       }
     },
 
@@ -514,7 +525,9 @@ module.exports = function (grunt) {
     // compile the css
     'cssmin',
     // copy fonts
-    'copy:font'
+    'copy:font',
+    // copy css-support images (images that css expects to be in the css directory)
+    'copy:csssupport'
   ]);
 
   // When sails is lifted in production
