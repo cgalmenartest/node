@@ -29,8 +29,10 @@ function send (locals, html, text, cb) {
     subject: locals.subject,
     html: html,
     text: text
-  },
-  cb);
+  }, function(err, info) {
+       if (err) sails.log.debug('Failed to send mail. If this is unexpected, please check your settings.');
+       cb(err, info);
+     });
 };
 
 module.exports = {
