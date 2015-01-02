@@ -18,7 +18,7 @@ require.config({
     'jquery.ui.widget'          : '../../vendor/jquery-file-upload/js/vendor/jquery.ui.widget',
     'jquery_fileupload'         : '../../vendor/jquery-file-upload/js/jquery.fileupload',
     'jquery.selection'          : '../../vendor/jquery-selection/src/jquery.selection',
-    'jquery.caret'              : '../../vendor/jquery-caret/src/jquery.caret',
+    'jquery.caret'              : '../../vendor/jquery-caret/dist/jquery.caret.min',
     'jquery.at'                 : '../../vendor/jquery-at/dist/js/jquery.atwho',
     'underscore'                : '../../vendor/underscore',
     'backbone'                  : '../../vendor/backbone',
