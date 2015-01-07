@@ -30,7 +30,7 @@ function send (locals, html, text, cb) {
     html: html,
     text: text
   }, function(err, info) {
-       if (err) sails.log.debug('Failed to send mail. If this is unexpected, please check your settings.');
+       if (err) sails.log.debug('Failed to send mail. If this is unexpected, please check your email configuration in config/local.js.');
        cb(err, info);
      });
 };
