@@ -715,7 +715,7 @@ module.exports = {
   cleanUser: function (user, reqId) {
     var u = {
       id: user.id,
-      username: null,
+      username: user.username,
       name: user.name,
       title: user.title,
       bio: user.bio,

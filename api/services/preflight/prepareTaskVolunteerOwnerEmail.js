@@ -49,6 +49,7 @@ module.exports = {
           content.fields.templateLocals.profileLink = content.fields.metadata.globals.urlPrefix  + '/profile/' + volunteer.id;
           content.fields.templateLocals.profileTitle = (volunteer.title ? volunteer.title : "");
           content.fields.templateLocals.profileName = (volunteer.name ? volunteer.name : "Someone");
+          content.fields.templateLocals.profileEmail = (volunteer.username ? volunteer.username : "Unknown Email");
           // set info on volunteer's location and agency
           volunteer.location = volunteer.location || {};
           volunteer.location.tag = volunteer.location.tag || {};
