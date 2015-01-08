@@ -9,4 +9,3 @@ override_attributes(
     config_name: "open-opportunities",
   }
 )
-
