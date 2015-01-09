@@ -102,6 +102,7 @@ module.exports = {
     }
     sails.services.utils.user['getUser'](req.route.params.id, reqId, function (err, user) {
       // prune out any info you don't want to be public here.
+      if (reqId !== req.route.params.id) user.username = null;
       if (err) { return res.send(400, { message: err }); }
       sails.log.debug('User Get:', user);
       res.send(user);
@@ -120,6 +121,7 @@ module.exports = {
     }
     sails.services.utils.user['getUser'](userId, reqId, function (err, user) {
       // this will only be shown to logged in users.
+      if (userId !== reqId) user.username = null;
       if (err) { return res.send(400, err); }
       sails.log.debug('User Get:', user);
       res.send(user);

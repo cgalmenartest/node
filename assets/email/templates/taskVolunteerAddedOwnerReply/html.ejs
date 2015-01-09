@@ -15,7 +15,7 @@ has volunteered for
         <img width="100" height="100" src="<%= globals.urlPrefix %>/api/user/photo/<%= metadata.volunteer.id %>" alt="<%= profileName %>"/>
       </td>
       <td valign="top">
-        <span class="volunteer-name"><%- profileName %></span>
+        <span class="volunteer-name"><%- profileName %> (<%- profileEmail %>)</span>
         <% if (profileTitle) { %>
           <br/>
           <%= profileTitle %>

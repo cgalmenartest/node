@@ -4,7 +4,7 @@ Hello<% if (metadata.recipient.name) { %> <%= metadata.recipient.name %><% } %>,
 
 Here is more information about your volunteer:
 
-<%- profileName %>
+<%- profileName %> (<%- profileEmail %>)
 <%- profileLink %><% if (profileTitle) { %>
 <%= profileTitle %><% } %><% if (profileAgency) { %>
 <%= profileAgency %><% } %><% if (profileLocation) { %>
