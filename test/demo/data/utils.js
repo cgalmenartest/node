@@ -124,6 +124,10 @@ module.exports = {
       url: conf.url + '/project',
       body: JSON.stringify(proj)
     }, function(err, response, body) {
+      if (response.statusCode !== 200) {
+        return cb(new Error("Project Update failed with response: "+ response.statusCode + " " + body));
+      }
+
       if (err) { return cb(err, null); }
       var b = JSON.parse(body);
       cb(null, b);
