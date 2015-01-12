@@ -1,4 +1,4 @@
-![midas](assets/images/logo.png) [![Build Status](https://travis-ci.org/18F/midas.png?branch=master)](https://travis-ci.org/18F/midas) [![Dependency Status](https://gemnasium.com/Innovation-Toolkit/midas.png)](https://gemnasium.com/Innovation-Toolkit/midas)
+![midas](assets/images/logo.png) [![Build Status](https://travis-ci.org/18F/midas.png?branch=master)](https://travis-ci.org/18F/midas) [![Dependency Status](https://gemnasium.com/18F/midas.png)](https://gemnasium.com/18F/midas)
 =====
 
 Goal: to foster innovation across team boundaries by connecting individuals who identify challenges and then work collaboratively to implement solutions.
