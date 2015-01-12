@@ -207,8 +207,6 @@ It is not necessary to edit any config files to run the demo locally.  You may o
 
 #### Setup the database
 
-In ```config/models.js```, temporarily set ```migrate: 'alter'```
-
 From the root of the midas directory, initialize the database:
 
      make init
@@ -216,10 +214,6 @@ From the root of the midas directory, initialize the database:
 If you'd like to include a sample project, also run:
 
      make demo
-
-
-In ```config/models.js```,  set ```migrate: 'safe'```
-
 
 Now you are ready to rock!
 
