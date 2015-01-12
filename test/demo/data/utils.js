@@ -121,7 +121,7 @@ module.exports = {
 
   proj_put: function(request, proj, cb) {
     var r = request.put({
-      url: conf.url + '/project',
+      url: conf.url + '/project/'+proj.id,
       body: JSON.stringify(proj)
     }, function(err, response, body) {
       if (response.statusCode !== 200) {
