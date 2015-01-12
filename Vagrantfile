@@ -45,6 +45,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # backing providers for Vagrant. These expose provider-specific options.
   # Example for VirtualBox:
   #
+
+  config.vm.provision "shell", inline: 'apt-get update'
+
   config.vm.provider "virtualbox" do |vb|
   #   # Don't boot with headless mode
   #   vb.gui = true
@@ -60,7 +63,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.omnibus.chef_version = :latest
   config.berkshelf.enabled = true
-  config.berkshelf.berksfile_path = "chef/Berksfile"  
+  config.berkshelf.berksfile_path = "chef/Berksfile"
 
   config.vm.provision "chef_solo" do |chef|
     chef.verbose_logging = true;
