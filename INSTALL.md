@@ -1,6 +1,9 @@
 Installation
 =====
 
+You can install Midas natively on Mac, Linux or Windows (see step by step
+  instructions below).  You can also use a Vagrant virtual machine for development.
+
 ## Vagrant
 
 Using vagrant is a quick and easy way to get a local midas instance up and running on a virtual machine. We use [Chef](http://www.getchef.com/chef/) for automated deployment, which can also be used for deploying to cloud servers.
@@ -203,6 +206,9 @@ It is not necessary to edit any config files to run the demo locally.  You may o
 `login.json` specifies the login options available on the frontend, and must have a corresponding backend component or configuration enabled (see `config/settings/auth.ex.js`).
 
 #### Setup the database
+
+In ```config/models.js```, temporarily set ```migrate: 'alter'```
+
 From the root of the midas directory, initialize the database:
 
      make init
@@ -210,6 +216,10 @@ From the root of the midas directory, initialize the database:
 If you'd like to include a sample project, also run:
 
      make demo
+
+
+In ```config/models.js```,  set ```migrate: 'safe'```
+
 
 Now you are ready to rock!
 
@@ -352,4 +362,3 @@ Raise sails with
      sails lift
 
 You can now access the server at `http://localhost:1337`
-
