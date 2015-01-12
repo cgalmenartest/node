@@ -15,11 +15,10 @@ module.exports.models = {
   *                                                                          *
   * See http://sailsjs.org/#/documentation/concepts/ORM/model-settings.html  *
   *                                                                          *
-  * Midas Note: Due to the implementation details of soft delete in our      *
-  * fork of the postgres sails adapter                                       *
-  * (https://github.com/18F/sails-postgresql), the migrate mode must be      *
-  * set to safe. Setting it to a different value will not function or will   *
-  * cause the deletedAt columns to be removed from the database.             *
+  * Midas Note: Schema is created in development when you run 'sails lift'.  *
+  * Typically that is when you run 'make init' on setup.  In production,     *
+  * sails should not modify your schema, but it is fine to change this to    *
+  * 'safe' after that initial schema creation step.                          *
   ***************************************************************************/
   migrate: 'alter'
 
