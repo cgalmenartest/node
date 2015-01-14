@@ -206,11 +206,7 @@ module.exports = {
         if (err) { return res.send(400, { message: 'An error occurred looking up task metrics.', error: err }); }
         metrics.users.withTasks = _(tasks).pluck('userId').uniq().value().length;
         metrics.tasks.count = tasks.length;
-        var lastId = -1;
         for(var i = 0; i < metrics.tasks.count; i++) {
-          if (tasks[i].userId !== lastId) {
-            lastId = tasks[i].userId;
-          }
           if (tasks[i].state === "open") {
             metrics.tasks.open++;
           } else if (tasks[i].state === "assigned") {
@@ -223,7 +219,7 @@ module.exports = {
         }
         Volunteer.find().sort('taskId').exec(function(err, vols) {
           if (err) { return res.send(400, { message: 'An error occurred looking up task metrics.', error: err }); }
-          lastId = -1;
+          var lastId = -1;
           for (var j = 0; j < vols.length; j++) {
             if (vols[j].taskId !== lastId) {
               metrics.tasks.withVolunteers++;
