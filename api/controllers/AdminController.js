@@ -279,6 +279,149 @@ module.exports = {
   },
 
   /**
+  * List recent notifications for activity feed
+  * eg: /api/admin/activities
+  */
+  activities: function (req, res) {
+
+    // Set up templates to for what data needs to be returned
+    var templates = {
+
+      newComment: function(event, done) {
+        var activity = {
+              type: 'newComment',
+              createdAt: event.createdAt
+            },
+            steps = [];
+
+        // Get comment model
+        steps.push(function(done) {
+          Comment.findOne({ id: event.callerId }).exec(function(err, result) {
+            if (err) return done('Failed to find model' + err);
+            activity.comment = result;
+            done();
+          });
+        });
+
+        // Get comment user
+        steps.push(function(done) {
+          var comment = activity.comment;
+
+          User.findOne({ id: comment.userId }).exec(function(err, result) {
+            if (err) return done('Failed to find model' + err);
+            activity.user = result;
+            done();
+          });
+        });
+
+        // Get comment task / project
+        steps.push(function(done) {
+          var comment = activity.comment,
+              type = (comment.projectId) ? 'project' : 'task',
+              typeId = comment.projectId || comment.taskId;
+
+          sails.models[type].findOne({ id: typeId }).exec(function(err, result) {
+            if (err) return done('Failed to find model' + err);
+            activity[type] = result;
+            done();
+          });
+        });
+
+        async.series(steps, function(err) { done(err, activity) });
+      },
+
+      newVolunteer: function(event, done) {
+        var activity = {
+          type: 'newVolunteer',
+          createdAt: event.createdAt
+        },
+        steps = [];
+
+        // Get task model
+        steps.push(function(done) {
+          Task.findOne({ id: event.callerId }).exec(function(err, result) {
+            if (err) return done('Failed to find model' + err);
+            activity.task = result;
+            done();
+          });
+        });
+
+        // Get user model
+        steps.push(function(done) {
+          var userId = JSON.parse(event.localParams).fields.volunteerId;
+          User.findOne({ id: userId }).exec(function(err, user) {
+            if (err) return done('Failed to find model' + err);
+            activity.user = user;
+            done();
+          });
+        });
+
+        async.series(steps, function(err) { done(err, activity) });
+      },
+
+      newUser: function(event, done) {
+        var activity = {
+          type: 'newUser',
+          createdAt: event.createdAt
+        },
+        steps = [];
+
+        // Get user model
+        steps.push(function(done) {
+          var userId = JSON.parse(event.localParams).fields.userId;
+          User.findOne({ id: userId }).exec(function(err, user) {
+            if (err) return done('Failed to find model' + err);
+            activity.task = user;
+            done();
+          });
+        });
+
+        async.series(steps, function(err) { done(err, activity) });
+      }
+
+    };
+
+    // Map actions to templates
+    var actions = {
+      projectCommentAdded: templates.newComment,
+      taskCommentAdded: templates.newComment,
+      taskVolunteerAdded: templates.newVolunteer,
+      welcomeUser: templates.newUser
+    };
+
+    // Get active notifications
+    Notification.find({ isActive: true }).sort('createdAt desc').exec(next);
+
+    // Process notifications
+    function next(err, notifications) {
+      if (err) return res.send(400, {
+        message: 'An error occurred looking up recent activities.',
+        error: err
+      });
+
+      var activities = [];
+
+      // Filter unique notifications
+      notifications = _.uniq(notifications, false, 'triggerGuid');
+
+      // Apply templates
+      async.map(notifications, function(notification, done) {
+        actions[notification.action](notification, done);
+      }, function(err, results) {
+        if (err) return res.send(400, {
+          message: 'An error occurred looking up recent activities.',
+          error: err
+        });
+
+        // Return templates
+        res.send(results);
+      });
+
+    }
+
+  },
+
+  /**
    * Overrides for the settings in `config/controllers.js`
    * (specific to AdminController)
    */
