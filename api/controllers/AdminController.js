@@ -204,11 +204,11 @@ module.exports = {
       metrics.users.count = userCount;
       Task.find().sort('userId').exec(function(err, tasks) {
         if (err) { return res.send(400, { message: 'An error occurred looking up task metrics.', error: err }); }
+        metrics.users.withTasks = _(tasks).pluck('userId').uniq().value().length;
         metrics.tasks.count = tasks.length;
         var lastId = -1;
         for(var i = 0; i < metrics.tasks.count; i++) {
           if (tasks[i].userId !== lastId) {
-            metrics.users.withTasks++;
             lastId = tasks[i].userId;
           }
           if (tasks[i].state === "open") {
