@@ -14,7 +14,7 @@
 
 <script type="text/template" id="newVolunteer">
   <li class="box-pad-t box-pad-b">
-    <a href="/profile/{{user.id}}">{{user.name}}</a> signed up for {{task.title}}
+    <a href="/profile/{{user.id}}">{{user.name}}</a> signed up for <a href="/tasks/{{task.id}}">{{task.title}}</a>
     <div class="comment-metadata"><time title="{{createdAt}}">{{createdAtFormatted}}</time></div>
   </li>
 </script>
