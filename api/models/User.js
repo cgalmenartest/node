@@ -45,23 +45,24 @@ module.exports = {
       type: 'INTEGER',
       defaultsTo: 0
     }
-  },
-
-  afterUpdate: function(model, done) {
-    Notification.create({
-      callerType: 'User',
-      callerId: model.id,
-      triggerGuid: require('node-uuid').v4(),
-      action: 'userUpdated',
-      createdDate: model.createdAt
-    }).exec(function (err, newNotification){
-      if (err) {
-        sails.log.debug(err);
-        done(null);
-        return false;
-      }
-      done(null);
-    });
   }
+
+  // Blocked by 18f/midas#498
+  // afterUpdate: function(model, done) {
+  //   Notification.create({
+  //     callerType: 'User',
+  //     callerId: model.id,
+  //     triggerGuid: require('node-uuid').v4(),
+  //     action: 'userUpdated',
+  //     createdDate: model.createdAt
+  //   }).exec(function (err, newNotification){
+  //     if (err) {
+  //       sails.log.debug(err);
+  //       done(null);
+  //       return false;
+  //     }
+  //     done(null);
+  //   });
+  // }
 
 };
