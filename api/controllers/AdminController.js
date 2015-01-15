@@ -283,6 +283,10 @@ module.exports = {
   * eg: /api/admin/activities
   */
   activities: function (req, res) {
+    // Query parameters
+    var page = parseInt(req.param('page', 1)),
+        limit = req.param('limit', 50),
+        sort = req.param('sort', 'createdAt desc');
 
     // Set up templates to for what data needs to be returned
     var templates = {
@@ -439,7 +443,10 @@ module.exports = {
     };
 
     // Get active notifications
-    Notification.find({ isActive: true }).sort('createdAt desc').exec(next);
+    Notification.find({ isActive: true })
+      .sort(sort)
+      .paginate({ page: page, limit: limit})
+      .exec(next);
 
     // Process notifications
     function next(err, notifications) {
@@ -465,6 +472,9 @@ module.exports = {
           message: 'An error occurred looking up recent activities.',
           error: err
         });
+
+        // Remove falsy items
+        results = _.compact(results);
 
         // Return templates
         res.send(results);
