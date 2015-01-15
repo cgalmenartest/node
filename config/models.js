@@ -20,6 +20,6 @@ module.exports.models = {
   * sails should not modify your schema, but it is fine to change this to    *
   * 'safe' after that initial schema creation step.                          *
   ***************************************************************************/
-  migrate: 'alter'
+  migrate: 'safe'
 
 };
