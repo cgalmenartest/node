@@ -32,6 +32,23 @@ module.exports = {
         }
         return false;
     }
+  },
+
+  afterCreate: function(model, done) {
+    Notification.create({
+      callerType: 'Task',
+      callerId: model.id,
+      triggerGuid: require('node-uuid').v4(),
+      action: 'taskCreated',
+      createdDate: model.createdAt
+    }).exec(function (err, newNotification){
+      if (err) {
+        sails.log.debug(err);
+        done(null);
+        return false;
+      }
+      done(null);
+    });
   }
 
 };

@@ -378,6 +378,53 @@ module.exports = {
         });
 
         async.series(steps, function(err) { done(err, activity) });
+      },
+
+      updatedUser: function(event, done) {
+        var activity = {
+          type: 'updatedUser',
+          createdAt: event.createdAt
+        },
+        steps = [];
+
+        // Get user model
+        steps.push(function(done) {
+          User.findOne({ id: event.callerId }).exec(function(err, user) {
+            if (err) return done('Failed to find model' + err);
+            activity.user = user;
+            done();
+          });
+        });
+
+        async.series(steps, function(err) { done(err, activity) });
+      },
+
+      newTask: function(event, done) {
+        var activity = {
+          type: 'newTask',
+          createdAt: event.createdAt
+        },
+        steps = [];
+
+        // Get task model
+        steps.push(function(done) {
+          Task.findOne({ id: event.callerId }).exec(function(err, task) {
+            if (err) return done('Failed to find model' + err);
+            activity.task = task;
+            done();
+          });
+        });
+
+        // Get user model
+        steps.push(function(done) {
+          User.findOne({ id: activity.task.userId }).exec(function(err, user) {
+            if (err) return done('Failed to find model' + err);
+            activity.user = user;
+            done();
+          });
+        });
+
+        async.series(steps, function(err) { done(err, activity) });
       }
 
     };
@@ -387,7 +434,8 @@ module.exports = {
       projectCommentAdded: templates.newComment,
       taskCommentAdded: templates.newComment,
       taskVolunteerAdded: templates.newVolunteer,
-      welcomeUser: templates.newUser
+      welcomeUser: templates.newUser,
+      taskCreated: templates.newTask
     };
 
     // Get active notifications
@@ -407,7 +455,11 @@ module.exports = {
 
       // Apply templates
       async.map(notifications, function(notification, done) {
-        actions[notification.action](notification, done);
+        if (actions[notification.action]) {
+          actions[notification.action](notification, done);
+        } else {
+          done();
+        }
       }, function(err, results) {
         if (err) return res.send(400, {
           message: 'An error occurred looking up recent activities.',

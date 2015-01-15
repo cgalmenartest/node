@@ -55,6 +55,7 @@ define([
       var template = _.template(AdminDashboardActivities);
       self.$(".activity-block").html(template);
       _(data).forEach(function(activity) {
+        if (!activity) return;
         // Strip HTML from comments
         if (activity.comment) {
           var value = activity.comment.value.replace(/<(?:.|\n)*?>/gm, '');
