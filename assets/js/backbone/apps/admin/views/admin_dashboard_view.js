@@ -7,8 +7,9 @@ define([
   'modal_component',
   'text!admin_dashboard_template',
   'text!admin_dashboard_table',
+  'text!admin_dashboard_activities',
   'json!login_config'
-], function ($, _, Backbone, i18n, utils, ModalComponent, AdminDashboardTemplate, AdminDashboardTable, LoginConfig) {
+], function ($, _, Backbone, i18n, utils, ModalComponent, AdminDashboardTemplate, AdminDashboardTable, AdminDashboardActivities, LoginConfig) {
 
   var AdminDashboardView = Backbone.View.extend({
 
@@ -36,7 +37,7 @@ define([
       var template = _.template(AdminDashboardTemplate, data);
       this.$el.html(template);
       this.rendered = true;
-      // fetch metric data
+      // fetch data
       this.fetchData(self, this.data);
       return this;
     },
@@ -50,6 +51,28 @@ define([
       self.$(".metric-block").show();
     },
 
+    renderActivities: function (self, data) {
+      var template = _.template(AdminDashboardActivities);
+      self.$(".activity-block").html(template);
+      _(data).forEach(function(activity) {
+        // Strip HTML from comments
+        if (activity.comment) {
+          var value = activity.comment.value.replace(/<(?:.|\n)*?>/gm, '');
+          activity.comment.value = value;
+        }
+        // Format timestamp
+        activity.createdAtFormatted = $.timeago(activity.createdAt);
+        var template = self.$('#' + activity.type).text(),
+            content = _.template(template, activity, { escape: /\{\{(.+?)\}\}/g });
+        self.$('.activity-block .activity-feed').append(content);
+      });
+
+      this.$el.i18n();
+      // hide spinner and show results
+      self.$(".spinner").hide();
+      self.$(".activity-block").show();
+    },
+
     fetchData: function (self, data) {
       $.ajax({
         url: '/api/admin/metrics',
@@ -58,6 +81,18 @@ define([
         success: function (data) {
           self.data = data;
           self.renderMetrics(self, data);
+        },
+        error: function (xhr, status, error) {
+          self.handleError(self, xhr, status, error);
+        }
+      });
+      $.ajax({
+        url: '/api/admin/activities',
+        dataType: 'json',
+        data: data,
+        success: function (data) {
+          self.data = data;
+          self.renderActivities(self, data);
         },
         error: function (xhr, status, error) {
           self.handleError(self, xhr, status, error);

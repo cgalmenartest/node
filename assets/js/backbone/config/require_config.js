@@ -221,6 +221,7 @@ require.config({
     'admin_dashboard_view'      : '../apps/admin/views/admin_dashboard_view',
     'admin_dashboard_template'  : '../apps/admin/templates/admin_dashboard_template.html',
     'admin_dashboard_table'     : '../apps/admin/templates/admin_dashboard_table.html',
+    'admin_dashboard_activities'     : '../apps/admin/templates/admin_dashboard_activities.html',
 
     // ----------
     //= Components
