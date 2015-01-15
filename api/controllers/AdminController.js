@@ -322,7 +322,8 @@ module.exports = {
 
           sails.models[type].findOne({ id: typeId }).exec(function(err, result) {
             if (err) return done('Failed to find model' + err);
-            activity[type] = result;
+            activity.itemType = type;
+            activity.item = result;
             done();
           });
         });
@@ -371,7 +372,7 @@ module.exports = {
           var userId = JSON.parse(event.localParams).fields.userId;
           User.findOne({ id: userId }).exec(function(err, user) {
             if (err) return done('Failed to find model' + err);
-            activity.task = user;
+            activity.user = user;
             done();
           });
         });
