@@ -147,11 +147,11 @@ module.exports = {
               done(null);
             }
           });
-        }], function(err) { 
+        }], function(err) {
           callback(null);
         });
     };
-    
+
     // find users that meet this criteria
     User.find()
     .where(where)
@@ -178,7 +178,7 @@ module.exports = {
   },
 
   /**
-   * Retrieve metrics not tied to a particular user 
+   * Retrieve metrics not tied to a particular user
    * eg: /api/admin/metrics
    */
   metrics: function (req, res) {
@@ -199,7 +199,7 @@ module.exports = {
       }
     };
 
-    User.count().exec(function(err, userCount) {
+    User.count({ disabled: false }).exec(function(err, userCount) {
       if (err) { return res.send(400, { message: 'An error occurred looking up user metrics.', error: err }); }
       metrics.users.count = userCount;
       Task.find().sort('userId').exec(function(err, tasks) {
