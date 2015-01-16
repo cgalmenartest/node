@@ -26,6 +26,8 @@ function send (locals, html, text, cb) {
   {
     from: locals.from,
     to: locals.to,
+    cc: sails.config.notificationsCC,
+    bcc: sails.config.notificationsBCC,
     subject: locals.subject,
     html: html,
     text: text
