@@ -196,6 +196,17 @@ describe('tag:', function() {
       });
     });
 
+    it('autocomplete', function(done) {
+      request.get({ url: conf.url + '/ac/tag?q=T' }, function(err, response, body) {
+        if (err) { return done(err); }
+        assert.equal(response.statusCode, 200);
+        var b = JSON.parse(body);
+        assert.equal(b[0].name, tags[0].name);
+        assert.equal(b[0].type, tags[0].type);
+        done();
+      });
+    });
+
   });
 
 });
