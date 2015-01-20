@@ -6,6 +6,7 @@ module.exports = {
   },
   // for the user.test.js suite
   'testUser': {
+    'name': 'Midas User',
     'username': 'testuser@midascrowd.com',
     'password': 'MidasTestM4$'
   },

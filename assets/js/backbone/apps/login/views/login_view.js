@@ -83,7 +83,7 @@ define([
       if (e.preventDefault) e.preventDefault();
 
       // validate input fields
-      var validateIds = ['#rusername', '#rpassword'];
+      var validateIds = ['#rname', '#rusername', '#rpassword'];
       // Only validate terms & conditions if it is enabled
       if (this.options.login.terms.enabled === true) {
         validateIds.push('#rterms');
@@ -107,6 +107,7 @@ define([
 
       // Create a data object with the required fields
       var data = {
+        name: this.$("#rname").val(),
         username: this.$("#rusername").val(),
         password: this.$("#rpassword").val(),
         json: true

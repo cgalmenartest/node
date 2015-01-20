@@ -24,11 +24,14 @@ describe('user:', function() {
       if (err) { return done(err); }
       assert.equal(response.statusCode, 403);
       request.post({ url: conf.url + '/auth/register',
-                     form: { username: conf.testUser.username, password: conf.testUser.password, json: true },
+                     form: { name: conf.testUser.name, username: conf.testUser.username, password: conf.testUser.password, json: true },
                    }, function (err, response, body) {
         if (err) { return done(err); }
         // Successful login or creation should be a 200 json object
         assert.equal(response.statusCode, 200);
+        var b = JSON.parse(body);
+        assert.equal(b.username, conf.testUser.username);
+        assert.equal(b.name, conf.testUser.name);
         done();
       });
     });

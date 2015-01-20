@@ -36,9 +36,10 @@ passport.use('local', new LocalStrategy(
   }
 ));
 
-passport.use('register', new LocalStrategy(
-  function (username, password, done) {
-    userUtils.createLocalUser(username, password, done);
+passport.use('register', new LocalStrategy({ passReqToCallback: true },
+  function (req, username, password, done) {
+    var userData = { displayName: req.param('name') };
+    userUtils.createLocalUser(username, password, userData, null, done);
   }
 ));
 
