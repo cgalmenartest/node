@@ -1,0 +1,36 @@
+<div class="alert alert-danger" style="display:none;">
+</div>
+<div class="row">
+  <div class="col-md-12 box box-pad-lr">
+    <div class="row">
+      <div class="col-md-12">
+        <h2><i class="fa fa-square"></i><span class="box-icon-text">Open Tasks</span></h2>
+        <p>Total: <%- open.length + withSignups.length + assigned.length %></p>
+        <ul class="metrics">
+          <% _(open).forEach(function(task) { %>
+            <li><%- task.title %></li>
+          <% }); %>
+        </ul>
+        <p>With Sign-ups: <%- withSignups.length %></p>
+        <ul class="metrics">
+          <% _(withSignups).forEach(function(task) { %>
+            <li><%- task.title %></li>
+          <% }); %>
+        </ul>
+        <p>Assigned: <%- assigned.length %></p>
+        <ul class="metrics">
+          <% _(assigned).forEach(function(task) { %>
+            <li><%- task.title %></li>
+          <% }); %>
+        </ul>
+        <h2 class="box-pad-t"><i class="fa fa-check-square"></i><span class="box-icon-text">Completed Tasks</span></h2>
+        <p>Total: <%- completed.length %></p>
+        <ul class="metrics">
+          <% _(completed).forEach(function(task) { %>
+            <li><%- task.title %></li>
+          <% }); %>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

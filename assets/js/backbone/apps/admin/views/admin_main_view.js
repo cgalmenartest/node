@@ -5,9 +5,10 @@ define([
   'utilities',
   'admin_user_view',
   'admin_tag_view',
+  'admin_task_view',
   'admin_dashboard_view',
   'text!admin_main_template',
-], function ($, _, Backbone, utils, AdminUserView, AdminTagView, AdminDashboardView, AdminMainTemplate) {
+], function ($, _, Backbone, utils, AdminUserView, AdminTagView, AdminTaskView, AdminDashboardView, AdminMainTemplate) {
 
   var AdminMainView = Backbone.View.extend({
 
@@ -50,6 +51,12 @@ define([
         }
         this.hideOthers();
         this.adminTagView.render();
+      } else if (target == 'tasks') {
+        if (!this.adminTaskView) {
+          this.initializeAdminTaskView();
+        }
+        this.hideOthers();
+        this.adminTaskView.render();
       } else if (target == 'dashboard') {
         if (!this.adminDashboardView) {
           this.initializeAdminDashboardView();
@@ -87,6 +94,15 @@ define([
       });
     },
 
+    initializeAdminTaskView: function () {
+      if (this.adminTaskView) {
+        this.adminTaskView.cleanup();
+      }
+      this.adminTaskView = new AdminTaskView({
+        el: "#admin-task"
+      });
+    },
+
     initializeAdminDashboardView: function () {
       if (this.adminDashboardView) {
         this.adminDashboardView.cleanup();
@@ -99,6 +115,7 @@ define([
     cleanup: function () {
       if (this.adminUserView) this.adminUserView.cleanup();
       if (this.adminTagView) this.adminTagView.cleanup();
+      if (this.adminTaskView) this.adminTaskView.cleanup();
       if (this.adminDashboardView) this.adminDashboardView.cleanup();
       removeView(this);
     },
