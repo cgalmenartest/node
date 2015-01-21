@@ -509,7 +509,7 @@ module.exports = {
             if (err) { return done(err); }
 
             tasks.forEach(function(task, i) {
-              tasks[i].user = _.where(users, { id: task.userId });
+              tasks[i].user = _.findWhere(users, { id: task.userId });
             });
             done(null, tasks);
           });
@@ -526,7 +526,7 @@ module.exports = {
           if (err) { return done(err); }
 
           result.forEach(function(volunteer, i) {
-            result[i].user = _.where(users, { id: volunteer.userId });
+            result[i].user = _.findWhere(users, { id: volunteer.userId });
           });
           done(null, result);
         });
@@ -552,12 +552,8 @@ module.exports = {
         return _(volunteers).pluck('taskId').uniq().value().indexOf(task.id) >= 0;
       });
 
-      // Output the remaining open tasks, exclusive of the assigned and withSignups lists
-      output.open = _.reject(openTasks, function(task) {
-        var assigned = _.pluck(output.assigned, 'id').indexOf(task.id) >= 0,
-            hasSignups = _.pluck(output.withSignups, 'id').indexOf(task.id) >= 0;
-        return assigned || hasSignups;
-      });
+      // Output the remaining open tasks
+      output.open = openTasks;
 
       res.json(output);
     });
