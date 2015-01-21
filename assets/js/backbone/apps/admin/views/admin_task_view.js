@@ -25,7 +25,6 @@ define([
         data: this.data,
         dataType: 'json',
         success: function (data) {
-          console.log(data);
           var template = _.template(AdminTaskTemplate, data);
           self.$el.html(template);
           self.$el.show();
