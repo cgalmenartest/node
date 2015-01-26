@@ -481,6 +481,86 @@ module.exports = {
   },
 
   /**
+  * List tasks
+  * eg: /api/admin/tasks
+  */
+  tasks: function (req, res) {
+    var page = parseInt(req.param('page', 1)),
+        limit = req.param('limit', 1000),
+        sort = req.param('sort', 'createdAt desc'),
+        output = {
+          open: 0,
+          withSignups: 0,
+          assigned: 0,
+          completed: 0
+        },
+        openTasks,
+        steps = [];
+
+    // Get tasks
+    steps.push(function(done) {
+      Task.find({ state: ['open', 'public', 'assigned', 'completed'] })
+        .sort(sort)
+        .paginate({ page: page, limit: limit})
+        .exec(function(err, tasks) {
+          if (err) { return done(err); }
+          openTasks = _.where(tasks, function(task) { return task.isOpen(); });
+          User.find({ id: _.pluck(tasks, 'userId') }).exec(function(err, users) {
+            if (err) { return done(err); }
+
+            tasks.forEach(function(task, i) {
+              tasks[i].user = _.findWhere(users, { id: task.userId });
+            });
+            done(null, tasks);
+          });
+        });
+    });
+
+    // Get volunteers
+    steps.push(function(done) {
+      Volunteer.find({ taskId: _.pluck(openTasks, 'id') }).exec(function(err, result) {
+        if (err) { return done(err); }
+
+        var userIds = _.pluck(result, 'userId');
+        User.find({ id: userIds }).exec(function(err, users) {
+          if (err) { return done(err); }
+
+          result.forEach(function(volunteer, i) {
+            result[i].user = _.findWhere(users, { id: volunteer.userId });
+          });
+          done(null, result);
+        });
+      });
+    });
+
+    // Build API response
+    async.series(steps, function(err, results) {
+      if (err) { return res.send(400, { message: 'Error looking up tasks', err: err}); }
+
+      var tasks = results[0],
+          volunteers = results[1];
+
+      // Populate volunteers for each task
+      tasks.forEach(function(task, i) {
+        tasks[i].volunteers = _.where(volunteers, { taskId: task.id });
+      });
+
+      // Set output properties
+      output.assigned = _.where(tasks, function(task) { return task.state === 'assigned'; });
+      output.completed = _.where(tasks, function(task) { return task.state === 'completed'; });
+      output.withSignups = _.where(tasks, function(task) {
+        return _(volunteers).pluck('taskId').uniq().value().indexOf(task.id) >= 0;
+      });
+
+      // Output the remaining open tasks
+      output.open = openTasks;
+
+      res.json(output);
+    });
+
+  },
+
+  /**
    * Overrides for the settings in `config/controllers.js`
    * (specific to AdminController)
    */
