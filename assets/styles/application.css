@@ -443,6 +443,16 @@ ul.metrics > ul > li {
   text-align: center;
 }
 
+.forgot-password {
+  display: block;
+  margin-top: 5px;
+}
+
+.login-register-label {
+  margin: 0;
+  padding-top: 7px;
+}
+
 .btn-login-responsive {
   height: auto;
   max-width: 100%;

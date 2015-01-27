@@ -35,20 +35,20 @@
       <div class="form-group margin-bottom-none">
         <label for="password" class="control-label">Password</label>
         <input type="password" class="form-control" id="password" name="password" placeholder="Password"/>
-      </div>
-  </div>
-  <div class="modal-footer modal-footer-grey" id="login-footer">
-    <div class="row">
-      <div class="col-md-3 col-md-push-9">
-        <button type="submit" class="btn btn-c2 pull-right">Sign in</button>
-      </div>
-      <div class="col-md-9 col-md-pull-3 modal-footer-text">
-        <a href="#forgot-password" id="forgot-password">Forgot your password?</a>
-        <br/>
-        <a href="#login-register" id="login-register">Sign up now</a>
+        <a href="#forgot-password" class="forgot-password" id="forgot-password">Forgot your password?</a>
       </div>
     </div>
-  </div>
+    <div class="modal-footer modal-footer-grey" id="login-footer">
+      <div class="row">
+        <div class="col-md-12">
+          <button type="submit" class="btn btn-c2 pull-right">Sign in</button>
+          <p class="pull-left login-register-label" id="login-register-label">
+            Need an account? 
+            <a href="#login-register" id="login-register">Sign up now</a>
+          </p>
+        </div>
+      </div>
+    </div>
   <% } else { %>
   </div>
   <% } %>
