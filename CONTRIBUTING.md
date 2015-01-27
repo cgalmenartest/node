@@ -61,6 +61,26 @@ longer than 76 characters.
 The last part of the commit log should contain all "external
 references", such as which issues were fixed.
 
+### Database changes
+
+The database schema is managed in this repository under `/tools/postgres/`. When
+you first set up Midas and run `make init` the `init.sh` script sets up the database
+with the latest schema. Each subsequent run of `init.sh` checks the database version
+and runs migration scripts to update it if the database is out of data.
+
+When making a database change, write a shell script that updates the database to
+your desired schema. Save this shell script as `[version].sh` where `[version]`
+is the new version of the schema. Migration scripts should be saved in
+`/tools/postgres/migrate`. See scripts in that directory like `2.sh` for examples.
+
+Then, export the updated schema:
+
+```sh
+pg_dump -h localhost -p 5432 -U midas -s midas > ./tools/postgres/schema/current.sql
+```
+
+The schema is also updated each time you run `make build`.
+
 ## <a name="submit"></a> Submission Guidelines
 
 ### Submitting an Issue
