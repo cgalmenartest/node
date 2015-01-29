@@ -39,7 +39,7 @@ module.exports = {
     'taskCreated': {
       layout: 'default',
       template: 'taskCreated',
-      subject: 'New Opportunity Confirmation',
+      subject: 'New Opportunity Submission',
       templateLocals: { },
       layoutLocals: { }
     },
