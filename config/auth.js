@@ -122,14 +122,10 @@ passport.use('myusa', new MyUSAStrategy({
     clientID: authSettings.auth.myusa.clientId,
     clientSecret: authSettings.auth.myusa.clientSecret,
     callbackURL: authSettings.auth.myusa.callbackUrl,
-    // Initially use staging.my.usa.gov until app approved for production
-    authorizationURL: 'https://myusa-staging.18f.us/oauth/authorize',
-    tokenURL: 'https://myusa-staging.18f.us/oauth/authorize',
-    profileURL: 'https://myusa-staging.18f.us/api/profile'
-    // For testing:
-    //authorizationURL: 'http://172.23.195.136:3000/oauth/authorize',
-    //tokenURL: 'http://172.23.195.136:3000/oauth/authorize',
-    //profileURL: 'http://172.23.195.136:3000/api/profile'
+    // Initially use alpha.my.usa.gov until app approved for production
+    authorizationURL: 'https://alpha.my.usa.gov/oauth/authorize',
+    tokenURL: 'https://alpha.my.usa.gov/oauth/token',
+    profileURL: 'https://alpha.my.usa.gov/api/profile'
   },
   function (req, accessToken, refreshToken, profile, done) {
     if (sails.config.auth.auth.myusa.overwrite === true) {
