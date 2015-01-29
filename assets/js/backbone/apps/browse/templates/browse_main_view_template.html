@@ -33,11 +33,13 @@
       <% if ( target == "tasks" ) {%>
       <div class="box-pad-lr" id="stateFilters">
         <% _.each(ui.states, function (t) { %>
-          <input type='checkbox' name='state<%- t.label %>' class='stateFilter' value='<%- t.value %>'
+          <label class="<% if ( t.value == "draft" ) { %>hidden draft-filter<% } %>">
+            <input type='checkbox' name='state<%- t.label %>' class='stateFilter' value='<%- t.value %>'
             <% if ( t.value == "open" ) {%>
               <%- checked="checked" %>
             <% } %>
-            > <%- t.label %> <br/>
+            > <%- t.label %>
+          </label>
         <% }); %>
       </div>
       <% } %>

@@ -12,11 +12,10 @@ var i18n = require('i18next');
 module.exports = {
 
   find: function (req, res) {
+    var user = (req.user) ? req.user[0] : null,
+        where = {};
+
     if (req.task) {
-      var user = null;
-      if (req.user) {
-        user = req.user[0];
-      }
       taskUtil.getMetadata(req.task, user, function (err) {
         if (err) { return res.send(400, { message: i18n.t('taskAPI.errMsg.likes', 'Error looking up task likes.') }); }
         taskUtil.getVolunteers(req.task, function (err) {
@@ -26,8 +25,20 @@ module.exports = {
       });
       return;
     }
+    // Only show drafts for current user
+    if (user) {
+      where = { or: [{
+        state: {'!': 'draft'}
+      }, {
+        state: 'draft',
+        userId: user.id
+      }]};
+    } else {
+      where.state = {'!': 'draft'};
+    }
+
     // run the common task find query
-    taskUtil.findTasks({}, function (err, tasks) {
+    taskUtil.findTasks(where, function (err, tasks) {
       if (err) { return res.send(400, err); }
       return res.send({ tasks: tasks });
     });

@@ -8,7 +8,7 @@ module.exports = {
     // Current state of the task
     state: {
         type: 'STRING',
-        defaultsTo: 'open'
+        defaultsTo: sails.config.taskState || 'open'
     },
     // user id of the task owner
     userId: 'INTEGER',
