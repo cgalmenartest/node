@@ -1,5 +1,5 @@
- // NOTIFICATION SETTINGS
- module.exports = {
+// NOTIFICATION SETTINGS
+module.exports = {
   // service functions called to produce the given audience
   audiences : {
     'everyone' : {
@@ -66,6 +66,12 @@
       method: 'prepareTaskVolunteerOwnerEmail',
       settings: {
         emailName: 'taskVolunteerAddedOwnerReply'
+      }
+    },
+    'preflightTaskCreated': {
+      method: 'prepareWelcomeUserEmail',
+      settings: {
+        emailName: 'taskCreated'
       }
     },
     'preflightUserPasswordReset': {
@@ -193,6 +199,18 @@
           strategy: {
             'contactTaskOwnersOnVolunteerEmail': {
               preflight: ['preflightTaskVolunteerOwner'],
+              delivery: 'sendSimpleEmail'
+            }
+          }
+        }
+      }
+    },
+    'taskCreated': {
+      audience:{
+        'user': {
+          strategy: {
+            'contactTaskOwnersOnVolunteerEmail': {
+              preflight: ['preflightTaskCreated'],
               delivery: 'sendSimpleEmail'
             }
           }

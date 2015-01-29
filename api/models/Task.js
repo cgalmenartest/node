@@ -2,6 +2,8 @@
     :: Task
     -> model
 ---------------------*/
+var noteUtils = require('../services/notifications/manager');
+
 module.exports = {
 
   attributes: {
@@ -34,21 +36,25 @@ module.exports = {
     }
   },
 
-  afterCreate: function(model, done) {
-    Notification.create({
-      callerType: 'Task',
-      callerId: model.id,
-      triggerGuid: require('node-uuid').v4(),
-      action: 'taskCreated',
-      createdDate: model.createdAt
-    }).exec(function (err, newNotification){
-      if (err) {
-        sails.log.debug(err);
-        done(null);
-        return false;
+  afterCreate: function(values, done) {
+    var params = {
+      trigger: {
+        callerType: 'Task',
+        callerId: values.id,
+        action: 'taskCreated'
+      },
+      data: {
+        audience: {
+          'user': {
+            fields: {
+              taskId: values.id,
+              userId: values.userId
+            }
+          }
+        }
       }
-      done(null);
-    });
+    };
+    noteUtils.notifier.notify(params, done);
   }
 
 };
