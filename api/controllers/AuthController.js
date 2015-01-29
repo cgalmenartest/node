@@ -209,8 +209,18 @@ module.exports = {
             // destroy the existing token
             validToken.destroy(function (err) {
               if (err) { return res.send(400, { message: 'Error destroying existing token'}); }
-              // success, return true
-              return res.send(true);
+              // Reset login
+              validUser.passwordAttempts = 0;
+              validUser.save(function(err, user) {
+                if (err) {
+                  return res.send(400, {
+                    message: 'Error resetting passwordAttempts',
+                    error: err
+                  });
+                }
+                // success, return true
+                return res.send(true);
+              });
             })
           });
         });
