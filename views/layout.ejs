@@ -16,6 +16,7 @@
 
     <script type="text/javascript">
     systemName = <%- JSON.stringify(systemName) %>;
+    draftAdminOnly = <%- JSON.stringify(draftAdminOnly) %>;
     version = <%- JSON.stringify(version) %>;
     <% if (req.user) { %>
     backendUser = <%- JSON.stringify(req.user[0]) %>;
@@ -80,7 +81,7 @@
 
      ga('create', '<%= sails.config.analytics.google.key %>', 'auto');
      ga('send', 'pageview');
-   </script>  
+   </script>
   <% } %>
 
   <% if (sails.config.analytics && sails.config.analytics.piwik && sails.config.analytics.piwik.enabled == true) { %>

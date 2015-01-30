@@ -311,8 +311,12 @@ h1, h2, h3, h4, h5, h6 {
   padding: 5px;
 }
 
-.navbar-side > .nav > li > a {
+.navbar-side > .nav > li > a,
+.navbar-side > .nav > li > .no-link {
   padding: 5px 15px;
+}
+.navbar-side > .nav > li > .no-link {
+  display: block;
 }
 
 ul.nav-search > li {

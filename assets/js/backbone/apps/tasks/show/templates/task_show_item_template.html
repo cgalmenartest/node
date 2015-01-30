@@ -70,9 +70,13 @@
               <li class="li-task-view" style="display: none;">
                 <a href="#" id="task-view"><i class="fa fa-pencil"></i> <span class="box-icon-text">View <span data-i18n="Task">Opportunity</span></span></a>
               </li>
+              <% if (!draftAdminOnly || model.state !== 'draft' || (user && user.isAdmin)) { %>
               <li id="li-task-close" style="<% if (model.state == 'closed') { %>display: none;<% } %>">
                 <a href="#" id="task-close"><i class="fa fa-times-circle"></i> <span class="box-icon-text">Change <span data-i18n="Task">Opportunity</span> State</span></a>
               </li>
+              <% } else {%>
+                <li><span class="no-link">This draft <span data-i18n="task">opportunity</span> is awaiting approval from an administrator.</span></li>
+              <% } %>
               <li id="li-task-reopen" style="<% if (model.state != 'closed') { %>display: none;<% } %>">
                 <a href="#" id="task-reopen"><i class="fa fa-share"></i> <span class="box-icon-text">Reopen</span></a>
               </li>
