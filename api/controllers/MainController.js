@@ -10,6 +10,7 @@ module.exports = {
     // include data variables for the view passed by the policies
     var data = {
       systemName: sails.config.systemName,
+      draftAdminOnly: sails.config.draftAdminOnly || false,
       alert: req.alert || null
     };
     // get version information

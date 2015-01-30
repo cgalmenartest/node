@@ -9,7 +9,11 @@ var util = require('./project');
 var tagUtil = require('./tag');
 var userUtil = require('./user');
 
-var authorized = function (id, userId, cb) {
+var authorized = function (id, userId, user, cb) {
+  if (typeof user === 'function') {
+    cb = user;
+    user = undefined;
+  }
   Task.findOneById(id, function (err, task) {
     if (err) { return cb('Error finding task.', null); }
     task.isOwner = false;
@@ -19,7 +23,7 @@ var authorized = function (id, userId, cb) {
     }
     // If not the owner, check if there is a public task
     if (!task.projectId) {
-      if ((task.state !== 'draft') || (userId == task.userId)) {
+      if ((task.state !== 'draft') || (userId == task.userId) || (user && user.isAdmin)) {
         return cb(null, task);
       }
       return cb(null, null);

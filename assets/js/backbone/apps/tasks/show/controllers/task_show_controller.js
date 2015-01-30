@@ -419,6 +419,12 @@ define([
       if (this.modalAlert) { this.modalAlert.cleanup(); }
       if (this.modalComponent) { this.modalComponent.cleanup(); }
       var states = UIConfig.states;
+      if (draftAdminOnly && !window.cache.currentUser.isAdmin) {
+        states = _(states).reject(function(state) {
+          return state.value === 'draft';
+        });
+      }
+
       var modalContent = _.template(ChangeStateTemplate,{model:self.model,states: states});
       this.modalComponent = new ModalComponent({
         el: "#modal-close",
