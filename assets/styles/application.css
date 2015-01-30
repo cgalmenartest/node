@@ -1376,6 +1376,10 @@ ul.task-tags > li {
 .task-show-creation > time {
   font-weight: bold;
 }
+#stateFilters label {
+  display: block;
+  font-weight: normal;
+}
 
 /**********************************
 =  TASKS INFINITE SCROLL OVERFLOW

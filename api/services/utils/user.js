@@ -4,7 +4,7 @@ var async = require('async');
 var tagUtils = require('./tag');
 var noteUtils = require('../notifications/manager');
 
-var sendWelcomeEmail = function(done, user) { 
+var sendWelcomeEmail = function(done, user) {
   // Generate a notification email to the user
   var params = {
     trigger: {

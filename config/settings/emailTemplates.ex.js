@@ -36,6 +36,13 @@ module.exports = {
       templateLocals: { taskTitle: '', taskLink: '', profileLink: '', profileTitle: '', profileName: '', profileLocation: '', profileAgency: '' },
       layoutLocals: { }
     },
+    'taskCreated': {
+      layout: 'default',
+      template: 'taskCreated',
+      subject: 'New Opportunity Submission',
+      templateLocals: { },
+      layoutLocals: { }
+    },
     'userPasswordResetEmail': {
       layout: 'default',
       template: 'userPasswordReset',

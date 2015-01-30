@@ -180,6 +180,11 @@ define([
         target: this.options.target,
         collection: filteredCollection,
       });
+      // Show draft filter
+      var draft = _(collection).chain()
+            .pluck('state')
+            .indexOf('draft').value() >= 0;
+      $(".draft-filter").toggleClass('hidden', !draft);
       $("#browse-search-spinner").hide();
       $("#browse-list").show();
       this.browseListView.render();
