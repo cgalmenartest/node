@@ -47,10 +47,12 @@ module.exports = {
   add: function (req, res) {
     if (req.route.method != 'post') { return res.send(400, { message: 'Unsupported operation.' } ); }
     var tag = _.extend(req.body || {}, req.params);
-    // Trim whitespace
+    // Delete undefined tag id added to request
+    delete tag.id;
     if (_.isUndefined(tag.name) || (_.isUndefined(tag.type))) {
       return res.send(400, { message: 'Must specify tag name and type.' });
     }
+    // Trim whitespace
     tag.name = tag.name.trim();
     TagEntity.find({ where: { type: tag.type, name: tag.name }}, function (err, existingTags) {
       if (err) { return res.send(400, { message: 'Error looking up tag' }); }
