@@ -47,10 +47,12 @@ module.exports = {
   add: function (req, res) {
     if (req.route.method != 'post') { return res.send(400, { message: 'Unsupported operation.' } ); }
     var tag = _.extend(req.body || {}, req.params);
-    // Trim whitespace
+    // Delete undefined tag id added to request
+    delete tag.id;
     if (_.isUndefined(tag.name) || (_.isUndefined(tag.type))) {
       return res.send(400, { message: 'Must specify tag name and type.' });
     }
+    // Trim whitespace
     tag.name = tag.name.trim();
     TagEntity.find({ where: { type: tag.type, name: tag.name }}, function (err, existingTags) {
       if (err) { return res.send(400, { message: 'Error looking up tag' }); }
@@ -63,13 +65,13 @@ module.exports = {
         if (err) { return res.send(400, { message: 'Error creating tag' }); }
         return res.send(tag);
       });
-    });    
+    });
   },
 
   // Override default create to check parameters and
   // ensure duplicate tags are not created.
   create: function (req, res) {
-    if (req.route.method != 'post') { return res.send(400, { message: 'Unsupported operation.' } ); }    
+    if (req.route.method != 'post') { return res.send(400, { message: 'Unsupported operation.' } ); }
     var tag = _.extend(req.body || {}, req.params);
     if (!tag.projectId) { tag.projectId = null; }
     if (!tag.taskId) { tag.taskId = null; }
@@ -104,7 +106,7 @@ module.exports = {
 
   // Override destroy to ensure owner has access to project
   destroy: function (req, res) {
-    if (req.route.method != 'delete') { return res.send(400, { message: 'Unsupported operation.' } ); }    
+    if (req.route.method != 'delete') { return res.send(400, { message: 'Unsupported operation.' } ); }
     var user = req.user[0];
     Tag.findOneById( req.params.id, function (err, tag) {
       if (err) { return res.send(400, { message: 'Error looking up tag' }); }

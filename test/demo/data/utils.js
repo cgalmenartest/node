@@ -105,7 +105,7 @@ module.exports = {
     request.post({ url: url,
                    body: JSON.stringify(obj)
                  }, function(err, response, body) {
-      if (err) { return cb(err, null); }
+      if (err || response.statusCode >= 400) { return cb(err, null); }
       var b = JSON.parse(body);
       cb(null, b);
     });
