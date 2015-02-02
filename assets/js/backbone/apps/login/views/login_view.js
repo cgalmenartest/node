@@ -18,6 +18,8 @@ define([
       'click #rusername-button'        : 'clickUsername',
       'keyup #rpassword'               : 'checkPassword',
       'blur #rpassword'                : 'checkPassword',
+      'keyup #rpassword-confirm'       : 'checkPasswordConfirm',
+      'blur #rpassword-confirm'        : 'checkPasswordConfirm',
       'submit #login-password-form'    : 'submitLogin',
       'submit #registration-form'      : 'submitRegister',
       'submit #forgot-form'            : 'submitForgot'
@@ -101,7 +103,15 @@ define([
       } else {
         $(parent.find('.error-password')[0]).hide();
       }
-      if (abort === true || passwordSuccess !== true) {
+      var passwordConfirmSuccess = this.checkPasswordConfirm();
+      var passwordConfirmParent = $(this.$("#rpassword-confirm").parents('.form-group')[0]);
+      if (passwordConfirmSuccess !== true) {
+        passwordConfirmParent.addClass('has-error');
+        $(passwordConfirmParent.find('.error-password')[0]).show();
+      } else {
+        $(passwordConfirmParent.find('.error-password')[0]).hide();
+      }
+      if (abort === true || passwordSuccess !== true || passwordConfirmSuccess !== true) {
         return;
       }
 
@@ -173,13 +183,21 @@ define([
           // username is available
           $("#rusername-button").addClass('btn-success');
           $("#rusername-check").addClass('fa fa-check');
+          $("#rusername").closest(".form-group").removeClass('has-error');
+          $("#rusername").closest(".form-group").find(".help-block").hide();
         }
       });
     },
 
     checkPassword: function (e) {
       var rules = validatePassword(this.$("#rusername").val(), this.$("#rpassword").val());
+      var valuesArray = _.values(rules);
+      var validRules = _.every(valuesArray);
       var success = true;
+      if (validRules === true) {
+        $("#rpassword").closest(".form-group").removeClass('has-error');
+        $("#rpassword").closest(".form-group").find(".help-block").hide();
+      }
       _.each(rules, function (value, key) {
         if (value === true) {
           this.$(".password-rules .success.rule-" + key).show();
@@ -190,6 +208,19 @@ define([
         }
         success = success && value;
       });
+      return success;
+    },
+
+    checkPasswordConfirm: function (e) {
+      var success = true;
+      var password = this.$("#rpassword").val();
+      var confirm = this.$("#rpassword-confirm").val()
+      if (password === confirm) {
+        $("#rpassword-confirm").closest(".form-group").find(".help-block").hide();
+      } else {
+        $("#rpassword-confirm").closest(".form-group").find(".help-block").show();
+        var success = false;
+      }
       return success;
     },
 
