@@ -28,7 +28,7 @@ module.exports = {
       },
       data: {
         audience: {
-          'taskOwners': {
+          'taskVolunteer': {
             fields: {
                 taskId: values.taskId,
                 volunteerId: values.userId

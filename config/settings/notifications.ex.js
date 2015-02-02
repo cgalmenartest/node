@@ -25,6 +25,9 @@ module.exports = {
     'taskOwners' : {
       method: 'findTaskOwners'
     },
+    'taskVolunteer' : {
+      method: 'findTaskVolunteer'
+    },
     'taskParticipants' : {
       method: 'findTaskParticipants'
     },
@@ -62,10 +65,10 @@ module.exports = {
         emailName: 'taskCommentOwnerReply'
       }
     },
-    'preflightTaskVolunteerOwner': {
-      method: 'prepareTaskVolunteerOwnerEmail',
+    'preflightTaskVolunteer': {
+      method: 'prepareTaskVolunteer',
       settings: {
-        emailName: 'taskVolunteerAddedOwnerReply'
+        emailName: 'taskVolunteerAdded'
       }
     },
     'preflightTaskCreated': {
@@ -195,10 +198,10 @@ module.exports = {
     },
     'taskVolunteerAdded': {
       audience:{
-        'taskOwners': {
+        'taskVolunteer': {
           strategy: {
             'contactTaskOwnersOnVolunteerEmail': {
-              preflight: ['preflightTaskVolunteerOwner'],
+              preflight: ['preflightTaskVolunteer'],
               delivery: 'sendSimpleEmail'
             }
           }
