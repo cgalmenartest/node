@@ -119,7 +119,7 @@ module.exports = {
     if (req.route.params.id) {
       userId = req.route.params.id;
     }
-    sails.services.utils.user['getUser'](userId, reqId, function (err, user) {
+    sails.services.utils.user['getUser'](userId, reqId, req.user, function (err, user) {
       // this will only be shown to logged in users.
       if (userId !== reqId) user.username = null;
       if (err) { return res.send(400, err); }

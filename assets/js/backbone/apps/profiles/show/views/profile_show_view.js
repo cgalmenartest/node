@@ -30,8 +30,6 @@ define([
       "click #profile-cancel"      : "profileCancel",
       "click #like-button"         : "like",
       "keyup #name, #title, #bio"  : "fieldModified",
-      "click #add-email"           : "addEmail",
-      "click .email-remove"        : "removeEmail",
       "click .removeAuth"          : "removeAuth"
     },
 
@@ -60,6 +58,8 @@ define([
         ui: UIConfig
       }
 
+      data.email = data.data.emails[0];
+
       if (data.data.bio) {
         data.data.bioHtml = marked(data.data.bio);
       }
@@ -74,13 +74,13 @@ define([
       this.initializeLikes();
       this.initializeTags();
       this.initializePAView();
-      this.initializeEmail();
       this.initializeTextArea();
       this.updatePhoto();
       this.updateProfileEmail();
       return this;
     },
- initializeFileUpload: function () {
+
+    initializeFileUpload: function () {
       var self = this;
 
       $('#fileupload').fileupload({
@@ -274,7 +274,12 @@ define([
 
         var newTags = [];
 
-        newTags = newTags.concat(self.$("#tag_topic").select2('data'),self.$("#tag_skill").select2('data'),self.$("#tag_location").select2('data'),self.$("#tag_agency").select2('data'));
+        newTags = newTags.concat(
+          self.$("#tag_topic").select2('data'),
+          self.$("#tag_skill").select2('data'),
+          self.$("#tag_location").select2('data'),
+          self.$("#tag_agency").select2('data')
+        );
 
         async.forEach(
           newTags,
@@ -443,32 +448,6 @@ define([
       });
     },
 
-    initializeEmail: function () {
-      var modelJson = this.model.toJSON();
-      if (this.edit) {
-        for (var i in modelJson.emails) {
-          var template = _.template(EmailTemplate, { email: modelJson.emails[i] });
-          $("#profile-emails").append(template);
-        }
-      }
-      // New tags added in to the DB via the modal
-      this.model.listenTo(this.model, "profile:email:new", function (data) {
-        // Destory modal
-        $(".modal").modal('hide');
-        // Add tag into the data list
-        var template = _.template(EmailTemplate, { email: data });
-        $("#profile-emails").append(template);
-      });
-
-      this.model.listenTo(this.model, "profile:email:error", function (data) {
-        // nothing to be done
-      });
-
-      this.listenTo(this.model, "profile:email:delete", function (e) {
-        $(e.currentTarget).parents('div.radio').remove();
-      });
-    },
-
     initializeTextArea: function () {
       if (this.md) { this.md.cleanup(); }
       this.md = new MarkdownEditor({
@@ -500,12 +479,30 @@ define([
       $("#profile-save, #submit").button('loading');
       setTimeout(function() { $("#profile-save, #submit").attr("disabled", "disabled") }, 0);
       var data = {
-        name: $("#name").val(),
-        title: $("#title").val(),
-        bio: $("#bio").val()
-      };
-      this.model.trigger("profile:save", data);
-      //this.render();
+            name: $("#name").val(),
+            title: $("#title").val(),
+            bio: $("#bio").val()
+          },
+          email = this.model.get('emails')[0],
+          self = this;
+
+      if ($("#profile-email").val() !== email.email) {
+        $.ajax({
+          url: '/api/useremail/' + email.id,
+          dataType: 'json',
+          method: 'put',
+          data: { email: $("#profile-email").val() },
+          success: function() { self.model.trigger("profile:save", data); },
+          error: function() {
+            var msg = 'Failed to update your email address. Please verify it \
+                       is a valid email address and try again.';
+            $("#email-update-alert").html(msg);
+            $("#email-update-alert").show();
+          }
+        });
+      } else {
+        this.model.trigger("profile:save", data);
+      }
     },
 
     removeAuth: function (e) {
@@ -516,41 +513,6 @@ define([
         node = node.parent();
       }
       this.model.trigger("profile:removeAuth", node.attr("id"));
-    },
-
-    addEmail: function (e) {
-      if (e.preventDefault) e.preventDefault();
-      var self = this;
-
-      // Pop up dialog box to create tag,
-      // then put tag into the select box
-      if (this.emailFormView) this.emailFormView.cleanup();
-      if (this.emailModalComponent) this.emailModalComponent.cleanup();
-      this.emailModalComponent = new ModalComponent({
-        el: "#emailModal",
-        id: "addEmail",
-        modalTitle: "Add Email Address"
-      }).render();
-      this.emailFormView = new EmailFormView({
-        el: "#addEmail .modal-template",
-        model: self.model,
-        target: 'profile'
-      });
-      this.emailFormView.render();
-    },
-
-    removeEmail: function (e) {
-      if (e.preventDefault) e.preventDefault();
-      var self = this;
-      // Get the data-id of the currentTarget
-      // and then call HTTP DELETE on that tag id
-      $.ajax({
-        url: '/api/useremail/' + $(e.currentTarget).data('id'),
-        type: 'DELETE',
-      }).done(function (data) {
-        self.model.trigger("profile:email:delete", e);
-      });
-
     },
 
     like: function (e) {

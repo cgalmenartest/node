@@ -90,13 +90,14 @@
         <h2> Account Information </h2>
 
         <div class="form-group">
-          <label for="profile-emails" class="col-md-3 control-label">Primary Email</label>
+          <label for="profile-email" class="col-md-3 control-label">Email</label>
           <div class="col-md-9">
-            <div id="profile-emails">
-            </div>
-            <a href="#addEmail" class="btn btn-default btn-xs" id="add-email" data-toggle="modal" data-backdrop="static">Add Email Address</a>
+            <input type="text" class="form-control" id="profile-email" name="email"
+              placeholder="Email" value="<% if (email) { %><%- email.email %><% } %>">
+            <div id="email-update-alert" class="alert alert-warning" style="display:none;"></div>
           </div>
         </div>
+
         <div class="form-group">
           <% if (login.oauth.length > 0) { %>
           <label for="services" class="col-md-3 control-label">Connected Accounts</label>

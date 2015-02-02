@@ -735,10 +735,14 @@ module.exports = {
    * @param userId: the id of the user to query
    * @param reqId: the requester's id
    */
-  getUser: function (userId, reqId, cb) {
+  getUser: function (userId, reqId, reqUser, cb) {
     var self = this;
     if (!_.isFinite(userId)) {
       return cb({ message: 'User ID must be a numeric value' }, null);
+    }
+    if (typeof reqUser === 'function') {
+      cb = reqUser;
+      reqUser = undefined;
     }
     User.findOneById(userId, function (err, user) {
       if (err) { return cb(err, null); }
@@ -788,7 +792,7 @@ module.exports = {
             if (err) { return cb(err, null); }
             if (like) { user.like = true; }
             // stop here if the requester id is not the same as the user id
-            if (userId != reqId) {
+            if (userId != reqId && !reqUser[0].isAdmin) {
               return cb(null, user);
             }
             // Look up which providers the user has authorized
