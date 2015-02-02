@@ -26,8 +26,8 @@ function send (locals, html, text, cb) {
   {
     from: locals.from,
     to: locals.to,
-    cc: sails.config.notificationsCC,
-    bcc: sails.config.notificationsBCC,
+    cc: _.compact([locals.cc, sails.config.notificationsCC]),
+    bcc: _.compact([locals.bcc, sails.config.notificationsBCC]),
     subject: locals.subject,
     html: html,
     text: text
@@ -55,6 +55,8 @@ module.exports = {
           send(
           {
             to: fields.to,
+            cc: fields.cc,
+            bcc: fields.bcc,
             subject: fields.subject,
             from: fields.from
           },
