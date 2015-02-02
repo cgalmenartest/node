@@ -36,6 +36,13 @@ module.exports = {
       templateLocals: { taskTitle: '', taskLink: '', profileLink: '', profileTitle: '', profileName: '', profileLocation: '', profileAgency: '' },
       layoutLocals: { }
     },
+    'taskVolunteerAdded': {
+      layout: 'default',
+      template: 'taskVolunteerAdded',
+      subject: 'Thanks for your interest in <%= task.title %>',
+      templateLocals: { },
+      layoutLocals: { }
+    },
     'taskCreated': {
       layout: 'default',
       template: 'taskCreated',
