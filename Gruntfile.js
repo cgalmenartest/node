@@ -16,7 +16,8 @@
 
 var fs = require('fs'),
     path = require('path'),
-    exec = require('child_process').exec;
+    exec = require('child_process').exec,
+    gitRev = require('git-rev');
 
 module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-requirejs');
@@ -144,7 +145,7 @@ module.exports = function (grunt) {
           name: 'app',
           baseUrl: "assets/js/backbone/app",
           mainConfigFile: "assets/js/backbone/config/require_config.js",
-          out: "assets/prod/js/midas-<%= pkg.version %>.js",
+          out: "assets/prod/js/midas-<%= sha %>.js",
           paths: {
             requireLib: "../../vendor/require"
           },
@@ -156,7 +157,7 @@ module.exports = function (grunt) {
     cssmin: {
       combine: {
         files: {
-          'assets/prod/css/midas-<%= pkg.version %>.css': [
+          'assets/prod/css/midas-<%= sha %>.css': [
             'assets/styles/bootstrap.css',
             'assets/styles/font-awesome/css/font-awesome.min.css',
             'assets/styles/font-custom/css/style.css',
@@ -516,8 +517,18 @@ module.exports = function (grunt) {
     'sails-linker:devTplJADE'
   ]);
 
+  grunt.registerTask('git', function() {
+    var done = this.async();
+    gitRev.long(function(long) {
+      grunt.config.set('sha', long);
+      done();
+    });
+  }),
+
   // Build the production files
   grunt.registerTask('build', [
+    // get git sha
+    'git',
     // compile the js
     'requirejs',
     // Check validity of JSON files.
