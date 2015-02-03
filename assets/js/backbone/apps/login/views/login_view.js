@@ -219,7 +219,7 @@ define([
         $("#rpassword-confirm").closest(".form-group").find(".help-block").hide();
       } else {
         $("#rpassword-confirm").closest(".form-group").find(".help-block").show();
-        var success = false;
+        success = false;
       }
       return success;
     },
