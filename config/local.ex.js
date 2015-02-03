@@ -21,6 +21,10 @@
  * For more information, check out:
  * http://sailsjs.org/#documentation
  */
+
+// Set global entry directory
+global.appPath = require('path').dirname(require.main.filename);
+
 var fs = require('fs');
 
 module.exports = {

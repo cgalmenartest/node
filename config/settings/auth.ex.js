@@ -1,5 +1,5 @@
 // import login configuration
-var config = require('../../assets/js/backbone/config/login.json');
+var config = require(appPath + '/assets/js/backbone/config/login.json');
 module.exports = {
   // AUTHENTICATION SETTINGS
   // Set your client ids private keys for each of your services
