@@ -84,9 +84,11 @@ define([
     },
 
     submitRegister: function (e) {
-      var self = this;
+      var self = this,
+          $submitButton = self.$('#registration-form [type="submit"]');
       if (e.preventDefault) e.preventDefault();
 
+      $submitButton.prop('disabled', true);
       // validate input fields
       var validateIds = ['#rname', '#rusername', '#rpassword'];
       // Only validate terms & conditions if it is enabled
@@ -115,6 +117,7 @@ define([
         $(passwordConfirmParent.find('.error-password')[0]).hide();
       }
       if (abort === true || passwordSuccess !== true || passwordConfirmSuccess !== true) {
+        $submitButton.prop('disabled', false);
         return;
       }
 
@@ -142,6 +145,7 @@ define([
         var d = JSON.parse(error.responseText);
         self.$("#registration-error").html(d.message);
         self.$("#registration-error").show();
+        $submitButton.prop('disabled', false);
       });
     },
 
