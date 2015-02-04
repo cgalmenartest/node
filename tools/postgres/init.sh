@@ -13,6 +13,21 @@ SCRIPTS=$SRC_DIR/migrate
 DB="midas"
 USER="midas"
 
+# Get file names
+FILES=($SCRIPTS/*.sh)
+VERSIONS=()
+for ((i=0; i<${#FILES[@]}; i++)); do
+  VERSIONS+=(`echo ${FILES[$i]%%.*} | sed 's/.*\///'`)
+done
+
+# Sort file names
+SORTED=($(printf '%s\n' "${VERSIONS[@]}"|sort))
+
+# Get latest version
+LENGTH=${#SORTED[@]}
+LAST=$((LENGTH - 1))
+LATEST=${SORTED[${LAST}]}
+
 # Has the default schema been loaded?
 PSQL=`psql -U $USER -d $DB -c "\dt"`
 if [ "$PSQL" == "No relations found." ]; then
@@ -21,6 +36,9 @@ if [ "$PSQL" == "No relations found." ]; then
 
   # Load current schema
   psql -U $USER -d $DB -f $SCHEMA
+
+  # Set version to latest
+  psql -U $USER -d $DB -c "INSERT INTO \"schema\" (schema, version) VALUES ('current', $LATEST);"
 
 else
 
@@ -31,21 +49,6 @@ else
   fi
 
   echo "Current schema version: $VERSION."
-
-  # Get file names
-  FILES=($SCRIPTS/*.sh)
-  VERSIONS=()
-  for ((i=0; i<${#FILES[@]}; i++)); do
-    VERSIONS+=(`echo ${FILES[$i]%%.*} | sed 's/.*\///'`)
-  done
-
-  # Sort file names
-  SORTED=($(printf '%s\n' "${VERSIONS[@]}"|sort))
-
-  # Get latest version
-  LENGTH=${#SORTED[@]}
-  LAST=$((LENGTH - 1))
-  LATEST=${SORTED[${LAST}]}
 
   # If current version < latest version
   if [ "$VERSION" -lt "$LATEST" ]; then

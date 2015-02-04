@@ -10,6 +10,8 @@ export TEST_ROOT ?= http://localhost:1337
 
 build:
 	grunt build
+
+migrate:
 	./tools/postgres/init.sh
 
 check: test
@@ -97,8 +99,7 @@ demo:
 		test/test.upstart.js  \
 		--recursive test/demo
 
-init:
-	./tools/postgres/init.sh
+init: migrate
 	@NODE_ENV=$(NODE_ENV) ./node_modules/.bin/mocha \
 		--reporter $(REPORTER) \
 		$(MOCHA_OPTS) \
