@@ -1,4 +1,4 @@
-var config = require('./config/local');
+var config = require('./config/settings/newrelic');
 // If New Relic is enabled on the server, load it
 if (config.newrelicEnabled === true) {
   require('newrelic');

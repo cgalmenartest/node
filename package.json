@@ -26,7 +26,7 @@
         "email-templates": "~0.1.5",
         "git-rev": "0.2.x",
         "sails-disk": "~0.10.0",
-        "sails-postgresql": "~0.10.9",
+        "sails-postgresql": "18F/sails-postgresql#softdelete",
         "sails-build-dictionary": "0.10.1",
         "i18next": "~1.7.4",
         "request": "2.x",

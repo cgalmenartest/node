@@ -7,6 +7,6 @@
  * For Midas, these configuration values were moved to local.js.
  */
 
-var local = require('./config/local');
+var local = require('./config/settings/newrelic');
 
 exports.config = local.newrelic;
