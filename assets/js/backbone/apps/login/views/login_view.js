@@ -13,6 +13,9 @@ define([
 
     events: {
       'click .oauth-link'              : 'link',
+      'keyup #rname'                   : 'checkName',
+      'change #rname'                  : 'checkName',
+      'blur #rname'                    : 'checkName',
       'keyup #rusername'               : 'checkUsername',
       'change #rusername'              : 'checkUsername',
       'click #rusername-button'        : 'clickUsername',
@@ -164,6 +167,15 @@ define([
         self.$("#forgot-error").html(d.message);
         self.$("#forgot-error").show();
       });
+    },
+
+    checkName: function (e) {
+      var name = this.$("#rname").val();
+      if (name && name !== '') {
+        $("#rname").closest(".form-group").find(".help-block").hide();
+      } else {
+        $("#rname").closest(".form-group").find(".help-block").show();
+      }
     },
 
     checkUsername: function (e) {
