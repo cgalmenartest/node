@@ -31,6 +31,10 @@ module.exports = {
     // Verification token for this email address
     token: 'STRING'
 
+  },
+
+  afterUpdate: function (values, cb) {
+    User.update(values.userId, { username: values.email }, cb);
   }
 
 };
