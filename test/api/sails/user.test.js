@@ -83,6 +83,61 @@ describe('user:', function() {
       });
     });
   });
+  it('change email', function(done) {
+    // Check if the user is logged in
+    request(conf.url + '/user', function (err, response, body) {
+      if (err) { return done(err); }
+      // Logged in users should get a 200 with the user object
+      assert.equal(response.statusCode, 200);
+      var obj = JSON.parse(body);
+      var emailBefore = obj.emails[0],
+          emailAfter = emailBefore.email.replace('@', '+test@');
+      request.put({
+        url: conf.url + '/useremail/' + emailBefore.id,
+        form: { email: emailAfter },
+      }, function(err, response, body) {
+        if (err) { return done(err); }
+        // Logged in users should get a 200 with the user object
+        assert.equal(response.statusCode, 200);
+        var obj = JSON.parse(body);
+        assert.equal(obj.email, emailAfter);
+        done();
+      });
+    });
+  });
+  it('verify changed username', function(done) {
+    // Check if the user is logged in
+    request(conf.url + '/user', function (err, response, body) {
+      if (err) { return done(err); }
+      // Logged in users should get a 200 with the user object
+      assert.equal(response.statusCode, 200);
+      var obj = JSON.parse(body);
+      assert.equal(obj.username, conf.testUser.username.replace('@', '+test@'));
+      done();
+    });
+  });
+  it('change back email', function(done) {
+    // Check if the user is logged in
+    request(conf.url + '/user', function (err, response, body) {
+      if (err) { return done(err); }
+      // Logged in users should get a 200 with the user object
+      assert.equal(response.statusCode, 200);
+      var obj = JSON.parse(body);
+      var emailBefore = obj.emails[0],
+          emailAfter = emailBefore.email.replace('+test@', '@');
+      request.put({
+        url: conf.url + '/useremail/' + emailBefore.id,
+        form: { email: emailAfter },
+      }, function(err, response, body) {
+        if (err) { return done(err); }
+        // Logged in users should get a 200 with the user object
+        assert.equal(response.statusCode, 200);
+        var obj = JSON.parse(body);
+        assert.equal(obj.email, emailAfter);
+        done();
+      });
+    });
+  });
   it('reset password', function (done) {
     request.post({ url: conf.url + '/user/resetPassword',
                    form: { password: conf.testUser.password + "aBc", json: true },

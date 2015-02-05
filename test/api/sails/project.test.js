@@ -8,7 +8,7 @@ describe('project:', function() {
 
   var publicProject, draftProject;
 
-  // check that the values returned are correct for a project 
+  // check that the values returned are correct for a project
   function assertProject(testData, realData) {
     assert.equal(testData.title, realData.title);
     assert.equal(testData.description, realData.description);
@@ -49,7 +49,7 @@ describe('project:', function() {
         if (err) { return done(err); }
         assert.equal(response.statusCode, 200);
         var b = JSON.parse(body);
-        // check that the values returned are correct 
+        // check that the values returned are correct
         assertProject(b, draftProject)
         assert.equal(b.like, false);
         done();
@@ -62,7 +62,7 @@ describe('project:', function() {
         if (err) { return done(err); }
         assert.equal(response.statusCode, 200);
         var b = JSON.parse(body);
-        // check that the values returned are correct 
+        // check that the values returned are correct
         assertProject(b, publicProject)
         assert.equal(b.like, false);
         done();
@@ -82,7 +82,6 @@ describe('project:', function() {
       request.post({ url: conf.url + '/projectowner',
           form: { projectId: publicProject.id, userId: 2 },
         }, function (err, response, body) {
-          console.log(body);
           assert.equal(response.statusCode, 200);
           var b = JSON.parse(body);
           assert.equal(b.projectId, publicProject.id);
@@ -92,7 +91,7 @@ describe('project:', function() {
     });
 
   });
-  
+
   describe('logged out:', function () {
 
     before(function () {
@@ -114,7 +113,7 @@ describe('project:', function() {
         if (err) { return done(err); }
         assert.equal(response.statusCode, 200);
         var b = JSON.parse(body);
-        // check that the values returned are correct 
+        // check that the values returned are correct
         assertProject(b, publicProject)
         assert.equal(b.like, false);
         done();
