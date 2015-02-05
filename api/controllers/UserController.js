@@ -133,6 +133,14 @@ module.exports = {
     module.exports.find(req, res);
   },
 
+  emailCount: function(req, res) {
+    var testEmail = req.param('email');
+    User.count({ username: testEmail }).exec(function(err, count) {
+      if (err) { return res.send(400, err); }
+      res.send('' + count);
+    });
+  },
+
   update: function (req, res) {
     return update(req, res);
   },

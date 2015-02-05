@@ -44,7 +44,8 @@ module.exports.policies = {
     'activities': ['authenticated'],
     'disable': ['authenticated', 'requireId', 'requireUserId'],
     'enable': ['authenticated', 'requireId', 'requireUserId', 'admin'],
-    'resetPassword': ['authenticated', 'requireUserId']
+    'resetPassword': ['authenticated', 'requireUserId'],
+    'emailCount': ['test']
   },
 
   UserEmailController : {

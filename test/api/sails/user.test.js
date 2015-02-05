@@ -36,6 +36,63 @@ describe('user:', function() {
       });
     });
   });
+  it('create duplicate user logged in', function (done) {
+    request.post({
+      url: conf.url + '/auth/register',
+      form: {
+        name: conf.testUser.name,
+        username: conf.testUser.username,
+        password: conf.testUser.password,
+        json: true
+      }
+    }, function (err, response, body) {
+      if (err) { return done(err); }
+      assert.equal(response.statusCode, 200);
+      var email = conf.testUser.username,
+          url = conf.url + '/user/emailCount?email=' + email;
+      request.get(url, function(err, res, matches) {
+        if (err) { return done(err); }
+        assert.equal(res.statusCode, 200);
+        assert.equal(matches, 1);
+        done();
+      });
+    });
+  });
+  it('create duplicate user logged out', function (done) {
+    request(conf.url + '/auth/logout', function (err, response, body) {
+      if (err) { return done(err); }
+      // it redirects for browser
+      assert(response.statusCode === 302);
+      request(conf.url + '/user', function (err, response, body) {
+        if (err) { return done(err); }
+        // Not logged in users should get a 403
+        assert(response.statusCode === 403);
+        next();
+      });
+    });
+    function next() {
+      request.post({
+        url: conf.url + '/auth/register',
+        form: {
+          name: conf.testUser.name,
+          username: conf.testUser.username,
+          password: conf.testUser.password,
+          json: true
+        }
+      }, function (err, response, body) {
+        if (err) { return done(err); }
+        assert.equal(response.statusCode, 200);
+        var email = conf.testUser.username,
+            url = conf.url + '/user/emailCount?email=' + email;
+        request.get(url, function(err, res, matches) {
+          if (err) { return done(err); }
+          assert.equal(res.statusCode, 200);
+          assert.equal(matches, 1);
+          done();
+        });
+      });
+    }
+  });
   it('logout', function (done) {
     request(conf.url + '/auth/logout', function (err, response, body) {
       if (err) { return done(err); }
