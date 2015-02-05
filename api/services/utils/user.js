@@ -736,7 +736,8 @@ module.exports = {
    * @param reqId: the requester's id
    */
   getUser: function (userId, reqId, reqUser, cb) {
-    var self = this;
+    var self = this,
+        admin = (reqUser && reqUser[0] && reqUser[0].isAdmin) ? true : false;
     if (!_.isFinite(userId)) {
       return cb({ message: 'User ID must be a numeric value' }, null);
     }
@@ -792,7 +793,7 @@ module.exports = {
             if (err) { return cb(err, null); }
             if (like) { user.like = true; }
             // stop here if the requester id is not the same as the user id
-            if (userId != reqId && !reqUser[0].isAdmin) {
+            if (userId != reqId && !admin) {
               return cb(null, user);
             }
             // Look up which providers the user has authorized
