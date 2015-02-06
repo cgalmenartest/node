@@ -1,30 +1,37 @@
 module.exports = {
 
-  // Name of the application (used as default <title>)
-  appName: "midas",
+  // The name of the system, as should appear in emails and the <html> <title> tag
+  systemName: 'midas',
 
-  // Port this Sails application will live on
-  port: 1337,
+  // 'http' or 'https'
+  httpProtocol: 'http',
 
-  // The environment the app is deployed in
-  // (`development` or `production`)
-  //
-  // In `production` mode, all css and js are bundled up and minified
-  // And your views and templates are cached in-memory.  Gzip is also used.
-  // The downside?  Harder to debug, and the server takes longer to start.
-  environment: 'development',
+  // hostName defines the domain upon which your app will be deployed (e.g. 'localhost:1337', for development)
+  hostName: 'localhost:1337'
 
-  // Logger
-  // Valid `level` configs:
+  // The `port` setting determines which TCP port your app will be deployed on
+  // Ports are a transport-layer concept designed to allow many different
+  // networking applications run at the same time on a single computer.
+  // More about ports: http://en.wikipedia.org/wiki/Port_(computer_networking)
   //
-  // - error
-  // - warn
-  // - debug
-  // - info
-  // - verbose
+  // By default, if it's set, Sails uses the `PORT` environment variable.
+  // Otherwise it falls back to port 1337.
   //
-  log: {
-    level: 'info'
-  },
+  // In production, you'll probably want to change this setting
+  // to 80 (http://) or 443 (https://) if you have an SSL certificate
+  // port: process.env.PORT || 1337,
+
+  // The runtime "environment" of your Sails app is either 'development' or 'production'.
+  //
+  // In development, your Sails app will go out of its way to help you
+  // (for instance you will receive more descriptive error and debugging output)
+  //
+  // In production, Sails configures itself (and its dependencies) to optimize performance.
+  // You should always put your app in production mode before you deploy it to a server-
+  // This helps ensure that your Sails app remains stable, performant, and scalable.
+  //
+  // By default, Sails sets its environment using the `NODE_ENV` environment variable.
+  // If NODE_ENV is not set, Sails will run in the 'development' environment.
+  // environment: process.env.NODE_ENV || 'development'
 
 };

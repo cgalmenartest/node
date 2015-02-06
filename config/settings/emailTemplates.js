@@ -1,4 +1,5 @@
 module.exports = {
+
   // predefined emails and their default values
   emails: {
     'projectCommentParentReply': {

@@ -66,15 +66,9 @@ Start the postgres console acting on the midas database with: `psql midas`
     ALTER SCHEMA public OWNER TO midas;
     \q
 
-Then back to the command-line:
+Then back to the command-line, install node.js:
 
     brew install nodejs
-
-    git clone https://github.com/18F/sails-postgresql.git
-    cd sails-postgresql
-    git checkout softdelete
-    npm install
-    npm link
 
 Then follow platform-independent steps below starting at [clone the git repository](#clone-the-git-repository).
 
@@ -138,19 +132,6 @@ AND modify `pg_hba.conf`:
 
      sudo apt-get install graphicsmagick
 
-#### Clone Forked Libraries
-
-This project uses a forked version of
-[sails-postgresql](https://github.com/18F/sails-postgresql) to
-provide soft deletes. Clone it and run the commands below to set
-everything up properly.
-
-     git clone https://github.com/18F/sails-postgresql.git
-     cd sails-postgresql
-     git checkout softdelete
-     npm install
-     sudo npm link
-
 #### Clone the git repository.
 
      git clone https://github.com/18F/midas.git
@@ -163,10 +144,6 @@ everything up properly.
      sudo npm install -g forever
 
 #### Install midas node packages (from the midas git folder)
-
-Important: first link in the forked sails-postgresql
-
-     npm link sails-postgresql
 
 Then run the normal npm package installer
 
@@ -255,10 +232,6 @@ messages after running `sails lift`. This is an issue with OSX and Grunt; there 
 #### Compile production JS and CSS (from the midas git folder)
 
      make build
-
-Alternatively, you can also run:
-
-     grunt build
 
 #### Initialize the database
 
@@ -349,7 +322,6 @@ Enter the following commands
 
 	npm install sails -g
 	npm install
-	npm link sails-postgresql
 	grunt requirejs
 
 Raise sails with

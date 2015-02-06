@@ -12,27 +12,19 @@ logs
 results
 
 npm-debug.log
+
 # Ignore modules, should be built using `node install`
 node_modules
+
 # Ignore sails.js filesystem database
 .tmp/
 
-# Ignore the configuration files
+# Ignore the local configuration file
 config/local.js
-config/i18next.js
-config/settings/auth.js
-config/settings/sources.js
-config/settings/tags.js
-config/settings/emailTemplates.js
-config/settings/notifications.js
-config/settings/analytics.js
-assets/js/backbone/config/login.json
 
 # Ignore production files
-assets/prod/js
-assets/prod/css
-assets/prod/font
-assets/prod/fonts
+assets/prod/*
+!assets/prod/.gitkeep
 
 # Ignore vagrant & chef tmp files
 .vagrant/*
@@ -49,4 +41,3 @@ chef/cookbooks/*
 
 # ruby version manager
 .rvmrc
-
