@@ -1,23 +1,3 @@
-var pgSession = require('connect-pg-simple'),
-    express = require('sails/node_modules/express'),
-    pg = require('sails-postgresql/node_modules/pg');
-
-// Build database config
-var environment = process.env.NODE_ENV || 'development',
-    configs = ['./connections', './env/' + environment, './local'],
-    config = {};
-
-(function() {
-  configs.forEach(function(c) {
-    try { extend(config, require(c).connections.postgresql); } catch(e) {}
-  });
-  function extend(obj, props) {
-    for (prop in props) {
-      if (props.hasOwnProperty(prop)) { obj[prop] = props[prop]; }
-    }
-  }
-})();
-
 /**
  * Session
  *
@@ -30,7 +10,7 @@ var environment = process.env.NODE_ENV || 'development',
  * http://sailsjs.org/#documentation
  */
 
-module.exports.session = {
+var session = {
 
   // Session secret is automatically generated when your new app is created
   // Replace at your own risk in production-- you will invalidate the cookies of your users,
@@ -41,46 +21,37 @@ module.exports.session = {
   // will persist forever.
   cookie: {
     maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
-  },
-
-  store: new (pgSession(express.session))({
-    conString: config,
-    pg: pg
-  })
-
-  // In production, uncomment the following lines to set up a shared redis session store
-  // that can be shared across multiple Sails.js servers
-  // adapter: 'redis',
-  //
-  // The following values are optional, if no options are set a redis instance running
-  // on localhost is expected.
-  // Read more about options at: https://github.com/visionmedia/connect-redis
-  //
-  // host: 'localhost',
-  // port: 6379,
-  // ttl: <redis session TTL in seconds>,
-  // db: 0,
-  // pass: <redis auth password>
-  // prefix: 'sess:'
-
-
-  // Uncomment the following lines to use your Mongo adapter as a session store
-  // adapter: 'mongo',
-  //
-  // host: 'localhost',
-  // port: 27017,
-  // db: 'sails',
-  // collection: 'sessions',
-  //
-  // Optional Values:
-  //
-  // # Note: url will override other connection settings
-  // url: 'mongodb://user:pass@host:port/database/collection',
-  //
-  // username: '',
-  // password: '',
-  // auto_reconnect: false,
-  // ssl: false,
-  // stringify: true
+  }
 
 };
+
+// Build database config
+if (process.env.NODE_ENV !== 'test') {
+
+  var pgSession = require('connect-pg-simple'),
+      express = require('sails/node_modules/express'),
+      pg = require('sails-postgresql/node_modules/pg'),
+      environment = process.env.NODE_ENV || 'development',
+      configs = ['./connections', './env/' + environment, './local'],
+      config = {};
+
+  configs.forEach(function(c) {
+    try { extend(config, require(c).connections.postgresql); } catch(e) {}
+  });
+
+  function extend(obj, props) {
+    for (prop in props) {
+      if (props.hasOwnProperty(prop)) { obj[prop] = props[prop]; }
+    }
+  }
+
+  if (Object.keys(config).length > 0) {
+    session.store = new (pgSession(express.session))({
+      conString: config,
+      pg: pg
+    });
+  }
+
+}
+
+module.exports.session = session;
