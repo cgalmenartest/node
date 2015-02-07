@@ -28,7 +28,7 @@ start: server.PID
 
 server.PID:
 	sails lift & echo $$! > $@;
-	sleep 5
+	sleep 15
 
 stop: server.PID
 	kill `cat $<` && rm $<
@@ -40,7 +40,7 @@ test-browser: test-browser-current-config-with-server
 test-browser-current-config-with-server: start test-browser-current-config stop
 
 test-browser-current-config:
-	./node_modules/mocha-casperjs/bin/mocha-casperjs test-browser/*.js || true
+	find ./test-browser -name "*.js" -exec ./node_modules/mocha-casperjs/bin/mocha-casperjs {} \; || true
 
 test-all-current-config:
 	@NODE_ENV=test ./node_modules/.bin/mocha \

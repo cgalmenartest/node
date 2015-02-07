@@ -43,5 +43,8 @@ describe('Home page', function() {
     });
   });
 
+  after(function() {
+    casper.exit();
+  });
 
 });
