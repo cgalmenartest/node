@@ -1,7 +1,7 @@
 source 'https://api.berkshelf.com'
 
 cookbook 'user', git: 'https://github.com/fnichol/chef-user'
-cookbook 'midas', git: 'https://github.com/18F/midas-cookbook.git'
+cookbook 'midas', git: 'https://github.com/18F/midas-cookbook.git', branch: 'master'
 cookbook 'postgresql', '3.4.4'
 cookbook 'nginx'
 cookbook 'nodejs'
