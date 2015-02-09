@@ -7,9 +7,9 @@ chai.use(casper_chai);
 // access environment vars
 var system = require('system');
 
-describe('Home page', function() {
+describe('Task page', function() {
   before(function() {
-    casper.start(system.env.TEST_ROOT, function afterStart() {
+    casper.start(system.env.TEST_ROOT + '/tasks', function afterStart() {
       this.options = {
         verbose: true,
         logLevel: "debug",
@@ -28,20 +28,20 @@ describe('Home page', function() {
     })
   })
 
-  it('should have correct title', function() {
+  it('should have task list', function() {
     casper.then(function() {
-      assert.equal(casper.getTitle(), "midas");
-    })
-  })
-
-  it('should link to /tasks', function() {
-    casper.then(function() {
-      casper.waitForText('Opportunities', function waitForTextOpportunities() {
-        casper.click('.tasks .nav-link[href]')
-        assert.equal(casper.getCurrentUrl(), system.env.TEST_ROOT + '/tasks');
-      })
+      casper.waitForSelector('#browse-list', loaded, failed, 1000 * 15);
+      function loaded() {
+        assert.ok(true);
+      }
+      function failed() {
+        assert.ok(false);
+      }
     });
   });
 
+  after(function() {
+    casper.exit();
+  });
 
 });
