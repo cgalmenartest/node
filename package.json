@@ -6,6 +6,7 @@
     "dependencies": {
         "sails": "0.10.5",
         "async": "0.2.9",
+        "connect-pg-simple": "^2.2.1",
         "grunt": "0.4.5",
         "ejs": "0.8.5",
         "underscore": "1.x",
@@ -26,13 +27,13 @@
         "email-templates": "~0.1.5",
         "git-rev": "0.2.x",
         "sails-disk": "~0.10.0",
-        "sails-postgresql": "~0.10.9",
+        "sails-postgresql": "18F/sails-postgresql#softdelete",
         "sails-build-dictionary": "0.10.1",
         "i18next": "~1.7.4",
         "request": "2.x",
         "grunt-contrib-requirejs": "~0.4.1",
-        "grunt-contrib-cssmin": "*",
-        "grunt-jsonlint" : "*"
+        "grunt-contrib-cssmin": "0.11.0",
+        "grunt-jsonlint" : "1.0.4"
       },
     "devDependencies": {
         "mocha": "*",
