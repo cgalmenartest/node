@@ -13,7 +13,7 @@ describe('Home page', function() {
       this.options = {
         verbose: true,
         logLevel: "debug",
-        waitTimeout: 5000
+        waitTimeout: 1000 * 15
       }
       this.on('remote.message', function(message) {
         this.log('browser console.log ==> ' + message);

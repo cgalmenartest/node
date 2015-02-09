@@ -20,14 +20,14 @@ import:
 	-cp -v $(DIR)/exclude.txt exclude.txt
 	rsync -av --exclude-from=exclude.txt $(DIR)/* .
 
-test: test-api
+test: test-api test-browser
 
 test-all: test-all-current-config
 
 start: server.PID
 
 server.PID:
-	sails lift & echo $$! > $@;
+	@NODE_ENV=test sails lift & echo $$! > $@;
 	sleep 15
 
 stop: server.PID

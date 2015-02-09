@@ -33,7 +33,7 @@
       <script src="/js/vendor/respond.js"></script>
     <![endif]-->
 
-    <% if (sails.config.environment == 'development') { %>
+    <% if (sails.config.environment != 'production') { %>
 
     <!-- Entry point for our app -->
     <script type="text/javascript" src="/js/vendor/require.js"></script>
