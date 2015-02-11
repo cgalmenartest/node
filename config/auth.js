@@ -1,3 +1,5 @@
+console.log('Loading... ', __filename);
+
 // Set up passport for authentication
 var       passport = require('passport')
          , request = require('request')

@@ -1,3 +1,5 @@
+console.log('Loading... ', __filename);
+
  module.exports = {
   // SOURCE SETTINGS
   // Set the sources of externally linked data/files

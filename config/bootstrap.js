@@ -1,3 +1,5 @@
+console.log('Loading... ', __filename);
+
 /**
  * Bootstrap
  * (sails.config.bootstrap)

@@ -1,3 +1,5 @@
+console.log('Loading... ', __filename);
+
 /**
  * HTTP Server Settings
  * (sails.config.http)
@@ -56,7 +58,7 @@ module.exports.http = {
 
     passportInit    : require('passport').initialize(),
     passportSession : require('passport').session(),
-     
+
 
   /***************************************************************************
   *                                                                          *

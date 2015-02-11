@@ -1,3 +1,5 @@
+console.log('Loading... ', __filename);
+
 // load package.json for the version
 var pkg = require('../package.json');
 var git = require('git-rev');
