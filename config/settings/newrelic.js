@@ -1,3 +1,5 @@
+console.log('Loading... ', __filename);
+
 module.exports = {
 
   // Is New Relic configured for this server?

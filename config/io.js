@@ -1,3 +1,5 @@
+console.log('Loading... ', __filename);
+
 // Configuration for internal socket.io server
 module.exports.io = {
 

@@ -1,3 +1,5 @@
+console.log('Loading... ', __filename);
+
 // import login configuration
 var config = require(process.env.PWD + '/assets/js/backbone/config/login.json');
 module.exports = {

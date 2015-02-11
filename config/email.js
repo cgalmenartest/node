@@ -1,3 +1,5 @@
+console.log('Loading... ', __filename);
+
 var fs = require('fs');
 
 module.exports = {

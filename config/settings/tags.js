@@ -1,3 +1,5 @@
+console.log('Loading... ', __filename);
+
  module.exports = {
   // TAG SETTINGS
   // When a user imports their profile from another service

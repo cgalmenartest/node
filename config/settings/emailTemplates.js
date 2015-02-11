@@ -1,3 +1,5 @@
+console.log('Loading... ', __filename);
+
 module.exports = {
 
   // predefined emails and their default values

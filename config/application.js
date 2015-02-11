@@ -1,3 +1,5 @@
+console.log('Loading... ', __filename);
+
 module.exports = {
 
   // The name of the system, as should appear in emails and the <html> <title> tag

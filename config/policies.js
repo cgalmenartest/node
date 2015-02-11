@@ -1,3 +1,5 @@
+console.log('Loading... ', __filename);
+
 /**
  * Policies are simply Express middleware functions which run before your controllers.
  * You can apply one or more policies for a given controller or action.

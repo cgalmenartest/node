@@ -1,3 +1,5 @@
+console.log('Loading... ', __filename);
+
 // import i18next configuration
 var config = require('../assets/js/backbone/config/i18n.json');
 

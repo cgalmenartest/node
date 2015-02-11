@@ -1,3 +1,5 @@
+console.log('Loading... ', __filename);
+
 module.exports.globals = {
   _: true,
   async: false,

@@ -1,4 +1,6 @@
-// web analytics configuration 
+console.log('Loading... ', __filename);
+
+// web analytics configuration
 module.exports = {
   //ANALYTICS SETTINGS
   google: {

@@ -1,3 +1,5 @@
+console.log('Loading... ', __filename);
+
 // NOTIFICATION SETTINGS
 module.exports = {
   // service functions called to produce the given audience
