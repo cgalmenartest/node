@@ -16,8 +16,9 @@ define([
   'json!ui_config',
   'text!volunteer_supervisor_notify_template',
   'text!volunteer_text_template',
-  'text!change_state_template'
-], function (Bootstrap, _, Backbone, i18n, Popovers, utils, BaseView, CommentListController, AttachmentView, TaskItemView, TagShowView, ModalComponent, ModalAlert, TaskEditFormView, UIConfig, VolunteerSupervisorNotifyTemplate, VolunteerTextTemplate, ChangeStateTemplate) {
+  'text!change_state_template',
+  'text!update_name_template'
+], function (Bootstrap, _, Backbone, i18n, Popovers, utils, BaseView, CommentListController, AttachmentView, TaskItemView, TagShowView, ModalComponent, ModalAlert, TaskEditFormView, UIConfig, VolunteerSupervisorNotifyTemplate, VolunteerTextTemplate, ChangeStateTemplate, UpdateNameTemplate) {
 
   var popovers = new Popovers();
 
@@ -320,9 +321,41 @@ define([
       } else {
         var self = this;
         var child = $(e.currentTarget).children("#like-button-icon");
+        var originalEvent = e;
 
         if (this.modalAlert) { this.modalAlert.cleanup(); }
         if (this.modalComponent) { this.modalComponent.cleanup(); }
+
+        // If user's profile has no name, ask them to enter one
+        if (!window.cache.currentUser.name) {
+          var modalContent = _.template(UpdateNameTemplate,{});
+          this.modalComponent = new ModalComponent({
+            el: "#modal-volunteer",
+            id: "update-name",
+            modalTitle: 'Enter your name'
+          }).render();
+          this.modalAlert = new ModalAlert({
+            el: "#update-name .modal-template",
+            modalDiv: '#update-name',
+            content: modalContent,
+            validateBeforeSubmit: true,
+            cancel: i18n.t('volunteerModal.cancel'),
+            submit: i18n.t('volunteerModal.ok'),
+            callback: function(e) {
+              var name = $('#update-name-field').val();
+              $.ajax({
+                url: '/api/user/' + window.cache.currentUser.id,
+                method: 'PUT',
+                data: { name: name }
+              }).done(function(user) {
+                window.cache.currentUser.name = user.name;
+                self.volunteer(originalEvent);
+              });
+            }
+          }).render();
+          return;
+        }
+
         this.modalComponent = new ModalComponent({
           el: "#modal-volunteer",
           id: "check-volunteer",
