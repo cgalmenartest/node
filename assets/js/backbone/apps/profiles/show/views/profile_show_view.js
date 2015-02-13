@@ -58,7 +58,7 @@ define([
         ui: UIConfig
       }
 
-      data.email = data.data.emails[0];
+      data.email = (data.data.emails && data.data.emails.length) ? data.data.emails[0] : '';
 
       if (data.data.bio) {
         data.data.bioHtml = marked(data.data.bio);
