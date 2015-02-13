@@ -52,7 +52,7 @@ define([
     render: function (self) {
       self.getTagData(self, function () {
         var d = self.data,
-            vol = (d.user.id !== d.model.userId && d.model.state !== 'draft');
+            vol = ((!d.user || d.user.id !== d.model.userId) && d.model.state !== 'draft');
         self.data.ui = UIConfig;
         self.data.vol = vol;
         var compiledTemplate = _.template(TaskShowTemplate, self.data);
