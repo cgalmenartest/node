@@ -9,6 +9,11 @@
 
           <!-- Nav tabs -->
           <ul class="nav nav-tabs box-pad-t" role="tablist">
+            <li role="presentation">
+              <a href="#drafts" aria-controls="open" role="tab" data-toggle="tab">
+                Drafts: <%- drafts.length %>
+              </a>
+            </li>
             <li role="presentation" class="active">
               <a href="#open" aria-controls="open" role="tab" data-toggle="tab">
                 Open: <%- open.length %>
@@ -33,6 +38,23 @@
 
           <!-- Tab panes -->
           <div class="tab-content box-pad-t">
+            <div role="tabpanel" class="tab-pane" id="drafts">
+              <ul class="metrics">
+                <% _(drafts).forEach(function(task) { %>
+                  <li>
+                    <a href="/tasks/<%- task.id %>"><%- task.title %></a>,
+                    <a href="/profile/<%- task.user.id %>"><%- task.user.name || task.user.username %></a>
+                    <% if (task.volunteers.length) { %>
+                    <p>Sign-ups:
+                      <% _(task.volunteers).forEach(function(vol) { %>
+                        <a href="/profile/<%- task.user.id %>"><%- vol.user.name || vol.user.username %></a>
+                      <% }); %>
+                    </p>
+                    <% } %>
+                  </li>
+                <% }); %>
+              </ul>
+            </div>
             <div role="tabpanel" class="tab-pane active" id="open">
               <ul class="metrics">
                 <% _(open).forEach(function(task) { %>
