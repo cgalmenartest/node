@@ -332,7 +332,7 @@ define([
           this.modalComponent = new ModalComponent({
             el: "#modal-volunteer",
             id: "update-name",
-            modalTitle: 'Enter your name'
+            modalTitle: "What's your name?"
           }).render();
           this.modalAlert = new ModalAlert({
             el: "#update-name .modal-template",
