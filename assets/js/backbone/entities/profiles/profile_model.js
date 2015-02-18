@@ -12,6 +12,12 @@ define([
 			this.initializeProfileGet();
 		},
 
+		parse: function(res, options) {
+			// Remove falsy values (db returns null instead of undefined)
+			_(res).each(function(v, k, o) { if (!v) delete o[k]; });
+			return res;
+		},
+
 		initializeProfileGet: function () {
 			var self = this;
 
@@ -79,7 +85,7 @@ define([
 				},
 				error: function (data) {
 					_this.trigger("profile:removeAuth:fail", data, id);
-				} 
+				}
 				});
 			});
 
