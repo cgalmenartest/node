@@ -417,6 +417,7 @@ module.exports = {
 
         // Get user model
         steps.push(function(done) {
+          if (!activity.task) return done();
           User.findOne({ id: activity.task.userId }).exec(function(err, user) {
             if (err) return done('Failed to find model' + err);
             activity.user = user;
