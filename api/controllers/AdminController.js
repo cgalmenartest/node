@@ -499,7 +499,7 @@ module.exports = {
 
     // Get tasks
     steps.push(function(done) {
-      Task.find({ state: ['open', 'public', 'assigned', 'completed'] })
+      Task.find({ state: ['draft', 'open', 'public', 'assigned', 'completed'] })
         .sort(sort)
         .paginate({ page: page, limit: limit})
         .exec(function(err, tasks) {
@@ -546,6 +546,7 @@ module.exports = {
       });
 
       // Set output properties
+      output.drafts = _.where(tasks, function(task) { return task.state === 'draft'; });
       output.assigned = _.where(tasks, function(task) { return task.state === 'assigned'; });
       output.completed = _.where(tasks, function(task) { return task.state === 'completed'; });
       output.withSignups = _.where(tasks, function(task) {
