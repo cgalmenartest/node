@@ -50,7 +50,8 @@ define([
     render: function () {
       var data = {
         id: this.options.id,
-        modalTitle: this.options.modalTitle
+        modalTitle: this.options.modalTitle,
+        draft: this.options.draft
       };
       var compiledTemplate = _.template(ModalWizardTemplate, data);
       this.$el.html(compiledTemplate);
@@ -159,6 +160,8 @@ define([
 
       var d = this.options.data(this);
       var abort = false;
+      var state = $(e.currentTarget).data('state');
+
       // pass the data to the view
       if (this.childSubmit) {
         // if submit returns true, abort modal processing
@@ -170,6 +173,7 @@ define([
       }
 
       $('.modal.in').modal('hide');
+      if (state) d.state = state;
       this.collection.trigger(this.options.modelName + ":save", d);
     },
 

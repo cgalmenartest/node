@@ -15,7 +15,7 @@ define([
 
     initialize: function () {
       this.listenTo(this, "task:save", function (data) {
-        this.save();
+        this.save(data);
       });
 
       this.listenTo(this, "task:model:fetch", function (data) {
