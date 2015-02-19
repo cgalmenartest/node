@@ -566,6 +566,31 @@ module.exports = {
   },
 
   /**
+  * Measure key interactions: http://git.io/AOkF
+  * eg: /api/admin/interactions
+  */
+  interactions: function(req, res) {
+    /**
+    * The interaction metric is the total of the following actions:
+    * - someone signs up for an opportunity
+    * - task creator assigns the opportunity
+    * - posting to the discussion
+    * - marking a task completed
+    * - someone creates an opportunity in draft
+    * - an opportunity is published
+    */
+    var interactions = {
+      signups: 0,
+      assignments: 0,
+      posts: 0,
+      completions: 0,
+      drafts: 0,
+      publishes: 0
+    };
+    res.send(interactions);
+  },
+
+  /**
    * Overrides for the settings in `config/controllers.js`
    * (specific to AdminController)
    */
