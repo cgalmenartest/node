@@ -189,6 +189,7 @@ module.exports = {
       },
       tasks: {
         count: 0,
+        draft: 0,
         open: 0,
         assigned: 0,
         completed: 0,
@@ -215,6 +216,8 @@ module.exports = {
             metrics.tasks.completed++;
           } else if (tasks[i].state === "archived") {
             metrics.tasks.archived++;
+          } else if (tasks[i].state === "draft") {
+            metrics.tasks.draft++;
           }
         }
         Volunteer.find().sort('taskId').exec(function(err, vols) {
