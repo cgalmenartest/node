@@ -32,11 +32,7 @@ define([
     addAndSave: function (data) {
       var self = this;
 
-      self.task = new TaskModel({
-        title: data['title'],
-        projectId: data['projectId'],
-        description: data['description']
-      });
+      self.task = new TaskModel(data);
 
       self.task.save(null,{
         success: function (model) {
