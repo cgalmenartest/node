@@ -48,21 +48,29 @@ module.exports = {
             content.fields.volunteerId = content.fields.metadata.modelTrigger.volunteerId || null;
             // for a volunteer this the volunteer id otherwise it will never not match
             content.fields.initiatorId = content.fields.metadata.modelTrigger.volunteerId || null;
+
+            // set the email fields
+            content.fields.from = sails.config['systemEmail'];
+            content.fields.subject = _.template(content.fields.subject)(content.fields.metadata);
+            // Set template local variables for task metadata
+            content.fields.templateLocals = content.fields.templateLocals || {};
+            content.fields.templateLocals.taskTitle = task.title;
+            content.fields.templateLocals.taskLink = content.fields.metadata.globals.urlPrefix  + '/tasks/' + task.id;
+            content.fields.templateLocals.taskOwner = taskOwner.name;
+            content.fields.templateLocals.taskOwnerId = taskOwner.id;
+            content.fields.templateLocals.taskOwnerEmail = taskOwnerEmail;
+
+            // ********************
+            // TODO: Need to figure out who should get the "assigned" emails
+            // ********************
+
+            if (!content.fields.volunteerId || !fields.recipientId) return cb(null, content);
+
             // Get user info for volunteerId on behalf of recipientId (protect privacy)
             sails.services.utils.user['getUser'](content.fields.volunteerId, fields.recipientId, function (err, volunteer) {
               if (err) { sails.log.debug(err); return cb(err, content); }
               // store the volunteer info
               content.fields.metadata.volunteer = volunteer;
-              // set the email fields
-              content.fields.from = sails.config['systemEmail'];
-              content.fields.subject = _.template(content.fields.subject)(content.fields.metadata);
-              // Set template local variables for task metadata
-              content.fields.templateLocals = content.fields.templateLocals || {};
-              content.fields.templateLocals.taskTitle = task.title;
-              content.fields.templateLocals.taskLink = content.fields.metadata.globals.urlPrefix  + '/tasks/' + task.id;
-              content.fields.templateLocals.taskOwner = taskOwner.name;
-              content.fields.templateLocals.taskOwnerId = taskOwner.id;
-              content.fields.templateLocals.taskOwnerEmail = taskOwnerEmail;
               cb(null, content);
             });
 

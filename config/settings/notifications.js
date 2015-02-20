@@ -79,6 +79,12 @@ module.exports = {
         emailName: 'taskCreated'
       }
     },
+    'preflightTaskAssigned': {
+      method: 'prepareTaskVolunteer',
+      settings: {
+        emailName: 'taskAssigned'
+      }
+    },
     'preflightUserPasswordReset': {
       method: 'prepareUserPasswordResetEmail',
       settings: {
@@ -216,6 +222,18 @@ module.exports = {
           strategy: {
             'contactTaskOwnersOnVolunteerEmail': {
               preflight: ['preflightTaskCreated'],
+              delivery: 'sendSimpleEmail'
+            }
+          }
+        }
+      }
+    },
+    'taskAssigned': {
+      audience:{
+        'user': {
+          strategy: {
+            'contactTaskOwnersOnVolunteerEmail': {
+              preflight: ['preflightTaskAssigned'],
               delivery: 'sendSimpleEmail'
             }
           }
