@@ -189,6 +189,7 @@ module.exports = {
       },
       tasks: {
         count: 0,
+        draft: 0,
         open: 0,
         assigned: 0,
         completed: 0,
@@ -215,6 +216,8 @@ module.exports = {
             metrics.tasks.completed++;
           } else if (tasks[i].state === "archived") {
             metrics.tasks.archived++;
+          } else if (tasks[i].state === "draft") {
+            metrics.tasks.draft++;
           }
         }
         Volunteer.find().sort('taskId').exec(function(err, vols) {
@@ -560,6 +563,82 @@ module.exports = {
       res.json(output);
     });
 
+  },
+
+  /**
+  * Measure key interactions: http://git.io/AOkF
+  * eg: /api/admin/interactions
+  */
+  interactions: function(req, res) {
+    /**
+    * The interaction metric is the total of the following actions:
+    * + someone signs up for an opportunity
+    * + task creator assigns the opportunity
+    * + posting to the discussion
+    * + marking a task completed
+    * + someone creates an opportunity in draft
+    * + an opportunity is published
+    */
+    var interactions = {
+          signups: 0,
+          assignments: 0,
+          posts: 0,
+          completions: 0,
+          drafts: 0,
+          publishes: 0
+        },
+        page = parseInt(req.param('page', 1)),
+        limit = req.param('limit', 1000),
+        sort = req.param('sort', 'createdAt desc'),
+        steps = [];
+
+    steps.push(function(done) {
+      Task.find({}).sort(sort).paginate({
+        page: page,
+        limit: limit
+      }).exec(function(err, tasks) {
+        if (err) { return done(err); }
+        interactions.assignments = tasks.reduce(function(count, task) {
+          return (task.assignedAt) ? count + 1 : count;
+        }, 0);
+        interactions.completions = tasks.reduce(function(count, task) {
+          return (task.completedAt) ? count + 1 : count;
+        }, 0);
+        interactions.drafts = tasks.reduce(function(count, task) {
+          return (task.createdAt) ? count + 1 : count;
+        }, 0);
+        interactions.publishes = tasks.reduce(function(count, task) {
+          return (task.publishedAt) ? count + 1 : count;
+        }, 0);
+        done();
+      });
+    });
+
+    steps.push(function(done) {
+      Comment.count({}).exec(function(err, count) {
+        if (err) { return done(err); }
+        interactions.posts = count;
+        done();
+      });
+    });
+
+    steps.push(function(done) {
+      Volunteer.count({}).exec(function(err, count) {
+        if (err) { return done(err); }
+        interactions.signups = count;
+        done();
+      });
+    });
+
+    async.parallel(steps, function(err) {
+      if (err) {
+        return res.send(400, {
+          message: 'Error generating interactions.',
+          err: err
+        });
+      }
+      res.send(interactions);
+    });
   },
 
   /**

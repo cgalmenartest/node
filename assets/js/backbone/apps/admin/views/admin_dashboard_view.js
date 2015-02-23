@@ -81,7 +81,21 @@ define([
         data: data,
         success: function (data) {
           self.data = data;
-          self.renderMetrics(self, data);
+          $.ajax({
+            url: '/api/admin/interactions',
+            dataType: 'json',
+            data: data,
+            success: function(interactions) {
+              data.interactions = interactions;
+              interactions.count = _(interactions).reduce(function(sum, value, key) {
+                return sum + value;
+              }, 0);
+              self.renderMetrics(self, data);
+            },
+            error: function (xhr, status, error) {
+              self.handleError(self, xhr, status, error);
+            }
+          });
         },
         error: function (xhr, status, error) {
           self.handleError(self, xhr, status, error);
