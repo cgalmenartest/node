@@ -29,8 +29,7 @@ function authenticate (req, res, strategy, json) {
       }
     });
   } else {
-    passport.authenticate(strategy, function (err, user, info)
-    {
+    passport.authenticate(strategy, function (err, user, info) {
       if ((err) || (!user))
       {
         var message = '';
