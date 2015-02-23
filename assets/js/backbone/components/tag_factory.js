@@ -44,8 +44,10 @@ define([
           name: tag.id
         },
         success: function (data){
-          context.data.newTag     = data;
-          context.data.newItemTags.push(data);
+          if (context.data) {
+            context.data.newTag = data;
+            context.data.newItemTags.push(data);
+          }
           return done();
         }
       });
@@ -176,6 +178,3 @@ define([
 
 return Application.Component.TagFactory;
 });
-
-
-
