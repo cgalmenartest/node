@@ -653,7 +653,9 @@ module.exports = {
             tagUtils.findOrCreateTags(user.id, tags, function (err, newTags) {
               if (err) { return done(null, false, { message: 'Unabled to create tags', err: err }); }
               // Generate a notification email to the user
-              sendWelcomeEmail(done, user);
+              sendWelcomeEmail(function() {
+                user_cb(null, user);
+              }, user);
             });
           });
         }
