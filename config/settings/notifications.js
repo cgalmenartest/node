@@ -80,7 +80,7 @@ module.exports = {
       }
     },
     'preflightTaskAssigned': {
-      method: 'prepareTaskVolunteer',
+      method: 'prepareTaskAllVolunteers',
       settings: {
         emailName: 'taskAssigned'
       }
