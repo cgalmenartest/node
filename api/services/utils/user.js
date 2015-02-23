@@ -759,29 +759,32 @@ module.exports = {
           delete tags[i].updatedAt;
           delete tags[i].deletedAt;
           delete tags[i].userId;
-          delete tags[i].tag.createdAt;
-          delete tags[i].tag.updatedAt;
-          delete tags[i].tag.deletedAt;
-          if (tags[i].tag.type == 'agency') {
-            if (!user.agency) {
-              user.agency = tags[i];
-            } else {
-              // always use the latest tag stored, in case multiple are stored
-              if (user.agency.createdAt < tags[i].createdAt) {
+
+          if ( typeof tags[i].tag != 'undefined' ){
+            delete tags[i].tag.createdAt;
+            delete tags[i].tag.updatedAt;
+            delete tags[i].tag.deletedAt;
+            if (tags[i].tag.type == 'agency') {
+              if (!user.agency) {
                 user.agency = tags[i];
+              } else {
+                // always use the latest tag stored, in case multiple are stored
+                if (user.agency.createdAt < tags[i].createdAt) {
+                  user.agency = tags[i];
+                }
               }
             }
-          }
-          if (tags[i].tag.type == 'location') {
-            if (!user.location) {
-              user.location = tags[i];
-            } else {
-              // always use the latest tag stored, in case multiple are stored
-              if (user.location.createdAt < tags[i].createdAt) {
+            if (tags[i].tag.type == 'location') {
+              if (!user.location) {
                 user.location = tags[i];
+              } else {
+                // always use the latest tag stored, in case multiple are stored
+                if (user.location.createdAt < tags[i].createdAt) {
+                  user.location = tags[i];
+                }
               }
             }
-          }
+         }
          }
         user.tags = tags;
         Like.countByTargetId(userId, function (err, likes) {
