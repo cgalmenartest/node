@@ -67,6 +67,18 @@ define([
       // DOM now exists, begin select2 init
       this.initializeSelect2();
       this.initializeTextArea();
+
+      // Set up time pickers
+      $('#publishedAt').datetimepicker({
+        defaultDate: this.data.data.publishedAt
+      });
+      $('#assignedAt').datetimepicker({
+        defaultDate: this.data.data.assignedAt
+      });
+      $('#completedAt').datetimepicker({
+        defaultDate: this.data.data.completedAt
+      });
+
     },
 
     initializeSelect2: function () {
@@ -198,7 +210,10 @@ define([
 
         var modelData = {
           title: this.$("#task-title").val(),
-          description: this.$("#task-description").val()
+          description: this.$("#task-description").val(),
+          publishedAt: this.$("#publishedAt").val(),
+          assignedAt: this.$("#assignedAt").val(),
+          completedAt: this.$("#completedAt").val()
         };
 
         var project = this.$("#projectId").select2('data');
@@ -312,7 +327,7 @@ define([
 
       return oldTags;
     },
-    
+
     cleanup: function () {
       if (this.md) { this.md.cleanup(); }
       removeView(this);
