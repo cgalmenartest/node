@@ -11,6 +11,8 @@ pids
 logs
 results
 
+.env
+
 npm-debug.log
 
 # Ignore modules, should be built using `node install`
