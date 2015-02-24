@@ -12,7 +12,7 @@
     "show" : false,
     "url"  : "/faq"
   },
-  "systemEmail" : "crowdwork@state.gov",
+  "systemEmail" : "test@midas.com",
   "browse": {
     "pageSize" : 27,
     "useInfiniteScroll" : false
