@@ -53,6 +53,13 @@ module.exports = {
       templateLocals: { },
       layoutLocals: { }
     },
+    'taskAssigned': {
+      layout: 'default',
+      template: 'taskAssigned',
+      subject: 'You’ve been selected for <%= task.title %>!',
+      templateLocals: { },
+      layoutLocals: { }
+    },
     'userPasswordResetEmail': {
       layout: 'default',
       template: 'userPasswordReset',
