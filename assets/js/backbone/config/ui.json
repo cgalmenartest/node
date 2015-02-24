@@ -1,6 +1,6 @@
 {
   "project": {
-    "show": false
+    "show": true
   },
   "supervisorEmail": {
 	  "useSupervisorEmail": false
