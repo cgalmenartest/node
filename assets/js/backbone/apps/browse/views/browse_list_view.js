@@ -2,14 +2,16 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'i18n',
   'async',
   'utilities',
   'json!ui_config',
   'marked',
   'tag_config',
   'text!project_list_item',
-  'text!task_list_item'
-], function ($, _, Backbone, async, utils, UIConfig, marked, TagConfig, ProjectListItem, TaskListItem) {
+  'text!task_list_item',
+  'text!no_search_results'
+], function ($, _, Backbone, i18n, async, utils, UIConfig, marked, TagConfig, ProjectListItem, TaskListItem, NoListItem) {
 
   var BrowseListView = Backbone.View.extend({
 
@@ -73,32 +75,41 @@ define([
         var start = 0;
       }
 
-      for ( i = start; i < limit; i++ ){
-
-      if ( typeof this.options.collection[i] == 'undefined' ){ break; }
-        var item = {
-          item: this.options.collection[i],
-          user: window.cache.currentUser,
-          tagConfig: TagConfig,
-          tagShow: ['location', 'skill', 'topic', 'task-time-estimate', 'task-time-required']
+      if ( this.options.collection.length == 0 ){
+        var settings = {
+          ui: UIConfig
         }
-        if (this.options.collection[i].tags) {
-          item.tags = this.organizeTags(this.options.collection[i].tags);
-        } else {
-          item.tags =[];
-        }
-        if (this.options.collection[i].description) {
-          item.item.descriptionHtml = marked(this.options.collection[i].description);
-        }
-        var compiledTemplate = '';
-        if (this.options.target == 'projects') {
-          compiledTemplate = _.template(ProjectListItem, item);
-        } else {
-          compiledTemplate = _.template(TaskListItem, item);
-        }
+        compiledTemplate = _.template(NoListItem, settings);
         this.$el.append(compiledTemplate);
-      }
+      } else {
 
+        for ( i = start; i < limit; i++ ){
+
+        if ( typeof this.options.collection[i] == 'undefined' ){ break; }
+          var item = {
+            item: this.options.collection[i],
+            user: window.cache.currentUser,
+            tagConfig: TagConfig,
+            tagShow: ['location', 'skill', 'topic', 'task-time-estimate', 'task-time-required']
+          }
+          if (this.options.collection[i].tags) {
+            item.tags = this.organizeTags(this.options.collection[i].tags);
+          } else {
+            item.tags =[];
+          }
+          if (this.options.collection[i].description) {
+            item.item.descriptionHtml = marked(this.options.collection[i].description);
+          }
+          var compiledTemplate = '';
+          if (this.options.target == 'projects') {
+            compiledTemplate = _.template(ProjectListItem, item);
+          } else {
+            compiledTemplate = _.template(TaskListItem, item);
+          }
+          this.$el.append(compiledTemplate);
+        }
+      }
+      this.$el.i18n();
       return this;
     },
 

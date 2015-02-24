@@ -105,6 +105,7 @@ require.config({
     'browse_search_tag'         : '../apps/browse/templates/browse_search_tag.html',
     'project_list_item'         : '../apps/browse/templates/project_list_item.html',
     'task_list_item'            : '../apps/browse/templates/task_list_item.html',
+    'no_search_results'         : '../apps/browse/templates/no_search_results.html',
 
     // ----------
     //= Projects

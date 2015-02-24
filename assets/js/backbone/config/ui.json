@@ -1,6 +1,6 @@
 {
   "project": {
-    "show": true
+    "show": false
   },
   "supervisorEmail": {
 	  "useSupervisorEmail": false
@@ -8,6 +8,11 @@
   "home": {
     "logged_in_path": "/projects"
   },
+  "faq" : {
+    "show" : false,
+    "url"  : "/faq"
+  },
+  "systemEmail" : "crowdwork@state.gov",
   "browse": {
     "pageSize" : 27,
     "useInfiniteScroll" : false
