@@ -27,6 +27,8 @@ test-all: test-all-current-config
 start: server.PID
 
 server.PID:
+	mkdir -p .tmp
+	cp test/data/disk.db .tmp/disk.db
 	@NODE_ENV=test sails lift & echo $$! > $@;
 	sleep 15
 
