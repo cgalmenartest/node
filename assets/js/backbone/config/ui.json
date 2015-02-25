@@ -8,6 +8,11 @@
   "home": {
     "logged_in_path": "/projects"
   },
+  "faq" : {
+    "show" : false,
+    "url"  : "/faq"
+  },
+  "systemEmail" : "test@midas.com",
   "browse": {
     "pageSize" : 27,
     "useInfiniteScroll" : false
