@@ -617,7 +617,7 @@ module.exports = {
           // service for them. Update their user model fields if they aren't already set.
           if (user) {
             if (user.disabled === true) {
-              return done(null, false, { message: 'Your account is disabled.' });
+              return done(null, false, { message: 'Your account is disabled. Please contact ' + sails.config.systemEmail });
             }
             var update = false;
             if (providerUser.overwrite || (!user.photoId && !user.photoUrl && providerUser.photoUrl)) {
@@ -635,7 +635,7 @@ module.exports = {
 
             if (update === true) {
               user.save(function (err) {
-                if (err) { return done(null, false, { message: 'Unable to update user information.' }); }
+                if (err) { return done(null, false, { message: 'Unable to update your information.' }); }
                 // check if tags should be updated
                 checkTagUpdate(user.id, providerUser, function (err) {
                   return user_cb(err, user);
@@ -653,7 +653,7 @@ module.exports = {
           else {
             User.create(userMatch).exec(function (err, user) {
               sails.log.debug('Created User: ', user);
-              if (err) { return done(null, false, { message: 'Unable to create user.' }); }
+              if (err) { return done(null, false, { message: 'Unable to create your account.' }); }
               var tags = create_tag_obj(providerUser);
               // Update the user's tags
               tagUtils.findOrCreateTags(user.id, tags, function (err, newTags) {
