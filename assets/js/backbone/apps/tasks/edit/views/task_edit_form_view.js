@@ -211,9 +211,9 @@ define([
         var modelData = {
           title: this.$("#task-title").val(),
           description: this.$("#task-description").val(),
-          publishedAt: this.$("#publishedAt").val(),
-          assignedAt: this.$("#assignedAt").val(),
-          completedAt: this.$("#completedAt").val()
+          publishedAt: this.$("#publishedAt").val() || undefined,
+          assignedAt: this.$("#assignedAt").val() || undefined,
+          completedAt: this.$("#completedAt").val() || undefined
         };
 
         var project = this.$("#projectId").select2('data');
