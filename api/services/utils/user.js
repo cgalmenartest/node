@@ -562,14 +562,14 @@ module.exports = {
       // If the user's authentication tokens don't exist
       // then add the authentication tokens and update the user profile
       if (userAuth.length === 0) {
-        var user = {
+        var userMatch = {
           name: providerUser.displayName,
           photoUrl: providerUser.photoUrl,
           title: providerUser.title,
           bio: providerUser.bio
         };
         if (providerUser.emails && (providerUser.emails.length > 0)) {
-          user.username = providerUser.emails[0].value.toLowerCase();
+          userMatch.username = providerUser.emails[0].value.toLowerCase();
         }
 
         // Utility function that completes the oauth user creation/update process
@@ -605,58 +605,67 @@ module.exports = {
             }
           });
         };
+        var email = (providerUser.emails && providerUser.emails.length) ?
+              providerUser.emails[0].value.toLowerCase() : undefined,
+            user = (req.user) ? req.user[0] : undefined;
+        User.findOne({ username: email }).exec(function(err, foundUser) {
+          if (err) { return done(null, false, { message: 'Unable to find existing users.' }); }
 
-        // if this user is logged in, then we're adding a new
-        // service for them.  Update their user model fields if they
-        // aren't already set.
-        if (req.user) {
-          if (req.user[0].disabled === true) {
-            return done(null, false, { message: 'Your account is disabled.' });
-          }
-          var update = false;
-          if (providerUser.overwrite || (!req.user[0].photoId && !req.user[0].photoUrl && providerUser.photoUrl)) {
-            req.user[0].photoUrl = providerUser.photoUrl || null;
-            update = true;
-          }
-          if (providerUser.overwrite || (!req.user[0].bio && providerUser.bio)) {
-            req.user[0].bio = providerUser.bio || null;
-            update = true;
-          }
-          if (providerUser.overwrite || (!req.user[0].title && providerUser.title)) {
-            req.user[0].title = providerUser.title || null;
-            update = true;
-          }
+          if (!user && foundUser) user = foundUser;
 
-          if (update === true) {
-            req.user[0].save(function (err) {
-              if (err) { return done(null, false, { message: 'Unable to update user information.' }); }
+          // If this user is logged in or already exists, then we're adding a new
+          // service for them. Update their user model fields if they aren't already set.
+          if (user) {
+            if (user.disabled === true) {
+              return done(null, false, { message: 'Your account is disabled. Please contact ' + sails.config.systemEmail });
+            }
+            var update = false;
+            if (providerUser.overwrite || (!user.photoId && !user.photoUrl && providerUser.photoUrl)) {
+              user.photoUrl = providerUser.photoUrl || null;
+              update = true;
+            }
+            if (providerUser.overwrite || (!user.bio && providerUser.bio)) {
+              user.bio = providerUser.bio || null;
+              update = true;
+            }
+            if (providerUser.overwrite || (!user.title && providerUser.title)) {
+              user.title = providerUser.title || null;
+              update = true;
+            }
+
+            if (update === true) {
+              user.save(function (err) {
+                if (err) { return done(null, false, { message: 'Unable to update your information.' }); }
+                // check if tags should be updated
+                checkTagUpdate(user.id, providerUser, function (err) {
+                  return user_cb(err, user);
+                });
+              });
+            // user object has not been updated, check tags
+            } else {
               // check if tags should be updated
-              checkTagUpdate(req.user[0].id, providerUser, function (err) {
-                return user_cb(err, req.user[0]);
+              checkTagUpdate(user.id, providerUser, function (err) {
+                return user_cb(err, user);
+              });
+            }
+          }
+          // create user because the user is not logged in
+          else {
+            User.create(userMatch).exec(function (err, user) {
+              sails.log.debug('Created User: ', user);
+              if (err) { return done(null, false, { message: 'Unable to create your account.' }); }
+              var tags = create_tag_obj(providerUser);
+              // Update the user's tags
+              tagUtils.findOrCreateTags(user.id, tags, function (err, newTags) {
+                if (err) { return done(null, false, { message: 'Unabled to create tags', err: err }); }
+                // Generate a notification email to the user
+                sendWelcomeEmail(function() {
+                  user_cb(null, user);
+                }, user);
               });
             });
-          // user object has not been updated, check tags
-          } else {
-            // check if tags should be updated
-            checkTagUpdate(req.user[0].id, providerUser, function (err) {
-              return user_cb(err, req.user[0]);
-            });
           }
-        }
-        // create user because the user is not logged in
-        else {
-          User.create(user).exec(function (err, user) {
-            sails.log.debug('Created User: ', user);
-            if (err) { return done(null, false, { message: 'Unable to create user.' }); }
-            var tags = create_tag_obj(providerUser);
-            // Update the user's tags
-            tagUtils.findOrCreateTags(user.id, tags, function (err, newTags) {
-              if (err) { return done(null, false, { message: 'Unabled to create tags', err: err }); }
-              // Generate a notification email to the user
-              sendWelcomeEmail(done, user);
-            });
-          });
-        }
+        });
       }
       // The user has authentication tokens already for this provider, update them.
       else {
