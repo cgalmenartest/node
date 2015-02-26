@@ -624,7 +624,8 @@ CREATE TABLE tagentity (
     id integer NOT NULL,
     "createdAt" timestamp with time zone,
     "updatedAt" timestamp with time zone,
-    "deletedAt" timestamp with time zone
+    "deletedAt" timestamp with time zone,
+    data json
 );
 
 

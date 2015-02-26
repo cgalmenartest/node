@@ -12,7 +12,9 @@ module.exports = {
     // type of the tag (such as 'skill' for Skill)
     type: 'STRING',
     // name of the tag (display name)
-    name: 'STRING'
+    name: 'STRING',
+    // arbitrary data attributes, like coordinates and time zones for locations
+    data: 'JSON'
   }
 
 };
