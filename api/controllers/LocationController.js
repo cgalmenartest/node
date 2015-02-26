@@ -27,14 +27,13 @@ module.exports = {
         var name = [item.toponymName];
         if (item.toponymName !== item.adminName1) name.push(item.adminName1);
         if (item.countryCode !== 'US') name.push(item.countryCode);
-        return {
+        return _.extend({
           name: name.join(', '),
           lat: item.lat,
           lon: item.lng,
-          timezone: item.timezone,
           source: 'geonames',
           sourceId: item.geonameId
-        };
+        }, item.timezone);
       }));
 
     });
