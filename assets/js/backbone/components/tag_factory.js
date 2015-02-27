@@ -41,14 +41,15 @@ define([
         type: 'POST',
         data: {
           type: tag.tagType,
-          name: tag.id
+          name: tag.id,
+          data: tag.data
         },
         success: function (data){
           if (context.data) {
             context.data.newTag = data;
             context.data.newItemTags.push(data);
           }
-          return done();
+          return done(data);
         }
       });
     },

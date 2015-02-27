@@ -386,6 +386,42 @@ define([
       };
 
       var modelJson = this.model.toJSON();
+
+      var locationSettings = {
+        placeholder: 'Select a Location',
+        formatResult: formatResult,
+        formatSelection: formatResult,
+        minimumInputLength: 1,
+        data: [ location ],
+        createSearchChoice: function (term, values) {
+          var vals = values.map(function(value) {
+            return value.value.toLowerCase();
+          });
+
+          //unmatched = true is the flag for saving these "new" tags to tagEntity when the opp is saved
+          return (vals.indexOf(term.toLowerCase()) >=0) ? false : {
+            tagType: 'location',
+            id: term,
+            value: term,
+            temp: true,
+            name: "<b>"+term+"</b> <i>search for this location</i>"
+          };
+        },
+        ajax: {
+          url: '/api/ac/tag',
+          dataType: 'json',
+          data: function (term) {
+            return {
+              type: 'location',
+              q: term
+            };
+          },
+          results: function (data) {
+            return { results: data };
+          }
+        }
+      };
+
       $("#company").select2({
         placeholder: 'Select an Agency',
         formatResult: formatResult,
@@ -420,31 +456,38 @@ define([
       $("#company").on('change', function (e) {
         self.model.trigger("profile:input:changed", e);
       });
-      $("#location").select2({
-        placeholder: 'Select a Location',
-        formatResult: formatResult,
-        formatSelection: formatResult,
-        minimumInputLength: 1,
-        data: [ location ],
-        ajax: {
-          url: '/api/ac/tag',
-          dataType: 'json',
-          data: function (term) {
-            return {
-              type: 'location',
-              q: term
-            };
-          },
-          results: function (data) {
-            return { results: data };
-          }
+      $('#location').select2(locationSettings).on('select2-selecting', function(e) {
+        var $el = self.$(e.currentTarget);
+        if (e.choice.temp) {
+          e.preventDefault();
+          this.temp = true;
+          $('#location').select2('data', e.choice.name);
+          $.get('/api/location/suggest?q=' + e.choice.value, function(d) {
+            d = _(d).map(function(item) {
+              return {
+                id: item.name,
+                text: item.name,
+                unmatched: true,
+                tagType: 'location',
+                data: _(item).omit('name')
+              };
+            });
+            $('#location').select2({ data: d }).select2('open');
+          });
+        } else {
+          delete this.temp;
         }
+      }).on('open', function(e) {
+        if (!this.temp) $("#location").select2(locationSettings);
       });
       if (modelJson.location) {
         $("#location").select2('data', modelJson.location.tag);
       }
       $("#location").on('change', function (e) {
-        self.model.trigger("profile:input:changed", e);
+        self.tagFactory.addTagEntities(e.added, self, function(tag) {
+          if (e.added && tag) e.added.id = tag.id;
+          self.model.trigger("profile:input:changed", e);
+        });
       });
     },
 
