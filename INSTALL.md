@@ -169,13 +169,6 @@ Then run the normal npm package installer
 
      npm install
 
-#### Copy the main settings files
-
-From the root of the midas directory:
-
-     cd config
-     cp local.ex.js local.js
-
 #### Copy the backend module configuration files
 
 From the root of the midas directory:
@@ -346,4 +339,3 @@ Raise sails with
      sails lift
 
 You can now access the server at `http://localhost:1337`
-
