@@ -258,19 +258,13 @@ define([
             tagMap.userId = self.model.toJSON().id;
           }
 
-        async.forEach(
-          tags,
-          function(tag, callback){
-            //diffAdd,self.model.attributes.id,"taskId",callback
-            return self.tagFactory.addTag(tag,tagMap.userId,"userId",callback);
-          },
-          function(err){
-            self.model.trigger("profile:tags:save:success", err);
-          }
-        );
+        async.forEach(tags, function(tag, callback){
+          //diffAdd,self.model.attributes.id,"taskId",callback
+          return self.tagFactory.addTag(tag,tagMap.userId,"userId",callback);
+        });
       });
 
-        this.listenTo(self.model, "profile:tags:save", function (tags) {
+      this.listenTo(self.model, "profile:tags:save", function (tags) {
 
         var newTags = [];
 
@@ -344,11 +338,7 @@ define([
         $("#profile-save, #submit").removeClass("btn-primary");
         $("#profile-save, #submit").addClass("btn-success");
         self.data.saved = true;
-
-        //despite being wrapped in a event listener, this only "refresh" only seems to reflect the update data with the delay
-        setTimeout(function(){
-          Backbone.history.navigate('profile/' + self.model.toJSON().id, { trigger: true });
-        },50);
+        Backbone.history.navigate('profile/' + self.model.toJSON().id, { trigger: true });
       });
 
       this.listenTo(self.model, "profile:save:fail", function (data) {
