@@ -11,7 +11,7 @@
           <div class="main-section">
             <div class="edit-task-section">
 
-              <h1><%= model.title %></h1>
+              <h1><%- model.title %></h1>
               <% if (!_.isUndefined(model.project) && ui.project.show) { %>
               <div class="task-project">
                 <a href="/projects/<%- model.projectId %>" class="link-backbone">
