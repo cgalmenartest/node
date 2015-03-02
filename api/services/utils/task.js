@@ -114,7 +114,7 @@ var findTasks = function (where, cb) {
   var w = where || {};
   Task.find()
   .where(w)
-  .sort({'updatedAt': -1})
+  .sort({ publishedAt: 0, updatedAt: 0 })
   .exec(function (err, tasks) {
     if (err) { return cb({ message: 'Error looking up tasks.' }, null); }
     // function for looking up user info
