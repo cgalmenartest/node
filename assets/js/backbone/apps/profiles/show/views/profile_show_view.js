@@ -474,7 +474,7 @@ define([
         $("#location").select2('data', modelJson.location.tag);
       }
       $("#location").on('change', function (e) {
-        self.tagFactory.addTagEntities(e.added, self, function(tag) {
+        self.tagFactory.addTagEntities(e.added, self, function(err, tag) {
           if (e.added && tag) e.added.id = tag.id;
           self.model.trigger("profile:input:changed", e);
         });

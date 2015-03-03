@@ -284,8 +284,8 @@ define([
           function(newTag, callback) {
             self.tagFactory.addTagEntities(newTag,self,callback);
           },
-          function(err) {
-          if (err) return next(err);
+          function(err, data) {
+            if (err) return next(err);
             self.trigger("task:tags:save:done");
           }
         );

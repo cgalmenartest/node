@@ -49,7 +49,7 @@ define([
             context.data.newTag = data;
             context.data.newItemTags.push(data);
           }
-          return done(data);
+          return done(null, data);
         }
       });
     },
@@ -101,79 +101,135 @@ define([
     },
 
     createTagDropDown: function(options) {
-
-        self.$(options.selector).select2({
-          placeholder: "Start typing to select a "+options.type,
-          minimumInputLength: 2,
-          multiple: true,
-          width: options.width || "500px",
-          tokenSeparators: options.tokenSeparators || [],
-          formatResult: function (obj, container, query) {
-            return obj.name;
-          },
-          formatSelection: function (obj, container, query) {
-            return obj.name;
-          },
-          createSearchChoice: function (term) {
-            //unmatched = true is the flag for saving these "new" tags to tagEntity when the opp is saved
-            return { unmatched: true,tagType: options.type,id: term, value: term, name: "<b>"+term+"</b> <i>click to create a new tag with this value</i>" };
-          },
-          ajax: {
-            url: '/api/ac/tag',
-            dataType: 'json',
-            data: function (term) {
+      var settings = {
+            placeholder: "Start typing to select a "+options.type,
+            minimumInputLength: 2,
+            multiple: true,
+            width: options.width || "500px",
+            tokenSeparators: options.tokenSeparators || [],
+            formatResult: function (obj, container, query) {
+              return obj.name;
+            },
+            formatSelection: function (obj, container, query) {
+              return obj.name;
+            },
+            createSearchChoice: function (term) {
+              //unmatched = true is the flag for saving these "new" tags to tagEntity when the opp is saved
               return {
-                type: options.type,
-                q: term
+                unmatched: true,
+                tagType: options.type,
+                id: term,
+                value: term,
+                temp: true,
+                name: "<b>"+term+"</b> <i>" + ((options.type !== 'location') ?
+                  "click to create a new tag with this value" :
+                  "search for this location") + "</i>"
               };
             },
-            results: function (data) {
-              return { results: data }
+            ajax: {
+              url: '/api/ac/tag',
+              dataType: 'json',
+              data: function (term) {
+                return {
+                  type: options.type,
+                  q: term
+                };
+              },
+              results: function (data) {
+                return { results: data }
+              }
             }
+          },
+        $sel = self.$(options.selector);
+      $sel.remote = true;
+      $sel.select2(settings).on("select2-selecting", function (e) {
+        if (e.choice.tagType === 'location') {
+          var $el = self.$(e.currentTarget);
+          if (e.choice.temp) {
+            e.choice.name = '<em>Searching for <strong>' +
+              e.choice.value + '</strong></em>';
+            this.temp = true;
+            $.get('/api/location/suggest?q=' + e.choice.value, function(d) {
+              d = _(d).map(function(item) {
+                return {
+                  id: item.name,
+                  name: item.name,
+                  unmatched: true,
+                  tagType: 'location',
+                  data: _(item).omit('name')
+                };
+              });
+              var items = $sel.select2('data');
+              this.cache = _.reject(items, function(item) {
+                return (item.name.indexOf('<em>Searching for <strong>') >= 0);
+              });
+              $sel.select2({
+                multiple: true,
+                data: { results: d, text: 'name' }
+              }).select2('data', this.cache).select2('open');
+              $sel.remote = false;
+            });
+          } else {
+            this.reload = true;
+            delete this.temp;
           }
-        }).on("select2-selecting", function (e){
+        } else {
           if ( e.choice.hasOwnProperty("unmatched") && e.choice.unmatched ){
             //remove the hint before adding it to the list
             e.choice.name = e.val;
           }
-        });
+        }
+      }).on('select2-blur', function(e) {
+        if (!this.reload && this.temp) {
+          this.reload = true;
+          delete this.temp;
+        }
+      }).on('select2-open', function(e) {
+        var el = this;
+        if (this.reload) {
+          this.cache = $sel.select2('data');
+          setTimeout(function(){
+            $sel.select2(settings).select2('data', el.cache).select2('open');
+          }, 0);
+          delete this.reload;
+        }
+      });
+    },
 
-      },
+    createDiff: function ( oldTags, currentTags){
+      //sort tags into their needed actions
+      //
 
-      createDiff: function ( oldTags, currentTags){
-        //sort tags into their needed actions
-        //
+      var out = {
+        remove: [],
+        add: [],
+        none: []
+      };
 
-        var out = {
-          remove: [],
-          add: [],
-          none: []
-        };
+      var none = null;
 
-        var none = null;
+      _.each(oldTags, function (oTag,oi){
 
-        _.each(oldTags, function (oTag,oi){
+        none = null;
 
-          none = null;
+        _.each(currentTags, function (cTag, ci){
+            if ( parseInt(cTag.id) == oTag.tagId ){
+              currentTags.splice(ci,1);
+              none = oi;
+            }
+          });
 
-          _.each(currentTags, function (cTag, ci){
-              if ( parseInt(cTag.id) == oTag.tagId ){
-                currentTags.splice(ci,1);
-                none = oi;
-              }
-            });
+        if( _.isFinite(none) ){
+          out.none.push(parseInt(oldTags[none].tagId));
+        } else {
+          out.remove.push(parseInt(oTag.id));
+        }
+      });
 
-          if( _.isFinite(none) ){
-            out.none.push(parseInt(oldTags[none].tagId));
-          } else {
-            out.remove.push(parseInt(oTag.id));
-          }
-        });
+      out.add = currentTags;
 
-        out.add = currentTags;
-
-        return out;
-      }
+      return out;
+    }
 
   });
 
