@@ -129,7 +129,6 @@ module.exports = {
   },
 
   findOne: function(req, res) {
-    sails.log.error('find one', req.route.params.id);
     module.exports.find(req, res);
   },
 

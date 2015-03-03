@@ -37,9 +37,10 @@ module.exports = function sendOK (data, options) {
   // work, just send JSON.
   if (options.view) {
     return res.view(options.view, { data: data });
+  } else if (data) {
+    return res.json(data);
+  } else {
+    return res.send(res.status());
   }
-
-  // If no second argument provided, send default.
-  else return res.send(res.status());
 
 };

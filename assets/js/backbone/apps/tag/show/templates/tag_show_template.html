@@ -7,7 +7,9 @@
   </div>
   <% } %>
   <ul class="tags">
-    <li class="tag-empty" id="<%- tags[i]['class'] %>-empty">None</li>
+    <li class="tag-empty" id="<%- tags[i]['class'] %>-empty">
+      <% if (tags[i]['class'] === 'location') { %>Anywhere<% } else { %>None<% } %>
+    </li>
   </ul>
 </div>
 <% } %>
