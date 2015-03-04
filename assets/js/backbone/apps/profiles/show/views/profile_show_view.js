@@ -447,9 +447,9 @@ define([
         self.model.trigger("profile:input:changed", e);
       });
       $('#location').select2(locationSettings).on('select2-selecting', function(e) {
-        var $el = self.$(e.currentTarget);
+        var $el = self.$(e.currentTarget),
+            el = this;
         if (e.choice.temp) {
-          e.preventDefault();
           this.temp = true;
           $('#location').select2('data', e.choice.name);
           $.get('/api/location/suggest?q=' + e.choice.value, function(d) {
@@ -457,18 +457,32 @@ define([
               return {
                 id: item.name,
                 text: item.name,
+                name: item.name,
                 unmatched: true,
                 tagType: 'location',
                 data: _(item).omit('name')
               };
             });
+            el.reload = true;
+            el.open = true;
             $('#location').select2({ data: d }).select2('open');
           });
         } else {
           delete this.temp;
         }
-      }).on('open', function(e) {
-        if (!this.temp) $("#location").select2(locationSettings);
+      }).on('select2-open', function(e) {
+        if (!this.reload && this.open) {
+          delete this.open;
+          delete this.temp;
+          var cache = $("#location").select2('data');
+          setTimeout(function() {
+            $("#location").select2(locationSettings)
+              .select2('data', cache)
+              .select2('open');
+          }, 0);
+        } else if (this.reload && this.open) {
+          delete this.reload;
+        }
       });
       if (modelJson.location) {
         $("#location").select2('data', modelJson.location.tag);
