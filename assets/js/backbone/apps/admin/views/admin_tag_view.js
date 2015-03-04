@@ -20,7 +20,6 @@ define([
     render: function () {
       var types = [
         'agency',
-        'location',
         'skill',
         'topic'
       ];
