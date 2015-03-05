@@ -149,6 +149,7 @@ module.exports = {
     query.exec(function found(err, matchingRecords) {
       if (err) return res.serverError(err);
 
+      matchingRecords = _.reject(matchingRecords, 'disabled');
       var ids  = matchingRecords.map(function(m) { return m.id }),
           reqId = req.user[0].id;
 
