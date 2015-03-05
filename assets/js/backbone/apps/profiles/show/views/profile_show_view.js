@@ -261,6 +261,8 @@ define([
         async.forEach(tags, function(tag, callback){
           //diffAdd,self.model.attributes.id,"taskId",callback
           return self.tagFactory.addTag(tag,tagMap.userId,"userId",callback);
+        }, function(err) {
+          self.model.trigger("profile:tags:save:success", err);
         });
       });
 
@@ -272,20 +274,9 @@ define([
           self.$("#tag_topic").select2('data'),
           self.$("#tag_skill").select2('data'),
           self.$("#tag_location").select2('data'),
+          self.$("#location").select2('data'),
           self.$("#tag_agency").select2('data')
         );
-
-        async.forEach(
-          newTags,
-          function(newTag, callback) {
-            return self.tagFactory.addTagEntities(newTag,self,callback);
-          },
-          function(err) {
-            if (err) return next(err);
-            self.trigger("newTagSaveDone");
-          }
-        );
-
 
         var removeTag = function(type, done) {
           if (self.model[type]) {
@@ -326,11 +317,25 @@ define([
           });
         }
 
-        async.each(['agency','location'], removeTag, function (err) {
-          async.forEach(tags, addTag, function (err) {
-            return self.model.trigger("profile:tags:save:success", err);
-          });
-        });
+        async.forEach(
+          newTags,
+          function(newTag, callback) {
+            return self.tagFactory.addTagEntities(newTag,self,callback);
+          },
+          function(err) {
+            if (err) return next(err);
+
+            tags = _.filter(tags, function(tag) {
+              return (tag && tag.id !== tag.name);
+            });
+            async.each(['agency','location'], removeTag, function (err) {
+              async.each(tags, addTag, function (err) {
+                self.trigger("newTagSaveDone");
+              });
+            });
+          }
+        );
+
       });
 
       this.listenTo(self.model, "profile:tags:save:success", function (err) {
@@ -447,9 +452,9 @@ define([
         self.model.trigger("profile:input:changed", e);
       });
       $('#location').select2(locationSettings).on('select2-selecting', function(e) {
-        var $el = self.$(e.currentTarget);
+        var $el = self.$(e.currentTarget),
+            el = this;
         if (e.choice.temp) {
-          e.preventDefault();
           this.temp = true;
           $('#location').select2('data', e.choice.name);
           $.get('/api/location/suggest?q=' + e.choice.value, function(d) {
@@ -457,27 +462,38 @@ define([
               return {
                 id: item.name,
                 text: item.name,
+                name: item.name,
                 unmatched: true,
                 tagType: 'location',
                 data: _(item).omit('name')
               };
             });
+            el.reload = true;
+            el.open = true;
             $('#location').select2({ data: d }).select2('open');
           });
         } else {
           delete this.temp;
         }
-      }).on('open', function(e) {
-        if (!this.temp) $("#location").select2(locationSettings);
+      }).on('select2-open', function(e) {
+        if (!this.reload && this.open) {
+          delete this.open;
+          delete this.temp;
+          var cache = $("#location").select2('data');
+          setTimeout(function() {
+            $("#location").select2(locationSettings)
+              .select2('data', cache)
+              .select2('open');
+          }, 0);
+        } else if (this.reload && this.open) {
+          delete this.reload;
+        }
       });
       if (modelJson.location) {
         $("#location").select2('data', modelJson.location.tag);
       }
       $("#location").on('change', function (e) {
-        self.tagFactory.addTagEntities(e.added, self, function(err, tag) {
-          if (e.added && tag) e.added.id = tag.id;
-          self.model.trigger("profile:input:changed", e);
-        });
+        self.model.trigger("profile:input:changed", e);
       });
     },
 
