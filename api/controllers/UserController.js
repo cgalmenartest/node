@@ -12,6 +12,7 @@ var taskUtils = require('../services/utils/task');
 var tagUtils = require('../services/utils/tag');
 var userUtils = require('../services/utils/user');
 var validator = require('validator');
+var actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 
 var getUserForUpdate = function (userId, reqUser, cb) {
   if (userId == reqUser.id) {
@@ -130,6 +131,42 @@ module.exports = {
 
   findOne: function(req, res) {
     module.exports.find(req, res);
+  },
+
+  // Use default Blueprint template with filtered data to return full profiles
+  profile: function(req, res) {
+    if (!req.user) return res.forbidden();
+
+    // Lookup for records that match the specified criteria
+    var Model = actionUtil.parseModel(req),
+        where = actionUtil.parseCriteria(req),
+        query = Model.find()
+          .where(where)
+          .limit(actionUtil.parseLimit(req))
+          .skip(actionUtil.parseSkip(req))
+          .sort(actionUtil.parseSort(req));
+
+    query.exec(function found(err, matchingRecords) {
+      if (err) return res.serverError(err);
+
+      var ids  = matchingRecords.map(function(m) { return m.id }),
+          reqId = req.user[0].id;
+
+      async.map(ids, function(userId, cb) {
+        sails.services.utils.user['getUser'](userId, reqId, req.user, function (err, user) {
+          if (err) return cb(err);
+          if (userId !== reqId && !_.contains(where.username, user.username)) {
+            delete user.username;
+          }
+          delete user.emails;
+          delete user.auths;
+          cb(null, user);
+        });
+      }, function(err, results) {
+        if (err) { return res.send(400, err); }
+        res.ok(results);
+      });
+    });
   },
 
   emailCount: function(req, res) {

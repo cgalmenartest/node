@@ -37,6 +37,7 @@ module.exports.policies = {
   // Limit user controller view to just the /user endpoint
   UserController : {
     '*': false,
+    'profile': ['authenticated'],
     'photo': ['authenticated', 'requireId'],
     'info': ['authenticated', 'requireId'],
     'update': ['authenticated', 'requireUserId', 'requireId'],
