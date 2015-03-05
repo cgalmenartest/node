@@ -261,6 +261,8 @@ define([
         async.forEach(tags, function(tag, callback){
           //diffAdd,self.model.attributes.id,"taskId",callback
           return self.tagFactory.addTag(tag,tagMap.userId,"userId",callback);
+        }, function(err) {
+          self.model.trigger("profile:tags:save:success", err);
         });
       });
 
@@ -272,20 +274,9 @@ define([
           self.$("#tag_topic").select2('data'),
           self.$("#tag_skill").select2('data'),
           self.$("#tag_location").select2('data'),
+          self.$("#location").select2('data'),
           self.$("#tag_agency").select2('data')
         );
-
-        async.forEach(
-          newTags,
-          function(newTag, callback) {
-            return self.tagFactory.addTagEntities(newTag,self,callback);
-          },
-          function(err) {
-            if (err) return next(err);
-            self.trigger("newTagSaveDone");
-          }
-        );
-
 
         var removeTag = function(type, done) {
           if (self.model[type]) {
@@ -326,11 +317,25 @@ define([
           });
         }
 
-        async.each(['agency','location'], removeTag, function (err) {
-          async.forEach(tags, addTag, function (err) {
-            return self.model.trigger("profile:tags:save:success", err);
-          });
-        });
+        async.forEach(
+          newTags,
+          function(newTag, callback) {
+            return self.tagFactory.addTagEntities(newTag,self,callback);
+          },
+          function(err) {
+            if (err) return next(err);
+
+            tags = _.filter(tags, function(tag) {
+              return (tag && tag.id !== tag.name);
+            });
+            async.each(['agency','location'], removeTag, function (err) {
+              async.each(tags, addTag, function (err) {
+                self.trigger("newTagSaveDone");
+              });
+            });
+          }
+        );
+
       });
 
       this.listenTo(self.model, "profile:tags:save:success", function (err) {
@@ -488,10 +493,7 @@ define([
         $("#location").select2('data', modelJson.location.tag);
       }
       $("#location").on('change', function (e) {
-        self.tagFactory.addTagEntities(e.added, self, function(err, tag) {
-          if (e.added && tag) e.added.id = tag.id;
-          self.model.trigger("profile:input:changed", e);
-        });
+        self.model.trigger("profile:input:changed", e);
       });
     },
 
