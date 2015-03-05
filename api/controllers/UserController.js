@@ -139,7 +139,7 @@ module.exports = {
 
     // Lookup for records that match the specified criteria
     var Model = actionUtil.parseModel(req),
-        where = actionUtil.parseCriteria(req),
+        where = _.omit(actionUtil.parseCriteria(req), 'access_token'),
         query = Model.find()
           .where(where)
           .limit(actionUtil.parseLimit(req))
