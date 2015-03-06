@@ -2,6 +2,7 @@ var assert = require('chai').assert;
 var conf = require('./helpers/config');
 var utils = require('./helpers/utils');
 var async = require('async');
+var _ = require('underscore');
 var request;
 
 describe('user:', function() {
@@ -11,6 +12,14 @@ describe('user:', function() {
 
   it('not logged in', function(done) {
     request(conf.url + '/user', function(err, response, body) {
+      if (err) { return done(err); }
+      // Not logged in users should get a 403
+      assert.equal(response.statusCode, 403);
+      done();
+    });
+  });
+  it('deny profile data', function(done) {
+    request(conf.url + '/user/profile', function(err, response, body) {
       if (err) { return done(err); }
       // Not logged in users should get a 403
       assert.equal(response.statusCode, 403);
@@ -140,6 +149,30 @@ describe('user:', function() {
       });
     });
   });
+  it('show profile data', function(done) {
+    request(conf.url + '/user/profile', function(err, response, body) {
+      if (err) { return done(err); }
+      var obj = JSON.parse(body);
+      // Authorized response
+      assert.equal(response.statusCode, 200);
+      // Has user profiles
+      assert.isAbove(obj.length, 0);
+      // Can only see own email address
+      var emails = _(obj).chain()
+            .map(function(o) { return o.username; })
+            .compact()
+            .value();
+      assert.equal(emails.length, 1);
+      request(conf.url + '/user', function (err, response, body) {
+        if (err) { return done(err); }
+        // Not logged in users should get a 200 with the user object
+        assert.equal(response.statusCode, 200);
+        var obj = JSON.parse(body);
+        assert.equal(obj.username, emails[0]);
+        done();
+      });
+    });
+  });
   it('change email', function(done) {
     // Check if the user is logged in
     request(conf.url + '/user', function (err, response, body) {
@@ -224,6 +257,35 @@ describe('user:', function() {
       });
     });
   });
+  it('read api with access_token', function(done) {
+    // Tests the API with a bearer access_token,
+    // reading from the profile and user endpoints
+    var token = '?access_token=testCode'
+    request(conf.url + '/user/profile' + token, function(err, response, body) {
+      if (err) { return done(err); }
+      var obj = JSON.parse(body);
+      // Authorized response
+      assert.equal(response.statusCode, 200);
+      // Has user profiles
+      assert.isAbove(obj.length, 0);
+      // Can only see own email address
+      var emails = _(obj).chain()
+            .map(function(o) { return o.username; })
+            .compact()
+            .value();
+      assert.equal(emails.length, 1);
+      request(conf.url + '/user' + token, function (err, response, body) {
+        if (err) { return done(err); }
+        // Not logged in users should get a 200 with the user object
+        assert.equal(response.statusCode, 200);
+        var obj = JSON.parse(body);
+        assert.equal(obj.username, emails[0]);
+        done();
+      });
+    });
+  });
+
+
   it('lockout user', function (done) {
     var count = 0;
     async.whilst(

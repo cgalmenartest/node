@@ -36,7 +36,15 @@ before(function(done) {
     // export properties for upcoming tests with supertest.js
     sails.localAppURL = localAppURL = ( sails.usingSSL ? 'https' : 'http' ) + '://' + sails.config.host + ':' + sails.config.port + '';
     // save reference for teardown function
-    done(err);
+
+    //Add temp userauth
+    sails.models.userauth.create({
+      userId: 4,
+      provider: 'test',
+      accessToken: 'testCode'
+    }, function(err, model) {
+      done(err);
+    })
   });
 
 });

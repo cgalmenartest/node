@@ -6,10 +6,14 @@ var       passport = require('passport')
    , LocalStrategy = require('passport-local').Strategy
   , OAuth2Strategy = require('passport-oauth').OAuth2Strategy
    , MyUSAStrategy = require('passport-myusa').Strategy
-, LinkedInStrategy = require('passport-linkedin').Strategy;
+, LinkedInStrategy = require('passport-linkedin').Strategy
+  , BearerStrategy = require('passport-http-bearer').Strategy;
 
 var authSettings   = require('./settings/auth.js');
 var userUtils      = require('../api/services/utils/user.js');
+
+var async = require('async'),
+    request = require('request');
 
 // Passport session setup.
 // To support persistent login sessions, Passport needs to be able to
@@ -227,3 +231,42 @@ passport.use('linkedin', new LinkedInStrategy({
     );
   }
 ));
+
+// Use brearer tokens from oauth reqests to autenticate users.
+// First, look for tokens already associated with users.
+// Then, check to see if token is valid, and if so, whether its email
+// address is associated with an account.
+passport.use(new BearerStrategy({}, function(token, done) {
+  if (!token) return done(null, false);
+  async.series([
+    // Try to find user based on token
+    function(cb) {
+      UserAuth.findOne({ accessToken: token }).exec(function(err, userAuth) {
+        if (err) return cb(err);
+        if (!userAuth) return cb();
+        User.findOne({ id: userAuth.userId }).exec(function(err, user) {
+          if (err) return cb(err);
+          if (!user) return cb();
+          return done(null, user);
+        });
+      });
+    },
+    // Try to find user associated with email address
+    function(cb) {
+      var tokenAPI = 'https://alpha.my.usa.gov/api/v1/profile?access_token=' + token;
+      request.get({ url: tokenAPI, json: true }, function(err, res, data) {
+        if (err) return cb(err);
+        if (!data || !data.email) return cb();
+        User.findOne({ username: data.email }).exec(function(err, user) {
+          if (err) return cb(err);
+          if (!user) return cb();
+          return done(null, user);
+        });
+      });
+    }
+    // No users match token
+  ], function(err) {
+    return done(err, false);
+  });
+
+}));

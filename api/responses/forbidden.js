@@ -52,6 +52,6 @@ module.exports = function forbidden (data, options) {
   }
 
   // If no second argument provided, send default.
-  else return res.send(res.status());
+  else return res.send();
 
 };
