@@ -30,7 +30,7 @@ define([
       var self = this;
 
     	//this is current solution to mark a tag object as on the fly added
-        if ( typeof tag.unmatched == 'undefined' || !tag.unmatched ){
+        if ( !tag || typeof tag.unmatched == 'undefined' || !tag.unmatched ){
           return done();
         }
       //remove the flag that marks them as new
