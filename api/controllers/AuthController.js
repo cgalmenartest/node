@@ -73,7 +73,7 @@ function authenticate (req, res, strategy, json) {
           res.send(userUtils.cleanUser(user, user.id));
         }
         else {
-          res.redirect('/projects');
+          res.redirect('/tasks');
         }
         return;
       });
@@ -269,7 +269,7 @@ module.exports = {
     if (req.param('json')) {
       res.send({ logout: true });
     } else {
-      res.redirect('/projects');
+      res.redirect('/tasks');
     }
   }
 
