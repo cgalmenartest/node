@@ -9,7 +9,7 @@ module.exports = {
   httpProtocol: 'http',
 
   // hostName defines the domain upon which your app will be deployed (e.g. 'localhost:1337', for development)
-  hostName: 'localhost:1337'
+  hostName: 'localhost:1337',
 
   // The `port` setting determines which TCP port your app will be deployed on
   // Ports are a transport-layer concept designed to allow many different
@@ -35,5 +35,8 @@ module.exports = {
   // By default, Sails sets its environment using the `NODE_ENV` environment variable.
   // If NODE_ENV is not set, Sails will run in the 'development' environment.
   // environment: process.env.NODE_ENV || 'development'
+
+  // import client configuration
+  ui: require(process.env.PWD + '/assets/js/backbone/config/ui.json')
 
 };
