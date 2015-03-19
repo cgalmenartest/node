@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset=utf-8 />
+  <title>Midas</title>
+  <link href='static/highlight.min.css' rel='stylesheet'>
+  <style>
+    html, body {
+      background: white;
+      font-family: sans-serif;
+    }
+    .content {
+      margin: 40px auto;
+      padding: 0 2em;
+      max-width: 800px;
+      margin-bottom: 50px;
+      line-height: 1.6em;
+    }
+    .content img {
+      max-width: 100%;
+    }
+    img[alt="Build Status"],
+    img[alt="Dependency Status"] {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+<div id='content' class='content'></div>
+<script src='static/corslite.js'></script>
+<script src='static/highlight.min.js'></script>
+<script src='static/marked.js'></script>
+<script>
+var content = document.getElementById('content');
+
+marked.setOptions({
+  gfm: true,
+  tables: true,
+  breaks: false,
+  pedantic: false,
+  sanitize: false,
+  smartLists: true,
+  langPrefix: 'language-',
+  highlight: function (code, lang) {
+    if (!lang) return code;
+
+    // Aliases
+    if (lang === 'js') lang = 'javascript';
+
+    try {
+      return hljs.highlight(lang, code).value;
+    } catch(e) {
+      return hljs.highlightAuto(code).value;
+    }
+  }
+});
+
+function load() {
+  corslite('README.md', function(err, resp) {
+    if (resp && resp.responseText) content.innerHTML = marked(resp.responseText);
+  });
+}
+
+load();
+</script>
+</body>
+</html>
