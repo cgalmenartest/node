@@ -14,7 +14,21 @@ module.exports = {
     // name of the tag (display name)
     name: 'STRING',
     // arbitrary data attributes, like coordinates and time zones for locations
-    data: 'JSON'
+    data: 'JSON',
+
+    // models
+    users: {
+      collection: 'user',
+      via: 'tags'
+    },
+    projects: {
+      collection: 'project',
+      via: 'tags'
+    },
+    tasks: {
+      collection: 'task',
+      via: 'tags'
+    }
   }
 
 };

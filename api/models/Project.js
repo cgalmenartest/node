@@ -21,7 +21,15 @@ module.exports = {
     // Project description
     description     : 'STRING',
     // Cover image, refers to a file identifier
-    coverId         : 'INTEGER'
+    coverId         : 'INTEGER',
+
+    // Tag association
+    tags: {
+      collection: 'tagEntity',
+      via: 'projects',
+      dominant: true
+    }
+
   }
 
 };

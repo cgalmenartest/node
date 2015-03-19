@@ -44,6 +44,13 @@ module.exports = {
     passwordAttempts: {
       type: 'INTEGER',
       defaultsTo: 0
+    },
+
+    // Tag association
+    tags: {
+      collection: 'tagEntity',
+      via: 'users',
+      dominant: true
     }
   }
 
