@@ -149,20 +149,6 @@ Then run the normal npm package installer
 
      npm install
 
-#### Copy the backend module configuration files
-
-From the root of the midas directory:
-
-     cd config/settings
-     for file in *.ex.js; do cp "$file" "${file/ex./}"; done
-
-#### Copy the client configuration files
-
-From the root of the midas directory:
-
-     cd assets/js/backbone/config/
-     cp login.ex.json login.json
-
 #### Optional: Edit the configuration files
 
 It is not necessary to edit any config files to run the demo locally.  You may optionally edit the config files that you made copies of above, or the front-end configuration (from the root directory):
@@ -192,6 +178,11 @@ Now you are ready to rock!
 
 ## For development
 
+Make sure you have sails and phantomjs installed
+
+    npm install -g sails
+    npm install -g phantomjs
+
 Run the tests (all should pass)
 
     make test
@@ -199,10 +190,6 @@ Run the tests (all should pass)
 Run the server
 
     sails lift
-
-If you get `command not found: sails`, install sails manually:
-
-    npm install sails -g
 
 Then try running the server:
 
