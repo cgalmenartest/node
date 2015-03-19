@@ -178,6 +178,11 @@ Now you are ready to rock!
 
 ## For development
 
+Make sure you have sails and phantomjs installed
+
+    npm install -g sails
+    npm install -g phantomjs
+
 Run the tests (all should pass)
 
     make test
@@ -185,10 +190,6 @@ Run the tests (all should pass)
 Run the server
 
     sails lift
-
-If you get `command not found: sails`, install sails manually:
-
-    npm install sails -g
 
 Then try running the server:
 
