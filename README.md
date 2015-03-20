@@ -26,7 +26,6 @@ How you can help:
 * Dive into our [help wanted issues](https://github.com/18F/midas/labels/help%20wanted) -- there are both dev and design opportunities there
 
 
-
 ## License
 
 This project is in the public domain within the United States, and
