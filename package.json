@@ -38,11 +38,12 @@
     "validator": "3.4.0"
   },
   "devDependencies": {
-    "mocha": "*",
-    "chai": "*",
-    "mocha-casperjs": "^0.5.3",
     "casper-chai": "^0.2.1",
-    "pg": "~3.6.0"
+    "chai": "*",
+    "mocha": "*",
+    "mocha-casperjs": "^0.5.3",
+    "pg": "~3.6.0",
+    "phantomjs": "^1.9.16"
   },
   "scripts": {
     "test:api": "(export NODE_ENV=test; mocha test/test.upstart.js --recursive test/api)",
