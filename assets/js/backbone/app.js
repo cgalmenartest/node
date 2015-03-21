@@ -3,18 +3,24 @@
  * that gets the rest of the apps, routers, etc
  * running.
  */
-require(['app-run'], function (appr) {
-  appr.initialize();
-});
+
+// Install jQuery plugins
+require('../vendor/jquery-file-upload/js/vendor/jquery.ui.widget');
+moment = require('moment');
 
 // App
 window.Application      = window.Application || {};
 window.cache            = { userEvents: {}, currentUser: null, system: {} };
 
-Application.AppModule   = {};
-Application.Controller  = {};
-Application.Component   = {};
-
 // Events
 window.entities = { request: {} };
 rendering       = {}
+
+// Set up Backbone to use jQuery
+_ = require('underscore');
+Backbone = require('backbone');
+Backbone.$ = jQuery;
+
+// Load the application
+var appr = require('./app-run');
+appr.initialize();

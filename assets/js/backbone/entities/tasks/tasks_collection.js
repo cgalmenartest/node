@@ -1,47 +1,46 @@
-define([
-  'underscore',
-  'backbone',
-  'task_model'
-], function (_, Backbone, TaskModel) {
-  'use strict';
+var _ = require('underscore');
+var Backbone = require('backbone');
+var TaskModel = require('./task_model');
 
-  var TasksCollection = Backbone.Collection.extend({
+'use strict';
 
-    model: TaskModel,
+var TasksCollection = Backbone.Collection.extend({
 
-    parse: function (response) {
-      if (response) {
-        if (response.tasks) {
-          return response.tasks;
-        }
-        return response;
+  model: TaskModel,
+
+  parse: function (response) {
+    if (response) {
+      if (response.tasks) {
+        return response.tasks;
       }
-      return [];
-    },
-
-    url: '/api/task',
-
-    initialize: function () {
-      var self = this;
-
-      this.listenTo(this, "task:save", function (data) {
-        self.addAndSave(data);
-      })
-    },
-
-    addAndSave: function (data) {
-      var self = this;
-
-      self.task = new TaskModel(data);
-
-      self.task.save(null,{
-        success: function (model) {
-          self.trigger("task:save:success", self.task.id);
-        }
-      });
+      return response;
     }
+    return [];
+  },
 
-  });
+  url: '/api/task',
 
-  return TasksCollection;
+  initialize: function () {
+    var self = this;
+
+    this.listenTo(this, "task:save", function (data) {
+      self.addAndSave(data);
+    })
+  },
+
+  addAndSave: function (data) {
+    var self = this;
+
+    self.task = new TaskModel(data);
+
+    self.task.save(null,{
+      success: function (model) {
+        self.trigger("task:save:success", self.task.id);
+      }
+    });
+  }
+
 });
+
+module.exports = TasksCollection;
+

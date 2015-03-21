@@ -1,36 +1,35 @@
-define([
-  'jquery',
-  'async',
-  'underscore',
-  'backbone',
-  'utilities',
-  'text!profile_settings_template'
-], function ($, async, _, Backbone, utils, ProfileSettingsTemplate) {
 
-  var ProfileSettingsView = Backbone.View.extend({
+var async = require('async');
+var _ = require('underscore');
+var Backbone = require('backbone');
+var utils = require('../../../../mixins/utilities');
+var ProfileSettingsTemplate = require('../templates/profile_settings_template.html');
 
-    events: {
-    },
 
-    initialize: function (options) {
-      this.options = options;
-      this.data = options.data;
-    },
+var ProfileSettingsView = Backbone.View.extend({
 
-    render: function () {
-      var data = {
-        user: window.cache.currentUser || {}
-      }
-      var template = _.template(ProfileSettingsTemplate, data);
-      this.$el.html(template);
-      return this;
-    },
+  events: {
+  },
 
-    cleanup: function () {
-      removeView(this);
-    },
+  initialize: function (options) {
+    this.options = options;
+    this.data = options.data;
+  },
 
-  });
+  render: function () {
+    var data = {
+      user: window.cache.currentUser || {}
+    }
+    var template = _.template(ProfileSettingsTemplate)(data);
+    this.$el.html(template);
+    return this;
+  },
 
-  return ProfileSettingsView;
+  cleanup: function () {
+    removeView(this);
+  },
+
 });
+
+module.exports = ProfileSettingsView;
+

@@ -1,13 +1,11 @@
-define([
-    'underscore',
-    'backbone'
-], function (_, Backbone) {
+var _ = require('underscore');
+var Backbone = require('backbone');
 
-  var EventModel = Backbone.Model.extend({
 
-    urlRoot: '/api/event'
+var EventModel = Backbone.Model.extend({
 
-  });
+  urlRoot: '/api/event'
 
-  return EventModel;
 });
+
+module.exports = EventModel;

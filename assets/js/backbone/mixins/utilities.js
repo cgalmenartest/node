@@ -3,7 +3,7 @@
 // @modelId [INTEGER] Backbone Model.cid
 
 // Return: [OBJECT] Model instance looked up from modelId within collection.
-var getCurrentModelFromId = function (collection, modelId) {
+global.getCurrentModelFromId = function (collection, modelId) {
 	var i = 0;
 			id = parseInt(modelId)
 			models = collection.models;
@@ -22,7 +22,7 @@ var getCurrentModelFromId = function (collection, modelId) {
 // @attr [STRING] Value, to be found.
 
 // Return: [OBJECT] Model instance that is corollary to the found @attr value.
-var getCurrentModelFromFormAttributes = function (collection, attr) {
+global.getCurrentModelFromFormAttributes = function (collection, attr) {
 	var	j,
 			i = 0,
 			attr = $.trim(attr),
@@ -60,7 +60,7 @@ var getCurrentModelFromFormAttributes = function (collection, attr) {
  * Return:
  * nothing
  */
-var removeView = function (view) {
+global.removeView = function (view) {
   view.undelegateEvents();
   view.$el.html("");
 }
@@ -70,7 +70,7 @@ var removeView = function (view) {
  * @params {[The non-jquery mapped el for the view instance]}
  * Return: Nothing.
  */
-var clearEl = function (el) {
+global.clearEl = function (el) {
   $(el).children().remove();
 }
 
@@ -79,7 +79,7 @@ var clearEl = function (el) {
  * @params None
  * @return Nothing
  */
-var clearContainer = function () {
+global.clearContainer = function () {
   $("#container").children().remove();
 }
 
@@ -93,7 +93,7 @@ var clearContainer = function () {
  * Return:
  * nothing
  */
-var scrollTop = function () {
+global.scrollTop = function () {
   $(window).scrollTop($(window).scrollTop());
 }
 
@@ -104,7 +104,7 @@ var scrollTop = function () {
  * @param  {[array]} tags           [array of tags]
  * @return {[object]}               [bindingObject returned out]
  */
-var organizeTags = function (tags) {
+global.organizeTags = function (tags) {
   var outTags = {};
   for (t in tags) {
     if (!(_.has(outTags, tags[t].tag.type))) {
@@ -133,7 +133,7 @@ var organizeTags = function (tags) {
  *
  * Expects an object with currentTarget, eg { currentTarget: '#foo' }
  */
-var validate = function (e) {
+global.validate = function (e) {
   var opts = String($(e.currentTarget).data('validate')).split(',');
   var val = $(e.currentTarget).val();
   var parent = $(e.currentTarget).parents('.form-group, .checkbox')[0];
@@ -232,7 +232,7 @@ var validate = function (e) {
   return result;
 };
 
-var validatePassword = function (username, password) {
+global.validatePassword = function (username, password) {
   var rules = {
     username: false,
     length: false,
@@ -281,7 +281,7 @@ var validatePassword = function (username, password) {
  * such as 'click .link-backbone' : linkBackbone
  * @param e the event fired by jquery/backbone
  */
-var linkBackbone = function (e) {
+global.linkBackbone = function (e) {
   // if meta or control is held, or if the middle mouse button is pressed,
   // let the link process normally.
   // eg: open a new tab or window based on the browser prefs

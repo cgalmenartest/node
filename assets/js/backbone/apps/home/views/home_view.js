@@ -1,73 +1,69 @@
-define([
-  'jquery',
-  'underscore',
-  'backbone',
-  'async',
-  'utilities',
-  'i18n',
-  'json!ui_config',
-  'json!login_config',
-  'login_controller',
-  'text!home_template'
-], function ($, _, Backbone, async, utils, 
-             i18n, UIConfig,
-             Login, LoginController, HomeTemplate) {
 
-  var HomeView = Backbone.View.extend({
+var _ = require('underscore');
+var Backbone = require('backbone');
+var async = require('async');
+var utils = require('../../../mixins/utilities');
+var i18n = require('i18next-client');
+var UIConfig = require('../../../config/ui.json');
+var Login = require('../../../config/login.json');
+var LoginController = require('../../login/controllers/login_controller');
+var HomeTemplate = require('../templates/home_view_template.html');
 
-    el: "#container",
 
-    events: {
-      'click .login'          : 'loginClick'
-    },
+var HomeView = Backbone.View.extend({
 
-    initialize: function (options) {
-      this.options = options;
-      this.listenTo(window.cache.userEvents, "user:login:success", function (user) {
-        Backbone.history.navigate(UIConfig.home.logged_in_path, { trigger: true });
-      });
-    },
+  el: "#container",
 
-    render: function () {
-      var compiledTemplate;
-      var data = {
-        hostname: window.location.hostname,
-        user: window.cache.currentUser || {},
-      };
+  events: {
+    'click .login'          : 'loginClick'
+  },
 
-      this.$el.addClass('home');
-      compiledTemplate = _.template(HomeTemplate, data);
-      this.$el.html(compiledTemplate);
-      this.$el.i18n();
+  initialize: function (options) {
+    this.options = options;
+    this.listenTo(window.cache.userEvents, "user:login:success", function (user) {
+      Backbone.history.navigate(UIConfig.home.logged_in_path, { trigger: true });
+    });
+  },
 
-      return this;
-    },
+  render: function () {
+    var compiledTemplate;
+    var data = {
+      hostname: window.location.hostname,
+      user: window.cache.currentUser || {},
+    };
 
-    loginClick: function (e) {
-      if (e.preventDefault) e.preventDefault();
-      if (window.cache.currentUser) {
-        // we're already logged in
-        Backbone.history.navigate(UIConfig.home.logged_in_path, { trigger: true });
-      } else {
-        this.login();
-      }
-    },
+    this.$el.addClass('home');
+    compiledTemplate = _.template(HomeTemplate)(data);
+    this.$el.html(compiledTemplate);
+    this.$el.i18n();
 
-    login: function (message) {
-      if (this.loginController) {
-        this.loginController.cleanup();
-      }
-      this.loginController = new LoginController({
-        el: '#login-wrapper',
-        message: message
-      });
-    },
+    return this;
+  },
 
-    cleanup: function () {
-      this.$el.removeClass('home');
-      removeView(this);
-    },
-  });
+  loginClick: function (e) {
+    if (e.preventDefault) e.preventDefault();
+    if (window.cache.currentUser) {
+      // we're already logged in
+      Backbone.history.navigate(UIConfig.home.logged_in_path, { trigger: true });
+    } else {
+      this.login();
+    }
+  },
 
-  return HomeView;
+  login: function (message) {
+    if (this.loginController) {
+      this.loginController.cleanup();
+    }
+    this.loginController = new LoginController({
+      el: '#login-wrapper',
+      message: message
+    });
+  },
+
+  cleanup: function () {
+    this.$el.removeClass('home');
+    removeView(this);
+  },
 });
+
+module.exports = HomeView;

@@ -1,36 +1,34 @@
-define([
-  'jquery',
-  'underscore',
-  'async',
-  'backbone',
-  'utilities',
-  'base_controller',
-  'admin_main_view'
-], function ($, _, async, Backbone, utils, BaseController, AdminMainView) {
 
-  Application.Admin = {};
+var _ = require('underscore');
+var async = require('async');
+var Backbone = require('backbone');
+var utils = require('../../../mixins/utilities');
+var BaseController = require('../../../base/base_controller');
+var AdminMainView = require('../views/admin_main_view');
 
-  Application.Admin.ShowController = BaseController.extend({
 
-    events: {
-    },
+Admin = {};
 
-    // Initialize the admin view
-    initialize: function (options) {
-      this.options = options;
-      this.adminMainView = new AdminMainView({
-        action: options.action,
-        el: this.el
-      }).render();
-    },
+Admin.ShowController = BaseController.extend({
 
-    // Cleanup controller and views
-    cleanup: function() {
-      this.adminMainView.cleanup();
-      removeView(this);
-    }
+  events: {
+  },
 
-  });
+  // Initialize the admin view
+  initialize: function (options) {
+    this.options = options;
+    this.adminMainView = new AdminMainView({
+      action: options.action,
+      el: this.el
+    }).render();
+  },
 
-  return Application.Admin.ShowController;
+  // Cleanup controller and views
+  cleanup: function() {
+    this.adminMainView.cleanup();
+    removeView(this);
+  }
+
 });
+
+module.exports = Admin.ShowController;

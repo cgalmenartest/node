@@ -1,7 +1,6 @@
-define([
-	'underscore',
-	'backbone'
-], function (_, Backbone) {
+var _ = require('underscore');
+var Backbone = require('backbone');
+
 
 	var ProfileModel = Backbone.Model.extend({
 
@@ -26,20 +25,20 @@ define([
 			});
 		},
 
-    remoteGet: function (id) {
-      var self = this;
-      if (id) {
+  remoteGet: function (id) {
+    var self = this;
+    if (id) {
 	      this.set({ id: id });
+    }
+    this.fetch({
+      success: function (model, response, options) {
+        self.trigger("profile:fetch:success", model);
+      },
+      error: function (model, response, options) {
+        self.trigger("profile:fetch:error", model, response);
       }
-      this.fetch({
-        success: function (model, response, options) {
-          self.trigger("profile:fetch:success", model);
-        },
-        error: function (model, response, options) {
-          self.trigger("profile:fetch:error", model, response);
-        }
-      });
-    },
+    });
+  },
 
 		initializeProfileSave: function () {
 			var _this = this;
@@ -93,5 +92,5 @@ define([
 
 	});
 
-	return ProfileModel;
-});
+	module.exports = ProfileModel;
+

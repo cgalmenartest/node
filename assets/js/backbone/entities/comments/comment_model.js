@@ -1,33 +1,31 @@
-define([
-  'underscore',
-  'backbone'
-], function (_, Backbone) {
+var _ = require('underscore');
+var Backbone = require('backbone');
 
-  var CommentModel = Backbone.Model.extend({
 
-    urlRoot: '/api/comment',
+var CommentModel = Backbone.Model.extend({
 
-    initialize: function () {
-      this.saveComment();
-    },
+  urlRoot: '/api/comment',
 
-    saveComment: function () {
-      var self = this;
+  initialize: function () {
+    this.saveComment();
+  },
 
-      this.listenTo(this, 'comment:save', function (parentId, comment, projectId) {
-        self.save({
-          parentId  : parentId,
-          value     : comment,
-          projectId : projectId
-        }, {
-          success: function (data) {
-            self.trigger("comment:save:success");
-          }
-        })
+  saveComment: function () {
+    var self = this;
+
+    this.listenTo(this, 'comment:save', function (parentId, comment, projectId) {
+      self.save({
+        parentId  : parentId,
+        value     : comment,
+        projectId : projectId
+      }, {
+        success: function (data) {
+          self.trigger("comment:save:success");
+        }
       })
-    }
+    })
+  }
 
-  });
-
-  return CommentModel;
 });
+
+module.exports = CommentModel;

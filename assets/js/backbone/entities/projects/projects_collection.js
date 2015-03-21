@@ -1,44 +1,42 @@
-define([
-  'underscore',
-  'backbone',
-  'project_model'
-], function (_, Backbone, ProjectModel) {
+var _ = require('underscore');
+var Backbone = require('backbone');
+var ProjectModel = require('./project_model');
 
-  var ProjectsCollection = Backbone.Collection.extend({
 
-    model: ProjectModel,
+var ProjectsCollection = Backbone.Collection.extend({
 
-    url: '/api/project/findAll',
+  model: ProjectModel,
 
-    parse: function (response) {
-      return response.projects;
-    },
+  url: '/api/project/findAll',
 
-    initialize: function () {
-      var self = this;
+  parse: function (response) {
+    return response.projects;
+  },
 
-      this.listenTo(this, "project:save", function (data) {
-        self.addAndSave(data);
-      });
-    },
+  initialize: function () {
+    var self = this;
 
-    addAndSave: function (data) {
-      var project, self = this;
+    this.listenTo(this, "project:save", function (data) {
+      self.addAndSave(data);
+    });
+  },
 
-      project = new ProjectModel({
-        title: data['title'],
-        description: data['description']
-      });
+  addAndSave: function (data) {
+    var project, self = this;
 
-      project.save({}, {
-        success: function (data) {
-          self.add(project);
-          self.trigger("project:save:success", data);
-        }
-      });
-    }
+    project = new ProjectModel({
+      title: data['title'],
+      description: data['description']
+    });
 
-  });
+    project.save({}, {
+      success: function (data) {
+        self.add(project);
+        self.trigger("project:save:success", data);
+      }
+    });
+  }
 
-  return ProjectsCollection;
 });
+
+module.exports = ProjectsCollection;

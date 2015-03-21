@@ -1,78 +1,75 @@
-define([
-  'jquery',
-  'bootstrap',
-  'underscore',
-  'backbone',
-  'utilities',
-  'text!tag_form_template'
-], function ($, Bootstrap, _, Backbone, utils, TagFormTemplate) {
 
-  var TagFormView = Backbone.View.extend({
+var Bootstrap = require('bootstrap');
+var _ = require('underscore');
+var Backbone = require('backbone');
+var utils = require('../../../../mixins/utilities');
+var TagFormTemplate = require('../templates/tag_new_form_template.html');
 
-    events: {
-      "blur #tag-form-name" : "v",
-      "submit #tag-form"    : "post"
-    },
 
-    initialize: function (options) {
-      this.tags = options.tags;
-      this.target = options.target;
-      this.options = options;
-    },
+var TagFormView = Backbone.View.extend({
 
-    render: function () {
-      var data = {
-        tags: this.tags
-      };
-      var template = _.template(TagFormTemplate, data);
-      this.$el.html(template);
-      return this;
-    },
+  events: {
+    "blur #tag-form-name" : "v",
+    "submit #tag-form"    : "post"
+  },
 
-    v: function (e) {
-      return validate(e);
-    },
+  initialize: function (options) {
+    this.tags = options.tags;
+    this.target = options.target;
+    this.options = options;
+  },
 
-    post: function (e) {
-      if (e.preventDefault) e.preventDefault();
+  render: function () {
+    var data = {
+      tags: this.tags
+    };
+    var template = _.template(TagFormTemplate)(data);
+    this.$el.html(template);
+    return this;
+  },
 
-      // perform field validation
-      var validateIds = ['#tag-form-name'];
-      var abort = false;
-      for (var i in validateIds) {
-        var iAbort = validate({ currentTarget: validateIds[i] });
-        abort = abort || iAbort;
-      }
-      if (abort) {
-        return;
-      }
+  v: function (e) {
+    return validate(e);
+  },
 
-      // assemble form and submit
-      var data;
-      var self = this;
+  post: function (e) {
+    if (e.preventDefault) e.preventDefault();
 
-      data = {
-        type: $(e.currentTarget).find("#tag-form-type").val(),
-        name: $(e.currentTarget).find("#tag-form-name").val()
-      }
-
-      $.ajax({
-        url: '/api/tag/add',
-        type: 'POST',
-        data: data
-      }).done(function (result) {
-        // Pass the tag back
-        self.options.model.trigger(self.target + ":tag:new", result);
-      });
-
-    },
-
-    cleanup: function () {
-      removeView(this);
+    // perform field validation
+    var validateIds = ['#tag-form-name'];
+    var abort = false;
+    for (var i in validateIds) {
+      var iAbort = validate({ currentTarget: validateIds[i] });
+      abort = abort || iAbort;
+    }
+    if (abort) {
+      return;
     }
 
-  });
+    // assemble form and submit
+    var data;
+    var self = this;
 
-  return TagFormView;
+    data = {
+      type: $(e.currentTarget).find("#tag-form-type").val(),
+      name: $(e.currentTarget).find("#tag-form-name").val()
+    }
+
+    $.ajax({
+      url: '/api/tag/add',
+      type: 'POST',
+      data: data
+    }).done(function (result) {
+      // Pass the tag back
+      self.options.model.trigger(self.target + ":tag:new", result);
+    });
+
+  },
+
+  cleanup: function () {
+    removeView(this);
+  }
 
 });
+
+module.exports = TagFormView;

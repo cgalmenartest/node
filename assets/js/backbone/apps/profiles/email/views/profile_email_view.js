@@ -1,62 +1,59 @@
-define([
-  'jquery',
-  'bootstrap',
-  'underscore',
-  'backbone',
-  'utilities',
-  'text!profile_email_form_template'
-], function ($, Bootstrap, _, Backbone, utils, EmailFormTemplate) {
 
-  var EmailFormView = Backbone.View.extend({
+var Bootstrap = require('bootstrap');
+var _ = require('underscore');
+var Backbone = require('backbone');
+var utils = require('../../../../mixins/utilities');
+var EmailFormTemplate = require('../templates/profile_email_form.html');
 
-    events: {
-      "submit #email-form" : "post"
-    },
 
-    initialize: function (options) {
-      this.target = options.target;
-      this.options = options;
-    },
+var EmailFormView = Backbone.View.extend({
 
-    render: function () {
-      var template = _.template(EmailFormTemplate, {});
-      this.$el.html(template);
-      return this;
-    },
+  events: {
+    "submit #email-form" : "post"
+  },
 
-    post: function (e) {
-      if (e.preventDefault) e.preventDefault();
-      var data;
-      var self = this;
+  initialize: function (options) {
+    this.target = options.target;
+    this.options = options;
+  },
 
-      this.$(".alert").hide();
-      data = {
-        email: $(e.currentTarget).find("#email").val(),
-      }
+  render: function () {
+    var template = _.template(EmailFormTemplate)({});
+    this.$el.html(template);
+    return this;
+  },
 
-      $.ajax({
-        url: '/api/useremail',
-        type: 'POST',
-        data: data,
-        success: function (result) {
-          // Pass the tag back
-          self.options.model.trigger(self.target + ":email:new", result);
-        },
-        error: function (req, status, error) {
-          self.$(".alert").html(req.responseJSON.message);
-          self.$(".alert").show();
-          self.options.model.trigger(self.target + ":email:error", req.responseJSON);
-        }
-      });
+  post: function (e) {
+    if (e.preventDefault) e.preventDefault();
+    var data;
+    var self = this;
 
-    },
-
-    cleanup: function () {
-      removeView(this);
+    this.$(".alert").hide();
+    data = {
+      email: $(e.currentTarget).find("#email").val(),
     }
 
-  });
+    $.ajax({
+      url: '/api/useremail',
+      type: 'POST',
+      data: data,
+      success: function (result) {
+        // Pass the tag back
+        self.options.model.trigger(self.target + ":email:new", result);
+      },
+      error: function (req, status, error) {
+        self.$(".alert").html(req.responseJSON.message);
+        self.$(".alert").show();
+        self.options.model.trigger(self.target + ":email:error", req.responseJSON);
+      }
+    });
 
-  return EmailFormView;
+  },
+
+  cleanup: function () {
+    removeView(this);
+  }
 
 });
+
+module.exports = EmailFormView;

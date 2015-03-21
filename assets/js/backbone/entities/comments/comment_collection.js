@@ -1,51 +1,49 @@
-define([
-  'underscore',
-  'backbone',
-  'comment_model',
-  'comment_list_controller'
-], function (_, Backbone, CommentModel, CommentListController) {
-  'use strict';
+var _ = require('underscore');
+var Backbone = require('backbone');
+var CommentModel = require('./comment_model');
+var CommentListController = require('../../apps/comments/list/controllers/comment_list_controller');
 
-  var CommentCollection = Backbone.Collection.extend({
+'use strict';
 
-    urlRoot: '/api/comment',
+var CommentCollection = Backbone.Collection.extend({
 
-    model: CommentModel,
+  urlRoot: '/api/comment',
 
-    initialize: function () {
-      var self = this;
+  model: CommentModel,
 
-      this.listenTo(this, "comment:save", function (data, currentTarget) {
-        self.addAndSave(data, currentTarget);
-      });
+  initialize: function () {
+    var self = this;
 
-    },
+    this.listenTo(this, "comment:save", function (data, currentTarget) {
+      self.addAndSave(data, currentTarget);
+    });
 
-    addAndSave: function (data, currentTarget) {
-      var self = this, comment;
+  },
 
-      comment = new CommentModel({
-        parentId  : data['parentId'],
-        value     : data['comment'],
-        taskId    : data['taskId'],
-        projectId : data['projectId'],
-        topic     : data['topic']
-      })
+  addAndSave: function (data, currentTarget) {
+    var self = this, comment;
 
-      self.add(comment);
+    comment = new CommentModel({
+      parentId  : data['parentId'],
+      value     : data['comment'],
+      taskId    : data['taskId'],
+      projectId : data['projectId'],
+      topic     : data['topic']
+    })
 
-      self.models.forEach(function (model) {
-        if (model.attributes.value === data['comment']) {
-          model.save(null, {
-            success: function (modelInstance, response) {
-              self.trigger("comment:save:success", modelInstance, response, currentTarget);
-            }
-          });
-        }
-      });
+    self.add(comment);
 
-    }
-  });
+    self.models.forEach(function (model) {
+      if (model.attributes.value === data['comment']) {
+        model.save(null, {
+          success: function (modelInstance, response) {
+            self.trigger("comment:save:success", modelInstance, response, currentTarget);
+          }
+        });
+      }
+    });
 
-  return CommentCollection;
-})
+  }
+});
+
+module.exports = CommentCollection;
