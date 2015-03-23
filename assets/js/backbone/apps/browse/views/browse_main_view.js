@@ -1,5 +1,5 @@
 
-var select2 = require('../../../../vendor/select2');
+var select2 = require('select2');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var i18n = require('i18next-client');
