@@ -63,7 +63,7 @@ var AdminDashboardView = Backbone.View.extend({
       // Format timestamp
       activity.createdAtFormatted = $.timeago(activity.createdAt);
       var template = self.$('#' + activity.type).text(),
-          content = _.template(template)(activity, { escape: /\{\{(.+?)\}\}/g });
+          content = _.template(template, { escape: /\{\{(.+?)\}\}/g })(activity);
       self.$('.activity-block .activity-feed').append(content);
     });
 

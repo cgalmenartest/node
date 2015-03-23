@@ -14,7 +14,6 @@ var ModalAlert = Backbone.View.extend({
   },
 
   initialize: function (options) {
-    console.log(options);
     this.options = options;
   },
 

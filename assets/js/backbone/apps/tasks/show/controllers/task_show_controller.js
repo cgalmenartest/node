@@ -1,7 +1,6 @@
 var Bootstrap = require('bootstrap');
 var _ = require('underscore');
 var Backbone = require('backbone');
-//var i18n = require('i18next-client');
 var Popovers = require('../../../../mixins/popovers');
 var utils = require('../../../../mixins/utilities');
 var BaseView = require('../../../../base/base_view');
@@ -396,7 +395,6 @@ var TaskShowController = BaseView.extend({
             $('.volunteer-true').show();
             $('.volunteer-false').hide();
             var html = '<div class="project-people-div" data-userid="' + data.userId + '" data-voluserid="' + data.userId + '"><img src="/api/user/photo/' + data.userId + '" class="project-people"/>';
-            console.log('DATA here', self);
             if (self.options.action === "edit") {
               html += '<a href="#" class="delete-volunteer volunteer-delete fa fa-times"  id="delete-volunteer-' + data.id + '" data-uid="' + data.userId + '" data-vid="' +  data.id + '"></a>';
             }
