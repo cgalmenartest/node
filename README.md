@@ -9,6 +9,9 @@ Midas is currently in active use [inside the US federal government](https://18f.
 
 Our Goal: to foster innovation across team boundaries by connecting individuals who identify challenges and then work collaboratively to implement solutions.
 
+<!-- responsive video embed -->
+<div class='embed-container'><iframe src='https://www.youtube-nocookie.com/embed/2FelzCR7pLk?rel=0&amp;showinfo=0' frameborder='0' allowfullscreen></iframe></div>
+<!-- end video embed -->
 [Open Opportunities Testimonial from USA.gov Search Mgr](https://www.youtube.com/watch?v=2FelzCR7pLk&feature=youtu.be)
 
 Midas can benefit all organizations, but it’s especially useful for those with distributed teams and whose employees have diverse skill sets.  Using Midas, you and your colleagues can work on projects together, get to know each other better, and develop skills you don’t use as often as you’d like.
