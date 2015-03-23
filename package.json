@@ -22,6 +22,7 @@
     "i18next": "~1.7.4",
     "i18next-client": "^1.8.2",
     "icalendar": "0.6.5",
+    "blueimp-file-upload": "9.9.0",
     "lodash": "~2.4.1",
     "marked": "^0.3.3",
     "moment": "2.5.0",

@@ -1,6 +1,6 @@
 
 var jqIframe = require('../../../../../vendor/jquery-file-upload/js/jquery.iframe-transport');
-var jqFU = require('../../../../../vendor/jquery-file-upload/js/jquery.fileupload');
+var jqFU = require('blueimp-file-upload');
 var select2 = require('../../../../../vendor/select2');
 var _ = require('underscore');
 var Backbone = require('backbone');

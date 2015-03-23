@@ -5,7 +5,7 @@
  */
 
 // Install jQuery plugins
-require('../vendor/jquery-file-upload/js/vendor/jquery.ui.widget');
+require('blueimp-file-upload/js/vendor/jquery.ui.widget');
 moment = require('moment');
 
 // App
