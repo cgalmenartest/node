@@ -139,32 +139,17 @@ module.exports = function (grunt) {
 
   grunt.initConfig({
 
-    requirejs: {
-      compile: {
-        options: {
-          name: 'app',
-          baseUrl: "assets/js/backbone/app",
-          mainConfigFile: "assets/js/backbone/config/require_config.js",
-          out: "assets/prod/js/midas-<%= sha %>.js",
-          paths: {
-            requireLib: "../../vendor/require"
-          },
-          include: "requireLib"
-        }
-      }
-    },
-
     cssmin: {
       combine: {
         files: {
           'assets/prod/css/midas-<%= sha %>.css': [
-            'assets/styles/bootstrap.css',
+            'node_modules/bootstrap/dist/css/bootstrap.css',
             'assets/styles/font-awesome/css/font-awesome.min.css',
             'assets/styles/font-custom/css/style.css',
             'assets/js/vendor/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css',
-            'assets/js/vendor/jquery-timepicker/jquery.timepicker.css',
-            'assets/js/vendor/jquery-file-upload/css/jquery.fileupload.css',
-            'assets/js/vendor/select2/select2.css',
+            'node_modules/timepicker/jquery.timepicker.css',
+            'node_modules/blueimp-file-upload/css/jquery.fileupload.css',
+            'node_modules/Select2/select2.css',
             'assets/styles/application.css',
             'assets/styles/theme.css'
           ]
@@ -250,7 +235,7 @@ module.exports = function (grunt) {
           expand: true,
           flatten: true,
           cwd: './assets',
-          src: ['js/vendor/select2/*.png', 'js/vendor/select2/*.gif'],
+          src: ['node_modules/Select2/*.png', 'node_modules/Select2/*.gif'],
           dest: 'assets/prod/css'
         }
         ]
@@ -529,8 +514,6 @@ module.exports = function (grunt) {
   grunt.registerTask('build', [
     // get git sha
     'git',
-    // compile the js
-    'requirejs',
     // Check validity of JSON files.
     'jsonlint',
     // compile the css

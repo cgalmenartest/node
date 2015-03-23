@@ -64,7 +64,7 @@
     "test:api": "(export NODE_ENV=test; mocha test/test.upstart.js --recursive test/api)",
     "test:browser": "(export NODE_ENV=test; export TEST_ROOT=\"http://localhost:1337\"; npm run build:dev && mkdir -p .tmp && cp test/data/disk.db .tmp/disk.db && node test/browser/upstart.js)",
     "test": "npm run test:api && npm run test:browser",
-    "build": "grunt build && node assets/js/backbone/build.js",
+    "build": "grunt build && browserify -t stringify -g uglifyify assets/js/backbone/app.js -o assets/prod/js/bundle.js",
     "build:dev": "grunt compileAssets && grunt linkAssets && node assets/js/backbone/build.js",
     "start": "npm run build && node app.js",
     "watch": "watchify -t stringify assets/js/backbone/app.js -o assets/js/backbone/bundle.js",

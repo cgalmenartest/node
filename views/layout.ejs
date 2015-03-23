@@ -36,7 +36,7 @@
     <% if (sails.config.environment != 'production') { %>
 
     <!-- Entry point for our app -->
-    <script type="text/javascript" src="/js/backbone/bundle.js"></script>
+    <script type="text/javascript" src="/js/bundle.js"></script>
     <link rel="stylesheet" type="text/css" href="/styles/bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="/styles/font-awesome/css/font-awesome.min.css" />
     <link rel="stylesheet" type="text/css" href="/styles/font-custom/css/style.css" />
@@ -48,8 +48,7 @@
     <link rel="stylesheet" type="text/css" href="/styles/theme.css" />
 
     <% } else { %>
-
-    <script type="text/javascript" src="/prod/js/midas-<%= version.gitLong %>.js"></script>
+    <script type="text/javascript" src="/prod/js/bundle.js"></script>
     <link rel="stylesheet" type="text/css" href="/prod/css/midas-<%= version.gitLong %>.min.css" />
 
     <% } %>
