@@ -11,7 +11,7 @@ var async = require('async');
 var utils = require('../mixins/utilities');
 var marked = require('marked');
 var BaseComponent = require('../base/base_component');
-var jqSelection = require('../../vendor/jquery-selection/src/jquery.selection');
+var jqSelection = require('../../vendor/jquery.selection');
 
 
 TagFactory = BaseComponent.extend({

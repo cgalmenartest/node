@@ -21,7 +21,7 @@ var Backbone = require('backbone');
 var utils = require('../mixins/utilities');
 var marked = require('marked');
 var BaseComponent = require('../base/base_component');
-var jqSelection = require('../../vendor/jquery-selection/src/jquery.selection');
+var jqSelection = require('../../vendor/jquery.selection');
 var EditorTemplate = require('./markdown_editor_template.html');
 
 
