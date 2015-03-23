@@ -6,8 +6,8 @@
 
 var _ = require('underscore');
 var Backbone = require('backbone');
-var jqCaret = require('../../../../../vendor/jquery-caret/dist/jquery.caret.min');
-var jqAt = require('../../../../../vendor/jquery-at/dist/js/jquery.atwho');
+var jqCaret = require('jquery.caret/dist/jquery.caret.min');
+var jqAt = require('jquery.atwho/dist/js/jquery.atwho');
 var utils = require('../../../../mixins/utilities');
 var marked = require('marked');
 var CommentCollection = require('../../../../entities/comments/comment_collection');
