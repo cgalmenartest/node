@@ -30,6 +30,7 @@
 <script src='static/corslite.js'></script>
 <script src='static/highlight.min.js'></script>
 <script src='static/marked.js'></script>
+<script src='static/base64.min.js'></script>
 <script>
 var content = document.getElementById('content');
 
@@ -56,8 +57,10 @@ marked.setOptions({
 });
 
 function load() {
-  corslite('README.md', function(err, resp) {
-    if (resp && resp.responseText) content.innerHTML = marked(resp.responseText);
+  corslite('https://api.github.com/repos/18F/midas/readme', function(err, x) {
+    if (err) return content.innerHTML = 'Error loading Gist';
+    var d = JSON.parse(x.responseText);
+    if (d && d.content) content.innerHTML = marked(Base64.decode(d.content));
   });
 }
 
