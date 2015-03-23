@@ -1,8 +1,8 @@
 
 var Bootstrap = require('bootstrap');
 var _ = require('underscore');
-var jqIframe = require('../../../../vendor/jquery-file-upload/js/jquery.iframe-transport');
-var jqFU = require('blueimp-file-upload');
+var jqIframe = require('blueimp-file-upload/js/jquery.iframe-transport');
+var jqFU = require('blueimp-file-upload/js/jquery.fileupload.js');
 var TimeAgo = require('../../../../vendor/jquery.timeago');
 var Backbone = require('backbone');
 var utils = require('../../../mixins/utilities');
