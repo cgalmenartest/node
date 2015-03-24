@@ -1,9 +1,7 @@
-
 var _ = require('underscore');
 var Backbone = require('backbone');
 var async = require('async');
 var utils = require('../../../mixins/utilities');
-var i18n = require('i18next-client');
 var UIConfig = require('../../../config/ui.json');
 var Login = require('../../../config/login.json');
 var LoginController = require('../../login/controllers/login_controller');

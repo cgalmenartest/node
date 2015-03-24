@@ -1,10 +1,8 @@
-
 var jqIframe = require('blueimp-file-upload/js/jquery.iframe-transport');
 var jqFU = require('blueimp-file-upload/js/jquery.fileupload.js');
 var select2 = require('select2');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var i18n = require('i18next-client');
 var utils = require('../../../../mixins/utilities');
 var async = require('async');
 var ProjectShowTemplate = require('../templates/project_item_view_template.html');

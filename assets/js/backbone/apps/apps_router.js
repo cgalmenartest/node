@@ -1,7 +1,5 @@
-
 var _ = require('underscore');
 var Backbone = require('backbone');
-var i18n = require('i18next-client');
 var i18nOption = require('../config/i18n.json');
 var BrowseApp = require('./browse/browse_app');
 

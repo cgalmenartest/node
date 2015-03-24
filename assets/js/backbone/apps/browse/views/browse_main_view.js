@@ -1,8 +1,6 @@
-
 var select2 = require('select2');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var i18n = require('i18next-client');
 var utils = require('../../../mixins/utilities');
 var UIConfig = require('../../../config/ui.json');
 var Popovers = require('../../../mixins/popovers');

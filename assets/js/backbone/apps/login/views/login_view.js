@@ -1,7 +1,5 @@
-
 var _ = require('underscore');
 var Backbone = require('backbone');
-var i18n = require('i18next-client');
 var utils = require('../../../mixins/utilities');
 var LoginPasswordView = require('./login_password_view');
 var LoginTemplate = require('../templates/login_template.html');
@@ -250,4 +248,3 @@ var LoginView = Backbone.View.extend({
 });
 
 module.exports = LoginView;
-

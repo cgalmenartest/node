@@ -1,7 +1,5 @@
-
 var _ = require('underscore');
 var Backbone = require('backbone');
-var i18n = require('i18next-client');
 var utils = require('../../../../mixins/utilities');
 var UIConfig = require('../../../../config/ui.json');
 var async = require('async');
@@ -615,4 +613,3 @@ var ProfileShowView = Backbone.View.extend({
 });
 
 module.exports = ProfileShowView;
-

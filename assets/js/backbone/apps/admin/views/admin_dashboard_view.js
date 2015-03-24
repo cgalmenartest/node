@@ -1,7 +1,5 @@
-
 var _ = require('underscore');
 var Backbone = require('backbone');
-var i18n = require('i18next-client');
 var utils = require('../../../mixins/utilities');
 var ModalComponent = require('../../../components/modal');
 var AdminDashboardTemplate = require('../templates/admin_dashboard_template.html');

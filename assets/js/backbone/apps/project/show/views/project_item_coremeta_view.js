@@ -1,8 +1,6 @@
-
 var _ = require('underscore');
 var async = require('async');
 var Backbone = require('backbone');
-var i18n = require('i18next-client');
 var utils = require('../../../../mixins/utilities');
 var marked = require('marked');
 var MarkdownEditor = require('../../../../components/markdown_editor');
@@ -146,4 +144,3 @@ var ProjectItemCoreMetaView = Backbone.View.extend({
 });
 
 module.exports = ProjectItemCoreMetaView;
-

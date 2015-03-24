@@ -1,7 +1,5 @@
-
 var _ = require('underscore');
 var Backbone = require('backbone');
-var i18n = require('i18next-client');
 var utils = require('../../../../mixins/utilities');
 var UIConfig = require('../../../../config/ui.json');
 var async = require('async');
@@ -33,7 +31,7 @@ var ProfileActivityView = Backbone.View.extend({
       data: results,
       count: {}
     };
-    
+
     for (var i in this.options.data) {
       if (_.isUndefined(data.count[this.options.data[i].state])) {
         data.count[this.options.data[i].state] = 1;
@@ -60,4 +58,3 @@ var ProfileActivityView = Backbone.View.extend({
 });
 
 module.exports = ProfileActivityView;
-

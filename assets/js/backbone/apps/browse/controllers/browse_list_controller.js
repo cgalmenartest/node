@@ -2,7 +2,6 @@
 var Bootstrap = require('bootstrap');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var i18n = require('i18next-client');
 var utils = require('../../../mixins/utilities');
 var BaseController = require('../../../base/base_controller');
 var BrowseMainView = require('../views/browse_main_view');

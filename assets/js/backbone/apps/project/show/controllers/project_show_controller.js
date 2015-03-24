@@ -1,8 +1,6 @@
-
 var _ = require('underscore');
 var async = require('async');
 var Backbone = require('backbone');
-var i18n = require('i18next-client');
 var utils = require('../../../../mixins/utilities');
 var Popovers = require('../../../../mixins/popovers');
 var BaseController = require('../../../../base/base_controller');

@@ -1,9 +1,7 @@
-
 var Bootstrap = require('bootstrap');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var async = require('async');
-var i18n = require('i18next-client');
 var utilities = require('../../../../mixins/utilities');
 var MarkdownEditor = require('../../../../components/markdown_editor');
 var TasksCollection = require('../../../../entities/tasks/tasks_collection');
@@ -56,7 +54,7 @@ var TaskFormView = Backbone.View.extend({
 
   initializeListeners: function() {
     var self = this;
-    
+
     _.extend(this, Backbone.Events);
 
     self.on('newTagSaveDone',function (){
@@ -74,7 +72,7 @@ var TaskFormView = Backbone.View.extend({
       if (self.$("#task-location").select2('data').id == 'true') {
         tempTags.push.apply(tempTags,self.$("#task_tag_location").select2('data'));
       }
-      
+
       //see if there are any previously created big three tags and add them to the tag array
       _.each(tempTags,function(tempTag){
           if ( tempTag.id !== tempTag.name ){
@@ -115,12 +113,12 @@ var TaskFormView = Backbone.View.extend({
       var newTags = [];
 
       newTags = newTags.concat(self.$("#task_tag_topics").select2('data'),self.$("#task_tag_skills").select2('data'),self.$("#task_tag_location").select2('data'));
-      
+
       async.forEach(
-        newTags, 
-        function(newTag, callback) { 
+        newTags,
+        function(newTag, callback) {
           return self.tagFactory.addTagEntities(newTag,self,callback);
-        }, 
+        },
         function(err) {
           if (err) return next(err);
           self.trigger("newTagSaveDone");
@@ -182,7 +180,7 @@ var TaskFormView = Backbone.View.extend({
     self.tagFactory.createTagDropDown({type:"skill",selector:"#task_tag_skills",width: "100%",tokenSeparators: [","]});
     self.tagFactory.createTagDropDown({type:"topic",selector:"#task_tag_topics",width: "100%",tokenSeparators: [","]});
     self.tagFactory.createTagDropDown({type:"location",selector:"#task_tag_location",width: "100%",tokenSeparators: [","]});
-    
+
     self.$(".el-specific-location").hide();
 
     // ------------------------------ //
@@ -249,5 +247,3 @@ var TaskFormView = Backbone.View.extend({
 });
 
 module.exports = TaskFormView;
-
-
