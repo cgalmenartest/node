@@ -6,6 +6,7 @@
 
 // Install jQuery plugins
 require('blueimp-file-upload/js/vendor/jquery.ui.widget');
+i18n = require('i18next-client/i18next.commonjs.withJQuery');
 moment = require('moment');
 
 // App
