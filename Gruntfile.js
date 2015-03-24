@@ -23,6 +23,7 @@ var fs = require('fs'),
 module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-jsonlint');
+  grunt.loadNpmTasks('grunt-browserify');
 
   // Get path to core grunt dependencies from Sails
   var depsPath = grunt.option('gdsrc') || 'node_modules/sails/node_modules';
@@ -33,25 +34,24 @@ module.exports = function (grunt) {
 
   grunt.initConfig({
 
-    buildjs: {
-      prod: function() {
-        var file = fs.createWriteStream(path.join(__dirname, 'assets/js/bundle.js'));
-
-        var bundled = browserify({ debug: false })
-          .transform({ global: true }, 'uglifyify')
-          .transform(stringify(['.html']))
-          .add(path.join(__dirname, 'assets/js/backbone/app.js'))
-          .bundle()
-          .pipe(file);
+    browserify: {
+      prod: {
+        src: 'assets/js/backbone/app.js',
+        dest: 'assets/build/js/bundle.min.js',
+        options: {
+          browserifyOptions: { debug: false },
+          transform: ['stringify', ['uglifyify', { global: true }]],
+          require: ['./assets/js/vendor/jquery-shim.js:jquery'],
+        }
       },
-      dev: function() {
-        var file = fs.createWriteStream(path.join(__dirname, 'assets/js/bundle.js'));
-
-        var bundled = browserify({ debug: true })
-          .transform(stringify(['.html']))
-          .add(path.join(__dirname, 'assets/js/backbone/app.js'))
-          .bundle()
-          .pipe(file);
+      dev: {
+        src: 'assets/js/backbone/app.js',
+        dest: 'assets/build/js/bundle.js',
+        options: {
+          browserifyOptions: { debug: true },
+          transform: ['stringify'],
+          require: ['./assets/js/vendor/jquery-shim.js:jquery'],
+        }
       }
     },
 
@@ -130,7 +130,7 @@ module.exports = function (grunt) {
         {
           expand: true,
           flatten: true,
-          cwd: './assets',
+          cwd: './',
           src: ['node_modules/Select2/*.png', 'node_modules/Select2/*.gif'],
           dest: 'assets/build/css'
         }
@@ -157,12 +157,24 @@ module.exports = function (grunt) {
       assets: {
 
         // Assets to watch:
-        // NOTE: The second entry in this array is to work around a bug related to the
-        // number of folders watched.
-        files: ['assets/**/*', '!assets/js/vendor/**/*'],
+        files: ['assets/**/*'],
 
         // When assets are changed:
-        tasks: ['build']
+        tasks: [
+          'clean:prod',
+          // Check validity of JSON files.
+          'jsonlint',
+          // build js bundle
+          'browserify:dev',
+          // compile the css
+          'cssmin',
+          // copy fonts
+          'copy:font',
+          // copy css-support images (images that css expects to be in the css directory)
+          'copy:csssupport',
+          // copy assets
+          'copy:prod'
+        ]
       }
     }
   });
@@ -177,6 +189,8 @@ module.exports = function (grunt) {
     'clean:prod',
     // Check validity of JSON files.
     'jsonlint',
+    // build js bundle
+    'browserify',
     // compile the css
     'cssmin',
     // copy fonts
@@ -190,6 +204,13 @@ module.exports = function (grunt) {
   // When sails is lifted in production
   // clean and only copy the production files
   grunt.registerTask('prod', [
+    'clean:prod',
+    // copy fonts
+    'copy:font',
+    // copy css-support images (images that css expects to be in the css directory)
+    'copy:csssupport',
+    // copy assets
+    'copy:prod'
   ]);
 
   grunt.registerTask('initTags', 'load tag data', function() {
