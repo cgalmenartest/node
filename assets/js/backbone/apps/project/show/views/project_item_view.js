@@ -1,6 +1,6 @@
 var jqIframe = require('blueimp-file-upload/js/jquery.iframe-transport');
 var jqFU = require('blueimp-file-upload/js/jquery.fileupload.js');
-var select2 = require('select2');
+var select2 = require('Select2');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var utils = require('../../../../mixins/utilities');

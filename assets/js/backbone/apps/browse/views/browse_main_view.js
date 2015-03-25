@@ -1,4 +1,4 @@
-var select2 = require('select2');
+var select2 = require('Select2');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var utils = require('../../../mixins/utilities');
