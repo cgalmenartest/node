@@ -1,43 +1,6 @@
 Installation
 =====
 
-You can install Midas natively on Mac, Linux or Windows (see step by step
-  instructions below).  You can also use a Vagrant virtual machine for development.
-
-## Vagrant
-
-Using vagrant is a quick and easy way to get a local midas instance up and running on a virtual machine. We use [Chef](http://www.getchef.com/chef/) for automated deployment, which can also be used for deploying to cloud servers.
-
-Install:
-* [Vagrant](https://www.vagrantup.com/downloads)
-* [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
-* [Chef Development Kit](http://downloads.getchef.com/chef-dk)
-
-Clone the git repository:
-
-     git clone https://github.com/18F/midas.git
-     cd midas
-     git submodule update --init
-
-Additonal plugins:
-
-     vagrant plugin install vagrant-berkshelf
-     vagrant plugin install vagrant-omnibus
-
-Startup the virtual machine:
-
-     vagrant up
-
-If you are modifying vagrant or chef setup, then you can configure to pull from your own repo by overriding attributes in your local `chef/nodes/localhost.json` adding:
-```
-  "midas": {
-    "git_repo": "https://github.com/myrepo/midas.git",
-    "git_revision": "devel-mybranch"
-  }
-```
-
-go to [http://localhost:8080/](http://localhost:8080/) to see Midas running on your local virtual machine
-
 ## Step by Step Installation
 The following installation steps for Mac, Linux, and Windows can be used for setting up a development or production environment manually.
 
@@ -51,8 +14,7 @@ In the Terminal:
     brew install postgresql
     brew install graphicsmagick
 
-When Homebrew is done installing Postgres, follow the instructions at the end
-to start Postgres.
+When Homebrew is done installing Postgres, follow the instructions at the end to start Postgres.
 
 Next, create the `midas` database:
 
@@ -71,7 +33,6 @@ Then back to the command-line, install node.js:
     brew install nodejs
 
 Then follow platform-independent steps below starting at [clone the git repository](#clone-the-git-repository).
-
 
 ### Linux (Ubuntu 12.04 LTS)
 
@@ -136,12 +97,6 @@ AND modify `pg_hba.conf`:
 
      git clone https://github.com/18F/midas.git
      cd midas
-     git submodule update --init
-
-#### Install global node packages
-
-     sudo npm install -g grunt-cli
-     sudo npm install -g forever
 
 #### Install midas node packages (from the midas git folder)
 
@@ -165,11 +120,11 @@ It is not necessary to edit any config files to run the demo locally.  You may o
 
 From the root of the midas directory, initialize the database:
 
-     make init
+     npm run init
 
 If you'd like to include a sample project, also run:
 
-     make demo
+     npm run demo
 
 
 Now you are ready to rock!
@@ -178,22 +133,13 @@ Now you are ready to rock!
 
 ## For development
 
-Make sure you have sails and phantomjs installed
-
-    npm install -g sails
-    npm install -g phantomjs
-
 Run the tests (all should pass)
 
-    make test
+    npm test
 
 Run the server
 
-    sails lift
-
-Then try running the server:
-
-    sails lift
+    npm start
 
 
 Go to [http://localhost:1337](http://localhost:1337) to see the app
@@ -201,17 +147,18 @@ Go to [http://localhost:1337](http://localhost:1337) to see the app
 Check out the [Contributor's Guide](CONTRIBUTING.md) for next steps
 
 #### Troubleshooting
+
 On Mac OSX, you may receive a stream of
 
     Error: EMFILE, too many open files
 
-messages after running `sails lift`. This is an issue with OSX and Grunt; there are directions to fix the issue [here](https://github.com/gruntjs/grunt-contrib-copy/issues/21) or [here](http://unix.stackexchange.com/questions/108174/how-to-persist-ulimit-settings-in-osx-mavericks).
+messages after running `npm start`. This is an issue with OSX and Grunt; there are directions to fix the issue [here](https://github.com/gruntjs/grunt-contrib-copy/issues/21) or [here](http://unix.stackexchange.com/questions/108174/how-to-persist-ulimit-settings-in-osx-mavericks).
 
 ## For production
 
 #### Compile production JS and CSS (from the midas git folder)
 
-     make build
+     npm run build
 
 #### Initialize the database
 
@@ -220,6 +167,10 @@ The database needs to be populated with the tag defaults for your application's 
 Edit the configuration file at `test/init/init/config.js` to match your tags in `assets/js/backbone/components/tag.js`
 
 ### Start the forever server (from the midas git folder)
+
+Install forever with from npm:
+
+     sudo npm install -g forever
 
 This will run the application server on port 1337
 
@@ -300,12 +251,46 @@ Navigate to Midas directory via windows cmd.exe prompt
 
 Enter the following commands
 
-	npm install sails -g
 	npm install
-	grunt requirejs
 
-Raise sails with
+Start Midas with
 
-     sails lift
+     npm start
 
 You can now access the server at `http://localhost:1337`
+
+
+## Vagrant
+
+You can install Midas natively on Mac, Linux or Windows, or you can use a Vagrant virtual machine for development.
+
+Using vagrant is a quick and easy way to get a local midas instance up and running on a virtual machine. We use [Chef](http://www.getchef.com/chef/) for automated deployment, which can also be used for deploying to cloud servers.
+
+Install:
+* [Vagrant](https://www.vagrantup.com/downloads)
+* [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
+* [Chef Development Kit](http://downloads.getchef.com/chef-dk)
+
+Clone the git repository:
+
+     git clone https://github.com/18F/midas.git
+     cd midas
+
+Additonal plugins:
+
+     vagrant plugin install vagrant-berkshelf
+     vagrant plugin install vagrant-omnibus
+
+Startup the virtual machine:
+
+     vagrant up
+
+If you are modifying vagrant or chef setup, then you can configure to pull from your own repo by overriding attributes in your local `chef/nodes/localhost.json` adding:
+```
+  "midas": {
+    "git_repo": "https://github.com/myrepo/midas.git",
+    "git_revision": "devel-mybranch"
+  }
+```
+
+Go to [http://localhost:8080/](http://localhost:8080/) to see Midas running on your local virtual machine
