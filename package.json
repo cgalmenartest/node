@@ -62,7 +62,7 @@
   },
   "scripts": {
     "test:api": "(export NODE_ENV=test; mocha test/test.upstart.js --recursive test/api)",
-    "test:browser": "(export NODE_ENV=test; export TEST_ROOT=\"http://localhost:1337\"; cp test/data/disk.db .tmp/disk.db && node test/browser/upstart.js)",
+    "test:browser": "(export NODE_ENV=test; export TEST_ROOT=\"http://localhost:1337\"; cp test/data/disk.db .tmp/disk.db && npm run build && node test/browser/upstart.js)",
     "test": "npm run test:api && npm run test:browser",
     "build": "grunt build",
     "start": "node app.js",
