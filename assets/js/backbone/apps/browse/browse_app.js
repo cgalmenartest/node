@@ -41,6 +41,17 @@ var BrowseRouter = Backbone.Router.extend({
     this.footerView = new FooterView({
       el: '#footer'
     }).render();
+
+    // set navigation state
+    this.on('route', function(route, params) {
+      var href = window.location.pathname;
+      $('.navigation .nav-link')
+        .closest('li')
+        .removeClass('active');
+      $('.navigation .nav-link[href="' + href + '"]')
+        .closest('li')
+        .addClass("active");
+    });
   },
 
   cleanupChildren: function () {
@@ -130,4 +141,3 @@ var initialize = function () {
 module.exports = {
   initialize: initialize
 };
-

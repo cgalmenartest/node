@@ -62,10 +62,6 @@ var NavView = Backbone.View.extend({
     var template = _.template(NavTemplate)(data);
     this.$el.html(template);
     this.$el.i18n();
-    $(".nav li").on("click", function () {
-      $(".nav li").removeClass("active");
-      $(this).addClass("active");
-    });
   },
 
   loginClick: function (e) {
