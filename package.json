@@ -11,6 +11,7 @@
     "blueimp-file-upload": "9.5.7",
     "bootstrap": "^3.3.4",
     "bootstrap-datetimepicker": "https://github.com/Eonasdan/bootstrap-datetimepicker/archive/v2.1.30.tar.gz",
+    "browserify": "^9.0.3",
     "connect-pg-simple": "^2.2.1",
     "ejs": "0.8.5",
     "email-templates": "~0.1.5",
@@ -45,20 +46,19 @@
     "sails-postgresql": "18F/sails-postgresql#softdelete",
     "select2": "select2/select2#3.5.2",
     "string": "~1.8.1",
+    "stringify": "^3.1.0",
     "timepicker": "jonthornton/jquery-timepicker#1.2.15",
+    "uglifyify": "^3.0.1",
     "underscore": "^1.8.2",
     "validator": "3.4.0"
   },
   "devDependencies": {
-    "browserify": "^9.0.3",
     "casper-chai": "^0.2.1",
     "chai": "2.1.2",
     "mocha": "2.2.1",
     "mocha-casperjs": "^0.5.3",
     "pg": "~3.6.0",
-    "phantomjs": "^1.9.16",
-    "stringify": "^3.1.0",
-    "uglifyify": "^3.0.1"
+    "phantomjs": "^1.9.16"
   },
   "config": {
     "grunt": "./node_modules/sails/node_modules/.bin/grunt"
