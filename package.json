@@ -61,7 +61,8 @@
     "phantomjs": "^1.9.16"
   },
   "config": {
-    "grunt": "./node_modules/sails/node_modules/.bin/grunt"
+    "grunt": "./node_modules/sails/node_modules/.bin/grunt",
+    "dir": "."
   },
   "scripts": {
     "test:api": "mocha test/test.upstart.js --recursive test/api",
@@ -72,7 +73,7 @@
     "migrate": "./tools/postgres/init.sh",
     "init": "mocha test/test.upstart.js --development --recursive test/init",
     "demo": "mocha test/test.upstart.js --development --recursive test/demo",
-    "import": "-cp -v ./exclude.txt exclude.txt rsync -av --exclude-from=exclude.txt ./* ."
+    "import": "cp -v $npm_package_config_dir/exclude.txt exclude.txt | true && rsync -av --exclude-from=exclude.txt $npm_package_config_dir/* ."
   },
   "main": "app.js",
   "repository": {
