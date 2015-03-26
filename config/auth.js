@@ -192,10 +192,6 @@ passport.use('linkedin', new LinkedInStrategy({
       profile.company = profile._json.threeCurrentPositions.values[0].company.name;
       profile.title = profile._json.threeCurrentPositions.values[0].title;
     }
-    // location
-    if (profile._json.location) {
-      profile.location = profile._json.location.name;
-    }
     // parse skills
     profile.skill = [];
     if (profile._json.skills && (profile._json.skills._total > 0)) {
