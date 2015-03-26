@@ -64,14 +64,14 @@
     "grunt": "./node_modules/sails/node_modules/.bin/grunt"
   },
   "scripts": {
-    "test:api": "(export NODE_ENV=test; mocha test/test.upstart.js --recursive test/api)",
-    "test:browser": "(export NODE_ENV=test; export TEST_ROOT=\"http://localhost:1337\"; cp test/data/disk.db .tmp/disk.db && npm run build && node test/browser/upstart.js)",
+    "test:api": "mocha test/test.upstart.js --recursive test/api",
+    "test:browser": "npm run build && node test/browser/upstart.js",
     "test": "npm run test:api && npm run test:browser",
     "build": "$npm_package_config_grunt build",
     "start": "node app.js",
     "migrate": "./tools/postgres/init.sh",
-    "init": "(export NODE_ENV=development; mocha test/test.upstart.js --recursive test/init)",
-    "demo": "(export NODE_ENV=development; mocha test/test.upstart.js --recursive test/demo)",
+    "init": "mocha test/test.upstart.js --development --recursive test/init",
+    "demo": "mocha test/test.upstart.js --development --recursive test/demo",
     "import": "-cp -v ./exclude.txt exclude.txt rsync -av --exclude-from=exclude.txt ./* ."
   },
   "main": "app.js",
