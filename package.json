@@ -12,6 +12,7 @@
     "bootstrap": "^3.3.4",
     "bootstrap-datetimepicker": "https://github.com/Eonasdan/bootstrap-datetimepicker/archive/v2.1.30.tar.gz",
     "browserify": "^9.0.3",
+    "chai": "2.1.2",
     "connect-pg-simple": "^2.2.1",
     "ejs": "0.8.5",
     "email-templates": "~0.1.5",
@@ -28,6 +29,7 @@
     "jquery.caret": "ichord/Caret.js#v0.0.7",
     "lodash": "~2.4.1",
     "marked": "^0.3.3",
+    "mocha": "2.2.1",
     "moment": "2.5.0",
     "newrelic": "1.16.1",
     "node-uuid": "1.4.x",
@@ -54,8 +56,6 @@
   },
   "devDependencies": {
     "casper-chai": "^0.2.1",
-    "chai": "2.1.2",
-    "mocha": "2.2.1",
     "mocha-casperjs": "^0.5.3",
     "pg": "~3.6.0",
     "phantomjs": "^1.9.16"
