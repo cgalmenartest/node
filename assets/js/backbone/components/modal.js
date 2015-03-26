@@ -6,51 +6,49 @@
  * Then all you have to do is set the ID of the modal to the ID of the link you are trying
  * to trigger from as per bootstrap BP.
  */
-define([
-  'jquery',
-  'underscore',
-  'backbone',
-  'utilities',
-  'base_component',
-  'text!modal_template'
-], function ($, _, Backbone, utils, BaseComponent, ModalTemplate) {
 
-  Application.Component.Modal = BaseComponent.extend({
+var _ = require('underscore');
+var Backbone = require('backbone');
+var utils = require('../mixins/utilities');
+var BaseComponent = require('../base/base_component');
+var ModalTemplate = require('./modal_template.html');
 
-    events: {
-      "click .link-backbone"  : "link"
-    },
 
-    initialize: function (options) {
-      this.options = options;
-    },
+Modal = BaseComponent.extend({
 
-    render: function () {
-      var data = {
-        id: this.options.id,
-        modalTitle: this.options.modalTitle,
-        disableClose: this.options.disableClose
-      };
+  events: {
+    "click .link-backbone"  : "link"
+  },
 
-      var compiledTemplate = _.template(ModalTemplate, data);
-      this.$el.append(compiledTemplate);
+  initialize: function (options) {
+    this.options = options;
+  },
 
-      return this;
-    },
+  render: function () {
+    var data = {
+      id: this.options.id,
+      modalTitle: this.options.modalTitle,
+      disableClose: this.options.disableClose
+    };
 
-    link: function (e) {
-      if (e.preventDefault) e.preventDefault();
-      // hide the modal, wait for it to close, then navigate
-      $('#' + this.options.id).bind('hidden.bs.modal', function() {
-        linkBackbone(e);
-      }).modal('hide');
-    },
+    var compiledTemplate = _.template(ModalTemplate)(data);
+    this.$el.append(compiledTemplate);
 
-    cleanup: function () {
-      removeView(this);
-    }
+    return this;
+  },
 
-  });
+  link: function (e) {
+    if (e.preventDefault) e.preventDefault();
+    // hide the modal, wait for it to close, then navigate
+    $('#' + this.options.id).bind('hidden.bs.modal', function() {
+      linkBackbone(e);
+    }).modal('hide');
+  },
 
-  return Application.Component.Modal;
+  cleanup: function () {
+    removeView(this);
+  }
+
 });
+
+module.exports = Modal;

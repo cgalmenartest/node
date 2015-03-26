@@ -1,106 +1,100 @@
-define([
-  'jquery',
-  'underscore',
-  'backbone',
-  'utilities',
-  'i18n',
-  'json!ui_config',
-  'json!login_config',
-  'login_controller',
-  'text!nav_template'
-], function ($, _, Backbone, utils, 
-            i18n, UIConfig, 
-            Login, LoginController, NavTemplate) {
+var _ = require('underscore');
+var Backbone = require('backbone');
+var utils = require('../../../mixins/utilities');
+var UIConfig = require('../../../config/ui.json');
+var Login = require('../../../config/login.json');
+var LoginController = require('../../login/controllers/login_controller');
+var NavTemplate = require('../templates/nav_template.html');
 
-  var NavView = Backbone.View.extend({
 
-    events: {
-      'click .navbar-brand'   : linkBackbone,
-      'click .nav-link'       : linkBackbone,
-      'click .login'          : 'loginClick',
-      'click .logout'         : 'logout'
-    },
+var NavView = Backbone.View.extend({
 
-    initialize: function (options) {
-      var self = this;
-      this.options = options;
+  events: {
+    'click .navbar-brand'   : linkBackbone,
+    'click .nav-link'       : linkBackbone,
+    'click .login'          : 'loginClick',
+    'click .logout'         : 'logout'
+  },
 
-      this.listenTo(window.cache.userEvents, "user:login:success", function (userData) {
-        self.doRender({ user: userData });
-      });
+  initialize: function (options) {
+    var self = this;
+    this.options = options;
 
-      this.listenTo(window.cache.userEvents, "user:logout", function () {
-        self.doRender({ user: null });
-        Backbone.history.loadUrl();
-        window.cache.userEvents.trigger("user:logout:success");
-      });
+    this.listenTo(window.cache.userEvents, "user:login:success", function (userData) {
+      self.doRender({ user: userData });
+    });
 
-      // request that the user log in to see the page
-      this.listenTo(window.cache.userEvents, "user:request:login", function (message) {
-        // trigger the login modal
-        self.login(message);
-      });
+    this.listenTo(window.cache.userEvents, "user:logout", function () {
+      self.doRender({ user: null });
+      Backbone.history.loadUrl();
+      window.cache.userEvents.trigger("user:logout:success");
+    });
 
-      // update the navbar when the profile changes
-      this.listenTo(window.cache.userEvents, "user:profile:save", function (data) {
-        // reset the currentUser object
-        window.cache.currentUser = data;
-        // re-render the view
-        self.render();
-      });
+    // request that the user log in to see the page
+    this.listenTo(window.cache.userEvents, "user:request:login", function (message) {
+      // trigger the login modal
+      self.login(message);
+    });
 
-      // update the user's photo when they change it
-      this.listenTo(window.cache.userEvents, "user:profile:photo:save", function (url) {
-        $(".navbar-people").attr('src', url);
-      });
-    },
+    // update the navbar when the profile changes
+    this.listenTo(window.cache.userEvents, "user:profile:save", function (data) {
+      // reset the currentUser object
+      window.cache.currentUser = data;
+      // re-render the view
+      self.render();
+    });
 
-    render: function () {
-      var self = this;
-      this.doRender({ user: window.cache.currentUser, systemName: window.cache.system.name });
-      return this;
-    },
+    // update the user's photo when they change it
+    this.listenTo(window.cache.userEvents, "user:profile:photo:save", function (url) {
+      $(".navbar-people").attr('src', url);
+    });
+  },
 
-    doRender: function (data) {
-      data.login = Login;
-      data.ui = UIConfig;
-      var template = _.template(NavTemplate, data);
-      this.$el.html(template);
-      this.$el.i18n();
-    },
+  render: function () {
+    var self = this;
+    this.doRender({ user: window.cache.currentUser, systemName: window.cache.system.name });
+    return this;
+  },
 
-    loginClick: function (e) {
-      if (e.preventDefault) e.preventDefault();
-      this.login();
-    },
+  doRender: function (data) {
+    data.login = Login;
+    data.ui = UIConfig;
+    var template = _.template(NavTemplate)(data);
+    this.$el.html(template);
+    this.$el.i18n();
+  },
 
-    login: function (message) {
-      if (this.loginController) {
-        this.loginController.cleanup();
-      }
-      this.loginController = new LoginController({
-        el: '#login-wrapper',
-        message: message
-      });
-    },
+  loginClick: function (e) {
+    if (e.preventDefault) e.preventDefault();
+    this.login();
+  },
 
-    logout: function (e) {
-      if (e.preventDefault) e.preventDefault();
-      $.ajax({
-        url: '/api/auth/logout?json=true',
-      }).done(function (success) {
-        window.cache.currentUser = null;
-        window.cache.userEvents.trigger("user:logout");
-      }).fail(function (error) {
-        // do nothing
-      });
-    },
+  login: function (message) {
+    if (this.loginController) {
+      this.loginController.cleanup();
+    }
+    this.loginController = new LoginController({
+      el: '#login-wrapper',
+      message: message
+    });
+  },
 
-    cleanup: function () {
-      if (this.loginController) { this.loginController.cleanup(); }
-      removeView(this);
-    },
-  });
+  logout: function (e) {
+    if (e.preventDefault) e.preventDefault();
+    $.ajax({
+      url: '/api/auth/logout?json=true',
+    }).done(function (success) {
+      window.cache.currentUser = null;
+      window.cache.userEvents.trigger("user:logout");
+    }).fail(function (error) {
+      // do nothing
+    });
+  },
 
-  return NavView;
+  cleanup: function () {
+    if (this.loginController) { this.loginController.cleanup(); }
+    removeView(this);
+  },
 });
+
+module.exports = NavView;

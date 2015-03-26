@@ -1,12 +1,11 @@
 // Base Controller
 
-define([
-	'jquery',
-	'underscore',
-	'backbone'
-], function ($, _, Backbone) {
 
-	Application.Controller.BaseController = Backbone.View.extend({
+var _ = require('underscore');
+var Backbone = require('backbone');
+
+
+	BaseController = Backbone.View.extend({
 		
 		initialize: function () {},
 
@@ -28,6 +27,5 @@ define([
 
 	});
 
-	return Application.Controller.BaseController;
+	module.exports = BaseController;
 
-});

@@ -17,7 +17,7 @@ This project follows the [git flow](http://nvie.com/posts/a-successful-git-branc
 ### Testing
 
 To run all the tests:
-```make test```
+```npm test```
 
 For testing in Midas, we are using:
 * [mocha](http://visionmedia.github.io/mocha/) test framework
@@ -64,7 +64,7 @@ references", such as which issues were fixed.
 ### Database changes
 
 The database schema is managed in this repository under `/tools/postgres/`. When
-you first set up Midas and run `make init` the `init.sh` script sets up the database
+you first set up Midas and run `npm run init` the `init.sh` script sets up the database
 with the latest schema. Each subsequent run of `init.sh` checks the database version
 and runs migration scripts to update it if the database is out of data.
 
@@ -127,7 +127,7 @@ Before you submit your pull request consider the following guidelines:
 * Build your changes locally to ensure all the tests pass
 
     ```shell
-    make test
+    npm test
     ```
 
 * Push your branch to GitHub:

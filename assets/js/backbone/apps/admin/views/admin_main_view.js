@@ -1,125 +1,123 @@
-define([
-  'jquery',
-  'underscore',
-  'backbone',
-  'utilities',
-  'admin_user_view',
-  'admin_tag_view',
-  'admin_task_view',
-  'admin_dashboard_view',
-  'text!admin_main_template',
-], function ($, _, Backbone, utils, AdminUserView, AdminTagView, AdminTaskView, AdminDashboardView, AdminMainTemplate) {
 
-  var AdminMainView = Backbone.View.extend({
+var _ = require('underscore');
+var Backbone = require('backbone');
+var utils = require('../../../mixins/utilities');
+var AdminUserView = require('./admin_user_view');
+var AdminTagView = require('./admin_tag_view');
+var AdminTaskView = require('./admin_task_view');
+var AdminDashboardView = require('./admin_dashboard_view');
+var AdminMainTemplate = require('../templates/admin_main_template.html');
 
-    events: {
-      'click .link-admin'             : 'link'
-    },
 
-    initialize: function (options) {
-      this.options = options;
-    },
+var AdminMainView = Backbone.View.extend({
 
-    render: function () {
-      var data = {
+  events: {
+    'click .link-admin'             : 'link'
+  },
 
-      };
-      var template = _.template(AdminMainTemplate, data);
-      this.$el.html(template);
-      this.routeTarget(this.options.action || '');
-      return this;
-    },
+  initialize: function (options) {
+    this.options = options;
+  },
 
-    routeTarget: function (target) {
-      if (!target) {
-        target = 'dashboard';
+  render: function () {
+    var data = {
+
+    };
+    var template = _.template(AdminMainTemplate)(data);
+    this.$el.html(template);
+    this.routeTarget(this.options.action || '');
+    return this;
+  },
+
+  routeTarget: function (target) {
+    if (!target) {
+      target = 'dashboard';
+    }
+    var t = $((this.$("[data-target=" + target + "]"))[0]);
+    // remove active classes
+    $($(t.parents('ul')[0]).find('li')).removeClass('active');
+    // make the current link active
+    $(t.parent('li')[0]).addClass('active');
+    if (target == 'user') {
+      if (!this.adminUserView) {
+        this.initializeAdminUserView();
       }
-      var t = $((this.$("[data-target=" + target + "]"))[0]);
-      // remove active classes
-      $($(t.parents('ul')[0]).find('li')).removeClass('active');
-      // make the current link active
-      $(t.parent('li')[0]).addClass('active');
-      if (target == 'user') {
-        if (!this.adminUserView) {
-          this.initializeAdminUserView();
-        }
-        this.hideOthers();
-        this.adminUserView.render();
-      } else if (target == 'tag') {
-        if (!this.adminTagView) {
-          this.initializeAdminTagView();
-        }
-        this.hideOthers();
-        this.adminTagView.render();
-      } else if (target == 'tasks') {
-        if (!this.adminTaskView) {
-          this.initializeAdminTaskView();
-        }
-        this.hideOthers();
-        this.adminTaskView.render();
-      } else if (target == 'dashboard') {
-        if (!this.adminDashboardView) {
-          this.initializeAdminDashboardView();
-        }
-        this.hideOthers();
-        this.adminDashboardView.render();
+      this.hideOthers();
+      this.adminUserView.render();
+    } else if (target == 'tag') {
+      if (!this.adminTagView) {
+        this.initializeAdminTagView();
       }
-    },
-
-    link: function (e) {
-      if (e.preventDefault) e.preventDefault();
-      var t = $(e.currentTarget);
-      this.routeTarget(t.data('target'));
-    },
-
-    hideOthers: function () {
-      this.$(".admin-container").hide();
-    },
-
-    initializeAdminUserView: function () {
-      if (this.adminUserView) {
-        this.adminUserView.cleanup();
+      this.hideOthers();
+      this.adminTagView.render();
+    } else if (target == 'tasks') {
+      if (!this.adminTaskView) {
+        this.initializeAdminTaskView();
       }
-      this.adminUserView = new AdminUserView({
-        el: "#admin-user"
-      });
-    },
-
-    initializeAdminTagView: function () {
-      if (this.adminTagView) {
-        this.adminTagView.cleanup();
+      this.hideOthers();
+      this.adminTaskView.render();
+    } else if (target == 'dashboard') {
+      if (!this.adminDashboardView) {
+        this.initializeAdminDashboardView();
       }
-      this.adminTagView = new AdminTagView({
-        el: "#admin-tag"
-      });
-    },
+      this.hideOthers();
+      this.adminDashboardView.render();
+    }
+  },
 
-    initializeAdminTaskView: function () {
-      if (this.adminTaskView) {
-        this.adminTaskView.cleanup();
-      }
-      this.adminTaskView = new AdminTaskView({
-        el: "#admin-task"
-      });
-    },
+  link: function (e) {
+    if (e.preventDefault) e.preventDefault();
+    var t = $(e.currentTarget);
+    this.routeTarget(t.data('target'));
+  },
 
-    initializeAdminDashboardView: function () {
-      if (this.adminDashboardView) {
-        this.adminDashboardView.cleanup();
-      }
-      this.adminDashboardView = new AdminDashboardView({
-        el: "#admin-dashboard"
-      });
-    },
+  hideOthers: function () {
+    this.$(".admin-container").hide();
+  },
 
-    cleanup: function () {
-      if (this.adminUserView) this.adminUserView.cleanup();
-      if (this.adminTagView) this.adminTagView.cleanup();
-      if (this.adminTaskView) this.adminTaskView.cleanup();
-      if (this.adminDashboardView) this.adminDashboardView.cleanup();
-      removeView(this);
-    },
-  });
+  initializeAdminUserView: function () {
+    if (this.adminUserView) {
+      this.adminUserView.cleanup();
+    }
+    this.adminUserView = new AdminUserView({
+      el: "#admin-user"
+    });
+  },
 
-  return AdminMainView;
+  initializeAdminTagView: function () {
+    if (this.adminTagView) {
+      this.adminTagView.cleanup();
+    }
+    this.adminTagView = new AdminTagView({
+      el: "#admin-tag"
+    });
+  },
+
+  initializeAdminTaskView: function () {
+    if (this.adminTaskView) {
+      this.adminTaskView.cleanup();
+    }
+    this.adminTaskView = new AdminTaskView({
+      el: "#admin-task"
+    });
+  },
+
+  initializeAdminDashboardView: function () {
+    if (this.adminDashboardView) {
+      this.adminDashboardView.cleanup();
+    }
+    this.adminDashboardView = new AdminDashboardView({
+      el: "#admin-dashboard"
+    });
+  },
+
+  cleanup: function () {
+    if (this.adminUserView) this.adminUserView.cleanup();
+    if (this.adminTagView) this.adminTagView.cleanup();
+    if (this.adminTaskView) this.adminTaskView.cleanup();
+    if (this.adminDashboardView) this.adminDashboardView.cleanup();
+    removeView(this);
+  },
 });
+
+module.exports = AdminMainView;

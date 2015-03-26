@@ -3,7 +3,7 @@
  * tags for this installation.  The tags will be displayed
  * in the order of the array.
  */
-define({
+module.exports = {
   // This defines all of the tag elements for use in the app
   tags: {
     'skill': {
@@ -103,4 +103,4 @@ define({
 
   task      : ['skill', 'topic', 'location', 'task-people', 'task-time-estimate', 'task-time-required', 'task-length'],
   tasks     : ['skill', 'topic', 'agency', 'location', 'task-skills-required', 'task-time-required', 'task-people', 'task-length', 'task-time-estimate']
-});
+};

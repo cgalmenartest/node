@@ -1,12 +1,11 @@
-define([
-	'jquery',
-	'underscore',
-	'backbone',
-	'utilities',
-	'async',
-	'marked',
-	'text!task_list_template'
-], function ($, _, Backbone, utils, async, marked, TaskListTemplate) {
+
+var _ = require('underscore');
+var Backbone = require('backbone');
+var utils = require('../../../../mixins/utilities');
+var async = require('async');
+var marked = require('marked');
+var TaskListTemplate = require('../templates/task_collection_view_template.html');
+
 
 	var TasksCollectionView = Backbone.View.extend({
 
@@ -50,7 +49,7 @@ define([
 			_.each(this.tasksJson.tasks, function(task) {
 				task.description = marked(task.description);
 			});
-			this.compiledTemplate = _.template(TaskListTemplate, this.tasksJson);
+			this.compiledTemplate = _.template(TaskListTemplate)(this.tasksJson);
 			this.$el.html(this.compiledTemplate);
 
 			return this;
@@ -62,5 +61,4 @@ define([
 
 	});
 
-	return TasksCollectionView;
-});
+	module.exports = TasksCollectionView;

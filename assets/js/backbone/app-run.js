@@ -1,44 +1,42 @@
-define([
-  'underscore',
-  'backbone',
-  'apps_router'
-], function (_, Backbone, AppsRouter) {
+var _ = require('underscore');
+var Backbone = require('backbone');
+var AppsRouter = require('./apps/apps_router');
 
-  Application = {
 
-    started: null,
+Application = {
 
-    // Initialize and fire up the application.
-    initialize: function () {
-      var self = this;
-      // Cache user
-      // Check if a user is already defined
-      if (!_.isUndefined(backendUser)) {
-        window.cache.currentUser = backendUser;
-      }
-      if (!_.isUndefined(systemName)) {
-        window.cache.system.name = systemName;
-      }
+  started: null,
 
-      // Create a user events handler
-      _.extend(window.cache.userEvents, Backbone.Events);
-
-      // Mixin backbone events into our pub sub handler
-      _.extend(entities.request, Backbone.Events);
-
-      // Mixin backbone events into our rendering event handler
-      _.extend(rendering, Backbone.Events);
-
-      if (this.started) {
-        self.started = false;
-        this.application.initialize();
-      } else {
-        this.application = AppsRouter.initialize();
-        self.started = true;
-      }
+  // Initialize and fire up the application.
+  initialize: function () {
+    var self = this;
+    // Cache user
+    // Check if a user is already defined
+    if (!_.isUndefined(backendUser)) {
+      window.cache.currentUser = backendUser;
     }
-  };
+    if (!_.isUndefined(systemName)) {
+      window.cache.system.name = systemName;
+    }
 
-  // Backbone Multi-tenant router firing up.
-  return Application;
-});
+    // Create a user events handler
+    _.extend(window.cache.userEvents, Backbone.Events);
+
+    // Mixin backbone events into our pub sub handler
+    _.extend(entities.request, Backbone.Events);
+
+    // Mixin backbone events into our rendering event handler
+    _.extend(rendering, Backbone.Events);
+
+    if (this.started) {
+      self.started = false;
+      this.application.initialize();
+    } else {
+      this.application = AppsRouter.initialize();
+      self.started = true;
+    }
+  }
+};
+
+// Backbone Multi-tenant router firing up.
+module.exports = Application;

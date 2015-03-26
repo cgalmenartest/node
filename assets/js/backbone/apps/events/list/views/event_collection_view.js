@@ -1,38 +1,36 @@
-define([
-  'jquery',
-  'underscore',
-  'backbone',
-  'utilities',
-  'text!event_list_template'
-], function ($, _, Backbone, utils, EventListTemplate) {
 
-  var EventCollectionView = Backbone.View.extend({
+var _ = require('underscore');
+var Backbone = require('backbone');
+var utils = require('../../../../mixins/utilities');
+var EventListTemplate = require('../templates/event_collection_view_template.html');
 
-    el: "#event-list-wrapper",
 
-    initialize: function (options) {
-      this.options = options;
-      this.render();
-    },
+var EventCollectionView = Backbone.View.extend({
 
-    render: function () {
-      var eventsJSON = {
-        events: this.options.collection.toJSON(),
-        projectId: this.options.projectId,
-        user: window.cache.currentUser
-      }
+  el: "#event-list-wrapper",
 
-      this.compiledTemplate = _.template(EventListTemplate, eventsJSON);
-      this.$el.html(this.compiledTemplate);
+  initialize: function (options) {
+    this.options = options;
+    this.render();
+  },
 
-      return this;
-    },
-
-    cleanup: function () {
-      removeView(this);
+  render: function () {
+    var eventsJSON = {
+      events: this.options.collection.toJSON(),
+      projectId: this.options.projectId,
+      user: window.cache.currentUser
     }
 
-  });
+    this.compiledTemplate = _.template(EventListTemplate)(eventsJSON);
+    this.$el.html(this.compiledTemplate);
 
-  return EventCollectionView;
+    return this;
+  },
+
+  cleanup: function () {
+    removeView(this);
+  }
+
 });
+
+module.exports = EventCollectionView;

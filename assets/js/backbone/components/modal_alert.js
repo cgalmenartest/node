@@ -1,58 +1,53 @@
-define([
-  'jquery',
-  'bootstrap',
-  'underscore',
-  'backbone',
-  'i18n',
-  'utilities',
-  'text!modal_alert_template'
-], function ($, Bootstrap, _, Backbone, i18n, utils, ModalTemplate) {
+var Bootstrap = require('bootstrap');
+var _ = require('underscore');
+var Backbone = require('backbone');
+var utils = require('../mixins/utilities');
+var ModalTemplate = require('./modal_alert_template.html');
 
-  var ModalAlert = Backbone.View.extend({
 
-    events: {
-      "submit #modal-form"    : "post"
-    },
+var ModalAlert = Backbone.View.extend({
 
-    initialize: function (options) {
-      this.options = options;
-    },
+  events: {
+    "submit #modal-form"    : "post"
+  },
 
-    render: function () {
-      var template = _.template(ModalTemplate, this.options);
-      this.$el.html(template);
-      this.$el.i18n();
-      $(this.options.modalDiv).modal('show');
-      return this;
-    },
+  initialize: function (options) {
+    this.options = options;
+  },
 
-    post: function (e) {
-      var self = this;
-      var hasError = false;
+  render: function () {
+    var template = _.template(ModalTemplate)(this.options);
+    this.$el.html(template);
+    this.$el.i18n();
+    $(this.options.modalDiv).modal('show');
+    return this;
+  },
 
-      if (e.preventDefault) e.preventDefault();
+  post: function (e) {
+    var self = this;
+    var hasError = false;
 
-      //check any .validate elements and don't submit if they fail
-      if ( self.options.validateBeforeSubmit ){
-        $(".validate").each(function(index){
-          hasError = validate({currentTarget: this});
-          if ( hasError ){ return false; }
-        });
-      }
+    if (e.preventDefault) e.preventDefault();
 
-      if ( !hasError ) {
-        $(this.options.modalDiv).bind('hidden.bs.modal', function() {
-          self.options.callback(e);
-        }).modal('hide');
-      }
-    },
-
-    cleanup: function () {
-      removeView(this);
+    //check any .validate elements and don't submit if they fail
+    if ( self.options.validateBeforeSubmit ){
+      $(".validate").each(function(index){
+        hasError = validate({currentTarget: this});
+        if ( hasError ){ return false; }
+      });
     }
 
-  });
+    if ( !hasError ) {
+      $(this.options.modalDiv).bind('hidden.bs.modal', function() {
+        self.options.callback(e);
+      }).modal('hide');
+    }
+  },
 
-  return ModalAlert;
+  cleanup: function () {
+    removeView(this);
+  }
 
 });
+
+module.exports = ModalAlert;

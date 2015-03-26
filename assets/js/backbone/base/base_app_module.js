@@ -1,10 +1,9 @@
-define([
-	'jquery',
-	'underscore',
-	'backbone'
-], function ($, _, Backbone) {
+
+var _ = require('underscore');
+var Backbone = require('backbone');
+
 	
-	Application.AppModule.BaseAppModule = Backbone.View.extend({
+	AppModule.BaseAppModule = Backbone.View.extend({
 
 		initialize: function () {},
 		
@@ -23,6 +22,5 @@ define([
 
 	});
 
-	return Application.AppModule.BaseAppModule;
+	module.exports = AppModule.BaseAppModule;
 
-});

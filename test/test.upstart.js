@@ -7,6 +7,8 @@ var fs = require('fs');
 var sails;
 var err;
 
+process.env.NODE_ENV = (process.argv.indexOf('--development') >= 0) ? 'development' : 'test';
+
 before(function(done) {
   console.log('lifting sails: env='+process.env.NODE_ENV );
 

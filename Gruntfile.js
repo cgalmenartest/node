@@ -17,139 +17,40 @@
 var fs = require('fs'),
     path = require('path'),
     exec = require('child_process').exec,
-    gitRev = require('git-rev');
+    browserify = require('browserify'),
+    stringify = require('stringify');
 
 module.exports = function (grunt) {
-  grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-jsonlint');
-
-  /**
-   * CSS files to inject in order
-   * (uses Grunt-style wildcard/glob/splat expressions)
-   *
-   * By default, Sails also supports LESS in development and production.
-   * To use SASS/SCSS, Stylus, etc., edit the `sails-linker:devStyles` task
-   * below for more options.  For this to work, you may need to install new
-   * dependencies, e.g. `npm install grunt-contrib-sass`
-   */
-
-  var cssFilesToInject = [
-    'linker/**/*.css'
-  ];
-
-
-  /**
-   * Javascript files to inject in order
-   * (uses Grunt-style wildcard/glob/splat expressions)
-   *
-   * To use client-side CoffeeScript, TypeScript, etc., edit the
-   * `sails-linker:devJs` task below for more options.
-   */
-
-  var jsFilesToInject = [
-
-    // Below, as a demonstration, you'll see the built-in dependencies
-    // linked in the proper order order
-
-    // Bring in the socket.io client
-    'linker/js/socket.io.js',
-
-    // then beef it up with some convenience logic for talking to Sails.js
-    'linker/js/sails.io.js',
-
-    // A simpler boilerplate library for getting you up and running w/ an
-    // automatic listener for incoming messages from Socket.io.
-    'linker/js/app.js',
-
-    // Include all javascript files in js and subdirectories
-    'linker/js/backbone/**/*.js'
-  ];
-
-
-  /**
-   * Client-side HTML templates are injected using the sources below
-   * The ordering of these templates shouldn't matter.
-   * (uses Grunt-style wildcard/glob/splat expressions)
-   *
-   * By default, Sails uses JST templates and precompiles them into
-   * functions for you.  If you want to use jade, handlebars, dust, etc.,
-   * edit the relevant sections below.
-   */
-
-  var templateFilesToInject = [
-    'linker/**/*.html'
-  ];
-
-
-
-  /////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////
-  //
-  // DANGER:
-  //
-  // With great power comes great responsibility.
-  //
-  /////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////
-
-  // Modify css file injection paths to use
-  cssFilesToInject = cssFilesToInject.map(function (path) {
-    return '.tmp/public/' + path;
-  });
-
-  // Modify js file injection paths to use
-  jsFilesToInject = jsFilesToInject.map(function (path) {
-    return '.tmp/public/' + path;
-  });
-
-
-  templateFilesToInject = templateFilesToInject.map(function (path) {
-    return 'assets/' + path;
-  });
-
+  grunt.loadNpmTasks('grunt-browserify');
 
   // Get path to core grunt dependencies from Sails
   var depsPath = grunt.option('gdsrc') || 'node_modules/sails/node_modules';
   grunt.loadTasks(depsPath + '/grunt-contrib-clean/tasks');
   grunt.loadTasks(depsPath + '/grunt-contrib-copy/tasks');
   grunt.loadTasks(depsPath + '/grunt-contrib-concat/tasks');
-  grunt.loadTasks(depsPath + '/grunt-sails-linker/tasks');
-  grunt.loadTasks(depsPath + '/grunt-contrib-jst/tasks');
   grunt.loadTasks(depsPath + '/grunt-contrib-watch/tasks');
-  grunt.loadTasks(depsPath + '/grunt-contrib-uglify/tasks');
-  // grunt.loadTasks(depsPath + '/grunt-contrib-cssmin/tasks');
-  grunt.loadTasks(depsPath + '/grunt-contrib-less/tasks');
 
   grunt.initConfig({
 
-    requirejs: {
-      compile: {
+    browserify: {
+      prod: {
+        src: 'assets/js/backbone/app.js',
+        dest: 'assets/build/js/bundle.min.js',
         options: {
-          name: 'app',
-          baseUrl: "assets/js/backbone/app",
-          mainConfigFile: "assets/js/backbone/config/require_config.js",
-          out: "assets/prod/js/midas-<%= sha %>.js",
-          paths: {
-            requireLib: "../../vendor/require"
-          },
-          include: "requireLib"
+          browserifyOptions: { debug: false },
+          transform: ['stringify', ['uglifyify', { global: true }]],
+          require: ['./assets/js/vendor/jquery-shim.js:jquery'],
+        }
+      },
+      dev: {
+        src: 'assets/js/backbone/app.js',
+        dest: 'assets/build/js/bundle.js',
+        options: {
+          browserifyOptions: { debug: true },
+          transform: ['stringify'],
+          require: ['./assets/js/vendor/jquery-shim.js:jquery'],
         }
       }
     },
@@ -157,14 +58,14 @@ module.exports = function (grunt) {
     cssmin: {
       combine: {
         files: {
-          'assets/prod/css/midas-<%= sha %>.css': [
-            'assets/styles/bootstrap.css',
+          'assets/build/css/midas.css': [
+            'node_modules/bootstrap/dist/css/bootstrap.css',
             'assets/styles/font-awesome/css/font-awesome.min.css',
             'assets/styles/font-custom/css/style.css',
-            'assets/js/vendor/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css',
-            'assets/js/vendor/jquery-timepicker/jquery.timepicker.css',
-            'assets/js/vendor/jquery-file-upload/css/jquery.fileupload.css',
-            'assets/js/vendor/select2/select2.css',
+            'node_modules/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css',
+            'node_modules/timepicker/jquery.timepicker.css',
+            'node_modules/blueimp-file-upload/css/jquery.fileupload.css',
+            'node_modules/Select2/select2.css',
             'assets/styles/application.css',
             'assets/styles/theme.css'
           ]
@@ -175,9 +76,9 @@ module.exports = function (grunt) {
       },
       minify: {
         expand: true,
-        cwd: 'assets/prod/css/',
+        cwd: 'assets/build/css/',
         src: ['*.css', '!*.min.css'],
-        dest: 'assets/prod/css/',
+        dest: 'assets/build/css/',
         ext: '.min.css',
         extDot: 'last',
         options: {
@@ -189,32 +90,12 @@ module.exports = function (grunt) {
     pkg: grunt.file.readJSON('package.json'),
 
     copy: {
-      dev: {
-        files: [
-          {
-          expand: true,
-          cwd: './assets',
-          src: ['**/*'],
-          dest: '.tmp/public'
-        }
-        ]
-      },
-      build: {
-        files: [
-          {
-          expand: true,
-          cwd: '.tmp/public',
-          src: ['**/*'],
-          dest: 'www'
-        }
-        ]
-      },
       prod: {
         files: [
         {
           expand: true,
           cwd: './assets',
-          src: ['prod/**/*', 'js/vendor/**/*', 'images/**/*','locales/**/*'],
+          src: ['build/**/*', 'js/vendor/**/*', 'images/**/*','locales/**/*'],
           dest: '.tmp/public'
         }
         ]
@@ -226,21 +107,21 @@ module.exports = function (grunt) {
           flatten: true,
           cwd: './assets',
           src: ['styles/font-awesome/fonts/*'],
-          dest: 'assets/prod/fonts'
+          dest: 'assets/build/fonts'
         },
         {
           expand: true,
           flatten: true,
           cwd: './assets',
           src: ['styles/font-custom/fonts/*'],
-          dest: 'assets/prod/fonts'
+          dest: 'assets/build/fonts'
         },
         {
           expand: true,
           flatten: true,
           cwd: './assets',
           src: ['fonts/*'],
-          dest: 'assets/prod/fonts'
+          dest: 'assets/build/fonts'
         }
         ]
       },
@@ -249,221 +130,16 @@ module.exports = function (grunt) {
         {
           expand: true,
           flatten: true,
-          cwd: './assets',
-          src: ['js/vendor/select2/*.png', 'js/vendor/select2/*.gif'],
-          dest: 'assets/prod/css'
+          cwd: './',
+          src: ['node_modules/Select2/*.png', 'node_modules/Select2/*.gif'],
+          dest: 'assets/build/css'
         }
         ]
       }
     },
 
     clean: {
-      dev: ['.tmp/public/**'],
-      prod: ['.tmp/public/**'],
-      build: ['www']
-    },
-
-    jst: {
-      dev: {
-        options: {
-          templateSettings: {
-            interpolate: /\{\{(.+?)\}\}/g
-          }
-        },
-        files: {
-          '.tmp/public/jst.js': templateFilesToInject
-        }
-      }
-    },
-
-    less: {
-      dev: {
-        files: [
-          {
-          expand: true,
-          cwd: 'assets/styles/',
-          src: ['*.less'],
-          dest: '.tmp/public/styles/',
-          ext: '.css'
-        }, {
-          expand: true,
-          cwd: 'assets/linker/styles/',
-          src: ['*.less'],
-          dest: '.tmp/public/linker/styles/',
-          ext: '.css'
-        }
-        ]
-      }
-    },
-
-    concat: {
-      js: {
-        src: jsFilesToInject,
-        dest: '.tmp/public/concat/production.js'
-      },
-      css: {
-        src: cssFilesToInject,
-        dest: '.tmp/public/concat/production.css'
-      }
-    },
-
-    uglify: {
-      dist: {
-        src: ['.tmp/public/concat/production.js'],
-        dest: '.tmp/public/min/production.js'
-      }
-    },
-
-    // cssmin: {
-    //   dist: {
-    //     src: ['.tmp/public/concat/production.css'],
-    //     dest: '.tmp/public/min/production.css'
-    //   }
-    // },
-
-    'sails-linker': {
-
-      devJs: {
-        options: {
-          startTag: '<!--SCRIPTS-->',
-          endTag: '<!--SCRIPTS END-->',
-          fileTmpl: '<script src="%s"></script>',
-          appRoot: '.tmp/public'
-        },
-        files: {
-          '.tmp/public/**/*.html': jsFilesToInject,
-          'views/**/*.html': jsFilesToInject,
-          'views/**/*.ejs': jsFilesToInject
-        }
-      },
-
-      prodJs: {
-        options: {
-          startTag: '<!--SCRIPTS-->',
-          endTag: '<!--SCRIPTS END-->',
-          fileTmpl: '<script src="%s"></script>',
-          appRoot: '.tmp/public'
-        },
-        files: {
-          '.tmp/public/**/*.html': ['.tmp/public/min/production.js'],
-          'views/**/*.html': ['.tmp/public/min/production.js'],
-          'views/**/*.ejs': ['.tmp/public/min/production.js']
-        }
-      },
-
-      devStyles: {
-        options: {
-          startTag: '<!--STYLES-->',
-          endTag: '<!--STYLES END-->',
-          fileTmpl: '<link rel="stylesheet" href="%s">',
-          appRoot: '.tmp/public'
-        },
-
-        // cssFilesToInject defined up top
-        files: {
-          '.tmp/public/**/*.html': cssFilesToInject,
-          'views/**/*.html': cssFilesToInject,
-          'views/**/*.ejs': cssFilesToInject
-        }
-      },
-
-      prodStyles: {
-        options: {
-          startTag: '<!--STYLES-->',
-          endTag: '<!--STYLES END-->',
-          fileTmpl: '<link rel="stylesheet" href="%s">',
-          appRoot: '.tmp/public'
-        },
-        files: {
-          '.tmp/public/index.html': ['.tmp/public/min/production.css'],
-          'views/**/*.html': ['.tmp/public/min/production.css'],
-          'views/**/*.ejs': ['.tmp/public/min/production.css']
-        }
-      },
-
-      // Bring in JST template object
-      devTpl: {
-        options: {
-          startTag: '<!--TEMPLATES-->',
-          endTag: '<!--TEMPLATES END-->',
-          fileTmpl: '<script type="text/javascript" src="%s"></script>',
-          appRoot: '.tmp/public'
-        },
-        files: {
-          '.tmp/public/index.html': ['.tmp/public/jst.js'],
-          'views/**/*.html': ['.tmp/public/jst.js'],
-          'views/**/*.ejs': ['.tmp/public/jst.js']
-        }
-      },
-
-
-      /*******************************************
-       * Jade linkers (TODO: clean this up)
-       *******************************************/
-
-      devJsJADE: {
-        options: {
-          startTag: '// SCRIPTS',
-          endTag: '// SCRIPTS END',
-          fileTmpl: 'script(type="text/javascript", src="%s")',
-          appRoot: '.tmp/public'
-        },
-        files: {
-          'views/**/*.jade': jsFilesToInject
-        }
-      },
-
-      prodJsJADE: {
-        options: {
-          startTag: '// SCRIPTS',
-          endTag: '// SCRIPTS END',
-          fileTmpl: 'script(type="text/javascript", src="%s")',
-          appRoot: '.tmp/public'
-        },
-        files: {
-          'views/**/*.jade': ['.tmp/public/min/production.js']
-        }
-      },
-
-      devStylesJADE: {
-        options: {
-          startTag: '// STYLES',
-          endTag: '// STYLES END',
-          fileTmpl: 'link(rel="stylesheet", href="%s")',
-          appRoot: '.tmp/public'
-        },
-        files: {
-          'views/**/*.jade': cssFilesToInject
-        }
-      },
-
-      prodStylesJADE: {
-        options: {
-          startTag: '// STYLES',
-          endTag: '// STYLES END',
-          fileTmpl: 'link(rel="stylesheet", href="%s")',
-          appRoot: '.tmp/public'
-        },
-        files: {
-          'views/**/*.jade': ['.tmp/public/min/production.css']
-        }
-      },
-
-      // Bring in JST template object
-      devTplJADE: {
-        options: {
-          startTag: '// TEMPLATES',
-          endTag: '// TEMPLATES END',
-          fileTmpl: 'script(type="text/javascript", src="%s")',
-          appRoot: '.tmp/public'
-        },
-        files: {
-          'views/**/*.jade': ['.tmp/public/jst.js']
-        }
-      }
-      /************************************
-       * Jade linker end
-       ************************************/
+      prod: ['.tmp/public/**']
     },
 
     jsonlint : {
@@ -481,70 +157,59 @@ module.exports = function (grunt) {
       assets: {
 
         // Assets to watch:
-        // NOTE: The second entry in this array is to work around a bug related to the
-        // number of folders watched.
-        files: ['assets/**/*', '!assets/js/vendor/**/*'],
+        files: ['assets/**/*'],
 
         // When assets are changed:
-        tasks: ['compileAssets', 'linkAssets']
+        tasks: [
+          'clean:prod',
+          // Check validity of JSON files.
+          'jsonlint',
+          // build js bundle
+          'browserify:dev',
+          // compile the css
+          'cssmin',
+          // copy fonts
+          'copy:font',
+          // copy css-support images (images that css expects to be in the css directory)
+          'copy:csssupport',
+          // copy assets
+          'copy:prod'
+        ]
       }
     }
   });
 
   // When Sails is lifted:
   grunt.registerTask('default', [
-    'compileAssets',
-    'linkAssets',
+    'build',
     'watch'
   ]);
 
-  grunt.registerTask('compileAssets', [
-    'clean:dev',
-    'jst:dev',
-    'less:dev',
-    'copy:dev',
-    'jsonlint'
-  ]);
-
-  grunt.registerTask('linkAssets', [
-
-    // Update link/script/template references in `assets` index.html
-    'sails-linker:devJs',
-    'sails-linker:devStyles',
-    'sails-linker:devTpl',
-    'sails-linker:devJsJADE',
-    'sails-linker:devStylesJADE',
-    'sails-linker:devTplJADE'
-  ]);
-
-  grunt.registerTask('git', function() {
-    var done = this.async();
-    gitRev.long(function(long) {
-      grunt.config.set('sha', long);
-      done();
-    });
-  }),
-
-  // Build the production files
   grunt.registerTask('build', [
-    // get git sha
-    'git',
-    // compile the js
-    'requirejs',
+    'clean:prod',
     // Check validity of JSON files.
     'jsonlint',
+    // build js bundle
+    'browserify',
     // compile the css
     'cssmin',
     // copy fonts
     'copy:font',
     // copy css-support images (images that css expects to be in the css directory)
-    'copy:csssupport'
+    'copy:csssupport',
+    // copy assets
+    'copy:prod'
   ]);
 
   // When sails is lifted in production
   // clean and only copy the production files
   grunt.registerTask('prod', [
     'clean:prod',
+    // copy fonts
+    'copy:font',
+    // copy css-support images (images that css expects to be in the css directory)
+    'copy:csssupport',
+    // copy assets
     'copy:prod'
   ]);
 
