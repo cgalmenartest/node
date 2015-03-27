@@ -216,7 +216,7 @@ Open pgAdmin
 #### Install Node.js via Windows MSI, select all available add-ons
 **_Note that currently Midas has a dependency on nodejs version .10+ and is not tested to work with .11 or .12, do not attempt to install a version higher than node ver .10.38_**
 
-[Node.js](http://nodejs.org/dist/v0.10.38/`)
+[Node.js](http://nodejs.org/dist/v0.10.38/)
 
 #### Install GraphicsMagick
 
