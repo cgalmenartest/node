@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset=utf-8 />
+  <title>Midas</title>
+  <link href='static/highlight.min.css' rel='stylesheet'>
+  <style>
+    html, body {
+      background: white;
+      font-family: sans-serif;
+    }
+    .content {
+      margin: 40px auto;
+      padding: 0 2em;
+      max-width: 800px;
+      margin-bottom: 50px;
+      line-height: 1.6em;
+    }
+    .content img {
+      max-width: 100%;
+    }
+    img[alt="Build Status"],
+    img[alt="Dependency Status"] {
+      display: none;
+    }
+    /* responsive video embeds */
+    .embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; }
+    .embed-container iframe,
+    .embed-container object,
+    .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+  </style>
+</head>
+<body>
+<div id='content' class='content'></div>
+<script src='../static/corslite.js'></script>
+<script src='../static/highlight.min.js'></script>
+<script src='../static/marked.js'></script>
+<script src='../static/base64.min.js'></script>
+<script id="template" type="text/markdown">
+Midas is an open source application. We welcome developers to contribute to Midas and build applications that interface with its API.
+
+# Contributing
+
+To get started with Midas, [view the project on GitHub](https://github.com/18F/midas#readme)
+
+# Developer API
+
+Midas provides a JSON API for reading, creating, and updating tasks, user profiles, and projects.
+
+## Notes
+
+**This API is still experimental. Midas is under active development, and this API is subject to change.**
+
+### Authentication
+
+Some API requests require authentication. To authenticate a request, add a valid MyUSA token as an `access_token` parameter to the request.
+
+If you are developing a feature for the Midas application itself, you don't need to worry about authenticating your API requests. They will be authenticated by the user's session cookie.
+
+### Contact
+
+If you have questions or need help, please [post an issue on GitHub](https://github.com/18F/midas/issues).
+
+
+## Tasks
+
+### List all tasks
+
+Returns JSON data for each task.
+
+    GET /api/task/
+
+#### Response
+
+```js
+{
+  "tasks": [ ... ]
+}
+```
+
+### Get a single task
+
+    GET /api/task/:taskId
+
+#### Response
+
+```js
+{
+  "state": "completed",
+  "userId": 2,
+  "projectId": 2,
+  "title": "Is Challenge.gov ready to launch?",
+  "description": "You’ll be the critical eye...",
+  "publishedAt": "2015-02-27T20:25:00.000Z",
+  "assignedAt": "2015-03-09T15:18:30.000Z",
+  "completedAt": "2015-03-09T15:19:21.000Z",
+  "id": 3,
+  "createdAt": "2015-02-28T04:25:43.000Z",
+  "updatedAt": "2015-03-09T15:19:21.000Z",
+  "isOwner": false,
+  "project": {
+    "state": "open",
+    "title": "Education Resources",
+    "description": "We are focused on...",
+    "coverId": null,
+    "id": 2,
+    "createdAt": "2015-02-28T04:25:41.000Z",
+    "updatedAt": "2015-02-28T04:25:41.000Z",
+    "owners": [
+      {
+        "id": 2,
+        "userId": 2
+      }
+    ],
+    "isOwner": false
+  },
+  "like": false,
+  "volunteer": false,
+  "owner": {
+    "userId": 2,
+    "name": "Tammy Craig"
+  },
+  "likeCount": 0,
+  "volunteers": [
+    {
+      "id": 3,
+      "userId": 6,
+      "name": "Sarah Allen"
+    }
+  ]
+}
+```
+
+### Create a task
+
+    POST /api/task/
+
+#### Parameters
+
+Name | Type | Description
+---|---|---
+title | string | task title
+description | string | task description
+userId | integer | user id for the task owner
+projectId | integer | project id of the parent project
+state | string | state of task, either `draft`, `open`, `assigned`, or `closed`
+
+#### Response
+
+Returns an object of the new task
+
+```js
+{
+  "state": "open",
+  "userId": 3,
+  "projectId": null,
+  "title": "Set up analytics on example.gov",
+  "description": "Example.gov needs help setting up analytics services.",
+  "publishedAt": "2015-03-27T15:45:32.000Z",
+  "assignedAt": null,
+  "completedAt": null,
+  "id": 4,
+  "createdAt": "2015-03-27T15:45:32.000Z",
+  "updatedAt": "2015-03-27T15:45:32.000Z",
+  "deletedAt": null
+}
+```
+
+### Update a task
+
+    PUT /api/task/:taskId
+
+#### Parameters
+
+Name | Type | Description
+---|---|---
+title | string | task title
+description | string | task description
+userId | integer | user id for the task owner
+projectId | integer | project id of the parent project
+state | string | state of task, either `draft`, `open`, `assigned`, or `closed`
+
+#### Response
+
+Returns an object of the updated task
+
+```js
+{
+  "state": "open",
+  "userId": 3,
+  "projectId": null,
+  "title": "Set up analytics on example.gov",
+  "description": "Help example.gov set up analytics services.",
+  "publishedAt": "2015-03-27T15:45:32.000Z",
+  "assignedAt": null,
+  "completedAt": null,
+  "id": 4,
+  "createdAt": "2015-03-27T15:45:32.000Z",
+  "updatedAt": "2015-03-27T15:45:32.000Z",
+  "deletedAt": null
+}
+```
+
+## Projects
+
+### List all projects
+
+Returns JSON data for each project.
+
+    GET /api/project/findAll
+
+#### Response
+
+```js
+{
+  "projects": [ ... ]
+}
+```
+
+### Get a single project
+
+    GET /api/project/:projectId
+
+#### Response
+
+```js
+{
+  "state": "open",
+  "title": "Health and Safety",
+  "description": "We are interested in projects that improve the health and safety of the American people.",
+  "coverId": null,
+  "id": 1,
+  "createdAt": "2015-03-25T23:28:51.000Z",
+  "updatedAt": "2015-03-25T23:28:52.000Z",
+  "owners": [
+    {
+      "id": 1,
+      "userId": 4,
+      "name": "Alan Barret"
+    }
+  ],
+  "isOwner": false,
+  "like": false,
+  "likeCount": 0
+}
+```
+
+### Create a project
+
+    POST /api/project/
+
+#### Parameters
+
+Name | Type | Description
+---|---|---
+title | string | project title
+description | string | project description
+
+#### Response
+
+Returns an object of the new task
+
+```js
+{
+  "state": "open",
+  "title": "Cyber Security",
+  "description": "Working group for cyber security issues",
+  "coverId": null,
+  "id": 3,
+  "createdAt": "2015-03-27T16:16:58.000Z",
+  "updatedAt": "2015-03-27T16:16:58.000Z",
+  "deletedAt": null,
+  "owners": [
+    {
+      "projectId": 3,
+      "userId": 6,
+      "id": 3,
+      "createdAt": "2015-03-27T16:16:58.000Z",
+      "updatedAt": "2015-03-27T16:16:58.000Z",
+      "deletedAt": null
+    }
+  ]
+}
+```
+
+### Update a project
+
+    PUT /api/project/:projectId
+
+#### Parameters
+
+Name | Type | Description
+---|---|---
+title | string | project title
+description | string | project description
+
+#### Response
+
+Returns an object of the updated task
+
+```js
+{
+  "state": "open",
+  "title": "Information Security",
+  "description": "Working group for cyber security issues",
+  "coverId": null,
+  "id": 3,
+  "createdAt": "2015-03-27T16:16:58.000Z",
+  "updatedAt": "2015-03-27T16:16:58.000Z",
+  "deletedAt": null,
+  "owners": [
+    {
+      "projectId": 3,
+      "userId": 6,
+      "id": 3,
+      "createdAt": "2015-03-27T16:16:58.000Z",
+      "updatedAt": "2015-03-27T16:16:58.000Z",
+      "deletedAt": null
+    }
+  ]
+}
+```
+
+## Users
+
+### Get a single user profile
+
+    GET /api/user/:userId
+
+#### Response
+
+Some information like email address will be removed if you do not have access to see it.
+
+```js
+{
+  "username": "[user email address]",
+  "name": "David Cole",
+  "title": "Developer",
+  "bio": "",
+  "photoId": 6,
+  "photoUrl": null,
+  "isAdmin": true,
+  "disabled": false,
+  "passwordAttempts": 0,
+  "id": 9,
+  "createdAt": "2015-03-04T17:04:01.000Z",
+  "updatedAt": "2015-03-11T19:39:04.000Z",
+  "location": {
+    "tagId": 44,
+    "id": 64,
+    "createdAt": "2015-03-11T19:39:04.000Z",
+    "tag": {
+      "type": "location",
+      "name": "Washington, D.C.",
+      "data": {
+        "lat": "38.89511",
+        "lon": "-77.03637",
+        "source": "geonames",
+        "sourceId": "4140963",
+        "dstOffset": "-4",
+        "gmtOffset": "-5",
+        "timeZoneId": "America/New_York"
+      },
+      "id": 44
+    }
+  },
+  "agency": {
+    "tagId": 28,
+    "id": 65,
+    "createdAt": "2015-03-11T19:39:04.000Z",
+    "tag": {
+      "type": "agency",
+      "name": "GSA",
+      "data": null,
+      "id": 28
+    }
+  },
+  "tags": [
+    {
+      "tagId": 41,
+      "id": 60,
+      "createdAt": "2015-03-10T21:01:41.000Z",
+      "tag": {
+        "type": "skill",
+        "name": "JavaScript",
+        "data": null,
+        "id": 41
+      }
+    },
+    {
+      "tagId": 42,
+      "id": 61,
+      "createdAt": "2015-03-10T21:01:41.000Z",
+      "tag": {
+        "type": "skill",
+        "name": " Node.js",
+        "data": null,
+        "id": 42
+      }
+    }
+  ],
+  "likeCount": 0,
+  "like": false,
+  "isOwner": true,
+  "auths": [
+    "myusa"
+  ],
+  "emails": [
+    {
+      "userId": 9,
+      "email": "[user email address]",
+      "isPrimary": false,
+      "isVerified": false,
+      "token": null,
+      "id": 9,
+      "createdAt": "2015-03-04T17:04:01.000Z",
+      "updatedAt": "2015-03-04T17:04:01.000Z"
+    }
+  ]
+}
+```
+
+### Update a user
+
+    PUT /api/user/:userId
+
+#### Parameters
+
+Name | Type | Description
+---|---|---
+name | string | user's display name
+title | string | user's professional title
+bio | string | user's bio statement
+
+#### Response
+
+```js
+{
+  "username": "[user email address]",
+  "name": "Dave Cole",
+  "title": "Developer",
+  "bio": "",
+  "photoId": 6,
+  "photoUrl": null,
+  "isAdmin": true,
+  "disabled": false,
+  "passwordAttempts": 0,
+  "id": 9,
+  "createdAt": "2015-03-04T17:04:01.000Z",
+  "updatedAt": "2015-03-11T19:39:04.000Z",
+  ...
+}
+```
+
+## Locations
+
+To assist forming location tags, Midas provides a geocoding interface based on GeoName's web service.
+
+### Suggest locations
+
+Send a plain text location question, like `Washington, DC`, or `New York`
+
+    GET /api/location/suggest?q=:locationQuery
+
+Remember to include an attribution link to GeoNames when using this data. The link is in the footer of pages on Midas.
+
+```html
+Locations provided by <a href="http://www.geonames.org/">GeoNames</a>
+```
+
+#### Response
+
+```js
+[
+  {
+    "name": "New York City, New York",
+    "lat": "40.71427",
+    "lon": "-74.00597",
+    "source": "geonames",
+    "sourceId": 5128581,
+    "dstOffset": -4,
+    "gmtOffset": -5,
+    "timeZoneId": "America/New_York"
+  },
+  {
+    "name": "Brooklyn, New York",
+    "lat": "40.6501",
+    "lon": "-73.94958",
+    "source": "geonames",
+    "sourceId": 5110302,
+    "dstOffset": -4,
+    "gmtOffset": -5,
+    "timeZoneId": "America/New_York"
+  },
+  {
+    "name": "Borough of Queens, New York",
+    "lat": "40.68149",
+    "lon": "-73.83652",
+    "source": "geonames",
+    "sourceId": 5133273,
+    "dstOffset": -4,
+    "gmtOffset": -5,
+    "timeZoneId": "America/New_York"
+  },
+  ...
+]
+```
+</script>
+<script>
+var content = document.getElementById('content');
+
+marked.setOptions({
+  gfm: true,
+  tables: true,
+  breaks: false,
+  pedantic: false,
+  sanitize: false,
+  smartLists: true,
+  langPrefix: 'language-',
+  highlight: function (code, lang) {
+    if (!lang) return code;
+
+    // Aliases
+    if (lang === 'js') lang = 'javascript';
+
+    try {
+      return hljs.highlight(lang, code).value;
+    } catch(e) {
+      return hljs.highlightAuto(code).value;
+    }
+  }
+});
+
+function load() {
+  content.innerHTML = marked(document.getElementById('template').text);
+}
+
+load();
+</script>
+</body>
+</html>
