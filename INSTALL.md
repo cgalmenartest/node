@@ -120,6 +120,7 @@ It is not necessary to edit any config files to run the demo locally.  You may o
 
 From the root of the midas directory, initialize the database:
 
+     npm run migrate
      npm run init
 
 If you'd like to include a sample project, also run:
