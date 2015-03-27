@@ -35,6 +35,7 @@ chef/cookbooks/*
 *~
 *#
 *.bak
+*.swp
 
 .DS_STORE
 .tmp
