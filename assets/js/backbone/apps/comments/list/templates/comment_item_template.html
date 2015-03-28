@@ -1,6 +1,8 @@
 <li class="comment-item clearfix">
-
   <div class="comment-content">
+  <% if ( currentUser && currentUser.isAdmin ) { %>
+    <span class="delete-comment" data-commentid="<%- commentId %>">X</span>
+  <% } %>
     <div class="comment-image">
       <div class="project-people-div" data-userid="<%- userId %>">
         <img src="/api/user/photo/<%= userId %>" alt="<%- user.name %>" class="project-people" />

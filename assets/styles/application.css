@@ -1152,6 +1152,19 @@ form.comment-submit .input-group-btn {
   padding-bottom: 10px;
 }
 
+span.delete-comment {
+  float:right;
+  right: -2px;
+  top: -2px;
+  background-color: rgb(255,255,255);
+  background-color: rgba(255,255,255,0.8);
+  border-radius: 10px;
+  padding: 3px;
+  border: 1px solid #c0c0c0;
+  color: #666;
+  font-size: 7px;
+}
+
 /*****************
 =  AUTOCOMPLETE
 ******************/

@@ -147,7 +147,7 @@ module.exports.policies = {
     'findOne': false,
     'create': ['authenticated', 'requireUserId', 'addUserId', 'projectId', 'taskId'],
     'update': ['authenticated', 'requireUserId', 'projectId', 'taskId'],
-    'destroy': ['authenticated', 'requireUserId', 'requireId'],
+    'destroy': ['authenticated', 'requireUserId', 'requireId', 'admin'],
     'findAllByProjectId': ['authenticated', 'requireId', 'project'],
     'findAllByTaskId': ['authenticated', 'requireId', 'task']
   },
