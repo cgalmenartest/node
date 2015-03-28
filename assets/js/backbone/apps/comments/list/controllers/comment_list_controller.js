@@ -35,7 +35,7 @@ Comment = Backbone.View.extend({
     this.listenTo(this.commentCollection, "comment:save:success", function (model, modelJson, currentTarget) {
       if (modelJson.topic) {
         // cleanup the topic form
-        if (this.topicForm) this.topicForm.cleanup();
+        if (this.topicForm) this.topicForm.empty();
       }
       self.addNewCommentToDom(modelJson, currentTarget);
     });
@@ -63,7 +63,15 @@ Comment = Backbone.View.extend({
   },
 
   initializeNewTopic: function () {
-    this.newTopic({});
+    var options = {
+      el: '.topic-form-wrapper',
+      target: this.options.target,
+      collection: this.commentCollection,
+      topic: true,
+      depth: -1
+    }
+    options[this.options.target + 'Id'] = this.options.id;
+    this.topicForm = new CommentFormView(options);
   },
 
   initializeListeners: function() {
@@ -190,21 +198,6 @@ Comment = Backbone.View.extend({
     }
     popovers.popoverPeopleInit(".comment-user-link");
     popovers.popoverPeopleInit(".project-people-div");
-  },
-
-  newTopic: function (e) {
-    if (e.preventDefault) e.preventDefault();
-
-    if (this.topicForm) this.topicForm.cleanup();
-    var options = {
-      el: '.topic-form-wrapper',
-      target: this.options.target,
-      collection: this.collection,
-      topic: true,
-      depth: -1
-    }
-    options[this.options.target + 'Id'] = this.options.id;
-    this.topicForm = new CommentFormView(options);
   },
 
   addNewCommentToDom: function (modelJson, currentTarget) {
