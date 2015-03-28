@@ -17,13 +17,9 @@ Comment = Backbone.View.extend({
   el: ".comment-list-wrapper",
 
   events: {
-    "click .new-topic"                  : "newTopic",
-    "click .comment-expand"             : "topicExpand",
-    "click .comment-contract"           : "topicContract",
     "mouseenter .comment-user-link"     : popovers.popoverPeopleOn,
     "click .comment-user-link"          : popovers.popoverClick,
-    "click .link-backbone"              : linkBackbone,
-    "click a[href='#reply-to-comment']" : "reply"
+    "click .link-backbone"              : linkBackbone
   },
 
   initialize: function (options) {
@@ -32,6 +28,7 @@ Comment = Backbone.View.extend({
 
     this.initializeRender();
     this.initializeCommentCollection();
+    this.initializeNewTopic();
     this.initializeListeners();
 
     // Populating the DOM after a comment was created.
@@ -63,6 +60,10 @@ Comment = Backbone.View.extend({
         self.renderView(collection);
       }
     });
+  },
+
+  initializeNewTopic: function () {
+    this.newTopic({});
   },
 
   initializeListeners: function() {
@@ -189,38 +190,6 @@ Comment = Backbone.View.extend({
     }
     popovers.popoverPeopleInit(".comment-user-link");
     popovers.popoverPeopleInit(".project-people-div");
-  },
-
-  topicExpand: function (e) {
-    if (e.preventDefault) e.preventDefault();
-    // toggle all the sublists
-    var target = $($(e.currentTarget).parents('li')[0])
-    $(e.currentTarget).hide();
-    $(target.find('.comment-contract')[0]).show();
-    $(target.children('.comment-sublist-wrapper')[0]).slideToggle();
-  },
-
-  topicContract: function (e) {
-    if (e.preventDefault) e.preventDefault();
-    // toggle all the sublists
-    var target = $($(e.currentTarget).parents('li')[0])
-    $(e.currentTarget).hide();
-    $(target.find('.comment-expand')[0]).show();
-    $(target.children('.comment-sublist-wrapper')[0]).slideToggle();
-  },
-
-  reply: function (e) {
-    if (e.preventDefault) e.preventDefault();
-    // The comment form is adjacent, not a child of the current target.
-    // so find the li container, and then the form inside
-    var target = $($($(e.currentTarget).parents('li.comment-item')[0]).children('.comment-form')[0]);
-    if (target.data('clicked') == 'true') {
-      target.hide();
-      target.data('clicked', 'false');
-    } else {
-      target.show();
-      target.data('clicked', 'true');
-    }
   },
 
   newTopic: function (e) {
