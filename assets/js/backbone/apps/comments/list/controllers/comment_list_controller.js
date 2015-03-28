@@ -18,6 +18,7 @@ Comment = Backbone.View.extend({
 
   events: {
     "click .new-topic"                  : "newTopic",
+    "click .delete-comment"             : "deleteComment",
     "click .comment-expand"             : "topicExpand",
     "click .comment-contract"           : "topicContract",
     "mouseenter .comment-user-link"     : popovers.popoverPeopleOn,
@@ -53,8 +54,7 @@ Comment = Backbone.View.extend({
   initializeCommentCollection: function () {
     var self = this;
 
-    if (this.commentCollection) { this.renderView() }
-    else { this.commentCollection = new CommentCollection(); }
+    if (this.commentCollection ) { this.renderView() } else { this.commentCollection = new CommentCollection(); }
 
     this.commentCollection.fetch({
       url: '/api/comment/findAllBy' + this.options.target + 'Id/' + this.options.id,
@@ -220,6 +220,23 @@ Comment = Backbone.View.extend({
     } else {
       target.show();
       target.data('clicked', 'true');
+    }
+  },
+
+  deleteComment: function (e) {
+    var self = this;
+    if (e.preventDefault) e.preventDefault();
+    var id = $(e.currentTarget).data("commentid") || null;
+    var isTopic = $(e.currentTarget).parent().parent().data("istopic");
+
+    //don't delete topics yet
+    if ( !isTopic && window.cache.currentUser && window.cache.currentUser.isAdmin ) {
+      $.ajax({
+        url: '/api/comment/'+id,
+        type: 'DELETE'
+      }).done( function(data){
+        $(e.currentTarget).parent().parent().remove("li.comment-item");
+      });
     }
   },
 
