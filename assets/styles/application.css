@@ -1665,3 +1665,12 @@ ul.task-tags > li {
     line-height: 96px;
   }
 }
+
+.export-button {
+  font-size: 1.5em;
+  line-height: 34px;
+}
+
+.nav-tabs > .export-button {
+  line-height: 42px;
+}

@@ -153,5 +153,19 @@ describe('admin:', function () {
       });
     });
 
+    it('export', function (done) {
+      request.get({
+        url: conf.url + '/user/export'
+      }, function (err, response, body) {
+        assert.equal(response.statusCode, 200);
+        var testBody = '"user_id","name","username","title","bio","isAdmin","disabled"\n' +
+            '1,"","tester1@midascrowd.com","","",false,false\n' +
+            '2,"","admin@midascrowd.com","","",true,false\n' +
+            '3,"","testreset@midascrowd.com","","",false,false\n'
+        assert.equal(body, testBody);
+        done(err);
+      });
+    });
+
   });
 });

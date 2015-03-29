@@ -7,6 +7,7 @@
 var taskUtil = require('../services/utils/task');
 var tagUtil = require('../services/utils/tag');
 var userUtil = require('../services/utils/user');
+var exportUtil = require('../services/utils/export');
 var i18n = require('i18next');
 
 module.exports = {
@@ -54,6 +55,65 @@ module.exports = {
     .exec(function(err, tasks) {
       if (err) return res.send(err, 500);
       res.send({ tasks: tasks });
+    });
+  },
+
+  export: function (req, resp) {
+    Task.find().exec(function (err, tasks) {
+      if (err) {
+        sails.log.error("task query error. " + err);
+        resp.send(400, {message: 'Error when querying tasks.', error: err});
+        return;
+      }
+      sails.log.debug('task export: found %s tasks', tasks.length)
+
+      User.find({id: _.pluck(tasks, 'userId')}).exec(function (err, creators) {
+        if (err) {
+          sails.log.error("task creator query error. " + err);
+          resp.send(400, {message: 'Error when querying task creators.', error: err});
+          return;
+        }
+        sails.log.debug('task export: found %s creators', creators.length)
+        for (var i=0; i < tasks.length; i++) {
+          var creator = _.findWhere(creators, {id: tasks[i].userId});
+          tasks[i].creator_name = creator ? creator.name : "";
+        }
+
+        var processVolunteerQuery = function (err, volQueryResult) {
+          if (err) {
+            sails.log.error("volunteer query error. " + err);
+            resp.send(400, {message: 'Error when counting volunteers', error: err});
+            return;
+          }
+          var volunteers = volQueryResult.rows;
+          sails.log.debug('task export: found %s task volunteer counts', volunteers ? volunteers.length : 0)
+          for (var i=0; i < tasks.length; i++) {
+            var taskVols = _.findWhere(volunteers, {id: tasks[i].id});
+            tasks[i].signups = taskVols ? parseInt(taskVols.count) : 0;
+          }
+          // gathered all data, render and return as file for download
+          exportUtil.renderCSV(Task, tasks, function (err, rendered) {
+            if (err) {
+              sails.log.error("task export render error. " + err);
+              resp.send(400, {message: 'Error when rendering', error: err})
+              return;
+            }
+            resp.set('Content-Type', 'text/csv');
+            resp.set('Content-disposition', 'attachment; filename=tasks.csv');
+            resp.send(200, rendered);
+          });
+        };
+
+        // Waterline ORM groupby/count doesn't work yet, so query manually
+        if ('query' in Volunteer) {
+          var sql = 'SELECT "taskId" AS id, sum(1) AS count FROM volunteer GROUP BY "taskId"';
+          Volunteer.query(sql, processVolunteerQuery);
+        } else {
+          sails.log.info("bypassing volunteer query, must be in a test");
+          // Since our testing backend doesn't handle sql, we need to bypass
+          processVolunteerQuery(null, []);
+        }
+      });
     });
   }
 
