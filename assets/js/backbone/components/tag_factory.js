@@ -104,6 +104,7 @@ TagFactory = BaseComponent.extend({
           placeholder: "Start typing to select a "+options.type,
           minimumInputLength: 2,
           multiple: true,
+          selectOnBlur: true,
           width: options.width || "500px",
           tokenSeparators: options.tokenSeparators || [],
           formatResult: function (obj, container, query) {
