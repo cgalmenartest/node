@@ -40,13 +40,13 @@
 
           <div class="navbar-side like-row border-bottom">
             <% if (user) { %>
-            <a href="#" id="like-button" class="like-button">
+            <button id="like-button" class="btn btn-link like-button" title="Click to Like or Unlike">
             <% } else { %>
             <span class="like-button">
             <% } %>
               <i id="like-button-icon" class="fa fa-star-o fa-lg gold"></i>
             <% if (user) { %>
-            </a>
+            </button>
             <% } else { %>
             </span>
             <% } %>

@@ -235,7 +235,7 @@ var TaskShowController = BaseView.extend({
     // Liked, initiate unlike
     else {
       child.removeClass('fa-star');
-      child.addClass('fa-star-empty');
+      child.addClass('fa-star-o');
       likenumber.text(parseInt(likenumber.text()) - 1);
       if (parseInt(likenumber.text()) === 1) {
         $("#like-text").text($("#like-text").data('singular'));
