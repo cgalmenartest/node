@@ -24,6 +24,12 @@ module.exports = {
     size: 'INTEGER',
     // Raw binary file data
     data: 'BINARY'
-  }
+  },
+
+  // Don't migrate this table automatically in development because the
+  // binary file data can get corrupted when it is extracted then
+  // reinserted into the database. Any changes to this table have to be
+  // migrated manually
+  migrate: 'safe'
 
 };
