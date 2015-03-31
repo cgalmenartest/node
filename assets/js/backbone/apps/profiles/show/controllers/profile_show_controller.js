@@ -75,11 +75,11 @@ Profile = BaseController.extend({
       self.model = model;
       var modelJson = model.toJSON();
       for (i in modelJson.tags) {
-        if (modelJson.tags[i].tag.type == 'agency') {
+        if (modelJson.tags[i].type == 'agency') {
           self.model.agency = modelJson.tags[i].tag;
           self.model.agency['tagId'] = modelJson.tags[i].id;
         }
-        else if (modelJson.tags[i].tag.type == 'location') {
+        else if (modelJson.tags[i].type == 'location') {
           self.model.location = modelJson.tags[i].tag;
           self.model.location['tagId'] = modelJson.tags[i].id;
         }

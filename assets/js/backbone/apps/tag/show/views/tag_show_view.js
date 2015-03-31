@@ -84,20 +84,12 @@ var TagShowView = Backbone.View.extend({
         user: window.cache.currentUser || {}
       };
       var compiledTemplate = _.template(TagTemplate)(templData);
-      var tagDom = $("." + tag.tag.type).children(".tags");
+      var tagDom = $("." + tag.type).children(".tags");
       tagDom.append(compiledTemplate);
-      $('#' + tagClass[tag.tag.type] + '-empty').hide();
+      $('#' + tagClass[tag.type] + '-empty').hide();
     };
 
-    $.ajax({
-      url: this.options.url + this.model.id
-    }).done(function (data) {
-      for (var i = 0; i < data.length; i++) {
-        // Render tags onto page
-        renderTag(data[i]);
-      }
-    });
-
+    _(this.model.get('tags')).each(renderTag);
     // Initialize Select2 for Administrative Functions
     var formatResult = function (object, container, query) {
       return '<i class="' + tagIcon[object.type] + '"></i> ' + object.name;

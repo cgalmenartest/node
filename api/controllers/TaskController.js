@@ -5,7 +5,6 @@
  * @description :: Interaction with tasks
  */
 var taskUtil = require('../services/utils/task');
-var tagUtil = require('../services/utils/tag');
 var userUtil = require('../services/utils/user');
 var i18n = require('i18next');
 

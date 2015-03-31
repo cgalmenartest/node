@@ -9,7 +9,6 @@ var _ = require('underscore');
 var bcrypt = require('bcrypt');
 var projUtils = require('../services/utils/project');
 var taskUtils = require('../services/utils/task');
-var tagUtils = require('../services/utils/tag');
 var userUtils = require('../services/utils/user');
 var validator = require('validator');
 var actionUtil = require('sails/lib/hooks/blueprints/actionUtil');

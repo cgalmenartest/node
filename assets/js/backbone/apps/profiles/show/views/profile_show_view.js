@@ -142,8 +142,7 @@ var ProfileShowView = Backbone.View.extend({
       el: '.tag-wrapper',
       target: 'profile',
       targetId: 'userId',
-      edit: this.edit,
-      url: '/api/tag/findAllByUserId/'
+      edit: this.edit
     });
     this.tagView.render();
   },
