@@ -71,37 +71,32 @@ module.exports = {
   // Override default create to check parameters and
   // ensure duplicate tags are not created.
   create: function (req, res) {
-    if (req.route.method != 'post') { return res.send(400, { message: 'Unsupported operation.' } ); }
+    return res.ok();
+    if (req.route.method != 'post') return res.badRequest('Unsupported operation.');
     var tag = _.extend(req.body || {}, req.params);
-    if (!tag.projectId) { tag.projectId = null; }
-    if (!tag.taskId) { tag.taskId = null; }
-    if (!tag.tagId) { return res.send(400, { message: "Must specify a tag id" }); }
-    if (tag.userId && (tag.userId != req.user[0].id) && (req.user[0].isAdmin !== true)) { return res.send(403, { message: 'Not authorized.'}); }
+    if (!tag.projectId) tag.projectId = null;
+    if (!tag.taskId) tag.taskId = null;
+    if (!tag.tagId) return res.badRequest('Must specify a tag id');
+    if (tag.userId && (tag.userId != req.user[0].id) && (req.user[0].isAdmin !== true)) {
+      return res.forbidden();
+    }
     // if neither are specified, associate with a user.
-    if (!tag.projectId && !tag.taskId && !tag.userId) { tag.userId = req.user[0].id }
-    // check if the tag already exists
-    Tag.findOne(
-      { where:
-        { projectId: tag.projectId,
-          taskId: tag.taskId,
-          userId: tag.userId,
-          tagId: tag.tagId
-        }
-      },
-      function (err, existingTag) {
-        if (err) { return res.send(400, { message: 'Error looking up tag' }); }
-        // Let the UI know that the tag existed and so wasn't created
-        if (existingTag) {
-          existingTag.existing = true;
-          return res.send(existingTag);
-        }
-        // Create tag if it doesn't exist
-        Tag.create(tag, function (err, tag) {
-          if (err) { return res.send(400, { message: 'Error creating tag' }); }
-          return res.send(tag);
-        });
-      }
-    );
+    if (!tag.projectId && !tag.taskId && !tag.userId) tag.userId = req.user[0].id;
+
+    if (tag.projectId) Project.findOne({ id: tag.projectId }).exec(exec);
+    else if (tag.taskId) Task.findOne({ id: tag.taskId }).exec(exec);
+    else if (tag.userId) User.findOne({ id: tag.userId }).exec(exec);
+
+    function exec(err, model) {
+      if (err) return done(err);
+      model.tags.add(tag.tagId);
+      model.save(done);
+    }
+
+    function done(err, query) {
+      if (err) return res.badRequest(err.err || err);
+      res.send(query);
+    }
   },
 
   // Override destroy to ensure owner has access to project
