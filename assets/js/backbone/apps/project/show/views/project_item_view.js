@@ -152,8 +152,7 @@ var ProjectShowView = Backbone.View.extend({
       el: '.tag-wrapper',
       target: 'project',
       targetId: 'projectId',
-      edit: this.edit,
-      url: '/api/tag/findAllByProjectId/'
+      edit: this.edit
     });
     this.tagView.render();
   },

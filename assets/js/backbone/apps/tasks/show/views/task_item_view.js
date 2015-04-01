@@ -22,44 +22,28 @@ var TaskItemView = BaseView.extend({
     });
   },
 
-  getTagData: function (self, cb) {
-    $.ajax({
-      url: '/api/tag/findAllByTaskId/' + self.options.id,
-      async: false,
-      success: function (data) {
-        self.tags = [];
-        for (var i = 0; i < data.length; i += 1) {
-          self.tags.push(data[i]);
-        }
-        // Build object for render
-        self.data = {
-          user: window.cache.currentUser,
-          model: self.model.toJSON(),
-          tags: self.tags
-        };
-        self.data['madlibTags'] = organizeTags(self.tags);
-        // convert description from markdown to html
-        self.data.model.descriptionHtml = marked(self.data.model.description);
-        self.model.trigger('task:tag:data', self.tags, self.data['madlibTags']);
-        return cb();
-      }
-    });
-
-  },
-
   render: function (self) {
-    self.getTagData(self, function () {
-      var d = self.data,
-          vol = ((!d.user || d.user.id !== d.model.userId) && d.model.state !== 'draft');
-      self.data.ui = UIConfig;
-      self.data.vol = vol;
-      var compiledTemplate = _.template(TaskShowTemplate)(self.data);
-      self.$el.html(compiledTemplate);
-      self.$el.i18n();
-      $("time.timeago").timeago();
-      self.updateTaskEmail();
-      self.model.trigger('task:show:render:done');
-    });
+    self.data = {
+      user: window.cache.currentUser,
+      model: self.model.toJSON(),
+      tags: self.model.toJSON().tags
+    };
+
+    self.data['madlibTags'] = organizeTags(self.data.tags);
+    // convert description from markdown to html
+    self.data.model.descriptionHtml = marked(self.data.model.description);
+    self.model.trigger('task:tag:data', self.tags, self.data['madlibTags']);
+
+    var d = self.data,
+        vol = ((!d.user || d.user.id !== d.model.userId) && d.model.state !== 'draft');
+    self.data.ui = UIConfig;
+    self.data.vol = vol;
+    var compiledTemplate = _.template(TaskShowTemplate)(self.data);
+    self.$el.html(compiledTemplate);
+    self.$el.i18n();
+    $("time.timeago").timeago();
+    self.updateTaskEmail();
+    self.model.trigger('task:show:render:done');
   },
 
   updateTaskEmail: function() {

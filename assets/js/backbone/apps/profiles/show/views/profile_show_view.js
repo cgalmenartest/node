@@ -273,20 +273,6 @@ var ProfileShowView = Backbone.View.extend({
         self.$("#tag_agency").select2('data')
       );
 
-      var removeTag = function(type, done) {
-        if (self.model[type]) {
-          // delete the existing tag
-          $.ajax({
-            url: '/api/tag/' + self.model[type].tagId,
-            type: 'DELETE',
-          }).done(function (data) {
-            return done();
-          });
-          return;
-        }
-        return done();
-      }
-
       var addTag = function (tag, done) {
         // the tag is invalid or hasn't been selected
         if (!tag || !tag.id) {
@@ -323,10 +309,8 @@ var ProfileShowView = Backbone.View.extend({
           tags = _.filter(tags, function(tag) {
             return (tag && tag.id !== tag.name);
           });
-          async.each(['agency','location'], removeTag, function (err) {
-            async.each(tags, addTag, function (err) {
-              self.trigger("newTagSaveDone");
-            });
+          async.each(tags, addTag, function (err) {
+            self.trigger("newTagSaveDone");
           });
         }
       );

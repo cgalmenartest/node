@@ -46,15 +46,6 @@ var ProjectRouter = Backbone.Router.extend({
     model.fetch({
       url: '/api/task/' + taskId,
       success: function (taskModel) {
-
-        $.ajax({
-          url: '/api/tag/findAllByTaskId/' + taskId,
-          async: false,
-          success: function (data) {
-            taskModel.attributes['tags'] = data;
-          }
-        });
-
         if (self.taskShowController) self.taskShowController.cleanup();
         self.taskShowController = new TaskShowController({ model: taskModel, router: self });
       }
