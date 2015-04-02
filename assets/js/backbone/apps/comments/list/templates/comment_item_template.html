@@ -17,11 +17,15 @@
           <% } %>
         </a>
       </span>
-
-      <%= valueHtml %>
+      <a name="comment-<%- id %>"></a>
+      <span id="comment-id-<%- id %>"><%= valueHtml %></span>
 
       <div class="comment-metadata">
         <time class="timeago comment-created-at" datetime="<%- createdAt %>"><%- createdAt %></time>
+        <% if (currentUser) { %>
+        &bull;
+        <a href="#reply-to-comment" class="reply-to-<%= id %>" data-depth="<%= depth %>" data-commentid="<%= id %>" data-authorid="<%- userId %>" data-commentauthor="<% if (user.name) { %><%- user.name %><% } else { %><%- user.username %><% } %>">Reply</a>
+        <% } %>
       </div>
     </div>
   </div>

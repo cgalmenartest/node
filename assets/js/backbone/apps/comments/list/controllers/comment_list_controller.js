@@ -8,6 +8,7 @@ var CommentCollection = require('../../../../entities/comments/comment_collectio
 var CommentFormView = require('../../new/views/comment_form_view');
 var CommentItemView = require('../views/comment_item_view');
 var CommentWrapper = require('../templates/comment_wrapper_template.html');
+var marked = require('marked');
 
 
 var popovers = new Popovers();
@@ -19,7 +20,8 @@ Comment = Backbone.View.extend({
   events: {
     "mouseenter .comment-user-link"     : popovers.popoverPeopleOn,
     "click .comment-user-link"          : popovers.popoverClick,
-    "click .link-backbone"              : linkBackbone
+    "click .link-backbone"              : linkBackbone,
+    "click a[href='#reply-to-comment']" : "reply"
   },
 
   initialize: function (options) {
@@ -145,6 +147,40 @@ Comment = Backbone.View.extend({
     });
 
     this.initializeCommentUIAdditions();
+  },
+
+  reply: function (e) {
+      if (e.preventDefault) e.preventDefault();
+
+      var inputTarget = $(".comment-input");
+      if ( !this.isElementInViewport(inputTarget) ){
+        $('html,body').animate({scrollTop: inputTarget.offset().top},'slow');
+      }
+
+      var replyto          = $(e.currentTarget).data("commentauthor");
+      var authorid         = $(e.currentTarget).data("authorid");
+      var replyToCommentId = $(e.currentTarget).data("commentid");
+      var quote            = $("#comment-id-"+replyToCommentId).html();
+      var authorSlug = "<a href='/profile/"+authorid+"'>"+replyto+"</a>";
+
+      $(".comment-input").html("<i>"+authorSlug+" said</i>"+marked("> "+quote)+"&nbsp;");
+   },
+
+  isElementInViewport: function (el) {
+      //from SO 123999
+
+      if (typeof jQuery === "function" && el instanceof jQuery) {
+          el = el[0];
+      }
+
+      var rect = el.getBoundingClientRect();
+
+      return (
+          rect.top >= 0 &&
+          rect.left >= 0 &&
+          rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && /*or $(window).height() */
+          rect.right <= (window.innerWidth || document.documentElement.clientWidth) /*or $(window).width() */
+      );
   },
 
   renderComment: function (self, comment, collection, map) {
