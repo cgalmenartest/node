@@ -7,7 +7,7 @@ module.exports = {
   // This defines all of the tag elements for use in the app
   tags: {
     'skill': {
-      'icon': 'icon-atom',
+      'icon': 'fa fa-cog',
       'class': 'skill',
       'id': 'skill',
       'type': 'skill',
@@ -16,7 +16,7 @@ module.exports = {
     },
 
     'topic': {
-      'icon': 'fa fa-briefcase',
+      'icon': 'fa fa-tags',
       'class': 'topic',
       'id': 'topic',
       'type': 'topic',
