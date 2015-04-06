@@ -111,9 +111,13 @@ Comment = Backbone.View.extend({
     var self = this;
     this.parentMap = {};
     this.topics = [];
-    var data = {
-      comments: collection.toJSON()[0].comments
-    };
+    if ( typeof collection != 'undefined' ) {
+      var data = {
+        comments: collection.toJSON()[0].comments
+      };
+    } else {
+      data = {};
+    }
 
     // compute the depth of each comment to use as metadata when rendering
     // in the process, create a map of the ids of each comment's children
@@ -282,6 +286,7 @@ Comment = Backbone.View.extend({
         type: 'DELETE'
       }).done( function(data){
         $(e.currentTarget).parent().parent().remove("li.comment-item");
+        self.initialize(self.options);
       });
     }
   },
