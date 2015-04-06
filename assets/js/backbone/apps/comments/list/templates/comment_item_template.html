@@ -1,17 +1,8 @@
 <li class="comment-item clearfix <% if (topic) { %>border-left box-pad-lr<% } else { %>border-top<% } %>" data-istopic="<%- topic %>">
 
   <div class="comment-content">
-    <% if (topic) { %>
-    <div class="comment-expand">
-      <span class="content">expand</span> <i class="fa fa-angle-double-down"></i>
-    </div>
-    <div class="comment-contract">
-      <span class="content">contract</span> <i class="fa fa-angle-double-up"></i>
-    </div>
-    <% } else { %>
-      <% if ( currentUser && currentUser.isAdmin ) { %>
+    <% if ( currentUser && currentUser.isAdmin ) { %>
       <span class="delete-comment" data-commentid="<%- commentId %>">X</span>
-      <% } %>
     <% } %>
     <div class="comment-image">
       <div class="project-people-div" data-userid="<%- userId %>">
