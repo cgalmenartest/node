@@ -275,10 +275,8 @@ Comment = Backbone.View.extend({
     var self = this;
     if (e.preventDefault) e.preventDefault();
     var id = $(e.currentTarget).data("commentid") || null;
-    var isTopic = $(e.currentTarget).parent().parent().data("istopic");
 
-    //don't delete topics yet
-    if ( !isTopic && window.cache.currentUser && window.cache.currentUser.isAdmin ) {
+    if ( window.cache.currentUser && window.cache.currentUser.isAdmin ) {
       $.ajax({
         url: '/api/comment/'+id,
         type: 'DELETE'
