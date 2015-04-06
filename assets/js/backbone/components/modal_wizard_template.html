@@ -12,7 +12,7 @@
 
       <div class="modal-footer">
         <button type="button" class="btn btn-c0 wizard-cancel" data-dismiss="modal">Cancel</button>
-        <% if (draft) { %><button type="button" class="btn btn-c0 wizard-submit" data-state="draft">Save Draft</button><% } %>
+        <% if (draft) { %><button type="button" class="btn btn-c0 wizard-submit wizard-draft" data-state="draft" style="display: none;">Save Draft</button><% } %>
         <button type="button" class="btn btn-c2 wizard-backward"><i class="fa fa-chevron-left"></i> Back</button>
         <button type="button" class="btn btn-c2 wizard-forward">Next <i class="fa fa-chevron-right"></i></button>
         <button type="button" class="btn btn-c2 wizard-submit" style="display: none;">Create</button>

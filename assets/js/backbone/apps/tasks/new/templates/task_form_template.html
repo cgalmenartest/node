@@ -1,21 +1,58 @@
 <form id="task-form" class="form-inline" action="/api/task">
 
-  <section id="section-1" class="current">
-    <div class="form-group fullwidth">
-      <label for="task-title">
-        What problem are you trying to solve?
-      </label>
-      <div class="row">
-        <div class="col-md-12">
-          <input type="text" id="task-title" class="fullwidth form-control validate" placeholder="A short description of the problem." data-validate="empty,count100"/>
-          <span class="help-block error-empty" style="display:none;">You must enter a title for this <span data-i18n="task">opportunity</span></span>
-          <span class="help-block error-count100" style="display:none;">The short description of the problem must be less than 100 characters.</span>
+  <section id="section-1" class="current nodraft">
+    <div class="row">
+      <div class="col-md-12">
+        <p>We’re glad you want to create an <span data-i18n="task">opportunity</span>!
+          Before continuing please review the following responsibilities.
+        </p>
+
+        <p>As a Task Creator I will:
+        <ul>
+          <li><strong>Respond promptly and positively</strong> to task takers</li>
+          <li>Lay out clear and realistic <strong>deliverables</strong></li>
+          <li>Be clear about <strong>how much time is needed</strong> to complete the task</li>
+          <li>Define the <strong>skills</strong> needed</li>
+          <li>Be prepared to <strong>onboard</strong> the task taker.
+            If the task assigned is a simple one, take the time to explain it.
+            If the task is big or long-term, be prepared to mentor the participant.
+          </li>
+        </ul>
+        </p>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" id="task-responsibilities" class="validate" data-validate="checked">
+            <span id="task-responsibilities-cta">
+              I agree to fulfill these responsibilities as a task creator.
+            </span>
+          </label>
+          <span class="help-block error-checked" style="display:none;">
+            You need to check this box to proceed.
+          </span>
         </div>
       </div>
     </div>
   </section>
 
   <section id="section-2">
+    <div class="form-group fullwidth">
+      <label for="task-title">
+        What problem are you trying to solve?
+      </label>
+
+      <div class="row">
+        <div class="col-md-12">
+          <input type="text" id="task-title" class="fullwidth form-control validate"
+                 placeholder="A short description of the problem." data-validate="empty,count100"/>
+          <span class="help-block error-empty" style="display:none;">You must enter a title for this <span
+              data-i18n="task">opportunity</span></span>
+          <span class="help-block error-count100" style="display:none;">The short description of the problem must be less than 100 characters.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="section-3">
     <div class="form-group fullwidth">
       <label for="people">
         We need
@@ -59,7 +96,7 @@
 
   </section>
 
-  <section id="section-3">
+  <section id="section-4">
     <div class="form-group fullwidth">
       <label for="time-estimate">
         The <span data-i18n="task">opportunity</span> will require
@@ -113,7 +150,7 @@
     </div>
   </section>
 
-  <section id="section-4">
+  <section id="section-5">
     <div class="form-group fullwidth">
       <label for="task-description">
         Describe the <span data-i18n="task">opportunity</span> details, including goals, expected outcomes and deliverables.

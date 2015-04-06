@@ -1461,6 +1461,19 @@ ul.task-tags > li {
   line-height: 2.1em;
 }
 
+#task-form #section-1 {
+  line-height: 1.2em;
+}
+
+#task-form #section-1 p,li {
+  margin-top: 0.5em;
+}
+
+#task-form #task-responsibilities-cta {
+  font-size: 125%;
+  margin-left: 6px;
+}
+
 #task-form .select2-container-multi {
   line-height: 1.2em;
 }
@@ -1488,8 +1501,8 @@ ul.task-tags > li {
   }
 }
 
-#task-form #section-1, #task-form #section-2, #task-form #section-3, #task-form #section-4 {
-  min-height: 210px;
+#task-form #section-1, #task-form #section-2, #task-form #section-3, #task-form #section-4, #task-form #section-5 {
+  min-height: 260px;
 }
 
 #task-form #people {

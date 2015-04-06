@@ -118,19 +118,19 @@ ModalWizard = BaseView.extend({
         return _.isUndefined(next.next().html());
       }
     };
-
-    hideCurrentAndInitializeNextWizardStep();
     if (nextWizardStep.doesNotExist()) {
       $("button.wizard-forward").hide();
       $("button.wizard-submit").show();
     }
-
-    function hideCurrentAndInitializeNextWizardStep () {
-      current.hide();
-      current.removeClass("current");
-      next.addClass("current");
-      next.show();
-    };
+    if (next.hasClass("nodraft")) {
+      $("button.wizard-draft").hide();
+    } else {
+      $("button.wizard-draft").show();
+    }
+    current.hide();
+    current.removeClass("current");
+    next.addClass("current");
+    next.show();
   },
 
   moveWizardBackward: function (e) {
@@ -141,12 +141,17 @@ ModalWizard = BaseView.extend({
         prevHtml  = prev.html();
 
     if (!_.isUndefined(prevHtml)) {
+      $("button.wizard-forward").show();
+      $("button.wizard-submit").hide();
+      if (prev.hasClass("nodraft")) {
+        $("button.wizard-draft").hide();
+      } else {
+        $("button.wizard-draft").show();
+      }
       current.hide();
       current.removeClass("current");
       prev.addClass("current");
       prev.show();
-      $("button.wizard-forward").show();
-      $("button.wizard-submit").hide();
     } else {
       return;
     }
