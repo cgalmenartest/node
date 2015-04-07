@@ -52,7 +52,7 @@ var ProfileShowView = Backbone.View.extend({
       edit: this.edit,
       saved: this.saved,
       ui: UIConfig
-    }
+    };
 
     data.email = (data.data.emails && data.data.emails.length) ? data.data.emails[0] : '';
 
@@ -96,13 +96,14 @@ var ProfileShowView = Backbone.View.extend({
           );
         },
         done: function (e, data) {
+          var result;
           // for IE8/9 that use iframe
           if (data.dataType == 'iframe text') {
-            var result = JSON.parse(data.result);
+            result = JSON.parse(data.result);
           }
           // for modern XHR browsers
           else {
-            var result = JSON.parse($(data.result).text());
+            result = JSON.parse($(data.result).text());
           }
           self.model.trigger("profile:updateWithPhotoId", result[0]);
         },
@@ -113,7 +114,7 @@ var ProfileShowView = Backbone.View.extend({
           if (data.jqXHR.status == 413) {
             message = "The uploaded file exceeds the maximum file size.";
           }
-          self.$("#file-upload-alert").html(message)
+          self.$("#file-upload-alert").html(message);
           self.$("#file-upload-alert").show();
         }
     });
@@ -273,31 +274,6 @@ var ProfileShowView = Backbone.View.extend({
         self.$("#tag_agency").select2('data')
       );
 
-      var addTag = function (tag, done) {
-        // the tag is invalid or hasn't been selected
-        if (!tag || !tag.id) {
-          return done();
-        }
-        // the tag already is stored in the db
-        if (tag.tagId) {
-          return done();
-        }
-        var tagMap = {
-          tagId: tag.id
-        };
-        // if a different profile is being edited, add its userId
-        if (self.model.toJSON().id !== window.cache.currentUser.id) {
-          tagMap.userId = self.model.toJSON().id;
-        }
-        $.ajax({
-          url: '/api/tag',
-          type: 'POST',
-          data: tagMap
-        }).done(function (data) {
-          done();
-        });
-      }
-
       async.forEach(
         newTags,
         function(newTag, callback) {
@@ -305,20 +281,14 @@ var ProfileShowView = Backbone.View.extend({
         },
         function(err) {
           if (err) return next(err);
-
-          tags = _.filter(tags, function(tag) {
-            return (tag && tag.id !== tag.name);
-          });
-          async.each(tags, addTag, function (err) {
-            self.trigger("newTagSaveDone");
-          });
+          self.trigger("newTagSaveDone");
         }
       );
 
     });
 
     this.listenTo(self.model, "profile:tags:save:success", function (err) {
-      setTimeout(function() { $("#profile-save, #submit").attr("disabled", "disabled") },0);
+      setTimeout(function() { $("#profile-save, #submit").attr("disabled", "disabled"); },0);
       $("#profile-save, #submit").removeClass("btn-primary");
       $("#profile-save, #submit").addClass("btn-success");
       self.data.saved = true;
@@ -505,7 +475,7 @@ var ProfileShowView = Backbone.View.extend({
   profileSubmit: function (e) {
     e.preventDefault();
     $("#profile-save, #submit").button('loading');
-    setTimeout(function() { $("#profile-save, #submit").attr("disabled", "disabled") }, 0);
+    setTimeout(function() { $("#profile-save, #submit").attr("disabled", "disabled"); }, 0);
     var data = {
           name: $("#name").val(),
           title: $("#title").val(),
@@ -522,8 +492,8 @@ var ProfileShowView = Backbone.View.extend({
         data: { email: $("#profile-email").val() },
         success: function() { self.model.trigger("profile:save", data); },
         error: function() {
-          var msg = 'Failed to update your email address. Please verify it \
-                     is a valid email address and try again.';
+          var msg = 'Failed to update your email address. Please verify it ' +
+                    'is a valid email address and try again.';
           $("#email-update-alert").html(msg);
           $("#email-update-alert").show();
         }
