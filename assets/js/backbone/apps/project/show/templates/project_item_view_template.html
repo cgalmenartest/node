@@ -97,7 +97,12 @@
 <div class="row">
 
   <div class="col-sm-5 col-md-4 md-nopadding-right sm-nopadding">
-
+    <div class="row">
+      <div class="col-md-12 box">
+        <div class="box" id="projectowner-wrapper">
+        </div>
+      </div>
+    </div>
     <div class="row">
       <div class="col-md-12 box">
         <div class="box-main tag-wrapper">
@@ -117,14 +122,7 @@
   </div>
   <div class="col-sm-7 col-md-8 md-nopadding-right sm-nopadding">
 
-    <div class="row">
-      <div class="col-md-12 sm-nopadding md-nopadding">
-        <div class="box" id="projectowner-wrapper">
-        </div>
-      </div>
-    </div>
-
-    <% if (!(data.isOwner || user.isAdmin) || !edit) { %>
+  <% if (!(data.isOwner || user.isAdmin) || !edit) { %>
     <div class="row">
       <div class="col-md-12 sm-nopadding md-nopadding">
         <!-- BEGIN EVENTS -->
