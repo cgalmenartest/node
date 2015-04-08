@@ -293,7 +293,9 @@ module.exports = {
       newComment: function(event, done) {
         var activity = {
               type: 'newComment',
-              createdAt: event.createdAt
+              createdAt: event.createdAt,
+              comment: {},
+              userId: null
             },
             steps = [];
 
@@ -301,7 +303,8 @@ module.exports = {
         steps.push(function(done) {
           Comment.findOne({ id: event.callerId }).exec(function(err, result) {
             if (err) return done('Failed to find model' + err);
-            activity.comment = result;
+            activity.comment = result || {};
+            activity.comment.value = activity.comment.value || "";
             done();
           });
         });
@@ -309,29 +312,33 @@ module.exports = {
         // Get comment user
         steps.push(function(done) {
           var comment = activity.comment;
-
           User.findOne({ id: comment.userId }).exec(function(err, result) {
             if (err) return done('Failed to find model' + err);
-            activity.user = result;
+            activity.user = result || {};
             done();
           });
         });
 
         // Get comment task / project
         steps.push(function(done) {
+
           var comment = activity.comment,
-              type = (comment.projectId) ? 'project' : 'task',
-              typeId = comment.projectId || comment.taskId;
+              type = (comment.projectId || null ) ? 'project' : 'task',
+              typeId = comment.projectId || comment.taskId || null;
 
           sails.models[type].findOne({ id: typeId }).exec(function(err, result) {
             if (err) return done('Failed to find model' + err);
             activity.itemType = type;
-            activity.item = result;
+            activity.item = result || {};
             done();
           });
         });
 
-        async.series(steps, function(err) { done(err, activity) });
+        async.series(steps, function(err) {
+          if ( activity.comment.value == "" ) { activity.comment = {}; }
+          done(err, activity);
+        });
+
       },
 
       newVolunteer: function(event, done) {
@@ -360,7 +367,9 @@ module.exports = {
           });
         });
 
-        async.series(steps, function(err) { done(err, activity) });
+        async.series(steps, function(err) {
+          done(err, activity);
+        });
       },
 
       newUser: function(event, done) {
