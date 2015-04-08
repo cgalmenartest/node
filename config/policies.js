@@ -48,7 +48,8 @@ module.exports.policies = {
     'disable': ['authenticated', 'requireId', 'requireUserId'],
     'enable': ['authenticated', 'requireId', 'requireUserId', 'admin'],
     'resetPassword': ['authenticated', 'requireUserId'],
-    'emailCount': ['test']
+    'emailCount': ['test'],
+    'export': ['authenticated', 'admin']
   },
 
   UserEmailController : {
@@ -125,7 +126,8 @@ module.exports.policies = {
     'attend': ['authenticated', 'requireUserId', 'addUserId', 'requireId'],
     'cancel': ['authenticated', 'requireUserId', 'addUserId', 'requireId'],
     'rsvp': ['authenticated', 'requireUserId', 'addUserId'],
-    'ical': ['authenticated', 'addUserId', 'project']
+    'ical': ['authenticated', 'addUserId', 'project'],
+    'destroy': ['authenticated', 'requireId', 'admin']
   },
 
   TagController : {
@@ -162,7 +164,8 @@ module.exports.policies = {
     'findAllByProjectId': ['authenticated', 'requireId', 'project'],
     'create': ['authenticated', 'requireUserId', 'addUserId'],
     'update': ['authenticated', 'requireUserId', 'requireId', 'projectId', 'task', 'ownerOrAdmin'],
-    'destroy': ['authenticated', 'requireUserId', 'requireId', 'task', 'ownerOrAdmin']
+    'destroy': ['authenticated', 'requireUserId', 'requireId', 'task', 'ownerOrAdmin'],
+    'export': ['authenticated', 'admin']
   },
 
   AttachmentController: {

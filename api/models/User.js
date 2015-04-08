@@ -6,6 +6,8 @@
  *
  */
 
+var exportUtils = require('../services/utils/export');
+
 module.exports = {
   tableName: 'midas_user',
   attributes: {
@@ -45,6 +47,17 @@ module.exports = {
       type: 'INTEGER',
       defaultsTo: 0
     }
+  },
+
+  // TODO: add more fields, likely driven off subqueries
+  exportFormat: {
+    'user_id': 'id',
+    'name': {field: 'name', filter: exportUtils.nullToEmptyString},
+    'username': {field: 'username', filter: exportUtils.nullToEmptyString},
+    'title': {field: 'title', filter: exportUtils.nullToEmptyString},
+    'bio': {field: 'bio', filter: exportUtils.nullToEmptyString},
+    'isAdmin': 'isAdmin',
+    'disabled': 'disabled'
   }
 
 };

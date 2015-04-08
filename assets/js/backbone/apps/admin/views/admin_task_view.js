@@ -27,6 +27,7 @@ var AdminTaskView = Backbone.View.extend({
         var template = _.template(AdminTaskTemplate)(data);
         self.$el.html(template);
         self.$el.show();
+        $('.tip').tooltip();
       },
       error: function (xhr, status, error) {
         self.handleError(self, xhr, status, error);

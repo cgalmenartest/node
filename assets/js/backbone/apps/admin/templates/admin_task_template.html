@@ -34,6 +34,15 @@
                 Completed: <%- completed.length %>
               </a>
             </li>
+
+            <!-- Export button -->
+            <div class="export-button pull-right tip" data-toggle="tooltip" data-placement="left"
+                 title="Download list of tasks as a comma-separated file ready for import into Excel">
+              <a href="/api/task/export">
+                <i class="fa fa-download"></i>
+              </a>
+            </div>
+
           </ul>
 
           <!-- Tab panes -->
@@ -41,85 +50,85 @@
             <div role="tabpanel" class="tab-pane" id="drafts">
               <ul class="metrics">
                 <% _(drafts).forEach(function(task) { %>
-                  <li>
-                    <a href="/tasks/<%- task.id %>"><%- task.title %></a>,
-                    <a href="/profile/<%- task.user.id %>"><%- task.user.name || task.user.username %></a>
-                    <% if (task.volunteers.length) { %>
-                    <p>Sign-ups:
-                      <% _(task.volunteers).forEach(function(vol) { %>
-                        <a href="/profile/<%- task.user.id %>"><%- vol.user.name || vol.user.username %></a>
-                      <% }); %>
-                    </p>
-                    <% } %>
-                  </li>
+                <li>
+                  <a href="/tasks/<%- task.id %>"><%- task.title %></a>,
+                  <a href="/profile/<%- task.user.id %>"><%- task.user.name || task.user.username %></a>
+                  <% if (task.volunteers.length) { %>
+                  <p>Sign-ups:
+                    <% _(task.volunteers).forEach(function(vol) { %>
+                    <a href="/profile/<%- task.user.id %>"><%- vol.user.name || vol.user.username %></a>
+                    <% }); %>
+                  </p>
+                  <% } %>
+                </li>
                 <% }); %>
               </ul>
             </div>
             <div role="tabpanel" class="tab-pane active" id="open">
               <ul class="metrics">
                 <% _(open).forEach(function(task) { %>
-                  <li>
-                    <a href="/tasks/<%- task.id %>"><%- task.title %></a>,
-                    <a href="/profile/<%- task.user.id %>"><%- task.user.name || task.user.username %></a>
-                    <% if (task.volunteers.length) { %>
-                    <p>Sign-ups:
-                      <% _(task.volunteers).forEach(function(vol) { %>
-                        <a href="/profile/<%- task.user.id %>"><%- vol.user.name || vol.user.username %></a>
-                      <% }); %>
-                    </p>
-                    <% } %>
-                  </li>
+                <li>
+                  <a href="/tasks/<%- task.id %>"><%- task.title %></a>,
+                  <a href="/profile/<%- task.user.id %>"><%- task.user.name || task.user.username %></a>
+                  <% if (task.volunteers.length) { %>
+                  <p>Sign-ups:
+                    <% _(task.volunteers).forEach(function(vol) { %>
+                    <a href="/profile/<%- task.user.id %>"><%- vol.user.name || vol.user.username %></a>
+                    <% }); %>
+                  </p>
+                  <% } %>
+                </li>
                 <% }); %>
               </ul>
             </div>
             <div role="tabpanel" class="tab-pane" id="signups">
               <ul class="metrics">
                 <% _(withSignups).forEach(function(task) { %>
-                  <li>
-                    <a href="/tasks/<%- task.id %>"><%- task.title %></a>,
-                    <a href="/profile/<%- task.user.id %>"><%- task.user.name || task.user.username %></a>
-                    <% if (task.volunteers.length) { %>
-                      <p>Sign-ups:
-                        <% _(task.volunteers).forEach(function(vol) { %>
-                          <a href="/profile/<%- task.user.id %>"><%- vol.user.name || vol.user.username %></a>
-                        <% }); %>
-                      </p>
-                    <% } %>
-                  </li>
+                <li>
+                  <a href="/tasks/<%- task.id %>"><%- task.title %></a>,
+                  <a href="/profile/<%- task.user.id %>"><%- task.user.name || task.user.username %></a>
+                  <% if (task.volunteers.length) { %>
+                  <p>Sign-ups:
+                    <% _(task.volunteers).forEach(function(vol) { %>
+                    <a href="/profile/<%- task.user.id %>"><%- vol.user.name || vol.user.username %></a>
+                    <% }); %>
+                  </p>
+                  <% } %>
+                </li>
                 <% }); %>
               </ul>
             </div>
             <div role="tabpanel" class="tab-pane" id="assigned">
               <ul class="metrics">
                 <% _(assigned).forEach(function(task) { %>
-                  <li>
-                    <a href="/tasks/<%- task.id %>"><%- task.title %></a>,
-                    <a href="/profile/<%- task.user.id %>"><%- task.user.name || task.user.username %></a>
-                    <% if (task.volunteers.length) { %>
-                      <p>Sign-ups:
-                        <% _(task.volunteers).forEach(function(vol) { %>
-                          <a href="/profile/<%- task.user.id %>"><%- vol.user.name || vol.user.username %></a>
-                        <% }); %>
-                      </p>
-                    <% } %>
-                  </li>
+                <li>
+                  <a href="/tasks/<%- task.id %>"><%- task.title %></a>,
+                  <a href="/profile/<%- task.user.id %>"><%- task.user.name || task.user.username %></a>
+                  <% if (task.volunteers.length) { %>
+                  <p>Sign-ups:
+                    <% _(task.volunteers).forEach(function(vol) { %>
+                    <a href="/profile/<%- task.user.id %>"><%- vol.user.name || vol.user.username %></a>
+                    <% }); %>
+                  </p>
+                  <% } %>
+                </li>
                 <% }); %>
               </ul>
             </div>
             <div role="tabpanel" class="tab-pane" id="completed">
               <ul class="metrics">
                 <% _(completed).forEach(function(task) { %>
-                  <li>
-                    <a href="/tasks/<%- task.id %>"><%- task.title %></a>,
-                    <a href="/profile/<%- task.user.id %>"><%- task.user.name || task.user.username %></a>
-                    <% if (task.volunteers.length) { %>
-                      <p>Sign-ups:
-                        <% _(task.volunteers).forEach(function(vol) { %>
-                          <a href="/profile/<%- task.user.id %>"><%- vol.user.name || vol.user.username %></a>
-                        <% }); %>
-                      </p>
-                    <% } %>
-                  </li>
+                <li>
+                  <a href="/tasks/<%- task.id %>"><%- task.title %></a>,
+                  <a href="/profile/<%- task.user.id %>"><%- task.user.name || task.user.username %></a>
+                  <% if (task.volunteers.length) { %>
+                  <p>Sign-ups:
+                    <% _(task.volunteers).forEach(function(vol) { %>
+                    <a href="/profile/<%- task.user.id %>"><%- vol.user.name || vol.user.username %></a>
+                    <% }); %>
+                  </p>
+                  <% } %>
+                </li>
                 <% }); %>
               </ul>
             </div>

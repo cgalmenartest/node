@@ -18,6 +18,7 @@ EventList = Backbone.View.extend({
   events: {
     'click .add-event'                : 'add',
     'click .rsvp'                     : 'toggleRSVP',
+    'click .delete-project-event'     : 'deleteEvent',
     'mouseenter .data-event-flag-true': 'buttonRSVPOn',
     'mouseleave .data-event-flag-true': 'buttonRSVPOff',
     "mouseenter .project-people-div"  : popovers.popoverPeopleOn,
@@ -115,6 +116,21 @@ EventList = Backbone.View.extend({
 
   buttonRSVPOff: function (e) {
     $(e.currentTarget).button('going');
+  },
+
+  deleteEvent: function (e) {
+    var self = this;
+    if (e.preventDefault) e.preventDefault();
+    var id = $($(e.currentTarget).parents('div.event')[0]).data('id');
+
+    if ( window.cache.currentUser && window.cache.currentUser.isAdmin ) {
+      $.ajax({
+        url: '/api/event/' + id,
+        type: 'DELETE',
+      }).done(function (data) {
+          self.requestEventsCollectionData();
+      });
+    }
   },
 
   toggleRSVP: function (e) {

@@ -3,6 +3,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var utilities = require('../../../../mixins/utilities');
 var Autolinker = require('autolinker');
+var marked = require('marked');
 var CommentItemTemplate = require('../templates/comment_item_template.html');
 
 
@@ -10,7 +11,7 @@ var CommentItemView = Backbone.View.extend({
 
   render: function () {
     this.model.currentUser = window.cache.currentUser;
-    this.model.valueHtml = Autolinker.link(this.model.value);
+    this.model.valueHtml = marked(Autolinker.link(this.model.value));
     if (this.model.topic) {
       var compiledTemplate = _.template(CommentItemTemplate)(this.model);
       this.$el.append(compiledTemplate);
