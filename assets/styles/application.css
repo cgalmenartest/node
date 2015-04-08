@@ -1506,7 +1506,7 @@ ul.task-tags > li {
 }
 
 #task-form #section-1, #task-form #section-2, #task-form #section-3, #task-form #section-4, #task-form #section-5 {
-  min-height: 260px;
+  min-height: 276px;
 }
 
 #task-form #people {

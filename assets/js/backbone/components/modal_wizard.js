@@ -94,7 +94,6 @@ ModalWizard = BaseView.extend({
   // If you want to force disable one or more buttons on a step of the wizard,
   // add a data-disable-buttons attribute with a space-separated lst.
   wizardButtons: function (e, step) {
-    console.log("wizardButtons");
     if (_.isUndefined(step)) {
       step = $('.current');
     }
