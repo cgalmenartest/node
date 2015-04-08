@@ -1,5 +1,5 @@
 console.log('Loading... ', __filename);
-//var winston = require('winston');
+var winston = require('winston');
 /**
 * Logger configuration
 *
@@ -53,9 +53,8 @@ var transports = [
       }
     ),
     new (winston.transports.Console)(
-
       {
-        level: 'verbose',
+        level: 'silly',
         name: 'console.log',
         silent: false,
         colorize: true,
@@ -124,6 +123,6 @@ var logger = new (winston.Logger)({
 
 module.exports.log = {
   level: 'debug',
-  colors: false,
+  colors: false, // To get clean logs without prefixes or color codings
   custom: logger
 };
