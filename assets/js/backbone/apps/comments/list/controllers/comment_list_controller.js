@@ -306,7 +306,6 @@ Comment = Backbone.View.extend({
     this.topicForm = new CommentFormView(options);
   },
 
->>>>>>> Admin can delete non-topic comments
   addNewCommentToDom: function (modelJson, currentTarget) {
     var self = this;
     modelJson['user'] = window.cache.currentUser;
