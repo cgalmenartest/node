@@ -29,7 +29,8 @@ ModalWizard = BaseView.extend({
     "click .wizard-forward" : "moveWizardForward",
     "click .wizard-backward": "moveWizardBackward",
     "click .wizard-submit"  : "submit",
-    "click .wizard-cancel"  : "cancel"
+    "click .wizard-cancel"  : "cancel",
+    "show.bs.modal"         : "wizardButtons"
   },
 
   initialize: function (options) {
@@ -87,46 +88,53 @@ ModalWizard = BaseView.extend({
     return this;
   },
 
+  // Set up wizard buttons based on whether or not position in flow.
+  // Assumes current step if one not given.
+  //
+  // If you want to force disable one or more buttons on a step of the wizard,
+  // add a data-disable-buttons attribute with a space-separated lst.
+  wizardButtons: function (e, step) {
+    console.log("wizardButtons");
+    if (_.isUndefined(step)) {
+      step = $('.current');
+    }
+    var prevAvailable = step.prev() && !_.isUndefined(step.prev().html());
+    var nextAvailable = step.next() && !_.isUndefined(step.next().html());
+    if (nextAvailable) {
+      $("#wizard-forward-button").show();
+      $("#wizard-create-button").hide();
+    } else {
+      $("#wizard-forward-button").hide();
+      $("#wizard-create-button").show();
+    }
+    this.$(".btn").prop('disabled', false);
+    $("#wizard-backward-button").prop('disabled', !prevAvailable);
+    var disables = step.data('disable-buttons');
+    if (disables) {
+      disables.split(" ").forEach(function (disable) {
+        $("#wizard-" + disable + "-button").prop('disabled', true);
+      });
+    }
+  },
+
   // In order for the ModalWizard to work it expects a section
   // by section layout inside the modal, with a 'current' class on
   // the first you want to always start on (re)render.
   moveWizardForward: function (e) {
     if (e.preventDefault) e.preventDefault();
-    var self = this;
 
     // Store $(".current") in cache to reduce query times for DOM lookup
     // on future children and adjacent element to the current el.
-    var current   = $(".current"),
-        next      = current.next(),
-        nextHtml  = next.html();
+    var current = $(".current");
+    var next = current.next();
 
     // Notify the sub-view to see if it is safe to proceed
     // if not, return and stop processing.
-    var abort = false;
     if (this.childNext) {
-      abort = this.childNext(e, current);
+      var abort = this.childNext(e, current);
+      if (abort) return;
     }
-    if (abort === true) {
-      return;
-    }
-
-    var nextWizardStep = {
-      exists: function () {
-        return !_.isUndefined(next.next().html());
-      },
-      doesNotExist: function () {
-        return _.isUndefined(next.next().html());
-      }
-    };
-    if (nextWizardStep.doesNotExist()) {
-      $("button.wizard-forward").hide();
-      $("button.wizard-submit").show();
-    }
-    if (next.hasClass("nodraft")) {
-      $("button.wizard-draft").hide();
-    } else {
-      $("button.wizard-draft").show();
-    }
+    this.wizardButtons(null, next);
     current.hide();
     current.removeClass("current");
     next.addClass("current");
@@ -136,24 +144,15 @@ ModalWizard = BaseView.extend({
   moveWizardBackward: function (e) {
     if (e.preventDefault) e.preventDefault();
 
-    var current   = $(".current"),
-        prev      = current.prev(),
-        prevHtml  = prev.html();
+    var current = $(".current");
+    var prev = current.prev();
 
-    if (!_.isUndefined(prevHtml)) {
-      $("button.wizard-forward").show();
-      $("button.wizard-submit").hide();
-      if (prev.hasClass("nodraft")) {
-        $("button.wizard-draft").hide();
-      } else {
-        $("button.wizard-draft").show();
-      }
+    if (!_.isUndefined(prev.html())) {
+      this.wizardButtons(null, prev);
       current.hide();
       current.removeClass("current");
       prev.addClass("current");
       prev.show();
-    } else {
-      return;
     }
   },
 
