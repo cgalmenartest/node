@@ -1,7 +1,7 @@
 <li class="comment-item clearfix">
   <div class="comment-content">
   <% if ( currentUser && currentUser.isAdmin ) { %>
-    <span class="delete-comment" data-commentid="<%- commentId %>">X</span>
+    <a href="#" class="delete-comment" data-commentid="<%- commentId %>"><span class='fa fa-times'></span></a>
   <% } %>
     <div class="comment-image">
       <div class="project-people-div" data-userid="<%- userId %>">
@@ -30,10 +30,5 @@
         <% } %>
       </div>
     </div>
-  </div>
-
-  <div class="comment-sublist-wrapper">
-
-    <ul id="comment-list-<%= id %>"></ul>
   </div>
 </li>

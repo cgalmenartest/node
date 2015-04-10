@@ -18,10 +18,7 @@ Comment = Backbone.View.extend({
   el: ".comment-list-wrapper",
 
   events: {
-    "click .new-topic"                  : "newTopic",
     "click .delete-comment"             : "deleteComment",
-    "click .comment-expand"             : "topicExpand",
-    "click .comment-contract"           : "topicContract",
     "mouseenter .comment-user-link"     : popovers.popoverPeopleOn,
     "click .comment-user-link"          : popovers.popoverClick,
     "click .link-backbone"              : linkBackbone,
@@ -56,7 +53,12 @@ Comment = Backbone.View.extend({
   initializeCommentCollection: function () {
     var self = this;
 
-    if (this.commentCollection ) { this.renderView() } else { this.commentCollection = new CommentCollection(); }
+    if (this.commentCollection && !self.options.recentlyDeleted ) {
+      this.renderView();
+    } else {
+      this.commentCollection = new CommentCollection();
+      self.options.recentlyDeleted = false;
+    }
 
     this.commentCollection.fetch({
       url: '/api/comment/findAllBy' + this.options.target + 'Id/' + this.options.id,
@@ -126,19 +128,10 @@ Comment = Backbone.View.extend({
       data.comments = [];
     }
     for (var i = 0; i < data.comments.length; i += 1) {
-      if (data.comments[i].topic === true) {
         depth[data.comments[i].id] = 0;
-        data.comments[i]['depth'] = depth[data.comments[i].id];
+        //data.comments[i]['depth'] = depth[data.comments[i].id];
+        data.comments[i]['depth'] = 0;
         this.topics.push(data);
-      } else {
-        depth[data.comments[i].id] = depth[data.comments[i].parentId] + 1;
-        data.comments[i]['depth'] = depth[data.comments[i].id];
-        // augment the parentMap with this comment
-        if (_.isUndefined(this.parentMap[data.comments[i].parentId])) {
-          this.parentMap[data.comments[i].parentId] = [];
-        }
-        this.parentMap[data.comments[i].parentId].push(data.comments[i].id);
-      }
     }
 
     // hide the loading spinner
@@ -146,10 +139,12 @@ Comment = Backbone.View.extend({
 
     this.commentViews = [];
     this.commentForms = [];
+
     if (data.comments.length == 0) {
       this.$('#comment-empty').show();
     }
     _.each(data.comments, function (comment, i) {
+      console.log("={}=",comment.id);
       self.renderComment(self, comment, collection, self.parentMap);
     });
 
@@ -191,46 +186,32 @@ Comment = Backbone.View.extend({
   },
 
   renderComment: function (self, comment, collection, map) {
+
     var self = this;
-    // count the number of replies in a topic, recursively
-    var countChildren = function (map, comment) {
-      if (_.isUndefined(map[comment])) {
-        return 0;
-      }
-      var count = map[comment].length;
-      _.each(map[comment], function (c) {
-        count += countChildren(map, c);
-      });
-      return count;
-    };
-    // if this is a topic, count the children for rendering
-    if (comment.topic === true) {
-      comment.numChildren = countChildren(map, comment.id);
-    }
-    // Render the topic view and then in that view spew out all of its children.
+
     var commentIV = new CommentItemView({
-      el: "#comment-list-" + (comment.topic ? 'null' : comment.parentId),
+      el: "#comment-list",
       model: comment,
       target: this.options.target,
       projectId: comment.projectId,
       taskId: comment.taskId,
       collection: collection
     }).render();
+
     self.commentViews.push(commentIV);
-    if (comment.depth <= 1) {
-      // Place the commentForm at the bottom of the list of comments for that topic.
-      var commentFV = new CommentFormView({
-        el: '#comment-form-' + comment.id,
-        target: this.options.target,
-        projectId: comment.projectId,
-        taskId: comment.taskId,
-        parentId: comment.id,
-        collection: collection,
-        depth: comment['depth']
-      });
-      self.commentForms.push(commentFV);
-    }
-    return $("#comment-list-" + (comment.topic ? 'null' : comment.parentId));
+
+    var commentFV = new CommentFormView({
+      el: '#comment-form-' + comment.id,
+      target: this.options.target,
+      projectId: comment.projectId,
+      taskId: comment.taskId,
+      parentId: comment.id,
+      collection: collection,
+      depth: comment['depth']
+    });
+    self.commentForms.push(commentFV);
+
+    return $("#comment-list");
   },
 
   initializeCommentUIAdditions: function ($comment) {
@@ -241,38 +222,6 @@ Comment = Backbone.View.extend({
     }
     popovers.popoverPeopleInit(".comment-user-link");
     popovers.popoverPeopleInit(".project-people-div");
-  },
-
-  topicExpand: function (e) {
-    if (e.preventDefault) e.preventDefault();
-    // toggle all the sublists
-    var target = $($(e.currentTarget).parents('li')[0])
-    $(e.currentTarget).hide();
-    $(target.find('.comment-contract')[0]).show();
-    $(target.children('.comment-sublist-wrapper')[0]).slideToggle();
-  },
-
-  topicContract: function (e) {
-    if (e.preventDefault) e.preventDefault();
-    // toggle all the sublists
-    var target = $($(e.currentTarget).parents('li')[0])
-    $(e.currentTarget).hide();
-    $(target.find('.comment-expand')[0]).show();
-    $(target.children('.comment-sublist-wrapper')[0]).slideToggle();
-  },
-
-  reply: function (e) {
-    if (e.preventDefault) e.preventDefault();
-    // The comment form is adjacent, not a child of the current target.
-    // so find the li container, and then the form inside
-    var target = $($($(e.currentTarget).parents('li.comment-item')[0]).children('.comment-form')[0]);
-    if (target.data('clicked') == 'true') {
-      target.hide();
-      target.data('clicked', 'false');
-    } else {
-      target.show();
-      target.data('clicked', 'true');
-    }
   },
 
   deleteComment: function (e) {
@@ -286,24 +235,10 @@ Comment = Backbone.View.extend({
         type: 'DELETE'
       }).done( function(data){
         $(e.currentTarget).parent().parent().remove("li.comment-item");
+        self.options.recentlyDeleted = true;
         self.initialize(self.options);
       });
     }
-  },
-
-  newTopic: function (e) {
-    if (e.preventDefault) e.preventDefault();
-
-    if (this.topicForm) this.topicForm.cleanup();
-    var options = {
-      el: '.topic-form-wrapper',
-      target: this.options.target,
-      collection: this.collection,
-      topic: true,
-      depth: -1
-    }
-    options[this.options.target + 'Id'] = this.options.id;
-    this.topicForm = new CommentFormView(options);
   },
 
   addNewCommentToDom: function (modelJson, currentTarget) {
@@ -318,14 +253,7 @@ Comment = Backbone.View.extend({
     // set the depth based on the position in the tree
     modelJson['depth'] = $(currentTarget).data('depth') + 1;
     // update the parentMap for sorting
-    if (!_.isNull(modelJson.parentId)) {
-      if (_.isUndefined(this.parentMap[modelJson.parentId])) {
-        this.parentMap[modelJson.parentId] = [];
-      }
-      this.parentMap[modelJson.parentId].push(modelJson.id);
-    } else {
       this.topics.push(modelJson);
-    }
     // hide the empty placeholder, just in case it is still showing
     $("#comment-empty").hide();
     // render comment and UI addons
