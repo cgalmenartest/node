@@ -279,7 +279,7 @@ var ProfileShowView = Backbone.View.extend({
           // delete the existing tag
           $.ajax({
             url: '/api/tag/' + self.model[type].tagId,
-            type: 'DELETE',
+            type: 'DELETE'
           }).done(function (data) {
             return done();
           });
@@ -625,7 +625,7 @@ var ProfileShowView = Backbone.View.extend({
     if (this.taskView) { this.taskView.cleanup(); }
     if (this.volView) { this.volView.cleanup(); }
     removeView(this);
-  },
+  }
 
 });
 
