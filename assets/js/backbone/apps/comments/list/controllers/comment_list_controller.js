@@ -70,12 +70,14 @@ Comment = Backbone.View.extend({
   },
 
   initializeNewTopic: function () {
+
     var options = {
       el: '.topic-form-wrapper',
       target: this.options.target,
       collection: this.commentCollection,
       topic: true,
-      depth: -1
+      depth: -1,
+      disable: ( window.cache.currentUser ) ? false : true
     }
     options[this.options.target + 'Id'] = this.options.id;
     this.topicForm = new CommentFormView(options);
