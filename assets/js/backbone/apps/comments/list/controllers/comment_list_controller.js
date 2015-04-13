@@ -146,7 +146,6 @@ Comment = Backbone.View.extend({
       this.$('#comment-empty').show();
     }
     _.each(data.comments, function (comment, i) {
-      console.log("={}=",comment.id);
       self.renderComment(self, comment, collection, self.parentMap);
     });
 
