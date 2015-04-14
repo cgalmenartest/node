@@ -34,6 +34,10 @@ module.exports.policies = {
     '*': true
   },
 
+  UserAuthController: {
+    '*': ['authenticated', 'requireUserId', 'requireId', 'userAuthIdMatch']
+  },
+
   // Limit user controller view to just the /user endpoint
   UserController : {
     '*': false,

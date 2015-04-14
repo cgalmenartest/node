@@ -128,7 +128,7 @@ var ProfileShowView = Backbone.View.extend({
       '&profileTitle=' + (self.model.attributes.title || '') +
       '&profileLink=' + window.location.protocol + "//" + window.location.host + "" + window.location.pathname +
       '&profileName=' + (self.model.attributes.name || '') +
-      '&profileLocation=' + (self.model.attributes.location ? self.model.attributes.location.tag.name : '') +
+      '&profileLocation=' + (self.model.attributes.location ? self.model.attributes.location.name : '') +
       '&profileAgency=' + (self.model.agency ? self.model.agency.name : '')),
       type: 'GET'
     }).done( function (data) {
@@ -386,7 +386,7 @@ var ProfileShowView = Backbone.View.extend({
       }
     });
     if (modelJson.agency) {
-      $("#company").select2('data', modelJson.agency.tag);
+      $("#company").select2('data', modelJson.agency);
     }
 
     $("#topics").on('change', function (e) {
@@ -439,7 +439,7 @@ var ProfileShowView = Backbone.View.extend({
       }
     });
     if (modelJson.location) {
-      $("#location").select2('data', modelJson.location.tag);
+      $("#location").select2('data', modelJson.location);
     }
     $("#location").on('change', function (e) {
       self.model.trigger("profile:input:changed", e);
@@ -476,13 +476,37 @@ var ProfileShowView = Backbone.View.extend({
     e.preventDefault();
     $("#profile-save, #submit").button('loading');
     setTimeout(function() { $("#profile-save, #submit").attr("disabled", "disabled"); }, 0);
-    var data = {
+
+    var newTags = [].concat(
+          $("#company").select2('data'),
+          $("#tag_topic").select2('data'),
+          $("#tag_skill").select2('data'),
+          $("#tag_location").select2('data'),
+          $("#location").select2('data'),
+          $("#tag_agency").select2('data')
+        ),
+        modelTags = _(this.model.get('tags')).filter(function(tag) {
+          return (tag.type !== 'agency' && tag.type !== 'location');
+        }),
+        data = {
           name: $("#name").val(),
           title: $("#title").val(),
-          bio: $("#bio").val()
+          bio: $("#bio").val(),
         },
         email = this.model.get('emails')[0],
-        self = this;
+        self = this,
+        tags = _(modelTags.concat(newTags)).chain()
+          .filter(function(tag) {
+            return _(tag).isObject() && !tag.context;
+          })
+          .map(function(tag) {
+            return (tag.id && tag.id !== tag.name) ? +tag.id : {
+              name: tag.name,
+              type: tag.tagType
+            };
+          }).unique().value();
+
+    data.tags = tags;
 
     if ($("#profile-email").val() !== email.email) {
       $.ajax({
@@ -505,12 +529,8 @@ var ProfileShowView = Backbone.View.extend({
 
   removeAuth: function (e) {
     if (e.preventDefault) e.preventDefault();
-    var node = $(e.target);
-    // walk up the tree until we get to the marked node
-    while (!(node.hasClass("removeAuth"))) {
-      node = node.parent();
-    }
-    this.model.trigger("profile:removeAuth", node.attr("id"));
+    var node = $(e.currentTarget);
+    this.model.trigger("profile:removeAuth", node.data("id"));
   },
 
   like: function (e) {

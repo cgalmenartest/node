@@ -142,6 +142,10 @@ var TagShowView = Backbone.View.extend({
 
   deleteTag: function (e) {
     if (e.preventDefault) e.preventDefault();
+    var tags = _(this.model.get('tags')).filter(function(tag) {
+          return tag.id !== $(e.currentTarget).data('id');
+        });
+    this.model.set('tags', tags);
     this.model.trigger(this.options.target + ":tag:delete", e);
 
   },

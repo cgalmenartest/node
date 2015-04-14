@@ -778,7 +778,11 @@ module.exports = {
             if (err) { return cb(err, null); }
             user.auths = [];
             for (var i = 0; i < auths.length; i++) {
-              user.auths.push(auths[i].provider);
+              user.auths.push({
+                provider: auths[i].provider,
+                id: auths[i].id,
+                token: auths[i].accessToken
+              });
             }
             // Look up the user's email addresses
             UserEmail.findByUserId(userId, function (err, emails) {
