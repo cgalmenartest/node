@@ -80,6 +80,22 @@ module.exports = {
     module.exports.find(req, res);
   },
 
+  all: function (req, res) {
+    User.find().populate('tags').exec(function (err, users) {
+      users = _.reject(users, function (u) { return u.disabled; });
+      if (err) {
+        return res.serverError(err);
+      }
+      _.each(users, function (user) {
+        delete user.auths;
+        delete user.passwordAttempts;
+        user.location = _.findWhere(user.tags, {type: 'location'});
+        user.agency = _.findWhere(user.tags, {type: 'agency'});
+      });
+      res.send(users);
+    });
+  },
+
   // Use default Blueprint template with filtered data to return full profiles
   profile: function(req, res) {
     if (!req.user) return res.forbidden();

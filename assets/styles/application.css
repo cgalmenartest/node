@@ -1703,7 +1703,6 @@ ul.task-tags > li {
 
 .value-prop .text {
   font-size: 18px;
-
 }
 
 .value-prop .icon {
@@ -1730,4 +1729,30 @@ ul.task-tags > li {
 
 .nav-tabs > .export-button {
   line-height: 42px;
+}
+
+/* PeopleMap */
+
+.country {
+  fill: #ccc;
+  stroke: #fff;
+  stroke-width: 1px;
+}
+
+.userDot {
+  fill: steelblue;
+  stroke: #fff;
+  fill-opacity: .8;
+}
+
+.d3_tooltip {
+  background-color: rgba(68, 136, 187, 0.5);
+  margin: 10px;
+  height: 50px;
+  width: 150px;
+  padding-left: 10px;
+  padding-top: 10px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
 }
