@@ -7,9 +7,15 @@
 </div>
 <div class="box-pad-lr">
   <ul id="comment-list">
+  <% if ( user ) { %>
   <li class="comment-item clearfix border-left box-pad-lr" id="comment-empty" style="display:none;">
     No discussion yet.  Start one!
   </li>
+  <% } else { %>
+  <li class="comment-item clearfix border-left box-pad-lr" id="comment-empty" style="display:none;">
+    Sign in to start the discussion!
+  </li>
+  <% } %>
 </ul>
 </div>
 <div class="box-pad-lr box-pad-t topic-form-wrapper"></div>
