@@ -8,6 +8,7 @@ var CommentCollection = require('../../../../entities/comments/comment_collectio
 var CommentFormView = require('../../new/views/comment_form_view');
 var CommentItemView = require('../views/comment_item_view');
 var CommentWrapper = require('../templates/comment_wrapper_template.html');
+var marked = require('marked');
 
 
 var popovers = new Popovers();
@@ -17,9 +18,6 @@ Comment = Backbone.View.extend({
   el: ".comment-list-wrapper",
 
   events: {
-    "click .new-topic"                  : "newTopic",
-    "click .comment-expand"             : "topicExpand",
-    "click .comment-contract"           : "topicContract",
     "mouseenter .comment-user-link"     : popovers.popoverPeopleOn,
     "click .comment-user-link"          : popovers.popoverClick,
     "click .link-backbone"              : linkBackbone,
@@ -32,13 +30,14 @@ Comment = Backbone.View.extend({
 
     this.initializeRender();
     this.initializeCommentCollection();
+    this.initializeNewTopic();
     this.initializeListeners();
 
     // Populating the DOM after a comment was created.
     this.listenTo(this.commentCollection, "comment:save:success", function (model, modelJson, currentTarget) {
       if (modelJson.topic) {
         // cleanup the topic form
-        if (this.topicForm) this.topicForm.cleanup();
+        if (this.topicForm) this.topicForm.empty();
       }
       self.addNewCommentToDom(modelJson, currentTarget);
     });
@@ -63,6 +62,18 @@ Comment = Backbone.View.extend({
         self.renderView(collection);
       }
     });
+  },
+
+  initializeNewTopic: function () {
+    var options = {
+      el: '.topic-form-wrapper',
+      target: this.options.target,
+      collection: this.commentCollection,
+      topic: true,
+      depth: -1
+    }
+    options[this.options.target + 'Id'] = this.options.id;
+    this.topicForm = new CommentFormView(options);
   },
 
   initializeListeners: function() {
@@ -138,6 +149,40 @@ Comment = Backbone.View.extend({
     this.initializeCommentUIAdditions();
   },
 
+  reply: function (e) {
+      if (e.preventDefault) e.preventDefault();
+
+      var inputTarget = $(".comment-input");
+      if ( !this.isElementInViewport(inputTarget) ){
+        $('html,body').animate({scrollTop: inputTarget.offset().top},'slow');
+      }
+
+      var replyto          = $(e.currentTarget).data("commentauthor");
+      var authorid         = $(e.currentTarget).data("authorid");
+      var replyToCommentId = $(e.currentTarget).data("commentid");
+      var quote            = $("#comment-id-"+replyToCommentId).html();
+      var authorSlug = "<a href='/profile/"+authorid+"'>"+replyto+"</a>";
+
+      $(".comment-input").html("<i>"+authorSlug+" said</i>"+marked("> "+quote)+"&nbsp;");
+   },
+
+  isElementInViewport: function (el) {
+      //from SO 123999
+
+      if (typeof jQuery === "function" && el instanceof jQuery) {
+          el = el[0];
+      }
+
+      var rect = el.getBoundingClientRect();
+
+      return (
+          rect.top >= 0 &&
+          rect.left >= 0 &&
+          rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && /*or $(window).height() */
+          rect.right <= (window.innerWidth || document.documentElement.clientWidth) /*or $(window).width() */
+      );
+  },
+
   renderComment: function (self, comment, collection, map) {
     var self = this;
     // count the number of replies in a topic, recursively
@@ -189,53 +234,6 @@ Comment = Backbone.View.extend({
     }
     popovers.popoverPeopleInit(".comment-user-link");
     popovers.popoverPeopleInit(".project-people-div");
-  },
-
-  topicExpand: function (e) {
-    if (e.preventDefault) e.preventDefault();
-    // toggle all the sublists
-    var target = $($(e.currentTarget).parents('li')[0])
-    $(e.currentTarget).hide();
-    $(target.find('.comment-contract')[0]).show();
-    $(target.children('.comment-sublist-wrapper')[0]).slideToggle();
-  },
-
-  topicContract: function (e) {
-    if (e.preventDefault) e.preventDefault();
-    // toggle all the sublists
-    var target = $($(e.currentTarget).parents('li')[0])
-    $(e.currentTarget).hide();
-    $(target.find('.comment-expand')[0]).show();
-    $(target.children('.comment-sublist-wrapper')[0]).slideToggle();
-  },
-
-  reply: function (e) {
-    if (e.preventDefault) e.preventDefault();
-    // The comment form is adjacent, not a child of the current target.
-    // so find the li container, and then the form inside
-    var target = $($($(e.currentTarget).parents('li.comment-item')[0]).children('.comment-form')[0]);
-    if (target.data('clicked') == 'true') {
-      target.hide();
-      target.data('clicked', 'false');
-    } else {
-      target.show();
-      target.data('clicked', 'true');
-    }
-  },
-
-  newTopic: function (e) {
-    if (e.preventDefault) e.preventDefault();
-
-    if (this.topicForm) this.topicForm.cleanup();
-    var options = {
-      el: '.topic-form-wrapper',
-      target: this.options.target,
-      collection: this.collection,
-      topic: true,
-      depth: -1
-    }
-    options[this.options.target + 'Id'] = this.options.id;
-    this.topicForm = new CommentFormView(options);
   },
 
   addNewCommentToDom: function (modelJson, currentTarget) {

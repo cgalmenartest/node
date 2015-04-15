@@ -116,6 +116,7 @@ var AdminUserView = Backbone.View.extend({
       success: function (data) {
         self.data = data;
         self.renderUsers(self, data);
+        $('.tip').tooltip();
       },
       error: function (xhr, status, error) {
         self.handleError(self, xhr, status, error);

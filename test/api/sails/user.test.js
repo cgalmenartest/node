@@ -6,8 +6,12 @@ var _ = require('underscore');
 var request;
 
 describe('user:', function() {
-  before(function() {
+  before(function (done) {
     request = utils.init();
+    utils.logout(request, function (err) {
+      if (err) { return done(err); }
+      done();
+    });
   });
 
   it('not logged in', function(done) {
@@ -24,6 +28,15 @@ describe('user:', function() {
       // Not logged in users should get a 403
       assert.equal(response.statusCode, 403);
       done();
+    });
+  });
+  it('deny export', function (done) {
+    request.get({
+      url: conf.url + '/user/export'
+    }, function (err, response, body) {
+      // Not logged in users should get a 403
+      assert.equal(response.statusCode, 403);
+      done(err);
     });
   });
   it('register', function (done) {
