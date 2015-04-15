@@ -10,6 +10,19 @@ All contributions to this project will be released under the CC0
 dedication. By submitting a pull request, you are agreeing to comply
 with this waiver of copyright interest.
 
+## Communication
+
+Anyone actively contributing or using Midas, should join our [Mailing List](https://groups.google.com/forum/#!forum/midascrowd).  
+
+You should be using the master branch for most stable release, please review [release notes](https://github.com/18F/midas/releases) regularly. We do releases every week or two and send out notes.  We're generally using [semantic versioning](http://semver.org/), but we're pre-1.0, so API can change at any time. We use the minor version for changes where there are significant installation process changes or API changes or a database migration is needed.
+
+If you want to keep up with the latest changes, we work in the "devel" branch.  If you are using devel, keep an eagle-eye on commits and/or join our daily standup.
+
+Currently stand-ups are at 11a PT / 2p ET, but since we might reschedule now and then so
+here is our calendar of public meetings:  https://www.google.com/calendar/embed?src=ultrasaurus.com_oja7dkbgf1cug9smkb8q8pn2b8%40group.calendar.google.com  Anyone interested in Midas is welcome to join standup, you can meet the team and we can figure out appropriate longer-format or offline follow-up if you have lots of questions.
+
+We also have a [wiki](https://github.com/18F/midas/wiki) where we keep various development notes. If anything is confusing or your questions are not answered there, please shout out on the mailing list](https://groups.google.com/forum/#!forum/midascrowd). 
+
 ## Development Process
 
 This project follows the [git flow](http://nvie.com/posts/a-successful-git-branching-model/) branching model of product development.
