@@ -218,81 +218,12 @@ var ProfileShowView = Backbone.View.extend({
         window.cache.userEvents.trigger("user:profile:save", data.toJSON());
       }
 
-      var tags = [
-        $("#company").select2('data'),
-        $("#location").select2('data')
-      ];
-      self.model.trigger("profile:tags:save", tags);
-    });
-
-    self.on('newTagSaveDone',function (){
-
-      tags         = [];
-      var tempTags = [];
-
-      //get newly created tags from big three types
-      _.each(self.data.newItemTags, function(newItemTag){
-        tags.push(newItemTag);
-      });
-
-      tempTags.push.apply(tempTags,self.$("#tag_topic").select2('data'));
-      tempTags.push.apply(tempTags,self.$("#tag_skill").select2('data'));
-      tempTags.push.apply(tempTags,self.$("#tag_location").select2('data'));
-      tempTags.push.apply(tempTags,self.$("#tag_agency").select2('data'));
-
-      //see if there are any previously created big three tags and add them to the tag array
-      _.each(tempTags,function(tempTag){
-          if ( tempTag.id !== tempTag.name ){
-          tags.push(tempTag);
-        }
-      });
-
-      var tagMap = {};
-
-        // if a different profile is being edited, add its userId
-        if (self.model.toJSON().id !== window.cache.currentUser.id) {
-          tagMap.userId = self.model.toJSON().id;
-        }
-
-      async.forEach(tags, function(tag, callback){
-        //diffAdd,self.model.attributes.id,"taskId",callback
-        return self.tagFactory.addTag(tag,tagMap.userId,"userId",callback);
-      }, function(err) {
-        self.model.trigger("profile:tags:save:success", err);
-      });
-    });
-
-    this.listenTo(self.model, "profile:tags:save", function (tags) {
-
-      var newTags = [];
-
-      newTags = newTags.concat(
-        self.$("#tag_topic").select2('data'),
-        self.$("#tag_skill").select2('data'),
-        self.$("#tag_location").select2('data'),
-        self.$("#location").select2('data'),
-        self.$("#tag_agency").select2('data')
-      );
-
-      async.forEach(
-        newTags,
-        function(newTag, callback) {
-          return self.tagFactory.addTagEntities(newTag,self,callback);
-        },
-        function(err) {
-          if (err) return next(err);
-          self.trigger("newTagSaveDone");
-        }
-      );
-
-    });
-
-    this.listenTo(self.model, "profile:tags:save:success", function (err) {
       setTimeout(function() { $("#profile-save, #submit").attr("disabled", "disabled"); },0);
       $("#profile-save, #submit").removeClass("btn-primary");
       $("#profile-save, #submit").addClass("btn-success");
       self.data.saved = true;
       Backbone.history.navigate('profile/' + self.model.toJSON().id, { trigger: true });
+
     });
 
     this.listenTo(self.model, "profile:save:fail", function (data) {

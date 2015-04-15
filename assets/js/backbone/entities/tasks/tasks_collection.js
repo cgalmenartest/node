@@ -43,4 +43,3 @@ var TasksCollection = Backbone.Collection.extend({
 });
 
 module.exports = TasksCollection;
-
