@@ -1,7 +1,9 @@
 <footer class="container">
   <div class="row">
     <div class="col-md-12">
-      <a href="https://github.com/18F/midas"><i class="fa fa-github"></i> powered by midas</a>
+      <a href="https://github.com/18F/midas"><i class="fa fa-github"></i> Powered by midas</a>
+      |
+      Version (<a href="https://github.com/18F/midas/releases/tag/<%- version.version %>"><%- version.version %></a>)
       <% if (login.terms.enabled === true) { %>
       |
       <a href="<%= login.terms.link %>"><%= login.terms.name %></a>
