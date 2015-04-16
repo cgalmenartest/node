@@ -733,7 +733,7 @@ a.search-tag-remove:hover {
 }
 
 /* project owner styles */
-a.delete-projectowner, a.delete-volunteer, .delete-project-event{
+a.delete-projectowner, a.delete-volunteer {
   position: absolute;
   right: -2px;
   top: -2px;
@@ -746,11 +746,18 @@ a.delete-projectowner, a.delete-volunteer, .delete-project-event{
   font-size: 7px;
 }
 
-.delete-project-event {
-  position: relative;
-  float: right;
-  right: -12px;
-  top: -4px;
+a.delete-project-event {
+  float:right;
+  top: -2px;
+  background-color: rgb(255,255,255);
+  background-color: rgba(255,255,255,0.8);
+  border-radius: 10px;
+  border: 1px solid #c0c0c0;
+  color: #666;
+  font-size: 7px;
+  width: 12px;
+  height: 12px;
+  padding: 0px 3px;
 }
 
 .project-people {

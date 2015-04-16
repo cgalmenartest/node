@@ -24,7 +24,7 @@
   <% _.each(events, function (event, iterator) { %>
   <div class="event border-left" data-id="<%= event.id %>">
     <% if ((user && user.isAdmin)) { %>
-    <span class="delete-project-event">X</span>
+    <a href="#" class="delete-project-event"><span class='fa fa-times'></span></a>
     <% } %>
     <% if (user) { %>
     <div class="event-button pull-right">
