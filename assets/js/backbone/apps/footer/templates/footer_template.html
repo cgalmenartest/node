@@ -1,13 +1,15 @@
 <footer class="container">
   <div class="row">
     <div class="col-md-12">
-      <a href="https://github.com/18F/midas"><i class="fa fa-github"></i> powered by midas</a>
+      <a target="_blank" href="https://github.com/18F/midas"><i class="fa fa-github"></i> Powered by Midas</a>
+      |
+      Version <a target="_blank" href="https://github.com/18F/midas/releases/tag/<%- version.version %>"><%- version.version %></a>
       <% if (login.terms.enabled === true) { %>
       |
       <a href="<%= login.terms.link %>"><%= login.terms.name %></a>
       <% } %>
       |
-      Locations provided by <a href="http://www.geonames.org/">GeoNames</a>.
+      Locations provided by <a target="_blank" href="http://www.geonames.org/">GeoNames</a>
     </div>
   </div>
 </footer>
