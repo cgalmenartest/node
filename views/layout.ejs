@@ -21,7 +21,7 @@
     </script>
 
     <!-- Application stylesheet -->
-    <link rel="stylesheet" type="text/css" href="/build/css/midas.min.css?v=<%= version %>" />
+    <link rel="stylesheet" type="text/css" href="/build/css/midas.min.css?v=<%= version.cache %>" />
 
     <!-- External libraries and browser shims -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
@@ -34,9 +34,9 @@
 
     <!-- Entry point for our app -->
     <% if (sails.config.environment !== 'production') { %>
-    <script type="text/javascript" src="/build/js/bundle.js?v=<%= version %>"></script>
+    <script type="text/javascript" src="/build/js/bundle.js?v=<%= version.cache %>"></script>
     <% } else { %>
-    <script type="text/javascript" src="/build/js/bundle.min.js?v=<%= version %>"></script>
+    <script type="text/javascript" src="/build/js/bundle.min.js?v=<%= version.cache %>"></script>
     <% } %>
 
   </head>
