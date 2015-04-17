@@ -18,6 +18,7 @@ Comment = Backbone.View.extend({
   el: ".comment-list-wrapper",
 
   events: {
+    "click .delete-comment"             : "deleteComment",
     "mouseenter .comment-user-link"     : popovers.popoverPeopleOn,
     "click .comment-user-link"          : popovers.popoverClick,
     "click .link-backbone"              : linkBackbone,
@@ -52,8 +53,12 @@ Comment = Backbone.View.extend({
   initializeCommentCollection: function () {
     var self = this;
 
-    if (this.commentCollection) { this.renderView() }
-    else { this.commentCollection = new CommentCollection(); }
+    if (this.commentCollection && !self.options.recentlyDeleted ) {
+      this.renderView();
+    } else {
+      this.commentCollection = new CommentCollection();
+      self.options.recentlyDeleted = false;
+    }
 
     this.commentCollection.fetch({
       url: '/api/comment/findAllBy' + this.options.target + 'Id/' + this.options.id,
@@ -65,12 +70,14 @@ Comment = Backbone.View.extend({
   },
 
   initializeNewTopic: function () {
+
     var options = {
       el: '.topic-form-wrapper',
       target: this.options.target,
       collection: this.commentCollection,
       topic: true,
-      depth: -1
+      depth: -1,
+      disable: ( window.cache.currentUser ) ? false : true
     }
     options[this.options.target + 'Id'] = this.options.id;
     this.topicForm = new CommentFormView(options);
@@ -108,9 +115,13 @@ Comment = Backbone.View.extend({
     var self = this;
     this.parentMap = {};
     this.topics = [];
-    var data = {
-      comments: collection.toJSON()[0].comments
-    };
+    if ( typeof collection != 'undefined' ) {
+      var data = {
+        comments: collection.toJSON()[0].comments
+      };
+    } else {
+      data = {};
+    }
 
     // compute the depth of each comment to use as metadata when rendering
     // in the process, create a map of the ids of each comment's children
@@ -119,19 +130,10 @@ Comment = Backbone.View.extend({
       data.comments = [];
     }
     for (var i = 0; i < data.comments.length; i += 1) {
-      if (data.comments[i].topic === true) {
         depth[data.comments[i].id] = 0;
-        data.comments[i]['depth'] = depth[data.comments[i].id];
+        //data.comments[i]['depth'] = depth[data.comments[i].id];
+        data.comments[i]['depth'] = 0;
         this.topics.push(data);
-      } else {
-        depth[data.comments[i].id] = depth[data.comments[i].parentId] + 1;
-        data.comments[i]['depth'] = depth[data.comments[i].id];
-        // augment the parentMap with this comment
-        if (_.isUndefined(this.parentMap[data.comments[i].parentId])) {
-          this.parentMap[data.comments[i].parentId] = [];
-        }
-        this.parentMap[data.comments[i].parentId].push(data.comments[i].id);
-      }
     }
 
     // hide the loading spinner
@@ -139,6 +141,7 @@ Comment = Backbone.View.extend({
 
     this.commentViews = [];
     this.commentForms = [];
+
     if (data.comments.length == 0) {
       this.$('#comment-empty').show();
     }
@@ -184,46 +187,32 @@ Comment = Backbone.View.extend({
   },
 
   renderComment: function (self, comment, collection, map) {
+
     var self = this;
-    // count the number of replies in a topic, recursively
-    var countChildren = function (map, comment) {
-      if (_.isUndefined(map[comment])) {
-        return 0;
-      }
-      var count = map[comment].length;
-      _.each(map[comment], function (c) {
-        count += countChildren(map, c);
-      });
-      return count;
-    };
-    // if this is a topic, count the children for rendering
-    if (comment.topic === true) {
-      comment.numChildren = countChildren(map, comment.id);
-    }
-    // Render the topic view and then in that view spew out all of its children.
+
     var commentIV = new CommentItemView({
-      el: "#comment-list-" + (comment.topic ? 'null' : comment.parentId),
+      el: "#comment-list",
       model: comment,
       target: this.options.target,
       projectId: comment.projectId,
       taskId: comment.taskId,
       collection: collection
     }).render();
+
     self.commentViews.push(commentIV);
-    if (comment.depth <= 1) {
-      // Place the commentForm at the bottom of the list of comments for that topic.
-      var commentFV = new CommentFormView({
-        el: '#comment-form-' + comment.id,
-        target: this.options.target,
-        projectId: comment.projectId,
-        taskId: comment.taskId,
-        parentId: comment.id,
-        collection: collection,
-        depth: comment['depth']
-      });
-      self.commentForms.push(commentFV);
-    }
-    return $("#comment-list-" + (comment.topic ? 'null' : comment.parentId));
+
+    var commentFV = new CommentFormView({
+      el: '#comment-form-' + comment.id,
+      target: this.options.target,
+      projectId: comment.projectId,
+      taskId: comment.taskId,
+      parentId: comment.id,
+      collection: collection,
+      depth: comment['depth']
+    });
+    self.commentForms.push(commentFV);
+
+    return $("#comment-list");
   },
 
   initializeCommentUIAdditions: function ($comment) {
@@ -234,6 +223,23 @@ Comment = Backbone.View.extend({
     }
     popovers.popoverPeopleInit(".comment-user-link");
     popovers.popoverPeopleInit(".project-people-div");
+  },
+
+  deleteComment: function (e) {
+    var self = this;
+    if (e.preventDefault) e.preventDefault();
+    var id = $(e.currentTarget).data("commentid") || null;
+
+    if ( window.cache.currentUser && window.cache.currentUser.isAdmin ) {
+      $.ajax({
+        url: '/api/comment/'+id,
+        type: 'DELETE'
+      }).done( function(data){
+        $(e.currentTarget).parent().parent().remove("li.comment-item");
+        self.options.recentlyDeleted = true;
+        self.initialize(self.options);
+      });
+    }
   },
 
   addNewCommentToDom: function (modelJson, currentTarget) {
@@ -248,14 +254,7 @@ Comment = Backbone.View.extend({
     // set the depth based on the position in the tree
     modelJson['depth'] = $(currentTarget).data('depth') + 1;
     // update the parentMap for sorting
-    if (!_.isNull(modelJson.parentId)) {
-      if (_.isUndefined(this.parentMap[modelJson.parentId])) {
-        this.parentMap[modelJson.parentId] = [];
-      }
-      this.parentMap[modelJson.parentId].push(modelJson.id);
-    } else {
       this.topics.push(modelJson);
-    }
     // hide the empty placeholder, just in case it is still showing
     $("#comment-empty").hide();
     // render comment and UI addons
