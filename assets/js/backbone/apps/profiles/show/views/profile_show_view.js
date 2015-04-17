@@ -279,7 +279,7 @@ var ProfileShowView = Backbone.View.extend({
           // delete the existing tag
           $.ajax({
             url: '/api/tag/' + self.model[type].tagId,
-            type: 'DELETE',
+            type: 'DELETE'
           }).done(function (data) {
             return done();
           });
@@ -466,7 +466,24 @@ var ProfileShowView = Backbone.View.extend({
           });
           el.reload = true;
           el.open = true;
-          $('#location').select2({ data: d }).select2('open');
+          $('#location').select2({
+            data: d,
+            formatResult: function (obj) { return obj.name; },
+            formatSelection: function (obj) { return obj.name; },
+            createSearchChoice: function (term, values) {
+              if (!values.some(function (v) {
+                  return (v.name.toLowerCase().indexOf(term.toLowerCase()) >= 0);
+                })) {
+                return {
+                  tagType: 'location',
+                  id: term,
+                  value: term,
+                  temp: true,
+                  name: "<b>" + term + "</b> <i>search for this location</i>"
+                };
+              }
+            }
+          }).select2('open');
         });
       } else {
         delete this.temp;
@@ -608,7 +625,7 @@ var ProfileShowView = Backbone.View.extend({
     if (this.taskView) { this.taskView.cleanup(); }
     if (this.volView) { this.volView.cleanup(); }
     removeView(this);
-  },
+  }
 
 });
 
