@@ -26,6 +26,9 @@ var ProfileShowView = Backbone.View.extend({
     "click #profile-cancel"      : "profileCancel",
     "click #like-button"         : "like",
     "keyup #name, #title, #bio"  : "fieldModified",
+    "keyup"                      : "checkName",
+    "change"                     : "checkName",
+    "blur"                       : "checkName",
     "click .removeAuth"          : "removeAuth"
   },
 
@@ -526,6 +529,15 @@ var ProfileShowView = Backbone.View.extend({
     this.model.trigger("profile:input:changed", e);
   },
 
+  checkName: function (e) {
+    var name = this.$("#name").val();
+    if (name && name !== '') {
+      $("#name").closest(".form-group").find(".help-block").hide();
+    } else {
+      $("#name").closest(".form-group").find(".help-block").show();
+    }
+  },
+
   profileCancel: function (e) {
     e.preventDefault();
     Backbone.history.navigate('profile/' + this.model.toJSON().id, { trigger: true });
@@ -538,8 +550,15 @@ var ProfileShowView = Backbone.View.extend({
 
   profileSubmit: function (e) {
     e.preventDefault();
+
+    // If the name isn't valid, don't put the save through
+    if (validate({ currentTarget: '#name' })) {
+      return;
+    }
+
     $("#profile-save, #submit").button('loading');
     setTimeout(function() { $("#profile-save, #submit").attr("disabled", "disabled") }, 0);
+
     var data = {
           name: $("#name").val(),
           title: $("#title").val(),
