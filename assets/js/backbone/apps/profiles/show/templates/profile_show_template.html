@@ -53,7 +53,8 @@
       <form class="form-horizontal" role="form" id="profile-form">
         <h1>
           <div class="form-group">
-            <input type="text" class="form-control input-lg" id="name" name="name" placeholder="Your Full Name" value="<% if (data.name) { %><%- data.name %><% } %>" title="Your Full Name"/>
+            <input type="text" class="form-control validate input-lg" id="name" name="name" placeholder="Your Full Name" value="<% if (data.name) { %><%- data.name %><% } %>" data-validate="empty" title="Your Full Name"/>
+            <span class="help-block error-empty" style="display:none;font-size:14px;">Please enter your full name.</span>
           </div>
         </h1>
 
