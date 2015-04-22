@@ -679,6 +679,11 @@ module.exports = {
           User.findOneById(userAuth.userId, function (err, user) {
             if (!user || err) { return done(null, false, { message: 'Error looking up user.' }); }
             sails.log.debug('User Found:', user);
+            if (providerUser.id !== user.id) {
+              return done(null, false, {
+                message: 'This profile is linked to another user.'
+              });
+            }
 
             var update = false;
             if (providerUser.overwrite || (user.photoId && !user.photoUrl && providerUser.photoUrl)) {
