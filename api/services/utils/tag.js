@@ -124,40 +124,10 @@ var findOrCreateTags = function (userId, tags, done) {
   });
 };
 
-/**
- * Given a userId and a list of tagIds that are valid,
- * prune all tagIds that don't match the list given.
- *
- * @param userId of the user associated
- * @param tagIds array of ids of the Tag model that are valid
- * @param done callback of the form done(err, deletedTags)
- */
-var pruneTags = function (userId, tagIds, done) {
-  return done();
-  // find all of the tags that don't match the current tag ids
-  Tag.find()
-  .where({ userId: userId })
-  .exec(function (err, tags) {
-    if (err) { return done(err, null); }
-    // given a tag, destroy it and call back
-    var destroyTag = function (tag, cb) {
-      // if the tagId is safe, don't destroy
-      if (_.contains(tagIds, tag.id)) {
-        return cb(null);
-      }
-      // the tagId wasn't found, destroy it
-      tag.destroy(cb);
-    };
-    // destroy tags
-    async.each(tags, destroyTag, function (err) {
-      // return list of destroyed tags
-      return done(err, tags);
-    });
-  });
-};
-
 module.exports = {
   assemble: tagAssemble,
   findOrCreateTags: findOrCreateTags,
-  pruneTags: pruneTags
+  pruneTags: function(userId, tagIds, done) {
+    return done();
+  }
 };
