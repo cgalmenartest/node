@@ -1,13 +1,13 @@
 console.log('Loading... ', __filename);
 
 // Set up passport for authentication
-var       passport = require('passport')
-         , request = require('request')
-   , LocalStrategy = require('passport-local').Strategy
-  , OAuth2Strategy = require('passport-oauth').OAuth2Strategy
-   , MyUSAStrategy = require('passport-myusa').Strategy
-, LinkedInStrategy = require('passport-linkedin').Strategy
-  , BearerStrategy = require('passport-http-bearer').Strategy;
+var       passport = require('passport'),
+           request = require('request'),
+     LocalStrategy = require('passport-local').Strategy,
+    OAuth2Strategy = require('passport-oauth').OAuth2Strategy,
+     MyUSAStrategy = require('passport-myusa').Strategy,
+  LinkedInStrategy = require('passport-linkedin').Strategy,
+    BearerStrategy = require('passport-http-bearer').Strategy;
 
 var authSettings   = require('./settings/auth.js');
 var userUtils      = require('../api/services/utils/user.js');
@@ -115,7 +115,7 @@ passport.use('oauth2', new OAuth2Strategy({
         providerUser,
         done
       );
-    })
+    });
   }
 ));
 

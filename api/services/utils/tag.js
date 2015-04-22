@@ -86,31 +86,14 @@ var findOrCreateTags = function (userId, tags, done) {
           // The entity doesn't exist, so create it.
           TagEntity.create(tagEntity, function (err, t) {
             if (err) { return cbTag(err); }
-            var tagObj = {
-              userId: userId,
-              tagId: t.id
-            };
-            // create tag association
-            Tag.create(tagObj, function (err, newTag) {
-              if (err) { return cbTag(err); }
-              resultTags.push(newTag);
-              cbTag();
-            });
+            resultTags.push(t);
+            cbTag();
           });
         }
         // tag entity exists, create a tag association
         else {
-          var tag = {
-            userId: userId,
-            tagId: t.id
-          };
-          // find or create the tag.  If it already exists,
-          // don't want to create a duplicate.
-          Tag.findOrCreate(tag, tag, function (err, newTag) {
-            if (err) { return cbTag(err); }
-            resultTags.push(newTag);
-            cbTag();
-          });
+          resultTags.push(t);
+          cbTag();
         }
       });
     };
@@ -122,7 +105,22 @@ var findOrCreateTags = function (userId, tags, done) {
   // begin processing each tag type
   async.each(_.keys(tags), processType, function (err) {
     if (err) { return done(err, null); }
-    return done(null, resultTags);
+    User.findOne({ id: userId }).exec(function(err, user) {
+      if (err) return done(err);
+      if (!user) return done({ message: 'No user found' });
+      _(resultTags).chain()
+        .pluck('id')
+        .each(function(id) {
+          user.tags.add(id);
+        });
+      user.save(function(err) {
+        if (err) {
+          sails.log.error(err);
+          return done(err);
+        }
+        return done();
+      });
+    });
   });
 };
 
@@ -135,6 +133,7 @@ var findOrCreateTags = function (userId, tags, done) {
  * @param done callback of the form done(err, deletedTags)
  */
 var pruneTags = function (userId, tagIds, done) {
+  return done();
   // find all of the tags that don't match the current tag ids
   Tag.find()
   .where({ userId: userId })
