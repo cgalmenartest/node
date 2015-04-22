@@ -681,7 +681,9 @@ module.exports = {
             sails.log.debug('User Found:', user);
             if (providerUser.id !== user.id) {
               return done(null, false, {
-                message: 'This profile is linked to another user.'
+                message: 'We\'re sorry, you can\'t connect that ' +
+                  sails.config.auth.config.config[userAuth.provider].name +
+                  ' account since it is already connected to a different profile.'
               });
             }
 
