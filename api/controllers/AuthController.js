@@ -84,7 +84,7 @@ function authenticate (req, res, strategy, json) {
       }
     });
   }
-};
+}
 
 module.exports = {
   /**
@@ -220,7 +220,7 @@ module.exports = {
                 // success, return true
                 return res.send(true);
               });
-            })
+            });
           });
         });
       });
@@ -232,9 +232,9 @@ module.exports = {
    */
   oauth: function (req, res) {
     var target = req.route.params.id;
-    if (!target || target == '' || !_.contains(sails.config.auth.config.oauth, target)) {
+    if (!target || target === '' || !_.contains(sails.config.auth.config.oauth, target)) {
       return res.send(403, { message: "Unsupported OAuth method." });
-    };
+    }
     var config = sails.config.auth.config.config;
     passport.authenticate(target, config[target].params || null)(req, res, function (err) {
       if (err) {
@@ -249,9 +249,9 @@ module.exports = {
    */
   callback: function (req, res) {
     var target = req.route.params.id;
-    if (!target || target == '' || !_.contains(sails.config.auth.config.oauth, target)) {
+    if (!target || target === '' || !_.contains(sails.config.auth.config.oauth, target)) {
       return res.send(403, { message: "Unsupported OAuth method." });
-    };
+    }
     authenticate(req, res, target, false);
   },
 

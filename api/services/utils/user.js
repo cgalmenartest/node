@@ -25,7 +25,7 @@ var sendWelcomeEmail = function(done, user) {
   noteUtils.notifier.notify(params, function (err) {
     done(err, user);
   });
-}
+};
 
 module.exports = {
 
@@ -176,7 +176,7 @@ module.exports = {
           result.agency = [ userObj.company ];
         }
         return result;
-      };
+      }
 
       // no user, create one
       if (!user) {
@@ -221,7 +221,7 @@ module.exports = {
                 return done(null, user);
               }
               var email = {
-                userId: user['id'],
+                userId: user.id,
                 email: userData.username,
               };
               // Store the email address
@@ -364,7 +364,7 @@ module.exports = {
         .limit(1)
         .exec(function (err, pwObj) {
           // If no password is set or there is an error, abort
-          if (err || !pwObj || pwObj.length == 0) { return done(null, false, { message: 'Invalid email address or password.'}); }
+          if (err || !pwObj || pwObj.length === 0) { return done(null, false, { message: 'Invalid email address or password.'}); }
           // Compare the passwords to check if it is correct
           bcrypt.compare(userData.password, pwObj[0].password, function (err, res) {
             // Valid password
@@ -576,7 +576,7 @@ module.exports = {
         // Stores the credentials and the user's other profile data
         var user_cb = function(err, user) {
           var creds = {
-            userId: user['id'],
+            userId: user.id,
             provider: provider,
             providerId: providerUser.id,
             accessToken: tokens.accessToken,
@@ -589,7 +589,7 @@ module.exports = {
             // Store emails if they're available
             if (providerUser.emails && (providerUser.emails.length > 0)) {
               var email = {
-                userId: user['id'],
+                userId: user.id,
                 email: providerUser.emails[0].value.toLowerCase(),
               };
               UserEmail.findOne(email, function (err, storedEmail) {
@@ -676,7 +676,7 @@ module.exports = {
         userAuth.save(function (err) {
           if (err) { return done(null, false, { message: 'Unable to update user credentials.' }); }
           // acquire user model and authenticate
-          User.findOneById(userAuth['userId'], function (err, user) {
+          User.findOneById(userAuth.userId, function (err, user) {
             if (!user || err) { return done(null, false, { message: 'Error looking up user.' }); }
             sails.log.debug('User Found:', user);
 
@@ -733,7 +733,7 @@ module.exports = {
     };
     // if the requestor is the same as the user, show admin status
     if (user.id === reqId) {
-      u.isAdmin = user.isAdmin
+      u.isAdmin = user.isAdmin;
     }
     return u;
   },
@@ -762,7 +762,7 @@ module.exports = {
       }
       tagUtils.assemble({ userId: userId }, function (err, tags) {
         if (err) { return cb(err, null); }
-        for (i in tags) {
+        for (var i in tags) {
           delete tags[i].projectId;
           delete tags[i].taskId;
           delete tags[i].updatedAt;
@@ -839,6 +839,7 @@ module.exports = {
   addUserName: function (ownerObj, done) {
     User.findOneById(ownerObj.userId, function (err, owner) {
       if (err) { return done(err); }
+      if (!owner) { return done(); }
       ownerObj.name = owner.name;
       return done();
     });
@@ -864,11 +865,11 @@ module.exports = {
     var _password = password.toLowerCase().trim();
     // check username is not the same as the password, in any case
     if (_username != _password && _username.split('@',1)[0] != _password) {
-      rules['username'] = true;
+      rules.username = true;
     }
     // length > 8 characters
     if (password && password.length >= 8) {
-      rules['length'] = true;
+      rules.length = true;
     }
     // Uppercase, Lowercase, and Numbers
     for (var i = 0; i < password.length; i++) {
@@ -876,19 +877,19 @@ module.exports = {
       // from http://stackoverflow.com/questions/3816905/checking-if-a-string-starts-with-a-lowercase-letter
       if (test === test.toLowerCase() && test !== test.toUpperCase()) {
         // lowercase found
-        rules['lower'] = true;
+        rules.lower = true;
       }
       else if (test === test.toUpperCase() && test !== test.toLowerCase()) {
-        rules['upper'] = true;
+        rules.upper = true;
       }
       // from http://stackoverflow.com/questions/18082/validate-numbers-in-javascript-isnumeric
       else if (!isNaN(parseFloat(test)) && isFinite(test)) {
-        rules['number'] = true;
+        rules.number = true;
       }
     }
     // check for symbols
     if (/.*[^\w\s].*/.test(password)) {
-      rules['symbol'] = true;
+      rules.symbol = true;
     }
     return rules;
   }
