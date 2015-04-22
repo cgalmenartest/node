@@ -76,20 +76,16 @@ var ModalPages = ModalWizard.extend({
     var prevAvailable = step.prev() && !_.isUndefined(step.prev().html());
     var nextAvailable = step.next() && !_.isUndefined(step.next().html());
     if (nextAvailable) {
-      console.log("does this happen 1");
       $("#wizard-forward-button").show();
       $("#wizard-create-button").hide();
     } else {
-      console.log("does this happen 2");
       $("#wizard-forward-button").hide();
       $("#wizard-create-button").show();
     }
 
     if ( prevAvailable ) {
-      console.log("does this happen 3");
       $("#wizard-backward-button").show();
     } else {
-      console.log("does this happen 4");
       $("#wizard-backward-button").hide();
     }
     /*
