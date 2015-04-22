@@ -15,7 +15,7 @@ var tagAssemble = function (where, done) {
   .where(where)
   .exec(function (err, tags) {
     if (err) { return done(err, null); }
-    if (!tags || (tags.length == 0)) { return done(null, []); }
+    if (!tags || (tags.length === 0)) { return done(null, []); }
     var entities = {};
     var tagIds = [];
 
@@ -26,7 +26,7 @@ var tagAssemble = function (where, done) {
         entities[tagId] = t;
         next(err);
       });
-    }
+    };
 
     // Get all the tag ids
     for (var i = 0; i < tags.length; i++) {
