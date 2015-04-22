@@ -11,7 +11,7 @@ var projUtil = require('../services/utils/project');
 var taskUtil = require('../services/utils/task');
 var tagUtil = require('../services/utils/tag');
 
-function search(target, req, res){
+function search(target, req, res) {
   //builds an array of task/project ids where search terms were found
   //   returns task / project(+counts) objects which are rendered by the calling page as cards
   //   search terms are ANDed
@@ -37,10 +37,11 @@ function search(target, req, res){
     // should be revisited once we are on sails 10
     // we are waiting for support of contains in an or-pair fragment in waterline
 
-    var titleSqlFrag = descSqlFrag = "";
+    var titleSqlFrag = '',
+        descSqlFrag = '';
 
     _.each(search,function(term){
-      if ( titleSqlFrag == "" ){
+      if ( titleSqlFrag === "" ){
         titleSqlFrag = " title ilike '%"+term+"%'";
         descSqlFrag  = " description ilike '%"+term+"%'";
       } else {
@@ -67,7 +68,7 @@ function search(target, req, res){
     var sqlFrag = "";
 
     _.each(search,function(term){
-      if ( sqlFrag == "" ){
+      if ( sqlFrag === "" ){
         sqlOrFrag  = " name ilike '%"+term+"%'";
       } else {
         sqlOrFrag  = sqlOrFrag+" or name ilike '%"+term+"%'";
@@ -91,7 +92,7 @@ function search(target, req, res){
                 results.push(tag.projectId);
               }
             }
-          });;
+          });
         cb();
       });
     });
@@ -103,14 +104,13 @@ function search(target, req, res){
         //we're don't care about the callback behavior here, so discard it
         callback(null,null);
       });
-    },
-    function(callback){
+    }, function(callback) {
       tagSearch(q.freeText,function(err){
         //we're don't care about the callback behavior here, so discard it
         callback(null,null);
       });
-    }],
-    function(err,trash){
+    }
+  ], function(err,trash) {
     var items = [];
 
     //de-dupe
@@ -125,27 +125,24 @@ function search(target, req, res){
         }
       });
     } else {
-      var items = [];
       //this each is required so we can add the counts which are need for project cards only
-      async.each(results,
-        function(id,fcb){
-          Project.findOneById(id,function(err,proj){
-            projUtil.addCounts(proj, function (err) {
-              items.push(proj);
-              fcb();
-            });
+      async.each(results, function(id,fcb){
+        Project.findOneById(id,function(err,proj){
+          projUtil.addCounts(proj, function (err) {
+            items.push(proj);
+            fcb();
           });
-        },
-        function(err){
-          if ( _.isNull(items) ){
-            res.send([]);
-          } else {
-            res.send(items);
-          }
         });
+      }, function(err){
+        if ( _.isNull(items) ){
+          res.send([]);
+        } else {
+          res.send(items);
+        }
+      });
     }
   });
-};
+}
 
 module.exports = {
 
