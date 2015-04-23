@@ -225,12 +225,16 @@ var TaskEditFormView = Backbone.View.extend({
         modelData.userId = owner.id;
       }
 
-      var tags = _(this.getTagsFromPage()).map(function(tag) {
-        return (tag.id && tag.id !== tag.name) ? +tag.id : {
-          name: tag.name,
-          type: tag.tagType
-        };
-      });
+      var tags = _(this.getTagsFromPage()).chain()
+            .map(function(tag) {
+              if (!tag) return;
+              return (tag.id && tag.id !== tag.name) ? +tag.id : {
+                name: tag.name,
+                type: tag.tagType
+              };
+            })
+            .compact()
+            .value();
       modelData.tags = tags;
 
       self.options.model.trigger("task:update", modelData);

@@ -721,6 +721,7 @@ module.exports = {
       name: user.name,
       title: user.title,
       bio: user.bio,
+      tags: user.tags,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt
     };
