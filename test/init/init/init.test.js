@@ -44,7 +44,7 @@ describe('init:', function() {
       utils.user_disable(request, user, function (err, user) {
         done(err);
       });
-    })
+    });
   });
 
 });
