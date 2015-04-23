@@ -55,6 +55,12 @@ module.exports = {
     'name': {field: 'name', filter: exportUtils.nullToEmptyString},
     'username': {field: 'username', filter: exportUtils.nullToEmptyString},
     'title': {field: 'title', filter: exportUtils.nullToEmptyString},
+
+    // The two below fields are not directly on the user model
+    // They are populated from tags by UserController.export
+    'agency': {field: 'agency', filter: exportUtils.nullToEmptyString},
+    'location': {field: 'location', filter: exportUtils.nullToEmptyString},
+
     'bio': {field: 'bio', filter: exportUtils.nullToEmptyString},
     'isAdmin': 'isAdmin',
     'disabled': 'disabled'
