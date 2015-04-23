@@ -10,41 +10,6 @@
 var _ = require('underscore');
 var async = require('async');
 
-var tagAssemble = function (where, done) {
-  Tag.find()
-  .where(where)
-  .exec(function (err, tags) {
-    if (err) { return done(err, null); }
-    if (!tags || (tags.length === 0)) { return done(null, []); }
-    var entities = {};
-    var tagIds = [];
-
-    // Helper function for async to look up each tag entitiy
-    var getTags = function (tagId, next) {
-      if (entities[tagId]) { return next(); }
-      TagEntity.findOne(tagId, function (err, t) {
-        entities[tagId] = t;
-        next(err);
-      });
-    };
-
-    // Get all the tag ids
-    for (var i = 0; i < tags.length; i++) {
-      tagIds.push(tags[i].tagId);
-    }
-
-    // Get the tag entities for each id
-    async.each(tagIds, getTags, function(err) {
-      if (err) { return done(err, null); }
-      // Attach the tag entity to the tag
-      for (var i = 0; i < tags.length; i++) {
-        tags[i].tag = entities[tags[i].tagId];
-      }
-      return done(null, tags);
-    });
-  });
-};
-
 /**
  * Given a userId and a list of tags with types,
  * find and return the tag, or create the tag and
@@ -125,9 +90,5 @@ var findOrCreateTags = function (userId, tags, done) {
 };
 
 module.exports = {
-  assemble: tagAssemble,
-  findOrCreateTags: findOrCreateTags,
-  pruneTags: function(userId, tagIds, done) {
-    return done();
-  }
+  findOrCreateTags: findOrCreateTags
 };

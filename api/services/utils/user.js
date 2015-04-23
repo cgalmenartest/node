@@ -281,11 +281,7 @@ module.exports = {
             for (var i in newTags) {
               newTagIds.push(newTags[i].id);
             }
-            // Prune old tags
-            tagUtils.pruneTags(user.id, newTagIds, function (err, removedTags) {
-              sails.log.debug('Prune Tags:', removedTags);
-              cbTagUpdate(err);
-            });
+            cbTagUpdate();
           });
         };
 
@@ -548,10 +544,7 @@ module.exports = {
         for (var i in newTags) {
           newTagIds.push(newTags[i].id);
         }
-        // Prune old tags
-        tagUtils.pruneTags(userId, newTagIds, function (err, removedTags) {
-          cbTagUpdate(err);
-        });
+        cbTagUpdate();
       });
     };
 
@@ -760,7 +753,8 @@ module.exports = {
       if (userId != reqId) {
         user = self.cleanUser(user, reqId);
       }
-
+      user.location = _.findWhere(user.tags, { type: 'location' });
+      user.agency = _.findWhere(user.tags, { type: 'agency' });
       Like.countByTargetId(userId, function (err, likes) {
         if (err) { return cb(err, null); }
         user.likeCount = likes;
