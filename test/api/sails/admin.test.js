@@ -154,18 +154,29 @@ describe('admin:', function () {
     });
 
     it('export', function (done) {
-      request.get({
-        url: conf.url + '/user/export'
-      }, function (err, response, body) {
-        assert.equal(response.statusCode, 200);
-        var testBody = '"user_id","name","username","title","bio","isAdmin","disabled"\n' +
-            '1,"","tester1@midascrowd.com","","",false,false\n' +
-            '2,"","admin@midascrowd.com","","",true,false\n' +
-            '3,"","testreset@midascrowd.com","","",false,false\n'
-        assert.equal(body, testBody);
-        done(err);
+      // Add a new tag of type 'location'
+      request.post({ url: conf.url + '/tag/add',
+                     body: JSON.stringify(conf.tags[3])
+                   }, function (err, response, body) {
+        var locationTag = { userId: 1,
+                            tagId: JSON.parse(body).id };
+        // Set user 1's location by referencing the newly added location tag
+        request.post({ url: conf.url + '/tag',
+                       body: JSON.stringify(locationTag)
+                     }, function (err, response, body) {
+          request.get({
+            url: conf.url + '/user/export'
+          }, function (err, response, body) {
+            assert.equal(response.statusCode, 200);
+            var testBody = '"user_id","name","username","title","agency","location","bio","isAdmin","disabled"\n' +
+                '1,"","' + conf.defaultUser.username + '","","","' + conf.tags[3].name + '","",false,false\n' +
+                '2,"","' + conf.adminUser.username + '","","","","",true,false\n' +
+                '3,"","' + conf.testPasswordResetUser.username + '","","","","",false,false\n'
+            assert.equal(body, testBody);
+            done(err);
+          });
+        });
       });
     });
-
   });
 });
