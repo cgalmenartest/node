@@ -128,4 +128,3 @@ TaskList = Backbone.View.extend({
 });
 
 module.exports = TaskList;
-

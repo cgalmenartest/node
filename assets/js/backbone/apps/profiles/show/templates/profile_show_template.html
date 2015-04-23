@@ -110,8 +110,8 @@
                   <img src="<%= login.config[a].image %>" alt="<%= login.config[a].name %>" style="height: 30px"/>
                 </div>
                 <div class="col-xs-4 col-sm-3 col-md-3">
-                  <% if (_.contains(data.auths, a)) { %>
-                  <a href="#" class="btn btn-danger btn-sm removeAuth pull-right" data-service="<%= a %>"><span class="fa fa-remove"></span> Disconnect</a>
+                  <% if (_.findWhere(data.auths, { provider: a })) { %>
+                  <a href="#" class="btn btn-danger btn-sm removeAuth pull-right" data-service="<%= a %>" data-id="<%= _.findWhere(data.auths, { provider: a }).id %>"><span class="fa fa-remove"></span> Disconnect</a>
                   <% } else { %>
                   <a href="<%= login.config[a].endpoint %>" class="btn btn-success btn-sm pull-right"><span class="fa fa-plus"></span> Connect</a>
                   <% } %>
@@ -141,8 +141,8 @@
           <h1><% if (data.name) { %><%- data.name %><% } else { %><%- data.username %><% } %></h1>
 
           <div class="profile-jobtitle"><% if (data.title) { %><i class="fa fa-briefcase"></i> <span class="box-icon-text"><%- data.title %></span><% } %></div>
-          <div class="profile-company"><% if (data.agency) { %><i class="icon-library"></i> <span class="box-icon-text"><%- data.agency.tag.name %></span><% } %></div>
-          <div class="profile-location"><% if (data.location) { %><span class="fa fa-map-marker"></span> <span class="box-icon-text"><%- data.location.tag.name %></span><% } %></div>
+          <div class="profile-company"><% if (data.agency) { %><i class="icon-library"></i> <span class="box-icon-text"><%- data.agency.name %></span><% } %></div>
+          <div class="profile-location"><% if (data.location) { %><span class="fa fa-map-marker"></span> <span class="box-icon-text"><%- data.location.name %></span><% } %></div>
 
           <div class="profile-bio box-pad-t">
             <% if (data.bioHtml) { %><%= data.bioHtml %><% } else { %>This person doesn't have a bio yet.<% } %>

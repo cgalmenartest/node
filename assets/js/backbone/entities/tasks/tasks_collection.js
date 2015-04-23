@@ -25,7 +25,7 @@ var TasksCollection = Backbone.Collection.extend({
 
     this.listenTo(this, "task:save", function (data) {
       self.addAndSave(data);
-    })
+    });
   },
 
   addAndSave: function (data) {
@@ -43,4 +43,3 @@ var TasksCollection = Backbone.Collection.extend({
 });
 
 module.exports = TasksCollection;
-

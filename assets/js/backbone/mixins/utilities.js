@@ -105,14 +105,8 @@ global.scrollTop = function () {
  * @return {[object]}               [bindingObject returned out]
  */
 global.organizeTags = function (tags) {
-  var outTags = {};
-  for (t in tags) {
-    if (!(_.has(outTags, tags[t].tag.type))) {
-      outTags[tags[t].tag.type] = [];
-    }
-    outTags[tags[t].tag.type].push(tags[t].tag);
-  }
-  return outTags;
+  // put the tags into their types
+  return _(tags).groupBy('type');
 }
 
 /**

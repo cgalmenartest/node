@@ -131,8 +131,7 @@ var TaskShowController = BaseView.extend({
         el: '.tag-wrapper',
         target: 'task',
         targetId: 'taskId',
-        edit: false,
-        url: '/api/tag/findAllByTaskId/'
+        edit: false
       }).render();
 
     });
