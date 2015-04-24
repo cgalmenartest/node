@@ -65,7 +65,7 @@ var HomeView = Backbone.View.extend({
       this.modalPages = new ModalPages({
         el: "#modal_target",
         id: "addSplash",
-        modalTitle: 'Welcome to CrowdWork Homie',
+        modalTitle: 'Welcome to '+ window.cache.system.name,
       }).render();
 
       this.emptyModalView = new EmptyModalView({
