@@ -24,6 +24,7 @@
       <a href="/tasks/<%- task.id %>" class="show-task" data-projectid="<%- task.projectId %>" data-id="<%- task.id %>"><%- task.title %></a>
     </div>
     <div class="task-description">
+      <% /* Escaped with marked() */ %>
       <%= task.description %>
     </div>
     <div class="task-tags-row">

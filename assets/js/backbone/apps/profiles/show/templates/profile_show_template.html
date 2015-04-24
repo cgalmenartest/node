@@ -145,6 +145,7 @@
           <div class="profile-location"><% if (data.location) { %><span class="fa fa-map-marker"></span> <span class="box-icon-text"><%- data.location.tag.name %></span><% } %></div>
 
           <div class="profile-bio box-pad-t">
+            <% /* Escaped with marked() */ %>
             <% if (data.bioHtml) { %><%= data.bioHtml %><% } else { %>This person doesn't have a bio yet.<% } %>
           </div>
         </div>

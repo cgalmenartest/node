@@ -48,10 +48,10 @@ var CommentFormView = Backbone.View.extend({
       // otherwise leave blank.
       if (data.target == 'user') {
         if (data.agency) {
-          data.description = data.agency;
+          data.description = _.escape(data.agency);
         }
         else if (data.title) {
-          data.description = data.title;
+          data.description = _.escape(data.title);
         }
         else {
           data.description = '';

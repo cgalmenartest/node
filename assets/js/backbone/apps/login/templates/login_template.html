@@ -3,6 +3,7 @@
 
   <% if (message && !_.isUndefined(message.message)) { %>
   <div class="alert alert-warning">
+    <% /* Escaped in calling views */ %>
     <%= message.message %>
   </div>
   <% } %>

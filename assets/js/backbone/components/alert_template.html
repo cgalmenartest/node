@@ -2,5 +2,6 @@
   <% if (alert.dismiss) { %>
   <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
   <% } %>
+  <% /* Server-generated error is escaped in the view */ %>
   <%= alert.message %>
 </div>

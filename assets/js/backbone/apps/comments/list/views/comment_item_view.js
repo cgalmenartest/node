@@ -11,7 +11,7 @@ var CommentItemView = Backbone.View.extend({
 
   render: function () {
     this.model.currentUser = window.cache.currentUser;
-    this.model.valueHtml = marked(Autolinker.link(this.model.value));
+    this.model.valueHtml = marked(Autolinker.link(this.model.value), { sanitize: false });
     this.model.commentId = this.model.id;
 
     var compiledTemplate = _.template(CommentItemTemplate)(this.model);
