@@ -37,9 +37,9 @@
       <td class="admin-table-createdat">
         <!-- day -->
         <% var created = new Date(u.createdAt); %>
-        <%= created.toLocaleDateString() %>
+        <%- created.toLocaleDateString() %>
         <!-- time -->
-        <%= created.toLocaleTimeString() %>
+        <%- created.toLocaleTimeString() %>
       </td>
       <td class="admin-table-projects">
       <% if (u.projectsCreatedOpen !== 0 || u.projectsCreatedClosed !== 0) { %>

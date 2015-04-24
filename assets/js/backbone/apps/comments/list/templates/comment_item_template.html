@@ -5,7 +5,7 @@
   <% } %>
     <div class="comment-image">
       <div class="project-people-div" data-userid="<%- userId %>">
-        <img src="/api/user/photo/<%= userId %>" alt="<%- user.name %>" class="project-people" />
+        <img src="/api/user/photo/<%- userId %>" alt="<%- user.name %>" class="project-people" />
       </div>
     </div>
 
@@ -26,7 +26,7 @@
         <time class="timeago comment-created-at" datetime="<%- createdAt %>"><%- createdAt %></time>
         <% if (currentUser) { %>
         &bull;
-        <a href="#reply-to-comment" class="reply-to-<%= id %>" data-depth="<%= depth %>" data-commentid="<%= id %>" data-authorid="<%- userId %>" data-commentauthor="<% if (user.name) { %><%- user.name %><% } else { %><%- user.username %><% } %>">Reply</a>
+        <a href="#reply-to-comment" class="reply-to-<%- id %>" data-depth="<%- depth %>" data-commentid="<%- id %>" data-authorid="<%- userId %>" data-commentauthor="<% if (user.name) { %><%- user.name %><% } else { %><%- user.username %><% } %>">Reply</a>
         <% } %>
       </div>
     </div>
