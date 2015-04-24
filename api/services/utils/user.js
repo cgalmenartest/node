@@ -679,6 +679,13 @@ module.exports = {
           User.findOneById(userAuth.userId, function (err, user) {
             if (!user || err) { return done(null, false, { message: 'Error looking up user.' }); }
             sails.log.debug('User Found:', user);
+            if (providerUser.id !== user.id) {
+              return done(null, false, {
+                message: 'We\'re sorry, you can\'t connect that ' +
+                  sails.config.auth.config.config[userAuth.provider].name +
+                  ' account since it is already connected to a different profile.'
+              });
+            }
 
             var update = false;
             if (providerUser.overwrite || (user.photoId && !user.photoUrl && providerUser.photoUrl)) {

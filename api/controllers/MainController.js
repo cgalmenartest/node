@@ -8,10 +8,11 @@
 module.exports = {
   index: function(req, res) {
     // include data variables for the view passed by the policies
+    var flash = req.flash('message');
     var data = {
       systemName: sails.config.systemName,
       draftAdminOnly: sails.config.draftAdminOnly || false,
-      alert: req.alert || null
+      alert: req.alert || (flash.length) ? { message: flash[0] } : null || null
     };
     // get version information
     sails.config.version(function (v) {
