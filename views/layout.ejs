@@ -14,7 +14,9 @@
     draftAdminOnly = <%- JSON.stringify(draftAdminOnly) %>;
     version = <%- JSON.stringify(version) %>;
     <% if (req.user) { %>
-    backendUser = <%- JSON.stringify(req.user[0]) %>;
+    backendUser = <%- JSON.stringify(_(req.user[0]).mapValues(function(value) {
+      return _.escape(value);
+    }).omit('inspect').value()) %>;
     <% } else { %>
     backendUser = null;
     <% } %>
