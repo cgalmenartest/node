@@ -157,9 +157,9 @@ module.exports = {
   },
 
   tag_find: function(request, name, type, cb) {
-    var url = conf.url + '/ac/tag?q=' + name;
+    var url = conf.url + '/ac/tag?q=' + encodeURIComponent(name);
     if (type) {
-      url = url + '&type=' + type;
+      url = url + '&type=' + encodeURIComponent(type);
     }
     var r = request.get({
       url: url
