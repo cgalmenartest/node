@@ -20,13 +20,14 @@ Next, create the `midas` database:
 
     initdb /usr/local/var/postgresql
 
-Once you're done install you'll see two options:
+Once you're done installing you'll see two options:
     Success. You can now start the database server using:
 
     postgres -D /usr/local/var/postgresql
     or
     pg_ctl -D /usr/local/var/postgresql -l logfile start
 
+When you run either of these commands it will start running the server. It's best to choose the first choice so if you work on a different tab in your terminal the server will keep running.
 
     createdb midas
 
