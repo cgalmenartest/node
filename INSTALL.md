@@ -19,6 +19,15 @@ When Homebrew is done installing Postgres, follow the instructions at the end to
 Next, create the `midas` database:
 
     initdb /usr/local/var/postgresql
+
+Once you're done install you'll see two options:
+    Success. You can now start the database server using:
+
+    postgres -D /usr/local/var/postgresql
+    or
+    pg_ctl -D /usr/local/var/postgresql -l logfile start
+
+
     createdb midas
 
 Start the postgres console acting on the midas database with: `psql midas`
