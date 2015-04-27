@@ -18,7 +18,9 @@ before(function(done) {
       level: 'error'
     },
     hooks: {
-      grunt: false
+      grunt: false,
+      sockets: false,
+      pubsub: false
     }
   }
 

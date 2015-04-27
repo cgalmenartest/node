@@ -6,7 +6,6 @@
  */
 var async = require('async');
 var util = require('./project');
-var tagUtil = require('./tag');
 var userUtil = require('./user');
 
 var authorized = function (id, userId, user, cb) {
@@ -14,7 +13,7 @@ var authorized = function (id, userId, user, cb) {
     cb = user;
     user = undefined;
   }
-  Task.findOneById(id, function (err, task) {
+  Task.findOneById(id).populate('tags').exec(function (err, task) {
     if (err) { return cb('Error finding task.', null); }
     task.isOwner = false;
     // otherwise, check that we have an owner
@@ -42,13 +41,6 @@ var authorized = function (id, userId, user, cb) {
       // In any other state, you have to be the owner.  Denied.
       return cb(null, null);
     });
-  });
-};
-
-var getTags = function (task, cb) {
-  tagUtil.assemble({ taskId: task.id }, function (err, tags) {
-    task.tags = tags;
-    cb(err);
   });
 };
 
@@ -114,6 +106,7 @@ var findTasks = function (where, cb) {
   var w = where || {};
   Task.find()
   .where(w)
+  .populate('tags')
   .sort({ publishedAt: 0, updatedAt: 0 })
   .exec(function (err, tasks) {
     if (err) { return cb({ message: 'Error looking up tasks.' }, null); }
@@ -131,14 +124,10 @@ var findTasks = function (where, cb) {
     // get user info
     async.each(tasks, lookupUser, function (err) {
       if (err) { return cb({ message: 'Error looking up user info.' }, null); }
-      // get tag info
-      async.each(tasks, self.getTags, function (err) {
-        if (err) { return cb({ message: 'Error looking up task tags.' }, null); }
-        // get likes
-        async.each(tasks, self.getLikes, function (err) {
-          if (err) { return cb({ message: 'Error looking up task likes.' }, null); }
-          return cb(err, tasks);
-        });
+      // get likes
+      async.each(tasks, self.getLikes, function (err) {
+        if (err) { return cb({ message: 'Error looking up task likes.' }, null); }
+        return cb(err, tasks);
       });
     })
   });
@@ -146,7 +135,6 @@ var findTasks = function (where, cb) {
 
 module.exports = {
   authorized: authorized,
-  getTags: getTags,
   getMetadata: getMetadata,
   getLikes: getLikes,
   getVolunteers: getVolunteers,

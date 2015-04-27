@@ -69,7 +69,7 @@ describe('demo:', function() {
           utils.login(request, user.username, user.password, function (err) {
             if (err) return done(err);
             var tagEntity = conf.tags[user[entity]];
-            createTag({ tagId: tagEntity.id }, done);
+            createTag({ tagId: tagEntity.id, userId: user.id }, done);
           });
           return;
         }
@@ -90,14 +90,13 @@ describe('demo:', function() {
   it('projects', function (done) {
     var process = function (proj, done) {
       var user = conf.users[proj.owner];
-      console.log(proj.owner, user.username, proj);
 
       // sub-functions to create comments
       var createComments = function (comments, parentId, done) {
         var request = utils.init();
 
         var processComment = function (comment, done) {
-          var user = conf.users[comment['user']];
+          var user = conf.users[comment.user];
           utils.login(request , user.username, user.password, function (err) {
             if (err) return done(err);
             comment.projectId = proj.id;
@@ -111,7 +110,7 @@ describe('demo:', function() {
               if (comment.children) {
                 createComments(comment.children, comment.id, function (err) {
                   done(err);
-                })
+                });
               } else {
                 done();
               }
@@ -197,7 +196,7 @@ describe('demo:', function() {
             task.id = taskObj.id;
             done(err);
           });
-        }
+        };
         utils.login(request, user.username, user.password, function (err) {
           if (err) return done(err);
           async.each(proj.tasks, createTask, done);
@@ -218,7 +217,7 @@ describe('demo:', function() {
         };
         utils.login(request, user.username, user.password, function (err) {
           if (err) return done(err);
-          async.each(proj.tags, createTag, done);
+          async.each(proj.tempTags, createTag, done);
         });
       };
 
@@ -231,6 +230,10 @@ describe('demo:', function() {
       // start processing each project
       utils.login(request, user.username, user.password, function (err) {
         if (err) return done(err);
+
+        proj.tempTags = proj.tags;
+        delete proj.tags;
+
         utils.proj_create(request, proj, function (err, projObj) {
           proj.obj = projObj;
           proj.id = projObj.id;

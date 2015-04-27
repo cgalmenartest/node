@@ -440,6 +440,41 @@ ALTER SEQUENCE project_id_seq OWNED BY project.id;
 
 
 --
+-- Name: project_tags__tagentity_projects; Type: TABLE; Schema: public; Owner: midas; Tablespace:
+--
+
+CREATE TABLE project_tags__tagentity_projects (
+    id integer NOT NULL,
+    project_tags integer,
+    tagentity_projects integer,
+    "deletedAt" timestamp with time zone
+);
+
+
+ALTER TABLE project_tags__tagentity_projects OWNER TO midas;
+
+--
+-- Name: project_tags__tagentity_projects_id_seq; Type: SEQUENCE; Schema: public; Owner: midas
+--
+
+CREATE SEQUENCE project_tags__tagentity_projects_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE project_tags__tagentity_projects_id_seq OWNER TO midas;
+
+--
+-- Name: project_tags__tagentity_projects_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: midas
+--
+
+ALTER SEQUENCE project_tags__tagentity_projects_id_seq OWNED BY project_tags__tagentity_projects.id;
+
+
+--
 -- Name: projectowner; Type: TABLE; Schema: public; Owner: midas; Tablespace:
 --
 
@@ -621,11 +656,11 @@ ALTER SEQUENCE tag_id_seq OWNED BY tag.id;
 CREATE TABLE tagentity (
     type text,
     name text,
+    data json,
     id integer NOT NULL,
     "createdAt" timestamp with time zone,
     "updatedAt" timestamp with time zone,
-    "deletedAt" timestamp with time zone,
-    data json
+    "deletedAt" timestamp with time zone
 );
 
 
@@ -650,6 +685,76 @@ ALTER TABLE tagentity_id_seq OWNER TO midas;
 --
 
 ALTER SEQUENCE tagentity_id_seq OWNED BY tagentity.id;
+
+
+--
+-- Name: tagentity_tasks__task_tags; Type: TABLE; Schema: public; Owner: midas; Tablespace:
+--
+
+CREATE TABLE tagentity_tasks__task_tags (
+    id integer NOT NULL,
+    tagentity_tasks integer,
+    task_tags integer,
+    "deletedAt" timestamp with time zone
+);
+
+
+ALTER TABLE tagentity_tasks__task_tags OWNER TO midas;
+
+--
+-- Name: tagentity_tasks__task_tags_id_seq; Type: SEQUENCE; Schema: public; Owner: midas
+--
+
+CREATE SEQUENCE tagentity_tasks__task_tags_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE tagentity_tasks__task_tags_id_seq OWNER TO midas;
+
+--
+-- Name: tagentity_tasks__task_tags_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: midas
+--
+
+ALTER SEQUENCE tagentity_tasks__task_tags_id_seq OWNED BY tagentity_tasks__task_tags.id;
+
+
+--
+-- Name: tagentity_users__user_tags; Type: TABLE; Schema: public; Owner: midas; Tablespace:
+--
+
+CREATE TABLE tagentity_users__user_tags (
+    id integer NOT NULL,
+    tagentity_users integer,
+    user_tags integer,
+    "deletedAt" timestamp with time zone
+);
+
+
+ALTER TABLE tagentity_users__user_tags OWNER TO midas;
+
+--
+-- Name: tagentity_users__user_tags_id_seq; Type: SEQUENCE; Schema: public; Owner: midas
+--
+
+CREATE SEQUENCE tagentity_users__user_tags_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE tagentity_users__user_tags_id_seq OWNER TO midas;
+
+--
+-- Name: tagentity_users__user_tags_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: midas
+--
+
+ALTER SEQUENCE tagentity_users__user_tags_id_seq OWNED BY tagentity_users__user_tags.id;
 
 
 --
@@ -1038,6 +1143,13 @@ ALTER TABLE ONLY project ALTER COLUMN id SET DEFAULT nextval('project_id_seq'::r
 -- Name: id; Type: DEFAULT; Schema: public; Owner: midas
 --
 
+ALTER TABLE ONLY project_tags__tagentity_projects ALTER COLUMN id SET DEFAULT nextval('project_tags__tagentity_projects_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: midas
+--
+
 ALTER TABLE ONLY projectowner ALTER COLUMN id SET DEFAULT nextval('projectowner_id_seq'::regclass);
 
 
@@ -1067,6 +1179,20 @@ ALTER TABLE ONLY tag ALTER COLUMN id SET DEFAULT nextval('tag_id_seq'::regclass)
 --
 
 ALTER TABLE ONLY tagentity ALTER COLUMN id SET DEFAULT nextval('tagentity_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: midas
+--
+
+ALTER TABLE ONLY tagentity_tasks__task_tags ALTER COLUMN id SET DEFAULT nextval('tagentity_tasks__task_tags_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: midas
+--
+
+ALTER TABLE ONLY tagentity_users__user_tags ALTER COLUMN id SET DEFAULT nextval('tagentity_users__user_tags_id_seq'::regclass);
 
 
 --
@@ -1206,6 +1332,14 @@ ALTER TABLE ONLY project
 
 
 --
+-- Name: project_tags__tagentity_projects_pkey; Type: CONSTRAINT; Schema: public; Owner: midas; Tablespace:
+--
+
+ALTER TABLE ONLY project_tags__tagentity_projects
+    ADD CONSTRAINT project_tags__tagentity_projects_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: projectowner_pkey; Type: CONSTRAINT; Schema: public; Owner: midas; Tablespace:
 --
 
@@ -1251,6 +1385,22 @@ ALTER TABLE ONLY tag
 
 ALTER TABLE ONLY tagentity
     ADD CONSTRAINT tagentity_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tagentity_tasks__task_tags_pkey; Type: CONSTRAINT; Schema: public; Owner: midas; Tablespace:
+--
+
+ALTER TABLE ONLY tagentity_tasks__task_tags
+    ADD CONSTRAINT tagentity_tasks__task_tags_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tagentity_users__user_tags_pkey; Type: CONSTRAINT; Schema: public; Owner: midas; Tablespace:
+--
+
+ALTER TABLE ONLY tagentity_users__user_tags
+    ADD CONSTRAINT tagentity_users__user_tags_pkey PRIMARY KEY (id);
 
 
 --

@@ -6,7 +6,6 @@ var utils = require('../../../../mixins/utilities');
 var async = require('async');
 var ModalComponent = require('../../../../components/modal');
 var TagConfig = require('../../../../config/tag');
-var TagFormView = require('../../new/views/tag_new_form_view');
 var TagTemplate = require('../templates/tag_item_template.html');
 var TagShowTemplate = require('../templates/tag_show_template.html');
 var TagFactory = require('../../../../components/tag_factory');
@@ -15,8 +14,6 @@ var TagFactory = require('../../../../components/tag_factory');
 var TagShowView = Backbone.View.extend({
 
   events: {
-    "click #tag-create"     : "createTag",
-    "click #tag-save"       : "saveTag",
     "click .tag-delete"     : "deleteTag"
   },
 
@@ -84,20 +81,12 @@ var TagShowView = Backbone.View.extend({
         user: window.cache.currentUser || {}
       };
       var compiledTemplate = _.template(TagTemplate)(templData);
-      var tagDom = $("." + tag.tag.type).children(".tags");
+      var tagDom = $("." + tag.type).children(".tags");
       tagDom.append(compiledTemplate);
-      $('#' + tagClass[tag.tag.type] + '-empty').hide();
+      $('#' + tagClass[tag.type] + '-empty').hide();
     };
 
-    $.ajax({
-      url: this.options.url + this.model.id
-    }).done(function (data) {
-      for (var i = 0; i < data.length; i++) {
-        // Render tags onto page
-        renderTag(data[i]);
-      }
-    });
-
+    _(this.model.get('tags')).each(renderTag);
     // Initialize Select2 for Administrative Functions
     var formatResult = function (object, container, query) {
       return '<i class="' + tagIcon[object.type] + '"></i> ' + object.name;
@@ -151,91 +140,17 @@ var TagShowView = Backbone.View.extend({
     });
   },
 
-  createTag: function (e) {
-    if (e.preventDefault) e.preventDefault();
-    var self = this;
-
-    // Pop up dialog box to create tag,
-    // then put tag into the select box
-    if (_.isUndefined(this.modalComponent)) {
-      this.modalComponent = new ModalComponent({
-        el: "#container",
-        id: "createTag",
-        modalTitle: "Create Tag"
-      }).render();
-    }
-
-    if (!_.isUndefined(this.modalComponent)) {
-      if (this.tagFormView) {
-        this.tagFormView.cleanup();
-      }
-      this.tagFormView = new TagFormView({
-        el: "#createTag .modal-template",
-        model: self.model,
-        tags: self.tags,
-        target: self.target
-      });
-      this.tagFormView.render();
-    }
-  },
-
-  saveTag: function (e) {
-    if (e.preventDefault) e.preventDefault();
-    var self = this;
-    // Cycle through tags in select box
-    // and call create on each one, then
-    // render
-    $("#tag-save").addClass('disabled');
-    var data = $("#input-tags").select2('data');
-    var result = [];
-
-    var processTag = function(tag, done) {
-      var tagMap = {
-        tagId: tag.id
-      };
-      if (self.targetId) {
-        tagMap[self.targetId] = self.model.id;
-      }
-      $.ajax({
-        url: '/api/tag',
-        type: 'POST',
-        data: tagMap
-      }).done(function (data) {
-        result.push(data);
-        done();
-      });
-    };
-
-    async.each(data, processTag, function (err) {
-      for (var i = 0; i < result.length; i++) {
-        for (var j = 0; j < data.length; j++) {
-          if (result[i].tagId == data[j].id) {
-            result[i].tag = data[j];
-            break;
-          }
-        }
-      }
-      $("#tag-save").removeClass('disabled');
-      self.model.trigger(self.options.target + ":tag:save", result);
-    });
-
-  },
-
   deleteTag: function (e) {
     if (e.preventDefault) e.preventDefault();
-    var self = this;
-    // Get the data-id of the currentTarget
-    // and then call HTTP DELETE on that tag id
-    $.ajax({
-      url: '/api/tag/' + $(e.currentTarget).data('id'),
-      type: 'DELETE',
-    }).done(function (data) {
-      self.model.trigger(self.options.target + ":tag:delete", e);
-    });
+    var tags = _(this.model.get('tags')).filter(function(tag) {
+          return tag.id !== $(e.currentTarget).data('id');
+        });
+    this.model.set('tags', tags);
+    this.model.trigger(this.options.target + ":tag:delete", e);
+
   },
 
   cleanup: function () {
-    if (this.tagFormView) { this.tagFormView.cleanup(); }
     removeView(this);
   }
 

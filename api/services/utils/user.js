@@ -281,11 +281,7 @@ module.exports = {
             for (var i in newTags) {
               newTagIds.push(newTags[i].id);
             }
-            // Prune old tags
-            tagUtils.pruneTags(user.id, newTagIds, function (err, removedTags) {
-              sails.log.debug('Prune Tags:', removedTags);
-              cbTagUpdate(err);
-            });
+            cbTagUpdate();
           });
         };
 
@@ -548,10 +544,7 @@ module.exports = {
         for (var i in newTags) {
           newTagIds.push(newTags[i].id);
         }
-        // Prune old tags
-        tagUtils.pruneTags(userId, newTagIds, function (err, removedTags) {
-          cbTagUpdate(err);
-        });
+        cbTagUpdate();
       });
     };
 
@@ -735,6 +728,7 @@ module.exports = {
       name: user.name,
       title: user.title,
       bio: user.bio,
+      tags: user.tags,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt
     };
@@ -761,79 +755,49 @@ module.exports = {
       cb = reqUser;
       reqUser = undefined;
     }
-    User.findOneById(userId, function (err, user) {
+    User.findOne({ id: userId }).populate('tags').exec(function (err, user) {
       if (err) { return cb(err, null); }
       delete user.deletedAt;
       if (userId != reqId) {
         user = self.cleanUser(user, reqId);
       }
-      tagUtils.assemble({ userId: userId }, function (err, tags) {
+      user.location = _.findWhere(user.tags, { type: 'location' });
+      user.agency = _.findWhere(user.tags, { type: 'agency' });
+      Like.countByTargetId(userId, function (err, likes) {
         if (err) { return cb(err, null); }
-        for (var i in tags) {
-          delete tags[i].projectId;
-          delete tags[i].taskId;
-          delete tags[i].updatedAt;
-          delete tags[i].deletedAt;
-          delete tags[i].userId;
-
-          if ( typeof tags[i].tag != 'undefined' ){
-            delete tags[i].tag.createdAt;
-            delete tags[i].tag.updatedAt;
-            delete tags[i].tag.deletedAt;
-            if (tags[i].tag.type == 'agency') {
-              if (!user.agency) {
-                user.agency = tags[i];
-              } else {
-                // always use the latest tag stored, in case multiple are stored
-                if (user.agency.createdAt < tags[i].createdAt) {
-                  user.agency = tags[i];
-                }
-              }
-            }
-            if (tags[i].tag.type == 'location') {
-              if (!user.location) {
-                user.location = tags[i];
-              } else {
-                // always use the latest tag stored, in case multiple are stored
-                if (user.location.createdAt < tags[i].createdAt) {
-                  user.location = tags[i];
-                }
-              }
-            }
-         }
-         }
-        user.tags = tags;
-        Like.countByTargetId(userId, function (err, likes) {
+        user.likeCount = likes;
+        user.like = false;
+        user.isOwner = false;
+        Like.findOne({ where: { userId: reqId, targetId: userId }}, function (err, like) {
           if (err) { return cb(err, null); }
-          user.likeCount = likes;
-          user.like = false;
-          user.isOwner = false;
-          Like.findOne({ where: { userId: reqId, targetId: userId }}, function (err, like) {
+          if (like) { user.like = true; }
+          // stop here if the requester id is not the same as the user id
+          if (userId != reqId && !admin) {
+            return cb(null, user);
+          }
+          // Look up which providers the user has authorized
+          UserAuth.findByUserId(userId, function (err, auths) {
             if (err) { return cb(err, null); }
-            if (like) { user.like = true; }
-            // stop here if the requester id is not the same as the user id
-            if (userId != reqId && !admin) {
-              return cb(null, user);
-            }
-            // Look up which providers the user has authorized
-            UserAuth.findByUserId(userId, function (err, auths) {
-              if (err) { return cb(err, null); }
-              user.auths = [];
-              for (var i = 0; i < auths.length; i++) {
-                user.auths.push(auths[i].provider);
-              }
-              // Look up the user's email addresses
-              UserEmail.findByUserId(userId, function (err, emails) {
-                if (err) { return cb(err, null); }
-                user.isOwner = true;
-                user.emails = [];
-                if (emails) { user.emails = emails; }
-                return cb(null, user);
+            user.auths = [];
+            for (var i = 0; i < auths.length; i++) {
+              user.auths.push({
+                provider: auths[i].provider,
+                id: auths[i].id,
+                token: auths[i].accessToken
               });
+            }
+            // Look up the user's email addresses
+            UserEmail.findByUserId(userId, function (err, emails) {
+              if (err) { return cb(err, null); }
+              user.isOwner = true;
+              user.emails = [];
+              if (emails) { user.emails = emails; }
+              return cb(null, user);
             });
           });
         });
       });
+
     });
   },
 

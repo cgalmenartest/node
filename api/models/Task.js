@@ -26,6 +26,13 @@ module.exports = {
     assignedAt: 'datetime',
     completedAt: 'datetime',
 
+    // Tag association
+    tags: {
+      collection: 'tagEntity',
+      via: 'tasks',
+      dominant: true
+    },
+
     isOpen: function(){
         if ( _.indexOf(['open','public','assigned'],this.state) != -1 ){
             return true;
