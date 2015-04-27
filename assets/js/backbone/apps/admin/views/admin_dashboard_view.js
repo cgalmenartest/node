@@ -114,10 +114,15 @@ var AdminDashboardView = Backbone.View.extend({
   },
 
   handleError: function (self, xhr, status, error) {
-    // show the alert message and hide the spinner
-    self.$('.alert').html(error.message || error);
-    self.$('.alert').show();
+    // for auth errors, get them out of here; for all others, show the error
+    // and hope a retry fixes it.
     self.$('.spinner').hide();
+    if (xhr.status >= 400 && xhr.status < 500) {
+      Backbone.history.navigate('/', { trigger: true });
+    } else {
+      self.$('.alert').html(error.message || error);
+      self.$('.alert').show();
+    }
   }
 });
 
