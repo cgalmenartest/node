@@ -21,7 +21,7 @@ If you want to keep up with the latest changes, we work in the "devel" branch.  
 Currently stand-ups are at 11a PT / 2p ET, but since we might reschedule now and then so
 here is our calendar of public meetings:  https://www.google.com/calendar/embed?src=ultrasaurus.com_oja7dkbgf1cug9smkb8q8pn2b8%40group.calendar.google.com  Anyone interested in Midas is welcome to join standup, you can meet the team and we can figure out appropriate longer-format or offline follow-up if you have lots of questions.
 
-We also have a [wiki](https://github.com/18F/midas/wiki) where we keep various development notes. If anything is confusing or your questions are not answered there, please shout out on the mailing list](https://groups.google.com/forum/#!forum/midascrowd). 
+We also have a [wiki](https://github.com/18F/midas/wiki) where we keep various development notes. If anything is confusing or your questions are not answered there, please shout out on the mailing list](https://groups.google.com/forum/#!forum/midascrowd).
 
 ## Development Process
 
@@ -44,6 +44,16 @@ The following command will execute a single test file in the application context
 ### Backbone
 
 - [Midas Backbone Best Practices](https://github.com/Innovation-Toolkit/midas/wiki/Backbone-Best-Practices).  Some basic hints on development in Backbone for Midas.
+
+### Secure templating
+
+Since Midas accepts and displays user-generated content, take care to make sure that is it escaped before displaying it. Otherwise, users may enter potentially harmful JavaScript code.
+
+Escape all content that doesn't need to render as HTML in the client template file with [HTML-escaped filters](http://underscorejs.org/#template) `<%- ... %>`.
+
+Any content that does need to display HTML, such as the user's profile, should be escaped in the view with `_.escape(content)` or by passing markdown content through `marked()`, which will sanitize HTML by default. Also include [a comment](https://github.com/18F/midas/blob/devel/assets/js/backbone/apps/profiles/show/templates/profile_show_template.html#L148) about how the content has been escaped so we can easily audit the templates.
+
+Note: server-side templates use [node-ejs](https://github.com/tj/ejs) instead of [underscore](http://underscorejs.org/#template) for templates. The syntax is very similar, but HTML-escaping is done by default with `<%= ... %>` with EJS instead of `<%- ... %>` like underscore.
 
 ### <a name="git-hooks"></a> Git Hooks
 
