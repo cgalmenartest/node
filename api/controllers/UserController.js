@@ -343,7 +343,14 @@ module.exports = {
   },
 
   export: function (req, resp) {
-    User.find().exec(function (err, users) {
+    User.find().populate('tags').exec(function (err, users) {
+
+      users.forEach(function(user) {
+        user.tags.forEach(function(tag) {
+          user[tag.type] = tag.name;
+        });
+      });
+
       if (err) {
         sails.log.error("user query error. " + err);
         resp.send(400, {message: 'An error occurred while looking up users.', error: err});
@@ -351,30 +358,15 @@ module.exports = {
       }
       sails.log.debug('user export: found %s', users.length);
 
-      var usersById = {};
-      // Index the users by id for easy lookup when tags need to be added to them
-      var usersIds = users.map(function(user) {
-        usersById[user.id] = user;
-        return user.id;
-      });
-
-      // Retrieve tags belonging to the users
-      tagUtils.assemble({userId: usersIds}, function (err, tags) {
-        // Map the tags for each user onto the appropriate user object
-        tags.forEach(function(tag) {
-          usersById[tag.userId][tag.tag.type] = tag.tag.name;
-        });
-
-        exportUtil.renderCSV(User, users, function (err, rendered) {
-          if (err) {
-            sails.log.error("user export render error. " + err);
-            resp.send(400, {message: 'An error occurred while rendering user list.', error: err});
-            return;
-          }
-          resp.set('Content-Type', 'text/csv');
-          resp.set('Content-disposition', 'attachment; filename=users.csv');
-          resp.send(200, rendered);
-        });
+      exportUtil.renderCSV(User, users, function (err, rendered) {
+        if (err) {
+          sails.log.error("user export render error. " + err);
+          resp.send(400, {message: 'An error occurred while rendering user list.', error: err});
+          return;
+        }
+        resp.set('Content-Type', 'text/csv');
+        resp.set('Content-disposition', 'attachment; filename=users.csv');
+        resp.send(200, rendered);
       });
     });
   }
