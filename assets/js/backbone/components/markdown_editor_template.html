@@ -23,12 +23,12 @@
   You can use any <a href="http://daringfireball.net/projects/markdown/syntax" target="_blank">Markdown</a> or <a href="https://help.github.com/articles/github-flavored-markdown" target="_blank">GitHub Flavored Markdown</a> syntax in this text box.
 </div>
 <textarea
-  <%if (!_.isUndefined(maxlength)) { %>maxlength="<%= maxlength %>"<% } %>
-  <% if (!_.isUndefined(rows)) { %>rows="<%= rows %>"<% } %>
+  <%if (!_.isUndefined(maxlength)) { %>maxlength="<%- maxlength %>"<% } %>
+  <% if (!_.isUndefined(rows)) { %>rows="<%- rows %>"<% } %>
   class="form-control validate"
-  id="<%= id %>"
-  data-validate="<% if (!_.isUndefined(validate)) { %><%= validate.join(',') %><% } %>"
-  <% if (!_.isUndefined(placeholder)) { %>placeholder="<%= placeholder %>"<% } %>
-  <% if (!_.isUndefined(title)) { %>title="<%= title %>"<% } %>
-  ><%= data %></textarea>
+  id="<%- id %>"
+  data-validate="<% if (!_.isUndefined(validate)) { %><%- validate.join(',') %><% } %>"
+  <% if (!_.isUndefined(placeholder)) { %>placeholder="<%- placeholder %>"<% } %>
+  <% if (!_.isUndefined(title)) { %>title="<%- title %>"<% } %>
+  ><%- data %></textarea>
 <div class="preview" style="display: none;"></div>

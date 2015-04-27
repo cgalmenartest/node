@@ -45,7 +45,7 @@ var TaskFormView = Backbone.View.extend({
           self.tagSources[type] = data;
         }
       });
-    }
+    };
 
     async.each(types, requestAllTagsByType, function (err) {
       self.render();
@@ -54,78 +54,7 @@ var TaskFormView = Backbone.View.extend({
 
   initializeListeners: function() {
     var self = this;
-
     _.extend(this, Backbone.Events);
-
-    self.on('newTagSaveDone',function (){
-
-      tags         = [];
-      var tempTags = [];
-
-      //get newly created tags from big three types
-      _.each(self.data.newItemTags, function(newItemTag){
-        tags.push(newItemTag);
-      });
-
-      tempTags.push.apply(tempTags,self.$("#task_tag_topics").select2('data'));
-      tempTags.push.apply(tempTags,self.$("#task_tag_skills").select2('data'));
-      if (self.$("#task-location").select2('data').id == 'true') {
-        tempTags.push.apply(tempTags,self.$("#task_tag_location").select2('data'));
-      }
-
-      //see if there are any previously created big three tags and add them to the tag array
-      _.each(tempTags,function(tempTag){
-          if ( tempTag.id !== tempTag.name ){
-          tags.push(tempTag);
-        }
-      });
-
-      _.each(this.data.existingTags, function(tempTag) {
-          tags.push(tempTag);
-      });
-
-      async.forEach(
-        tags,
-        function(tag, callback){
-          //diffAdd,self.model.attributes.id,"taskId",callback
-          return self.tagFactory.addTag(tag,self.tempTaskId,"taskId",callback);
-        },
-        function(err){
-          self.model.trigger("task:modal:hide");
-          self.model.trigger("task:tags:save:success", err);
-        }
-      );
-    });
-
-    this.listenTo(this.tasks,"task:save:success", function (taskId){
-      //the only concern here is to add newly created tags which is only available in the three items below
-      //
-
-      self.tempTaskId = taskId;
-
-      // save the tags from the drop downs
-      this.data.existingTags.push(self.$("#skills-required").select2('data'));
-      this.data.existingTags.push(self.$("#people").select2('data'));
-      this.data.existingTags.push(self.$("#time-required").select2('data'));
-      this.data.existingTags.push(self.$("#time-estimate").select2('data'));
-      this.data.existingTags.push(self.$("#length").select2('data'));
-
-      var newTags = [];
-
-      newTags = newTags.concat(self.$("#task_tag_topics").select2('data'),self.$("#task_tag_skills").select2('data'),self.$("#task_tag_location").select2('data'));
-
-      async.forEach(
-        newTags,
-        function(newTag, callback) {
-          return self.tagFactory.addTagEntities(newTag,self,callback);
-        },
-        function(err) {
-          if (err) return next(err);
-          self.trigger("newTagSaveDone");
-        }
-      );
-
-    });
   },
 
   getTagsFromPage: function () {
@@ -146,7 +75,7 @@ var TaskFormView = Backbone.View.extend({
   },
 
   render: function () {
-    var template = _.template(TaskFormTemplate)({ tags: this.tagSources })
+    var template = _.template(TaskFormTemplate)({ tags: this.tagSources });
     this.$el.html(template);
     this.initializeSelect2();
     this.initializeTextArea();

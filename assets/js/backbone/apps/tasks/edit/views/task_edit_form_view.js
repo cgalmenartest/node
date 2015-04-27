@@ -225,25 +225,19 @@ var TaskEditFormView = Backbone.View.extend({
         modelData.userId = owner.id;
       }
 
-      oldTags = this.getOldTags();
-      tags    = this.getTagsFromPage();
-      diff    = this.tagFactory.createDiff(oldTags, tags);
+      var tags = _(this.getTagsFromPage()).chain()
+            .map(function(tag) {
+              if (!tag) return;
+              return (tag.id && tag.id !== tag.name) ? +tag.id : {
+                name: tag.name,
+                type: tag.tagType
+              };
+            })
+            .compact()
+            .value();
+      modelData.tags = tags;
 
-      _.each(self.data.newItemTags, function(newItemTag){
-        diff.add.push(newItemTag.id);
-      });
-
-      async.forEach(
-        diff.add,
-        function(diffAdd, callback){
-          if ( !_.isFinite(diffAdd) && diffAdd.name == diffAdd.id ) { return callback(); }
-          self.tagFactory.addTag(diffAdd,self.model.attributes.id,"taskId",callback);
-        },
-        function(err){
-          self.options.model.trigger("task:update", modelData);
-        }
-      );
-
+      self.options.model.trigger("task:update", modelData);
     });
   },
 
@@ -268,31 +262,7 @@ var TaskEditFormView = Backbone.View.extend({
     if (abort === true) {
       return;
     }
-
-    //var types = ["task-skills-required", "task-time-required", "task-people", "task-length", "task-time-estimate", "skill", "topic", "location"];
-    tags = this.getTagsFromPage();
-    oldTags = this.getOldTags();
-
-    newTags = [];
-    newTags = newTags.concat(self.$("#task_tag_topics").select2('data'),self.$("#task_tag_skills").select2('data'),self.$("#task_tag_location").select2('data'));
-
-      async.forEach(
-        newTags,
-        function(newTag, callback) {
-          self.tagFactory.addTagEntities(newTag,self,callback);
-        },
-        function(err, data) {
-          if (err) return next(err);
-          self.trigger("task:tags:save:done");
-        }
-      );
-    diff = this.tagFactory.createDiff(oldTags, tags);
-
-    if ( diff.remove.length > 0 ) {
-      async.each(diff.remove, self.tagFactory.removeTag, function (err) {
-        // do nothing for now
-      });
-    }
+    return self.trigger("task:tags:save:done");
   },
 
   getTagsFromPage: function () {

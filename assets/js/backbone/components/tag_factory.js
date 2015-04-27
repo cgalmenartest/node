@@ -53,52 +53,6 @@ TagFactory = BaseComponent.extend({
     });
   },
 
-  removeTag: function (id, done) {
-    $.ajax({
-      url: '/api/tag/' + id,
-      type: 'DELETE',
-      success: function (data) {
-        return done();
-      }
-    });
-  },
-
-  addTag: function (tag, modelId, modelType, done) {
-  	//assumes
-  	//  tag -- array of tag objects to add
-  	//  --- NYI ---
-  	//  project or task id - string
-    // TODO: abstract the below if-else to a different function so this funciton just takes an array tag ids
-
-    var tagMap = {};
-    tagMap[modelType] = modelId;
-
-    if ( _.isFinite(tag) ){
-        // --- NYI ---
-        // or project id
-
-        tagMap.tagId = tag;
-    } else {
-        // --- NYI ---
-        // or project id
-
-        tagMap.tagId = tag.id;
-    }
-
-    $.ajax({
-      url: '/api/tag',
-      type: 'POST',
-      data: tagMap,
-      success: function (data) {
-        return done();
-      },
-      error: function (err) {
-        return done(err);
-      }
-    });
-
-  },
-
   createTagDropDown: function(options) {
     var settings = {
           placeholder: "Start typing to select a "+options.type,
@@ -136,7 +90,7 @@ TagFactory = BaseComponent.extend({
               };
             },
             results: function (data) {
-              return { results: data }
+              return { results: data };
             }
           }
         },

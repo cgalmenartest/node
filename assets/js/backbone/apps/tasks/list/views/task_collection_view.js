@@ -24,25 +24,7 @@ var TaskListTemplate = require('../templates/task_collection_view_template.html'
 				user: window.cache.currentUser
 			};
 
-			var requestTagData = function (task, done) {
-				$.ajax({
-					url: '/api/tag/findAllByTaskId/' + task.id,
-					async: false,
-					success: function (tags) {
-						task['tags'] = tags;
-						done();
-					},
-					error: function () {
-						task['tags'] = [];
-						done();
-					}
-				});
-			}
-
-			async.each(this.tasksJson.tasks, requestTagData, function () {
-				self.render();
-			});
-
+			self.render();
 		},
 
 		render: function () {

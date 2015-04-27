@@ -15,60 +15,6 @@ var userUtils = require('../services/utils/user');
 var validator = require('validator');
 var actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 
-var getUserForUpdate = function (userId, reqUser, cb) {
-  if (userId == reqUser.id) {
-    return cb(null, reqUser);
-  }
-  if (reqUser.isAdmin !== true) {
-    return cb({ message: "Not Authorized."}, null);
-  }
-  User.findOneById(userId, function (err, user) {
-    cb(err, user);
-  });
-};
-
-var update = function (req, res) {
-  var reqUser = req.user[0];
-  var userId = req.route.params.id || reqUser.id;
-  getUserForUpdate(userId, reqUser, function (err, user) {
-    if (err) { return res.send(403, err); }
-    var params = _.extend(req.body || {}, req.params);
-    if (!_.isUndefined(params.name)) { user.name = params.name; }
-    if (!_.isUndefined(params.username)) { user.username = params.username; }
-    if (!_.isUndefined(params.photoId)) { user.photoId = params.photoId; }
-    if (!_.isUndefined(params.photoUrl)) { user.photoUrl = params.photoUrl; }
-    if (!_.isUndefined(params.title)) { user.title = params.title; }
-    if (!_.isUndefined(params.bio)) { user.bio = params.bio; }
-    // The main user object is being updated
-    if (user) {
-      sails.log.debug('User Update:', user);
-      user.save(function (err) {
-        if (err) { return res.send(400, {message:'Error while saving user.'}) }
-        // Check if a userauth was removed
-        if (params.auths) {
-          var checkAuth = function(auth, done) {
-            if (_.contains(params.auths, auth.provider)) {
-              return done();
-            }
-            auth.destroy(done);
-          };
-
-          UserAuth.findByUserId(req.user[0].id, function (err, auths) {
-            if (err) { return res.send(400, {message:'Error finding authorizations.'}); }
-            async.each(auths, checkAuth, function(err) {
-              if (err) { return res.send(400, {message:'Error finding authorizations.'}); }
-              user.auths = params.auths;
-              return res.send(user);
-            });
-          });
-        } else {
-          res.send(user);
-        }
-      });
-    }
-  });
-};
-
 module.exports = {
 
   /**
@@ -102,7 +48,7 @@ module.exports = {
     if (req.user) {
       reqId = req.user[0].id;
     }
-    sails.services.utils.user['getUser'](req.route.params.id, reqId, function (err, user) {
+    sails.services.utils.user.getUser(req.route.params.id, reqId, function (err, user) {
       // prune out any info you don't want to be public here.
       if (reqId !== req.route.params.id) user.username = null;
       if (err) { return res.send(400, { message: err }); }
@@ -121,7 +67,7 @@ module.exports = {
     if (req.route.params.id) {
       userId = req.route.params.id;
     }
-    sails.services.utils.user['getUser'](userId, reqId, req.user, function (err, user) {
+    sails.services.utils.user.getUser(userId, reqId, req.user, function (err, user) {
       // this will only be shown to logged in users.
       if (userId !== reqId) user.username = null;
       if (err) { return res.send(400, err); }
@@ -151,11 +97,11 @@ module.exports = {
       if (err) return res.serverError(err);
 
       matchingRecords = _.reject(matchingRecords, 'disabled');
-      var ids  = matchingRecords.map(function(m) { return m.id }),
+      var ids  = matchingRecords.map(function(m) { return m.id; }),
           reqId = req.user[0].id;
 
       async.map(ids, function(userId, cb) {
-        sails.services.utils.user['getUser'](userId, reqId, req.user, function (err, user) {
+        sails.services.utils.user.getUser(userId, reqId, req.user, function (err, user) {
           if (err) return cb(err);
           if (userId !== reqId && !_.contains(where.username, user.username)) {
             delete user.username;
@@ -177,10 +123,6 @@ module.exports = {
       if (err) { return res.send(400, err); }
       res.send('' + count);
     });
-  },
-
-  update: function (req, res) {
-    return update(req, res);
   },
 
   activities: function (req, res) {
@@ -207,7 +149,7 @@ module.exports = {
             projUtils.authorized(projId, userId, function (err, proj) {
               if (proj) {
                 // delete unnecessary data from projects
-                delete proj['deletedAt'];
+                delete proj.deletedAt;
                 projects.push(proj);
               }
               done(err);
@@ -248,7 +190,7 @@ module.exports = {
                   callback(err);
                 });
               });
-            })
+            });
           });
         });
       },
@@ -352,7 +294,9 @@ module.exports = {
    */
   resetPassword: function (req, res) {
     // POST is the only supported method
-    if (req.route.method != 'post') { return res.send(400, {message:'Unsupported operation.'}) }
+    if (req.route.method != 'post') {
+      return res.send(400, {message:'Unsupported operation.'});
+    }
     var userId = req.user[0].id;
     // Allow administrators to set other users' passwords
     if ((req.user[0].isAdmin === true) && (req.param('id'))) {

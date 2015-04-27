@@ -251,6 +251,11 @@ input[type="submit"] {
   margin: -1px 0;
 }
 
+.container > .server-alert {
+  margin-left: -20px;
+  margin-top: 20px;
+}
+
 /*****************
 =  HEADERS
 ******************/

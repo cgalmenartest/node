@@ -57,8 +57,9 @@ var ProjectModel = Backbone.Model.extend({
     var self = this;
 
     this.save({
-      title: data['title'],
-      description: data['description']
+      title: data.title,
+      description: data.description,
+      tags: data.tags
     }, { success: function (data) {
         self.trigger("project:save:success", data);
       }
@@ -70,7 +71,7 @@ var ProjectModel = Backbone.Model.extend({
     var self = this;
 
     this.save({
-      coverId: file['id']
+      coverId: file.id
     }, {
       success: function (data) {
         self.trigger("project:updated:photo:success", data);

@@ -34,6 +34,10 @@ module.exports.policies = {
     '*': true
   },
 
+  UserAuthController: {
+    '*': ['authenticated', 'requireUserId', 'requireId', 'userAuthIdMatch']
+  },
+
   // Limit user controller view to just the /user endpoint
   UserController : {
     '*': false,
@@ -128,19 +132,6 @@ module.exports.policies = {
     'rsvp': ['authenticated', 'requireUserId', 'addUserId'],
     'ical': ['authenticated', 'addUserId', 'project'],
     'destroy': ['authenticated', 'requireId', 'admin']
-  },
-
-  TagController : {
-    '*': ['authenticated'],
-    'find': false,
-    'findOne': false,
-    'create': ['authenticated', 'requireUserId', 'projectId', 'taskId', 'ownerOrAdmin'],
-    'update': false,
-    'destroy': ['authenticated', 'requireUserId', 'requireId'],
-    'add': ['authenticated', 'requireUserId'],
-    'findAllByProjectId': ['authenticated', 'requireId', 'project'],
-    'findAllByTaskId': ['authenticated', 'requireId', 'task']
-    //'findAllByUserId': not needed because authenticated is default
   },
 
   CommentController : {

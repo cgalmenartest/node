@@ -34,9 +34,6 @@ Project.ShowController = BaseController.extend({
   events: {
     "click #like-button"              : "like",
     "keyup .comment-content"          : "search",
-    "click #tag-save"                 : "tagSave",
-    "click #tag-create"               : "tagCreate",
-    "click .tag-delete"               : "tagDelete",
     "click #project-close"            : "stateClose",
     "click #project-reopen"           : "stateReopen",
     'click #editProject'              : 'toggleEditMode',
@@ -71,7 +68,7 @@ Project.ShowController = BaseController.extend({
         // if not the owner, trigger the login dialog.
         if (owner !== true) {
           window.cache.userEvents.trigger("user:request:login", {
-            message: "You are not the owner of this project. <a class='link-backbone' href='/projects/" + model.id + "'>View the project instead.</a>",
+            message: "You are not the owner of this project. <a class='link-backbone' href='/projects/" + _.escape(model.id) + "'>View the project instead.</a>",
             disableClose: true
           });
           return;

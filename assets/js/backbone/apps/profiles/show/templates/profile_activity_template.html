@@ -1,15 +1,15 @@
 <ul class="nav nav-tabs">
-  <li class="active"><a href="#<%= handle %>-tab-open" data-toggle="tab">Open</a></li>
-  <li><a href="#<%= handle %>-tab-closed" data-toggle="tab">Closed</a></li>
+  <li class="active"><a href="#<%- handle %>-tab-open" data-toggle="tab">Open</a></li>
+  <li><a href="#<%- handle %>-tab-closed" data-toggle="tab">Closed</a></li>
 </ul>
 
 <div class="tab-content">
-  <div class="tab-pane active" id="<%= handle %>-tab-open">
+  <div class="tab-pane active" id="<%- handle %>-tab-open">
     <table class="table table-condensed table-hover">
       <% if ( count.open > 0 || count.assigned > 0 || count.draft > 0) { %>
         <thead>
           <tr>
-            <th data-i18n="<%= targetCapitalized %>">Project</th>
+            <th data-i18n="<%- targetCapitalized %>">Project</th>
             <th>Created</th>
             <th>Likes</th>
           </tr>
@@ -22,30 +22,30 @@
               <% if (data[i].state == 'draft') { %>
               <span class="label label-warning">draft</span>
               <% } %>
-              <a href="<%= target %>s/<%= data[i].id %>" class="activity-link" data-id="<%= data[i].id %>"><%= data[i].title %></a>
+              <a href="<%- target %>s/<%- data[i].id %>" class="activity-link" data-id="<%- data[i].id %>"><%- data[i].title %></a>
             </td>
             <td>
               <% var created = new Date(data[i].createdAt); %>
-              <%= created.toLocaleDateString() %> <%= created.toLocaleTimeString() %></td>
-            <td><%= data[i].likeCount %></td>
+              <%- created.toLocaleDateString() %> <%- created.toLocaleTimeString() %></td>
+            <td><%- data[i].likeCount %></td>
           </tr>
         <% } %>
         </tbody>
       <% } else { %>
         <tbody>
           <tr>
-            <td>No <%= targetsFriendly %></td>
+            <td>No <%- targetsFriendly %></td>
           </tr>
         </tbody>
       <% } %>
     </table>
   </div>
-  <div class="tab-pane" id="<%= handle %>-tab-closed">
+  <div class="tab-pane" id="<%- handle %>-tab-closed">
     <table class="table table-condensed table-hover">
       <% if (count.completed > 0 || count.archived > 0) { %>
         <thead>
           <tr>
-            <th data-i18n="<%= targetCapitalized %>">Project</th>
+            <th data-i18n="<%- targetCapitalized %>">Project</th>
             <th>Created</th>
             <th>Likes</th>
           </tr>
@@ -55,17 +55,17 @@
           <% if (data[i].state !== 'completed' && data[i].state !== 'archived') { continue; } %>
           <tr>
             <td>
-              <a href="<%= target %>s/<%= data[i].id %>" class="activity-link" data-id="<%= data[i].id %>"><%= data[i].title %></a>
+              <a href="<%- target %>s/<%- data[i].id %>" class="activity-link" data-id="<%- data[i].id %>"><%- data[i].title %></a>
             </td>
-            <td><%= data[i].createdAt %></td>
-            <td><%= data[i].likeCount %></td>
+            <td><%- data[i].createdAt %></td>
+            <td><%- data[i].likeCount %></td>
           </tr>
         <% } %>
         </tbody>
       <% } else { %>
         <tbody>
           <tr>
-            <td>No <%= targetsFriendly %></td>
+            <td>No <%- targetsFriendly %></td>
           </tr>
         </tbody>
       <% } %>

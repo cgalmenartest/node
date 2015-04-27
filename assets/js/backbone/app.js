@@ -9,6 +9,12 @@ require('blueimp-file-upload/js/vendor/jquery.ui.widget');
 i18n = require('i18next-client/i18next.commonjs.withJQuery');
 moment = require('moment');
 
+// Set markdown defaults
+var marked = require('marked');
+marked.setOptions({
+  sanitize: true
+});
+
 // App
 window.Application      = window.Application || {};
 window.cache            = { userEvents: {}, currentUser: null, system: {} };

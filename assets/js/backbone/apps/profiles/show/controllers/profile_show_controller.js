@@ -62,7 +62,7 @@ Profile = BaseController.extend({
           message: "<strong>Direct editing of profiles is disabled.</strong>  <a href=\"" + Login.profile.editUrl + "\" title=\"Edit Profile\">Click here to edit your profile</a>"
         }
       };
-      var template = _.template(AlertTemplate)(data)
+      var template = _.template(AlertTemplate)(data);
       this.$el.html(template);
       return;
     }
@@ -74,16 +74,16 @@ Profile = BaseController.extend({
       // @instance
       self.model = model;
       var modelJson = model.toJSON();
-      for (i in modelJson.tags) {
-        if (modelJson.tags[i].tag.type == 'agency') {
-          self.model.agency = modelJson.tags[i].tag;
-          self.model.agency['tagId'] = modelJson.tags[i].id;
+      _.each(modelJson.tags, function(tag, i) {
+        if (modelJson.tags[i].type == 'agency') {
+          self.model.agency = modelJson.tags[i];
+          self.model.agency.tagId = modelJson.tags[i].id;
         }
-        else if (modelJson.tags[i].tag.type == 'location') {
-          self.model.location = modelJson.tags[i].tag;
-          self.model.location['tagId'] = modelJson.tags[i].id;
+        else if (modelJson.tags[i].type == 'location') {
+          self.model.location = modelJson.tags[i];
+          self.model.location.tagId = modelJson.tags[i].id;
         }
-      }
+      });
       self.initializeProfileViewInstance();
     });
     // if the profile fetch fails, check if it is due to the user
@@ -105,10 +105,10 @@ Profile = BaseController.extend({
       if (response.responseText) {
         var err = JSON.parse(response.responseText);
         if (err.message) {
-          data.alert.message += err.message;
+          data.alert.message += _.escape(err.message);
         }
       }
-      var template = _.template(AlertTemplate)(data)
+      var template = _.template(AlertTemplate)(data);
       self.$el.html(template);
     });
   },

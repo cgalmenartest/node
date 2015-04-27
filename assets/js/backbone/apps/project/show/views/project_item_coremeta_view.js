@@ -122,7 +122,23 @@ var ProjectItemCoreMetaView = Backbone.View.extend({
     var pId = self.model.attributes.id;
     var title = self.$('#project-edit-form-title').val();
     var description = self.$('#project-edit-form-description').val();
-    var params = { title :title, description: description };
+    function getTags() {
+      var modelTags = self.model.get('tags'),
+          tags = [];
+      tags.push.apply(tags, this.$("#tag_topic").select2('data'));
+      tags.push.apply(tags, this.$("#tag_skill").select2('data'));
+      tags.push.apply(tags, this.$("#tag_location").select2('data'));
+      tags.push.apply(tags, this.$("#tag_agency").select2('data'));
+      return _(modelTags.concat(tags)).chain().filter(function(tag) {
+          return _(tag).isObject() && !tag.context;
+        }).map(function(tag) {
+          return (tag.id && tag.id !== tag.name) ? +tag.id : {
+            name: tag.name,
+            type: tag.tagType
+          };
+        }).unique().value();
+    }
+    var params = { title :title, description: description, tags: getTags() };
 
     self.model.trigger("project:tag:update:start");
     self.model.trigger("project:model:update", params);

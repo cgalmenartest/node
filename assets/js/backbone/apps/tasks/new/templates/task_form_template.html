@@ -65,7 +65,7 @@
       </label>
       <select id="people" class="dropdown">
         <% _.each(tags['task-people'], function (person) { %>
-          <option value="<%= person.id %>"><%= person.name %></option>
+          <option value="<%- person.id %>"><%- person.name %></option>
         <% }); %>
       </select>
 
@@ -87,7 +87,7 @@
       </label>
       <select id="skills-required" name="skills-required" class="dropdown">
         <% _.each(tags['task-skills-required'], function(requirement) { %>
-          <option value="<%= requirement.id %>"><%= requirement.name %></option>
+          <option value="<%- requirement.id %>"><%- requirement.name %></option>
         <% }); %>
       </select>
       <label for="skills">
@@ -109,7 +109,7 @@
       </label>
       <select id="time-estimate" class="dropdown">
         <% _.each(tags['task-time-estimate'], function (timeEstimate) { %>
-          <option value="<%= timeEstimate.id %>"><%= timeEstimate.name %></option>
+          <option value="<%- timeEstimate.id %>"><%- timeEstimate.name %></option>
         <% }); %>
       </select>
 
@@ -118,7 +118,7 @@
       </label>
       <select id="time-required" class="dropdown">
         <% _.each(tags['task-time-required'], function (time) { %>
-          <option value="<%= time.id %>"><%= time.name %></option>
+          <option value="<%- time.id %>"><%- time.name %></option>
         <% }); %>
       </select>
 
@@ -127,7 +127,7 @@
       </label>
       <select id="length" class="dropdown">
         <% _.each(tags['task-length'], function (item) { %>
-          <option value="<%= item.id %>"><%= item.name %></option>
+          <option value="<%- item.id %>"><%- item.name %></option>
         <% }) %>
       </select>
     </div>

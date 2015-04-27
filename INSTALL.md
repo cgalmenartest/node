@@ -19,6 +19,16 @@ When Homebrew is done installing Postgres, follow the instructions at the end to
 Next, create the `midas` database:
 
     initdb /usr/local/var/postgresql
+
+Once you're done installing you'll see two options:
+    Success. You can now start the database server using:
+
+    postgres -D /usr/local/var/postgresql
+    or
+    pg_ctl -D /usr/local/var/postgresql -l logfile start
+
+When you run either of these commands it will start running the server. It's best to choose the first choice (postgres -D /usr/local/var/postgresql) so if you work on a different tab in your terminal the server will keep running. Next in the Terminal:
+
     createdb midas
 
 Start the postgres console acting on the midas database with: `psql midas`
@@ -127,6 +137,8 @@ From the root of the midas directory, initialize the database:
 
      npm run migrate
      npm run init
+     
+Please note, run `npm run init` once per database, otherwise you'll see an error. If you get an error you can skip that step.
 
 If you'd like to include a sample project, also run:
 

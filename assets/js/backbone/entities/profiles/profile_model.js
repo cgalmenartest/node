@@ -14,6 +14,8 @@ var Backbone = require('backbone');
 		parse: function(res, options) {
 			// Remove falsy values (db returns null instead of undefined)
 			_(res).each(function(v, k, o) { if (!v) delete o[k]; });
+			res.agency = _(res.tags).findWhere({ type: 'agency' });
+			res.location = _(res.tags).findWhere({ type: 'location' });
 			return res;
 		},
 
@@ -46,7 +48,7 @@ var Backbone = require('backbone');
 			this.listenTo(this, "profile:updateWithPhotoId", function(file) {
 				var _self = this;
 				_this.save({
-					photoId: file['id']
+					photoId: file.id
 				}, {
 				success: function (data) {
 					_this.trigger("profile:updatedPhoto", data);
@@ -58,33 +60,35 @@ var Backbone = require('backbone');
 			});
 
 			this.listenTo(this, "profile:save", function (form) {
-				_this.save({
-					name: form['name'],
-					username: form['username'],
-					title: form['title'],
-					bio: form['bio']
-				}, {
-				success: function (data) {
-					_this.trigger("profile:save:success", data);
-				},
-				error: function (data) {
-					_this.trigger("profile:save:fail", data);
-				}
+				var data = {
+					name: form.name,
+					username: form.username,
+					title: form.title,
+					bio: form.bio,
+					tags: form.tags
+				};
+				_this.save(data, {
+					success: function (data) {
+						_this.trigger("profile:save:success", data);
+					},
+					error: function (data) {
+						_this.trigger("profile:save:fail", data);
+					}
 				});
 			});
 
 			this.listenTo(this, "profile:removeAuth", function(id) {
-				var auths = this.get("auths");
-				auths.splice(auths.indexOf(id), 1);
-				_this.save({
-					auths: auths
-				}, {
-				success: function (data) {
-					_this.trigger("profile:removeAuth:success", data, id);
-				},
-				error: function (data) {
+				$.ajax({
+					url: '/api/userauth/' + id,
+					method: 'DELETE'
+				}).done(function(data) {
+					_this.fetch({
+						success: function(model) {
+							_this.trigger("profile:removeAuth:success", model, id);
+						}
+					});
+				}).fail(function(data) {
 					_this.trigger("profile:removeAuth:fail", data, id);
-				}
 				});
 			});
 
@@ -93,4 +97,3 @@ var Backbone = require('backbone');
 	});
 
 	module.exports = ProfileModel;
-

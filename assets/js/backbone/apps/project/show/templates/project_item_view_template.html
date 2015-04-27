@@ -8,7 +8,7 @@
     <div class="row">
       <div class="col-md-12 box project-header-wrapper">
         <% if (data.coverId) { %>
-        <div id="project-header" style="background-image:url('/api/file/get/<%= data.coverId %>');">
+        <div id="project-header" style="background-image:url('/api/file/get/<%- data.coverId %>');">
         <% } else { %>
         <div id="project-header" style="background-image:url('/images/project_default.png');">
         <% } %>
@@ -136,7 +136,7 @@
       <div class="col-md-12 sm-nopadding md-nopadding">
         <!-- BEGIN TASKS -->
         <div class="wrapper-addTask"></div>
-        <div class="box" id="task-list-wrapper" data-project-id="<%= data.id %>">
+        <div class="box" id="task-list-wrapper" data-project-id="<%- data.id %>">
         </div>
         <!-- END TASKS -->
       </div>

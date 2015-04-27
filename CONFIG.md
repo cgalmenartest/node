@@ -61,3 +61,24 @@ Changing the value of label is largely cosmetic as it is used to drive drop down
 
 When upgrading Midas from versions prior to .21 you need to run ```./tools/postgres/rename-public-to-open-state.sh``` to update any existing projects or opportunities.
 
+## Adding a one-time modal to the Home page
+In ```assets/js/backbone/config/ui.json``` change "modalHome" to true:
+```
+"modalHome" : {
+    "show" : true
+  }
+```
+You also need to add a row to usersetting for **each** user you want to see the modal upon logging in. This row should have the following column values:
+```
+key = showModalHome
+value = true
+isActive = true
+userId = whichever user(s) you would like to see the modal.
+```
+
+The text of the modal is set in the translation file. The default value is **modalHome.text**:
+```
+"modalHome" : {
+    "text" : "<section class='current'><h2>Congratulations!</h2><p>Welcome to the Midas platform.</p></section><section><h2>Congratulations!</h2><p>Welcome to the Midas platform.</p></section><section><h2>Congratulations!</h2><p>Welcome to the Midas platform.</p><p><input type='checkbox' class='tos-checkbox'/> I agree to the <a href=''>Terms and Conditions<a/> required to use this platform.</p></section>"
+  }
+  ```

@@ -19,6 +19,7 @@ function authenticate (req, res, strategy, json) {
       if (json) {
         res.send(userUtils.cleanUser(req.user, req.user.id));
       } else {
+        if (info && info.message) req.flash('message', info.message);
         res.redirect('/profile/edit');
       }
       return;

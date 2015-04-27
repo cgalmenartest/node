@@ -72,7 +72,7 @@ var TaskShowController = BaseView.extend({
     // if not the owner, trigger the login dialog.
     if (owner !== true) {
       window.cache.userEvents.trigger("user:request:login", {
-        message: "You are not the owner of this opportunity. <a class='link-backbone' href='/tasks/" + model.id + "'>View the opportunity instead.</a>",
+        message: "You are not the owner of this opportunity. <a class='link-backbone' href='/tasks/" + _.escape(model.id) + "'>View the opportunity instead.</a>",
         disableClose: true
       });
       return;
@@ -131,8 +131,7 @@ var TaskShowController = BaseView.extend({
         el: '.tag-wrapper',
         target: 'task',
         targetId: 'taskId',
-        edit: false,
-        url: '/api/tag/findAllByTaskId/'
+        edit: false
       }).render();
 
     });

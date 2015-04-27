@@ -81,8 +81,8 @@ Browse.ListController = BaseController.extend({
           self.collection = collection;
           self.browseMainView.renderList(self.collection.toJSON());
         }
-      })
-    })
+      });
+    });
   },
 
   // -----------------------
@@ -138,8 +138,9 @@ Browse.ListController = BaseController.extend({
         title: parent.$("#task-title").val(),
         description: parent.$("#task-description").val(),
         // these tasks are orphaned
-        projectId: null
-      } }
+        projectId: null,
+        tags: getTags()
+      }; }
     }).render();
 
     this.taskFormView = new TaskFormView({
@@ -151,6 +152,25 @@ Browse.ListController = BaseController.extend({
     this.modalWizardComponent.setChildView(this.taskFormView);
     this.modalWizardComponent.setNext(this.taskFormView.childNext);
     this.modalWizardComponent.setSubmit(this.taskFormView.childNext);
+
+    function getTags() {
+      var tags = [];
+      tags.push.apply(tags,this.$("#task_tag_topics").select2('data'));
+      tags.push.apply(tags,this.$("#task_tag_skills").select2('data'));
+      tags.push.apply(tags,this.$("#task_tag_location").select2('data'));
+      tags.push.apply(tags,[this.$("#skills-required").select2('data')]);
+      tags.push.apply(tags,[this.$("#people").select2('data')]);
+      tags.push.apply(tags,[this.$("#time-required").select2('data')]);
+      tags.push.apply(tags,[this.$("#time-estimate").select2('data')]);
+      tags.push.apply(tags,[this.$("#length").select2('data')]);
+      return _(tags).map(function(tag) {
+        return (tag.id && tag.id !== tag.name) ? +tag.id : {
+          name: tag.name,
+          type: tag.tagType
+        };
+      });
+    }
+
   },
 
   // ---------------------

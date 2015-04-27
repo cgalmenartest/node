@@ -9,9 +9,8 @@ var _ = require('underscore');
 var async = require('async');
 var projUtil = require('../services/utils/project');
 var taskUtil = require('../services/utils/task');
-var tagUtil = require('../services/utils/tag');
 
-function search(target, req, res){
+function search(target, req, res) {
   //builds an array of task/project ids where search terms were found
   //   returns task / project(+counts) objects which are rendered by the calling page as cards
   //   search terms are ANDed
@@ -20,12 +19,12 @@ function search(target, req, res){
   var results   = [];
 
   var modelProxy = null;
-  if ( target == 'tasks' ){
-    modelProxy=Task;
+  if (target === 'tasks') {
+    modelProxy = Task;
     modelWord = 'task';
   } else {
-    modelProxy=Project;
-    modelWord='project';
+    modelProxy = Project;
+    modelWord = 'project';
   }
 
   // make the query well formed
@@ -37,10 +36,11 @@ function search(target, req, res){
     // should be revisited once we are on sails 10
     // we are waiting for support of contains in an or-pair fragment in waterline
 
-    var titleSqlFrag = descSqlFrag = "";
+    var titleSqlFrag = '',
+        descSqlFrag = '';
 
     _.each(search,function(term){
-      if ( titleSqlFrag == "" ){
+      if ( titleSqlFrag === "" ){
         titleSqlFrag = " title ilike '%"+term+"%'";
         descSqlFrag  = " description ilike '%"+term+"%'";
       } else {
@@ -60,40 +60,21 @@ function search(target, req, res){
   };
 
   var tagSearch = function (search, cb) {
-    //this is a temp solution
-    // should be revisited once we are on sails 10
-    // we are waiting for support of contains in an or-pair fragment in waterline
-
-    var sqlFrag = "";
-
-    _.each(search,function(term){
-      if ( sqlFrag == "" ){
-        sqlOrFrag  = " name ilike '%"+term+"%'";
-      } else {
-        sqlOrFrag  = sqlOrFrag+" or name ilike '%"+term+"%'";
-      }
-    });
-
-    TagEntity.query("select distinct id from TagEntity where "+sqlOrFrag+" order by id asc",function(err,data){
-      if ( _.isNull(data) ) { cb(); }
-      var temp = _.map(data.rows,function(item,key){
-        return item.id;
-      });
-      Tag.find({tagId: temp})
-        .exec(function(err,foundTags){
-          _.each(foundTags,function(tag,key){
-            if ( target == 'tasks'){
-              if ( !_.isNull(tag.taskId) ){
-                results.push(tag.taskId);
-              }
-            } else {
-              if ( !_.isNull(tag.projectId) ){
-                results.push(tag.projectId);
-              }
-            }
-          });;
-        cb();
-      });
+    var query = search.map(function(term) {
+          return { name: { 'contains': term } };
+        });
+    TagEntity.find(query).populate(target).exec(function(err, tags) {
+      if (err) return cb(err);
+      var ids = _(tags).chain()
+            .pluck(target)
+            .map(function(items) {
+              return _.pluck(items, 'id');
+            })
+            .flatten()
+            .unique()
+            .value();
+      results = results.concat(ids);
+      cb();
     });
   };
 
@@ -103,14 +84,13 @@ function search(target, req, res){
         //we're don't care about the callback behavior here, so discard it
         callback(null,null);
       });
-    },
-    function(callback){
+    }, function(callback) {
       tagSearch(q.freeText,function(err){
         //we're don't care about the callback behavior here, so discard it
         callback(null,null);
       });
-    }],
-    function(err,trash){
+    }
+  ], function(err,trash) {
     var items = [];
 
     //de-dupe
@@ -125,27 +105,25 @@ function search(target, req, res){
         }
       });
     } else {
-      var items = [];
       //this each is required so we can add the counts which are need for project cards only
-      async.each(results,
-        function(id,fcb){
-          Project.findOneById(id,function(err,proj){
-            projUtil.addCounts(proj, function (err) {
-              items.push(proj);
-              fcb();
-            });
+      async.each(results, function(id,fcb){
+        Project.findOneById(id,function(err,proj){
+          projUtil.addCounts(proj, function (err) {
+            items.push(proj);
+            fcb();
           });
-        },
-        function(err){
-          if ( _.isNull(items) ){
-            res.send([]);
-          } else {
-            res.send(items);
-          }
         });
+      }, function(err) {
+        if (err) return res.serverError(err);
+        if ( _.isNull(items) ){
+          res.send([]);
+        } else {
+          res.send(items);
+        }
+      });
     }
   });
-};
+}
 
 module.exports = {
 
