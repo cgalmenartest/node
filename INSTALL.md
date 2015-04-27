@@ -138,7 +138,7 @@ From the root of the midas directory, initialize the database:
      npm run migrate
      npm run init
      
-Please note, ``npm run init`` once per database, otherwise you'll see an error. If you get an error you can skip that step.
+Please note, run `npm run init` once per database, otherwise you'll see an error. If you get an error you can skip that step.
 
 If you'd like to include a sample project, also run:
 
