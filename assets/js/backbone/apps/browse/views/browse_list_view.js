@@ -31,14 +31,7 @@ var BrowseListView = Backbone.View.extend({
 
   organizeTags: function (tags) {
     // put the tags into their types
-    var outTags = {};
-    for (t in tags) {
-      if (!(_.has(outTags, tags[t].tag.type))) {
-        outTags[tags[t].tag.type] = [];
-      }
-      outTags[tags[t].tag.type].push(tags[t].tag);
-    }
-    return outTags;
+    return _(tags).groupBy('type');
   },
 
   scrollCheck: function(e) {

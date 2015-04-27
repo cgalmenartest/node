@@ -8,7 +8,7 @@ var userUtil = require('./user');
  * was found but access is denied.
  */
 var authorized = function (id, userId, cb) {
-  Project.findOneById(id, function (err, proj) {
+  Project.findOneById(id).populate('tags').exec(function (err, proj) {
     if (err || !proj) { return cb('Error finding project.', null); }
     // otherwise, check that we have an owner
     ProjectOwner.findByProjectId(proj.id, function(err, owners) {

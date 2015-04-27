@@ -34,9 +34,6 @@ Project.ShowController = BaseController.extend({
   events: {
     "click #like-button"              : "like",
     "keyup .comment-content"          : "search",
-    "click #tag-save"                 : "tagSave",
-    "click #tag-create"               : "tagCreate",
-    "click .tag-delete"               : "tagDelete",
     "click #project-close"            : "stateClose",
     "click #project-reopen"           : "stateReopen",
     'click #editProject'              : 'toggleEditMode',

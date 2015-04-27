@@ -36,7 +36,6 @@ var TaskModel = Backbone.Model.extend({
 
   update: function (data) {
     var self = this;
-
     this.save(data, {
       success: function (data) {
         self.trigger("task:update:success", data);
@@ -82,4 +81,3 @@ var TaskModel = Backbone.Model.extend({
 });
 
   module.exports = TaskModel;
-
