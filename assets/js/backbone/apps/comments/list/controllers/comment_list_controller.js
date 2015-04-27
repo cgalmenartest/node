@@ -166,7 +166,7 @@ Comment = Backbone.View.extend({
       var quote            = $("#comment-id-"+replyToCommentId).html();
       var authorSlug = "<a href='/profile/"+authorid+"'>"+replyto+"</a>";
 
-      $(".comment-input").html("<i>"+authorSlug+" said</i>"+marked("> "+quote)+"&nbsp;");
+      $(".comment-input").html("<i>"+authorSlug+" said</i>"+marked("> "+quote, { sanitize: false })+"&nbsp;");
    },
 
   isElementInViewport: function (el) {
@@ -281,4 +281,3 @@ Comment = Backbone.View.extend({
 });
 
 module.exports = Comment;
-

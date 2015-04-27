@@ -3,6 +3,7 @@
 
   <% if (message && !_.isUndefined(message.message)) { %>
   <div class="alert alert-warning">
+    <% /* Escaped in calling views */ %>
     <%= message.message %>
   </div>
   <% } %>
@@ -13,8 +14,8 @@
   <div class="row">
     <div class="col-sm-offset-3 col-sm-6">
       <div class="login-option">
-        <a href="<%= login.config[e].endpoint %>" class="btn btn-c0 btn-login">
-          <img src="<%= login.config[e].image %>" alt="<%= login.config[e].name %>" class="btn-login-responsive"/>
+        <a href="<%- login.config[e].endpoint %>" class="btn btn-c0 btn-login">
+          <img src="<%- login.config[e].image %>" alt="<%- login.config[e].name %>" class="btn-login-responsive"/>
         </a>
       </div>
     </div>
@@ -43,7 +44,7 @@
         <div class="col-md-12">
           <button type="submit" class="btn btn-c2 pull-right">Sign in</button>
           <p class="pull-left login-register-label" id="login-register-label">
-            Need an account? 
+            Need an account?
             <a href="#login-register" id="login-register">
               <strong>Sign up now</strong>
             </a>
@@ -90,8 +91,8 @@
     <div class="checkbox">
       <label>
         <% if (login.terms.enabled === true) { %>
-        <input type="checkbox" id="rterms" class="validate" data-validate="checked"> <span data-i18n="loginModal.tosCheckbox">Yes, I agree to the </span><a href="<%= login.terms.link %>"><%= login.terms.name %></a>.
-        <span class="help-block error-checked" style="display:none;">You must accept the <%= login.terms.name %> to register.</span>
+        <input type="checkbox" id="rterms" class="validate" data-validate="checked"> <span data-i18n="loginModal.tosCheckbox">Yes, I agree to the </span><a href="<%- login.terms.link %>"><%- login.terms.name %></a>.
+        <span class="help-block error-checked" style="display:none;">You must accept the <%- login.terms.name %> to register.</span>
         <% } %>
       </label>
     </div>

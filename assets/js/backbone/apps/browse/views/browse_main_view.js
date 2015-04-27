@@ -52,7 +52,7 @@ var BrowseMainView = Backbone.View.extend({
     } else if (object.target == 'task') {
       icon = 'fa fa-tag';
     }
-    return '<i class="' + icon + '"></i> <span class="box-icon-text">' + name + '</span>';
+    return '<i class="' + _.escape(icon) + '"></i> <span class="box-icon-text">' + _.escape(name) + '</span>';
   },
 
   initializeSearch: function() {

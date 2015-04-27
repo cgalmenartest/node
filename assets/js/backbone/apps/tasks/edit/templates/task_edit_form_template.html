@@ -40,7 +40,7 @@
     We need
     <select id="people" class="dropdown">
       <% _.each(tagTypes['task-people'], function (t) { %>
-      <option value=<%= t.id %> <% if (madlibTags['task-people'] && (madlibTags['task-people'][0].id == t.id)) { %>selected<% } %>><%= t.name %></option>
+      <option value=<%- t.id %> <% if (madlibTags['task-people'] && (madlibTags['task-people'][0].id == t.id)) { %>selected<% } %>><%- t.name %></option>
       <% }); %>
     </select>
 
@@ -56,7 +56,7 @@
     The following skills are useful and
     <select id="skills-required" class="dropdown">
       <% _.each(tagTypes['task-skills-required'], function (t) { %>
-      <option value=<%= t.id %> <% if (madlibTags['task-skills-required'] && (madlibTags['task-skills-required'][0].id == t.id)) { %>selected<% } %>><%= t.name %></option>
+      <option value=<%- t.id %> <% if (madlibTags['task-skills-required'] && (madlibTags['task-skills-required'][0].id == t.id)) { %>selected<% } %>><%- t.name %></option>
       <% }); %>
     </select>
 
@@ -72,21 +72,21 @@
     The <span data-i18n="task">opportunity</span> will require
     <select id="time-estimate" class="dropdown">
       <% _.each(tagTypes['task-time-estimate'], function (t) { %>
-      <option value=<%= t.id %> <% if (madlibTags['task-time-estimate'] && (madlibTags['task-time-estimate'][0].id == t.id)) { %>selected<% } %>><%= t.name %></option>
+      <option value=<%- t.id %> <% if (madlibTags['task-time-estimate'] && (madlibTags['task-time-estimate'][0].id == t.id)) { %>selected<% } %>><%- t.name %></option>
       <% }); %>
     </select>
 
     of
     <select id="time-required" class="dropdown">
       <% _.each(tagTypes['task-time-required'], function (t) { %>
-      <option value=<%= t.id %> <% if (madlibTags['task-time-required'] && (madlibTags['task-time-required'][0].id == t.id)) { %>selected<% } %>><%= t.name %></option>
+      <option value=<%- t.id %> <% if (madlibTags['task-time-required'] && (madlibTags['task-time-required'][0].id == t.id)) { %>selected<% } %>><%- t.name %></option>
       <% }); %>
     </select>
 
     work, and must be completed within
     <select id="length" class="dropdown">
       <% _.each(tagTypes['task-length'], function (t) { %>
-      <option value=<%= t.id %> <% if (madlibTags['task-length'] && (madlibTags['task-length'][0].id == t.id)) { %>selected<% } %>><%= t.name %></option>
+      <option value=<%- t.id %> <% if (madlibTags['task-length'] && (madlibTags['task-length'][0].id == t.id)) { %>selected<% } %>><%- t.name %></option>
       <% }); %>
     </select>
 

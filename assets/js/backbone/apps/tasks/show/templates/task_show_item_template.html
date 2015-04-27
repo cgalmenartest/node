@@ -22,6 +22,7 @@
               <% } %>
 
               <div class="task-show-description">
+                <% /* Escaped with marked() */ %>
                 <%= model.descriptionHtml %>
               </div>
 
@@ -111,7 +112,7 @@
             We need
               <strong>
                 <% if (madlibTags['task-people']) { %>
-                  <%= madlibTags['task-people'][0].name %>
+                  <%- madlibTags['task-people'][0].name %>
                 <% } else { %>
                   'no people yet assigned'
                 <% } %>
@@ -124,7 +125,7 @@
                     <% if (i > 0) { %>
                     ,
                     <% } %>
-                    <%= t.name %>
+                    <%- t.name %>
                     <% }) %>
               </strong>.
             <% } %>
@@ -134,7 +135,7 @@
             The following skills are useful and
               <strong>
                 <% if (madlibTags['task-skills-required']) { %>
-                  <%= madlibTags['task-skills-required'][0].name %>
+                  <%- madlibTags['task-skills-required'][0].name %>
                 <% } else { %>
                   not required
                 <% } %>
@@ -147,7 +148,7 @@
                   <% if (i > 0) { %>
                   ,
                   <% } %>
-                  <%= s.name %>
+                  <%- s.name %>
                   <% }) %>
                 <% } else { %>
                   no special skills required
@@ -158,7 +159,7 @@
             The <span data-i18n="task">opportunity</span> will require
               <strong>
                 <% if (madlibTags['task-time-estimate']) { %>
-                  <%= madlibTags['task-time-estimate'][0].name %>
+                  <%- madlibTags['task-time-estimate'][0].name %>
                 <% } else { %>
                   an unspecified amount of time
                 <% } %>
@@ -167,7 +168,7 @@
             of
               <strong>
                 <% if (madlibTags['task-time-required']) { %>
-                  <%= madlibTags['task-time-required'][0].name %>
+                  <%- madlibTags['task-time-required'][0].name %>
                 <% } else { %>
                   unstructured
                 <% } %>
@@ -177,7 +178,7 @@
             <% if (madlibTags['task-length']) { %>
             must be completed within
               <strong>
-                <%= madlibTags['task-length'][0].name %></strong>.
+                <%- madlibTags['task-length'][0].name %></strong>.
             <% } else { %>
               <strong>
                 has no deadline.
@@ -191,7 +192,7 @@
               <% if (i > 0) { %>
               ,
               <% } %>
-              <%= s.name %>
+              <%- s.name %>
               <% }) %>
             </strong>
             to complete this <span data-i18n="task">opportunity</span>.
@@ -244,16 +245,16 @@
             </h2>
           </div>
           <div class="box-main" id="task-volunteers">
-            <div class="project-people-div" data-userid="<%= model.userId %>">
-              <img src="/api/user/photo/<%= model.userId %>" class="project-people" alt="<%= model.owner.name %>"/>
+            <div class="project-people-div" data-userid="<%- model.userId %>">
+              <img src="/api/user/photo/<%- model.userId %>" class="project-people" alt="<%- model.owner.name %>"/>
             </div>
             <div class="project-people-space">
               <div class="bar">
               </div>
             </div>
             <% _.each(model.volunteers, function (v) { %>
-            <div class="project-people-div" data-userid="<%= v.userId %>" data-voluserid="<%= v.userId %>">
-              <img src="/api/user/photo/<%= v.userId %>" class="project-people" alt="<%= v.name %>"/>
+            <div class="project-people-div" data-userid="<%- v.userId %>" data-voluserid="<%- v.userId %>">
+              <img src="/api/user/photo/<%- v.userId %>" class="project-people" alt="<%- v.name %>"/>
             </div>
             <% }); %>
           </div>

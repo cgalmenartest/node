@@ -105,7 +105,7 @@ Profile = BaseController.extend({
       if (response.responseText) {
         var err = JSON.parse(response.responseText);
         if (err.message) {
-          data.alert.message += err.message;
+          data.alert.message += _.escape(err.message);
         }
       }
       var template = _.template(AlertTemplate)(data);

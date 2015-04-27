@@ -107,15 +107,15 @@
             <% _.each(login.oauth, function (a) { %>
               <div class="form-group">
                 <div class="col-xs-8 col-sm-9 col-md-9">
-                  <img src="<%= login.config[a].image %>" alt="<%= login.config[a].name %>" style="height: 30px"/>
+                  <img src="<%- login.config[a].image %>" alt="<%- login.config[a].name %>" style="height: 30px"/>
                 </div>
                 <div class="col-xs-4 col-sm-3 col-md-3">
                   <% if (_.findWhere(data.auths, { provider: a })) { %>
-                  <a href="#" class="btn btn-danger btn-sm removeAuth pull-right" data-service="<%= a %>" data-id="<%= _.findWhere(data.auths, { provider: a }).id %>"><span class="fa fa-remove"></span> Disconnect</a>
+                  <a href="#" class="btn btn-danger btn-sm removeAuth pull-right" data-service="<%- a %>" data-id="<%- _.findWhere(data.auths, { provider: a }).id %>"><span class="fa fa-remove"></span> Disconnect</a>
                   <% } else { %>
-                  <a href="<%= login.config[a].endpoint %>" class="btn btn-success btn-sm pull-right"><span class="fa fa-plus"></span> Connect</a>
+                  <a href="<%- login.config[a].endpoint %>" class="btn btn-success btn-sm pull-right"><span class="fa fa-plus"></span> Connect</a>
                   <% } %>
-                  <!-- <%= login.config[a].name %> -->
+                  <!-- <%- login.config[a].name %> -->
                 </div>
               </div>
             <% }); %>
@@ -145,6 +145,7 @@
           <div class="profile-location"><% if (data.location) { %><span class="fa fa-map-marker"></span> <span class="box-icon-text"><%- data.location.name %></span><% } %></div>
 
           <div class="profile-bio box-pad-t">
+            <% /* Escaped with marked() */ %>
             <% if (data.bioHtml) { %><%= data.bioHtml %><% } else { %>This person doesn't have a bio yet.<% } %>
           </div>
         </div>
@@ -177,7 +178,7 @@
                 <% if (login.profile.edit === true) { %>
                 <a href="/profile/<%- data.id %>/edit" class="link-backbone"><i class="fa fa-pencil"></i> <span class="box-icon-text">Edit Profile</span></a>
                 <% } else if (login.profile.editUrl) { %>
-                <a href="<%= login.profile.editUrl %>" target="_blank"><i class="fa fa-pencil"></i> <span class="box-icon-text">Edit Profile</span></a>
+                <a href="<%- login.profile.editUrl %>" target="_blank"><i class="fa fa-pencil"></i> <span class="box-icon-text">Edit Profile</span></a>
                 <% } %>
               </li>
               <% } %>
@@ -222,7 +223,7 @@
             <% _.each(login.oauth, function (a) { %>
               <% if (_.contains(data.auths, a)) { %>
               <div>
-                <%= login.config[a].name %>
+                <%- login.config[a].name %>
                 <span class="label label-success">Connected</span>
               </div>
               <% } %>
