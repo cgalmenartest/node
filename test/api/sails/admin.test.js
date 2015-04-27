@@ -139,7 +139,7 @@ describe('admin:', function () {
           var adminEmail = obj.emails[0];
           request.put({
             url: conf.url + '/useremail/' + emailBefore.id,
-            form: { email: emailAfter },
+            form: { email: emailAfter }
           }, function(err, response, body) {
             if (err) { return done(err); }
             // Logged in users should get a 200 with the user object
@@ -154,28 +154,16 @@ describe('admin:', function () {
     });
 
     it('export', function (done) {
-      // Add a new tag of type 'location'
-      request.post({ url: conf.url + '/tag/add',
-                     body: JSON.stringify(conf.tags[3])
-                   }, function (err, response, body) {
-        var locationTag = { userId: 1,
-                            tagId: JSON.parse(body).id };
-        // Set user 1's location by referencing the newly added location tag
-        request.post({ url: conf.url + '/tag',
-                       body: JSON.stringify(locationTag)
-                     }, function (err, response, body) {
-          request.get({
-            url: conf.url + '/user/export'
-          }, function (err, response, body) {
-            assert.equal(response.statusCode, 200);
-            var testBody = '"user_id","name","username","title","agency","location","bio","isAdmin","disabled"\n' +
-                '1,"","' + conf.defaultUser.username + '","","","' + conf.tags[3].name + '","",false,false\n' +
-                '2,"","' + conf.adminUser.username + '","","","","",true,false\n' +
-                '3,"","' + conf.testPasswordResetUser.username + '","","","","",false,false\n'
-            assert.equal(body, testBody);
-            done(err);
-          });
-        });
+      request.get({
+        url: conf.url + '/user/export'
+      }, function (err, response, body) {
+        assert.equal(response.statusCode, 200);
+        var testBody = '"user_id","name","username","title","agency","location","bio","admin","disabled"\n' +
+            '1,"","' + conf.defaultUser.username + '","","","","",false,false\n' +
+            '2,"","' + conf.adminUser.username + '","","","","",true,false\n' +
+            '3,"","' + conf.testPasswordResetUser.username + '","","","","",false,false\n'
+        assert.equal(body, testBody);
+        done(err);
       });
     });
   });

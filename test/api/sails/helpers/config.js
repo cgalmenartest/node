@@ -57,10 +57,6 @@ module.exports = {
     {
       'type': 'office',
       'name': 'Tag3'
-    },
-    {
-      'type': 'location',
-      'name': 'San Fransisco'
     }
   ]
 };

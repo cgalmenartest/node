@@ -69,7 +69,7 @@ module.exports = {
     'location': {field: 'location', filter: exportUtils.nullToEmptyString},
 
     'bio': {field: 'bio', filter: exportUtils.nullToEmptyString},
-    'isAdmin': 'isAdmin',
+    'admin': 'isAdmin',
     'disabled': 'disabled'
   }
 
