@@ -343,13 +343,21 @@ module.exports = {
   },
 
   export: function (req, resp) {
-    User.find().exec(function (err, users) {
+    User.find().populate('tags').exec(function (err, users) {
+
+      users.forEach(function(user) {
+        user.tags.forEach(function(tag) {
+          user[tag.type] = tag.name;
+        });
+      });
+
       if (err) {
         sails.log.error("user query error. " + err);
         resp.send(400, {message: 'An error occurred while looking up users.', error: err});
         return;
       }
       sails.log.debug('user export: found %s', users.length);
+
       exportUtil.renderCSV(User, users, function (err, rendered) {
         if (err) {
           sails.log.error("user export render error. " + err);
