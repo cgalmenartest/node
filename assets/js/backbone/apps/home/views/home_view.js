@@ -29,7 +29,7 @@ var HomeView = Backbone.View.extend({
       this.checkModalShow(window.cache.currentUser.id);
     });
 
-    if ( UIConfig.modalHome.show && window.cache.currentUser ) {
+    if ( UIConfig.modalHome && UIConfig.modalHome.show && window.cache.currentUser ) {
       this.getUserSettings(window.cache.currentUser.id);
     }
 
