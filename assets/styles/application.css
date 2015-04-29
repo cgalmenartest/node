@@ -746,6 +746,13 @@ a.delete-projectowner, a.delete-volunteer {
   font-size: 7px;
 }
 
+.projectowner-add {
+  float: right;
+  margin-left: 5px;
+  margin-top: -3px;
+  text-transform: none;
+}
+
 a.delete-project-event {
   float:right;
   top: -2px;
