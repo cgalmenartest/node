@@ -12,7 +12,10 @@ module.exports = {
     var data = {
       systemName: sails.config.systemName,
       draftAdminOnly: sails.config.draftAdminOnly || false,
-      alert: req.alert || (flash.length) ? { message: flash[0] } : null || null
+      alert: req.alert || (flash.length) ? { message: flash[0] } : null || null,
+      user: (req.user) ? _(req.user[0]).mapValues(function(value) {
+        return (typeof value === 'string') ? _.escape(value) : value;
+      }).omit('inspect').value() : null
     };
     // get version information
     sails.config.version(function (v) {
