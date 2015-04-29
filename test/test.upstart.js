@@ -20,7 +20,8 @@ before(function(done) {
     hooks: {
       grunt: false,
       sockets: false,
-      pubsub: false
+      pubsub: false,
+      csrf: false
     }
   }
 
