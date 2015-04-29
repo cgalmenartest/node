@@ -2,13 +2,14 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var utils = require('../../../mixins/utilities');
 var ModalComponent = require('../../../components/modal');
+var AdminAbstractView = require('./admin_abstract_view');
 var AdminDashboardTemplate = require('../templates/admin_dashboard_template.html');
 var AdminDashboardTable = require('../templates/admin_dashboard_table.html');
 var AdminDashboardActivities = require('../templates/admin_dashboard_activities.html');
 var LoginConfig = require('../../../config/login.json');
 
 
-var AdminDashboardView = Backbone.View.extend({
+var AdminDashboardView = AdminAbstractView.extend({
 
   events: {
   },
@@ -18,6 +19,7 @@ var AdminDashboardView = Backbone.View.extend({
     this.data = {
       page: 1
     };
+    AdminAbstractView.prototype.initialize.apply(this);
   },
 
   render: function () {
@@ -111,18 +113,6 @@ var AdminDashboardView = Backbone.View.extend({
         self.handleError(self, xhr, status, error);
       }
     });
-  },
-
-  handleError: function (self, xhr, status, error) {
-    // for auth errors, get them out of here; for all others, show the error
-    // and hope a retry fixes it.
-    self.$('.spinner').hide();
-    if (xhr.status >= 400 && xhr.status < 500) {
-      Backbone.history.navigate('/', { trigger: true });
-    } else {
-      self.$('.alert').html(error.message || error);
-      self.$('.alert').show();
-    }
   }
 });
 

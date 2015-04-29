@@ -20,9 +20,7 @@ var AdminMainView = Backbone.View.extend({
   },
 
   render: function () {
-    var data = {
-
-    };
+    var data = {};
     var template = _.template(AdminMainTemplate)(data);
     this.$el.html(template);
     this.routeTarget(this.options.action || '');

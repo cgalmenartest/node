@@ -1,6 +1,7 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
 var utils = require('../../../mixins/utilities');
+var AdminAbstractView = require('./admin_abstract_view');
 var ModalComponent = require('../../../components/modal');
 var AdminUserPasswordView = require('./admin_user_password_view');
 var AdminUserTemplate = require('../templates/admin_user_template.html');
@@ -9,7 +10,7 @@ var Paginate = require('../templates/admin_paginate.html');
 var LoginConfig = require('../../../config/login.json');
 
 
-var AdminUserView = Backbone.View.extend({
+var AdminUserView = AdminAbstractView.extend({
 
   events: {
     "click a.page"              : "clickPage",
@@ -28,6 +29,7 @@ var AdminUserView = Backbone.View.extend({
     this.data = {
       page: 1
     };
+    AdminAbstractView.prototype.initialize.apply(this);
   },
 
   render: function () {
@@ -122,13 +124,6 @@ var AdminUserView = Backbone.View.extend({
         self.handleError(self, xhr, status, error);
       }
     });
-  },
-
-  handleError: function (self, xhr, status, error) {
-    // show the alert message and hide the spinner
-    self.$('.alert').html(error.message || error);
-    self.$('.alert').show();
-    self.$('.spinner').hide();
   },
 
   adminCreate: function (e) {
@@ -246,11 +241,8 @@ var AdminUserView = Backbone.View.extend({
 
     // render the modal
     this.$("#reset-password-modal").modal('show');
-  },
+  }
 
-  cleanup: function () {
-    removeView(this);
-  },
 });
 
 module.exports = AdminUserView;

@@ -3,9 +3,10 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var utils = require('../../../mixins/utilities');
 var AdminTaskTemplate = require('../templates/admin_task_template.html');
+var AdminAbstractView = require('./admin_abstract_view');
 
 
-var AdminTaskView = Backbone.View.extend({
+var AdminTaskView = AdminAbstractView.extend({
 
   events: {
   },
@@ -15,6 +16,7 @@ var AdminTaskView = Backbone.View.extend({
     this.data = {
       page: 1
     };
+    AdminAbstractView.prototype.initialize.apply(this);
   },
 
   render: function () {
@@ -36,10 +38,6 @@ var AdminTaskView = Backbone.View.extend({
 
     Backbone.history.navigate('/admin/tasks');
     return this;
-  },
-
-  cleanup: function () {
-    removeView(this);
   },
 
   handleError: function (self, xhr, status, error) {

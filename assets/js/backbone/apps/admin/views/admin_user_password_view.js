@@ -2,11 +2,12 @@
 var Bootstrap = require('bootstrap');
 var _ = require('underscore');
 var Backbone = require('backbone');
+var AdminAbstractView = require('./admin_abstract_view');
 var utils = require('../../../mixins/utilities');
 var AdminUserPassword = require('../templates/admin_user_password.html');
 
 
-var AdminUserPasswordView = Backbone.View.extend({
+var AdminUserPasswordView = AdminAbstractView.extend({
 
   events: {
     "blur #newPassword"             : "v",
@@ -15,13 +16,14 @@ var AdminUserPasswordView = Backbone.View.extend({
 
   initialize: function (options) {
     this.options = options;
+    AdminAbstractView.prototype.initialize.apply(this);
   },
 
   render: function () {
     var data = {
       admin: this.options.admin,
       u: this.options.user
-    }
+    };
     var template = _.template(AdminUserPassword)(data);
     this.$el.html(template);
     return this;
@@ -65,22 +67,14 @@ var AdminUserPasswordView = Backbone.View.extend({
           $("#reset-password-modal").modal('hide');
           return;
         }
-        self.processError({ message: 'An error occurred while trying to save the password: the server provided an unexpected response.'})
+        self.handleError(self, xhr, status,
+          { message: 'An error occurred while trying to save the password: the server provided an unexpected response.'});
       },
       error: function (xhr, status, error) {
-        self.processError(xhr.responseJSON);
+        self.handleError(self, xhr, status, error);
       }
     });
 
-  },
-
-  processError: function (e) {
-    this.$(".alert").html(e.message || e);
-    this.$(".alert").show();
-  },
-
-  cleanup: function () {
-    removeView(this);
   }
 
 });
