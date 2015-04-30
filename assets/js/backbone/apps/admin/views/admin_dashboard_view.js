@@ -2,14 +2,13 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var utils = require('../../../mixins/utilities');
 var ModalComponent = require('../../../components/modal');
-var AdminAbstractView = require('./admin_abstract_view');
 var AdminDashboardTemplate = require('../templates/admin_dashboard_template.html');
 var AdminDashboardTable = require('../templates/admin_dashboard_table.html');
 var AdminDashboardActivities = require('../templates/admin_dashboard_activities.html');
 var LoginConfig = require('../../../config/login.json');
 
 
-var AdminDashboardView = AdminAbstractView.extend({
+var AdminDashboardView = Backbone.View.extend({
 
   events: {
   },
@@ -19,7 +18,6 @@ var AdminDashboardView = AdminAbstractView.extend({
     this.data = {
       page: 1
     };
-    AdminAbstractView.prototype.initialize.apply(this);
   },
 
   render: function () {
@@ -91,14 +89,8 @@ var AdminDashboardView = AdminAbstractView.extend({
               return sum + value;
             }, 0);
             self.renderMetrics(self, data);
-          },
-          error: function (xhr, status, error) {
-            self.handleError(self, xhr, status, error);
           }
         });
-      },
-      error: function (xhr, status, error) {
-        self.handleError(self, xhr, status, error);
       }
     });
     $.ajax({
@@ -108,12 +100,14 @@ var AdminDashboardView = AdminAbstractView.extend({
       success: function (data) {
         self.data = data;
         self.renderActivities(self, data);
-      },
-      error: function (xhr, status, error) {
-        self.handleError(self, xhr, status, error);
       }
     });
+  },
+
+  cleanup: function () {
+    removeView(this);
   }
+
 });
 
 module.exports = AdminDashboardView;

@@ -2,11 +2,10 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
 var utils = require('../../../mixins/utilities');
-var AdminAbstractView = require('./admin_abstract_view');
 var AdminTagTemplate = require('../templates/admin_tag_template.html');
 var TagFactory = require('../../../components/tag_factory');
 
-var AdminTagView = AdminAbstractView.extend({
+var AdminTagView = Backbone.View.extend({
 
   events: {
   },
@@ -14,7 +13,6 @@ var AdminTagView = AdminAbstractView.extend({
   initialize: function (options) {
     this.options = options;
     this.tagFactory = new TagFactory();
-    AdminAbstractView.prototype.initialize.apply(this);
   },
 
   render: function () {
@@ -84,6 +82,10 @@ var AdminTagView = AdminAbstractView.extend({
         }
       });
     });
+  },
+
+  cleanup: function () {
+    removeView(this);
   }
 
 });

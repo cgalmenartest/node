@@ -3,10 +3,9 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var utils = require('../../../mixins/utilities');
 var AdminTaskTemplate = require('../templates/admin_task_template.html');
-var AdminAbstractView = require('./admin_abstract_view');
 
 
-var AdminTaskView = AdminAbstractView.extend({
+var AdminTaskView = Backbone.View.extend({
 
   events: {
   },
@@ -16,7 +15,6 @@ var AdminTaskView = AdminAbstractView.extend({
     this.data = {
       page: 1
     };
-    AdminAbstractView.prototype.initialize.apply(this);
   },
 
   render: function () {
@@ -30,9 +28,6 @@ var AdminTaskView = AdminAbstractView.extend({
         self.$el.html(template);
         self.$el.show();
         $('.tip').tooltip();
-      },
-      error: function (xhr, status, error) {
-        self.handleError(self, xhr, status, error);
       }
     });
 
@@ -40,11 +35,8 @@ var AdminTaskView = AdminAbstractView.extend({
     return this;
   },
 
-  handleError: function (self, xhr, status, error) {
-    // show the alert message and hide the spinner
-    self.$('.alert').html(error.message || error);
-    self.$('.alert').show();
-    self.$('.spinner').hide();
+  cleanup: function () {
+    removeView(this);
   }
 
 });

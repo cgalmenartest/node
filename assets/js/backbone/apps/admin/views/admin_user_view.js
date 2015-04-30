@@ -1,7 +1,6 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
 var utils = require('../../../mixins/utilities');
-var AdminAbstractView = require('./admin_abstract_view');
 var ModalComponent = require('../../../components/modal');
 var AdminUserPasswordView = require('./admin_user_password_view');
 var AdminUserTemplate = require('../templates/admin_user_template.html');
@@ -10,7 +9,7 @@ var Paginate = require('../templates/admin_paginate.html');
 var LoginConfig = require('../../../config/login.json');
 
 
-var AdminUserView = AdminAbstractView.extend({
+var AdminUserView = Backbone.View.extend({
 
   events: {
     "click a.page"              : "clickPage",
@@ -29,7 +28,6 @@ var AdminUserView = AdminAbstractView.extend({
     this.data = {
       page: 1
     };
-    AdminAbstractView.prototype.initialize.apply(this);
   },
 
   render: function () {
@@ -119,9 +117,6 @@ var AdminUserView = AdminAbstractView.extend({
         self.data = data;
         self.renderUsers(self, data);
         $('.tip').tooltip();
-      },
-      error: function (xhr, status, error) {
-        self.handleError(self, xhr, status, error);
       }
     });
   },
@@ -207,9 +202,6 @@ var AdminUserView = AdminAbstractView.extend({
           if (data.isAdmin === false) {
             $(t.siblings(".admin-user-mkadmin")[0]).show();
           }
-        },
-        error: function (xhr, status, error) {
-          self.handleError(self, xhr, status, error);
         }
       });
     }
@@ -241,6 +233,10 @@ var AdminUserView = AdminAbstractView.extend({
 
     // render the modal
     this.$("#reset-password-modal").modal('show');
+  },
+
+  cleanup: function () {
+    removeView(this);
   }
 
 });

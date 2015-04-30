@@ -2,12 +2,11 @@
 var Bootstrap = require('bootstrap');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var AdminAbstractView = require('./admin_abstract_view');
 var utils = require('../../../mixins/utilities');
 var AdminUserPassword = require('../templates/admin_user_password.html');
 
 
-var AdminUserPasswordView = AdminAbstractView.extend({
+var AdminUserPasswordView = Backbone.View.extend({
 
   events: {
     "blur #newPassword"             : "v",
@@ -16,7 +15,6 @@ var AdminUserPasswordView = AdminAbstractView.extend({
 
   initialize: function (options) {
     this.options = options;
-    AdminAbstractView.prototype.initialize.apply(this);
   },
 
   render: function () {
@@ -74,7 +72,10 @@ var AdminUserPasswordView = AdminAbstractView.extend({
         self.handleError(self, xhr, status, error);
       }
     });
+  },
 
+  cleanup: function () {
+    removeView(this);
   }
 
 });
