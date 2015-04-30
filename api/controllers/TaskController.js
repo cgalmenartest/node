@@ -50,6 +50,7 @@ module.exports = {
 
   findAllByProjectId: function (req, res) {
     Task.findByProjectId(req.params.id)
+    .populate('tags')
     .sort({'updatedAt': -1})
     .exec(function(err, tasks) {
       if (err) return res.send(err, 500);
