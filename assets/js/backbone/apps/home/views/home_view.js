@@ -21,7 +21,7 @@ var HomeView = Backbone.View.extend({
 
   initialize: function (options) {
     this.options = options;
-    this.listenTo(window.cache.userEvents, "user:login:success", function (user) {
+    this.listenTo(window.cache.userEvents, "user:login:success:navigate", function (user) {
       Backbone.history.navigate(UIConfig.home.logged_in_path, { trigger: true });
     });
 

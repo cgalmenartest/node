@@ -86,9 +86,11 @@ var NavView = Backbone.View.extend({
     if (this.loginController) {
       this.loginController.cleanup();
     }
+
     this.loginController = new LoginController({
       el: '#login-wrapper',
-      message: message
+      message: message,
+      navigate: ($(location).attr('pathname') === "/")
     });
   },
 

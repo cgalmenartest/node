@@ -61,6 +61,9 @@ Login = BaseController.extend({
         // if successful, reload page
         Backbone.history.loadUrl();
         window.cache.userEvents.trigger("user:login:success", user);
+        if (self.options.navigate) {
+          window.cache.userEvents.trigger("user:login:success:navigate", user);
+        }
       }).modal('hide');
 
     });
