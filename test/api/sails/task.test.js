@@ -76,6 +76,18 @@ describe('tasks:', function () {
         done(err);
       });
     });
+
+    it('clone', function (done) {
+      request.post({
+        url: conf.url + '/task/clone',
+        body: JSON.stringify({taskId: 1})
+      }, function (err, response, body) {
+        body = JSON.parse(body);
+        assert.equal(body.taskId, 3);
+        assert.equal(body.title, conf.tasks[0].title);
+        done(err);
+      });
+    });
   });
 
 });
