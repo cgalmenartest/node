@@ -16,6 +16,7 @@ var VolunteerSupervisorNotifyTemplate = require('../templates/volunteer_supervis
 var VolunteerTextTemplate = require('../templates/volunteer_text_template.html');
 var ChangeStateTemplate = require('../templates/change_state_template.html');
 var UpdateNameTemplate = require('../templates/update_name_template.html');
+var CloneTaskTemplate = require('../templates/clone_task_template.html');
 
 
 var popovers = new Popovers();
@@ -34,6 +35,7 @@ var TaskShowController = BaseView.extend({
     'click #volunteered'              : 'volunteered',
     "click #task-close"               : "stateChange",
     "click #task-reopen"              : "stateReopen",
+    "click #task-clone"               : "clone",
     "click .link-backbone"            : linkBackbone,
     "click .delete-volunteer"         : 'removeVolunteer',
     "mouseenter .project-people-div"  : popovers.popoverPeopleOn,
@@ -478,6 +480,46 @@ var TaskShowController = BaseView.extend({
   stateReopen: function (e) {
     if (e.preventDefault) e.preventDefault();
     this.model.trigger("task:update:state", 'open');
+  },
+
+  clone: function (e) {
+    if (e.preventDefault) e.preventDefault();
+    var self = this;
+
+    if (this.modalAlert) { this.modalAlert.cleanup(); }
+    if (this.modalComponent) { this.modalComponent.cleanup(); }
+
+    var modalContent = _.template(CloneTaskTemplate)();
+
+    this.modalComponent = new ModalComponent({
+      el: "#modal-clone",
+      id: "check-clone",
+      modalTitle: "Clone This Opportunity"
+    }).render();
+
+    this.modalAlert = new ModalAlert({
+      el: "#check-clone .modal-template",
+      modalDiv: '#check-clone',
+      content: modalContent,
+      validateBeforeSubmit: true,
+      cancel: 'Cancel',
+      submit: 'Clone Opportunity',
+      callback: function (e) {
+        $.ajax({
+          url: '/api/task/clone',
+          method: 'POST',
+          data: {
+            taskId: self.model.attributes.id,
+            title: $('#task-clone-title').val()
+          }
+        }).done(function(data) {
+          self.options.router.navigate('/tasks/' + data.taskId,
+                                       { trigger: true });
+        });
+      }
+    }).render();
+
+    $('#task-clone-title').val(self.model.attributes.title + ' Clone');
   },
 
   cleanup: function () {
