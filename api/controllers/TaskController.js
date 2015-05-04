@@ -63,22 +63,23 @@ module.exports = {
     .populate('tags')
     .exec(function(err, task) {
       if (err) return res.send(err, 500);
+
       // Create a new task, copying over the following from the original:
-      // projectId, title, description
-      // Don't copy over the task state or any dates
-      // TODO: Implement cloning tags as well
-      var data = {
-        title: req.body.title ? req.body.title : task.title,
+      // projectId, title, description, tags
+      // Don't copy over the task state
+      var taskCloneData = {
+        title: req.body.title !== undefined ? req.body.title : task.title,
         description: task.description,
-        projectId: task.projectId
+        userId: req.user[0].id,
+        projectId: task.projectId,
+        tags: task.tags
       };
 
-      Task.create(data)
+      Task.create(taskCloneData)
       .exec(function(err, newTask) {
-        res.send({
-          title: newTask.title,
-          taskId: newTask.id
-        });
+        if (err) return res.send(err, 500);
+
+        res.send({ taskId: newTask.id, title: newTask.title });
       });
     });
   },
