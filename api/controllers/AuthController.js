@@ -13,6 +13,7 @@ var userUtils = require('../services/utils/user');
  * remote server.
  */
 function authenticate (req, res, strategy, json) {
+  if (req.user && json) req.logout();
   if (req.user) {
     passport.authorize(strategy, function (err, user, info)
     {
