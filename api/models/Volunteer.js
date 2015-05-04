@@ -49,7 +49,7 @@ module.exports = {
 
   beforeDestroy: function (values, cb){
    Volunteer.findOne({ id: values.where.id }).exec(function(err, volunteer) {
-      if (err) done(err);
+      if (err) cb(err);
       var params = {
       trigger: {
         callerType: 'Task',
