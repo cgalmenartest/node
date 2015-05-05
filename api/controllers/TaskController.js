@@ -58,24 +58,24 @@ module.exports = {
     });
   },
 
-  clone: function(req, res) {
+  copy: function(req, res) {
     Task.findOneById(req.body.taskId)
     .populate('tags')
     .exec(function(err, task) {
       if (err) return res.send(err, 500);
 
-      // Create a new task, copying over the following from the original:
+      // Create a new task draft, copying over the following from the original:
       // projectId, title, description, tags
-      // Don't copy over the task state
-      var taskCloneData = {
+      var taskCopyData = {
         title: req.body.title !== undefined ? req.body.title : task.title,
         description: task.description,
-        userId: req.user[0].id,
+        userId: req.body.userId,
         projectId: task.projectId,
+        state: 'draft',
         tags: task.tags
       };
 
-      Task.create(taskCloneData)
+      Task.create(taskCopyData)
       .exec(function(err, newTask) {
         if (err) return res.send(err, 500);
 

@@ -77,9 +77,9 @@ describe('tasks:', function () {
       });
     });
 
-    it('clone', function (done) {
+    it('copy', function (done) {
       request.post({
-        url: conf.url + '/task/clone',
+        url: conf.url + '/task/copy',
         body: JSON.stringify({taskId: 1})
       }, function (err, response, body) {
         body = JSON.parse(body);
