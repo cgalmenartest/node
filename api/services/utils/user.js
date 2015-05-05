@@ -672,7 +672,7 @@ module.exports = {
           User.findOneById(userAuth.userId, function (err, user) {
             if (!user || err) { return done(null, false, { message: 'Error looking up user.' }); }
             sails.log.debug('User Found:', user);
-            if (providerUser.id !== user.id) {
+            if (req.user && req.user[0] && req.user[0].id !== user.id) {
               return done(null, false, {
                 message: 'We\'re sorry, you can\'t connect that ' +
                   sails.config.auth.config.config[userAuth.provider].name +
