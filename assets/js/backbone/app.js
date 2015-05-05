@@ -32,12 +32,32 @@ window.cache            = { userEvents: {}, currentUser: null, system: {} };
 
 // Events
 window.entities = { request: {} };
-rendering       = {}
+rendering       = {};
 
 // Set up Backbone to use jQuery
 _ = require('underscore');
 Backbone = require('backbone');
 Backbone.$ = jQuery;
+
+// Global AJAX error listener. If we ever get an auth error, prompt to log
+// in otherwise show the error.
+$(function () {
+  $(document).ajaxError(function (e, jqXHR, settings, errorText) {
+    $('.spinner').hide();
+    if (jqXHR.status === 401 || jqXHR.status === 403) {
+      if (!window.cache || !window.cache.userEvents
+        || !('trigger' in window.cache.userEvents)) return;
+      window.cache.userEvents.trigger("user:request:login", {
+        disableClose: false,
+        message: jqXHR.responseJSON.message || ""
+      });
+    } else {
+      $('.alert')
+        .html("<strong>" + errorText + "</strong>. " + jqXHR.responseJSON.message || "")
+        .show();
+    }
+  });
+});
 
 // Load the application
 var appr = require('./app-run');

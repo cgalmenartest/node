@@ -5,7 +5,6 @@ var utils = require('../../../mixins/utilities');
 var AdminTagTemplate = require('../templates/admin_tag_template.html');
 var TagFactory = require('../../../components/tag_factory');
 
-
 var AdminTagView = Backbone.View.extend({
 
   events: {
@@ -87,7 +86,8 @@ var AdminTagView = Backbone.View.extend({
 
   cleanup: function () {
     removeView(this);
-  },
+  }
+
 });
 
 module.exports = AdminTagView;

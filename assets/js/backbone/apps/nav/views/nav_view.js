@@ -1,3 +1,10 @@
+// Nav
+//
+// Note we need to take special care to not open up this view multiple times.
+// Bootstrap modals do work with multiple modal opens, and that wouldn't make
+// sense anyway. We do that via a variable here (doingLogin) that bypasses
+// the render here, and is reset by a callback when the modal closes later.
+
 var _ = require('underscore');
 var Backbone = require('backbone');
 var utils = require('../../../mixins/utilities');
@@ -22,6 +29,10 @@ var NavView = Backbone.View.extend({
 
     this.listenTo(window.cache.userEvents, "user:login:success", function (userData) {
       self.doRender({ user: userData });
+    });
+
+    this.listenTo(window.cache.userEvents, "user:login:close", function () {
+      self.doingLogin = false;
     });
 
     this.listenTo(window.cache.userEvents, "user:logout", function () {
@@ -70,12 +81,16 @@ var NavView = Backbone.View.extend({
   },
 
   login: function (message) {
+    if (this.doingLogin) return;    // login modal already open, skip!
+    this.doingLogin = true;
     if (this.loginController) {
       this.loginController.cleanup();
     }
+
     this.loginController = new LoginController({
       el: '#login-wrapper',
-      message: message
+      message: message,
+      navigate: ($(location).attr('pathname') === "/")
     });
   },
 
@@ -92,9 +107,11 @@ var NavView = Backbone.View.extend({
   },
 
   cleanup: function () {
-    if (this.loginController) { this.loginController.cleanup(); }
+    if (this.loginController) {
+      this.loginController.cleanup();
+    }
     removeView(this);
-  },
+  }
 });
 
 module.exports = NavView;

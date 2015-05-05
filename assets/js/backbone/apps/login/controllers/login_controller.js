@@ -20,7 +20,6 @@ Login = BaseController.extend({
   },
 
   initialize: function ( options ) {
-    var self = this;
     this.options = options;
     this.initializeView();
   },
@@ -59,11 +58,20 @@ Login = BaseController.extend({
       self.stopListening(window.cache.userEvents);
       // window.cache.userEvents.stopListening();
       $('#login').bind('hidden.bs.modal', function() {
-        // reload the page after login
+        // if successful, reload page
         Backbone.history.loadUrl();
         window.cache.userEvents.trigger("user:login:success", user);
-        self.cleanup();
+        if (self.options.navigate) {
+          window.cache.userEvents.trigger("user:login:success:navigate", user);
+        }
       }).modal('hide');
+
+    });
+
+    // clean up no matter how the modal is closed
+    $('#login').bind('hidden.bs.modal', function () {
+      window.cache.userEvents.trigger("user:login:close");
+      self.cleanup();
     });
   },
 
@@ -107,7 +115,6 @@ Login = BaseController.extend({
   //= UTILITY METHODS
   // ---------------------
   cleanup: function() {
-    // don't do anything
     if (this.loginView) { this.loginView.cleanup(); }
     if (this.modalComponent) { this.modalComponent.cleanup(); }
     removeView(this);

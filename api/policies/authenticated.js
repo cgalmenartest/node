@@ -27,7 +27,7 @@ module.exports = function authenticated (req, res, next) {
 
         // User is not allowed, send 403 message
         return res.send(403, {
-          message: "You are not permitted to perform this action."
+          message: "You must login to perform this action."
         });
 
       }

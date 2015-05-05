@@ -28,9 +28,6 @@ var AdminTaskView = Backbone.View.extend({
         self.$el.html(template);
         self.$el.show();
         $('.tip').tooltip();
-      },
-      error: function (xhr, status, error) {
-        self.handleError(self, xhr, status, error);
       }
     });
 
@@ -40,13 +37,6 @@ var AdminTaskView = Backbone.View.extend({
 
   cleanup: function () {
     removeView(this);
-  },
-
-  handleError: function (self, xhr, status, error) {
-    // show the alert message and hide the spinner
-    self.$('.alert').html(error.message || error);
-    self.$('.alert').show();
-    self.$('.spinner').hide();
   }
 
 });

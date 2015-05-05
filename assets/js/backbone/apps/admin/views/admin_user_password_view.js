@@ -21,7 +21,7 @@ var AdminUserPasswordView = Backbone.View.extend({
     var data = {
       admin: this.options.admin,
       u: this.options.user
-    }
+    };
     var template = _.template(AdminUserPassword)(data);
     this.$el.html(template);
     return this;
@@ -65,18 +65,13 @@ var AdminUserPasswordView = Backbone.View.extend({
           $("#reset-password-modal").modal('hide');
           return;
         }
-        self.processError({ message: 'An error occurred while trying to save the password: the server provided an unexpected response.'})
+        self.handleError(self, xhr, status,
+          { message: 'An error occurred while trying to save the password: the server provided an unexpected response.'});
       },
       error: function (xhr, status, error) {
-        self.processError(xhr.responseJSON);
+        self.handleError(self, xhr, status, error);
       }
     });
-
-  },
-
-  processError: function (e) {
-    this.$(".alert").html(e.message || e);
-    this.$(".alert").show();
   },
 
   cleanup: function () {

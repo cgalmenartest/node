@@ -117,18 +117,8 @@ var AdminUserView = Backbone.View.extend({
         self.data = data;
         self.renderUsers(self, data);
         $('.tip').tooltip();
-      },
-      error: function (xhr, status, error) {
-        self.handleError(self, xhr, status, error);
       }
     });
-  },
-
-  handleError: function (self, xhr, status, error) {
-    // show the alert message and hide the spinner
-    self.$('.alert').html(error.message || error);
-    self.$('.alert').show();
-    self.$('.spinner').hide();
   },
 
   adminCreate: function (e) {
@@ -212,9 +202,6 @@ var AdminUserView = Backbone.View.extend({
           if (data.isAdmin === false) {
             $(t.siblings(".admin-user-mkadmin")[0]).show();
           }
-        },
-        error: function (xhr, status, error) {
-          self.handleError(self, xhr, status, error);
         }
       });
     }
@@ -250,7 +237,8 @@ var AdminUserView = Backbone.View.extend({
 
   cleanup: function () {
     removeView(this);
-  },
+  }
+
 });
 
 module.exports = AdminUserView;

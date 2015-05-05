@@ -89,14 +89,8 @@ var AdminDashboardView = Backbone.View.extend({
               return sum + value;
             }, 0);
             self.renderMetrics(self, data);
-          },
-          error: function (xhr, status, error) {
-            self.handleError(self, xhr, status, error);
           }
         });
-      },
-      error: function (xhr, status, error) {
-        self.handleError(self, xhr, status, error);
       }
     });
     $.ajax({
@@ -106,19 +100,14 @@ var AdminDashboardView = Backbone.View.extend({
       success: function (data) {
         self.data = data;
         self.renderActivities(self, data);
-      },
-      error: function (xhr, status, error) {
-        self.handleError(self, xhr, status, error);
       }
     });
   },
 
-  handleError: function (self, xhr, status, error) {
-    // show the alert message and hide the spinner
-    self.$('.alert').html(error.message || error);
-    self.$('.alert').show();
-    self.$('.spinner').hide();
+  cleanup: function () {
+    removeView(this);
   }
+
 });
 
 module.exports = AdminDashboardView;
