@@ -1,7 +1,7 @@
 console.log('Loading... ', __filename);
 
 // import login configuration
-var config = require(process.env.PWD + '/assets/js/backbone/config/login.json');
+var config = require(process.cwd() + '/assets/js/backbone/config/login.json');
 module.exports = {
   // AUTHENTICATION SETTINGS
   // Set your client ids private keys for each of your services
