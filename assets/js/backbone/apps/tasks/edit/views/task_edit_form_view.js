@@ -230,7 +230,8 @@ var TaskEditFormView = Backbone.View.extend({
               if (!tag) return;
               return (tag.id && tag.id !== tag.name) ? +tag.id : {
                 name: tag.name,
-                type: tag.tagType
+                type: tag.tagType,
+                data: tag.data
               };
             })
             .compact()

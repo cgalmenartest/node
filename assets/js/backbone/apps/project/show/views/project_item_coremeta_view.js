@@ -134,7 +134,8 @@ var ProjectItemCoreMetaView = Backbone.View.extend({
         }).map(function(tag) {
           return (tag.id && tag.id !== tag.name) ? +tag.id : {
             name: tag.name,
-            type: tag.tagType
+            type: tag.tagType,
+            data: tag.data
           };
         }).unique().value();
     }
