@@ -70,7 +70,6 @@ module.exports = {
         title: req.body.title !== undefined ? req.body.title : task.title,
         description: task.description,
         userId: req.body.userId,
-        projectId: task.projectId,
         state: 'draft',
         tags: task.tags
       };
