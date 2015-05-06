@@ -23,7 +23,10 @@ Sails.lift({}, function(err, sails) {
       json: true
     }, function(err, res, body) {
       if (err) return cb(err);
-      if (!body[0]) return cb();
+      if (!body[0]) {
+        console.log('No location data found for ' + tag.name);
+        return cb();
+      }
       var data = _.omit(body[0], 'name');
       TagEntity.update(tag.id, { data: data }).exec(function(err) {
         if (err) return cb(err);
