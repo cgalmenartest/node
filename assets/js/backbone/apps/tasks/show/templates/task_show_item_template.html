@@ -55,10 +55,16 @@
             <span class="like-plural" id="like-text" data-plural="likes" data-singular="like">likes</span>
           </div>
           <div class="navbar-side border-bottom">
+            <div id="modal-copy"></div>
             <ul class="nav nav-pills nav-stacked">
               <li>
                 <a href="#" id="email"><i class="fa fa-envelope-o"></i> <span class="box-icon-text">Share</span></a>
               </li>
+              <% if (user) { %>
+              <li class="li-task-copy">
+                <a href="#" id="task-copy"><i class="fa fa-files-o"></i><span class="box-icon-text">Copy Opportunity</span></a>
+              </li>
+              <% } %>
             </ul>
           </div>
           <% if (model.isOwner || (user && user.isAdmin)) { %>

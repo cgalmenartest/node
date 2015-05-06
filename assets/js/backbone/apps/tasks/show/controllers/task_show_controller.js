@@ -16,6 +16,7 @@ var VolunteerSupervisorNotifyTemplate = require('../templates/volunteer_supervis
 var VolunteerTextTemplate = require('../templates/volunteer_text_template.html');
 var ChangeStateTemplate = require('../templates/change_state_template.html');
 var UpdateNameTemplate = require('../templates/update_name_template.html');
+var CopyTaskTemplate = require('../templates/copy_task_template.html');
 
 
 var popovers = new Popovers();
@@ -34,6 +35,7 @@ var TaskShowController = BaseView.extend({
     'click #volunteered'              : 'volunteered',
     "click #task-close"               : "stateChange",
     "click #task-reopen"              : "stateReopen",
+    "click #task-copy"                : "copy",
     "click .link-backbone"            : linkBackbone,
     "click .delete-volunteer"         : 'removeVolunteer',
     "mouseenter .project-people-div"  : popovers.popoverPeopleOn,
@@ -93,6 +95,7 @@ var TaskShowController = BaseView.extend({
     this.$(".li-task-view").show();
     this.$(".li-task-edit").hide();
     this.$(".task-view").hide();
+    this.$(".li-task-copy").hide();
   },
 
   initializeChildren: function () {
@@ -482,6 +485,46 @@ var TaskShowController = BaseView.extend({
   stateReopen: function (e) {
     if (e.preventDefault) e.preventDefault();
     this.model.trigger("task:update:state", 'open');
+  },
+
+  copy: function (e) {
+    if (e.preventDefault) e.preventDefault();
+    var self = this;
+
+    if (this.modalAlert) { this.modalAlert.cleanup(); }
+    if (this.modalComponent) { this.modalComponent.cleanup(); }
+
+    var modalContent = _.template(CopyTaskTemplate)();
+
+    this.modalComponent = new ModalComponent({
+      el: "#modal-copy",
+      id: "check-copy",
+      modalTitle: "Copy This Opportunity"
+    }).render();
+
+    this.modalAlert = new ModalAlert({
+      el: "#check-copy .modal-template",
+      modalDiv: '#check-copy',
+      content: modalContent,
+      validateBeforeSubmit: true,
+      cancel: 'Cancel',
+      submit: 'Copy Opportunity',
+      callback: function (e) {
+        $.ajax({
+          url: '/api/task/copy',
+          method: 'POST',
+          data: {
+            taskId: self.model.attributes.id,
+            title: $('#task-copy-title').val()
+          }
+        }).done(function(data) {
+          self.options.router.navigate('/tasks/' + data.taskId + '/edit',
+                                       { trigger: true });
+        });
+      }
+    }).render();
+
+    $('#task-copy-title').val('COPY ' + self.model.attributes.title);
   },
 
   cleanup: function () {

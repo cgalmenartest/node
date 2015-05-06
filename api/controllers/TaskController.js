@@ -58,6 +58,31 @@ module.exports = {
     });
   },
 
+  copy: function(req, res) {
+    Task.findOneById(req.body.taskId)
+    .populate('tags')
+    .exec(function(err, task) {
+      if (err) return res.send(err, 500);
+
+      // Create a new task draft, copying over the following from the original:
+      // projectId, title, description, tags
+      var taskCopyData = {
+        title: req.body.title !== undefined ? req.body.title : task.title,
+        description: task.description,
+        userId: req.body.userId,
+        state: 'draft',
+        tags: task.tags
+      };
+
+      Task.create(taskCopyData)
+      .exec(function(err, newTask) {
+        if (err) return res.send(err, 500);
+
+        res.send({ taskId: newTask.id, title: newTask.title });
+      });
+    });
+  },
+
   export: function (req, resp) {
     Task.find().exec(function (err, tasks) {
       if (err) {
