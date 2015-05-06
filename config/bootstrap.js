@@ -1,5 +1,8 @@
 console.log('Loading... ', __filename);
 
+var fs = require('fs'),
+    p = require('path');
+
 /**
  * Bootstrap
  * (sails.config.bootstrap)
@@ -13,6 +16,13 @@ console.log('Loading... ', __filename);
 var buildDictionary = require('sails-build-dictionary');
 
 module.exports.bootstrap = function (cb) {
+
+  // If upload directory is missing, create it
+  var config = sails.config.fileStore || {},
+      dir = config.local.dirname || '/assets/uploads',
+      path = p.join(sails.config.appPath, dir);
+  if (!fs.existsSync(path)) fs.mkdirSync(path);
+
   buildDictionary.optional({
         dirname     : sails.config.paths.services,
         filter      : /(.+)\.(js|coffee|litcoffee)$/,

@@ -15,9 +15,9 @@ Sails.lift({}, function(err, sails) {
   function moveFile(file, cb) {
     if (file.fd || !file.data) return cb();
     var fd = file.id + '.' + file.name.split('.').pop();
-    File.update(file.id, { fd: fd }).exec(function(err) {
+    fileStore.store(fd, file.data.parent, function(err, message) {
       if (err) return cb(err);
-      fileStore.store(fd, file.data.parent, function(err, message) {
+      File.update(file.id, { fd: fd }).exec(function(err) {
         if (err) return cb(err);
         cb();
       });
