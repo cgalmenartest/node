@@ -72,7 +72,7 @@ Comment = Backbone.View.extend({
   initializeNewTopic: function () {
 
     var options = {
-      el: '.topic-form-wrapper',
+      el: '#comment-form-target',
       target: this.options.target,
       collection: this.commentCollection,
       topic: true,
@@ -200,17 +200,6 @@ Comment = Backbone.View.extend({
     }).render();
 
     self.commentViews.push(commentIV);
-
-    var commentFV = new CommentFormView({
-      el: '#comment-form-' + comment.id,
-      target: this.options.target,
-      projectId: comment.projectId,
-      taskId: comment.taskId,
-      parentId: comment.id,
-      collection: collection,
-      depth: comment['depth']
-    });
-    self.commentForms.push(commentFV);
 
     return $("#comment-list");
   },

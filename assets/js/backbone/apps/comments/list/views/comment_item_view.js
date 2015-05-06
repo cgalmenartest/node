@@ -15,7 +15,7 @@ var CommentItemView = Backbone.View.extend({
     this.model.commentId = this.model.id;
 
     var compiledTemplate = _.template(CommentItemTemplate)(this.model);
-    this.$el.append(compiledTemplate);
+    this.$el.prepend(compiledTemplate);
   },
 
   cleanup: function () {

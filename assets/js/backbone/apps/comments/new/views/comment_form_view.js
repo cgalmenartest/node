@@ -32,9 +32,8 @@ var CommentFormView = Backbone.View.extend({
     var self = this;
     var data = { form: this.options };
     var template = _.template(CommentFormTemplate)(data);
-
     if (this.options.topic) {
-      this.$el.prepend(template).append("<div class='clearfix'></div>");
+      this.$el.append(template).append("<div class='clearfix'></div>");
     } else {
       this.$el.append(template);
     }
