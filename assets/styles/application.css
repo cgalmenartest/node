@@ -1745,14 +1745,12 @@ ul.task-tags > li {
   fill-opacity: .8;
 }
 
-.d3_tooltip {
-  background-color: rgba(68, 136, 187, 0.5);
+.d3-tooltip {
+  background-color: rgba(87, 129, 175, 0.7);
   margin: 10px;
-  height: 50px;
-  width: 150px;
-  padding-left: 10px;
-  padding-top: 10px;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
+  width: 240px;
+  padding: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
 }

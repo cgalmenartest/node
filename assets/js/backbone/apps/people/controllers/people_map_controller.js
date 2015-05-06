@@ -12,6 +12,10 @@ PeopleMap = {};
 
 PeopleMap.Controller = BaseController.extend({
 
+  events: {
+    "user:logout:success":      "cleanup"
+  },
+
   initialize: function () {
     var that = this;
     var gatherData = [];

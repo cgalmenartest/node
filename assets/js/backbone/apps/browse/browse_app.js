@@ -128,7 +128,12 @@ var BrowseRouter = Backbone.Router.extend({
 
   showPeople: function () {
     this.cleanupChildren();
-    this.peopleController = new PeopleController({target: 'people', el: '#container', router: this, data: this.data });
+    this.peopleController = new PeopleController({
+      el: '#container',
+      target: 'people',
+      router: this,
+      data: this.data
+    });
   },
 
   showAdmin: function (action) {
