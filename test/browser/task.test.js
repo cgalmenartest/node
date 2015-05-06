@@ -14,41 +14,15 @@ var system = require('system');
  */
 
  before(function() {
-   casper.start(system.env.TEST_ROOT, function afterStart() {
+   casper.start(system.env.TEST_ROOT + '/tasks', function afterStart() {
      this.options = {
        waitTimeout: 1000 * 15
-     }
+     };
      this.on('remote.message', function(message) {
        this.log('browser console.log ==> ' + message);
      });
    }).viewport(1000,1000).userAgent('Mozilla/5.0');
- })
-
-
-describe('Home page', function() {
-
-  it('should have success status', function() {
-    casper.then(function() {
-      assert.equal(casper.currentHTTPStatus,200);
-    })
-  })
-
-  it('should have correct title', function() {
-    casper.then(function() {
-      assert.equal(casper.getTitle(), "midas");
-    })
-  })
-
-  it('should link to /tasks', function() {
-    casper.then(function() {
-      casper.waitForText('Opportunities', function waitForTextOpportunities() {
-        casper.click('.tasks .nav-link[href]')
-        assert.equal(casper.getCurrentUrl(), system.env.TEST_ROOT + '/tasks');
-      })
-    });
-  });
-
-});
+ });
 
 /**
  *
@@ -60,8 +34,8 @@ describe('Task page', function() {
   it('should have success status', function() {
     casper.then(function() {
       assert.equal(casper.currentHTTPStatus,200);
-    })
-  })
+    });
+  });
 
   it('should have task listing page', function() {
     casper.then(function() {
