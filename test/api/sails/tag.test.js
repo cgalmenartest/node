@@ -110,6 +110,36 @@ describe('tag:', function() {
       });
     });
 
+    it('location tag', function (done) {
+      request.get({
+        url: conf.url + '/location/suggest?q=Camden,%20NJ'
+      }, function(err, response, body) {
+        assert.equal(response.statusCode, 200);
+        var b = JSON.parse(body);
+        assert.isAbove(body.length, 0);
+        var tag = {
+              name: body[0].name,
+              type: 'location',
+              data: _.omit(body[0], 'name')
+            };
+
+        request.post({ url: conf.url + '/tagentity',
+                       body: JSON.stringify(tag)
+                     }, function (err, response, body) {
+          if (err) { return done(err); }
+          assert.equal(response.statusCode, 200);
+          var b = JSON.parse(body);
+          // check that the values passed in are the same as those passed back
+          assert.equal(tag.name, b.name);
+          assert.equal(tag.type, b.type);
+          assert.deepEqual(tag.data, b.data);
+          done();
+        });
+
+      });
+    });
+
+
   });
 
   describe('logged out:', function () {
