@@ -120,4 +120,34 @@ describe('Task actions', function() {
     });
   });
 
+  it('should edit task', function() {
+
+    // Click the edit task button
+    casper.then(function() {
+      casper.click('#task-edit');
+      casper.waitForSelector('#task-edit-form');
+    });
+
+    // Change the title and description
+    casper.then(function() {
+      casper.fillSelectors('#task-edit-form', {
+        '#task-title': config.task.titleChange,
+        '#task-description': config.task.descriptionChange
+      }, false);
+      casper.click('#task-edit-form input[type="submit"]');
+      casper.waitUntilVisible('.li-task-edit');
+    });
+
+    // Verify updated task
+    casper.then(function() {
+      var title = casper.fetchText('.edit-task-section h1'),
+          description = casper.fetchText('.edit-task-section .task-show-description').trim(),
+          people = casper.fetchText('#task-people-empty+li').trim();
+      assert.equal(config.task.titleChange, title);
+      assert.equal(config.task.descriptionChange, description);
+      assert.equal(config.task.people.name, people);
+    });
+
+  });
+
 });

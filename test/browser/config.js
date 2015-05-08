@@ -8,11 +8,13 @@ module.exports = {
   },
   "task": {
     "title": "Testing Task",
+    "titleChange": "A New Task Test",
     "people": {
       "id": 5,
       "name": "2 - 5 people"
     },
     "tag": "testing",
-    "description": "A test for creating a new task"
+    "description": "A test for creating a new task",
+    "descriptionChange": "This is a testing task"
   }
 };
