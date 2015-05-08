@@ -1196,6 +1196,9 @@ a.delete-comment {
   padding: 0px 3px;
 }
 
+#comment-form-target {
+  margin-top: 5px;
+}
 /*****************
 =  AUTOCOMPLETE
 ******************/

@@ -15,7 +15,8 @@ var commentAssemble = function (where, done) {
   Comment.find()
   // .where({ topic: true })
   .where(where)
-  .sort('id')
+  //we sort oldest to newest because we are changing the renderer (which is called for each comment) to prepend instead of append
+  .sort({'updatedAt':1})
   .exec(function (err, comments) {
     if (err) return done(err, null);
 
