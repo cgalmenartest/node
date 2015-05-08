@@ -73,7 +73,6 @@ describe('Task actions', function() {
     // Agree to terms
     casper.then(function() {
       casper.click('#task-responsibilities');
-      casper.capture('img-form2.png');
       casper.click('#wizard-forward-button');
       casper.waitForSelector('#task-title');
     });
@@ -89,7 +88,6 @@ describe('Task actions', function() {
 
     // Select number of people for task and a new tag to task
     casper.then(function() {
-      casper.capture('img-form5.png');
       casper.fillSelectors('#task-form', {
         '#people': config.task.people.id
       }, false);
@@ -99,7 +97,6 @@ describe('Task actions', function() {
 
     // Fill out description
     casper.then(function() {
-      casper.capture('img-form8.png');
       casper.fillSelectors('#task-form', {
         '#task-description': config.task.description
       });

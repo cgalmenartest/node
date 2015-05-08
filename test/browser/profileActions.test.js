@@ -167,12 +167,11 @@ describe('Profile actions', function() {
     // Go to tasks page
     casper.then(function() {
       casper.click('.nav-link[href="/tasks"]');
-      casper.waitForSelector('#browse-list');
+      casper.waitForSelector('.task-box a');
     });
 
     // Click task title
     casper.then(function() {
-      casper.capture('temp.png');
       casper.click('.task-box a');
       casper.waitForSelector('#volunteer');
     });
