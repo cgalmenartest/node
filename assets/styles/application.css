@@ -1282,6 +1282,10 @@ a.delete-comment {
 /*****************
 =  TASK LIST
 ******************/
+.task-scroll .task {
+  overflow-y: hidden;
+}
+
 .task-box {
   width: 240px;
   height: 307px;
