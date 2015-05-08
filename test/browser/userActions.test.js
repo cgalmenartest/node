@@ -1,4 +1,4 @@
-var config = require('../init/init/config');
+var config = require('./config');
 var chai = require('chai');
 var expect = chai.expect;
 var assert = chai.assert;
@@ -10,7 +10,7 @@ var system = require('system');
 
 /**
  *
- * Home page tests
+ * User action tests
  *
  */
 
@@ -45,7 +45,7 @@ describe('User actions', function() {
     // Fill out the registration form
     casper.then(function() {
       casper.fillSelectors('#registration-form', {
-        '#rname': 'Test User',
+        '#rname': config.user.name,
         '#rusername': config.user.username,
         '#rpassword': config.user.password,
         '#rpassword-confirm': config.user.password
@@ -60,13 +60,51 @@ describe('User actions', function() {
     });
 
     // Verify that account was created and user is logged in
-    casper.then(function(){
+    casper.then(function() {
       var username = casper.evaluate(function() {
         return window.cache.currentUser.username;
       });
       assert.equal(username, config.user.username);
     });
 
+  });
+
+  it('should edit profile', function() {
+
+    // Click view profile
+    casper.then(function() {
+      casper.click('.nav-link[href="/profile"]');
+      casper.waitForSelector('.link-backbone');
+    });
+
+    // Click edit profile
+    casper.then(function() {
+      casper.click('.link-backbone');
+      casper.waitForSelector('#profile-form');
+    });
+
+    // Fill form
+    casper.then(function() {
+      casper.fillSelectors('#profile-form', {
+        '#title': config.user.title,
+        '#bio': config.user.bio
+      }, false);
+      casper.click('#submit');
+      casper.waitForSelector('.profile-jobtitle');
+    });
+
+    // Verify title and bio set correctly
+    casper.then(function() {
+      var bioUI = casper.fetchText('.profile-bio'),
+          titleUI = casper.fetchText('.profile-jobtitle .box-icon-text'),
+          data = casper.evaluate(function() {
+            return window.cache.currentUser;
+          });
+      assert.equal(config.user.bio, bioUI.trim());
+      assert.equal(config.user.bio, data.bio.trim());
+      assert.equal(config.user.title, titleUI.trim());
+      assert.equal(config.user.title, data.title.trim());
+    });
   });
 
   it('should log out', function() {
@@ -125,8 +163,9 @@ describe('User actions', function() {
   it('should log in from task page', function() {
     var submitButton = '#login-password-form button[type="submit"]';
 
-    // Wait for tasks to load
+    // Go to tasks page
     casper.then(function() {
+      casper.click('.nav-link[href="/tasks"]');
       casper.waitForSelector('#browse-list');
     });
 

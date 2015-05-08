@@ -64,7 +64,7 @@ function start(err) {
 
     // Recursively call test files except the upstart script
     var testDir = 'test/browser',
-        tests = _.without(fs.readdirSync(testDir), 'upstart.js');
+        tests = _.without(fs.readdirSync(testDir), 'upstart.js', 'config.js');
 
     async.eachSeries(tests, function(test, cb) {
       var child = spawn('./node_modules/.bin/mocha-casperjs', [

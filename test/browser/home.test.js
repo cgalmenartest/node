@@ -1,4 +1,3 @@
-var config = require('../init/init/config');
 var chai = require('chai');
 var expect = chai.expect;
 var assert = chai.assert;
