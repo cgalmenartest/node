@@ -62,9 +62,11 @@ function start(err) {
     // export properties for upcoming tests with supertest.js
     sails.localAppURL = localAppURL = ( sails.usingSSL ? 'https' : 'http' ) + '://' + sails.config.host + ':' + sails.config.port + '';
 
-    // Recursively call test files except the upstart script
+    // Recursively call .test.js files
     var testDir = 'test/browser',
-        tests = _.without(fs.readdirSync(testDir), 'upstart.js', 'config.js');
+        tests = _.filter(fs.readdirSync(testDir), function(filename) {
+          return /\.test\.js$/.test(filename);
+        });
 
     async.eachSeries(tests, function(test, cb) {
       var child = spawn('./node_modules/.bin/mocha-casperjs', [

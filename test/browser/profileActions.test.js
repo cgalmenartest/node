@@ -25,7 +25,7 @@ before(function() {
   }).viewport(1000,1000).userAgent('Mozilla/5.0');
 });
 
-describe('User actions', function() {
+describe('Profile actions', function() {
 
   it('should create a new account', function() {
     var submitButton = '#registration-form button[type="submit"]';
@@ -156,6 +156,7 @@ describe('User actions', function() {
       });
       assert.equal(username, config.user.username);
       casper.click('a.logout');
+      casper.waitForSelector('a.login');
     });
 
   });
