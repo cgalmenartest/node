@@ -21,7 +21,7 @@ If you want to keep up with the latest changes, we work in the "devel" branch.  
 Currently stand-ups are at 11a PT / 2p ET, but since we might reschedule now and then so
 here is our calendar of public meetings:  https://www.google.com/calendar/embed?src=ultrasaurus.com_oja7dkbgf1cug9smkb8q8pn2b8%40group.calendar.google.com  Anyone interested in Midas is welcome to join standup, you can meet the team and we can figure out appropriate longer-format or offline follow-up if you have lots of questions.
 
-We also have a [wiki](https://github.com/18F/midas/wiki) where we keep various development notes. If anything is confusing or your questions are not answered there, please shout out on the mailing list](https://groups.google.com/forum/#!forum/midascrowd).
+We also have a [wiki](https://github.com/18F/midas/wiki) where we keep various development notes. If anything is confusing or your questions are not answered there, please shout out on the [mailing list](https://groups.google.com/forum/#!forum/midascrowd).
 
 ## Development Process
 
