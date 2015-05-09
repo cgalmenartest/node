@@ -5,9 +5,9 @@ var conf = require('./config');
 var utils = require('./utils');
 var request;
 
-describe('demo:', function() {
+describe('demo:', function () {
 
-  before(function(done) {
+  before(function (done) {
     request = utils.init();
     done();
   });
@@ -69,7 +69,11 @@ describe('demo:', function() {
           utils.login(request, user.username, user.password, function (err) {
             if (err) return done(err);
             var tagEntity = conf.tags[user[entity]];
-            createTag({ tagId: tagEntity.id, userId: user.id }, done);
+            createTag({
+                tagId: tagEntity.id,
+                userId: user.id,
+                data: tagEntity.data || ''
+              }, done);
           });
           return;
         }
@@ -97,7 +101,7 @@ describe('demo:', function() {
 
         var processComment = function (comment, done) {
           var user = conf.users[comment.user];
-          utils.login(request , user.username, user.password, function (err) {
+          utils.login(request, user.username, user.password, function (err) {
             if (err) return done(err);
             comment.projectId = proj.id;
             if (parentId) {
@@ -167,7 +171,7 @@ describe('demo:', function() {
         var createEvent = function (ev, done) {
           ev.projectId = proj.id;
           ev.start = new Date(now.valueOf());
-          ev.start.setDate(now.getDate() + Math.ceil(Math.random()*30));
+          ev.start.setDate(now.getDate() + Math.ceil(Math.random() * 30));
           ev.start.setMinutes(0);
           ev.start.setSeconds(0);
           ev.start.setMilliseconds(0);
@@ -206,7 +210,7 @@ describe('demo:', function() {
       var startTags = function (tag, done) {
         var request = utils.init();
         var createTag = function (tag, done) {
-            console.log("==", tag, conf.tags[tag]);
+          console.log("==", tag, conf.tags[tag]);
           var t = {
             tagId: conf.tags[tag].id,
             projectId: proj.id
@@ -250,9 +254,9 @@ describe('demo:', function() {
     });
   });
 
-  after(function(done) {
+  after(function (done) {
     // Disable all of the users after populating the database
-    var disableUser = function(u, done) {
+    var disableUser = function (u, done) {
       utils.login(request, u.username, u.password, function (err) {
         if (err) return done(err);
         utils.user_info(request, function (err, user) {
