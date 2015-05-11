@@ -65,16 +65,29 @@ var PeopleMapView = Backbone.View.extend({
 
   renderUserDots: function () {
     var that = this;
+
+    // massage data: pivot list of people by city, flatten that into a list with
+    // cityname, people in that city, sorted largest first (so largest cities get
+    // drawn first (bottom).
     var peopleWithLocations = this.people
       .filter(function (p) {
         return !_.isUndefined(p.get('location'));
       });
-    var citiesPeople = _.groupBy(peopleWithLocations, function (p) {
+    var cityPeopleObj = _.groupBy(peopleWithLocations, function (p) {
       return p.get('location').name;
+    });
+    var cityPeopleList = _.map(_.keys(cityPeopleObj), function (c) {
+      return {
+        cityname: c,
+        people: cityPeopleObj[c]
+      }
+    });
+    cityPeopleList = _.sortBy(cityPeopleList, function (cp) {
+      return cp.people.length * -1;
     });
 
     var dotScale = d3.scale.linear()
-      .domain([1, _.max(citiesPeople, 'length').length])
+      .domain([1, cityPeopleList[0].people.length])
       .range([
         this.smallestDotPx * this.staticScale,
         this.smallestDotPx * this.staticScale * this.dotSizeFactor
@@ -88,19 +101,19 @@ var PeopleMapView = Backbone.View.extend({
       .style("visibility", "hidden");
 
     var usersG = this.svg.append("g");
-    _.values(citiesPeople).forEach(function (cityPeople) {
-      var cityLoc = cityPeople[0].get('location');
+    _.values(cityPeopleList).forEach(function (cp) {
+      var cityLoc = cp.people[0].get('location');
       var tipDesc = this.tipDescTemplate({
-        city: cityLoc.name,
-        count: cityPeople.length,
-        names: _.map(cityPeople, function (p) {
+        city: cp.cityname,
+        count: cp.people.length,
+        names: _.map(cp.people, function (p) {
           return p.get('name');
         }).slice(0, 3).join(', ')    // only show three names
       });
 
       if (!cityLoc.data || !cityLoc.data.lon || !cityLoc.data.lat) {
-        console.log("Warning: skipped city, missing data:", cityLoc.name + ",",
-          cityPeople.length, "users");
+        console.log("Warning: skipped city, missing data:", cp.cityname + ",",
+          cp.people.length, "users");
         return;
       }
       var projectedPoint = this.projection([cityLoc.data.lon, cityLoc.data.lat]);
@@ -110,7 +123,7 @@ var PeopleMapView = Backbone.View.extend({
         .attr("class", "point")
         .attr("cx", projectedPoint[0])
         .attr("cy", projectedPoint[1])
-        .attr("r", dotScale(cityPeople.length))
+        .attr("r", dotScale(cp.people.length))
         .attr("pointer-events", "all")
         .on("click", function () {
           window.cache.userEvents.trigger("people:list", {people: cityPeople})

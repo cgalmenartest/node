@@ -28,17 +28,35 @@ module.exports = {
       location: 'Washington, DC',
       photo: 'assets/users/alan.jpg'
     },
+    'jon': {
+      name: 'Jon Snow',
+      username: 'jon@gameofthrones.com',
+      password: 'jonjonS1!',
+      title: 'Member of the Night\'s Watch',
+      agency: 'Dept of Homeland Security',
+      location: 'Duluth, Minnesota',
+      photo: 'assets/users/jon.jpg'
+    },
     'ned': {
       name: 'Eddard Stark',
       username: 'ned@gameofthrones.com',
       password: 'nednedN1!',
+      title: 'Lady of Winterfell',
+      agency: 'GSA',
+      location: 'Minneapolis, Minnesota',
+      photo: 'assets/users/cat.jpg'
+    },
+    'cat': {
+      name: 'Catelyn Stark',
+      username: 'cat@gameofthrones.com',
+      password: 'catcatS1!',
       title: 'Lord of Winterfell and Warden of the North',
       agency: 'GSA',
       location: 'Minneapolis, Minnesota',
       photo: 'assets/users/ned.jpg'
     },
     'tyrion': {
-      name: 'Tyrion Lanister',
+      name: 'Tyrion Lannister',
       username: 'tyrion@gameofthrones.com',
       password: 'tyriontyrionL1!',
       title: 'Master of Coin adn the Imp',
@@ -47,7 +65,7 @@ module.exports = {
       photo: 'assets/users/tyrion.jpg'
     },
     'cersei': {
-      name: 'Cersei Lanister',
+      name: 'Cersei Lannister',
       username: 'cersei@gameofthrones.com',
       password: 'cerseicerseiL1!',
       title: 'Queen of the Seven Kingdoms',
@@ -63,15 +81,6 @@ module.exports = {
       agency: 'Dept of Homeland Security',
       location: 'Washington, DC',
       photo: 'assets/users/jaime.jpg'
-    },
-    'jon': {
-      name: 'Jon Snow',
-      username: 'jon@gameofthrones.com',
-      password: 'jonjonS1!',
-      title: 'Member of the Night\'s Watch',
-      agency: 'Dept of Homeland Security',
-      location: 'Duluth, Minnesota',
-      photo: 'assets/users/jon.jpg'
     },
     'oberyn': {
       name: 'Oberyn Martell',
@@ -90,6 +99,15 @@ module.exports = {
       agency: 'Dept of Homeland Security',
       location: 'San Francisco, CA',
       photo: 'assets/users/balon.jpg'
+    },
+    'dani': {
+      name: 'Daenerys Targaryen',
+      username: 'dani@gameofthrones.com',
+      password: 'danidaniT1!',
+      title: 'Queen of the Andals and the Rhoynar and the First Men, Lord of the Seven Kingdoms, Khaleesi of the Great Grass Sea, Breaker of Shackles/Chains, Queen of Meereen, Princess of Dragonstone',
+      agency: 'Dept of Homeland Security',
+      location: 'Lahore, Punjab, PK',
+      photo: 'assets/users/dani.jpg'
     }
 
   },
@@ -174,6 +192,11 @@ module.exports = {
       type: 'location',
       name: 'São Paulo, BR',
       data: '{"lat":"-23.5475","lon":"-46.63611","source":"geonames","sourceId":3448439,"gmtOffset":-2,"timeZoneId":"America/Sao_Paulo","dstOffset":-3}'
+    },
+    'Lahore, Punjab, PK': {
+      type: 'location',
+      name: 'Lahore, Punjab, PK',
+      data: '{"lat":"31.54972","lon":"74.34361","source":"geonames","sourceId":1172451,"gmtOffset":5,"timeZoneId":"Asia/Karachi","dstOffset":5}'
     }
   },
   projects: [

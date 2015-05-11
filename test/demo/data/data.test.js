@@ -57,33 +57,18 @@ describe('demo:', function () {
   it('user tags', function (done) {
     var entities = ['location', 'agency'];
     var process = function (user, done) {
-      var processE = function (entity, done) {
-        var request = utils.init();
-        var createTag = function (tag, done) {
-          utils.tag_create(request, tag, function (err, tagObj) {
-            return done(err);
-          });
-          return;
-        };
-        if (user[entity]) {
-          utils.login(request, user.username, user.password, function (err) {
-            if (err) return done(err);
-            var tagEntity = conf.tags[user[entity]];
-            createTag({
-                tagId: tagEntity.id,
-                userId: user.id,
-                data: tagEntity.data || ''
-              }, done);
-          });
-          return;
-        }
-        else {
-          return done();
-        }
-      };
-
-      async.eachSeries(entities, processE, function (err) {
-        return done(err);
+      var tagIds = _.map(entities, function (entity) {
+        return conf.tags[user[entity]].id || '';
+      });
+      var request = utils.init();
+      utils.login(request, user.username, user.password, function (err) {
+        if (err) return done(err);
+        utils.tag_create(request, {
+          tagId: tagIds,
+          userId: user.id
+        }, function (err) {
+          return done(err);
+        });
       });
     };
     async.eachSeries(_.values(conf.users), process, function (err) {
