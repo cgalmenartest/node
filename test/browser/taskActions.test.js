@@ -150,4 +150,29 @@ describe('Task actions', function() {
 
   });
 
+  it('should change opportunity state', function() {
+
+    // Click "Change Opportunity State"
+    casper.then(function() {
+      var task = casper.getCurrentUrl().split('/').pop();
+      casper.click('#task-close');
+      casper.fill('#modal-form', {
+        'opportunityState': 'completed'
+      });
+      casper.click('#submit');
+      casper.wait(1000 * 2); // Wait for AJAX POST to complete
+    });
+
+    // Verify state changed
+    casper.then(function() {
+      var task = casper.getCurrentUrl().split('/').pop(),
+          data = casper.evaluate(function(url) {
+            return JSON.parse(__utils__.sendAJAX(url, 'GET', null, false));
+          }, {
+            url: system.env.TEST_ROOT + '/api/task/' + task
+          });
+      assert.equal(data.state, 'completed');
+    });
+  });
+
 });
