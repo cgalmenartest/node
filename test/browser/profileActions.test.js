@@ -167,7 +167,7 @@ describe('Profile actions', function() {
     // Go to tasks page
     casper.then(function() {
       casper.click('.nav-link[href="/tasks"]');
-      casper.waitForSelector('.task-box a');
+      casper.wait(5 * 1000); // Try longer wait time for Travis CI
     });
 
     // Click task title
