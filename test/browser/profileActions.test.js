@@ -136,6 +136,7 @@ describe('Profile actions', function() {
 
     // Fill out the login form
     casper.then(function() {
+      casper.capture('test-img/1.png');
       casper.fillSelectors('#login-password-form', {
         '#username': config.user.username,
         '#password': config.user.password
@@ -145,33 +146,39 @@ describe('Profile actions', function() {
 
     // Click the "sign in" button
     casper.then(function() {
+      casper.capture('test-img/2.png');
       casper.click(submitButton);
       casper.waitForSelector('.profile.dropdown');
     });
 
     // Verify that account was created and user is logged in
     casper.then(function(){
+      casper.capture('test-img/3.png');
       var username = casper.evaluate(function() {
         return window.cache.currentUser.username;
       });
       assert.equal(username, config.user.username);
+    });
+
+    // Go back to task page
+    casper.then(function() {
+      casper.click('.nav-link[href="/tasks"]');
+      casper.waitForSelector('a.logout');
+    });
+
+    // Go log out
+    casper.then(function() {
       casper.click('a.logout');
       casper.waitForSelector('a.login');
     });
-
   });
 
   it('should log in from task page', function() {
     var submitButton = '#login-password-form button[type="submit"]';
 
-    // Go to tasks page
-    casper.then(function() {
-      casper.click('.nav-link[href="/tasks"]');
-      casper.wait(5 * 1000); // Try longer wait time for Travis CI
-    });
-
     // Click task title
     casper.then(function() {
+      casper.captureBase64('png');
       casper.click('.task-box a');
       casper.waitForSelector('#volunteer');
     });
