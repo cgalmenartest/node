@@ -136,7 +136,6 @@ describe('Profile actions', function() {
 
     // Fill out the login form
     casper.then(function() {
-      casper.capture('test-img/1.png');
       casper.fillSelectors('#login-password-form', {
         '#username': config.user.username,
         '#password': config.user.password
@@ -146,14 +145,12 @@ describe('Profile actions', function() {
 
     // Click the "sign in" button
     casper.then(function() {
-      casper.capture('test-img/2.png');
       casper.click(submitButton);
       casper.waitForSelector('.profile.dropdown');
     });
 
     // Verify that account was created and user is logged in
     casper.then(function(){
-      casper.capture('test-img/3.png');
       var username = casper.evaluate(function() {
         return window.cache.currentUser.username;
       });
@@ -178,7 +175,6 @@ describe('Profile actions', function() {
 
     // Click task title
     casper.then(function() {
-      casper.captureBase64('png');
       casper.click('.task-box a');
       casper.waitForSelector('#volunteer');
     });

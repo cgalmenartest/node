@@ -67,7 +67,7 @@ describe('Task actions', function() {
     // Click +opportunity
     casper.then(function() {
       casper.click('.add-opportunity');
-      casper.waitForSelector('#task-form');
+      casper.wait(2 * 1000); // wait for modal to open
     });
 
     // Agree to terms
