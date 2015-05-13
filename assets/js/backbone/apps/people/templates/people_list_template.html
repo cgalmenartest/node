@@ -1,9 +1,10 @@
 <table class="table table-condensed table-hover">
 
   <tr>
-    <th width="30%">Name</th>
-    <th width="30%">Agency</th>
-    <th width="40%">Location</th>
+    <th width="20%">Name</th>
+    <th width="30%">Title</th>
+    <th width="25%">Agency</th>
+    <th width="25%">Location</th>
   </tr>
 
   <% _.each(people, function(person) { %>
@@ -13,6 +14,7 @@
         <%= person.get('name') %>
       </a>
     </td>
+    <td><%= person.get('title') %></td>
     <td><%= person.get('agency').name %></td>
     <td><%= person.get('location').name %></td>
   </tr>
