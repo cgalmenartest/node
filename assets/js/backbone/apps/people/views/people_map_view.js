@@ -22,7 +22,7 @@ var PeopleMapView = Backbone.View.extend({
     this.countries = options.countries;
     this.smallestDotPx = 5;         // size of smallest dot
     this.dotSizeFactor = options.dotSizeFactor || 5;
-    this.center = [0, 15];          // favor the northern hemisphere
+    this.center = [0, 25];          // favor the northern hemisphere
     this.rotate = [-10, 0];         // break map cleanly in pacific
     this.tipDescTemplate = _.template(tooltipTemplate);
     this.tipXOffset = this.smallestDotPx;
@@ -31,11 +31,10 @@ var PeopleMapView = Backbone.View.extend({
   render: function () {
     // mercator projection is 960 x 500 @ 150 points, scale relative to that
     this.width = this.$el.width();
-    this.height = Math.round(this.width / 2);
+    this.height = Math.round(this.width / 2) - 50;
     this.staticScale = this.width / 960;
 
     this.svg = d3.select(this.el).append('svg')
-      .attr("class", "box")
       .attr("preserveAspectRatio", "xMaxYMid")
       .attr("meetOrSlice", "slice")
       .attr("viewBox", "0 0 " + this.width + " " + this.height);
@@ -126,7 +125,7 @@ var PeopleMapView = Backbone.View.extend({
         .attr("r", dotScale(cp.people.length))
         .attr("pointer-events", "all")
         .on("click", function () {
-          window.cache.userEvents.trigger("people:list", {people: cityPeople})
+          window.cache.userEvents.trigger("people:list", cp.people)
         })
         .on("mouseover", function () {
           var dynamicScale = that.svg.node().width.animVal.value / 960;
