@@ -1754,6 +1754,10 @@ ul.task-tags > li {
   fill-opacity: .8;
 }
 
+.userDot-select {
+  fill: #FFCB32;
+}
+
 .d3-tooltip {
   background-color: rgba(87, 129, 175, 0.7);
   margin: 10px;

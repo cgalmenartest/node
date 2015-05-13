@@ -21,7 +21,7 @@ var PeopleMapView = Backbone.View.extend({
     this.people = options.people;
     this.countries = options.countries;
     this.smallestDotPx = 5;         // size of smallest dot
-    this.dotSizeFactor = options.dotSizeFactor || 5;
+    this.dotSizeFactor = options.dotSizeFactor || 3;
     this.center = [0, 25];          // favor the northern hemisphere
     this.rotate = [-10, 0];         // break map cleanly in pacific
     this.tipDescTemplate = _.template(tooltipTemplate);
@@ -125,7 +125,15 @@ var PeopleMapView = Backbone.View.extend({
         .attr("r", dotScale(cp.people.length))
         .attr("pointer-events", "all")
         .on("click", function () {
-          window.cache.userEvents.trigger("people:list", cp.people)
+          var previouslySelected = this.classList.contains('userDot-select');
+          // note jQuery removeClass() doesn't work on svg elements, but this does
+          $('.userDot-select').attr("class", "userDot");
+          window.cache.userEvents.trigger("people:list:remove");
+          if (!previouslySelected) {
+            this.classList.add('userDot-select');
+            window.cache.userEvents.trigger("people:list", cp.people);
+          }
+          d3.event.stopPropagation();
         })
         .on("mouseover", function () {
           var dynamicScale = that.svg.node().width.animVal.value / 960;
@@ -141,7 +149,14 @@ var PeopleMapView = Backbone.View.extend({
         })
         .on("mouseout", function () {
           return tooltip.style("visibility", "hidden");
-        })
+        });
+
+      // fallthrough click handler -- deselect all dots and remove detail list
+      $('svg').on('click', function (event) {
+        $('.userDot-select').attr("class", "userDot");
+        window.cache.userEvents.trigger("people:list:remove");
+      });
+
     }, this);
   },
 
