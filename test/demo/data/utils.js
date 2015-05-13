@@ -182,7 +182,7 @@ module.exports = {
   tag_create: function(request, tag, cb) {
     var model = (tag.projectId) ? 'project': 'user',
         modelId = tag[model + 'Id'],
-        data = { tags: [tag.tagId], data: tag.data || '' };
+        data = { tags: [tag.tagId] };
     this.put(request, conf.url + '/' + model + '/' + modelId, data, cb);
   }
 

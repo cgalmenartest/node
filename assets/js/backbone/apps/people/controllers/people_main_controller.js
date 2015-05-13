@@ -11,9 +11,15 @@ PeopleMain = {};
 
 PeopleMain.Controller = BaseController.extend({
 
+  events: {
+    "user:logout:success":      "cleanup"
+  },
+
+  template: _.template(PeopleMainTemplate),
+
   initialize: function () {
-    var rendered = _.template(PeopleMainTemplate)();
-    this.$el.html(rendered);
+    // not worth doing a whole separate view just for this, render here
+    this.$el.html(this.template());
     this.peopleMapController = new PeopleMapController({
       el: '#people-map'
     });

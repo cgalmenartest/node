@@ -12,10 +12,6 @@ PeopleMap = {};
 
 PeopleMap.Controller = BaseController.extend({
 
-  events: {
-    "user:logout:success":      "cleanup"
-  },
-
   initialize: function () {
     var that = this;
     var gatherData = [];
@@ -28,9 +24,7 @@ PeopleMap.Controller = BaseController.extend({
         success: function () {
           cb(null);
         },
-        error: function (jqXHR) {
-          cb(jqXHR);
-        }
+        error: cb
       })
     });
     gatherData.push(function (cb) {
@@ -54,8 +48,9 @@ PeopleMap.Controller = BaseController.extend({
   },
 
   cleanup: function () {
-    if (!this.peopleMapView) return;
-    this.peopleMapView.cleanup();
+    if (this.peopleMapView) {
+      this.peopleMapView.cleanup();
+    }
   }
 
 });

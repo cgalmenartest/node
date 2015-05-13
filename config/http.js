@@ -46,7 +46,6 @@ module.exports.http = {
       'router',
       'www',
       'favicon',
-      'us.json',
       '404',
       '500'
     ],
