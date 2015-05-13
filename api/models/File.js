@@ -22,6 +22,7 @@ module.exports = {
     mimeType: 'STRING',
     // Size in bytes
     size: 'INTEGER',
+    fd: 'STRING',
     // Raw binary file data
     data: 'BINARY'
   },
