@@ -29,6 +29,10 @@ var TaskListTemplate = require('../templates/task_collection_view_template.html'
 
 		render: function () {
 			_.each(this.tasksJson.tasks, function(task) {
+				// Filter out "Required"/"Not Required" from the task tag cloud
+				task.tags = _.filter(task.tags, function(tag) {
+					return tag.type !== "task-skills-required";
+				});
 				task.description = marked(task.description);
 			});
 			this.compiledTemplate = _.template(TaskListTemplate)(this.tasksJson);
