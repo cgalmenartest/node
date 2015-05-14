@@ -28,86 +28,86 @@ module.exports = {
       location: 'Washington, DC',
       photo: 'assets/users/alan.jpg'
     },
-    'jon': {
-      name: 'Jon Snow',
-      username: 'jon@gameofthrones.com',
-      password: 'jonjonS1!',
-      title: 'Member of the Night\'s Watch',
+    'janice': {
+      name: 'Janice Thompson',
+      username: 'janice@test.gov',
+      password: 'janicejaniceT1!',
+      title: 'Field Officer Level 3',
       agency: 'Dept of Homeland Security',
       location: 'Duluth, Minnesota',
-      photo: 'assets/users/jon.jpg'
+      photo: 'assets/users/janice.jpg'
     },
-    'ned': {
-      name: 'Eddard Stark',
-      username: 'ned@gameofthrones.com',
-      password: 'nednedN1!',
-      title: 'Lady of Winterfell',
+    'clay': {
+      name: 'Clay Smithson',
+      username: 'clay@test.gov',
+      password: 'clayclayS1!',
+      title: 'Accountant',
       agency: 'GSA',
       location: 'Minneapolis, Minnesota',
-      photo: 'assets/users/cat.jpg'
+      photo: 'assets/users/clay.jpg'
     },
-    'cat': {
-      name: 'Catelyn Stark',
-      username: 'cat@gameofthrones.com',
+    'lucia': {
+      name: 'Lucia Esperanza',
+      username: 'cat@test.gov',
       password: 'catcatS1!',
-      title: 'Lord of Winterfell and Warden of the North',
+      title: 'Procurement Manager',
       agency: 'GSA',
       location: 'Minneapolis, Minnesota',
-      photo: 'assets/users/ned.jpg'
+      photo: 'assets/users/lucia.jpg'
     },
-    'tyrion': {
-      name: 'Tyrion Lannister',
-      username: 'tyrion@gameofthrones.com',
-      password: 'tyriontyrionL1!',
-      title: 'Master of Coin adn the Imp',
+    'dante': {
+      name: 'Dante Francis',
+      username: 'dante@test.gov',
+      password: 'dantedanteF1!',
+      title: 'Secret Service Field Agent',
       agency: 'Dept of Treasury',
       location: 'Washington, DC',
-      photo: 'assets/users/tyrion.jpg'
+      photo: 'assets/users/dante.jpg'
     },
-    'cersei': {
-      name: 'Cersei Lannister',
-      username: 'cersei@gameofthrones.com',
-      password: 'cerseicerseiL1!',
-      title: 'Queen of the Seven Kingdoms',
+    'serena': {
+      name: 'Serena Chao',
+      username: 'serena@test.gov',
+      password: 'serenaserenaM1!',
+      title: 'Currency Quality Assurance, Level 2',
       agency: 'Dept of Treasury',
       location: 'Washington, DC',
-      photo: 'assets/users/cersei.jpg'
+      photo: 'assets/users/serena.jpg'
     },
-    'jaime': {
-      name: 'Jaime Lannister',
-      username: 'jaime@gameofthrones.com',
-      password: 'jaimejaimeL1!',
-      title: 'Master of the Kings Guard and the Kingslayer',
+    'jason': {
+      name: 'Jason Xui',
+      username: 'jason@test.gov',
+      password: 'jasonjasonX1!',
+      title: 'TSA Inspector',
       agency: 'Dept of Homeland Security',
       location: 'Washington, DC',
-      photo: 'assets/users/jaime.jpg'
+      photo: 'assets/users/jason.jpg'
     },
-    'oberyn': {
-      name: 'Oberyn Martell',
-      username: 'oberyn@gameofthrones.com',
-      password: 'oberynoberynM1!',
-      title: 'Prince of Dorne and the Red Viper',
+    'sally': {
+      name: 'Sally Wilson',
+      username: 'sally@test.gov',
+      password: 'sallysallyW1!',
+      title: 'Field Software Engineer',
       agency: 'GSA',
       location: 'São Paulo, BR',
-      photo: 'assets/users/oberyn.jpg'
+      photo: 'assets/users/sally.jpg'
     },
-    'balon': {
-      name: 'Balon Greyjoy',
-      username: 'balon@gameofthrones.com',
-      password: 'balonbalonG1!',
-      title: 'Lord of the Iron Islands',
+    'robert': {
+      name: 'Robert Simmons',
+      username: 'robert@test.gov',
+      password: 'robertrobertS1!',
+      title: 'Port Security Inspector',
       agency: 'Dept of Homeland Security',
       location: 'San Francisco, CA',
-      photo: 'assets/users/balon.jpg'
+      photo: 'assets/users/robert.jpg'
     },
-    'dani': {
-      name: 'Daenerys Targaryen',
-      username: 'dani@gameofthrones.com',
-      password: 'danidaniT1!',
-      title: 'Queen of the Andals and the Rhoynar and the First Men, Lord of the Seven Kingdoms, Khaleesi of the Great Grass Sea, Breaker of Shackles/Chains, Queen of Meereen, Princess of Dragonstone',
-      agency: 'Dept of Homeland Security',
+    'tanya': {
+      name: 'Tanya de la Rocha',
+      username: 'tanya@test.gov',
+      password: 'tanyatanyaR1!',
+      title: 'Deputy Field Operations Director',
+      agency: 'Dept of State',
       location: 'Lahore, Punjab, PK',
-      photo: 'assets/users/dani.jpg'
+      photo: 'assets/users/tanya.jpg'
     }
 
   },
@@ -143,6 +143,10 @@ module.exports = {
     'GSA': {
       type: 'agency',
       name: 'GSA'
+    },
+    'Dept of State': {
+      type: 'agency',
+      name: 'Dept of State'
     },
     'Dept of Homeland Security': {
       type: 'agency',
@@ -230,27 +234,27 @@ module.exports = {
           value: 'Swift as a deer. Quiet as a shadow. Fear cuts deeper than swords. Quick as a snake. Calm as still water.',
           children: [
             {
-              user: 'ned',
-              value: 'Winter is coming.'
+              user: 'tanya',
+              value: '.'
             }
           ]
         },
         {
           topic: true,
-          user: 'ned',
-          value: 'The man who passes the sentence should swing the sword. ',
+          user: 'tanya',
+          value: 'Ask not what your country can do for you, but for what you can do for your country. ',
           children: [
             {
-              user: 'ned',
-              value: 'He\'s just stupid. He likes to polish helmets and beat on swords with hammers.'
+              user: 'robert',
+              value: 'Truer words have never been spoken.'
             },
             {
-              user: 'tammy',
-              value: 'I much like my head. I don\'t want to see it removed just yet.'
+              user: 'sally',
+              value: 'Are you so sure? That\'s a pretty broad assertion!'
             },
             {
-              user: 'pran',
-              value: 'I don\'t like your head. And stop your family from trying to kill me.'
+              user: 'robert',
+              value: 'Fair enough, But the general sentiment is sound and something we shoudld keep in mind.'
             }
           ]
         }
