@@ -26,6 +26,7 @@ config/local.js
 
 # Ignore production files
 assets/build
+assets/uploads
 
 # Ignore vagrant & chef tmp files
 .vagrant/*
