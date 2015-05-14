@@ -3,6 +3,7 @@
 */
 var fs = require('fs'),
     spawn = require('child_process').spawn,
+    async = require('async'),
     sails,
     err;
 
@@ -52,7 +53,7 @@ function start(err) {
     hooks: {
       grunt: false
     }
-  }
+  };
 
   // Lift Sails and store the app reference
   require('sails').lift(config, function(e, s) {
@@ -61,19 +62,31 @@ function start(err) {
     // export properties for upcoming tests with supertest.js
     sails.localAppURL = localAppURL = ( sails.usingSSL ? 'https' : 'http' ) + '://' + sails.config.host + ':' + sails.config.port + '';
 
-    var test = spawn('./node_modules/.bin/mocha-casperjs', ['test/browser/browser.js']);
-    test.stdout.on('data', function (data) {
-      console.log(''+data);
-    });
+    // Recursively call .test.js files
+    var testDir = 'test/browser',
+        tests = _.filter(fs.readdirSync(testDir), function(filename) {
+          return /\.test\.js$/.test(filename);
+        });
 
-    test.stderr.on('data', function (data) {
-      console.error('stderr: '+data);
-    });
-
-    test.on('exit', function (code) {
+    async.eachSeries(tests, function(test, cb) {
+      var child = spawn('./node_modules/.bin/mocha-casperjs', [
+            testDir + '/' + test
+          ]);
+      child.stdout.on('data', function (data) {
+        console.log(''+data);
+      });
+      child.stderr.on('data', function (data) {
+        console.error('stderr: '+data);
+      });
+      child.on('exit', function (code) {
+        if (code !== 0) return cb(code);
+        cb();
+      });
+    }, function(err) {
       sails.lower(function() {
-        process.exit(code);
+        process.exit(err || 0);
       });
     });
+
   });
 }
