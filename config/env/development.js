@@ -6,7 +6,5 @@ console.log('Loading... ', __filename);
 //         ( it undeletes things that have been soft deleted on sails lift )
 
 module.exports.models = {
-  migrate: 'alter',
-  'adapter': 'disk'
-
-}
+  migrate: 'safe'
+};
