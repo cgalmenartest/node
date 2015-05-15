@@ -1,5 +1,8 @@
 ## Contributing
 
+We aspire to create a welcoming environment for collaboration on this project.
+To that end, we follow the [18F Code of Conduct](https://github.com/18F/code-of-conduct/blob/master/code-of-conduct.md) and ask that all contributors do the same.
+
 ### Public domain
 
 This project is in the public domain within the United States, and
@@ -19,7 +22,7 @@ You should be using the master branch for most stable release, please review [re
 If you want to keep up with the latest changes, we work in the "devel" branch.  If you are using devel, keep an eagle-eye on commits and/or join our daily standup.
 
 Currently stand-ups are at 11a PT / 2p ET, but since we might reschedule now and then so
-here is our calendar of public meetings:  https://www.google.com/calendar/embed?src=ultrasaurus.com_oja7dkbgf1cug9smkb8q8pn2b8%40group.calendar.google.com  Anyone interested in Midas is welcome to join standup, you can meet the team and we can figure out appropriate longer-format or offline follow-up if you have lots of questions.
+here is our calendar of public meetings:  https://www.google.com/calendar/embed?src=gsa.gov_689f3n1dfi539lv0g5p7lvobdc%40group.calendar.google.com&ctz=America/Los_Angeles  Anyone interested in Midas is welcome to join standup, you can meet the team and we can figure out appropriate longer-format or offline follow-up if you have lots of questions.
 
 We also have a [wiki](https://github.com/18F/midas/wiki) where we keep various development notes. If anything is confusing or your questions are not answered there, please shout out on the [mailing list](https://groups.google.com/forum/#!forum/midascrowd).
 
