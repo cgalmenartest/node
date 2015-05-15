@@ -13,6 +13,7 @@ var TaskShowController = require('../tasks/show/controllers/task_show_controller
 var TaskEditFormView = require('../tasks/edit/views/task_edit_form_view');
 var AdminMainController = require('../admin/controllers/admin_main_controller');
 var HomeController = require('../home/controllers/home_controller');
+var PeopleController = require('../people/controllers/people_main_controller');
 
 
 var BrowseRouter = Backbone.Router.extend({
@@ -29,7 +30,8 @@ var BrowseRouter = Backbone.Router.extend({
     'profile/:id(/)'            : 'showProfile',
     'profile/:id(/)/:action'    : 'showProfile',
     'admin(/)'                  : 'showAdmin',
-    'admin(/):action(/)'        : 'showAdmin'
+    'admin(/):action(/)'        : 'showAdmin',
+    'people(/)'                 : 'showPeople'
   },
 
   data: { saved: false },
@@ -59,6 +61,7 @@ var BrowseRouter = Backbone.Router.extend({
     if (this.projectShowController) { this.projectShowController.cleanup(); }
     if (this.profileShowController) { this.profileShowController.cleanup(); }
     if (this.taskShowController) { this.taskShowController.cleanup(); }
+    if (this.peopleController) { this.peopleController.cleanup(); }
     if (this.homeController) { this.homeController.cleanup(); }
     this.data = { saved: false };
   },
@@ -121,6 +124,16 @@ var BrowseRouter = Backbone.Router.extend({
       }
     }
     this.profileShowController = new ProfileShowController({ id: id, action: action, data: this.data });
+  },
+
+  showPeople: function () {
+    this.cleanupChildren();
+    this.peopleController = new PeopleController({
+      el: '#container',
+      target: 'people',
+      router: this,
+      data: this.data
+    });
   },
 
   showAdmin: function (action) {

@@ -140,9 +140,20 @@ From the root of the midas directory, initialize the database:
      
 Please note, run `npm run init` once per database, otherwise you'll see an error. If you get an error you can skip that step.
 
-If you'd like to include a sample project, also run:
+If you'd like to include a sample project and users, also run:
 
      npm run demo
+
+This also creates a handful of initial users. By default all those users are disabled, and none are admin.
+It's usually helpful to have at least one admin user (we picked "Alan Barret") so these commands are
+helpful:
+
+     psql midas
+     update midas_user set disabled='f';
+     update midas_user set "isAdmin"='t' where username='alan@test.gov';
+
+Note the quotes around "isAdmin". Postgres by default lowercases all non-keywords, which includes column names.
+This doesn't play nicely with our schema.
 
 
 Now you are ready to rock!

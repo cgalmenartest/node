@@ -5,9 +5,9 @@ var conf = require('./config');
 var utils = require('./utils');
 var request;
 
-describe('demo:', function() {
+describe('demo:', function () {
 
-  before(function(done) {
+  before(function (done) {
     request = utils.init();
     done();
   });
@@ -57,29 +57,21 @@ describe('demo:', function() {
   it('user tags', function (done) {
     var entities = ['location', 'agency'];
     var process = function (user, done) {
-      var processE = function (entity, done) {
-        var request = utils.init();
-        var createTag = function (tag, done) {
-          utils.tag_create(request, tag, function (err, tagObj) {
-            return done(err);
-          });
-          return;
-        };
-        if (user[entity]) {
-          utils.login(request, user.username, user.password, function (err) {
-            if (err) return done(err);
-            var tagEntity = conf.tags[user[entity]];
-            createTag({ tagId: tagEntity.id, userId: user.id }, done);
-          });
-          return;
+      var tagIds = _.without(_.map(entities, function (entity) {
+        if (typeof user[entity] == "undefined" && typeof conf.tags[user[entity]] == "undefined") {
+          return NaN;
         }
-        else {
-          return done();
-        }
-      };
-
-      async.eachSeries(entities, processE, function (err) {
-        return done(err);
+        return conf.tags[user[entity]].id;
+      }), NaN);
+      var request = utils.init();
+      utils.login(request, user.username, user.password, function (err) {
+        if (err) return done(err);
+        utils.tag_create(request, {
+          tagId: tagIds,
+          userId: user.id
+        }, function (err) {
+          return done(err);
+        });
       });
     };
     async.eachSeries(_.values(conf.users), process, function (err) {
@@ -97,7 +89,7 @@ describe('demo:', function() {
 
         var processComment = function (comment, done) {
           var user = conf.users[comment.user];
-          utils.login(request , user.username, user.password, function (err) {
+          utils.login(request, user.username, user.password, function (err) {
             if (err) return done(err);
             comment.projectId = proj.id;
             if (parentId) {
@@ -167,7 +159,7 @@ describe('demo:', function() {
         var createEvent = function (ev, done) {
           ev.projectId = proj.id;
           ev.start = new Date(now.valueOf());
-          ev.start.setDate(now.getDate() + Math.ceil(Math.random()*30));
+          ev.start.setDate(now.getDate() + Math.ceil(Math.random() * 30));
           ev.start.setMinutes(0);
           ev.start.setSeconds(0);
           ev.start.setMilliseconds(0);
@@ -206,7 +198,7 @@ describe('demo:', function() {
       var startTags = function (tag, done) {
         var request = utils.init();
         var createTag = function (tag, done) {
-            console.log("==", tag, conf.tags[tag]);
+          console.log("==", tag, conf.tags[tag]);
           var t = {
             tagId: conf.tags[tag].id,
             projectId: proj.id
@@ -250,9 +242,9 @@ describe('demo:', function() {
     });
   });
 
-  after(function(done) {
+  after(function (done) {
     // Disable all of the users after populating the database
-    var disableUser = function(u, done) {
+    var disableUser = function (u, done) {
       utils.login(request, u.username, u.password, function (err) {
         if (err) return done(err);
         utils.user_info(request, function (err, user) {
