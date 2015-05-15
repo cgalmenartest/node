@@ -126,7 +126,7 @@ var PeopleMapView = Backbone.View.extend({
         .attr("pointer-events", "all")
         .on("click", function () {
           var previouslySelected = this.classList.contains('userDot-select');
-          // note jQuery removeClass() doesn't work on svg elements, but this does
+          // jQuery removeClass() doesn't work on svg elements, but this does
           $('.userDot-select').attr("class", "userDot");
           window.cache.userEvents.trigger("people:list:remove");
           if (!previouslySelected) {
@@ -135,16 +135,11 @@ var PeopleMapView = Backbone.View.extend({
           }
           d3.event.stopPropagation();
         })
-        .on("mouseover", function () {
-          var dynamicScale = that.svg.node().width.animVal.value / 960;
-          var dotR = that.svg.node().offsetLeft
-            + ((this.cx.animVal.value + this.r.animVal.value) * dynamicScale);
-          var dotT = that.svg.node().offsetTop
-            + ((this.cy.animVal.value - this.r.animVal.value) * dynamicScale);
+        .on("mouseenter", function () {
           tooltip.html(tipDesc)
             .style("visibility", "visible")
-            .style("left", String(dotR + (that.tipXOffset * dynamicScale)) + "px")
-            .style("top", String(dotT) + "px")
+            .style("left", String(d3.event.pageX + 20) + "px")
+            .style("top", String(d3.event.pageY - 20) + "px")
           return true;
         })
         .on("mouseout", function () {
