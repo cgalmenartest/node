@@ -41,8 +41,7 @@ module.exports = {
       name: 'Clay Smithson',
       username: 'clay@test.gov',
       password: 'clayclayS1!',
-      title: 'Accountant',
-      agency: 'GSA',
+      // no title or agency
       location: 'Minneapolis, Minnesota',
       photo: 'assets/users/clay.jpg'
     },
@@ -61,14 +60,14 @@ module.exports = {
       password: 'dantedanteF1!',
       title: 'Secret Service Field Agent',
       agency: 'Dept of Treasury',
-      location: 'Washington, DC',
+      // no location
       photo: 'assets/users/dante.jpg'
     },
     'serena': {
       name: 'Serena Chao',
       username: 'serena@test.gov',
       password: 'serenaserenaM1!',
-      title: 'Currency Quality Assurance, Level 2',
+      // no title
       agency: 'Dept of Treasury',
       location: 'Washington, DC',
       photo: 'assets/users/serena.jpg'
@@ -87,7 +86,7 @@ module.exports = {
       username: 'sally@test.gov',
       password: 'sallysallyW1!',
       title: 'Field Software Engineer',
-      agency: 'GSA',
+      // no agency
       location: 'São Paulo, BR',
       photo: 'assets/users/sally.jpg'
     },

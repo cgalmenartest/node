@@ -14,9 +14,19 @@
         <%= person.get('name') %>
       </a>
     </td>
-    <td><%= person.get('title') %></td>
-    <td><%= person.get('agency').name %></td>
-    <td><%= person.get('location').name %></td>
+    <td>
+      <%- person.get('title') %>
+    </td>
+    <td>
+      <% if (!_.isUndefined(person.get('agency'))) { %>
+      <%- person.get('agency').name %>
+      <% } %>
+    </td>
+    <td>
+      <% if (!_.isUndefined(person.get('location'))) { %>
+      <%- person.get('location').name %>
+      <% } %>
+    </td>
   </tr>
   <% }); %>
 

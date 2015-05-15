@@ -57,9 +57,12 @@ describe('demo:', function () {
   it('user tags', function (done) {
     var entities = ['location', 'agency'];
     var process = function (user, done) {
-      var tagIds = _.map(entities, function (entity) {
-        return conf.tags[user[entity]].id || '';
-      });
+      var tagIds = _.without(_.map(entities, function (entity) {
+        if (typeof user[entity] == "undefined" && typeof conf.tags[user[entity]] == "undefined") {
+          return NaN;
+        }
+        return conf.tags[user[entity]].id;
+      }), NaN);
       var request = utils.init();
       utils.login(request, user.username, user.password, function (err) {
         if (err) return done(err);
