@@ -52,7 +52,12 @@ var BrowseMainView = Backbone.View.extend({
     } else if (object.target == 'task') {
       icon = 'fa fa-tag';
     }
-    return '<i class="' + _.escape(icon) + '"></i> <span class="box-icon-text">' + _.escape(name) + '</span>';
+    if (object.unmatched) {
+      //name is escaped in create search choice
+      return name;
+    } else {
+      return '<i class="' + _.escape(icon) + '"></i> <span class="box-icon-text">' + name + '</span>';
+    }
   },
 
   initializeSearch: function() {
@@ -93,7 +98,7 @@ var BrowseMainView = Backbone.View.extend({
           return object.name || object.title;
       },
       createSearchChoice: function (term) {
-          return { unmatched: true,id: term, value: term, name: "<b>"+term+"</b> <i>click to text search for this value.</i>" };
+          return { unmatched: true,id: term, value: term, name: "<b>"+_.escape(term)+"</b> <i>click to text search for this value.</i>" };
       },
       ajax: {
         url: '/api/ac/search/' + self.options.target,
