@@ -45,6 +45,7 @@ var BrowseMainView = Backbone.View.extend({
   },
 
   format: function (self, object, container, query) {
+    var formatIcon = "";
     var name = object.name || object.title;
     var icon = this.tagIcon[object.type];
     if (object.target == 'project') {
@@ -52,12 +53,14 @@ var BrowseMainView = Backbone.View.extend({
     } else if (object.target == 'task') {
       icon = 'fa fa-tag';
     }
-    if (object.unmatched) {
-      //name is escaped in create search choice
-      return name;
-    } else {
-      return '<i class="' + _.escape(icon) + '"></i> <span class="box-icon-text">' + name + '</span>';
+
+    if ( !object.unmatched ) {
+      //unmatched name is escaped in createSearchChoice func to preserve html formatting
+      name = _.escape(name);
+      formatIcon = '<i class="' + _.escape(icon) + '"></i>';
     }
+
+    return  formatIcon+'<span class="box-icon-text">' + name + '</span>';
   },
 
   initializeSearch: function() {
