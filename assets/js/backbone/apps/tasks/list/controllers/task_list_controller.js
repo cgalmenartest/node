@@ -69,7 +69,11 @@ TaskList = Backbone.View.extend({
   renderTaskCollectionView: function () {
     var self = this;
 
-    if (this.taskCollectionView) this.taskCollectionView.cleanup();
+    this.listenTo(this.collection, "task:save:success", function (model) {
+      self.requestTasksCollectionData();
+    });
+
+  if (this.taskCollectionView) this.taskCollectionView.cleanup();
     this.taskCollectionView = new TaskCollectionView({
       el: "#task-list-wrapper",
       onRender: true,
