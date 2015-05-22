@@ -75,7 +75,8 @@ function authenticate (req, res, strategy, json) {
           res.send(userUtils.cleanUser(user, user.id));
         }
         else {
-          res.redirect(sails.config.ui.home.logged_in_path);
+          res.redirect(req.session.logged_in_path || sails.config.ui.home.logged_in_path);
+          delete req.session.logged_in_path;
         }
         return;
       });
@@ -237,7 +238,12 @@ module.exports = {
     if (!target || target === '' || !_.contains(sails.config.auth.config.oauth, target)) {
       return res.send(403, { message: "Unsupported OAuth method." });
     }
-    var config = sails.config.auth.config.config;
+    var config = sails.config.auth.config.config,
+        path = req.headers.referer.split('://')[1].split(req.headers.host)[1];
+
+    // Set referer path for redirection after authentication
+    req.session.logged_in_path = path;
+
     passport.authenticate(target, config[target].params || null)(req, res, function (err) {
       if (err) {
         sails.log.error('Authentication Error:', err);

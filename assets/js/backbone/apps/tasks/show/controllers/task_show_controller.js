@@ -317,7 +317,10 @@ var TaskShowController = BaseView.extend({
   volunteer: function (e) {
     if (e.preventDefault) e.preventDefault();
     if (!window.cache.currentUser) {
-      window.cache.taskVolunteer = this.model.id;
+      Backbone.history.navigate(window.location.pathname + '?volunteer', {
+        trigger: false,
+        replace: true
+      });
       window.cache.userEvents.trigger("user:request:login");
     } else {
       var self = this;
