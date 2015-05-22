@@ -143,9 +143,9 @@ EventList = Backbone.View.extend({
     if (e.preventDefault) e.preventDefault();
     // get the id from the parent event div
     var id = $($(e.currentTarget).parents('div.event')[0]).data('id');
-    if ($(".rsvp").hasClass("data-event-flag-true") === false) {
-      $(".rsvp").removeClass("data-event-flag-false");
-      $(".rsvp").addClass("data-event-flag-true");
+    if ($(e.currentTarget).hasClass("rsvp") && $(e.currentTarget).hasClass("data-event-flag-true") === false) {
+      $(e.currentTarget).removeClass("data-event-flag-false");
+      $(e.currentTarget).addClass("data-event-flag-true");
       $(e.currentTarget).button('going');
       self.updatePeople(e, true);
       $.ajax({
@@ -154,8 +154,8 @@ EventList = Backbone.View.extend({
         }
       });
     } else {
-      $(".rsvp").removeClass("data-event-flag-true");
-      $(".rsvp").addClass("data-event-flag-false");
+      $(e.currentTarget).removeClass("data-event-flag-true");
+      $(e.currentTarget).addClass("data-event-flag-false");
       $(e.currentTarget).button('rsvp');
       self.updatePeople(e, false);
       $.ajax({
