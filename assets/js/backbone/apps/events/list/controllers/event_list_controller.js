@@ -86,6 +86,11 @@ EventList = Backbone.View.extend({
       projectId: this.options.projectId,
       collection: this.collection
     }).render();
+
+    $('#addEvent').bind('hidden.bs.modal', function() {
+      $('#addEvent').remove();
+    }).modal('hide');
+
   },
 
   updatePeople: function (e, inc) {
