@@ -44,9 +44,13 @@ var TaskItemView = BaseView.extend({
     $("time.timeago").timeago();
     self.updateTaskEmail();
     self.model.trigger('task:show:render:done');
-	if (window.cache.taskVolunteer && !self.model.attributes.volunteer) {
+    if (window.location.search === '?volunteer' &&
+        !self.model.attributes.volunteer) {
       $('#volunteer').click();
-      delete window.cache.taskVolunteer;
+      Backbone.history.navigate(window.location.pathname, {
+        trigger: false,
+        replace: true
+      });
     }
   },
 
