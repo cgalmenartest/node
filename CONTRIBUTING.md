@@ -30,6 +30,26 @@ We also have a [wiki](https://github.com/18F/midas/wiki) where we keep various d
 
 This project follows the [git flow](http://nvie.com/posts/a-successful-git-branching-model/) branching model of product development.
 
+### Watch command
+
+Use `npm run watch` to automatically regenerate the application after changing files. This command will also source a `.env` file as a bash script if it exists. Use this for setting up environment variables for your development environment, such as:
+
+```sh
+# New Relic settings
+export NEW_RELIC_APP_NAME=midas-local-dev
+export NEW_RELIC_LICENSE_KEY=18956ab3a4d8c772
+
+# LinkedIn auth settings
+export LINKEDIN_CLIENT_ID=77xinrs
+export LINKEDIN_CLIENT_SECRET=11aw6wbHC
+export LINKEDIN_CALLBACK_URL=http://localhost:1337/api/auth/callback/linkedin
+
+# MyUSA auth settings
+export MYUSA_CLIENT_ID=0a33d1c4df848fa1ec666068285e903
+export MYUSA_CLIENT_SECRET=bc4b61e58a579efb8907f5d673cef9f34e
+export MYUSA_CALLBACK_URL=http://localhost:1337/api/auth/callback/myusa
+```
+
 ### Testing
 
 To run all the tests:
