@@ -146,43 +146,25 @@ module.exports = function (grunt) {
       sample: {
         src:['assets/locales/**/*.json']
       }
-    },
-
-    watch: {
-      api: {
-
-        // API files to watch:
-        files: ['api/**/*']
-      },
-      assets: {
-
-        // Assets to watch:
-        files: ['assets/**/*'],
-
-        // When assets are changed:
-        tasks: [
-          'clean:prod',
-          // Check validity of JSON files.
-          'jsonlint',
-          // build js bundle
-          'browserify:dev',
-          // compile the css
-          'cssmin',
-          // copy fonts
-          'copy:font',
-          // copy css-support images (images that css expects to be in the css directory)
-          'copy:csssupport',
-          // copy assets
-          'copy:prod'
-        ]
-      }
     }
+
   });
 
   // When Sails is lifted:
   grunt.registerTask('default', [
-    'build',
-    'watch'
+    'clean:prod',
+    // Check validity of JSON files.
+    'jsonlint',
+    // build js bundle
+    'browserify:dev',
+    // compile the css
+    'cssmin',
+    // copy fonts
+    'copy:font',
+    // copy css-support images (images that css expects to be in the css directory)
+    'copy:csssupport',
+    // copy assets
+    'copy:prod'
   ]);
 
   grunt.registerTask('build', [
