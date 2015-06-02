@@ -83,7 +83,9 @@ module.exports.routes = {
   '/admin/:unknownRoute': {
     controller: 'main',
     action: 'index'
-  }
+  },
+
+  '/index.html': '/'
 
   /*
   // But what if you want your home page to display
