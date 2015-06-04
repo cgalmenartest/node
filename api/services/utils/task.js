@@ -111,27 +111,22 @@ var findTasks = function (where, cb) {
   .exec(function (err, tasks) {
     if (err) { return cb({ message: 'Error looking up tasks.' }, null); }
     // function for looking up user info
-    var lookupUser = function (task, done) {
-      userUtil.getUser(task.userId, null, function (err, user) {
-        if (err) { return done(err); }
-        task.user = {
-          name: user.name,
-          agency: user.agency
-        };
-        return done();
+    User.find({ id: _(tasks).pluck('userId').uniq().value() })
+      .populate('tags', { where: { type: 'agency' } })
+      .exec(function (err, users) {
+        if (err) return cb({ message: 'Error looking up user info.' }, null);
+        tasks.forEach(function(task) {
+          var user = _.findWhere(users, { id: task.userId }) || {};
+          task.user = {
+            name: user.name,
+            agency: user.tags[0]
+          };
+        });
+        return cb(null, tasks);
       });
-    };
-    // get user info
-    async.each(tasks, lookupUser, function (err) {
-      if (err) { return cb({ message: 'Error looking up user info.' }, null); }
-      // get likes
-      async.each(tasks, self.getLikes, function (err) {
-        if (err) { return cb({ message: 'Error looking up task likes.' }, null); }
-        return cb(err, tasks);
-      });
-    })
+
   });
-}
+};
 
 module.exports = {
   authorized: authorized,
