@@ -7,7 +7,7 @@ Sails.lift({}, function(err, sails) {
   File.find({}).exec(function(err, files) {
     if (err) return console.error(err);
     async.each(files, moveFile, function(err) {
-      if (err) console.error(err);
+      if (err) sails.log.error(err);
       Sails.lower();
     });
   });
@@ -16,9 +16,9 @@ Sails.lift({}, function(err, sails) {
     if (file.fd || !file.data) return cb();
     var fd = file.id + '.' + file.name.split('.').pop();
     fileStore.store(fd, file.data.parent, function(err, message) {
-      if (err) return cb(err);
+      if (err) sails.log.error(err);
       File.update(file.id, { fd: fd }).exec(function(err) {
-        if (err) return cb(err);
+        if (err) sails.log.error(err);
         cb();
       });
     });
