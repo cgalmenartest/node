@@ -20,7 +20,7 @@
  * Replies are children of comments.  Replies should have the topicId
  * set to the main topic.  The parentId should be the id of the parent comment.
  */
-var noteUtils = require('../services/notifications/manager');
+var noteUtils = {} //require('../services/notifications/manager');
 
 module.exports = {
 

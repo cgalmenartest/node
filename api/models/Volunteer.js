@@ -5,7 +5,7 @@
  * @description :: Stores volunteer information for tasks
  *
  */
-var noteUtils = require('../services/notifications/manager');
+var noteUtils = {} //require('../services/notifications/manager');
 
 module.exports = {
 

@@ -2,7 +2,7 @@
     :: Task
     -> model
 ---------------------*/
-var noteUtils = require('../services/notifications/manager');
+var noteUtils = {} //require('../services/notifications/manager');
 var exportUtils = require('../services/utils/export');
 
 module.exports = {
