@@ -756,8 +756,7 @@ module.exports = {
       reqUser = undefined;
     }
     User.findOne({ id: userId }).populate('tags').exec(function (err, user) {
-      if (err) { return cb(err, null); }
-      if (!user) { return cb("User not found", null); }
+      if (err || !user) { return cb("Error finding User.", null); }
       delete user.deletedAt;
       if (userId != reqId) {
         user = self.cleanUser(user, reqId);
