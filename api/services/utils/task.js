@@ -15,6 +15,7 @@ var authorized = function (id, userId, user, cb) {
   }
   Task.findOneById(id).populate('tags').exec(function (err, task) {
     if (err) { return cb('Error finding task.', null); }
+    if (!task) { return cb('Task not found.', null); }
     task.isOwner = false;
     // otherwise, check that we have an owner
     if (userId && (userId == task.userId)) {
