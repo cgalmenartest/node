@@ -47,8 +47,11 @@ var ProjectModel = Backbone.Model.extend({
     var self = this;
     this.set({ id: id });
     this.fetch({
-      success: function (data) {
-        self.trigger("project:model:fetch:success", data);
+      success: function (model) {
+        self.trigger("project:model:fetch:success", model);
+      },
+      error: function (model, xhr) {
+        self.trigger("project:model:fetch:error", model, xhr);
       }
     });
   },
