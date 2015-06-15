@@ -81,7 +81,7 @@ Project.ShowController = BaseController.extend({
     this.listenTo(this.model, "project:model:fetch:error", function (projectModel, xhr) {
       //this template is populated by the Global AJAX error listener
       var template = _.template(AlertTemplate)();
-      this.$el.html(template);
+      self.$el.html(template);
     });
 
     this.model.on("project:show:rendered", function () {

@@ -74,6 +74,9 @@ var TaskModel = Backbone.Model.extend({
     this.fetch({
       success: function (data) {
         self.trigger("task:model:fetch:success", data);
+      },
+      error: function(data, xhr) {
+        self.trigger("task:model:fetch:error", data, xhr);
       }
     });
   },
