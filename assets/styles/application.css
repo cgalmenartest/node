@@ -214,6 +214,10 @@ input[type="submit"] {
   border-radius: 3px;
 }
 
+.modal-content textarea {
+  resize: vertical;
+}
+
 .modal-footer-text {
   font-size: 13px;
   text-align: left;

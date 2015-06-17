@@ -62,10 +62,11 @@ TagFactory = BaseComponent.extend({
           width: options.width || "500px",
           tokenSeparators: options.tokenSeparators || [],
           formatResult: function (obj, container, query) {
-            return obj.name;
+            //allow the createSearchChoice to contain HTML
+            return (obj.unmatched ? obj.name : _.escape(obj.name));
           },
           formatSelection: function (obj, container, query) {
-            return obj.name;
+            return _.escape(obj.name);
           },
           createSearchChoice: function (term) {
             //unmatched = true is the flag for saving these "new" tags to tagEntity when the opp is saved
@@ -75,7 +76,7 @@ TagFactory = BaseComponent.extend({
               id: term,
               value: term,
               temp: true,
-              name: "<b>"+term+"</b> <i>" + ((options.type !== 'location') ?
+              name: "<b>"+_.escape(term)+"</b> <i>" + ((options.type !== 'location') ?
                 "click to create a new tag with this value" :
                 "search for this location") + "</i>"
             };

@@ -21,14 +21,14 @@
   "like" : "like",
   "likePlural" : "likes",
 
-  "volunteer" : "volunteer",
-  "volunteerPlural" : "volunteers",
+  "volunteer" : "particpant",
+  "volunteerPlural" : "participants",
 
   "Browse" : "Browse",
 
   "taskPage" : {
-    "volunteerButton" : "Volunteer",
-    "volunteeredButton" : "Volunteered!"
+    "volunteerButton" : "Participate",
+    "volunteeredButton" : "Thanks!"
   },
 
   "loginModal" : {
@@ -38,8 +38,8 @@
 
   "volunteerModal": {
     "notifySupervisor": "I understand it is my responsibility to confirm supervisor approval prior to committing to an opportunity.",
-    "cantCancel": "Once you volunteer for an opportunity, you will not be able to cancel your commitment to volunteer.",
-    "title": "Do you want to volunteer?",
+    "cantCancel": "Once you offer to participate in an opportunity, you will not be able to cancel your commitment.",
+    "title": "Do you want to participate?",
     "cancel": "Cancel",
     "ok": "I Agree"
   },
@@ -53,7 +53,7 @@
   "commonAPI" : {
     "unsupported" : "Unsupported operation."
   },
- 
+
   "projectAPI" : {
     "errMsg" : {
       "lookup" : "'Error looking up $t(project).",

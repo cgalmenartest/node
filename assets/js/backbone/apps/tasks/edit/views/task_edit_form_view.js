@@ -82,7 +82,7 @@ var TaskEditFormView = Backbone.View.extend({
 
     var formatResult = function (object, container, query) {
       var formatted = '<div class="select2-result-title">';
-      formatted += object.name || object.title;
+      formatted += _.escape(object.name || object.title);
       formatted += '</div>';
       if (!_.isUndefined(object.description)) {
         formatted += '<div class="select2-result-description">' + marked(object.description) + '</div>';

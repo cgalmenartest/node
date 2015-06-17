@@ -69,8 +69,8 @@ module.exports = {
     }
     sails.services.utils.user.getUser(userId, reqId, req.user, function (err, user) {
       // this will only be shown to logged in users.
-      if (userId !== reqId) user.username = null;
       if (err) { return res.send(400, err); }
+      if (userId !== reqId) user.username = null;
       sails.log.debug('User Get:', user);
       res.send(user);
     });
