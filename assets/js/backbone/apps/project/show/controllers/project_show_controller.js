@@ -37,8 +37,8 @@ Project.ShowController = BaseController.extend({
     "click #project-close"            : "stateClose",
     "click #project-reopen"           : "stateReopen",
     'click #editProject'              : 'toggleEditMode',
-    "mouseenter .project-people-div"  : popovers.popoverPeopleOn,
-    "click .project-people-div"       : popovers.popoverClick
+    "mouseenter .project-people-show-div"  : popovers.popoverPeopleOn,
+    "click .project-people-show-div"       : popovers.popoverClick
   },
 
   // The initialize method is mainly used for event bindings (for effeciency)
@@ -175,7 +175,7 @@ Project.ShowController = BaseController.extend({
   },
 
   initializeUI: function() {
-    popovers.popoverPeopleInit(".project-people-div");
+    popovers.popoverPeopleInit(".project-people-show-div");
   },
 
   toggleEditMode: function(e){
