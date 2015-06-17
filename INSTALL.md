@@ -38,7 +38,7 @@ Start the postgres console acting on the midas database with: `psql midas`
     ALTER SCHEMA public OWNER TO midas;
     \q
 
-Install node.js. As of Feb 2015 Node.js has moved to 0.12 for its stable version. But many dependencies, especially native compiled packages, don't work with 0.10 yet. So consider running Node.js 0.10.  Consider using [nvm](https://github.com/creationix/nvm) to manage Node versions. Once installed and sourced into your environment nvm can handle manage versions. 
+Install node.js. As of Feb 2015 Node.js has moved to 0.12 for its stable version. But many dependencies, especially native compiled packages, don't work with 0.12 yet. So consider running Node.js 0.10.  Consider using [nvm](https://github.com/creationix/nvm) to manage Node versions. Once installed and sourced into your environment nvm can handle manage versions. 
 
 So back to the command line. We assume that nvm is installed and set up
 (added to `.bashrc` or equivalent).

@@ -90,14 +90,15 @@ TaskList = Backbone.View.extend({
     this.modalWizardComponent = new ModalWizardComponent({
       el: ".wrapper-addTask",
       id: "addTask",
-      modalTitle: 'New Opportunity',
+      modalTitle: 'New ' + i18n.t('Opportunity'),
       model: self.taskModel,
       collection: self.tasks,
       modelName: 'task',
       data: function (parent) { return {
         title: parent.$("#task-title").val(),
         description: parent.$("#task-description").val(),
-        projectId: self.options.projectId
+        projectId: self.options.projectId,
+        tags: getTags()
       } }
     }).render();
 
@@ -110,6 +111,26 @@ TaskList = Backbone.View.extend({
     this.modalWizardComponent.setChildView(this.taskFormView);
     this.modalWizardComponent.setNext(this.taskFormView.childNext);
     this.modalWizardComponent.setSubmit(this.taskFormView.childNext);
+
+    function getTags() {
+      var tags = [];
+      tags.push.apply(tags,this.$("#task_tag_topics").select2('data'));
+      tags.push.apply(tags,this.$("#task_tag_skills").select2('data'));
+      tags.push.apply(tags,this.$("#task_tag_location").select2('data'));
+      tags.push.apply(tags,[this.$("#skills-required").select2('data')]);
+      tags.push.apply(tags,[this.$("#people").select2('data')]);
+      tags.push.apply(tags,[this.$("#time-required").select2('data')]);
+      tags.push.apply(tags,[this.$("#time-estimate").select2('data')]);
+      tags.push.apply(tags,[this.$("#length").select2('data')]);
+      return _(tags).map(function(tag) {
+        return (tag.id && tag.id !== tag.name) ? +tag.id : {
+          name: tag.name,
+          type: tag.tagType,
+          data: tag.data
+        };
+      });
+    }
+
   },
 
   show: function (e) {
