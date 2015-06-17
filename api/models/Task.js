@@ -113,25 +113,11 @@ module.exports = {
     this.beforeUpdate(values, done);
   },
 
-  afterCreate: function(values, done) {
-    var params = {
-      trigger: {
-        callerType: 'Task',
-        callerId: values.id,
-        action: 'taskCreated'
-      },
-      data: {
-        audience: {
-          'user': {
-            fields: {
-              taskId: values.id,
-              userId: values.userId
-            }
-          }
-        }
-      }
-    };
-    noteUtils.notifier.notify(params, done);
+  afterCreate: function(model, done) {
+    Notification.create({
+      action: 'task.create.thanks',
+      model: model
+    }, done);
   }
 
 };
