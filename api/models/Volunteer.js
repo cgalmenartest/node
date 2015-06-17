@@ -19,32 +19,11 @@ module.exports = {
   },
 
   // create notification after creating a volunteer
-  afterCreate: function (values, cb){
-    var params = {
-      trigger: {
-        callerType: 'Task',
-        callerId: values.taskId,
-        action: 'taskVolunteerAdded'
-      },
-      data: {
-        audience: {
-          'taskVolunteer': {
-            fields: {
-                taskId: values.taskId,
-                volunteerId: values.userId
-            }
-          },
-          'volunteerSupervisor': {
-            fields: {
-              taskId: values.taskId,
-              volunteerId: values.userId
-            }
-          }
-        }
-      }
-    };
-
-    noteUtils.notifier.notify(params, cb);
+  afterCreate: function(model, done) {
+    Notification.create({
+      action: 'volunteer.create.thanks',
+      model: model
+    }, done);
   },
 
   beforeDestroy: function (values, cb){
