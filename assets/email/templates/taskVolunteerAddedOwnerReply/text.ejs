@@ -1,8 +1,8 @@
 Hello<% if (metadata.recipient.name) { %> <%= metadata.recipient.name %><% } %>,
 
-<% if (profileName) { %><%= profileName %><% } else { %>Someone<% } %> has volunteered for <%= taskTitle %>
+<% if (profileName) { %><%= profileName %><% } else { %>Someone<% } %> has offered to participate in <%= taskTitle %>
 
-Here is more information about your volunteer:
+Here is more information about your participant:
 
 <%- profileName %> (<%- profileEmail %>)
 <%- profileLink %><% if (profileTitle) { %>
