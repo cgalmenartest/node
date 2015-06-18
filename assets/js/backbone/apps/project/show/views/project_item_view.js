@@ -6,6 +6,7 @@ var Backbone = require('backbone');
 var utils = require('../../../../mixins/utilities');
 var async = require('async');
 var ProjectShowTemplate = require('../templates/project_item_view_template.html');
+var ShareTemplate = require('../templates/project_share_template.txt');
 var TagShowView = require('../../../tag/show/views/tag_show_view');
 var TagFactory = require('../../../../components/tag_factory');
 
@@ -66,17 +67,18 @@ var ProjectShowView = Backbone.View.extend({
   },
 
   updateProjectEmail: function() {
-    var self = this;
-    $.ajax({
-      url: encodeURI('/api/email/makeURL?email=contactUserAboutProject&subject=Check Out "'+ self.model.attributes.title + '"' +
-      '&projectTitle=' + self.model.attributes.title +
-      '&projectLink=' + window.location.protocol + "//" + window.location.host + "" + window.location.pathname +
-      '&projectDescription=' + (self.model.attributes.description || '')),
-      type: 'GET'
-    }).done( function (data) {
-      self.$('#email').attr('href', data);
-    });
+    var subject = 'Take A Look At This Project',
+        data = {
+          projectTitle: this.model.get('title'),
+          projectLink: window.location.protocol +
+            "//" + window.location.host + "" + window.location.pathname,
+          projectDescription: this.model.get('description')
+        },
+        body = _.template(ShareTemplate)(data),
+        link = 'mailto:?subject=' + encodeURIComponent(subject) +
+          '&body=' + encodeURIComponent(body);
 
+    this.$('#email').attr('href', link);
   },
 
   initializeToggle: function () {
