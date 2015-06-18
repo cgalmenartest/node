@@ -5,8 +5,6 @@
  * @description :: Stores volunteer information for tasks
  *
  */
-var noteUtils = {} //require('../services/notifications/manager');
-
 module.exports = {
 
   attributes: {
@@ -26,31 +24,12 @@ module.exports = {
     }, done);
   },
 
-  beforeDestroy: function (values, cb){
-   Volunteer.findOne({ id: values.where.id }).exec(function(err, volunteer) {
-      if (err) cb(err);
-      var params = {
-      trigger: {
-        callerType: 'Task',
-        callerId: volunteer.taskId,
-        action: 'taskVolunteerRemoved'
-      },
-      data: {
-        audience: {
-          'taskVolunteer': {
-            fields: {
-              //we set volunteer id to userid because the look up is labeled wrong
-              //        and says it expects volunteerId but really it's using userId
-              //        for a where on the user model
-                taskId: volunteer.taskId,
-                userId: volunteer.userId,
-                volunteerId: volunteer.userId
-            }
-          }
-        }
-      }
-    };
-    noteUtils.notifier.notify(params, cb);
-   });
+  afterDestroy: function(model, done) {
+    Notification.create({
+      action: 'volunteer.destroy.decline',
+      // Sails returns an array of deleted models,
+      // but we're only deleting them one at a time
+      model: model[0]
+    }, done);
   }
 };
