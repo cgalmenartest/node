@@ -21,6 +21,13 @@ module.exports = {
     // generate a unique token based on uuid
     values.token = uuid.v4();
     cb(null, values);
+  },
+
+  afterCreate: function(model, done) {
+    Notification.create({
+      action: 'UserPasswordReset.create.token',
+      model: model
+    }, done);
   }
 
 };
