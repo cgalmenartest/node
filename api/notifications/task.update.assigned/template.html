@@ -1,6 +1,6 @@
-<p>Great news: You’ve been selected to complete “<%= metadata.task.title %>!”</p>
+<p>Great news: You’ve been selected to complete “<%- task.title %>!”</p>
 
-<p>Before you get started, please review the Opportunity details: <%= globals.urlPrefix %>/tasks/<%= metadata.modelTrigger.taskId %></p>
+<p>Before you get started, please review the Opportunity details: <%- globals.urlPrefix %>/tasks/<%- task.id %></p>
 
 <p>Have questions about what you need to do? Post them to the discussion — directly below the Opportunity description — for the quickest response.</p>
 
@@ -11,5 +11,5 @@
 <p>
   Best,
   <br>
-  The <%= globals.systemName %> Team
+  The <%- globals.systemName %> Team
 </p>
