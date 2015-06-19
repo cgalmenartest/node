@@ -25,7 +25,7 @@ module.exports = {
 
   afterCreate: function(model, done) {
     Notification.create({
-      action: 'UserPasswordReset.create.token',
+      action: 'userpasswordreset.create.token',
       model: model
     }, done);
   }
