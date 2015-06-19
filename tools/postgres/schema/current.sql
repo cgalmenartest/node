@@ -370,6 +370,7 @@ CREATE TABLE notification (
     "createdDate" timestamp with time zone,
     "localParams" text,
     "globalParams" text,
+    "model" json,
     "isActive" boolean,
     id integer NOT NULL,
     "createdAt" timestamp with time zone,
