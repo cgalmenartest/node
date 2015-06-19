@@ -44,7 +44,7 @@ module.exports.policies = {
     'profile': ['authenticated'],
     'photo': ['authenticated', 'requireId'],
     'info': ['authenticated', 'requireId'],
-    'update': ['authenticated', 'requireUserId', 'requireId'],
+    'update': ['authenticated', 'requireUserId', 'requireId', 'protectAdmin'],
     'username': ['authenticated'],
     'find': ['authenticated', 'requireUserId'],
     'all': ['authenticated', 'requireUserId'],
