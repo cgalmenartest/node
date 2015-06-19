@@ -1,7 +1,10 @@
 /**
-* Only Admins should be able to set the isAdmin property of the model.
+* Only Admins should be able to UPDATE the isAdmin property of the model.
+* All other references to isAdmin should be scrubbed.
 */
 module.exports = function protectAdmin (req, res, next) {
-	delete req.body.isAdmin;
-	next();
+  if ( !(req.user && req.user[0].isAdmin) ) {
+    delete req.body.isAdmin;
+  }
+  next();
 };
