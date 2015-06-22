@@ -305,10 +305,19 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 18px;
 }
 
-.navbar .nav .divider-vertical {
+.navbar .nav .navbar-divider {
+  /* vertical divider */
   background-color: white;
   height: 40px;
   width: 1px;
+}
+
+@media (max-width: 768px) {
+  /* horizontal divider */
+  .navbar .nav .navbar-divider {
+    height: 1px;
+    width: 100%;
+  }
 }
 
 #navbar-profile {
