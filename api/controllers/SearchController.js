@@ -10,7 +10,8 @@ var async = require('async');
 var projUtil = require('../services/utils/project');
 var taskUtil = require('../services/utils/task');
 
-function search(target, req, res) {
+
+function taskProjectSearch(target, req, res) {
   //builds an array of task/project ids where search terms were found
   //   returns task / project(+counts) objects which are rendered by the calling page as cards
   //   search terms are ANDed
@@ -125,6 +126,39 @@ function search(target, req, res) {
   });
 }
 
+function peopleSearch (req, res) {
+  if (!req.body) {
+    return res.send(400, {message: 'Need data to query'});
+  }
+  var q = req.body;
+  var searchTerms = q.freeText || [];
+
+  // Same problem as taskProjectSearch above. Searching for multiple "contains" queries on
+  // a column doesn't seem to be supported by Sails ORM. Fall back to SQL for now.
+  var whereClause = searchTerms.map(function (term) {
+    return "name ILIKE '%" + term + "%'";
+  }).join(" AND ");
+  var query = "SELECT DISTINCT id FROM midas_user WHERE " + whereClause + " ORDER BY id ASC";
+  User.query(query, function (err, data) {
+    var userIds = _.map(data.rows, function (item) { return item.id; });
+    // now that we have a list of ID's, we can use the ORM to flesh out the objects
+    User.find({id: userIds}).populate('tags').exec(function (err, users) {
+      if (err) { return res.serverError(err); }
+      users = _.reject(users, function (u) { return u.disabled; });
+      _.each(users, function (user) {
+        delete user.auths;
+        delete user.passwordAttempts;
+        // de-normalize these two special tags, delete the rest
+        user.location = _.findWhere(user.tags, {type: 'location'});
+        user.agency = _.findWhere(user.tags, {type: 'agency'});
+        delete user.tags;
+      });
+      return res.send(users);
+    });
+  });
+}
+
+
 module.exports = {
 
   index: function (req, res) {
@@ -132,7 +166,9 @@ module.exports = {
       return res.send(400, { message: 'Need data to query' });
     }
     if ((req.body.target == 'projects') || (req.body.target == 'tasks')) {
-      return search(req.body.target, req, res);
+      return taskProjectSearch(req.body.target, req, res);
+    } else if (req.body.target == 'people') {
+      return peopleSearch(req, res);
     }
     return res.send([]);
   },
