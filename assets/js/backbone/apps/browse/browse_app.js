@@ -19,7 +19,7 @@ var PeopleController = require('../people/controllers/people_main_controller');
 var BrowseRouter = Backbone.Router.extend({
 
   routes: {
-    ''                   : 'showHome',
+    ''                          : 'showHome',
     'projects(/)'               : 'listProjects',
     'projects/:id(/)'           : 'showProject',
     'projects/:id/:action(/)'   : 'showProject',
@@ -31,7 +31,7 @@ var BrowseRouter = Backbone.Router.extend({
     'profile/:id(/)/:action'    : 'showProfile',
     'admin(/)'                  : 'showAdmin',
     'admin(/):action(/)'        : 'showAdmin',
-    'people(/)'                 : 'showPeople'
+    'people(/)(?:queryStr)'     : 'showPeople'
   },
 
   data: { saved: false },
@@ -126,13 +126,27 @@ var BrowseRouter = Backbone.Router.extend({
     this.profileShowController = new ProfileShowController({ id: id, action: action, data: this.data });
   },
 
-  showPeople: function () {
+  showPeople: function (queryStr) {
+    // todo: consider generalizing query parameter handling for other endpoints
+    var queryParams = {};
+    if (queryStr) {
+      var terms = queryStr.split('&');
+      for (var i=0; i < terms.length; i++) {
+        var nameValue = terms[i].split('=');
+        if (nameValue.length == 2) {
+          queryParams[nameValue[0]] = nameValue[1];
+        } else {
+          queryParams[terms[i]] = '';
+        }
+      }
+    }
     this.cleanupChildren();
     this.peopleController = new PeopleController({
       el: '#container',
       target: 'people',
       router: this,
-      data: this.data
+      data: this.data,
+      queryParams: queryParams
     });
   },
 

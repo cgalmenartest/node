@@ -12,7 +12,7 @@ PeopleMap = {};
 
 PeopleMap.Controller = BaseController.extend({
 
-  initialize: function () {
+  initialize: function (options) {
     var that = this;
     var gatherData = [];
     var profiles;
@@ -41,8 +41,11 @@ PeopleMap.Controller = BaseController.extend({
       if (err) return err;
       that.peopleMapView = new PeopleMapView({
         el: that.el,
+        target: options.target,
+        router: options.router,
         people: profiles,
-        countries: countries
+        countries: countries,
+        queryParams: options.queryParams
       }).render();
     });
   },

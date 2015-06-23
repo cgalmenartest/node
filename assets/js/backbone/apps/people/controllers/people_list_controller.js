@@ -13,7 +13,10 @@ PeopleList.Controller = BaseController.extend({
   initialize: function (options) {
     this.peoplelistView = new PeopleListView({
       el: options.el,
-      people: options.people || []
+      target: options.target,
+      router: options.router,
+      people: options.people || [],
+      queryParams: options.queryParams
     }).render();
   },
 

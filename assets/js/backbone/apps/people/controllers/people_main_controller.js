@@ -17,14 +17,20 @@ PeopleMain.Controller = BaseController.extend({
 
   template: _.template(PeopleMainTemplate),
 
-  initialize: function () {
+  initialize: function (options) {
     // not worth doing a whole separate view just for this, render here
     this.$el.html(this.template());
     this.peopleMapController = new PeopleMapController({
-      el: '#people-map'
+      el: '#people-map',
+      target: options.target,
+      router: options.router,
+      queryParams: options.queryParams
     });
     this.peopleListController = new PeopleListController({
-      el: '#people-list'
+      el: '#people-list',
+      target: options.target,
+      router: options.router,
+      queryParams: options.queryParams
     });
   },
 
