@@ -4,6 +4,7 @@ var utils = require('../../../mixins/utilities');
 var ModalComponent = require('../../../components/modal');
 var AdminDashboardTemplate = require('../templates/admin_dashboard_template.html');
 var AdminDashboardTable = require('../templates/admin_dashboard_table.html');
+var AdminDashboardTasks = require('../templates/admin_dashboard_task_metrics.html');
 var AdminDashboardActivities = require('../templates/admin_dashboard_activities.html');
 var LoginConfig = require('../../../config/login.json');
 
@@ -46,6 +47,15 @@ var AdminDashboardView = Backbone.View.extend({
     // hide spinner and show results
     self.$(".spinner").hide();
     self.$(".metric-block").show();
+  },
+
+  renderTasks: function(self, data) {
+    var template = _.template(AdminDashboardTasks)(data);
+    self.$(".task-metrics").html(template);
+    this.$el.i18n();
+    // hide spinner and show results
+    self.$(".spinner").hide();
+    self.$(".task-metrics").show();
   },
 
   renderActivities: function (self, data) {
@@ -102,6 +112,7 @@ var AdminDashboardView = Backbone.View.extend({
         self.renderActivities(self, data);
       }
     });
+    self.renderTasks(self, {});
   },
 
   cleanup: function () {
