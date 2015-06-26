@@ -457,6 +457,17 @@ ul.metrics > ul > li {
   margin-bottom: 2px;
 }
 
+.task-metrics-table th:first-child {
+  text-align: left;
+}
+.task-metrics-table th {
+  text-align: right;
+}
+.task-metrics-table td {
+  width: 15%;
+  text-align: right;
+}
+
 /*****************
 =  LOGIN
 ******************/

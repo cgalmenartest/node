@@ -246,17 +246,19 @@ module.exports = {
    * with the above endpoint.
    */
   taskMetrics: function(req, res) {
-    var getFY = function(date) {
-          if (!date) return undefined;
+    var getFY = function(input) {
+          if (!input) return undefined;
+          var date = new Date(input);
           return new Date(date.setMonth(date.getMonth() + 3)).getFullYear();
         },
+        currentFY = getFY(new Date()),
+        fiscalYears = _.range(2014, currentFY + 1),
         output = {
           tasks: {},
           volunteers: {},
-          agencies: {}
-        },
-        currentFY = getFY(new Date()),
-        fiscalYears = _.range(2014, currentFY + 1);
+          agencies: {},
+          fiscalYears: fiscalYears
+        };
 
     async.parallel([
       function(done) {
@@ -429,7 +431,9 @@ module.exports = {
         });
 
         async.series(steps, function(err) {
-          if ( activity.comment.value == "" ) { activity.comment = {}; }
+          if (!activity.comment || activity.comment.value === "") {
+            activity.comment = {};
+          }
           done(err, activity);
         });
 
@@ -483,7 +487,7 @@ module.exports = {
           });
         });
 
-        async.series(steps, function(err) { done(err, activity) });
+        async.series(steps, function(err) { done(err, activity); });
       },
 
       updatedUser: function(event, done) {
@@ -502,7 +506,7 @@ module.exports = {
           });
         });
 
-        async.series(steps, function(err) { done(err, activity) });
+        async.series(steps, function(err) { done(err, activity); });
       },
 
       newTask: function(event, done) {
@@ -531,7 +535,7 @@ module.exports = {
           });
         });
 
-        async.series(steps, function(err) { done(err, activity) });
+        async.series(steps, function(err) { done(err, activity); });
       }
 
     };

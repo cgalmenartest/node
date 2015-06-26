@@ -86,13 +86,11 @@ var AdminDashboardView = Backbone.View.extend({
     $.ajax({
       url: '/api/admin/metrics',
       dataType: 'json',
-      data: data,
       success: function (data) {
         self.data = data;
         $.ajax({
           url: '/api/admin/interactions',
           dataType: 'json',
-          data: data,
           success: function(interactions) {
             data.interactions = interactions;
             interactions.count = _(interactions).reduce(function(sum, value, key) {
@@ -101,18 +99,24 @@ var AdminDashboardView = Backbone.View.extend({
             self.renderMetrics(self, data);
           }
         });
+        $.ajax({
+          url: '/api/admin/taskmetrics',
+          dataType: 'json',
+          success: function (data) {
+            console.log(self.data.tasks);
+            data.tasks.active = self.data.tasks;
+            self.renderTasks(self, data);
+          }
+        });
       }
     });
     $.ajax({
       url: '/api/admin/activities',
       dataType: 'json',
-      data: data,
       success: function (data) {
-        self.data = data;
         self.renderActivities(self, data);
       }
     });
-    self.renderTasks(self, {});
   },
 
   cleanup: function () {
