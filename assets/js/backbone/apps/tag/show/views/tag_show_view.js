@@ -71,8 +71,7 @@ var TagShowView = Backbone.View.extend({
     self.tagFactory.createTagDropDown({
       type:"location",
       selector:"#tag_location",
-      width: "100%",
-      multiple: true,
+      width: "100%"
     });
 
     self.tagFactory.createTagDropDown({

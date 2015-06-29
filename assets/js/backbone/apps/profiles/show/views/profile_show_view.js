@@ -273,6 +273,7 @@ var ProfileShowView = Backbone.View.extend({
     this.tagFactory.createTagDropDown({
       type: "location",
       selector: "#location",
+      multiple: false,
       data: modelJson.location,
       width: "100%"
     });
