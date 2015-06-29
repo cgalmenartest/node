@@ -71,7 +71,7 @@ TagFactory = BaseComponent.extend({
     //location tags get special treatment
     var isLocation = (options.type === 'location')
 
-    //have to check these first, to allow False values to override the default True
+    //have to check these beforehand to allow False values to override the default True
     options.multiple    = (options.multiple    !== undefined ? options.multiple    : true);
     options.allowCreate = (options.allowCreate !== undefined ? options.allowCreate : true);
 
@@ -134,7 +134,6 @@ TagFactory = BaseComponent.extend({
     //event handlers
     $sel.on("select2-selecting", function (e) {
       if (e.choice.tagType === 'location') {
-
         if (e.choice.temp) {
           this.temp = true;
           e.choice.name = '<em>Searching for <strong>' + e.choice.value + '</strong></em>';
@@ -144,7 +143,6 @@ TagFactory = BaseComponent.extend({
             d = _(d).map(function(item) {
               return {
                 id: item.name,
-                text: item.name,
                 name: item.name,
                 unmatched: true,
                 tagType: 'location',
@@ -153,8 +151,9 @@ TagFactory = BaseComponent.extend({
             });
             this.cache = $sel.select2('data');
             if(settings.multiple) {
+              //remove the "Searching for..." text from multi-select boxes
               this.cache = _.reject(this.cache, function(item) {
-                return (item.name.indexOf('<em>Searching for <strong>') >= 0);
+                return (item.name.indexOf('Searching') >= 0);
               });
             }
             $sel.select2({
