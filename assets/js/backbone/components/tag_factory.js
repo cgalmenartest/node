@@ -111,7 +111,14 @@ TagFactory = BaseComponent.extend({
 
     //if requested, give users the option to create new
     if(options.allowCreate) {
-      settings.createSearchChoice = function (term) {
+      settings.createSearchChoice = function (term, values) {
+        values = values.map(function(v) {
+          return v.value.toLowerCase();
+        });
+
+        if (values.indexOf(term.toLowerCase()) >= 0)
+          return false; //don't prompt to "add new" if it already exists
+
         //unmatched = true is the flag for saving these "new" tags to tagEntity when the opp is saved
         return {
           unmatched: true,
