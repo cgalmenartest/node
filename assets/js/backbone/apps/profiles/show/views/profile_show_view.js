@@ -26,10 +26,9 @@ var ProfileShowView = Backbone.View.extend({
     "click .link-backbone"       : linkBackbone,
     "click #profile-cancel"      : "profileCancel",
     "click #like-button"         : "like",
-    "keyup #name, #title, #bio"  : "fieldModified",
-    "keyup"                      : "checkName",
-    "change"                     : "checkName",
-    "blur"                       : "checkName",
+    "keyup"                      : "fieldModified",
+    "change"                     : "fieldModified",
+    "blur"                       : "fieldModified",
     "click .removeAuth"          : "removeAuth"
   },
 
@@ -208,14 +207,6 @@ var ProfileShowView = Backbone.View.extend({
   initializeForm: function() {
     var self = this;
 
-    $("#topics").on('change', function (e) {
-      self.model.trigger("profile:input:changed", e);
-    });
-
-    $("#skills").on('change', function (e) {
-      self.model.trigger("profile:input:changed", e);
-    });
-
     this.listenTo(self.model, "profile:save:success", function (data) {
       // Bootstrap .button() has execution order issue since it
       // uses setTimeout to change the text of buttons.
@@ -263,11 +254,6 @@ var ProfileShowView = Backbone.View.extend({
 
   initializeSelect2: function () {
     var self = this;
-
-    var formatResult = function (object, container, query) {
-      return object.name;
-    };
-
     var modelJson = this.model.toJSON();
 
     /*
@@ -292,22 +278,6 @@ var ProfileShowView = Backbone.View.extend({
       data:        modelJson.agency,
       width:       "100%",
     });
-
-    $("#topics").on('change', function (e) {
-      self.model.trigger("profile:input:changed", e);
-    });
-
-    $("#skills").on('change', function (e) {
-      self.model.trigger("profile:input:changed", e);
-    });
-
-    $("#company").on('change', function (e) {
-      self.model.trigger("profile:input:changed", e);
-    });
-
-    $("#location").on('change', function (e) {
-      self.model.trigger("profile:input:changed", e);
-    });
   },
 
   initializeTextArea: function () {
@@ -323,16 +293,12 @@ var ProfileShowView = Backbone.View.extend({
   },
 
   fieldModified: function (e) {
-    this.model.trigger("profile:input:changed", e);
-  },
 
-  checkName: function (e) {
-    var name = this.$("#name").val();
-    if (name && name !== '') {
-      $("#name").closest(".form-group").find(".help-block").hide();
-    } else {
-      $("#name").closest(".form-group").find(".help-block").show();
-    }
+    //check that the name isn't a null string
+    var $help = this.$("#name").closest(".form-group").find(".help-block")
+    $help.toggle( this.$("#name").val() === '' )
+
+    this.model.trigger("profile:input:changed", e);
   },
 
   profileCancel: function (e) {
