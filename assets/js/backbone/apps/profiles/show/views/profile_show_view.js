@@ -270,36 +270,28 @@ var ProfileShowView = Backbone.View.extend({
 
     var modelJson = this.model.toJSON();
 
+    /*
+      The location and company selectors differ from the
+      defaults in tag_show_view, so they are explicitly
+      created here (with different HTML IDs than normal,
+      to avoid conflicts).
+    */
     this.tagFactory.createTagDropDown({
-      type: "location",
-      selector: "#location",
-      multiple: false,
-      data: modelJson.location,
-      width: "100%"
+      type:        "location",
+      selector:    "#location",
+      multiple:    false,
+      data:        modelJson.location,
+      width:       "100%"
     });
 
-    $("#company").select2({
-      placeholder: 'Select an Agency',
-      formatResult: formatResult,
-      formatSelection: formatResult,
-      minimumInputLength: 2,
-      ajax: {
-        url: '/api/ac/tag',
-        dataType: 'json',
-        data: function (term) {
-          return {
-            type: 'agency',
-            q: term
-          };
-        },
-        results: function (data) {
-          return { results: data };
-        }
-      }
+    this.tagFactory.createTagDropDown({
+      type:        "agency",
+      selector:    "#company",
+      multiple:    false,
+      allowCreate: false,
+      data:        modelJson.agency,
+      width:       "100%",
     });
-    if (modelJson.agency) {
-      $("#company").select2('data', modelJson.agency);
-    }
 
     $("#topics").on('change', function (e) {
       self.model.trigger("profile:input:changed", e);
@@ -313,9 +305,6 @@ var ProfileShowView = Backbone.View.extend({
       self.model.trigger("profile:input:changed", e);
     });
 
-    // if (modelJson.location) {
-    //   $("#location").select2('data', modelJson.location);
-    // }
     $("#location").on('change', function (e) {
       self.model.trigger("profile:input:changed", e);
     });
@@ -371,17 +360,15 @@ var ProfileShowView = Backbone.View.extend({
           $("#company").select2('data'),
           $("#tag_topic").select2('data'),
           $("#tag_skill").select2('data'),
-          // $("#tag_location").select2('data'),
-          $("#location").select2('data'),
-          $("#tag_agency").select2('data')
+          $("#location").select2('data')
         ),
         modelTags = _(this.model.get('tags')).filter(function(tag) {
           return (tag.type !== 'agency' && tag.type !== 'location');
         }),
         data = {
-          name: $("#name").val(),
+          name:  $("#name").val(),
           title: $("#title").val(),
-          bio: $("#bio").val(),
+          bio:   $("#bio").val(),
         },
         email = this.model.get('emails')[0],
         self = this,

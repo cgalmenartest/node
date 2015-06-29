@@ -54,18 +54,26 @@ TagFactory = BaseComponent.extend({
   },
 
   /*
+    required:
     @param {Object}   options
     @param {String}   options.type               - The tag type this dropdown will operate with
     @param {String}   options.selector           - CSS selector of the new dropdown, element should be preexisting
-    @param {Boolean}  options.multiple           - Whether to allow multiple tags to be selected
-    @param {*}        options.data               - The initial data loaded into the select2 element
+
+    optional:
     @param {String}   options.width='500px'      - CSS width attribute for the dropdown
+    @param {Boolean}  options.multiple=true      - Whether to allow multiple tags to be selected
+    @param {Boolean}  options.allowCreate=true   - Whether a `createSearchChoice` option will be given
     @param {String[]} options.tokenSeparators=[] - Array of valid tag delimeters
+    @param {*}        options.data=undefined     - The initial data loaded into the select2 element
   */
   createTagDropDown: function(options) {
 
     //location tags get special treatment
     var isLocation = (options.type === 'location')
+
+    //have to check these first, to allow False values to override the default True
+    options.multiple    = (options.multiple    !== undefined ? options.multiple    : true);
+    options.allowCreate = (options.allowCreate !== undefined ? options.allowCreate : true);
 
     //construct the settings for this tag type
     var settings = {
@@ -75,8 +83,7 @@ TagFactory = BaseComponent.extend({
       selectOnBlur:       !isLocation,
       width:              options.width || "500px",
       tokenSeparators:    options.tokenSeparators || [],
-                          //had to use long for to allow False values to override the default True
-      multiple:           (options.multiple !== undefined ? options.multiple : true),
+      multiple:           options.multiple,
 
       formatResult: function (obj, container, query) {
         //allow the createSearchChoice to contain HTML
@@ -85,20 +92,6 @@ TagFactory = BaseComponent.extend({
 
       formatSelection: function (obj, container, query) {
         return (obj.unmatched ? obj.name : _.escape(obj.name));
-      },
-
-      createSearchChoice: function (term) {
-        //unmatched = true is the flag for saving these "new" tags to tagEntity when the opp is saved
-        return {
-          unmatched: true,
-          tagType: options.type,
-          id: term,
-          value: term,
-          temp: true,
-          name: "<b>"+_.escape(term)+"</b> <i>" + (isLocation ?
-            "search for this location" :
-            "click to create a new tag with this value") + "</i>"
-        };
       },
 
       ajax: {
@@ -115,6 +108,23 @@ TagFactory = BaseComponent.extend({
         }
       }
     };
+
+    //if requested, give users the option to create new
+    if(options.allowCreate) {
+      settings.createSearchChoice = function (term) {
+        //unmatched = true is the flag for saving these "new" tags to tagEntity when the opp is saved
+        return {
+          unmatched: true,
+          tagType: options.type,
+          id: term,
+          value: term,
+          temp: true,
+          name: "<b>"+_.escape(term)+"</b> <i>" + (isLocation ?
+            "search for this location" :
+            "click to create a new tag with this value") + "</i>"
+        };
+      };
+    }
 
 
     //init Select2
