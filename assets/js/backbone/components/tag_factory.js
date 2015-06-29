@@ -65,6 +65,8 @@ TagFactory = BaseComponent.extend({
     @param {Boolean}  options.allowCreate=true   - Whether a `createSearchChoice` option will be given
     @param {String[]} options.tokenSeparators=[] - Array of valid tag delimeters
     @param {*}        options.data=undefined     - The initial data loaded into the select2 element
+
+    @returns {jQuery element}                    - The initialized jQuery element selected by options.selector
   */
   createTagDropDown: function(options) {
 
@@ -211,6 +213,8 @@ TagFactory = BaseComponent.extend({
     if(options.data) {
       $sel.select2('data', options.data);
     }
+
+    return $sel;
   },
 
 });
