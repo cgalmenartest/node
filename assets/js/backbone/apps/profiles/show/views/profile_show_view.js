@@ -270,40 +270,12 @@ var ProfileShowView = Backbone.View.extend({
 
     var modelJson = this.model.toJSON();
 
-    var locationSettings = {
-      placeholder: 'Select a Location',
-      formatResult: formatResult,
-      formatSelection: formatResult,
-      minimumInputLength: 1,
-      data: [ location ],
-      createSearchChoice: function (term, values) {
-        var vals = values.map(function(value) {
-          return value.value.toLowerCase();
-        });
-
-        //unmatched = true is the flag for saving these "new" tags to tagEntity when the opp is saved
-        return (vals.indexOf(term.toLowerCase()) >=0) ? false : {
-          tagType: 'location',
-          id: term,
-          value: term,
-          temp: true,
-          name: "<b>"+term+"</b> <i>search for this location</i>"
-        };
-      },
-      ajax: {
-        url: '/api/ac/tag',
-        dataType: 'json',
-        data: function (term) {
-          return {
-            type: 'location',
-            q: term
-          };
-        },
-        results: function (data) {
-          return { results: data };
-        }
-      }
-    };
+    this.tagFactory.createTagDropDown({
+      type: "location",
+      selector: "#location",
+      data: modelJson.location,
+      width: "100%"
+    });
 
     $("#company").select2({
       placeholder: 'Select an Agency',
@@ -339,64 +311,10 @@ var ProfileShowView = Backbone.View.extend({
     $("#company").on('change', function (e) {
       self.model.trigger("profile:input:changed", e);
     });
-    $('#location').select2(locationSettings).on('select2-selecting', function(e) {
-      var $el = self.$(e.currentTarget),
-          el = this;
-      if (e.choice.temp) {
-        this.temp = true;
-        $('#location').select2('data', e.choice.name);
-        $.get('/api/location/suggest?q=' + e.choice.value, function(d) {
-          d = _(d).map(function(item) {
-            return {
-              id: item.name,
-              text: item.name,
-              name: item.name,
-              unmatched: true,
-              tagType: 'location',
-              data: _(item).omit('name')
-            };
-          });
-          el.reload = true;
-          el.open = true;
-          $('#location').select2({
-            data: d,
-            formatResult: function (obj) { return obj.name; },
-            formatSelection: function (obj) { return obj.name; },
-            createSearchChoice: function (term, values) {
-              if (!values.some(function (v) {
-                  return (v.name.toLowerCase().indexOf(term.toLowerCase()) >= 0);
-                })) {
-                return {
-                  tagType: 'location',
-                  id: term,
-                  value: term,
-                  temp: true,
-                  name: "<b>" + term + "</b> <i>search for this location</i>"
-                };
-              }
-            }
-          }).select2('open');
-        });
-      } else {
-        delete this.temp;
-      }
-    }).on('select2-open', function(e) {
-      if (!this.reload && this.open) {
-        delete this.open;
-        delete this.temp;
-        var cache = $("#location").select2('data');
-        setTimeout(function() {
-          $("#location").select2(locationSettings)
-            .select2('data', cache)
-            .select2('open');
-        }, 0);
-      } else if (this.reload && this.open) {
-        delete this.reload;
-      }
-    });
-    if (modelJson.location) {
-      $("#location").select2('data', modelJson.location);
-    }
+
+    // if (modelJson.location) {
+    //   $("#location").select2('data', modelJson.location);
+    // }
     $("#location").on('change', function (e) {
       self.model.trigger("profile:input:changed", e);
     });
@@ -452,7 +370,7 @@ var ProfileShowView = Backbone.View.extend({
           $("#company").select2('data'),
           $("#tag_topic").select2('data'),
           $("#tag_skill").select2('data'),
-          $("#tag_location").select2('data'),
+          // $("#tag_location").select2('data'),
           $("#location").select2('data'),
           $("#tag_agency").select2('data')
         ),

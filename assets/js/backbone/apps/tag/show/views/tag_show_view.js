@@ -17,6 +17,12 @@ var TagShowView = Backbone.View.extend({
     "click .tag-delete"     : "deleteTag"
   },
 
+  /*
+    @param {Object}  options
+    @param {String}  options.target   - key for looking up tag-type sets from the TagConfig (profile|task|project)
+    @param {String}  options.targetId - not used
+    @param {Boolean} options.edit     - whether or not to display the tag editor
+  */
   initialize: function (options) {
     this.options = options;
     this.model = options.model;

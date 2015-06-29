@@ -53,137 +53,251 @@ TagFactory = BaseComponent.extend({
     });
   },
 
+  /*
+    @param {Object}   options
+    @param {String}   options.type               - The tag type this dropdown will operate with
+    @param {String}   options.selector           - CSS selector of the new dropdown, element should be preexisting
+    @param {Boolean}  options.multiple           - Whether to allow multiple tags to be selected
+    @param {*}        options.data               - The initial data loaded into the select2 element
+    @param {String}   options.width='500px'      - CSS width attribute for the dropdown
+    @param {String[]} options.tokenSeparators=[] - Array of valid tag delimeters
+  */
   createTagDropDown: function(options) {
+
+    //location tags get special treatment
+    var isLocation = (options.type === 'location')
+
+    //construct the settings for this tag type
     var settings = {
-          placeholder: "Start typing to select a "+options.type,
-          minimumInputLength: 2,
-          multiple: true,
-          selectOnBlur: true,
-          width: options.width || "500px",
-          tokenSeparators: options.tokenSeparators || [],
-          formatResult: function (obj, container, query) {
-            //allow the createSearchChoice to contain HTML
-            return (obj.unmatched ? obj.name : _.escape(obj.name));
-          },
-          formatSelection: function (obj, container, query) {
-            return _.escape(obj.name);
-          },
-          createSearchChoice: function (term) {
-            //unmatched = true is the flag for saving these "new" tags to tagEntity when the opp is saved
-            return {
-              unmatched: true,
-              tagType: options.type,
-              id: term,
-              value: term,
-              temp: true,
-              name: "<b>"+_.escape(term)+"</b> <i>" + ((options.type !== 'location') ?
-                "click to create a new tag with this value" :
-                "search for this location") + "</i>"
-            };
-          },
-          ajax: {
-            url: '/api/ac/tag',
-            dataType: 'json',
-            data: function (term) {
-              return {
-                type: options.type,
-                q: term
-              };
-            },
-            results: function (data) {
-              return { results: data };
-            }
-          }
+
+      placeholder:        "Start typing to select a " + options.type,
+      minimumInputLength: (isLocation ? 1 : 2),
+      multiple:           options.multiple || !isLocation,
+      selectOnBlur:       !isLocation,
+      width:              options.width || "500px",
+      tokenSeparators:    options.tokenSeparators || [],
+
+      formatResult: function (obj, container, query) {
+        //allow the createSearchChoice to contain HTML
+        return (obj.unmatched ? obj.name : _.escape(obj.name));
+      },
+
+      formatSelection: function (obj, container, query) {
+        return (obj.unmatched ? obj.name : _.escape(obj.name));
+      },
+
+      createSearchChoice: function (term) {
+        //unmatched = true is the flag for saving these "new" tags to tagEntity when the opp is saved
+        return {
+          unmatched: true,
+          tagType: options.type,
+          id: term,
+          value: term,
+          temp: true,
+          name: "<b>"+_.escape(term)+"</b> <i>" + (isLocation ?
+            "search for this location" :
+            "click to create a new tag with this value") + "</i>"
+        };
+      },
+
+      ajax: {
+        url: '/api/ac/tag',
+        dataType: 'json',
+        data: function (term) {
+          return {
+            type: options.type,
+            q: term
+          };
         },
-      $sel = self.$(options.selector);
-    $sel.remote = true;
-    $sel.select2(settings).on("select2-selecting", function (e) {
+        results: function (data) {
+          return { results: data };
+        }
+      }
+    };
+
+
+    //init Select2
+    var $sel = self.$(options.selector).select2(settings);
+
+
+    //event handlers
+    $sel.on("select2-selecting", function (e) {
       if (e.choice.tagType === 'location') {
+
+
+
+
         var $el = self.$(e.currentTarget);
+        var el = this;
         if (e.choice.temp) {
-          e.choice.name = '<em>Searching for <strong>' +
-            e.choice.value + '</strong></em>';
           this.temp = true;
+          $sel.select2('data', e.choice.name);
           $.get('/api/location/suggest?q=' + e.choice.value, function(d) {
             d = _(d).map(function(item) {
               return {
                 id: item.name,
+                text: item.name,
                 name: item.name,
                 unmatched: true,
                 tagType: 'location',
                 data: _(item).omit('name')
               };
             });
-            var items = $sel.select2('data');
-            this.cache = _.reject(items, function(item) {
-              return (item.name.indexOf('<em>Searching for <strong>') >= 0);
-            });
+            el.reload = true;
+            el.open = true;
             $sel.select2({
-              multiple: true,
-              data: { results: d, text: 'name' }
-            }).select2('data', this.cache).select2('open');
-            $sel.remote = false;
+              data:               d,
+              width:              settings.width,
+              formatResult:       settings.formatResult,
+              formatSelection:    settings.formatSelection,
+              createSearchChoice: settings.createSearchChoice,
+            }).select2('open');
           });
         } else {
-          this.reload = true;
           delete this.temp;
         }
-      } else {
+      } else { //if this is NOT a location tag
         if ( e.choice.hasOwnProperty("unmatched") && e.choice.unmatched ){
           //remove the hint before adding it to the list
           e.choice.name = e.val;
         }
       }
-    }).on('select2-blur', function(e) {
+    });
+
+    $sel.on('select2-blur', function(e) {
       if (!this.reload && this.temp) {
         this.reload = true;
         delete this.temp;
       }
-    }).on('select2-open', function(e) {
-      var el = this;
-      if (this.reload) {
-        this.cache = $sel.select2('data');
-        setTimeout(function(){
-          $sel.select2(settings).select2('data', el.cache).select2('open');
+    });
+
+    $sel.on('select2-open', function(e) {
+      if (!this.reload && this.open) {
+        delete this.open;
+        delete this.temp;
+        var cache = $("#location").select2('data');
+        setTimeout(function() {
+          $("#location").select2(settings)
+            .select2('data', cache)
+            .select2('open');
         }, 0);
+      } else if (this.reload && this.open) {
         delete this.reload;
       }
     });
+
+    //load initial data, if provided
+    if(options.data) {
+      $sel.select2('data', options.data);
+    }
   },
 
-  createDiff: function ( oldTags, currentTags){
-    //sort tags into their needed actions
-    //
 
-    var out = {
-      remove: [],
-      add: [],
-      none: []
+
+
+
+  createLocationDropDown: function(options) {
+    var self = this;
+
+    var formatResult = function (object, container, query) {
+      return object.name;
     };
 
-    var none = null;
+    var modelJson = options.modelJson;
 
-    _.each(oldTags, function (oTag,oi){
-
-      none = null;
-
-      _.each(currentTags, function (cTag, ci){
-          if (cTag && parseInt(cTag.id) == oTag.tagId ){
-            currentTags.splice(ci,1);
-            none = oi;
-          }
+    var locationSettings = {
+      placeholder: 'Select a Location',
+      formatResult: formatResult,
+      formatSelection: formatResult,
+      minimumInputLength: 1,
+      data: [ location ],
+      createSearchChoice: function (term, values) {
+        var vals = values.map(function(value) {
+          return value.value.toLowerCase();
         });
 
-      if( _.isFinite(none) ){
-        out.none.push(parseInt(oldTags[none].tagId));
+        //unmatched = true is the flag for saving these "new" tags to tagEntity when the opp is saved
+        return (vals.indexOf(term.toLowerCase()) >=0) ? false : {
+          tagType: 'location',
+          id: term,
+          value: term,
+          temp: true,
+          name: "<b>"+term+"</b> <i>search for this location</i>"
+        };
+      },
+      ajax: {
+        url: '/api/ac/tag',
+        dataType: 'json',
+        data: function (term) {
+          return {
+            type: 'location',
+            q: term
+          };
+        },
+        results: function (data) {
+          return { results: data };
+        }
+      }
+    };
+
+    $('#location').select2(locationSettings).on('select2-selecting', function(e) {
+      var $el = self.$(e.currentTarget);
+      var el = this;
+      if (e.choice.temp) {
+        this.temp = true;
+        $('#location').select2('data', e.choice.name);
+        $.get('/api/location/suggest?q=' + e.choice.value, function(d) {
+          d = _(d).map(function(item) {
+            return {
+              id: item.name,
+              text: item.name,
+              name: item.name,
+              unmatched: true,
+              tagType: 'location',
+              data: _(item).omit('name')
+            };
+          });
+          el.reload = true;
+          el.open = true;
+          $('#location').select2({
+            data: d,
+            formatResult: function (obj) { return obj.name; },
+            formatSelection: function (obj) { return obj.name; },
+            createSearchChoice: function (term, values) {
+              if (!values.some(function (v) {
+                  return (v.name.toLowerCase().indexOf(term.toLowerCase()) >= 0);
+                })) {
+                return {
+                  tagType: 'location',
+                  id: term,
+                  value: term,
+                  temp: true,
+                  name: "<b>" + term + "</b> <i>search for this location</i>"
+                };
+              }
+            }
+          }).select2('open');
+        });
       } else {
-        out.remove.push(parseInt(oTag.id));
+        delete this.temp;
+      }
+    }).on('select2-open', function(e) {
+      if (!this.reload && this.open) {
+        delete this.open;
+        delete this.temp;
+        var cache = $("#location").select2('data');
+        setTimeout(function() {
+          $("#location").select2(locationSettings)
+            .select2('data', cache)
+            .select2('open');
+        }, 0);
+      } else if (this.reload && this.open) {
+        delete this.reload;
       }
     });
-
-    out.add = currentTags;
-
-    return out;
+    if (options.data) {
+      $("#location").select2('data', options.data);
+    }
   }
 
 });
