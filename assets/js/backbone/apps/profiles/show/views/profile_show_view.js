@@ -10,6 +10,7 @@ var marked = require('marked');
 var TagShowView = require('../../../tag/show/views/tag_show_view');
 var ProfileTemplate = require('../templates/profile_show_template.html');
 var EmailTemplate = require('../templates/profile_email_template.html');
+var ShareTemplate = require('../templates/profile_share_template.txt');
 var Login = require('../../../../config/login.json');
 var ModalComponent = require('../../../../components/modal');
 var PAView = require('./profile_activity_view');
@@ -125,18 +126,22 @@ var ProfileShowView = Backbone.View.extend({
   },
 
   updateProfileEmail: function(){
-    var self = this;
-    $.ajax({
-      url: encodeURI('/api/email/makeURL?email=contactUserAboutProfile&subject=Check Out "'+ self.model.attributes.name + '"' +
-      '&profileTitle=' + (self.model.attributes.title || '') +
-      '&profileLink=' + window.location.protocol + "//" + window.location.host + "" + window.location.pathname +
-      '&profileName=' + (self.model.attributes.name || '') +
-      '&profileLocation=' + (self.model.attributes.location ? self.model.attributes.location.name : '') +
-      '&profileAgency=' + (self.model.agency ? self.model.agency.name : '')),
-      type: 'GET'
-    }).done( function (data) {
-      self.$('#email').attr('href', data);
-    });
+    var subject = 'Take A Look At This Profile',
+        data = {
+          profileTitle: this.model.get('title'),
+          profileLink: window.location.protocol +
+            "//" + window.location.host + "" + window.location.pathname,
+          profileName: this.model.get('name'),
+          profileLocation: this.model.get('location') ?
+            this.model.get('location').name : '',
+          profileAgency: this.model.get('agency') ?
+            this.model.get('agency').name : ''
+        },
+        body = _.template(ShareTemplate)(data),
+        link = 'mailto:?subject=' + encodeURIComponent(subject) +
+          '&body=' + encodeURIComponent(body);
+
+    this.$('#email').attr('href', link);
   },
 
   initializeTags: function() {

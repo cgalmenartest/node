@@ -301,7 +301,8 @@ module.exports = {
 
         // Get comment model
         steps.push(function(done) {
-          Comment.findOne({ id: event.callerId }).exec(function(err, result) {
+          var id = (event.model || {}).id;
+          Comment.findOne({ id: id }).exec(function(err, result) {
             if (err) return done('Failed to find model' + err);
             activity.comment = result || {};
             activity.comment.value = activity.comment.value || "";
@@ -335,7 +336,7 @@ module.exports = {
         });
 
         async.series(steps, function(err) {
-          if ( activity.comment.value == "" ) { activity.comment = {}; }
+          if (activity.comment.value === "") { activity.comment = {}; }
           done(err, activity);
         });
 
@@ -350,7 +351,8 @@ module.exports = {
 
         // Get task model
         steps.push(function(done) {
-          Task.findOne({ id: event.callerId }).exec(function(err, result) {
+          var id = (event.model || {}).taskId;
+          Task.findOne({ id: id }).exec(function(err, result) {
             if (err) return done('Failed to find model' + err);
             activity.task = result;
             done();
@@ -359,8 +361,8 @@ module.exports = {
 
         // Get user model
         steps.push(function(done) {
-          var userId = JSON.parse(event.localParams).fields.volunteerId;
-          User.findOne({ id: userId }).exec(function(err, user) {
+          var id = (event.model || {}).userId;
+          User.findOne({ id: id }).exec(function(err, user) {
             if (err) return done('Failed to find model' + err);
             activity.user = user;
             done();
@@ -381,34 +383,15 @@ module.exports = {
 
         // Get user model
         steps.push(function(done) {
-          var userId = JSON.parse(event.localParams).fields.userId;
-          User.findOne({ id: userId }).exec(function(err, user) {
+          var id = (event.model || {}).id;
+          User.findOne({ id: id }).exec(function(err, user) {
             if (err) return done('Failed to find model' + err);
             activity.user = user;
             done();
           });
         });
 
-        async.series(steps, function(err) { done(err, activity) });
-      },
-
-      updatedUser: function(event, done) {
-        var activity = {
-          type: 'updatedUser',
-          createdAt: event.createdAt
-        },
-        steps = [];
-
-        // Get user model
-        steps.push(function(done) {
-          User.findOne({ id: event.callerId }).exec(function(err, user) {
-            if (err) return done('Failed to find model' + err);
-            activity.user = user;
-            done();
-          });
-        });
-
-        async.series(steps, function(err) { done(err, activity) });
+        async.series(steps, function(err) { done(err, activity); });
       },
 
       newTask: function(event, done) {
@@ -420,7 +403,8 @@ module.exports = {
 
         // Get task model
         steps.push(function(done) {
-          Task.findOne({ id: event.callerId }).exec(function(err, task) {
+          var id = (event.model || {}).id;
+          Task.findOne({ id: id }).exec(function(err, task) {
             if (err) return done('Failed to find model' + err);
             activity.task = task;
             done();
@@ -437,22 +421,21 @@ module.exports = {
           });
         });
 
-        async.series(steps, function(err) { done(err, activity) });
+        async.series(steps, function(err) { done(err, activity); });
       }
 
     };
 
     // Map actions to templates
     var actions = {
-      projectCommentAdded: templates.newComment,
-      taskCommentAdded: templates.newComment,
-      taskVolunteerAdded: templates.newVolunteer,
-      welcomeUser: templates.newUser,
-      taskCreated: templates.newTask
+      'comment.create.owner': templates.newComment,
+      'volunteer.create.thanks': templates.newVolunteer,
+      'user.create.welcome': templates.newUser,
+      'task.create.thanks': templates.newTask
     };
 
     // Get active notifications
-    Notification.find({ isActive: true })
+    Notification.find({})
       .sort(sort)
       .paginate({ page: page, limit: limit})
       .exec(next);
@@ -465,9 +448,6 @@ module.exports = {
       });
 
       var activities = [];
-
-      // Filter unique notifications
-      notifications = _.uniq(notifications, false, 'triggerGuid');
 
       // Apply templates
       async.map(notifications, function(notification, done) {
