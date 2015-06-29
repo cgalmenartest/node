@@ -131,7 +131,14 @@ TagFactory = BaseComponent.extend({
         var el = this;
         if (e.choice.temp) {
           this.temp = true;
-          $sel.select2('data', e.choice.name);
+
+          if(settings.multiple) {
+            e.choice.name = '<em>Searching for <strong>' + e.choice.value + '</strong></em>';
+          }
+          else {
+            $sel.select2('data', e.choice.name);
+          }
+
           $.get('/api/location/suggest?q=' + e.choice.value, function(d) {
             d = _(d).map(function(item) {
               return {
@@ -143,17 +150,24 @@ TagFactory = BaseComponent.extend({
                 data: _(item).omit('name')
               };
             });
-            el.reload = true;
-            el.open = true;
+            this.cache = $sel.select2('data');
+            if(settings.multiple) {
+              this.cache = _.reject(this.cache, function(item) {
+                return (item.name.indexOf('<em>Searching for <strong>') >= 0);
+              });
+            }
             $sel.select2({
-              data:               d,
+              data:               { results: d, text: 'name' },
               width:              settings.width,
+              multiple:           settings.multiple,
               formatResult:       settings.formatResult,
               formatSelection:    settings.formatSelection,
               createSearchChoice: settings.createSearchChoice,
-            }).select2('open');
+            }).select2('data', this.cache).select2('open');
+            $sel.remote = false;
           });
         } else {
+          this.reload = true;
           delete this.temp;
         }
       } else { //if this is NOT a location tag
