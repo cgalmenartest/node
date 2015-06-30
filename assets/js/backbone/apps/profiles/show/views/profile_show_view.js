@@ -295,8 +295,8 @@ var ProfileShowView = Backbone.View.extend({
   fieldModified: function (e) {
 
     //check that the name isn't a null string
-    var $help = this.$("#name").closest(".form-group").find(".help-block")
-    $help.toggle( this.$("#name").val() === '' )
+    var $help = this.$("#name").closest(".form-group").find(".help-block");
+    $help.toggle( this.$("#name").val() === "" );
 
     this.model.trigger("profile:input:changed", e);
   },
