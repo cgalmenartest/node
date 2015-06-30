@@ -38,8 +38,8 @@ var TaskShowController = BaseView.extend({
     "click #task-copy"                : "copy",
     "click .link-backbone"            : linkBackbone,
     "click .delete-volunteer"         : 'removeVolunteer',
-    "mouseenter .project-people-div"  : popovers.popoverPeopleOn,
-    "click .project-people-div"       : popovers.popoverClick
+    "mouseenter .project-people-show-div"  : popovers.popoverPeopleOn,
+    "click .project-people-show-div"       : popovers.popoverClick
   },
 
   initialize: function (options) {
@@ -111,9 +111,9 @@ var TaskShowController = BaseView.extend({
 
       if (self.options.action == 'edit') {
         self.initializeEdit();
-        popovers.popoverPeopleInit(".project-people-div");
+        popovers.popoverPeopleInit(".project-people-show-div");
       } else {
-        popovers.popoverPeopleInit(".project-people-div");
+        popovers.popoverPeopleInit(".project-people-show-div");
         if (self.commentListController) self.commentListController.cleanup();
         self.commentListController = new CommentListController({
           target: 'task',

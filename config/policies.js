@@ -44,7 +44,7 @@ module.exports.policies = {
     'profile': ['authenticated'],
     'photo': ['authenticated', 'requireId'],
     'info': ['authenticated', 'requireId'],
-    'update': ['authenticated', 'requireUserId', 'requireId', 'protectAdmin'],
+    'update': ['authenticated', 'requireUserId', 'requireId', 'user', 'protectAdmin'],
     'username': ['authenticated'],
     'find': ['authenticated', 'requireUserId'],
     'all': ['authenticated', 'requireUserId'],
@@ -147,7 +147,9 @@ module.exports.policies = {
 
   TagEntityController : {
     // Purely for administrative functions
-    '*': 'authenticated'
+    '*': ['authenticated'],
+    'update': ['authenticated', 'admin'],
+    'destroy': ['authenticated', 'admin']
   },
 
   TaskController : {

@@ -8,7 +8,8 @@ var marked = require('marked');
 var TimeAgo = require('../../../../../vendor/jquery.timeago');
 var BaseView = require('../../../../base/base_view');
 var TaskShowTemplate = require('../templates/task_show_item_template.html');
-
+var AlertTemplate = require('../../../../components/alert_template.html');
+var ShareTemplate = require('../templates/task_share_template.txt');
 
 var TaskItemView = BaseView.extend({
 
@@ -20,6 +21,13 @@ var TaskItemView = BaseView.extend({
       self.model = model;
       self.initializeTags(self);
     });
+    this.listenTo(this.model, "task:model:fetch:error", function (projectModel, xhr) {
+      //this template is populated by the Global AJAX error listener
+      var template = _.template(AlertTemplate)();
+      self.$el.html(template);
+    });
+
+
   },
 
   render: function (self) {
@@ -55,18 +63,21 @@ var TaskItemView = BaseView.extend({
   },
 
   updateTaskEmail: function() {
-    var self = this;
-    $.ajax({
-      url: encodeURI('/api/email/makeURL?email=contactUserAboutTask&subject=Check Out "'+ self.model.attributes.title + '"' +
-      '&opportunityTitle=' + self.model.attributes.title +
-      '&opportunityLink=' + window.location.protocol + "//" + window.location.host + "" + window.location.pathname +
-      '&opportunityDescription=' + (self.model.attributes.description || '') +
-      '&opportunityMadlibs=' + $('<div />', { html: self.$('#task-show-madlib-description').html() }).text().replace(/\s+/g, " ")),
-      type: 'GET'
-    }).done( function (data) {
-      self.$('#email').attr('href', data);
-    });
+    var subject = 'Take A Look At This Opportunity',
+        data = {
+          opportunityTitle: this.model.get('title'),
+          opportunityLink: window.location.protocol +
+            "//" + window.location.host + "" + window.location.pathname,
+          opportunityDescription: this.model.get('description'),
+          opportunityMadlibs: $('<div />', {
+              html: this.$('#task-show-madlib-description').html()
+            }).text().replace(/\s+/g, " ")
+        },
+        body = _.template(ShareTemplate)(data),
+        link = 'mailto:?subject=' + encodeURIComponent(subject) +
+          '&body=' + encodeURIComponent(body);
 
+    this.$('#email').attr('href', link);
   },
 
   initializeTags: function (self) {

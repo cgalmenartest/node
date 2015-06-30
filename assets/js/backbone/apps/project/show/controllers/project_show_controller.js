@@ -16,6 +16,7 @@ var ModalComponent = require('../../../../components/modal');
 var ModalAlert = require('../../../../components/modal_alert');
 var TaskModel = require('../../../../entities/tasks/task_model');
 var ProjectOpenTasksWarningTemplate = require('../templates/project_open_tasks_warning_template.html');
+var AlertTemplate = require('../../../../components/alert_template.html');
 
 
 var popovers = new Popovers();
@@ -37,8 +38,8 @@ Project.ShowController = BaseController.extend({
     "click #project-close"            : "stateClose",
     "click #project-reopen"           : "stateReopen",
     'click #editProject'              : 'toggleEditMode',
-    "mouseenter .project-people-div"  : popovers.popoverPeopleOn,
-    "click .project-people-div"       : popovers.popoverClick
+    "mouseenter .project-people-show-div"  : popovers.popoverPeopleOn,
+    "click .project-people-show-div"       : popovers.popoverClick
   },
 
   // The initialize method is mainly used for event bindings (for effeciency)
@@ -75,6 +76,12 @@ Project.ShowController = BaseController.extend({
         }
       }
       self.initializeItemView();
+    });
+
+    this.listenTo(this.model, "project:model:fetch:error", function (projectModel, xhr) {
+      //this template is populated by the Global AJAX error listener
+      var template = _.template(AlertTemplate)();
+      self.$el.html(template);
     });
 
     this.model.on("project:show:rendered", function () {
@@ -175,7 +182,7 @@ Project.ShowController = BaseController.extend({
   },
 
   initializeUI: function() {
-    popovers.popoverPeopleInit(".project-people-div");
+    popovers.popoverPeopleInit(".project-people-show-div");
   },
 
   toggleEditMode: function(e){

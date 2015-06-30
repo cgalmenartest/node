@@ -71,6 +71,13 @@ module.exports = {
     'bio': {field: 'bio', filter: exportUtils.nullToEmptyString},
     'admin': 'isAdmin',
     'disabled': 'disabled'
+  },
+
+  afterCreate: function(model, done) {
+    Notification.create({
+      action: 'user.create.welcome',
+      model: model
+    }, done);
   }
 
 };
