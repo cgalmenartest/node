@@ -108,50 +108,6 @@ var TagShowView = Backbone.View.extend({
     };
 
     _(this.model.get('tags')).each(renderTag);
-    // Initialize Select2 for Administrative Functions
-    var formatResult = function (object, container, query) {
-      return '<i class="' + tagIcon[object.type] + '"></i> ' + object.name;
-    };
-
-    $("#input-tags").select2({
-      placeholder: 'Add tags',
-      multiple: true,
-      formatResult: formatResult,
-      formatSelection: formatResult,
-      ajax: {
-        url: '/api/ac/tag',
-        dataType: 'json',
-        data: function (term) {
-          return {
-            type: TagConfig[self.target].join(),
-            q: term
-          };
-        },
-        results: function (data) {
-          return { results: data };
-        }
-      }
-    });
-
-    // New tags added in to the DB via the modal
-    this.listenTo(this.model, this.target + ":tag:new", function (data) {
-      // Destory modal
-      $(".modal").modal('hide');
-      // Add tag into the data list
-      var s2data = $("#input-tags").select2("data");
-      s2data.push(data);
-      $("#input-tags").select2("data", s2data);
-    });
-
-    // Tags saved using the select2 dialog
-    this.listenTo(this.model, this.target + ":tag:save", function (data) {
-      for (var i = 0; i < data.length; i++) {
-        if (!data[i].existing) {
-          renderTag(data[i]);
-        }
-      }
-      $("#input-tags").select2("val", "");
-    });
 
     this.listenTo(this.model, this.target + ":tag:delete", function (e) {
       if ($(e.currentTarget).parent('li').siblings().length == 1) {
