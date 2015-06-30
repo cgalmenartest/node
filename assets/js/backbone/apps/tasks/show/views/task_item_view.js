@@ -8,8 +8,8 @@ var marked = require('marked');
 var TimeAgo = require('../../../../../vendor/jquery.timeago');
 var BaseView = require('../../../../base/base_view');
 var TaskShowTemplate = require('../templates/task_show_item_template.html');
+var AlertTemplate = require('../../../../components/alert_template.html');
 var ShareTemplate = require('../templates/task_share_template.txt');
-
 
 var TaskItemView = BaseView.extend({
 
@@ -21,6 +21,13 @@ var TaskItemView = BaseView.extend({
       self.model = model;
       self.initializeTags(self);
     });
+    this.listenTo(this.model, "task:model:fetch:error", function (projectModel, xhr) {
+      //this template is populated by the Global AJAX error listener
+      var template = _.template(AlertTemplate)();
+      self.$el.html(template);
+    });
+
+
   },
 
   render: function (self) {
