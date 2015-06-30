@@ -28,7 +28,7 @@ PeopleMap.Controller = BaseController.extend({
       })
     });
     gatherData.push(function (cb) {
-      d3.json("data/world-110m.json", function (err, world) {
+      d3.json("/data/world-110m.json", function (err, world) {
         if (err) {
           cb(err);
         } else {
