@@ -14,11 +14,12 @@
   <button id="owner-cancel" name="owner-cancel" class="btn btn-c0 btn-sm projectowner-add owner-form-toggle">Cancel</button>
 </div>
 
-<div id="project-owners-show" class="box-pad-lr box-pad-t owner-form-toggle">
+<div id="project-owners-show" class="box-pad-lr box-pad-t owner-form-toggle" style="padding: 10px 3px 0px 10px">
   <% if (data.owners) { %>
     <% for (var i = 0; i < data.owners.length; i++) { %>
-    <div class="project-people-div" data-userid="<%- data.owners[i].userId %>">
-      <img src="/api/user/photo/<%- data.owners[i].userId %>" class="project-people" alt="<%- data.owners[i].name %>"/>
+    <div class="project-people-show-div" data-userid="<%- data.owners[i].userId %>">
+      <img src="/api/user/photo/<%- data.owners[i].userId %>" alt="<%- data.owners[i].name %>"/>
+      <label class="project-people-show-label"><%- data.owners[i].name %></label>
       <% if ((data.isOwner || user.isAdmin) && (data.owners[i].userId != cache.currentUser.id) && data.edit) { %>
       <a href="#" class="delete-projectowner project-owner-delete fa fa-times"  id="delete-projectowner-<%- data.owners[i].id %>" data-uid="<%- data.owners[i].userId %>" data-poid="<%- data.owners[i].id %>">
       </a>
