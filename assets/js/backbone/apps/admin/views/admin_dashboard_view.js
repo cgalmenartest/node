@@ -6,6 +6,7 @@ var AdminDashboardTemplate = require('../templates/admin_dashboard_template.html
 var AdminDashboardTable = require('../templates/admin_dashboard_table.html');
 var AdminDashboardActivities = require('../templates/admin_dashboard_activities.html');
 var LoginConfig = require('../../../config/login.json');
+var marked = require('marked');
 
 
 var AdminDashboardView = Backbone.View.extend({
@@ -54,15 +55,22 @@ var AdminDashboardView = Backbone.View.extend({
     _(data).forEach(function(activity) {
 
       if (!activity || ( activity.comment && typeof activity.comment.value == "undefined") ) return;
-      // Strip HTML from comments
+      // Render markdown
       if (activity.comment) {
-        var value = activity.comment.value.replace(/<(?:.|\n)*?>/gm, '');
+        var value = activity.comment.value;
+
+        value = marked(value, { sanitize: false });
+        //render comment in single line by stripping the markdown-generated paragraphs
+        value = value.replace(/<\/?p>/gm, '');
+        value = value.replace(/<br>/gm, '');
+        value = value.trim();
+
         activity.comment.value = value;
       }
       // Format timestamp
       activity.createdAtFormatted = $.timeago(activity.createdAt);
       var template = self.$('#' + activity.type).text(),
-          content = _.template(template, { escape: /\{\{(.+?)\}\}/g })(activity);
+          content = _.template(template, { interpolate: /\{\{(.+?)\}\}/g })(activity);
       self.$('.activity-block .activity-feed').append(content);
     });
 
