@@ -3,8 +3,16 @@
 */
 
 module.exports = function user (req, res, next) {
-  if (req.route.params.id == req.user[0].id) {
+  if (req.user && req.user[0].isAdmin) {
+    //admins are allowed to do anything
     return next();
+  } else {
+    if (req.route.params.id == req.user[0].id) {
+      //allow the currently logged in user to access themselves
+      return next();
+    } else {
+      //dissallow a user due to ID mismatch
+      return res.send(403, { message: 'Not authorized'});
+    }
   }
-  return res.send(403, { message: 'Not Authorized.' });
 };
