@@ -4,12 +4,6 @@ var fs = require('fs');
 
 module.exports = {
 
-  // Email Templating settings
-  emailTemplateDirectories: {
-    templateDir: 'assets/email/templates',
-    layoutDir: 'assets/email/layouts'
-  },
-
   // Email dispatch protocol (i.e. SMTP  or SES)
   emailProtocol: 'SMTP',
 
@@ -59,6 +53,6 @@ module.exports = {
   },
 
   // system email address (from address)
-  systemEmail: 'test@midas.com'
+  systemEmail: 'test@example.com'
 
 };

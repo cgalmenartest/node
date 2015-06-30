@@ -149,3 +149,25 @@ If you don't want to use Winston to write a log to file, then do not include the
     custom: logger
   }
   ```
+  
+  ## Set up SMTP for Email Notifications
+  
+  To set up an email provider, add the credentials for your SMTP service to the `/config/local.js` file. For example, using Mandrill:
+
+```js
+  emailProtocol: 'SMTP',
+  smtp: {
+    service             : '',
+    host                : 'smtp.mandrillapp.com',
+    secureConnection    : false,
+    port                : 587,
+    auth                : {
+      user              : '[mandrill user]',
+      pass              : '[mandrill pass]'
+    },
+    ignoreTLS           : false,
+    debug               : false,
+    maxConnections      : 5
+  },
+  systemEmail: '[from address (don't use a GSA address — GSA will block the incoming messages]',
+```
