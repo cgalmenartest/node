@@ -85,9 +85,18 @@ var BrowseMainView = Backbone.View.extend({
       return self.format(self, object, container, query);
     };
 
+    var searchPlaceholder = function (){
+      if(self.options.target == 'projects')
+        return "I\'m looking for working groups by name, agency, skill, topic, description...";
+      else if(self.options.target == 'tasks')
+        return "I\'m looking for opportunities by name, agency, skill, topic, description...";
+      else
+        return "I\'m looking for...";
+    };
+
     // Initialize Select2
     $("#search").select2({
-      placeholder: 'I\'m looking for...',
+      placeholder: searchPlaceholder,
       multiple: true,
       formatResult: formatResult,
       formatSelection: function(object,container,query) {

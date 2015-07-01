@@ -2,30 +2,6 @@ var _ = require('underscore');
 var validator = require('validator');
 var async = require('async');
 var tagUtils = require('./tag');
-var noteUtils = require('../notifications/manager');
-
-var sendWelcomeEmail = function(done, user) {
-  // Generate a notification email to the user
-  var params = {
-    trigger: {
-      callerType: 'UserEmail',
-      callerId: user.id,
-      action: 'welcomeUser'
-    },
-    data: {
-      audience: {
-        'user': {
-          fields: {
-            userId: user.id
-          }
-        }
-      }
-    }
-  };
-  noteUtils.notifier.notify(params, function (err) {
-    done(err, user);
-  });
-};
 
 module.exports = {
 
@@ -230,8 +206,7 @@ module.exports = {
                 if (err) { return done(null, false, { message: 'Unable to store user email address.', err: err }); }
                 tagUtils.findOrCreateTags(user.id, tags, function (err, newTags) {
                   if (err) { return done(null, false, { message: 'Unabled to create tags', err: err }); }
-                  // Generate welcome email
-                  sendWelcomeEmail(done, user);
+                  return done(null, user);
                 });
               });
             });
@@ -440,28 +415,8 @@ module.exports = {
         };
         UserPasswordReset.create(token, function (err, newToken) {
           if (err) { return cb({ message: 'Error creating a reset password token.', err: err }); }
-          // Generate a notification email to the user
-          var params = {
-            trigger: {
-              callerType: 'UserPasswordReset',
-              callerId: newToken.id,
-              token: newToken.token,
-              action: 'userPasswordReset'
-            },
-            data: {
-              audience: {
-                'user': {
-                  fields: {
-                    userId: user.id
-                  }
-                }
-              }
-            }
-          };
-          noteUtils.notifier.notify(params, function (err) {
-            // pass the token back
-            cb(err, newToken);
-          });
+          // pass the token back
+          cb(err, newToken);
         });
       });
     });
@@ -651,10 +606,7 @@ module.exports = {
               // Update the user's tags
               tagUtils.findOrCreateTags(user.id, tags, function (err, newTags) {
                 if (err) { return done(null, false, { message: 'Unabled to create tags', err: err }); }
-                // Generate a notification email to the user
-                sendWelcomeEmail(function() {
-                  user_cb(null, user);
-                }, user);
+                user_cb(null, user);
               });
             });
           }

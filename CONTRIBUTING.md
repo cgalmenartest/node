@@ -15,7 +15,7 @@ with this waiver of copyright interest.
 
 ## Communication
 
-Anyone actively contributing or using Midas, should join our [Mailing List](https://groups.google.com/forum/#!forum/midascrowd).  
+Anyone actively contributing or using Midas, should join our [Mailing List](https://groups.google.com/forum/#!forum/midascrowd).
 We also have a public Slack chat room. If you're interested in following along with the development process or have questions, feel free to join us at http://chat.18f.gov/, and select "midas-public".
 
 You should be using the master branch for most stable release, please review [release notes](https://github.com/18F/midas/releases) regularly. We do releases every week or two and send out notes.  We're generally using [semantic versioning](http://semver.org/), but we're pre-1.0, so API can change at any time. We use the minor version for changes where there are significant installation process changes or API changes or a database migration is needed.
@@ -225,3 +225,9 @@ from the main (upstream) repository:
     ```shell
     git pull --ff upstream devel
     ```
+
+### Reviewing Pull Requests
+
+Except for critical, urgent or very small fixes, we try to leave pull requests open for most of the day or overnight if something comes in late in the day, so that multiple people have the chance to review/comment.  Anyone who reviews a pull request should leave a note to let others know that someone has looked at it.  For larger commits, we like to have a +1 from someone else on the core team and/or from other contributor(s).  Please note if you reviewed the code or tested locally -- a +1 by itself will typically be interpreted as your thinking its a good idea, but not having reviewed in detail.
+
+
