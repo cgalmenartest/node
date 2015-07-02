@@ -25,7 +25,8 @@ Sails.lift(opts, function(err, sails) {
   var newTagNamesToAdd = [
     { type: 'task-length', name: '6 months' },
     { type: 'task-time-estimate', name: '2 - 4 hours' },
-    { type: 'task-time-estimate', name: '16 - 24 hours' }
+    { type: 'task-time-estimate', name: '16 - 24 hours' },
+    { type: 'task-time-estimate', name: '24 - 40 hours' }
   ];
 
   var tagNamesToMigrate = {
@@ -39,15 +40,15 @@ Sails.lift(opts, function(err, sails) {
     _.keys(tagsToRename).forEach(function(oldTag) {
       var newTag = tagsToRename[oldTag];
 
-      console.log('Renaming tags "' + oldTag + '" to "' + newTag + '"');
-
       TagEntity.findOne({name: oldTag})
       .exec(function (err, tagEntity) {
         if (err) return cb(err);
+        if (!tagEntity) { return }
 
         tagEntity.name = newTag;
         tagEntity.save(function (err, newModel) {
           if (err) return cb(err);
+          console.log('Renaming tags "' + oldTag + '" to "' + newTag + '"');
         });
       });
     });
@@ -60,10 +61,15 @@ Sails.lift(opts, function(err, sails) {
       var name = newTagName.name;
       var newTag = { type: type, name: name };
 
-      console.log('Adding new tag "' + name + '" of type "' + type + '"');
+      TagEntity.findOne({name: name})
+      .exec(function(err, tagEntity) {
+        if (err) return cb(err);
+        if (tagEntity) { return }
 
-      TagEntity.create(newTag).exec(function (err, newModel){
-        if (err) { return cb(err); }
+        TagEntity.create(newTag).exec(function (err, newModel){
+          if (err) { return cb(err); }
+          console.log('Adding new tag "' + name + '" of type "' + type + '"');
+        });
       });
     });
     cb(null);
@@ -73,17 +79,16 @@ Sails.lift(opts, function(err, sails) {
     _.keys(tagNamesToMigrate).forEach(function (oldTag) {
       var newTag = tagNamesToMigrate[oldTag];
 
-      console.log('Migrating tags "' + oldTag + '" to "' + newTag + '"');
       TagEntity.findOne({ name: newTag })
       .exec(function (err, newTagEntity){
         if (err) { return cb(err); }
-
+        if (!newTagEntity) { return; }
         // nested so that we have easy access to the new and old tags
         TagEntity.findOne({ name: oldTag })
         .populate('users').populate('tasks').populate('projects')
         .exec(function (err, oldTagEntity) {
           if (err) { return cb(err); }
-          if (!oldTagEntity) { return cb(null) }
+          if (!oldTagEntity) { return }
 
           if (oldTagEntity.users.length != 0) {
             oldTagEntity.users.forEach(function (user) {
@@ -116,6 +121,7 @@ Sails.lift(opts, function(err, sails) {
       if (err) return cb(err);
       TagEntity.destroy({ id: oldTag.id }).exec(function (err, d) {
         if (err) return cb(err);
+        console.log('Migrating tags "' + oldTag.name + '" to "' + newTag.name + '"');
       });
     });
   }
