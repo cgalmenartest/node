@@ -139,7 +139,7 @@ module.exports.policies = {
     'find': false,
     'findOne': false,
     'create': ['authenticated', 'requireUserId', 'addUserId', 'projectId', 'taskId'],
-    'update': ['authenticated', 'requireUserId', 'projectId', 'taskId'],
+    'update': ['authenticated', 'requireUserId', 'projectId', 'taskId', 'comment', 'ownerOrAdmin'],
     'destroy': ['authenticated', 'requireUserId', 'requireId', 'admin'],
     'findAllByProjectId': ['authenticated', 'requireId', 'project'],
     'findAllByTaskId': ['authenticated', 'requireId', 'task']
