@@ -251,16 +251,18 @@
             </h2>
           </div>
           <div class="box-main" id="task-volunteers">
-            <div class="project-people-div" data-userid="<%- model.userId %>">
-              <img src="/api/user/photo/<%- model.userId %>" class="project-people" alt="<%- model.owner.name %>"/>
+            <div class="project-people-show-div" data-userid="<%- model.userId %>">
+              <img src="/api/user/photo/<%- model.userId %>" alt="<%- model.owner.name %>"/>
+              <label class="project-people-show-label"><%- model.owner.name %></label>
             </div>
             <div class="project-people-space">
               <div class="bar">
               </div>
             </div>
             <% _.each(model.volunteers, function (v) { %>
-            <div class="project-people-div" data-userid="<%- v.userId %>" data-voluserid="<%- v.userId %>">
-              <img src="/api/user/photo/<%- v.userId %>" class="project-people" alt="<%- v.name %>"/>
+            <div class="project-people-show-div" data-userid="<%- v.userId %>" data-voluserid="<%- v.userId %>">
+              <img src="/api/user/photo/<%- v.userId %>" alt="<%- v.name %>"/>
+              <label class="project-people-show-label"><%- v.name %></label>
             </div>
             <% }); %>
           </div>

@@ -809,14 +809,6 @@ a.delete-project-event {
   padding: 0px 3px;
 }
 
-.project-people {
-  height: 40px;
-  width: 40px;
-  max-height: 40px;
-  border-radius: 25px;
-  vertical-align: baseline;
-}
-
 .project-comments {
   margin-bottom: 20px;
 }
@@ -827,9 +819,39 @@ a.delete-project-event {
   cursor: pointer;
 }
 
+.project-people-div img {
+  height: 40px;
+  width: 40px;
+  max-height: 40px;
+  border-radius: 25px;
+}
+
+.project-people-show-div {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  text-align: center;
+  vertical-align: top;
+  padding: 0px 3px 0px 3px;
+  width: 70px;
+}
+
+.project-people-show-div img {
+  height: 40px;
+  width: 40px;
+  max-height: 40px;
+  border-radius: 25px;
+}
+
+.project-people-show-label {
+  font-size: 11px;
+  color: #606060;
+  font-weight: 300;
+  display: block;
+  max-width: 70px;
+}
+
 .project-people-space {
-  margin-left: 10px;
-  margin-right: 10px;
   position: relative;
   display: inline-block;
 }

@@ -44,7 +44,7 @@ module.exports.policies = {
     'profile': ['authenticated'],
     'photo': ['authenticated', 'requireId'],
     'info': ['authenticated', 'requireId'],
-    'update': ['authenticated', 'requireUserId', 'requireId', 'protectAdmin'],
+    'update': ['authenticated', 'requireUserId', 'requireId', 'user', 'protectAdmin'],
     'username': ['authenticated'],
     'find': ['authenticated', 'requireUserId'],
     'all': ['authenticated', 'requireUserId'],
@@ -118,7 +118,7 @@ module.exports.policies = {
   VolunteerController : {
     '*': false,
     'create': ['authenticated', 'requireUserId', 'addUserId'],
-    'destroy': ['authenticated', 'requireId', 'ownerOrAdmin'],
+    'destroy': ['authenticated', 'requireUserId', 'requireId', 'volunteer', 'ownerOrAdmin'],
   },
 
   EventController : {
@@ -139,7 +139,7 @@ module.exports.policies = {
     'find': false,
     'findOne': false,
     'create': ['authenticated', 'requireUserId', 'addUserId', 'projectId', 'taskId'],
-    'update': ['authenticated', 'requireUserId', 'projectId', 'taskId'],
+    'update': ['authenticated', 'requireUserId', 'projectId', 'taskId', 'comment', 'ownerOrAdmin'],
     'destroy': ['authenticated', 'requireUserId', 'requireId', 'admin'],
     'findAllByProjectId': ['authenticated', 'requireId', 'project'],
     'findAllByTaskId': ['authenticated', 'requireId', 'task']
@@ -147,7 +147,9 @@ module.exports.policies = {
 
   TagEntityController : {
     // Purely for administrative functions
-    '*': 'authenticated'
+    '*': ['authenticated'],
+    'update': ['authenticated', 'admin'],
+    'destroy': ['authenticated', 'admin']
   },
 
   TaskController : {

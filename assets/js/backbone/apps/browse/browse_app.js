@@ -19,7 +19,7 @@ var PeopleController = require('../people/controllers/people_main_controller');
 var BrowseRouter = Backbone.Router.extend({
 
   routes: {
-    ''                   : 'showHome',
+    ''                          : 'showHome',
     'projects(/)'               : 'listProjects',
     'projects/:id(/)'           : 'showProject',
     'projects/:id/:action(/)'   : 'showProject',
