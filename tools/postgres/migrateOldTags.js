@@ -14,7 +14,7 @@ Sails.lift(opts, function(err, sails) {
 
   var tagsToRename = {
     'Part Time': 'One time',
-    'Full Time': 'On going',
+    'Full Time': 'Ongoing',
     '1 Week': '1 week',
     '1 Month': '1 month',
     'A Few Months': '3 months',
@@ -30,7 +30,7 @@ Sails.lift(opts, function(err, sails) {
   ];
 
   var tagNamesToMigrate = {
-    '20% Time': 'On going',
+    '20% Time': 'Ongoing',
     '1 Day': '1 week',
     '1 - 3 Days': '1 week',
     'longer than 40 hours': '24 - 40 hours'

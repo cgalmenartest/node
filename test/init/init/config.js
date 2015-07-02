@@ -10,7 +10,7 @@ module.exports = {
     },
     {
       type: 'task-time-required',
-      name: 'On going'
+      name: 'Ongoing'
     },
     // ------------
     {
