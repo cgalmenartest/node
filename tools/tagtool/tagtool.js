@@ -1,21 +1,40 @@
 #! /usr/bin/env node
 
+function help_and_quit(msg) {
+  if(msg) {
+    console.log("Error:\n    " + msg + "\n");
+  }
+  console.log("This is a tool for loading tags into the database in bulk.\n" +
+              "\n" +
+              "Usage:\n" +
+              "    ./tagtools.js [type] [file]\n" +
+              "\n" +
+              "    type - The string type of tags to be loaded\n" +
+              "    file - file containing a newline delimited list of tag values to be loaded\n");
+  process.exit(1);
+}
+
 var fs = require('fs');
 var pg = require('pg');
 
 // load db config file
-var config = require('../../config/local');
+try {
+  var config = require('../../config/local');
+} catch(e) {
+  help_and_quit("Please create a config/local.js file with your postgresql information");
+}
 
 var args = process.argv.slice(2);
+
+if (args.length < 2) {
+  help_and_quit();
+}
+
 var tagType = args[0];
 var tagFile = args[1];
 
-var commandFormat = process.argv[0] + ' ' + process.argv[1] + ' tagType  /path/to/tag/file'; 
-
 if (tagType.length === 0) {
-  console.log('Tag type must be provided.');
-  console.log(commandFormat);
-  return 1;
+  help_and_quit('Tag type must be provided.');
 }
 
 var tags = [];
@@ -24,9 +43,7 @@ if (fs.existsSync(tagFile)) {
   tags = fs.readFileSync(tagFile).toString().split("\n");
 }
 else {
-  console.log('Failed to find tag file (' + tagFile + ')');
-  console.log(commandFormat);
-  return 1;
+  help_and_quit('Failed to find tag file (' + tagFile + ')');
 }
 
 // open database
@@ -42,8 +59,7 @@ client.on('drain', client.end.bind(client)); //disconnect client when all querie
 
 client.connect(function (err) {
   if (err) {
-    console.log('Failed to connect to the database (' + err + ')');
-    return 1;
+    help_and_quit('Failed to connect to the database (' + err + ')');
   }
   // loop over records in the file, creating a record for each
   var date = new Date();
