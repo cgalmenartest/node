@@ -9,10 +9,12 @@
 var exportUtils = require('../services/utils/export');
 
 module.exports = {
+  schema: true,
   tableName: 'midas_user',
   attributes: {
     // Login information
-    username: 'STRING',
+    username: { type: 'string', unique: true },
+    passports : { collection: 'Passport', via: 'user' },
 
     // Core attributes about a user
     name: 'STRING',

@@ -1,132 +1,152 @@
-/**
- * AuthController
- *
- * @module    :: Controller
- * @description :: Contains logic for handling authentication requests.
- */
-var passport = require('passport');
 var userUtils = require('../services/utils/user');
 
-/* Authenticate a user based on the credentials returned,
- * whether those are provided by 'local' user/password
- * logins or by OAuth authentication + REST profile from
- * remote server.
+/**
+ * Authentication Controller
+ *
+ * This is merely meant as an example of how your Authentication controller
+ * should look. It currently includes the minimum amount of functionality for
+ * the basics of Passport.js to work.
  */
-function authenticate (req, res, strategy, json) {
-  if (req.user && json) req.logout();
-  if (req.user) {
-    passport.authorize(strategy, function (err, user, info)
-    {
-      if (json) {
-        res.send(userUtils.cleanUser(req.user, req.user.id));
+var AuthController = {
+
+  /**
+   * Log out a user and return them to the homepage
+   *
+   * Passport exposes a logout() function on req (also aliased as logOut()) that
+   * can be called from any route handler which needs to terminate a login
+   * session. Invoking logout() will remove the req.user property and clear the
+   * login session (if any).
+   *
+   * For more information on logging out users in Passport.js, check out:
+   * http://passportjs.org/guide/logout/
+   *
+   * @param {Object} req
+   * @param {Object} res
+   */
+  logout: function (req, res) {
+    // Disable local logoout when sspi is enabled; User is not
+    // allowed to logout since SSPI provides auto login
+    if (sails.config.auth.auth.sspi.enabled === true) {
+      return res.send(403, { message: 'Authentication method not supported. '});
+    }
+
+    req.logout();
+
+    // mark the user as logged out for auth purposes
+    req.session.authenticated = false;
+
+    if (req.param('json')) {
+      res.send({ logout: true });
+    } else {
+      res.redirect(sails.config.ui.home.logged_in_path);
+    }
+
+  },
+
+  /**
+   * Create a third-party authentication endpoint
+   *
+   * @param {Object} req
+   * @param {Object} res
+   */
+  provider: function (req, res) {
+    var path = req.headers.referer
+          .split('://')[1]
+          .split(req.headers.host)[1];
+
+    // Set referer path for redirection after authentication
+    req.session.logged_in_path = path;
+
+    // Disable local logins when sspi is enabled; can allow bypassing of
+    // credentials through the sspi auto-login functionality
+    if (sails.config.auth.auth.sspi.enabled === true) {
+      return res.send(403, {
+        message: 'Authentication method not supported.'
+      });
+    }
+
+    passport.endpoint(req, res);
+  },
+
+  /**
+   * Create a authentication callback endpoint
+   *
+   * This endpoint handles everything related to creating and verifying Pass-
+   * ports and users, both locally and from third-aprty providers.
+   *
+   * Passport exposes a login() function on req (also aliased as logIn()) that
+   * can be used to establish a login session. When the login operation
+   * completes, user will be assigned to req.user.
+   *
+   * For more information on logging in users in Passport.js, check out:
+   * http://passportjs.org/guide/login/
+   *
+   * @param {Object} req
+   * @param {Object} res
+   */
+  callback: function (req, res) {
+    function tryAgain (err) {
+
+      // Only certain error messages are returned via req.flash('error', someError)
+      // because we shouldn't expose internal authorization errors to the user.
+      // We do return a generic error and the original request body.
+      var flashError = req.flash('error')[0];
+
+      if (err && !flashError ) {
+        req.flash('error', 'Error.Passport.Generic');
+      } else if (flashError) {
+        req.flash('error', flashError);
+      }
+      req.flash('form', req.body);
+
+      sails.log.error('Authentication Error:', err, flashError);
+      if (req.param('json')) {
+        return res.send(403, { message: 'Invalid email address or password.' });
       } else {
-        if (info && info.message) req.flash('message', info.message);
-        res.redirect('/profile/edit');
+        return res.redirect('/');
       }
-      return;
-    })(req, res, function (err) {
-      if (err) {
-        sails.log.error('Authentication Error:', err);
-        return res.send(500, { message: "An internal error occurred while trying to authenticate.  Please try again later.", error: err });
+
+    }
+
+    passport.callback(req, res, function (err, user, challenges, statuses) {
+      if (err || !user) {
+        return tryAgain(challenges);
       }
-    });
-  } else {
-    passport.authenticate(strategy, function (err, user, info) {
-      if ((err) || (!user))
-      {
-        var message = '';
-        if (info && info.message) {
-          message = info.message;
+
+      req.login(user, function (err) {
+        if (err) {
+          return tryAgain(err);
         }
-        // if local strategy, don't show user what actually happened for security purposes
-        sails.log.debug('Authentication Error:', err, info);
-        if (json === true) {
-          res.send(403, {
-            error: err,
-            message: message
-          });
+
+        // Mark the session as authenticated to work with default Sails sessionAuth.js policy
+        req.session.authenticated = true;
+
+        if (req.param('json')) {
+          res.send(user);
         } else {
-          res.redirect('/auth');
-        }
-        return;
-      }
-
-      // process additional registration information if available
-      if (strategy === 'register') {
-      }
-
-      req.logIn(user, function (err)
-      {
-        if (err)
-        {
-          sails.log.debug('Authentication Error:', err, info);
-          if (json === true) {
-            res.send(403, {
-              error: err,
-              message: info.message
-            });
-          } else {
-            res.redirect('/');
-          }
-          return;
-        }
-
-        if (json === true) {
-          res.send(userUtils.cleanUser(user, user.id));
-        }
-        else {
+          // Upon successful login, send the user to the homepage were req.user
+          // will be available.
           res.redirect(req.session.logged_in_path || sails.config.ui.home.logged_in_path);
           delete req.session.logged_in_path;
         }
-        return;
+
       });
-    })(req, res, function (err) {
-      if (err) {
-        sails.log.error('Authentication Error:', err);
-        return res.send(500, { message: "An internal error occurred while trying to authenticate.  Please try again later.", error: err });
-      }
     });
-  }
-}
-
-module.exports = {
-  /**
-   * View login options
-   */
-  index: function (req, res) {
-    // if the user is logged in, redirect them back to the app
-    if (req.user) { res.redirect('/'); return; }
-    res.view();
   },
 
   /**
-   * Authentication Provider for local and register username/password system
+   * Disconnect a passport from a user
+   *
+   * @param {Object} req
+   * @param {Object} res
    */
-  local: function (req, res) {
-    // Disable local logins when sspi is enabled; can allow bypassing of
-    // credentials through the sspi auto-login functionality
-    if (sails.config.auth.auth.sspi.enabled === true) {
-      return res.send(403, { message: 'Authentication method not supported. '});
-    }
-    var json = false;
-    if (req.param('json')) {
-      json = true;
-    }
-    authenticate(req, res, 'local', json);
+  disconnect: function (req, res) {
+    passport.disconnect(req, res);
   },
-  register: function (req, res) {
-    // Disable local logins when sspi is enabled; can allow bypassing of
-    // credentials through the sspi auto-login functionality
-    if (sails.config.auth.auth.sspi.enabled === true) {
-      return res.send(403, { message: 'Authentication method not supported. '});
-    }
-    var json = false;
-    req.register = true;
-    if (req.param('json')) {
-      json = true;
-    }
-    authenticate(req, res, 'register', json);
-  },
+
+  /**
+   * Password reset controllers
+   */
   forgot: function (req, res) {
     var email = req.param('username');
     if (!email) {
@@ -228,57 +248,8 @@ module.exports = {
         });
       });
     });
-  },
-
-  /**
-   * Start the OAuth authentication process for a given strategy
-   */
-  oauth: function (req, res) {
-    var target = req.route.params.id;
-    if (!target || target === '' || !_.contains(sails.config.auth.config.oauth, target)) {
-      return res.send(403, { message: "Unsupported OAuth method." });
-    }
-    var config = sails.config.auth.config.config,
-        path = req.headers.referer.split('://')[1].split(req.headers.host)[1];
-
-    // Set referer path for redirection after authentication
-    req.session.logged_in_path = path;
-
-    passport.authenticate(target, config[target].params || null)(req, res, function (err) {
-      if (err) {
-        sails.log.error('Authentication Error:', err);
-        return res.send(500, { message: "An internal error occurred while trying to authenticate.  Please try again later.", error: err });
-      }
-    });
-  },
-
-  /**
-   * Complete OAuth authentication by validating the callback
-   */
-  callback: function (req, res) {
-    var target = req.route.params.id;
-    if (!target || target === '' || !_.contains(sails.config.auth.config.oauth, target)) {
-      return res.send(403, { message: "Unsupported OAuth method." });
-    }
-    authenticate(req, res, target, false);
-  },
-
-  /**
-   * Logout user from session
-   */
-  logout: function (req,res) {
-    // Disable local logoout when sspi is enabled; User is not
-    // allowed to logout since SSPI provides auto login
-    if (sails.config.auth.auth.sspi.enabled === true) {
-      return res.send(403, { message: 'Authentication method not supported. '});
-    }
-    // logout and redirect back to the app
-    req.logout();
-    if (req.param('json')) {
-      res.send({ logout: true });
-    } else {
-      res.redirect(sails.config.ui.home.logged_in_path);
-    }
   }
 
 };
+
+module.exports = AuthController;
