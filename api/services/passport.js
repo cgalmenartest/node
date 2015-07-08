@@ -96,6 +96,14 @@ passport.connect = function (req, query, profile, next) {
     return next(new Error('Neither a username nor email was available'));
   }
 
+  // Get profile values for new users
+  user = _.defaults(user, {
+    name: profile.displayName,
+    photoUrl: profile.photoUrl,
+    title: profile.title,
+    bio: profile.bio
+  });
+
   Passport.findOne({
     provider   : provider
   , identifier : query.identifier.toString()
@@ -109,19 +117,8 @@ passport.connect = function (req, query, profile, next) {
       //           authentication provider.
       // Action:   Create a new user and assign them a passport.
       if (!passport) {
-        User.create(user, function (err, user) {
-          if (err) {
-            if (err.code === 'E_VALIDATION') {
-              if (err.invalidAttributes.username) {
-                req.flash('error', 'Error.Passport.Email.Exists');
-              }
-              else {
-                req.flash('error', 'Error.Passport.User.Exists');
-              }
-            }
-
-            return next(err);
-          }
+        User.findOrCreate({ username: user.username }, user, function(err, user) {
+          if (err) return next(err);
 
           query.user = user.id;
 
@@ -170,7 +167,7 @@ passport.connect = function (req, query, profile, next) {
           next(err, req.user);
         });
       }
-      // Scenario: The user is a nutjob or spammed the back-button.
+      // Scenario: Connection already exists.
       // Action:   Simply pass along the already established session.
       else {
         next(null, req.user);

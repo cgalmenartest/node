@@ -33,7 +33,8 @@ module.exports.passport = {
       // Initially use alpha.my.usa.gov until app approved for production
       authorizationURL: 'https://alpha.my.usa.gov/oauth/authorize',
       tokenURL: 'https://alpha.my.usa.gov/oauth/token',
-      profileURL: 'https://alpha.my.usa.gov/api/profile'
+      profileURL: 'https://alpha.my.usa.gov/api/v1/profile',
+      scope: ["profile.email", "profile.first_name", "profile.last_name"]
     }
   },
 
@@ -43,7 +44,8 @@ module.exports.passport = {
     callback : process.env.LINKEDIN_CALLBACK_URL || '/api/auth/callback/linkedin',
     options: {
       consumerKey   : process.env.LINKEDIN_CLIENT_ID  || 'CLIENT_ID',
-      consumerSecret: process.env.LINKEDIN_CLIENT_SECRET || 'CLIENT_SECRET'
+      consumerSecret: process.env.LINKEDIN_CLIENT_SECRET || 'CLIENT_SECRET',
+      scope: ["r_basicprofile", "r_fullprofile", "r_emailaddress", "r_network"]
     },
     passReqToCallback: true,
     profileFields: [

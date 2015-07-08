@@ -1,4 +1,5 @@
-var userUtils = require('../services/utils/user');
+var userUtils = require('../services/utils/user'),
+    url = require('url');
 
 /**
  * Authentication Controller
@@ -110,13 +111,14 @@ var AuthController = {
 
     passport.callback(req, res, function (err, user, challenges, statuses) {
       if (err || !user) {
+        sails.log.error('Authentication Error:', err);
         return tryAgain(challenges);
       }
 
       req.login(user, function (err) {
-        if (err) {
-          return tryAgain(err);
-        }
+        if (err) return tryAgain(err);
+
+        var path, u;
 
         // Mark the session as authenticated to work with default Sails sessionAuth.js policy
         req.session.authenticated = true;
@@ -124,10 +126,21 @@ var AuthController = {
         if (req.param('json')) {
           res.send(user);
         } else {
-          // Upon successful login, send the user to the homepage were req.user
-          // will be available.
-          res.redirect(req.session.logged_in_path || sails.config.ui.home.logged_in_path);
+          // After successful login, redirect the user to the
+          // previous page (if that page is not the home page),
+          // or to the default logged_in_path from the UI config.
+          // Also, force the browser to reload to get backendUser data.
+          // source: http://stackoverflow.com/a/20389831
+          path = (req.session.logged_in_path &&
+            req.session.logged_in_path !== '/') ?
+            req.session.logged_in_path :
+            sails.config.ui.home.logged_in_path;
+          u = url.parse(path, true, false);
+          u.query.v = +new Date(); // add versioning to bust cache
+          delete u.search;
           delete req.session.logged_in_path;
+
+          return res.redirect(url.format(u));
         }
 
       });
