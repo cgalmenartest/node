@@ -9,12 +9,10 @@ var MarkdownEditor = require('../../../../components/markdown_editor');
 var marked = require('marked');
 var TagShowView = require('../../../tag/show/views/tag_show_view');
 var ProfileTemplate = require('../templates/profile_show_template.html');
-var EmailTemplate = require('../templates/profile_email_template.html');
 var ShareTemplate = require('../templates/profile_share_template.txt');
 var Login = require('../../../../config/login.json');
 var ModalComponent = require('../../../../components/modal');
 var PAView = require('./profile_activity_view');
-var EmailFormView = require('../../email/views/profile_email_view');
 var TagFactory = require('../../../../components/tag_factory');
 
 
@@ -34,6 +32,7 @@ var ProfileShowView = Backbone.View.extend({
   },
 
   initialize: function (options) {
+    var self = this;
     this.options = options;
     this.data = options.data;
     this.tagFactory = new TagFactory();
@@ -46,6 +45,18 @@ var ProfileShowView = Backbone.View.extend({
       this.saved = true;
       this.data.saved = false;
     }
+    // Handle email validation errors
+    this.model.on('error', function(model, xhr) {
+      var error = xhr.responseJSON;
+      if (error.invalidAttributes && error.invalidAttributes.username) {
+        var message = _(error.invalidAttributes.username)
+              .pluck('message').join(', ')
+              .replace(/record/g, 'user')
+              .replace(/undefined/g, 'email')
+              .replace(/`username`/g, 'email');
+        self.$("#email-update-alert").html(message).show();
+      }
+    });
   },
 
   render: function () {
@@ -58,7 +69,7 @@ var ProfileShowView = Backbone.View.extend({
       ui: UIConfig
     };
 
-    data.email = (data.data.emails && data.data.emails.length) ? data.data.emails[0] : '';
+    data.email = data.data.username;
 
     if (data.data.bio) {
       data.data.bioHtml = marked(data.data.bio);
@@ -463,8 +474,9 @@ var ProfileShowView = Backbone.View.extend({
           name: $("#name").val(),
           title: $("#title").val(),
           bio: $("#bio").val(),
+          username: $("#profile-email").val()
         },
-        email = this.model.get('emails')[0],
+        email = this.model.get('username'),
         self = this,
         tags = _(modelTags.concat(newTags)).chain()
           .filter(function(tag) {
@@ -480,23 +492,7 @@ var ProfileShowView = Backbone.View.extend({
 
     data.tags = tags;
 
-    if ($("#profile-email").val() !== email.email) {
-      $.ajax({
-        url: '/api/useremail/' + email.id,
-        dataType: 'json',
-        method: 'put',
-        data: { email: $("#profile-email").val() },
-        success: function() { self.model.trigger("profile:save", data); },
-        error: function() {
-          var msg = 'Failed to update your email address. Please verify it ' +
-                    'is a valid email address and try again.';
-          $("#email-update-alert").html(msg);
-          $("#email-update-alert").show();
-        }
-      });
-    } else {
-      this.model.trigger("profile:save", data);
-    }
+    this.model.trigger("profile:save", data);
   },
 
   removeAuth: function (e) {

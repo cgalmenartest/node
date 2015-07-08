@@ -13,7 +13,7 @@ module.exports = {
   tableName: 'midas_user',
   attributes: {
     // Login information
-    username: { type: 'string', unique: true },
+    username: { type: 'email', unique: true },
     passports : { collection: 'Passport', via: 'user' },
 
     // Core attributes about a user

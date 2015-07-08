@@ -70,7 +70,8 @@ module.exports = {
     sails.services.utils.user.getUser(userId, reqId, req.user, function (err, user) {
       // this will only be shown to logged in users.
       if (err) { return res.send(400, { message: err }); }
-      if (userId !== reqId) user.username = null;
+      // non-script equality test because params are strings
+      if (userId != reqId) user.username = null;
       sails.log.debug('User Get:', user);
       res.send(user);
     });
