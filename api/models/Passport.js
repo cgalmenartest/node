@@ -83,6 +83,13 @@ module.exports = {
      */
     validatePassword: function (password, next) {
       bcrypt.compare(password, this.password, next);
+    },
+
+    toJSON: function() {
+      var obj = this.toObject();
+      delete obj.password;
+      delete obj.accessToken;
+      return obj;
     }
 
   },

@@ -55,6 +55,12 @@ module.exports = {
       collection: 'tagEntity',
       via: 'users',
       dominant: true
+    },
+
+    toJSON: function() {
+      var obj = this.toObject();
+      delete obj.passports;
+      return obj;
     }
   },
 

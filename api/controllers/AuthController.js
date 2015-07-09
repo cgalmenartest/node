@@ -154,7 +154,11 @@ var AuthController = {
    * @param {Object} res
    */
   disconnect: function (req, res) {
-    passport.disconnect(req, res);
+    if (!req.param('provider')) return res.badRequest();
+    passport.disconnect(req, res, function(err, user) {
+      if (err) return res.serverError(err);
+      res.send(user);
+    });
   },
 
   /**

@@ -498,7 +498,7 @@ var ProfileShowView = Backbone.View.extend({
   removeAuth: function (e) {
     if (e.preventDefault) e.preventDefault();
     var node = $(e.currentTarget);
-    this.model.trigger("profile:removeAuth", node.data("id"));
+    this.model.trigger("profile:removeAuth", node.data("service"));
   },
 
   like: function (e) {

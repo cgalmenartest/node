@@ -217,8 +217,9 @@
             <% if (data.auths.length === 0) { %>
               No connected accounts.
             <% } %>
-            <% _.each(login.oauth, function (a) { %>
-              <% if (_.contains(data.auths, a)) { %>
+            <% _.each(login.oauth, function (a) { console.log(a); %>
+
+              <% if (_(data.auths).chain().pluck('provider').contains(a).value()) { %>
               <div>
                 <%- login.config[a].name %>
                 <span class="label label-success">Connected</span>

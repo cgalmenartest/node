@@ -351,6 +351,8 @@ passport.disconnect = function (req, res, next) {
   Passport.findOne(query, function (err, passport) {
     if (err) {
       return next(err);
+    } else if (!passport) {
+      return next({ message: 'No passport found.'} );
     }
 
     Passport.destroy(passport.id, function (error) {

@@ -707,7 +707,7 @@ module.exports = {
       cb = reqUser;
       reqUser = undefined;
     }
-    User.findOne({ id: userId }).populate('tags').exec(function (err, user) {
+    User.findOne({ id: userId }).populate('tags').populate('passports').exec(function (err, user) {
       if (err || !user) { return cb("Error finding User.", null); }
       delete user.deletedAt;
       if (userId != reqId) {
@@ -723,30 +723,25 @@ module.exports = {
         Like.findOne({ where: { userId: reqId, targetId: userId }}, function (err, like) {
           if (err) { return cb(err, null); }
           if (like) { user.like = true; }
+
           // stop here if the requester id is not the same as the user id
-          if (userId != reqId && !admin) {
-            return cb(null, user);
-          }
+          if (userId != reqId && !admin) return cb(null, user);
+
+          user.isOwner = true;
+
           // Look up which providers the user has authorized
-          UserAuth.findByUserId(userId, function (err, auths) {
-            if (err) { return cb(err, null); }
-            user.auths = [];
-            for (var i = 0; i < auths.length; i++) {
-              user.auths.push({
-                provider: auths[i].provider,
-                id: auths[i].id,
-                token: auths[i].accessToken
-              });
-            }
-            // Look up the user's email addresses
-            UserEmail.findByUserId(userId, function (err, emails) {
-              if (err) { return cb(err, null); }
-              user.isOwner = true;
-              user.emails = [];
-              if (emails) { user.emails = emails; }
-              return cb(null, user);
-            });
-          });
+          user.auths = [];
+          user.auths = _(user.passports).chain().filter(function(passport) {
+            return passport.provider && !passport.deletedAt;
+          }).map(function(passport) {
+            return {
+              provider: passport.provider,
+              id: passport.id,
+              token: passport.tokens.accessToken
+            };
+          }).value();
+
+          return cb(null, user);
         });
       });
 
