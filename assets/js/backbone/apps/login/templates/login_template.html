@@ -97,6 +97,31 @@
       </label>
     </div>
 
+
+  <% if (login.agency.enabled === true) { %>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="form-group">
+          <label for="ragency" class="control-label" data-i18n="loginModal.agency">Agency</label>
+          <input type="hidden" id="ragency" name="ragency" style="width: 100%" data-validate="empty"/>
+          <span class="help-block error-empty" style="display:none;">Please select a valid agency.</span>
+        </div>
+      </div>
+    </div>
+  <% } %>
+
+  <% if (login.location.enabled === true) { %>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="form-group">
+          <label for="rlocation" class="control-label" data-i18n="loginModal.location">Location</label>
+          <input type="hidden" id="rlocation" name="rlocation" style="width: 100%" data-validate="empty"/>
+          <span class="help-block error-empty" style="display:none;">Please select a valid location.</span>
+        </div>
+      </div>
+    </div>
+    <% } %>
+
     <div class="form-group margin-bottom-none">
       <div class="row">
         <div class="col-sm-12">
@@ -104,13 +129,15 @@
         </div>
       </div>
     </div>
+
 </div>
 <div class="modal-footer modal-footer-grey" id="registration-footer" style="display:none;">
   <div class="row">
     <div class="col-sm-12">
       <div class="pull-right">
         <button type="button" id="register-cancel" class="btn btn-c0">Cancel</button>
-        <button type="submit" class="btn btn-c2">Register</button>
+        <button type="button" class="btn btn-c2">Next</button>
+        <button type="submit" class="btn btn-c2">Submit</button>
       </div>
     </div>
   </div>

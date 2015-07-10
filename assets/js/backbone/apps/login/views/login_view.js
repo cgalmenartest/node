@@ -4,7 +4,7 @@ var utils = require('../../../mixins/utilities');
 var LoginPasswordView = require('./login_password_view');
 var LoginTemplate = require('../templates/login_template.html');
 var ModalComponent = require('../../../components/modal');
-
+var TagFactory = require('../../../components/tag_factory');
 
 var LoginView = Backbone.View.extend({
 
@@ -27,6 +27,7 @@ var LoginView = Backbone.View.extend({
 
   initialize: function (options) {
     this.options = options;
+    this.tagFactory = new TagFactory();
   },
 
   render: function () {
@@ -41,6 +42,23 @@ var LoginView = Backbone.View.extend({
     this.loginPasswordView = new LoginPasswordView({
       el: this.$(".password-view")
     }).render();
+
+    var agencyTags = this.tagFactory.createTagDropDown({
+          type:"agency",
+          selector:"#ragency",
+          width: "100%",
+          multiple: false,
+          allowCreate: false
+        });
+
+    var locationTags = this.tagFactory.createTagDropDown({
+          type:"location",
+          selector:"#rlocation",
+          width: "100%",
+          multiple: false,
+          allowCreate: false
+        });
+
     setTimeout(function () {
       self.$("#username").focus();
     }, 500);
@@ -92,6 +110,13 @@ var LoginView = Backbone.View.extend({
     if (this.options.login.terms.enabled === true) {
       validateIds.push('#rterms');
     }
+    if (this.options.login.agency.enabled === true) {
+      validateIds.push('#ragency');
+    }
+    if (this.options.login.location.enabled === true) {
+      validateIds.push('#rlocation');
+    }
+
     var abort = false;
     for (i in validateIds) {
       var iAbort = validate({ currentTarget: validateIds[i] });
@@ -123,8 +148,12 @@ var LoginView = Backbone.View.extend({
       name: this.$("#rname").val(),
       username: this.$("#rusername").val(),
       password: this.$("#rpassword").val(),
+      agency: this.$("#ragency").val(),
+      location: this.$("#rlocation").val(),
       json: true
     };
+
+    console.log('data', data);
     // Add in additional, optional fields
     if (this.options.login.terms.enabled === true) {
       data['terms'] = (this.$("#rterms").val() == "on");
