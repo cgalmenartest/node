@@ -4,9 +4,8 @@ var userUtils = require('../services/utils/user'),
 /**
  * Authentication Controller
  *
- * This is merely meant as an example of how your Authentication controller
- * should look. It currently includes the minimum amount of functionality for
- * the basics of Passport.js to work.
+ * @module    :: Controller
+ * @description :: Contains logic for handling authentication requests.
  */
 var AuthController = {
 
