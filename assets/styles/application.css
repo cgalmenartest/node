@@ -1304,7 +1304,7 @@ a.delete-comment {
     border-bottom: 1px solid #DDD;
     cursor: pointer;
     max-height: 40px;
-    overflow: idden;
+    overflow: hidden;
 }
 .atwho-view small {
     font-size: smaller;
