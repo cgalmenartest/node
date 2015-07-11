@@ -118,7 +118,7 @@ module.exports.policies = {
   VolunteerController : {
     '*': false,
     'create': ['authenticated', 'requireUserId', 'addUserId'],
-    'destroy': ['authenticated', 'requireId', 'ownerOrAdmin'],
+    'destroy': ['authenticated', 'requireUserId', 'requireId', 'volunteer', 'ownerOrAdmin'],
   },
 
   EventController : {
@@ -139,7 +139,7 @@ module.exports.policies = {
     'find': false,
     'findOne': false,
     'create': ['authenticated', 'requireUserId', 'addUserId', 'projectId', 'taskId'],
-    'update': ['authenticated', 'requireUserId', 'projectId', 'taskId'],
+    'update': ['authenticated', 'requireUserId', 'projectId', 'taskId', 'comment', 'ownerOrAdmin'],
     'destroy': ['authenticated', 'requireUserId', 'requireId', 'admin'],
     'findAllByProjectId': ['authenticated', 'requireId', 'project'],
     'findAllByTaskId': ['authenticated', 'requireId', 'task']

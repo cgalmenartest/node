@@ -240,6 +240,102 @@ module.exports = {
   },
 
   /**
+   * Task metrics API
+   * Provides data for the task metrics section of the admin
+   * dashboard. At some point, it may be consolidated
+   * with the above endpoint.
+   */
+  taskMetrics: function(req, res) {
+    var getFY = function(input) {
+          if (!input) return undefined;
+          var date = new Date(input);
+          return new Date(date.setMonth(date.getMonth() + 3)).getFullYear();
+        },
+        currentFY = getFY(new Date()),
+        fiscalYears = _.range(2014, currentFY + 1),
+        output = {
+          tasks: {},
+          volunteers: {},
+          agencies: {},
+          fiscalYears: fiscalYears
+        };
+
+    async.parallel([
+      function(done) {
+        Task.find({}).exec(function(err, tasks) {
+          if (err) return done('task');
+
+          var groups = {
+                carryOver: {},
+                published: _.countBy(tasks, function(task) {
+                  return getFY(task.publishedAt);
+                }),
+                completed: _.countBy(tasks, function(task) {
+                  return getFY(task.completedAt);
+                })
+              };
+
+          // Evaluate whether a task was started and remained open in a previous FY
+          _.each(tasks, function(task) {
+            fiscalYears.forEach(function(fy) {
+              var openedBeforeFY = getFY(task.publishedAt) < fy,
+                  openAfterFY = task.state !== 'archived' &&
+                    (!task.completedAt || getFY(task.completedAt) > fy);
+              groups.carryOver[fy] = groups.carryOver[fy] || 0;
+              if (openedBeforeFY && openAfterFY) groups.carryOver[fy] += 1;
+            });
+          });
+
+          output.tasks = groups;
+          done();
+        });
+      },
+      function(done) {
+        Volunteer.find({}).exec(function(err, volunteers) {
+          if (err) return done('volunteer');
+
+          // Group volunteers by created FY
+          output.volunteers = _.groupBy(volunteers, function(volunteer) {
+            return getFY(volunteer.createdAt);
+          });
+
+          // Get volunteer users and tags to count agencies
+          User.find({ id: _.pluck(volunteers, 'userId') })
+            .populate('tags', { type: 'agency' })
+            .exec(function(err, users) {
+              if (err) return done('volunteer');
+
+              // Get unique agencies with volunteers
+              output.agencies = _.reduce(output.volunteers, function(o, vols, fy) {
+
+                // Return agency (first tag) for matching user
+                o[fy] = _(vols).map(function(vol) {
+                  return (_.findWhere(users, { id: vol.userId }).tags[0] || {}).id;
+                }).compact().uniq().value().length;
+
+                return o;
+
+              }, {});
+
+              // Count volunteers
+              output.volunteers = _.reduce(output.volunteers, function(o, vols, fy) {
+                o[fy] = vols.length;
+                return o;
+              }, {});
+
+              done();
+            });
+
+        });
+      }
+    ], function(err) {
+      if (err) res.serverError(err + ' metrics are unavailable.');
+      res.send(output);
+    });
+  },
+
+
+  /**
    * Add or remove admin priviledges from a user account
    * @param id the user id to make an admin or remove
    * @param action true to make admin, false to revoke
@@ -336,7 +432,9 @@ module.exports = {
         });
 
         async.series(steps, function(err) {
-          if (activity.comment.value === "") { activity.comment = {}; }
+          if (!activity.comment || activity.comment.value === "") {
+            activity.comment = {};
+          }
           done(err, activity);
         });
 

@@ -4,6 +4,7 @@ var utils = require('../../../mixins/utilities');
 var ModalComponent = require('../../../components/modal');
 var AdminDashboardTemplate = require('../templates/admin_dashboard_template.html');
 var AdminDashboardTable = require('../templates/admin_dashboard_table.html');
+var AdminDashboardTasks = require('../templates/admin_dashboard_task_metrics.html');
 var AdminDashboardActivities = require('../templates/admin_dashboard_activities.html');
 var LoginConfig = require('../../../config/login.json');
 var marked = require('marked');
@@ -49,6 +50,15 @@ var AdminDashboardView = Backbone.View.extend({
     self.$(".metric-block").show();
   },
 
+  renderTasks: function(self, data) {
+    var template = _.template(AdminDashboardTasks)(data);
+    self.$(".task-metrics").html(template);
+    this.$el.i18n();
+    // hide spinner and show results
+    self.$(".spinner").hide();
+    self.$(".task-metrics").show();
+  },
+
   renderActivities: function (self, data) {
     var template = _.template(AdminDashboardActivities);
     self.$(".activity-block").html(template);
@@ -84,13 +94,11 @@ var AdminDashboardView = Backbone.View.extend({
     $.ajax({
       url: '/api/admin/metrics',
       dataType: 'json',
-      data: data,
       success: function (data) {
         self.data = data;
         $.ajax({
           url: '/api/admin/interactions',
           dataType: 'json',
-          data: data,
           success: function(interactions) {
             data.interactions = interactions;
             interactions.count = _(interactions).reduce(function(sum, value, key) {
@@ -99,14 +107,21 @@ var AdminDashboardView = Backbone.View.extend({
             self.renderMetrics(self, data);
           }
         });
+        $.ajax({
+          url: '/api/admin/taskmetrics',
+          dataType: 'json',
+          success: function (data) {
+            console.log(self.data.tasks);
+            data.tasks.active = self.data.tasks;
+            self.renderTasks(self, data);
+          }
+        });
       }
     });
     $.ajax({
       url: '/api/admin/activities',
       dataType: 'json',
-      data: data,
       success: function (data) {
-        self.data = data;
         self.renderActivities(self, data);
       }
     });
