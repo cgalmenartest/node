@@ -13,25 +13,24 @@ var TaskShowController = require('../tasks/show/controllers/task_show_controller
 var TaskEditFormView = require('../tasks/edit/views/task_edit_form_view');
 var AdminMainController = require('../admin/controllers/admin_main_controller');
 var HomeController = require('../home/controllers/home_controller');
-var PeopleController = require('../people/controllers/people_main_controller');
 
 
 var BrowseRouter = Backbone.Router.extend({
 
   routes: {
     ''                          : 'showHome',
-    'projects(/)'               : 'listProjects',
+    'projects(/)(?:queryStr)'   : 'listProjects',
     'projects/:id(/)'           : 'showProject',
     'projects/:id/:action(/)'   : 'showProject',
-    'tasks(/)'                  : 'listTasks',
+    'tasks(/)(?:queryStr)'      : 'listTasks',
     'tasks/:id(/)'              : 'showTask',
     'tasks/:id/:action(/)'      : 'showTask',
+    'profiles(/)(?:queryStr)'   : 'listProfiles',
     'profile(/)'                : 'showProfile',
     'profile/:id(/)'            : 'showProfile',
     'profile/:id(/)/:action'    : 'showProfile',
     'admin(/)'                  : 'showAdmin',
-    'admin(/):action(/)'        : 'showAdmin',
-    'people(/)(?:queryStr)'     : 'showPeople'
+    'admin(/):action(/)'        : 'showAdmin'
   },
 
   data: { saved: false },
@@ -61,7 +60,6 @@ var BrowseRouter = Backbone.Router.extend({
     if (this.projectShowController) { this.projectShowController.cleanup(); }
     if (this.profileShowController) { this.profileShowController.cleanup(); }
     if (this.taskShowController) { this.taskShowController.cleanup(); }
-    if (this.peopleController) { this.peopleController.cleanup(); }
     if (this.homeController) { this.homeController.cleanup(); }
     this.data = { saved: false };
   },
@@ -71,20 +69,51 @@ var BrowseRouter = Backbone.Router.extend({
     this.homeController = new HomeController({target: 'home', el: '#container', router: this, data: this.data });
   },
 
-  listProjects: function () {
+  parseQueryParams: function (str) {
+    var params = {};
+    if (str) {
+      var terms = str.split('&');
+      for (var i = 0; i < terms.length; i++) {
+        var nameValue = terms[i].split('=');
+        if (nameValue.length == 2) {
+          params[nameValue[0]] = nameValue[1];
+        } else {
+          params[terms[i]] = '';
+        }
+      }
+    }
+    return params;
+  },
+
+  listProjects: function (queryStr) {
     this.cleanupChildren();
     this.browseListController = new BrowseListController({
       target: 'projects',
       el: '#container',
+      router: this,
+      queryParams: this.parseQueryParams(queryStr),
       data: this.data
     });
   },
 
-  listTasks: function () {
+  listTasks: function (queryStr) {
     this.cleanupChildren();
     this.browseListController = new BrowseListController({
       target: 'tasks',
       el: '#container',
+      router: this,
+      queryParams: this.parseQueryParams(queryStr),
+      data: this.data
+    });
+  },
+
+  listProfiles: function (queryStr) {
+    this.cleanupChildren();
+    this.browseListController = new BrowseListController({
+      target: 'profiles',
+      el: '#container',
+      router: this,
+      queryParams: this.parseQueryParams(queryStr),
       data: this.data
     });
   },
@@ -126,30 +155,6 @@ var BrowseRouter = Backbone.Router.extend({
     this.profileShowController = new ProfileShowController({ id: id, action: action, data: this.data });
   },
 
-  showPeople: function (queryStr) {
-    // todo: consider generalizing query parameter handling for other endpoints
-    var queryParams = {};
-    if (queryStr) {
-      var terms = queryStr.split('&');
-      for (var i=0; i < terms.length; i++) {
-        var nameValue = terms[i].split('=');
-        if (nameValue.length == 2) {
-          queryParams[nameValue[0]] = nameValue[1];
-        } else {
-          queryParams[terms[i]] = '';
-        }
-      }
-    }
-    this.cleanupChildren();
-    this.peopleController = new PeopleController({
-      el: '#container',
-      target: 'people',
-      router: this,
-      data: this.data,
-      queryParams: queryParams
-    });
-  },
-
   showAdmin: function (action) {
     this.cleanupChildren();
     this.adminMainController = new AdminMainController({
@@ -163,7 +168,7 @@ var BrowseRouter = Backbone.Router.extend({
 var initialize = function () {
   var router = new BrowseRouter();
   return router;
-}
+};
 
 module.exports = {
   initialize: initialize

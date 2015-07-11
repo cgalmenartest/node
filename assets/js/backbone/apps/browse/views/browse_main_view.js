@@ -6,6 +6,8 @@ var UIConfig = require('../../../config/ui.json');
 var Popovers = require('../../../mixins/popovers');
 var TagConfig = require('../../../config/tag');
 var BrowseListView = require('./browse_list_view');
+var ProfileListView = require('./profile_list_view');
+var ProfileMapView = require('./profile_map_view');
 var BrowseMainTemplate = require('../templates/browse_main_view_template.html');
 var BrowseSearchTag = require('../templates/browse_search_tag.html');
 
@@ -34,8 +36,8 @@ var BrowseMainView = Backbone.View.extend({
       user: window.cache.currentUser,
       ui: UIConfig
     };
-    this.compiledTemplate = _.template(BrowseMainTemplate)(options)
-    this.$el.html(this.compiledTemplate);
+    this.rendered = _.template(BrowseMainTemplate)(options);
+    this.$el.html(this.rendered);
     this.$el.i18n();
 
     this.initializeSearch();
@@ -54,7 +56,7 @@ var BrowseMainView = Backbone.View.extend({
       icon = 'fa fa-tag';
     }
 
-    if ( !object.unmatched ) {
+    if (!object.unmatched) {
       //unmatched name is escaped in createSearchChoice func to preserve html formatting
       name = _.escape(name);
       formatIcon = '<i class="' + _.escape(icon) + '"></i>';
@@ -85,13 +87,16 @@ var BrowseMainView = Backbone.View.extend({
       return self.format(self, object, container, query);
     };
 
-    var searchPlaceholder = function (){
-      if(self.options.target == 'projects')
-        return "I\'m looking for working groups by name, agency, skill, topic, description...";
-      else if(self.options.target == 'tasks')
-        return "I\'m looking for opportunities by name, agency, skill, topic, description...";
-      else
-        return "I\'m looking for...";
+    var searchPlaceholder = function () {
+      if (self.options.target == 'projects') {
+        return "I'm looking for working groups by name, agency, skill, topic, description...";
+      } else if (self.options.target == 'tasks') {
+        return "I'm looking for opportunities by name, agency, skill, topic, description...";
+      } else if (self.options.target == 'profiles') {
+        return "I'm looking for people by name, agency, skill, location...";
+      } else {
+        return "I'm looking for...";
+      }
     };
 
     // Initialize Select2
@@ -182,26 +187,54 @@ var BrowseMainView = Backbone.View.extend({
   },
 
   renderList: function (collection) {
+    var filteredCollection = this.applyStateFilters(collection);
+
     // create a new view for the returned data
     if (this.browseListView) { this.browseListView.cleanup(); }
 
-    var filteredCollection = this.applyStateFilters(collection);
-
-    this.browseListView = new BrowseListView({
-      el: '#browse-list',
-      target: this.options.target,
-      collection: filteredCollection,
-    });
-    // Show draft filter
-    var draft = _(collection).chain()
+    if (this.options.target == 'projects' || this.options.target == 'tasks') {
+      // projects and tasks get list of tiles
+      $("#browse-map").hide();
+      this.browseListView = new BrowseListView({
+        el: '#browse-list',
+        target: this.options.target,
+        collection: filteredCollection
+      });
+      // Show draft filter
+      var draft = _(collection).chain()
           .pluck('state')
           .indexOf('draft').value() >= 0;
-    $(".draft-filter").toggleClass('hidden', !draft);
+      $(".draft-filter").toggleClass('hidden', !draft);
+
+    } else {
+      // profiles get tabular
+      this.browseListView = new ProfileListView({
+        el: '#browse-list',
+        target: this.options.target,
+        collection: filteredCollection
+      });
+      // and profiles get a map too!
+      this.renderMap(filteredCollection);
+    }
     $("#browse-search-spinner").hide();
     $("#browse-list").show();
     this.browseListView.render();
+
     popovers.popoverPeopleInit(".project-people-div");
   },
+
+  renderMap: function (collection) {
+    // create a new view for the returned data. Need to show the div before
+    // rendering otherwise the SVG borders will be wrong.
+    $("#browse-map").show();
+    if (this.browseMapView) { this.browseMapView.cleanup(); }
+    this.browseMapView = new ProfileMapView({
+      el: '#browse-map',
+      people: collection
+    });
+    this.browseMapView.render();
+  },
+
 
   searchExec: function (terms) {
     var self = this;

@@ -12,7 +12,8 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
 var d3 = require('d3');
-var tooltipTemplate = require('../templates/people_map_tooltip.html');
+var tooltipTemplate = require('../templates/profile_map_tooltip.html');
+var CountriesModel = require('../../../entities/countries/countries_model');
 
 var PeopleMapView = Backbone.View.extend({
 
@@ -21,7 +22,6 @@ var PeopleMapView = Backbone.View.extend({
     this.target = options.target;
     this.router = options.router;
     this.people = options.people;
-    this.countries = options.countries;
     this.queryParams = options.queryParams;
 
     this.smallestDotPx = 5;         // size of smallest dot
@@ -29,10 +29,10 @@ var PeopleMapView = Backbone.View.extend({
     this.center = [0, 25];          // favor the northern hemisphere
     this.rotate = [-10, 0];         // break map cleanly in pacific
     this.tipDescTemplate = _.template(tooltipTemplate);
-    this.tipXOffset = this.smallestDotPx;
   },
 
   render: function () {
+    var self = this;
     // mercator projection is 960 x 500 @ 150 points, scale relative to that
     this.width = this.$el.width();
     this.height = Math.round(this.width / 2) - 50;
@@ -43,8 +43,18 @@ var PeopleMapView = Backbone.View.extend({
       .attr("meetOrSlice", "slice")
       .attr("viewBox", "0 0 " + this.width + " " + this.height);
 
-    this.renderCountries.call(this);
-    this.renderUserDots.call(this);
+    // TOOD: hack: we shouldn't reload country data all the time, should happen in the controller for lifetime management
+    this.countriesModel = new CountriesModel();
+    this.countriesModel.fetch({
+      success: function (data) {
+        self.countries = data;
+        console.log("rendering countries");
+        self.renderCountries.call(self);
+        console.log("rendering dots");
+        self.renderUserDots.call(self);
+      }
+    });
+
   },
 
   renderCountries: function () {
@@ -74,10 +84,10 @@ var PeopleMapView = Backbone.View.extend({
     // drawn first (bottom).
     var peopleWithLocations = this.people
       .filter(function (p) {
-        return !_.isUndefined(p.get('location'));
+        return !_.isUndefined(p.location);
       });
     var cityPeopleObj = _.groupBy(peopleWithLocations, function (p) {
-      return p.get('location').name;
+      return p.location.name;
     });
     var cityPeopleList = _.map(_.keys(cityPeopleObj), function (c) {
       return {
@@ -106,12 +116,12 @@ var PeopleMapView = Backbone.View.extend({
     var usersG = this.svg.append("g");
     _.values(cityPeopleList).forEach(function (cp) {
       var safeCityName = that.cityNameSlug(cp.cityname);
-      var cityLoc = cp.people[0].get('location');
+      var cityLoc = cp.people[0].location;
       var tipDesc = this.tipDescTemplate({
         city: cp.cityname,
         count: cp.people.length,
         names: _.map(cp.people, function (p) {
-          return p.get('name');
+          return p.name;
         }).slice(0, 3).join(', ')    // only show three names
       });
 
@@ -143,14 +153,14 @@ var PeopleMapView = Backbone.View.extend({
           // jQuery removeClass() doesn't work on svg elements, but this does
           $('.userDot-select').attr("class", "userDot");
           if (previouslySelected) {
-            // unselect city: remove styling, remove people detail list
-            window.cache.userEvents.trigger("people:list:remove");
-            that.router.navigate(that.target);
+            // unselect city: remove styling & re-render list w/ default
+            window.cache.userEvents.trigger("people:list");
+            // that.router.navigate(that.target);
           } else {
             // select city: add styling, render people detail list below
             this.classList.add('userDot-select');
             window.cache.userEvents.trigger("people:list", cp.people);
-            that.router.navigate(that.target + "?city=" + safeCityName);
+            // that.router.navigate(that.target + "?city=" + safeCityName);
             // TODO: generalize query parameter handling so to not clobber others
           }
           d3.event.stopPropagation();
@@ -166,10 +176,11 @@ var PeopleMapView = Backbone.View.extend({
           return tooltip.style("visibility", "hidden");
         });
 
-      // fallthrough click handler -- deselect all dots and remove detail list
+      // fallthrough click handler: deselect all dots & re-render list w/ default
       $('svg').on('click', function (event) {
         $('.userDot-select').attr("class", "userDot");
-        window.cache.userEvents.trigger("people:list:remove");
+        window.cache.userEvents.trigger("people:list");
+        d3.event.stopPropagation();
       });
     }, this);
   },

@@ -23,7 +23,7 @@ var BrowseListView = Backbone.View.extend({
     this.data = {
       pageSize: pageSize,
       page: 1
-    }
+    };
     $(window).on('scroll',function(e){
       self.scrollCheck(e);
     });
@@ -68,7 +68,7 @@ var BrowseListView = Backbone.View.extend({
     if ( this.options.collection.length == 0 ){
       var settings = {
         ui: UIConfig
-      }
+      };
       compiledTemplate = _.template(NoListItem)(settings);
       this.$el.append(compiledTemplate);
     } else {
@@ -81,7 +81,7 @@ var BrowseListView = Backbone.View.extend({
           user: window.cache.currentUser,
           tagConfig: TagConfig,
           tagShow: ['location', 'skill', 'topic', 'task-time-estimate', 'task-time-required']
-        }
+        };
         if (this.options.collection[i].tags) {
           item.tags = this.organizeTags(this.options.collection[i].tags);
         } else {

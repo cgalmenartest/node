@@ -656,6 +656,12 @@ div.project-title {
   margin-bottom: 30px;
 }
 
+#browse-map {
+  display: none;
+  padding: 0;
+  margin-left: -15px;
+}
+
 #browse-list {
   padding: 0;
   margin-left: -15px;
@@ -1287,7 +1293,7 @@ a.delete-comment {
     border-bottom: 1px solid #DDD;
     cursor: pointer;
     max-height: 40px;
-    overflow: hidden;
+    overflow: idden;
 }
 .atwho-view small {
     font-size: smaller;

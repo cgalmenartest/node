@@ -1,6 +1,6 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
-var listTemplate = require('../templates/people_list_template.html');
+var listTemplate = require('../templates/profile_list_template.html');
 
 var PeopleListView = Backbone.View.extend({
 
@@ -8,20 +8,23 @@ var PeopleListView = Backbone.View.extend({
 
   initialize: function (options) {
     this.el = options.el;
+    this.people = options.collection;
     this.listenTo(window.cache.userEvents, "people:list", this.render);
     this.listenTo(window.cache.userEvents, "people:list:remove", this.empty);
   },
 
-  render: function (peopleCollection) {
-    if (!peopleCollection) return;
-    this.$el.html(this.template({people: peopleCollection}));
+  render: function (peopleSelection) {
+    // if passed a collection of people, render that collection, otherwise
+    // just render the collection that you were created with (prob. everyone).
+    var peopleToRender = peopleSelection ? peopleSelection : this.people;
+    this.$el.html(this.template({people: peopleToRender}));
   },
 
   empty: function () {
     this.$el.html("");
   },
 
-  close: function () {
+  cleanup: function () {
     this.remove();
   }
 
