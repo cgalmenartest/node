@@ -148,7 +148,7 @@ function profileSearch (req, res) {
     return "(midas_user.name ILIKE '%" + term + "%' OR midas_user.title ILIKE '%" + term + "%' or tagentity.name ILIKE '%" + term + "%')";
   }).join(" AND ");
 
-  var query = selectClause + " WHERE " + whereClause + " ORDER BY id ASC";
+  var query = selectClause + " WHERE " + whereClause + " ORDER BY midas_user.id ASC";
 
   User.query(query, function (err, data) {
     var userIds = _.map(data.rows, function (item) { return item.id; });
