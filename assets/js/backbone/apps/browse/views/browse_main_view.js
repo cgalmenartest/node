@@ -93,7 +93,7 @@ var BrowseMainView = Backbone.View.extend({
       } else if (self.options.target == 'tasks') {
         return "I'm looking for opportunities by name, agency, skill, topic, description...";
       } else if (self.options.target == 'profiles') {
-        return "I'm looking for people by name, agency, skill, location...";
+        return "I'm looking for people by name, title, agency, location...";
       } else {
         return "I'm looking for...";
       }
@@ -193,7 +193,7 @@ var BrowseMainView = Backbone.View.extend({
     if (this.browseListView) { this.browseListView.cleanup(); }
 
     if (this.options.target == 'projects' || this.options.target == 'tasks') {
-      // projects and tasks get list of tiles
+      // projects and tasks get tiles
       $("#browse-map").hide();
       this.browseListView = new BrowseListView({
         el: '#browse-list',
@@ -207,14 +207,12 @@ var BrowseMainView = Backbone.View.extend({
       $(".draft-filter").toggleClass('hidden', !draft);
 
     } else {
-      // profiles get tabular
+      // profiles are in a table
       this.browseListView = new ProfileListView({
         el: '#browse-list',
         target: this.options.target,
         collection: filteredCollection
       });
-      // and profiles get a map too!
-      this.renderMap(filteredCollection);
     }
     $("#browse-search-spinner").hide();
     $("#browse-list").show();
@@ -223,25 +221,28 @@ var BrowseMainView = Backbone.View.extend({
     popovers.popoverPeopleInit(".project-people-div");
   },
 
-  renderMap: function (collection) {
+  renderMap: function (profiles) {
     // create a new view for the returned data. Need to show the div before
     // rendering otherwise the SVG borders will be wrong.
-    $("#browse-map").show();
     if (this.browseMapView) { this.browseMapView.cleanup(); }
+    $("#browse-map").show();
     this.browseMapView = new ProfileMapView({
       el: '#browse-map',
-      people: collection
+      people: profiles
     });
     this.browseMapView.render();
   },
-
 
   searchExec: function (terms) {
     var self = this;
 
     if (!terms || (terms.length == 0)) {
-      // re-render the collection
-      self.renderList(this.options.collection.toJSON());
+      // re-render everything collection
+      var all = this.options.collection.toJSON();
+      this.renderList(all);
+      if (this.options.target == 'profiles') {
+        this.renderMap(all);
+      }
       return;
     }
 
@@ -344,6 +345,7 @@ var BrowseMainView = Backbone.View.extend({
   },
 
   cleanup: function() {
+    if (this.browseMapView) { this.browseMapView.cleanup(); }
     if (this.browseListView) { this.browseListView.cleanup(); }
     removeView(this);
   }

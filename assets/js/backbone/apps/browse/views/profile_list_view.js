@@ -25,7 +25,7 @@ var PeopleListView = Backbone.View.extend({
   },
 
   cleanup: function () {
-    this.remove();
+    removeView(this);
   }
 
 });

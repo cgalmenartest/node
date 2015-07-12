@@ -50,6 +50,7 @@ function taskProjectSearch(target, req, res) {
       }
     });
 
+    // TODO: needs escaping to prevent SQL injection
     modelProxy.query("select distinct id from "+modelWord+" where "+titleSqlFrag+" or "+descSqlFrag+" order by id asc",function(err,data){
       if ( _.isNull(data) ) { cb(); }
       var temp = _.map(data.rows,function(item,key){
@@ -126,7 +127,7 @@ function taskProjectSearch(target, req, res) {
   });
 }
 
-function peopleSearch (req, res) {
+function profileSearch (req, res) {
   if (!req.body) {
     return res.send(400, {message: 'Need data to query'});
   }
@@ -135,10 +136,20 @@ function peopleSearch (req, res) {
 
   // Same problem as taskProjectSearch above. Searching for multiple "contains" queries on
   // a column doesn't seem to be supported by Sails ORM. Fall back to SQL for now.
+  // TODO: needs escaping to prevent SQL injection
+  var selectClause =
+    "SELECT DISTINCT midas_user.id FROM midas_user " +
+        "LEFT OUTER JOIN tagentity_users__user_tags " +
+    "ON tagentity_users__user_tags.user_tags = midas_user.id " +
+        "LEFT JOIN tagentity " +
+    "ON tagentity_users__user_tags.tagentity_users = tagentity.id";
+
   var whereClause = searchTerms.map(function (term) {
-    return "name ILIKE '%" + term + "%'";
+    return "(midas_user.name ILIKE '%" + term + "%' OR midas_user.title ILIKE '%" + term + "%' or tagentity.name ILIKE '%" + term + "%')";
   }).join(" AND ");
-  var query = "SELECT DISTINCT id FROM midas_user WHERE " + whereClause + " ORDER BY id ASC";
+
+  var query = selectClause + " WHERE " + whereClause + " ORDER BY id ASC";
+
   User.query(query, function (err, data) {
     var userIds = _.map(data.rows, function (item) { return item.id; });
     // now that we have a list of ID's, we can use the ORM to flesh out the objects
@@ -167,8 +178,8 @@ module.exports = {
     }
     if ((req.body.target == 'projects') || (req.body.target == 'tasks')) {
       return taskProjectSearch(req.body.target, req, res);
-    } else if (req.body.target == 'people') {
-      return peopleSearch(req, res);
+    } else if (req.body.target == 'profiles') {
+      return profileSearch(req, res);
     }
     return res.send([]);
   },

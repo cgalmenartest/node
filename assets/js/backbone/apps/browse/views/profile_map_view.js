@@ -48,9 +48,7 @@ var PeopleMapView = Backbone.View.extend({
     this.countriesModel.fetch({
       success: function (data) {
         self.countries = data;
-        console.log("rendering countries");
         self.renderCountries.call(self);
-        console.log("rendering dots");
         self.renderUserDots.call(self);
       }
     });
@@ -196,8 +194,8 @@ var PeopleMapView = Backbone.View.extend({
     return str;
   },
 
-  close: function () {
-    this.remove();
+  cleanup: function () {
+    removeView(this);
   }
 
 });

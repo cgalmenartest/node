@@ -15,7 +15,6 @@ var CountriesModel = Backbone.Model.extend({
     var self=this;
     if (this.countries) {
       // cached copy -- use it, never invalidate
-      console.log("fetch map data (cache hit)");
       callbacks.success(this.countries);
     } else {
       // don't have a cached copy, load
@@ -26,7 +25,6 @@ var CountriesModel = Backbone.Model.extend({
           }
           return;
         }
-        console.log("fetch map data (cache miss)");
         self.countries = topojson.feature(world, world.objects.countries).features;
         callbacks.success(self.countries);
       });

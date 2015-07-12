@@ -79,6 +79,9 @@ Browse.ListController = BaseController.extend({
         success: function (collection) {
           self.collection = collection;
           self.browseMainView.renderList(self.collection.toJSON());
+          if (self.target == 'profiles') {
+            self.browseMainView.renderMap(self.collection.toJSON());
+          }
         }
       });
     });
