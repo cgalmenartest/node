@@ -17,7 +17,9 @@ var popovers = new Popovers();
 var BrowseMainView = Backbone.View.extend({
 
   events: {
-    "submit #search-form"             : "search",
+    "submit #search-form"             : "searchBar",
+    "browseSearchLocation"           : "searchMap",
+    "browseRemoveLocations"          : "searchLocationsRemove",
     "click .search-tag-remove"        : "searchTagRemove",
     "click .search-clear"             : "searchClear",
     "change .stateFilter"             : "searchTagRemove",
@@ -140,50 +142,67 @@ var BrowseMainView = Backbone.View.extend({
 
   submitOnEnter: function (e) {
     if(e.keyCode === 13) {
-      this.search(e);
+      this.searchBar(e);
     }
   },
 
-  search: function (e) {
-    var self = this;
+  addSearchTerm: function (term) {
+    // add it to our list of search terms
+    this.searchTerms.push(term);
+    // render the search term in the list
+    var templData = {
+      data: term,
+      format: this.format(this, term)
+    };
+    var templ = _.template(BrowseSearchTag)(templData);
+    if (term.target == 'tagentity') {
+      $("#search-tags").append(templ);
+    } else {
+      $("#search-projs").append(templ);
+    }
+  },
+
+  existingSearchTerm: function (term) {
+    var found = false;
+    // check if this search term already is chosen
+    for (var i in this.searchTerms) {
+      if (this.searchTerms[i].id == term.id) {
+        if (this.searchTerms[i].title && (this.searchTerms[i].title == term.title)) {
+          found = true;
+        }
+        else if (this.searchTerms[i].name && (this.searchTerms[i].name == term.name)) {
+          found = true;
+        }
+      }
+    }
+    return found;
+  },
+
+  searchBar: function (e) {
+    var self=this;
     if (e.preventDefault) e.preventDefault();
     // get values from select2
-    var data = $("#search").select2("data");
-    if (data.length > 0) {
+    var searchTerms = $("#search").select2("data");
+    if (searchTerms.length > 0) {
       $("#search-none").hide();
       $(".search-clear").show();
     }
-    _.each(data, function (d) {
-      var found = false;
-      // check if this search term already is chosen
-      for (var i in self.searchTerms) {
-        if (self.searchTerms[i].id == d.id) {
-          if (self.searchTerms[i].title && (self.searchTerms[i].title == d.title)) {
-            found = true;
-          }
-          else if (self.searchTerms[i].name && (self.searchTerms[i].name == d.name)) {
-            found = true;
-          }
-        }
+    _.each(searchTerms, function (d) {
+      if (self.existingSearchTerm(d)) {
+        return;
       }
-      // return if the search term is found
-      if (found) return;
-      // add it to our list of search terms
-      self.searchTerms.push(d);
-      // render the search term in the list
-      var templData = {
-        data: d,
-        format: self.format(self, d)
-      };
-      var templ = _.template(BrowseSearchTag)(templData);
-      if (d.target == 'tagentity') {
-        $("#search-tags").append(templ);
-      } else {
-        $("#search-projs").append(templ);
-      }
+      self.addSearchTerm(d);
     });
-    $("#search").select2("data","");
-    self.searchExec(self.searchTerms);
+    $("#search").select2("data", "");
+    this.searchExec(this.searchTerms);
+  },
+
+  searchMap: function (loc) {
+    if (this.existingSearchTerm(loc)) {
+      return;
+    }
+    this.addSearchTerm(loc);
+    this.searchExec(this.searchTerms);
   },
 
   renderList: function (collection) {
@@ -332,6 +351,15 @@ var BrowseMainView = Backbone.View.extend({
       $(".search-clear").hide();
     }
     self.searchExec(self.searchTerms);
+  },
+
+  searchLocationsRemove: function (options) {
+    for (var i in this.searchTerms) {
+    }
+
+    if (options && options.render) {
+      this.searchExec(this.searchTerms);
+    }
   },
 
   searchClear: function (e) {

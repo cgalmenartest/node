@@ -22,7 +22,6 @@ var PeopleMapView = Backbone.View.extend({
     this.target = options.target;
     this.router = options.router;
     this.people = options.people;
-    this.queryParams = options.queryParams;
 
     this.smallestDotPx = 5;         // size of smallest dot
     this.dotSizeFactor = options.dotSizeFactor || 3;
@@ -113,7 +112,6 @@ var PeopleMapView = Backbone.View.extend({
 
     var usersG = this.svg.append("g");
     _.values(cityPeopleList).forEach(function (cp) {
-      var safeCityName = that.cityNameSlug(cp.cityname);
       var cityLoc = cp.people[0].location;
       var tipDesc = this.tipDescTemplate({
         city: cp.cityname,
@@ -129,19 +127,10 @@ var PeopleMapView = Backbone.View.extend({
         return;
       }
 
-      // if this city name was in the search bar, then treat it as already selected
-      var dotStyle = "userDot";
-      if (this.queryParams && 'city' in this.queryParams
-        && this.queryParams.city == safeCityName) {
-        dotStyle += " userDot-select";
-        window.cache.userEvents.trigger("people:list", cp.people);
-      }
-
       var projectedPoint = this.projection([cityLoc.data.lon, cityLoc.data.lat]);
       usersG.append("g")
-        .attr("id", safeCityName)
         .append("svg:circle")
-        .attr("class", dotStyle)
+        .attr("class", "userDot")
         .attr("cx", projectedPoint[0])
         .attr("cy", projectedPoint[1])
         .attr("r", dotScale(cp.people.length))
@@ -152,14 +141,12 @@ var PeopleMapView = Backbone.View.extend({
           $('.userDot-select').attr("class", "userDot");
           if (previouslySelected) {
             // unselect city: remove styling & re-render list w/ default
-            window.cache.userEvents.trigger("people:list");
-            // that.router.navigate(that.target);
+            window.cache.userEvents.trigger("browseRemoveLocations", {render: true});
           } else {
             // select city: add styling, render people detail list below
             this.classList.add('userDot-select');
-            window.cache.userEvents.trigger("people:list", cp.people);
-            // that.router.navigate(that.target + "?city=" + safeCityName);
-            // TODO: generalize query parameter handling so to not clobber others
+            window.cache.userEvents.trigger("browseRemoveLocations", {render: false});
+            window.cache.userEvents.trigger("browseSearchLocation", cp.cityname);
           }
           d3.event.stopPropagation();
         })
@@ -177,21 +164,10 @@ var PeopleMapView = Backbone.View.extend({
       // fallthrough click handler: deselect all dots & re-render list w/ default
       $('svg').on('click', function (event) {
         $('.userDot-select').attr("class", "userDot");
-        window.cache.userEvents.trigger("people:list");
+        window.cache.userEvents.trigger("browse:removeLocations", {render: true});
         d3.event.stopPropagation();
       });
     }, this);
-  },
-
-  cityNameSlug: function (str) {
-    // Turn a generic place name into something that is safe to use as a DOM
-    // element ID, safe for URL too.
-    // from: http://stackoverflow.com/questions/9635625/javascript-regex-to-remove-illegal-characters-from-dom-id
-    // TODO: make robust against collisions, should be rare but you never know
-    str = str.replace(/[, ]/g, "_");
-    str = encodeURIComponent(str);
-    str = str.replace(/[^a-z0-9\-_:\.]|^[^a-z]/gi, "_");
-    return str;
   },
 
   cleanup: function () {
