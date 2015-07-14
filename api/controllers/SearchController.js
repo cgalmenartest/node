@@ -136,21 +136,50 @@ function profileSearch (req, res) {
 
   // Same problem as taskProjectSearch above. Searching for multiple "contains" queries on
   // a column doesn't seem to be supported by Sails ORM. Fall back to SQL for now.
-  // TODO: needs escaping to prevent SQL injection
+  // This is a terrible query. Doing two outer joins so that we can query on both agency
+  // and location tags simultaneously.
   var selectClause =
     "SELECT DISTINCT midas_user.id FROM midas_user " +
-        "LEFT OUTER JOIN tagentity_users__user_tags " +
-    "ON tagentity_users__user_tags.user_tags = midas_user.id " +
-        "LEFT JOIN tagentity " +
-    "ON tagentity_users__user_tags.tagentity_users = tagentity.id";
 
-  var whereClause = searchTerms.map(function (term) {
-    return "(midas_user.name ILIKE '%" + term + "%' OR midas_user.title ILIKE '%" + term + "%' or tagentity.name ILIKE '%" + term + "%')";
-  }).join(" AND ");
+        // agency tags
+        "LEFT OUTER JOIN tagentity_users__user_tags AS agency_tags " +
+          "ON agency_tags.user_tags = midas_user.id " +
+        "LEFT JOIN tagentity AS agency " +
+          "ON agency_tags.tagentity_users = agency.id " +
+          "AND agency.type = 'agency' " +
 
-  var query = selectClause + " WHERE " + whereClause + " ORDER BY midas_user.id ASC";
+        // location tags
+        "LEFT OUTER JOIN tagentity_users__user_tags AS location_tags " +
+          "ON location_tags.user_tags = midas_user.id " +
+        "LEFT JOIN tagentity AS location " +
+          "ON location_tags.tagentity_users = location.id " +
+          "AND location.type = 'location' ";
+
+  // default if no search terms, simple query w/ no parameters
+  var query = selectClause + " ORDER BY midas_user.id ASC";
+
+  if (searchTerms.length) {
+    // if search terms, build up parameterized where clause
+    var whereClause = "";
+    for (var i = 1; i < searchTerms.length+1; i++) {
+      if (whereClause !== "") {
+        whereClause += " AND ";
+      }
+      var istr = i.toString();
+      whereClause += "(midas_user.name ILIKE $" + istr +
+        " OR midas_user.title ILIKE $" + istr +
+        " OR agency.name ILIKE $" + istr +
+        " OR location.name ILIKE $" + istr + ")";
+    }
+    var wildcardSearchTerms = _.map(searchTerms, function (t) { return "%" + t + "%"; });
+    query = {
+      text: selectClause + " WHERE " + whereClause + " ORDER BY midas_user.id ASC",
+      values: wildcardSearchTerms
+    };
+  }
 
   User.query(query, function (err, data) {
+    if (err) { return res.serverError(err); }
     var userIds = _.map(data.rows, function (item) { return item.id; });
     // now that we have a list of ID's, we can use the ORM to flesh out the objects
     User.find({id: userIds}).populate('tags').exec(function (err, users) {

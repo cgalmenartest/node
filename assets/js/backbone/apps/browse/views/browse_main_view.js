@@ -18,8 +18,6 @@ var BrowseMainView = Backbone.View.extend({
 
   events: {
     "submit #search-form"             : "searchBar",
-    "browseSearchLocation"           : "searchMap",
-    "browseRemoveLocations"          : "searchLocationsRemove",
     "click .search-tag-remove"        : "searchTagRemove",
     "click .search-clear"             : "searchClear",
     "change .stateFilter"             : "searchTagRemove",
@@ -198,10 +196,24 @@ var BrowseMainView = Backbone.View.extend({
   },
 
   searchMap: function (loc) {
-    if (this.existingSearchTerm(loc)) {
+    // this is a hack to make a location search mimic a menu bar search. If this worked
+    // properly, field = type = "location" but search doesn't work like that now (broken).
+    var locItem = {
+      field: "location",
+      id: loc,
+      name: loc,
+      type: "location",
+      value: loc,
+      unmatched: true
+    }
+    if (this.existingSearchTerm(locItem)) {
       return;
     }
-    this.addSearchTerm(loc);
+    this.addSearchTerm(locItem);
+    if (this.searchTerms.length > 0) {
+      $("#search-none").hide();
+      $(".search-clear").show();
+    }
     this.searchExec(this.searchTerms);
   },
 
@@ -250,6 +262,9 @@ var BrowseMainView = Backbone.View.extend({
       people: profiles
     });
     this.browseMapView.render();
+    // set up listeners for events from the map view
+    this.listenTo(this.browseMapView, "browseSearchLocation", this.searchMap);
+    this.listenTo(this.browseMapView, "browseRemove", this.searchRemove);
   },
 
   searchExec: function (terms) {
@@ -353,11 +368,20 @@ var BrowseMainView = Backbone.View.extend({
     self.searchExec(self.searchTerms);
   },
 
-  searchLocationsRemove: function (options) {
-    for (var i in this.searchTerms) {
+  searchRemove: function (options) {
+    // remove all tags of a type
+    var i = 0;
+    while (i < this.searchTerms.length) {
+      if (this.searchTerms[i].type == options.type) {
+        $("#search-projs").children().filter('[data-id="' + this.searchTerms[i].id + '"]').remove();
+        this.searchTerms.splice(i, 1);
+      }
+      i++;
     }
-
-    if (options && options.render) {
+    if ($("#search-projs").children().length == 0 && $("#search-tags").children().length == 0) {
+      $(".search-clear").hide();
+    }
+    if (options.render) {
       this.searchExec(this.searchTerms);
     }
   },

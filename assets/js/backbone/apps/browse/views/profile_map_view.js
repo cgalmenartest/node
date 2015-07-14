@@ -74,7 +74,7 @@ var PeopleMapView = Backbone.View.extend({
   },
 
   renderUserDots: function () {
-    var that = this;
+    var self = this;
 
     // massage data: pivot list of people by city, flatten that into a list with
     // cityname, people in that city, sorted largest first (so largest cities get
@@ -141,15 +141,26 @@ var PeopleMapView = Backbone.View.extend({
           $('.userDot-select').attr("class", "userDot");
           if (previouslySelected) {
             // unselect city: remove styling & re-render list w/ default
-            window.cache.userEvents.trigger("browseRemoveLocations", {render: true});
+            self.trigger("browseRemove", {type: "location", render: true});
           } else {
             // select city: add styling, render people detail list below
             this.classList.add('userDot-select');
-            window.cache.userEvents.trigger("browseRemoveLocations", {render: false});
-            window.cache.userEvents.trigger("browseSearchLocation", cp.cityname);
+            self.trigger("browseRemove", {type: "location", render: false});
+            self.trigger("browseSearchLocation", cp.cityname);
           }
           d3.event.stopPropagation();
         })
+        // gobble up the doubleclick and mousedown events on the map since these go on to
+        // cause ugly selection on the table.
+        .on("dblclick", function () {
+          d3.event.stopPropagation();
+          d3.event.preventDefault();
+        })
+        .on("mousedown", function () {
+          d3.event.stopPropagation();
+          d3.event.preventDefault();
+        })
+        // mouseenter/out events for displaying the floating legend (tooltip)
         .on("mouseenter", function () {
           tooltip.html(tipDesc)
             .style("visibility", "visible")
@@ -164,8 +175,9 @@ var PeopleMapView = Backbone.View.extend({
       // fallthrough click handler: deselect all dots & re-render list w/ default
       $('svg').on('click', function (event) {
         $('.userDot-select').attr("class", "userDot");
-        window.cache.userEvents.trigger("browse:removeLocations", {render: true});
+        self.trigger("browseRemove", {type: "location", render: true});
         d3.event.stopPropagation();
+        d3.event.preventDefault();
       });
     }, this);
   },
