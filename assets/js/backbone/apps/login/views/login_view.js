@@ -183,8 +183,8 @@ var LoginView = Backbone.View.extend({
       name: this.$("#rname").val(),
       username: this.$("#rusername").val(),
       password: this.$("#rpassword").val(),
-      agency: this.$("#ragency").val(),
-      location: this.$("#rlocation").val(),
+      agency: this.$("#ragency").select2('data'),
+      location: this.$("#rlocation").select2('data'),
       json: true
     };
 
