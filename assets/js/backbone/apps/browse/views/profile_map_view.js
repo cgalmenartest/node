@@ -12,8 +12,9 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
 var d3 = require('d3');
+var topojson = require('topojson');
 var tooltipTemplate = require('../templates/profile_map_tooltip.html');
-var CountriesModel = require('../../../entities/countries/countries_model');
+var countryData = require('../../../../../data/world-110m.json');
 
 var PeopleMapView = Backbone.View.extend({
 
@@ -28,6 +29,8 @@ var PeopleMapView = Backbone.View.extend({
     this.center = [0, 25];          // favor the northern hemisphere
     this.rotate = [-10, 0];         // break map cleanly in pacific
     this.tipDescTemplate = _.template(tooltipTemplate);
+
+    this.countries = topojson.feature(countryData, countryData.objects.countries).features;
   },
 
   render: function () {
@@ -42,16 +45,8 @@ var PeopleMapView = Backbone.View.extend({
       .attr("meetOrSlice", "slice")
       .attr("viewBox", "0 0 " + this.width + " " + this.height);
 
-    // TOOD: hack: we shouldn't reload country data all the time, should happen in the controller for lifetime management
-    this.countriesModel = new CountriesModel();
-    this.countriesModel.fetch({
-      success: function (data) {
-        self.countries = data;
-        self.renderCountries.call(self);
-        self.renderUserDots.call(self);
-      }
-    });
-
+    this.renderCountries();
+    this.renderUserDots();
   },
 
   renderCountries: function () {
@@ -150,8 +145,8 @@ var PeopleMapView = Backbone.View.extend({
           }
           d3.event.stopPropagation();
         })
-        // gobble up the doubleclick and mousedown events on the map since these go on to
-        // cause ugly selection on the table.
+        // gobble up the doubleclick and mousedown events on the map since these go on
+        // to cause ugly selection on the table.
         .on("dblclick", function () {
           d3.event.stopPropagation();
           d3.event.preventDefault();
@@ -173,7 +168,7 @@ var PeopleMapView = Backbone.View.extend({
         });
 
       // fallthrough click handler: deselect all dots & re-render list w/ default
-      $('svg').on('click', function (event) {
+      $('svg').on('click', function () {
         $('.userDot-select').attr("class", "userDot");
         self.trigger("browseRemove", {type: "location", render: true});
         d3.event.stopPropagation();
