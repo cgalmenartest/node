@@ -342,19 +342,31 @@ module.exports = {
         }
       }
 
-      // Encrypt the password
-      bcrypt.hash(password, 10, function(err, hash) {
-        if (err) { return res.send(400, { message: 'Unable to hash password.' }); }
-        var pwObj = {
-          userId: userId,
-          password: hash
-        };
-        // Store the user's password with the bcrypt hash
-        UserPassword.create(pwObj).exec(function (err, pwObj) {
-          if (err) { return res.send(400, { message: 'Unable to store password.'}); }
-          return res.send(true);
+      Passport.findOrCreate({
+        user: user.id,
+        protocol: 'local'
+      }).exec(function(err, passport) {
+        passport.password = password;
+        passport.save(function (err, newPasswordObj) {
+          if (err) return res.send(400, {
+            message: 'Error storing new password.'
+          });
+
+          // Reset login
+          user.passwordAttempts = 0;
+          user.save(function(err, user) {
+            if (err) {
+              return res.send(400, {
+                message: 'Error resetting passwordAttempts',
+                error: err
+              });
+            }
+            // success, return true
+            return res.send(true);
+          });
         });
       });
+
     });
 
   },
