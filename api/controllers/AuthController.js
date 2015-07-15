@@ -103,10 +103,13 @@ var AuthController = {
       if (req.param('json')) {
         var message = (err === 'locked') ?
               'Your account has been locked, please reset your password.' :
+              (err === 'invalid domain') ?
+              'This email address is not from an approved domain. Please sign in with an official government email address. If you think this may be an error, please contact: ' + sails.config.systemEmail :
               'Invalid email address or password.';
         return res.send(403, { message: message });
       } else {
-        return res.redirect('/');
+        var errorMessage = (err === 'invalid domain') ? ('?error=' + err) : '';
+        return res.redirect('/' + errorMessage);
       }
 
     }
@@ -115,6 +118,8 @@ var AuthController = {
       if (err || !user) {
         sails.log.error('Authentication Error:', err);
         if (err === 'locked') return tryAgain(err);
+        if (err === 'invalid domain') return tryAgain(err);
+        if (err && err.originalError === 'invalid domain') return tryAgain(err.originalError);
         return tryAgain(challenges);
       }
 
