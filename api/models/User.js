@@ -85,7 +85,6 @@ module.exports = {
     // If configured, validate that user has an email from a valid domain
     if (sails.config.validateDomains && sails.config.domains) {
       if (!_.contains(sails.config.domains, values.username.split('@')[1])) {
-        console.log('failure is an option');
         return done('invalid domain');
       }
     }
