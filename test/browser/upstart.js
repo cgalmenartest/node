@@ -52,7 +52,8 @@ function start(err) {
     },
     hooks: {
       grunt: false
-    }
+    },
+    validateDomains: false
   };
 
   // Lift Sails and store the app reference
