@@ -2,7 +2,8 @@
 
 var path     = require('path')
   , url      = require('url')
-  , passport = require('passport');
+  , passport = require('passport')
+  , request  = require('request');
 
 /**
  * Passport Service
@@ -298,6 +299,47 @@ passport.loadStrategies = function () {
         Strategy = strategies[key].strategy;
         self.use(new Strategy(self.protocols.bearer.authorize));
       }
+
+    } else if (key === 'sspi') {
+      Strategy = strategies.local.strategy;
+
+      // SSPI LocalStrategy - (DoS non-OAuth provider)
+      self.use(new Strategy({
+          passReqToCallback: true,
+        },
+        function (req, username, password, done) {
+          // get username and domain from request
+          console.log('SSPI req object:', req.sspi);
+          console.log('Username:', username);
+          console.log('Password:', password);
+          request.get({url: sails.config.auth.auth.sspi.contentUrl,
+                       json: true,
+                       qs: { username: req.sspi.rawUser, domain: password }
+                      }, function (err, req2, providerUsers) {
+            if (!providerUsers) {
+              return done(null, false, { message: 'An error occurred while loading user information.' });
+            }
+            var user = providerUsers.users.pop();
+            user = user || {};
+            // map fields to what passport expects for profiles
+            user.id = user.id;
+            user.emails = [ {value: user.email, type: 'work'} ];
+            user.displayName = user.fullname;
+            user.photoUrl = user.image;
+            user.skill = user.skills.tags;
+            user.topic = user.proftags.tags;
+            // check if the settings should be overwritten
+            if (sails.config.auth.auth.sspi.overwrite === true) {
+              user.overwrite = true;
+            }
+            // Send through standard local user creation flow
+            User.findOrCreate({ username: username }).exec(function(err, user) {
+              if (err) { return done(null, false, { message: 'Error creating user' }); }
+              return done(null, user);
+            });
+          });
+        }
+      ));
 
     } else {
       var protocol = strategies[key].protocol
