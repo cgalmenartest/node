@@ -99,7 +99,7 @@ var AuthController = {
       }
       req.flash('form', req.body);
 
-      sails.log.error('Authentication Error:', err, flashError);
+      sails.log.verbose('Authentication Error:', err, flashError);
 
       var message = (err === 'locked') ?
             'Your account has been locked, please reset your password.' :
@@ -118,7 +118,7 @@ var AuthController = {
 
     passport.callback(req, res, function (err, user, challenges, statuses) {
       if (err || !user) {
-        sails.log.error('Authentication Error:', err);
+        sails.log.verbose('Authentication Error:', err);
         if (err === 'locked') return tryAgain(err);
         if (err === 'invalid domain') return tryAgain(err);
         if (err && err.originalError === 'invalid domain') return tryAgain(err.originalError);
