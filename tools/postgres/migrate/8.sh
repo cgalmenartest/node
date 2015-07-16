@@ -15,12 +15,16 @@ psql -U midas -d midas -c "CREATE TABLE passport (
     \"deletedAt\" timestamp with time zone
 );
 
+ALTER TABLE passport OWNER TO midas;
+
 CREATE SEQUENCE passport_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
+
+ALTER TABLE passport_id_seq OWNER TO midas;
 
 ALTER SEQUENCE passport_id_seq OWNED BY passport.id;
 
