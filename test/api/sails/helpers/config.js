@@ -16,9 +16,9 @@ module.exports = {
     'name': 'Admin User',
     'username': 'admin@midascrowd.com',
     'password': 'Adm1nTest123$#',
-    'isAdmin': true
   },
   'testPasswordResetUser': {
+    'name': 'Password Reset User',
     'username': 'testreset@midascrowd.com',
     'password': 'Test123$',
     'newpassword': 'FooBar123#'
