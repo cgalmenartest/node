@@ -62,7 +62,7 @@ module.exports = function sspi (req, res, next) {
         }
         if (typeof req.user != 'array')
         {
-          req.user = [req.user];
+          req.user = req.user;
         }
         // set the session creation time
         req.session.createdAt = new Date();

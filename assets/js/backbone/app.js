@@ -52,7 +52,7 @@ $(function () {
         message: jqXHR.responseJSON.message || ""
       });
     } else {
-      $('.alert')
+      $('.alert-global')
         .html("<strong>" + errorText + "</strong>. " + jqXHR.responseJSON.message || "")
         .show();
     }

@@ -16,7 +16,7 @@ module.exports = function authenticated (req, res, next) {
 
       // If logged in, set the user
       if (user) {
-        req.user = [user];
+        req.user = user;
         return next();
       }
 

@@ -48,7 +48,6 @@
     <!-- RIGHT MAIN BAR -->
     <% if (edit) { %> <!-- in edit mode -->
     <div class="box box-main">
-      <div id="emailModal"></div>
 
       <form class="form-horizontal" role="form" id="profile-form">
         <h1>
@@ -93,8 +92,8 @@
         <div class="form-group">
           <label for="profile-email" class="col-md-3 control-label">Email</label>
           <div class="col-md-9">
-            <input type="text" class="form-control" id="profile-email" name="email"
-              placeholder="Email" value="<% if (email) { %><%- email.email %><% } %>">
+            <input type="text" class="form-control" id="profile-email" name="username"
+              placeholder="Email" value="<%- email %>">
             <div id="email-update-alert" class="alert alert-warning" style="display:none;"></div>
           </div>
         </div>
@@ -198,14 +197,12 @@
       <div class="box-pad-lr box-pad-t">
         <div class="row">
           <div class="col-xs-3 col-sm-3 col-md-3">
-            Email<% if (data.emails.length > 1) { %>s<% }%>:
+            Email:
           </div>
           <div class="col-xs-9 col-sm-9 col-md-9">
-            <% for (var e = 0; e < data.emails.length; e++) { %>
-              <% if (data.emails[e].isPrimary) { %>x<% } %>
-              <%- data.emails[e].email %><br/>
-            <% } %>
-            <% if (data.emails.length == 0) { %>
+            <% if (email) { %>
+            <%- email %>
+            <% } else { %>
             No email addresses
             <% } %>
           </div>
@@ -220,8 +217,9 @@
             <% if (data.auths.length === 0) { %>
               No connected accounts.
             <% } %>
-            <% _.each(login.oauth, function (a) { %>
-              <% if (_.contains(data.auths, a)) { %>
+            <% _.each(login.oauth, function (a) { console.log(a); %>
+
+              <% if (_(data.auths).chain().pluck('provider').contains(a).value()) { %>
               <div>
                 <%- login.config[a].name %>
                 <span class="label label-success">Connected</span>

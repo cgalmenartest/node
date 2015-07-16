@@ -9,10 +9,12 @@
 var exportUtils = require('../services/utils/export');
 
 module.exports = {
+  schema: true,
   tableName: 'midas_user',
   attributes: {
     // Login information
-    username: 'STRING',
+    username: { type: 'email', unique: true },
+    passports : { collection: 'Passport', via: 'user' },
 
     // Core attributes about a user
     name: 'STRING',
@@ -53,6 +55,12 @@ module.exports = {
       collection: 'tagEntity',
       via: 'users',
       dominant: true
+    },
+
+    toJSON: function() {
+      var obj = this.toObject();
+      delete obj.passports;
+      return obj;
     }
   },
 
