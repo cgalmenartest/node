@@ -46,7 +46,7 @@ before(function(done) {
 
     //Add temp userauth
     sails.models.passport.create({
-      user: 4,
+      user: 1,
       provider: 'test',
       protocol: 'test',
       accessToken: 'testCode'
