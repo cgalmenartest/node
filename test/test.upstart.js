@@ -17,13 +17,14 @@ before(function(done) {
     log: {
       level: 'error'
     },
+    validateDomains: false,
     hooks: {
       grunt: false,
       sockets: false,
       pubsub: false,
       csrf: false
     }
-  }
+  };
 
   if (process.env.NODE_ENV == 'test') {
     // remove the database directories
@@ -32,7 +33,7 @@ before(function(done) {
     }
     config.adapters = {
       'default': 'disk'
-    }
+    };
   }
   // Lift Sails and store the app reference
   require('sails').lift(config, function(e, s) {
@@ -43,13 +44,14 @@ before(function(done) {
     // save reference for teardown function
 
     //Add temp userauth
-    sails.models.userauth.create({
-      userId: 4,
+    sails.models.passport.create({
+      user: 4,
       provider: 'test',
+      protocol: 'test',
       accessToken: 'testCode'
     }, function(err, model) {
       done(err);
-    })
+    });
   });
 
 });

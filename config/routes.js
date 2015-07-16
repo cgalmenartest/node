@@ -99,6 +99,8 @@ module.exports.routes = {
 
   'post /api/auth/disconnect/:provider': 'AuthController.disconnect',
 
+  'get /api/auth/checkToken/:token': 'AuthController.checkToken',
+
   'get /api/auth/:provider': 'AuthController.provider',
   'get /api/auth/callback/:provider': 'AuthController.callback',
   'get /api/auth/:provider/:action': 'AuthController.callback'

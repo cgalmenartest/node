@@ -1,6 +1,7 @@
 module.exports = {
   // used if no other user is specified
   'defaultUser': {
+    'name': 'Default User',
     'username': 'tester1@midascrowd.com',
     'password': 'TestTest123#'
   },
@@ -12,8 +13,10 @@ module.exports = {
   },
   // for the admin test suite
   'adminUser': {
+    'name': 'Admin User',
     'username': 'admin@midascrowd.com',
-    'password': 'Adm1nTest123$#'
+    'password': 'Adm1nTest123$#',
+    'isAdmin': true
   },
   'testPasswordResetUser': {
     'username': 'testreset@midascrowd.com',

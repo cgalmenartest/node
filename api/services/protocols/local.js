@@ -127,19 +127,19 @@ exports.connect = function (req, res, next) {
  * @param {Function} next
  */
 exports.login = function (req, identifier, password, next) {
-  var query   = {};
-
-  query.username = identifier;
+  var query = { username: identifier },
+      maxAttempts = sails.config.auth.auth.local.passwordAttempts;
 
   User.findOne(query, function (err, user) {
-    if (err) {
-      return next(err);
-    }
+    if (err) return next(err);
 
     if (!user) {
       req.flash('error', 'Error.Passport.Username.NotFound');
-
       return next(null, false);
+    }
+
+    if (maxAttempts > 0 && user.passwordAttempts >= maxAttempts) {
+      return next('locked');
     }
 
     Passport.findOne({
@@ -153,8 +153,14 @@ exports.login = function (req, identifier, password, next) {
           }
 
           if (!res) {
-            req.flash('error', 'Error.Passport.Password.Wrong');
-            return next(null, false);
+            user.passwordAttempts++;
+            user.save(function() {
+              if (maxAttempts > 0 && user.passwordAttempts >= maxAttempts) {
+                return next('locked');
+              }
+              req.flash('error', 'Error.Passport.Password.Wrong');
+              return next(null, false);
+            });
           } else {
             return next(null, user);
           }
