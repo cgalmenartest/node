@@ -9,10 +9,12 @@
 var exportUtils = require('../services/utils/export');
 
 module.exports = {
+  schema: true,
   tableName: 'midas_user',
   attributes: {
     // Login information
-    username: 'STRING',
+    username: { type: 'email', unique: true },
+    passports : { collection: 'Passport', via: 'user' },
 
     // Core attributes about a user
     name: 'STRING',
@@ -53,6 +55,12 @@ module.exports = {
       collection: 'tagEntity',
       via: 'users',
       dominant: true
+    },
+
+    toJSON: function() {
+      var obj = this.toObject();
+      delete obj.passports;
+      return obj;
     }
   },
 
@@ -71,6 +79,16 @@ module.exports = {
     'bio': {field: 'bio', filter: exportUtils.nullToEmptyString},
     'admin': 'isAdmin',
     'disabled': 'disabled'
+  },
+
+  beforeCreate: function(values, done) {
+    // If configured, validate that user has an email from a valid domain
+    if (sails.config.validateDomains && sails.config.domains) {
+      if (!_.contains(sails.config.domains, values.username.split('@')[1])) {
+        return done('invalid domain');
+      }
+    }
+    done();
   },
 
   afterCreate: function(model, done) {

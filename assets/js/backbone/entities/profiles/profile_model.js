@@ -77,18 +77,18 @@ var Backbone = require('backbone');
 				});
 			});
 
-			this.listenTo(this, "profile:removeAuth", function(id) {
+			this.listenTo(this, "profile:removeAuth", function(service) {
 				$.ajax({
-					url: '/api/userauth/' + id,
-					method: 'DELETE'
+					url: '/api/auth/disconnect/' + service,
+					method: 'POST'
 				}).done(function(data) {
 					_this.fetch({
 						success: function(model) {
-							_this.trigger("profile:removeAuth:success", model, id);
+							_this.trigger("profile:removeAuth:success", model, service);
 						}
 					});
 				}).fail(function(data) {
-					_this.trigger("profile:removeAuth:fail", data, id);
+					_this.trigger("profile:removeAuth:fail", data, service);
 				});
 			});
 
