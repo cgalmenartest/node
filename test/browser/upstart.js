@@ -53,7 +53,8 @@ function start(err) {
     hooks: {
       grunt: false
     },
-    validateDomains: false
+    validateDomains: false,
+    emailProtocol: ''
   };
 
   // Lift Sails and store the app reference

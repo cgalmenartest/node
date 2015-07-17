@@ -39,7 +39,61 @@ describe('user:', function() {
       done(err);
     });
   });
-  it('register', function (done) {
+  it('register with domain block (failure)', function (done) {
+    sails.config.validateDomains = true;
+    request.post({ url: conf.url + '/auth/local',
+                   form: {
+                     username: conf.DomainBlockedUser.username,
+                     password: conf.DomainBlockedUser.password,
+                     json: true
+                   },
+                 }, function (err, response, body) {
+      if (err) { return done(err); }
+      assert.equal(response.statusCode, 403);
+      request.post({ url: conf.url + '/auth/local/register',
+                     form: { name: conf.DomainBlockedUser.name, username: conf.DomainBlockedUser.username, password: conf.DomainBlockedUser.password, json: true },
+                   }, function (err, response, body) {
+        if (err) { return done(err); }
+        // Should be Blocked
+        assert.equal(response.statusCode, 403);
+        var b = JSON.parse(body);
+        assert(b.message.indexOf('This email address is not from an approved domain') === 0);
+        done();
+      });
+    });
+  });
+  it('register with domain block (success)', function (done) {
+    sails.config.validateDomains = true;
+    request.post({ url: conf.url + '/auth/local',
+                   form: {
+                     username: conf.DomainAllowedUser.username,
+                     password: conf.DomainAllowedUser.password,
+                     json: true
+                   },
+                 }, function (err, response, body) {
+      if (err) { return done(err); }
+      assert.equal(response.statusCode, 403);
+      request.post({ url: conf.url + '/auth/local/register',
+                     form: { name: conf.DomainAllowedUser.name, username: conf.DomainAllowedUser.username, password: conf.DomainAllowedUser.password, json: true },
+                   }, function (err, response, body) {
+        if (err) { return done(err); }
+        // Should be allowed
+        assert.equal(response.statusCode, 200);
+        var b = JSON.parse(body);
+        assert.equal(b.username, conf.DomainAllowedUser.username);
+        assert.equal(b.name, conf.DomainAllowedUser.name);
+        // reset domain block to false
+        sails.config.validateDomains = false;
+        // logout at end of test
+        request(conf.url + '/auth/logout', function (err, response, body) {
+          if (err) { return done(err); }
+          done();
+        });
+
+      });
+    });
+  });
+  it('register without domain block', function (done) {
     request.post({ url: conf.url + '/auth/local',
                    form: { username: conf.testUser.username, password: conf.testUser.password, json: true },
                  }, function (err, response, body) {

@@ -23,6 +23,17 @@ module.exports = {
     'password': 'Test123$',
     'newpassword': 'FooBar123#'
   },
+  'DomainBlockedUser': {
+    'name': 'Domain Blocked User',
+    'username': 'testerblocked@midascrowd.com',
+    'password': 'TestTest1234#'
+  },
+  'DomainAllowedUser': {
+    'name': 'Domain Allowed User',
+    'username': 'hhttillykolvpcqgxgop@gsa.gov',
+    'password': 'TestTest1234#'
+  },
+
   'url': 'http://localhost:1337/api',
   'sails': {
       log: {

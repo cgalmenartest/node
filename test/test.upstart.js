@@ -19,6 +19,7 @@ before(function(done) {
       level: 'error'
     },
     validateDomains: false,
+    emailProtocol: '',
     hooks: {
       grunt: false,
       sockets: false,
