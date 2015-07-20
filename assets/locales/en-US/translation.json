@@ -17,6 +17,13 @@
   "task" : "opportunity",
   "taskPlural" : "opportunities",
 
+  "Profile": "Person",
+  "ProfilePlural": "People",
+  "ProfileIndefinite" : "Someone",
+  "ProfilePluralIndefinite": "Some people",
+  "profile" : "person",
+  "profilePlural" : "people",
+
   "SaveTask"  : "Save Opportunity",
 
   "like" : "like",

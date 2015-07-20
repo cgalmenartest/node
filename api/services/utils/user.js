@@ -164,7 +164,7 @@ module.exports = {
             return {
               provider: passport.provider,
               id: passport.id,
-              token: passport.tokens.accessToken
+              token: passport.accessToken || passport.tokens.accessToken
             };
           }).value();
 

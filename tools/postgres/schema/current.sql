@@ -361,16 +361,16 @@ ALTER SEQUENCE midas_user_id_seq OWNED BY midas_user.id;
 --
 
 CREATE TABLE notification (
+    action text,
+    model json,
     "callerId" integer,
     "callerType" text,
     "triggerGuid" text,
-    action text,
     audience text,
     "recipientId" integer,
     "createdDate" timestamp with time zone,
     "localParams" text,
     "globalParams" text,
-    "model" json,
     "isActive" boolean,
     id integer NOT NULL,
     "createdAt" timestamp with time zone,
@@ -400,6 +400,48 @@ ALTER TABLE notification_id_seq OWNER TO midas;
 --
 
 ALTER SEQUENCE notification_id_seq OWNED BY notification.id;
+
+
+--
+-- Name: passport; Type: TABLE; Schema: public; Owner: midas; Tablespace:
+--
+
+CREATE TABLE passport (
+    protocol text,
+    password text,
+    "accessToken" text,
+    provider text,
+    identifier text,
+    tokens json,
+    "user" integer,
+    id integer NOT NULL,
+    "createdAt" timestamp with time zone,
+    "updatedAt" timestamp with time zone,
+    "deletedAt" timestamp with time zone
+);
+
+
+ALTER TABLE passport OWNER TO midas;
+
+--
+-- Name: passport_id_seq; Type: SEQUENCE; Schema: public; Owner: midas
+--
+
+CREATE SEQUENCE passport_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE passport_id_seq OWNER TO midas;
+
+--
+-- Name: passport_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: midas
+--
+
+ALTER SEQUENCE passport_id_seq OWNED BY passport.id;
 
 
 --
@@ -1138,6 +1180,13 @@ ALTER TABLE ONLY notification ALTER COLUMN id SET DEFAULT nextval('notification_
 -- Name: id; Type: DEFAULT; Schema: public; Owner: midas
 --
 
+ALTER TABLE ONLY passport ALTER COLUMN id SET DEFAULT nextval('passport_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: midas
+--
+
 ALTER TABLE ONLY project ALTER COLUMN id SET DEFAULT nextval('project_id_seq'::regclass);
 
 
@@ -1318,11 +1367,27 @@ ALTER TABLE ONLY midas_user
 
 
 --
+-- Name: midas_user_username_key; Type: CONSTRAINT; Schema: public; Owner: midas; Tablespace:
+--
+
+ALTER TABLE ONLY midas_user
+    ADD CONSTRAINT midas_user_username_key UNIQUE (username);
+
+
+--
 -- Name: notification_pkey; Type: CONSTRAINT; Schema: public; Owner: midas; Tablespace:
 --
 
 ALTER TABLE ONLY notification
     ADD CONSTRAINT notification_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: passport_pkey; Type: CONSTRAINT; Schema: public; Owner: midas; Tablespace:
+--
+
+ALTER TABLE ONLY passport
+    ADD CONSTRAINT passport_pkey PRIMARY KEY (id);
 
 
 --
