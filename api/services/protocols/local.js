@@ -28,7 +28,11 @@ var crypto    = require('crypto');
 exports.register = function (req, res, next) {
   var name = req.param('name')
     , username = req.param('username')
-    , password = req.param('password');
+    , password = req.param('password')
+    , agencyID = parseInt(req.param('agency').id)
+    , locationID = parseInt(req.param('location').id);
+
+    console.log('req', req);
 
   if (!username) {
     req.flash('error', 'Error.Passport.Username.Missing');
@@ -38,6 +42,16 @@ exports.register = function (req, res, next) {
   if (!password) {
     req.flash('error', 'Error.Passport.Password.Missing');
     return next(new Error('No password was entered.'));
+  }
+
+  if (!agencyID) {
+    req.flash('error', 'Error.Passport.Password.Missing');
+    return next(new Error('No agency was entered.'));
+  }
+
+  if (!locationID) {
+    req.flash('error', 'Error.Passport.Password.Missing');
+    return next(new Error('No location was entered.'));
   }
 
   User.create({
@@ -52,26 +66,34 @@ exports.register = function (req, res, next) {
       return next(err);
     }
 
-    // Generating accessToken for API authentication
-    var token = crypto.randomBytes(48).toString('base64');
-
-    Passport.create({
-      protocol    : 'local'
-    , password    : password
-    , user        : user.id
-    , accessToken : token
-    }, function (err, passport) {
+    // Add location and agency tags
+    user.tags.add([agencyID, locationID]);
+    user.save(function(err) {
       if (err) {
-        if (err.code === 'E_VALIDATION') {
-          req.flash('error', 'Error.Passport.Password.Invalid');
-        }
-
-        return user.destroy(function (destroyErr) {
-          next(destroyErr || err);
-        });
+        return next(err);
       }
 
-      next(null, user);
+      // Generating accessToken for API authentication
+      var token = crypto.randomBytes(48).toString('base64');
+
+      Passport.create({
+        protocol    : 'local'
+      , password    : password
+      , user        : user.id
+      , accessToken : token
+      }, function (err, passport) {
+        if (err) {
+          if (err.code === 'E_VALIDATION') {
+            req.flash('error', 'Error.Passport.Password.Invalid');
+          }
+
+          return user.destroy(function (destroyErr) {
+            next(destroyErr || err);
+          });
+        }
+
+        next(null, user);
+      });
     });
   });
 };
