@@ -3,6 +3,8 @@
 var validator = require('validator');
 var crypto    = require('crypto');
 
+var config = require('../../../config/settings/auth');
+
 /**
  * Local Authentication Protocol
  *
@@ -29,10 +31,7 @@ exports.register = function (req, res, next) {
   var name = req.param('name')
     , username = req.param('username')
     , password = req.param('password')
-    , agencyID = parseInt(req.param('agency').id)
-    , locationID = parseInt(req.param('location').id);
-
-    console.log('req', req);
+    , agencyID, locationID;
 
   if (!username) {
     req.flash('error', 'Error.Passport.Username.Missing');
@@ -44,14 +43,20 @@ exports.register = function (req, res, next) {
     return next(new Error('No password was entered.'));
   }
 
-  if (!agencyID) {
-    req.flash('error', 'Error.Passport.Password.Missing');
-    return next(new Error('No agency was entered.'));
+  if (config.auth.local.requireAgency) {
+    agencyID = parseInt(req.param('agency').id);
+    if (!agencyID) {
+      req.flash('error', 'Error.Passport.Password.Missing');
+      return next(new Error('No agency was entered.'));
+    }
   }
 
-  if (!locationID) {
-    req.flash('error', 'Error.Passport.Password.Missing');
-    return next(new Error('No location was entered.'));
+  if (config.auth.local.requireLocation) {
+    locationID = parseInt(req.param('location').id);
+    if (!locationID) {
+      req.flash('error', 'Error.Passport.Password.Missing');
+      return next(new Error('No location was entered.'));
+    }
   }
 
   User.create({
@@ -66,8 +71,16 @@ exports.register = function (req, res, next) {
       return next(err);
     }
 
-    // Add location and agency tags
-    user.tags.add([agencyID, locationID]);
+    // Add location and agency tags if configured
+    if (config.auth.local.requireAgency) {
+      user.tags.add(agencyID);
+    }
+    if (config.auth.local.requireLocation) {
+      user.tags.add(locationID);
+    }
+
+    // Calling save in the even that added tags above. Otherwise, should be called
+    // but shouldn't change any attributes of the model
     user.save(function(err) {
       if (err) {
         return next(err);
