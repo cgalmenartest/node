@@ -183,10 +183,16 @@ var LoginView = Backbone.View.extend({
       name: this.$("#rname").val(),
       username: this.$("#rusername").val(),
       password: this.$("#rpassword").val(),
-      agency: this.$("#ragency").select2('data'),
-      location: this.$("#rlocation").select2('data'),
       json: true
     };
+
+    if (this.options.login.agency.enabled === true) {
+      data.agency = this.$("#ragency").select2('data');
+    }
+
+    if (this.options.login.location.enabled === true) {
+      data.location = this.$("#rlocation").select2('data');
+    }
 
     console.log('data', data);
     // Add in additional, optional fields
