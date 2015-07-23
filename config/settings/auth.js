@@ -10,10 +10,7 @@ module.exports = {
       // number of attempts before locking out the user
       passwordAttempts : 5,
       // expire password reset tokens after this many milliseconds
-      tokenExpiration  : 60*60*1000,
-      // require agency or location (or both) on signup
-      requireAgency: true,
-      requireLocation: false
+      tokenExpiration  : 60*60*1000
     },
     linkedin : {
       overwrite   : false
