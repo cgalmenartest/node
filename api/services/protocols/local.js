@@ -43,20 +43,20 @@ exports.register = function (req, res, next) {
     return next(new Error('No password was entered.'));
   }
 
-  if (config.auth.local.requireAgency) {
-    agencyID = parseInt(req.param('agency').id);
-    if (!agencyID) {
+  if (sails.config.requireAgency) {
+    if (_.isUndefined(req.param('agency'))) {
       req.flash('error', 'Error.Passport.Password.Missing');
       return next(new Error('No agency was entered.'));
     }
+    agencyID = parseInt(req.param('agency').id);
   }
 
-  if (config.auth.local.requireLocation) {
-    locationID = parseInt(req.param('location').id);
-    if (!locationID) {
+  if (sails.config.requireLocation) {
+    if (_.isUndefined(req.param('location'))) {
       req.flash('error', 'Error.Passport.Password.Missing');
       return next(new Error('No location was entered.'));
     }
+    locationID = parseInt(req.param('location').id);
   }
 
   User.create({
@@ -72,10 +72,10 @@ exports.register = function (req, res, next) {
     }
 
     // Add location and agency tags if configured
-    if (config.auth.local.requireAgency) {
+    if (sails.config.requireAgency) {
       user.tags.add(agencyID);
     }
-    if (config.auth.local.requireLocation) {
+    if (sails.config.requireLocation) {
       user.tags.add(locationID);
     }
 
