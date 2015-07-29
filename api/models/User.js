@@ -81,6 +81,11 @@ module.exports = {
     'disabled': 'disabled'
   },
 
+  beforeValidate: function(values, done) {
+    values.username = values.username.toLowerCase();
+    done();
+  },
+
   beforeCreate: function(values, done) {
     // If configured, validate that user has an email from a valid domain
     if (sails.config.validateDomains && sails.config.domains) {
