@@ -48,7 +48,7 @@ exports.register = function (req, res, next) {
       req.flash('error', 'Error.Passport.Password.Missing');
       return next(new Error('No agency was entered.'));
     }
-    agencyID = parseInt(req.param('agency').id);
+    agencyID = parseInt(req.param('agency').id, 10);
   }
 
   if (sails.config.requireLocation) {
@@ -56,7 +56,7 @@ exports.register = function (req, res, next) {
       req.flash('error', 'Error.Passport.Password.Missing');
       return next(new Error('No location was entered.'));
     }
-    locationID = parseInt(req.param('location').id);
+    locationID = parseInt(req.param('location').id, 10);
   }
 
   User.create({
