@@ -162,7 +162,7 @@ exports.connect = function (req, res, next) {
  * @param {Function} next
  */
 exports.login = function (req, identifier, password, next) {
-  var query = { username: identifier },
+  var query = { username: identifier.toLowerCase() },
       maxAttempts = sails.config.auth.auth.local.passwordAttempts;
 
   User.findOne(query, function (err, user) {
