@@ -62,8 +62,7 @@ var LoginView = Backbone.View.extend({
               type:"location",
               selector:"#rlocation",
               width: "100%",
-              multiple: false,
-              allowCreate: false
+              multiple: false
             });
       }
 
@@ -152,7 +151,7 @@ var LoginView = Backbone.View.extend({
     }
 
     var abort = false;
-    for (i in validateIds) {
+    for (var i in validateIds) {
       var iAbort = validate({ currentTarget: validateIds[i] });
       abort = abort || iAbort;
     }
@@ -183,22 +182,36 @@ var LoginView = Backbone.View.extend({
       name: this.$("#rname").val(),
       username: this.$("#rusername").val(),
       password: this.$("#rpassword").val(),
+      tags: [],
       json: true
     };
 
     if (this.options.login.agency.enabled === true) {
-      data.agency = this.$("#ragency").select2('data');
+      data.tags.push(this.$("#ragency").select2('data'));
     }
 
     if (this.options.login.location.enabled === true) {
-      data.location = this.$("#rlocation").select2('data');
+      data.tags.push(this.$("#rlocation").select2('data'));
     }
 
-    console.log('data', data);
     // Add in additional, optional fields
     if (this.options.login.terms.enabled === true) {
-      data['terms'] = (this.$("#rterms").val() == "on");
+      data.terms = (this.$("#rterms").val() === "on");
     }
+
+    // Process tags
+    data.tags = _(data.tags).chain()
+      .filter(function(tag) {
+        return _(tag).isObject() && !tag.context;
+      })
+      .map(function(tag) {
+        return (tag.id && tag.id !== tag.name) ? +tag.id : {
+          name: tag.name,
+          type: tag.tagType,
+          data: tag.data
+        };
+      }).unique().value();
+
     // Post the registration request to the server
     $.ajax({
       url: '/api/auth/local/register',
@@ -300,7 +313,7 @@ var LoginView = Backbone.View.extend({
   checkPasswordConfirm: function (e) {
     var success = true;
     var password = this.$("#rpassword").val();
-    var confirm = this.$("#rpassword-confirm").val()
+    var confirm = this.$("#rpassword-confirm").val();
     if (password === confirm) {
       $("#rpassword-confirm").closest(".form-group").find(".help-block").hide();
     } else {

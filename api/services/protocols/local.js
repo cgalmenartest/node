@@ -29,7 +29,7 @@ exports.register = function (req, res, next) {
   var name = req.param('name')
     , username = req.param('username')
     , password = req.param('password')
-    , tags = [];
+    , tags = req.param('tags');
 
   if (!username) {
     req.flash('error', 'Error.Passport.Username.Missing');
@@ -39,22 +39,6 @@ exports.register = function (req, res, next) {
   if (!password) {
     req.flash('error', 'Error.Passport.Password.Missing');
     return next(new Error('No password was entered.'));
-  }
-
-  if (sails.config.requireAgency) {
-    if (_.isUndefined(req.param('agency'))) {
-      req.flash('error', 'Error.Passport.Password.Missing');
-      return next(new Error('No agency was entered.'));
-    }
-    if (req.param('agency').id) tags.push(parseInt(req.param('agency').id, 10));
-  }
-
-  if (sails.config.requireLocation) {
-    if (_.isUndefined(req.param('location'))) {
-      req.flash('error', 'Error.Passport.Password.Missing');
-      return next(new Error('No location was entered.'));
-    }
-    if (req.param('location').id) tags.push(parseInt(req.param('location').id, 10));
   }
 
   User.create({
