@@ -3,8 +3,6 @@
 var validator = require('validator');
 var crypto    = require('crypto');
 
-var config = require('../../../config/settings/auth');
-
 /**
  * Local Authentication Protocol
  *
@@ -31,7 +29,7 @@ exports.register = function (req, res, next) {
   var name = req.param('name')
     , username = req.param('username')
     , password = req.param('password')
-    , agencyID, locationID;
+    , tags = [];
 
   if (!username) {
     req.flash('error', 'Error.Passport.Username.Missing');
@@ -48,7 +46,7 @@ exports.register = function (req, res, next) {
       req.flash('error', 'Error.Passport.Password.Missing');
       return next(new Error('No agency was entered.'));
     }
-    agencyID = parseInt(req.param('agency').id, 10);
+    if (req.param('agency').id) tags.push(parseInt(req.param('agency').id, 10));
   }
 
   if (sails.config.requireLocation) {
@@ -56,12 +54,13 @@ exports.register = function (req, res, next) {
       req.flash('error', 'Error.Passport.Password.Missing');
       return next(new Error('No location was entered.'));
     }
-    locationID = parseInt(req.param('location').id, 10);
+    if (req.param('location').id) tags.push(parseInt(req.param('location').id, 10));
   }
 
   User.create({
     username : username,
-    name: name
+    name: name,
+    tags: tags
   }, function (err, user) {
     if (err) {
       if (err.code === 'E_VALIDATION') {
@@ -71,42 +70,26 @@ exports.register = function (req, res, next) {
       return next(err);
     }
 
-    // Add location and agency tags if configured
-    if (sails.config.requireAgency) {
-      user.tags.add(agencyID);
-    }
-    if (sails.config.requireLocation) {
-      user.tags.add(locationID);
-    }
+    // Generating accessToken for API authentication
+    var token = crypto.randomBytes(48).toString('base64');
 
-    // Calling save in the even that added tags above. Otherwise, should be called
-    // but shouldn't change any attributes of the model
-    user.save(function(err) {
+    Passport.create({
+      protocol    : 'local'
+    , password    : password
+    , user        : user.id
+    , accessToken : token
+    }, function (err, passport) {
       if (err) {
-        return next(err);
-      }
-
-      // Generating accessToken for API authentication
-      var token = crypto.randomBytes(48).toString('base64');
-
-      Passport.create({
-        protocol    : 'local'
-      , password    : password
-      , user        : user.id
-      , accessToken : token
-      }, function (err, passport) {
-        if (err) {
-          if (err.code === 'E_VALIDATION') {
-            req.flash('error', 'Error.Passport.Password.Invalid');
-          }
-
-          return user.destroy(function (destroyErr) {
-            next(destroyErr || err);
-          });
+        if (err.code === 'E_VALIDATION') {
+          req.flash('error', 'Error.Passport.Password.Invalid');
         }
 
-        next(null, user);
-      });
+        return user.destroy(function (destroyErr) {
+          next(destroyErr || err);
+        });
+      }
+
+      next(null, user);
     });
   });
 };
