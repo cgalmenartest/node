@@ -14,7 +14,8 @@ var TaskFormView = Backbone.View.extend({
 
   events: {
     "change .validate"        : "v",
-    "change #task-location" : "locationChange"
+    "change #task-location"   : "locationChange",
+    "click #create-button"    : "submit"
   },
 
   initialize: function (options) {
@@ -79,8 +80,6 @@ var TaskFormView = Backbone.View.extend({
     this.initializeSelect2();
     this.initializeTextArea();
 
-    // Important: Hide all non-currently opened sections of wizard.
-    // this.$("section:not(.current)").hide();
     this.$el.i18n();
 
     // Return this for chaining.
@@ -91,32 +90,15 @@ var TaskFormView = Backbone.View.extend({
     return validate(e);
   },
 
-  // childNext: function (e, current) {
-  //   // find all the validation elements
-  //   var children = current.find('.validate');
-  //   var abort = false;
-  //   _.each(children, function (child) {
-  //     var iAbort = validate({ currentTarget: child });
-  //     abort = abort || iAbort;
-  //   });
-  //   return abort;
-  // },
-
   initializeSelect2: function () {
     var self = this;
 
     self.tagFactory.createTagDropDown({type:"skill",selector:"#task_tag_skills",width: "100%",tokenSeparators: [","]});
     self.tagFactory.createTagDropDown({type:"location",selector:"#task_tag_location",tokenSeparators: [","]});
 
-    self.$(".el-specific-location").hide();
-
     // ------------------------------ //
     // PRE-DEFINED SELECT MENUS BELOW //
     // ------------------------------ //
-    self.$("#skills-required").select2({
-      placeholder: "Required/Not Required",
-      width: 'resolve'
-    });
 
     self.$("#time-required").select2({
       placeholder: 'Time Commitment',
@@ -159,6 +141,57 @@ var TaskFormView = Backbone.View.extend({
     } else {
       this.$(".el-specific-location").hide();
     }
+  },
+
+  validateBeforeSubmit: function (fields) {
+    var self  = this,
+        valid = true;
+    fields.forEach(function (field) {
+      // remember: this.v() return true if there IS a validation error
+      // it returns false if there is not
+      var i = self.v({ currentTarget: field });
+      console.log(field, i);
+      i === true ? valid = false : valid = true;
+    });
+
+    return valid;
+  },
+
+  submit: function (e) {
+    var fieldsToValidate  = ['#task-title', '#task-description', '#task-responsibilities'],
+        validForm         = this.validateBeforeSubmit(fieldsToValidate),
+        data;
+
+    if (!validForm) return this;
+
+    function getTags() {
+      var tags = [];
+      tags.push.apply(tags,this.$("#task_tag_skills").select2('data'));
+      tags.push.apply(tags,this.$("#task_tag_location").select2('data'));
+      tags.push.apply(tags,[this.$("[name=task-time-required]:checked").val()]);
+      tags.push.apply(tags,[this.$("#time-estimate").select2('data')]);
+      tags.push.apply(tags,[this.$("#length").select2('data')]);
+      return _(tags).map(function(tag) {
+        console.log('tag', tag);
+        return (tag.id && tag.id !== tag.name) ? +tag.id : {
+          name: tag.name,
+          type: tag.tagType,
+          data: tag.data
+        };
+      });
+      return tags;
+    }
+
+    data = {
+      'title'      : this.$('#task-title').val(),
+      'description': this.$('#task-description').val(),
+      'tags'       : getTags()
+    };
+
+    console.log('submitting with', data);
+    this.collection.addAndSave(data);
+
+    return this;
   },
 
   cleanup: function () {
