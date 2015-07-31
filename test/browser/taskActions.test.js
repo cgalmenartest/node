@@ -67,45 +67,26 @@ describe('Task actions', function() {
     // Click +opportunity
     casper.then(function() {
       casper.click('.add-opportunity');
-      casper.wait(2 * 1000); // wait for modal to open
     });
+
+    // Fill out the form
+    casper.then(function() {
+      casper.fillSelectors('#task-form', {
+        '#task-title': config.task.title,
+        '#task-description': config.task.description,
+        '#anywhere': true
+      });
+    }, false);
+
 
     // Agree to terms
     casper.then(function() {
       casper.click('#task-responsibilities');
-      casper.click('#wizard-forward-button');
-      casper.waitForSelector('#task-title');
-    });
-
-    // Fill out title
-    casper.then(function() {
-      casper.fillSelectors('#task-form', {
-        '#task-title': config.task.title
-      });
-      casper.click('#wizard-forward-button');
-      casper.waitForSelector('#s2id_people');
-    }, false);
-
-    // Select number of people for task and a new tag to task
-    casper.then(function() {
-      casper.fillSelectors('#task-form', {
-        '#people': config.task.people.id
-      }, false);
-      casper.click('#wizard-forward-button');
-      casper.click('#wizard-forward-button');
-    });
-
-    // Fill out description
-    casper.then(function() {
-      casper.fillSelectors('#task-form', {
-        '#task-description': config.task.description
-      });
-      casper.waitUntilVisible('#wizard-create-button');
     });
 
     // Click "Create"
     casper.then(function() {
-      casper.click('#wizard-create-button');
+      casper.click('#create-button');
       casper.waitForSelector('.edit-task-section');
     });
 
@@ -116,7 +97,6 @@ describe('Task actions', function() {
           people = casper.fetchText('#task-people-empty+li').trim();
       assert.equal(config.task.title, title);
       assert.equal(config.task.description, description);
-      assert.equal(config.task.people.name, people);
     });
   });
 
@@ -145,7 +125,6 @@ describe('Task actions', function() {
           people = casper.fetchText('#task-people-empty+li').trim();
       assert.equal(config.task.titleChange, title);
       assert.equal(config.task.descriptionChange, description);
-      assert.equal(config.task.people.name, people);
     });
 
   });
