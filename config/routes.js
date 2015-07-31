@@ -56,6 +56,10 @@ module.exports.routes = {
     controller: 'main',
     action: 'index'
   },
+  '/tasks/new': {
+    controller: 'main',
+    action: 'index'
+  },
   '/tasks/:unknownRoute': {
     controller: 'main',
     action: 'index'
