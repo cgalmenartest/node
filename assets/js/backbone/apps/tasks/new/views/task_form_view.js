@@ -8,10 +8,9 @@ var TasksCollection = require('../../../../entities/tasks/tasks_collection');
 var TaskFormTemplate = require('../templates/task_form_template.html');
 var TagFactory = require('../../../../components/tag_factory');
 
-
 var TaskFormView = Backbone.View.extend({
 
-  el: "#task-list-wrapper",
+  el: "#container",
 
   events: {
     "change .validate"        : "v",
@@ -32,7 +31,7 @@ var TaskFormView = Backbone.View.extend({
 
   initializeSelect2Data: function () {
     var self = this;
-    var types = ["task-skills-required", "task-time-required", "task-people", "task-length", "task-time-estimate"];
+    var types = ["task-time-required", "task-length", "task-time-estimate", "task-skills-required"];
 
     this.tagSources = {};
 
@@ -81,7 +80,7 @@ var TaskFormView = Backbone.View.extend({
     this.initializeTextArea();
 
     // Important: Hide all non-currently opened sections of wizard.
-    this.$("section:not(.current)").hide();
+    // this.$("section:not(.current)").hide();
     this.$el.i18n();
 
     // Return this for chaining.
@@ -92,23 +91,22 @@ var TaskFormView = Backbone.View.extend({
     return validate(e);
   },
 
-  childNext: function (e, current) {
-    // find all the validation elements
-    var children = current.find('.validate');
-    var abort = false;
-    _.each(children, function (child) {
-      var iAbort = validate({ currentTarget: child });
-      abort = abort || iAbort;
-    });
-    return abort;
-  },
+  // childNext: function (e, current) {
+  //   // find all the validation elements
+  //   var children = current.find('.validate');
+  //   var abort = false;
+  //   _.each(children, function (child) {
+  //     var iAbort = validate({ currentTarget: child });
+  //     abort = abort || iAbort;
+  //   });
+  //   return abort;
+  // },
 
   initializeSelect2: function () {
     var self = this;
 
     self.tagFactory.createTagDropDown({type:"skill",selector:"#task_tag_skills",width: "100%",tokenSeparators: [","]});
-    self.tagFactory.createTagDropDown({type:"topic",selector:"#task_tag_topics",width: "100%",tokenSeparators: [","]});
-    self.tagFactory.createTagDropDown({type:"location",selector:"#task_tag_location",width: "100%",tokenSeparators: [","]});
+    self.tagFactory.createTagDropDown({type:"location",selector:"#task_tag_location",tokenSeparators: [","]});
 
     self.$(".el-specific-location").hide();
 
@@ -122,11 +120,6 @@ var TaskFormView = Backbone.View.extend({
 
     self.$("#time-required").select2({
       placeholder: 'Time Commitment',
-      width: 'resolve'
-    });
-
-    self.$("#people").select2({
-      placeholder: 'Personnel Needed',
       width: 'resolve'
     });
 
