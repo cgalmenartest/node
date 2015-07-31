@@ -10,7 +10,7 @@ var TasksCollection = require('../../../entities/tasks/tasks_collection');
 var ProfilesCollection = require('../../../entities/profiles/profiles_collection');
 var TaskModel = require('../../../entities/tasks/task_model');
 var ProjectFormView = require('../../project/new/views/project_new_form_view');
-var TaskFormView = require('../../tasks/new/views/task_form_view');
+// var TaskFormView = require('../../tasks/new/views/task_form_view');
 var ModalWizardComponent = require('../../../components/modal_wizard');
 var ModalComponent = require('../../../components/modal');
 
@@ -39,13 +39,6 @@ Browse.ListController = BaseController.extend({
       // hide the modal
       $('#addProject').bind('hidden.bs.modal', function() {
         Backbone.history.navigate('projects/' + data.attributes.id, { trigger: true });
-      }).modal('hide');
-    });
-
-    this.listenTo(this.tasksCollection, "task:save:success", function (data) {
-      // hide the modal
-      $('#addTask').bind('hidden.bs.modal', function() {
-        Backbone.history.navigate('tasks/' + data, { trigger: true });
       }).modal('hide');
     });
 
@@ -121,59 +114,8 @@ Browse.ListController = BaseController.extend({
 
   },
 
-  addTask: function (e) {
-    if (e.preventDefault) e.preventDefault();
-
-    if (this.taskFormView) this.taskFormView.cleanup();
-    if (this.modalWizardComponent) this.modalWizardComponent.cleanup();
-
-    this.taskModel = new TaskModel();
-    this.modalWizardComponent = new ModalWizardComponent({
-      el: ".wrapper-addTask",
-      id: "addTask",
-      draft: true,
-      modalTitle: 'New ' + i18n.t('Opportunity'),
-      model: this.taskModel,
-      collection: this.tasksCollection,
-      modelName: 'task',
-      data: function (parent) { return {
-        title: parent.$("#task-title").val(),
-        description: parent.$("#task-description").val(),
-        // these tasks are orphaned
-        projectId: null,
-        tags: getTags()
-      }; }
-    }).render();
-
-    this.taskFormView = new TaskFormView({
-      el: "#addTask .modal-body",
-      projectId: null,
-      model: this.taskModel,
-      tasks: this.tasksCollection
-    }).render();
-    this.modalWizardComponent.setChildView(this.taskFormView);
-    this.modalWizardComponent.setNext(this.taskFormView.childNext);
-    this.modalWizardComponent.setSubmit(this.taskFormView.childNext);
-
-    function getTags() {
-      var tags = [];
-      tags.push.apply(tags,this.$("#task_tag_topics").select2('data'));
-      tags.push.apply(tags,this.$("#task_tag_skills").select2('data'));
-      tags.push.apply(tags,this.$("#task_tag_location").select2('data'));
-      tags.push.apply(tags,[this.$("#skills-required").select2('data')]);
-      tags.push.apply(tags,[this.$("#people").select2('data')]);
-      tags.push.apply(tags,[this.$("#time-required").select2('data')]);
-      tags.push.apply(tags,[this.$("#time-estimate").select2('data')]);
-      tags.push.apply(tags,[this.$("#length").select2('data')]);
-      return _(tags).map(function(tag) {
-        return (tag.id && tag.id !== tag.name) ? +tag.id : {
-          name: tag.name,
-          type: tag.tagType,
-          data: tag.data
-        };
-      });
-    }
-
+  addTask: function () {
+    Backbone.history.navigate('/tasks/new', { trigger: true });
   },
 
   // ---------------------
