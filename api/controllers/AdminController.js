@@ -310,7 +310,9 @@ module.exports = {
 
                 // Return agency (first tag) for matching user
                 o[fy] = _(vols).map(function(vol) {
-                  return (_.findWhere(users, { id: vol.userId }).tags[0] || {}).id;
+                  var vol = _.findWhere(users, { id: vol.userId });
+                  if (!vol || !vol.tags[0]) return undefined;
+                  return (vol.tags[0] || {}).id;
                 }).compact().uniq().value().length;
 
                 return o;
