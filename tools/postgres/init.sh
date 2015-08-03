@@ -21,7 +21,7 @@ for ((i=0; i<${#FILES[@]}; i++)); do
 done
 
 # Sort file names
-SORTED=($(printf '%s\n' "${VERSIONS[@]}"|sort))
+SORTED=($(printf '%s\n' "${VERSIONS[@]}"|sort -g))
 
 # Get latest version
 LENGTH=${#SORTED[@]}
