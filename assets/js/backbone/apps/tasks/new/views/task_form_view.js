@@ -8,14 +8,16 @@ var TasksCollection = require('../../../../entities/tasks/tasks_collection');
 var TaskFormTemplate = require('../templates/task_form_template.html');
 var TagFactory = require('../../../../components/tag_factory');
 
-
 var TaskFormView = Backbone.View.extend({
 
-  el: "#task-list-wrapper",
+  el: "#container",
 
   events: {
-    "change .validate"        : "v",
-    "change #task-location" : "locationChange"
+    "change .validate"                : "v",
+    "click [name=task-time-required]" : "toggleTimeOptions",
+    "change #task-location"           : "locationChange",
+    "click #draft-button"             : "saveDraft",
+    "click #create-button"            : "submit"
   },
 
   initialize: function (options) {
@@ -32,7 +34,7 @@ var TaskFormView = Backbone.View.extend({
 
   initializeSelect2Data: function () {
     var self = this;
-    var types = ["task-skills-required", "task-time-required", "task-people", "task-length", "task-time-estimate"];
+    var types = ["task-time-required", "task-length", "task-time-estimate", "task-skills-required"];
 
     this.tagSources = {};
 
@@ -57,31 +59,14 @@ var TaskFormView = Backbone.View.extend({
     _.extend(this, Backbone.Events);
   },
 
-  getTagsFromPage: function () {
-
-    // Gather tags for submission after the task is created
-    tags = {
-      topic: this.$("#task_tag_topics").select2('data'),
-      skill: this.$("#task_tagskills").select2('data'),
-      location: this.$("#task_tag_location").select2('data'),
-      'task-skills-required': [ this.$("#skills-required").select2('data') ],
-      'task-people': [ this.$("#people").select2('data') ],
-      'task-time-required': [ this.$("#time-required").select2('data') ],
-      'task-time-estimate': [ this.$("#time-estimate").select2('data') ],
-      'task-length': [ this.$("#length").select2('data') ]
-    };
-
-    return tags;
-  },
-
   render: function () {
     var template = _.template(TaskFormTemplate)({ tags: this.tagSources });
     this.$el.html(template);
     this.initializeSelect2();
     this.initializeTextArea();
 
-    // Important: Hide all non-currently opened sections of wizard.
-    this.$("section:not(.current)").hide();
+    this.$('#time-options').css('display', 'none');
+
     this.$el.i18n();
 
     // Return this for chaining.
@@ -92,47 +77,24 @@ var TaskFormView = Backbone.View.extend({
     return validate(e);
   },
 
-  childNext: function (e, current) {
-    // find all the validation elements
-    var children = current.find('.validate');
-    var abort = false;
-    _.each(children, function (child) {
-      var iAbort = validate({ currentTarget: child });
-      abort = abort || iAbort;
-    });
-    return abort;
-  },
-
   initializeSelect2: function () {
     var self = this;
 
     self.tagFactory.createTagDropDown({type:"skill",selector:"#task_tag_skills",width: "100%",tokenSeparators: [","]});
-    self.tagFactory.createTagDropDown({type:"topic",selector:"#task_tag_topics",width: "100%",tokenSeparators: [","]});
-    self.tagFactory.createTagDropDown({type:"location",selector:"#task_tag_location",width: "100%",tokenSeparators: [","]});
-
-    self.$(".el-specific-location").hide();
+    self.tagFactory.createTagDropDown({type:"location",selector:"#task_tag_location",tokenSeparators: [","]});
 
     // ------------------------------ //
     // PRE-DEFINED SELECT MENUS BELOW //
     // ------------------------------ //
-    self.$("#skills-required").select2({
-      placeholder: "Required/Not Required",
-      width: 'resolve'
-    });
 
     self.$("#time-required").select2({
       placeholder: 'Time Commitment',
       width: 'resolve'
     });
 
-    self.$("#people").select2({
-      placeholder: 'Personnel Needed',
-      width: 'resolve'
-    });
-
-    self.$("#length").select2({
-      placeholder: 'Deadline',
-      width: 'resolve'
+    self.$("#task-length").select2({
+      placeholder: 'Frequency of work',
+      width: 'fullwidth'
     });
 
     self.$("#time-estimate").select2({
@@ -160,6 +122,26 @@ var TaskFormView = Backbone.View.extend({
     }).render();
   },
 
+  toggleTimeOptions: function (e) {
+    var currentValue      = this.$('[name=task-time-required]:checked').val(),
+        timeOptionsParent = this.$('#time-options'),
+        timeRequired      = this.$('#time-options-time-required'),
+        completionDate    = this.$('#time-options-completion-date'),
+        timeFrequency     = this.$('#time-options-time-frequency');
+
+    timeOptionsParent.css('display', 'block');
+    if (currentValue == 1) { // time selection is "One time"
+      timeRequired.css('display', 'block');
+      completionDate.css('display', 'block');
+      timeFrequency.css('display', 'none');
+    }
+    else if (currentValue == 2) { // time selection is "On going"
+      timeRequired.css('display', 'block');
+      completionDate.css('display', 'none');
+      timeFrequency.css('display', 'block');
+    }
+  },
+
   locationChange: function (e) {
     if (_.isEqual(e.currentTarget.value, "true")) {
       this.$(".el-specific-location").show();
@@ -168,6 +150,81 @@ var TaskFormView = Backbone.View.extend({
     }
   },
 
+  validateBeforeSubmit: function (fields) {
+    var self  = this,
+        field, validation;
+
+    for (var i=0; i<fields.length; i++) {
+      // remember: this.v() return true if there IS a validation error
+      // it returns false if there is not
+      field = fields[i];
+      valid = self.v({ currentTarget: field });
+
+      if (valid === true) {
+        return false;
+      }
+    }
+
+    return true;
+  },
+  saveDraft: function (e) {
+    var draft = true;
+    this.submit(e, draft);
+  },
+  submit: function (e, draft) {
+    var fieldsToValidate  = ['#task-title', '#task-description', '[name=task-time-required]:checked', '[name=time-required]:checked', '#task-responsibilities'],
+        validForm         = this.validateBeforeSubmit(fieldsToValidate),
+        effortType        = this.$('[name=task-time-required]:checked').val(),
+        data;
+
+    if (!validForm && !draft) return this;
+
+    data = {
+      'title'      : this.$('#task-title').val(),
+      'description': this.$('#task-description').val(),
+      'projectId'  : null,
+      'tags'       : this.getTags()
+    };
+
+    if (draft) data['state'] = this.$('#draft-button').data('state');
+    if (effortType == 1) { // time selection is "One time"
+      data['completedBy'] = this.$('#estimated-completion-date').val();
+    }
+    console.log('submitting with', data);
+    this.collection.trigger("task:save", data);
+
+    return this;
+  },
+  getTags: function getTags() {
+    var tags          = [],
+        effortType    = this.$('[name=task-time-required]:checked').val(),
+        tagSkills     = this.$("#task_tag_skills").select2('data'),
+        tagLocation   = this.$("#task_tag_location").select2('data');
+
+    // check for the presence of data in these fields
+    // no data means no tags are supplied
+    // don't send those tags because the API returns 500
+    if (tagSkills != []) tags.push.apply(tags, tagSkills);
+    if (tagLocation != []) tags.push.apply(tags, tagLocation);
+    if (effortType) tags.push.apply(tags,[{ id: effortType }]);
+    tags.push.apply(tags,[this.$("#time-estimate").select2('data')]);
+
+    if (effortType == 1) { // time selection is "One time"
+
+    }
+    else if (effortType == 2) { // time selection is "On going"
+      tags.push.apply(tags,[this.$("#task-length").select2('data')]);
+    }
+
+    return _(tags).map(function(tag) {
+      return (tag.id && tag.id !== tag.name && tag.id !== undefined) ? +tag.id : {
+        name: tag.name,
+        type: tag.tagType,
+        data: tag.data
+      };
+    });
+    return tags;
+  },
   cleanup: function () {
     if (this.md) { this.md.cleanup(); }
     removeView(this);

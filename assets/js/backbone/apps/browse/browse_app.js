@@ -9,8 +9,10 @@ var ProjectModel = require('../../entities/projects/project_model');
 var ProjectShowController = require('../project/show/controllers/project_show_controller');
 var ProfileShowController = require('../profiles/show/controllers/profile_show_controller');
 var TaskModel = require('../../entities/tasks/task_model');
+var TaskCollection = require('../../entities/tasks/tasks_collection');
 var TaskShowController = require('../tasks/show/controllers/task_show_controller');
 var TaskEditFormView = require('../tasks/edit/views/task_edit_form_view');
+var TaskCreateFormView = require('../tasks/new/views/task_form_view');
 var AdminMainController = require('../admin/controllers/admin_main_controller');
 var HomeController = require('../home/controllers/home_controller');
 
@@ -22,6 +24,7 @@ var BrowseRouter = Backbone.Router.extend({
     'projects(/)(?:queryStr)'   : 'listProjects',
     'projects/:id(/)'           : 'showProject',
     'projects/:id/:action(/)'   : 'showProject',
+    'tasks/new'                 : 'newTask',
     'tasks(/)(?:queryStr)'      : 'listTasks',
     'tasks/:id(/)'              : 'showTask',
     'tasks/:id/:action(/)'      : 'showTask',
@@ -60,13 +63,19 @@ var BrowseRouter = Backbone.Router.extend({
     if (this.projectShowController) { this.projectShowController.cleanup(); }
     if (this.profileShowController) { this.profileShowController.cleanup(); }
     if (this.taskShowController) { this.taskShowController.cleanup(); }
+    if (this.taskCreateController) { this.taskCreateController.cleanup(); }
     if (this.homeController) { this.homeController.cleanup(); }
     this.data = { saved: false };
   },
 
   showHome: function () {
     this.cleanupChildren();
-    this.homeController = new HomeController({target: 'home', el: '#container', router: this, data: this.data });
+    this.homeController = new HomeController({
+      target: 'home',
+      el: '#container',
+      router: this,
+      data: this.data
+    });
   },
 
   parseQueryParams: function (str) {
@@ -130,6 +139,17 @@ var BrowseRouter = Backbone.Router.extend({
     var model = new TaskModel();
     model.set({ id: id });
     this.taskShowController = new TaskShowController({ model: model, router: this, id: id, action: action, data: this.data });
+  },
+
+  newTask: function() {
+    this.cleanupChildren();
+    var tasks = new TaskCollection();
+    this.taskCreateController = new TaskCreateFormView({ collection: tasks });
+    this.taskCreateController.render();
+
+    this.listenTo(tasks, 'task:save:success', function(data) {
+      Backbone.history.navigate('/tasks/' + data, { trigger: true });
+    })
   },
 
   showProfile: function (id, action) {
