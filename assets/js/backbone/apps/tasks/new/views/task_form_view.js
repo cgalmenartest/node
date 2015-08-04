@@ -174,6 +174,7 @@ var TaskFormView = Backbone.View.extend({
   submit: function (e, draft) {
     var fieldsToValidate  = ['#task-title', '#task-description', '[name=task-time-required]:checked', '[name=time-required]:checked', '#task-responsibilities'],
         validForm         = this.validateBeforeSubmit(fieldsToValidate),
+        effortType        = this.$('[name=task-time-required]:checked').val(),
         data;
 
     if (!validForm && !draft) return this;
@@ -186,7 +187,9 @@ var TaskFormView = Backbone.View.extend({
     };
 
     if (draft) data['state'] = this.$('#draft-button').data('state');
-
+    if (effortType == 1) { // time selection is "One time"
+      data['completedBy'] = this.$('#estimated-completion-date').val();
+    }
     console.log('submitting with', data);
     this.collection.trigger("task:save", data);
 
