@@ -69,9 +69,9 @@ describe('tasks:', function () {
       }, function (err, response, body) {
         assert.equal(response.statusCode, 200);
         var saniBody = body.replace(/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/g, "DATE");
-        var testBody = '"project_id","name","description","created_date","published_date","assigned_date","creator_name","signups"\n,' +
-        '"task1","description1","DATE","DATE","DATE","' + conf.adminUser.name + '",0\n,' +
-        '"task2","description2","DATE","DATE","DATE","' + conf.adminUser.name + '",0\n';
+        var testBody = '"project_id","name","description","created_date","published_date","assigned_date","creator_name","signups","task_id","task_state","agency_name","completion_date","archived_date"\n,' +
+        '"task1","description1","DATE","DATE","DATE","' + conf.adminUser.name + '",0,1,"open","","DATE","DATE"\n,' +
+        '"task2","description2","DATE","DATE","DATE","' + conf.adminUser.name + '",0,2,"open","","DATE","DATE"\n';
         assert.equal(saniBody, testBody);
         done(err);
       });
