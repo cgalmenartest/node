@@ -78,12 +78,6 @@ describe('Task actions', function() {
       });
     }, false);
 
-
-    // Agree to terms
-    casper.then(function() {
-      casper.click('#task-responsibilities');
-    });
-
     // Click "Create"
     casper.then(function() {
       casper.click('#create-button');

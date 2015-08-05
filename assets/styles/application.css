@@ -1578,11 +1578,6 @@ ul.task-tags > li {
   margin-top: 0.5em;
 }
 
-#task-form #task-responsibilities-cta {
-  font-size: 125%;
-  margin-left: 6px;
-}
-
 #task-form .select2-container-multi {
   line-height: 1.2em;
 }

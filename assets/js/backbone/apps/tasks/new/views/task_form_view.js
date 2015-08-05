@@ -172,7 +172,7 @@ var TaskFormView = Backbone.View.extend({
     this.submit(e, draft);
   },
   submit: function (e, draft) {
-    var fieldsToValidate  = ['#task-title', '#task-description', '[name=task-time-required]:checked', '[name=time-required]:checked', '#task-responsibilities'],
+    var fieldsToValidate  = ['#task-title', '#task-description', '[name=task-time-required]:checked', '[name=time-required]:checked'],
         validForm         = this.validateBeforeSubmit(fieldsToValidate),
         effortType        = this.$('[name=task-time-required]:checked').val(),
         data;
