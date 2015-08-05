@@ -83,7 +83,7 @@ module.exports = function (grunt) {
         extDot: 'last',
         options: {
           report: 'min',
-          sourceMap: true
+          sourceMap: process.env.NODE_ENV !== 'production'
         }
       }
     },
