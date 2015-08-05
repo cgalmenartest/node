@@ -1588,6 +1588,7 @@ ul.task-tags > li {
 
 #task-form .dropdown {
   margin-top: -7px;
+  min-width: 100px;
 }
 
 #task-form input.fullwidth {

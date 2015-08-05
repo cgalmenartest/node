@@ -44,6 +44,9 @@ var TaskFormView = Backbone.View.extend({
         type: 'GET',
         async: false,
         success: function (data) {
+          if (type === 'task-time-estimate' || type === 'task-length') {
+            data = _.sortBy(data, 'updatedAt');
+          }
           self.tagSources[type] = data;
         }
       });
