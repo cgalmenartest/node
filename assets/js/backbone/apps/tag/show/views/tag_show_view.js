@@ -43,6 +43,13 @@ var TagShowView = Backbone.View.extend({
       edit: this.edit,
       user: window.cache.currentUser || {}
     };
+
+    if (this.model.attributes.completedBy == null) {
+      data.tags = _.reject(this.tags, function (t) {
+        return t.type == 'task-length';
+      });
+    }
+
     var template = _.template(TagShowTemplate)(data);
     this.$el.html(template);
     this.initializeSelect2();
@@ -108,6 +115,12 @@ var TagShowView = Backbone.View.extend({
     };
 
     _(this.model.get('tags')).each(renderTag);
+    if (this.model.attributes.completedBy != null) {
+      renderTag({
+        type: 'task-length',
+        name: moment(self.model.attributes.completedBy).format('ddd, MMM D, YYYY')
+      });
+    }
 
     this.listenTo(this.model, this.target + ":tag:delete", function (e) {
       if ($(e.currentTarget).parent('li').siblings().length == 1) {

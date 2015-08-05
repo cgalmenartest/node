@@ -44,6 +44,9 @@ var TaskFormView = Backbone.View.extend({
         type: 'GET',
         async: false,
         success: function (data) {
+          if (type === 'task-time-estimate' || type === 'task-length') {
+            data = _.sortBy(data, 'updatedAt');
+          }
           self.tagSources[type] = data;
         }
       });
@@ -172,7 +175,7 @@ var TaskFormView = Backbone.View.extend({
     this.submit(e, draft);
   },
   submit: function (e, draft) {
-    var fieldsToValidate  = ['#task-title', '#task-description', '[name=task-time-required]:checked', '[name=time-required]:checked', '#task-responsibilities'],
+    var fieldsToValidate  = ['#task-title', '#task-description', '[name=task-time-required]:checked', '[name=time-required]:checked'],
         validForm         = this.validateBeforeSubmit(fieldsToValidate),
         effortType        = this.$('[name=task-time-required]:checked').val(),
         data;
