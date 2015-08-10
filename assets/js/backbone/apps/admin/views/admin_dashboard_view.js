@@ -64,7 +64,12 @@ var AdminDashboardView = Backbone.View.extend({
     self.$(".activity-block").html(template);
     _(data).forEach(function(activity) {
 
-      if (!activity || ( activity.comment && typeof activity.comment.value == "undefined") ) return;
+      // If activity is missing data, skip it
+      if (!activity || !activity.user ||
+        (activity.type === 'newVolunteer' && !activity.task) ||
+        (activity.comment && typeof activity.comment.value === "undefined")
+       ) return;
+
       // Render markdown
       if (activity.comment) {
         var value = activity.comment.value;
@@ -111,7 +116,6 @@ var AdminDashboardView = Backbone.View.extend({
           url: '/api/admin/taskmetrics',
           dataType: 'json',
           success: function (data) {
-            console.log(self.data.tasks);
             data.tasks.active = self.data.tasks;
             self.renderTasks(self, data);
           }
