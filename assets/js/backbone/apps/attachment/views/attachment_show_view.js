@@ -115,12 +115,12 @@ var AttachmentShowView = Backbone.View.extend({
       user: window.cache.currentUser,
       canAdd:
         // Admins
-        window.cache.currentUser.isAdmin ||
+        window.cache.currentUser && window.cache.currentUser.isAdmin ||
         // Project creator
         (this.options.target ==='project' && this.options.owner) ||
         // Task creators for open tasks
         (
-          this.options.target ==='task' && 
+          this.options.target ==='task' &&
           this.options.owner &&
           ['open', 'assigned'].indexOf(this.options.state) !== -1
         ) ||
