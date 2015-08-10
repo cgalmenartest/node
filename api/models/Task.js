@@ -54,14 +54,13 @@ module.exports = {
     'description': {field: 'description', filter: exportUtils.nullToEmptyString},
     'created_date': {field: 'createdAt', filter: exportUtils.excelDateFormat},
     'published_date': {field: 'publishedAt', filter: exportUtils.excelDateFormat},
-    'assigned_date': {field: 'createdAt', filter: exportUtils.excelDateFormat},
+    'assigned_date': {field: 'assignedAt', filter: exportUtils.excelDateFormat},
     'creator_name': {field: 'creator_name', filter: exportUtils.nullToEmptyString},
     'signups': 'signups',
     'task_id': 'id',
     'task_state': 'state',
     'agency_name': {field: 'agency_name', filter: exportUtils.nullToEmptyString},
-    'completion_date': {field: 'completedAt', filter: exportUtils.excelDateFormat},
-    'archived_date': {field: 'deletedAt', filter: exportUtils.excelDateFormat}
+    'completion_date': {field: 'completedAt', filter: exportUtils.excelDateFormat}
   },
 
   beforeUpdate: function(values, done) {
