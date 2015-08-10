@@ -50,7 +50,7 @@ module.exports = {
    * library to do the heavy lifting.
    */
   excelDateFormat: function (date) {
-    return moment(date).format("YYYY-MM-DD HH:mm:ss")
+    return date != null ? moment(date).format("YYYY-MM-DD HH:mm:ss") : "";
   },
 
   /**
