@@ -70,8 +70,8 @@ describe('tasks:', function () {
         assert.equal(response.statusCode, 200);
         var saniBody = body.replace(/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/g, "DATE");
         var testBody = '"project_id","name","description","created_date","published_date","assigned_date","creator_name","signups","task_id","task_state","agency_name","completion_date","archived_date"\n,' +
-        '"task1","description1","DATE","DATE","DATE","' + conf.adminUser.name + '",0,1,"open","","",""\n,' +
-        '"task2","description2","DATE","DATE","DATE","' + conf.adminUser.name + '",0,2,"open","","",""\n';
+        '"task1","description1","DATE","DATE","DATE","' + conf.adminUser.name + '",0,2,"open","","",""\n,' +
+        '"task2","description2","DATE","DATE","DATE","' + conf.adminUser.name + '",0,3,"open","","",""\n';
         assert.equal(saniBody, testBody);
         done(err);
       });
@@ -80,10 +80,10 @@ describe('tasks:', function () {
     it('copy', function (done) {
       request.post({
         url: conf.url + '/task/copy',
-        body: JSON.stringify({taskId: 2})
+        body: JSON.stringify({taskId: 1})
       }, function (err, response, body) {
         body = JSON.parse(body);
-        assert.equal(body.taskId, 4);
+        assert.equal(body.taskId, 3);
         assert.equal(body.title, conf.tasks[0].title);
         done(err);
       });
