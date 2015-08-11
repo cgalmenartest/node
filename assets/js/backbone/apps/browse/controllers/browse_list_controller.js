@@ -29,7 +29,7 @@ Browse.ListController = BaseController.extend({
   initialize: function ( options ) {
     // this.options = options;
     this.target = options.target;
-    this.queryParams = options.queryParams || {};
+    this.queryParams = options.queryParams || false;
 
     this.fireUpCollection();
     this.initializeView();
@@ -72,6 +72,7 @@ Browse.ListController = BaseController.extend({
       self.collection.fetch({
         success: function (collection) {
           self.collection = collection;
+          if (_.has(self.queryParams, 'search')) return;
           self.browseMainView.renderList(self.collection.toJSON());
           if (self.target == 'profiles') {
             self.browseMainView.renderMap(self.collection.toJSON());
