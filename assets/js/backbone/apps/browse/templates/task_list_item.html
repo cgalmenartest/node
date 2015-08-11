@@ -19,7 +19,11 @@
       <div class="task-list-tags c0 task-single-overflow">
         <i class="task-list-icon-center <%- tagConfig.tags[tagType].icon %>"></i>
         <% _.each(tags[tagType], function (t, i) { %>
-          <%- t.name %><% if (i + 1 < tags[tagType].length) { %>,<% } %>
+          <% if (t.type == 'skill') { %>
+            <a href="/tasks?search=<%- t.name %>"><%- t.name %></a><% if (i + 1 < tags[tagType].length) { %>,<% } %>
+          <% } else { %>
+            <%- t.name %><% if (i + 1 < tags[tagType].length) { %>,<% } %>
+          <% } %>
         <% }); %>
       </div>
       <% } %>
