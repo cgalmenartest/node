@@ -406,6 +406,9 @@ var BrowseMainView = Backbone.View.extend({
     $("#search-none").show();
     $(".search-clear").hide();
     this.searchExec(self.searchTerms);
+
+    if (this.options.target == 'tasks') Backbone.history.navigate('/tasks');
+    if (this.options.target == 'projects') Backbone.history.navigate('/projects');
   },
 
   cleanup: function() {
