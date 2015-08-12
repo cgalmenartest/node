@@ -14,7 +14,7 @@
     "bootstrap-datetimepicker": "https://github.com/Eonasdan/bootstrap-datetimepicker/archive/v2.1.30.tar.gz",
     "browserify": "^9.0.3",
     "chai": "2.1.2",
-    "connect-pg-simple": "^2.2.1",
+    "connect-pg-simple": "^3.0.1",
     "d3": "^3.5.5",
     "topojson": "^1.6.19",
     "ejs": "0.8.5",
