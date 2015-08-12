@@ -1468,7 +1468,7 @@ ul.task-tags > li {
   font-size: 18px;
   margin-bottom: 10px;
   line-height: 1.5em;
-  overflow: hidden;
+  word-break: break-all;
 }
 
 .task-edit-description {
