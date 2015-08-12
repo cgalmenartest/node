@@ -202,7 +202,8 @@ var ProfileShowView = Backbone.View.extend({
   updatePhoto: function () {
     var self = this;
     this.model.on("profile:updatedPhoto", function (data) {
-      var url = '/api/user/photo/' + data.attributes.id;
+      //added timestamp to URL to force FF to reload image from server
+      var url = '/api/user/photo/' + data.attributes.id + "?" + new Date().getTime();
       // force the new image to be loaded
       $.get(url, function (data) {
         $("#project-header").css('background-image', "url('" + url + "')");
