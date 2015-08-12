@@ -99,19 +99,28 @@ var TagShowView = Backbone.View.extend({
       tagIcon[this.tags[i].type] = this.tags[i].icon;
       tagClass[this.tags[i].type] = this.tags[i]['class'];
     }
-
     var renderTag = function (tag) {
-      var templData = {
-        data: self.model.toJSON(),
-        tags: self.tags,
-        tag: tag,
-        edit: self.edit,
-        user: window.cache.currentUser || {}
-      };
-      var compiledTemplate = _.template(TagTemplate)(templData);
-      var tagDom = $("." + tag.type).children(".tags");
-      tagDom.append(compiledTemplate);
-      $('#' + tagClass[tag.type] + '-empty').hide();
+      if(self.edit)
+      {
+        var input = $("#tag_" + tag.type);
+        var data = input.select2('data');
+        data.push({id:tag.id,name:tag.name, value:tag.name});
+        input.select2("data", data, true);
+      }
+      else
+      {
+        var templData = {
+          data: self.model.toJSON(),
+          tags: self.tags,
+          tag: tag,
+          edit: self.edit,
+          user: window.cache.currentUser || {}
+        };
+        var compiledTemplate = _.template(TagTemplate)(templData);
+        var tagDom = $("." + tag.type).children(".tags");
+        tagDom.append(compiledTemplate);
+        $('#' + tagClass[tag.type] + '-empty').hide();
+      }
     };
 
     _(this.model.get('tags')).each(renderTag);

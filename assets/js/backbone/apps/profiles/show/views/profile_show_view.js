@@ -339,9 +339,6 @@ var ProfileShowView = Backbone.View.extend({
           $("#tag_skill").select2('data'),
           $("#location").select2('data')
         ),
-        modelTags = _(this.model.get('tags')).filter(function(tag) {
-          return (tag.type !== 'agency' && tag.type !== 'location');
-        }),
         data = {
           name:  $("#name").val(),
           title: $("#title").val(),
@@ -350,7 +347,7 @@ var ProfileShowView = Backbone.View.extend({
         },
         email = this.model.get('username'),
         self = this,
-        tags = _(modelTags.concat(newTags)).chain()
+        tags = _(newTags).chain()
           .filter(function(tag) {
             return _(tag).isObject() && !tag.context;
           })

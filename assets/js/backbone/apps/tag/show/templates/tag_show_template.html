@@ -6,11 +6,13 @@
     <input type="text" id="tag_<%- tags[i].id.toLowerCase() %>" class="fullwidth" name="tag_<%- tags[i].name.toLowerCase() %>"/>
   </div>
   <% } %>
+  <% if (!edit) { %>
   <ul class="tags">
     <li class="tag-empty" id="<%- tags[i]['class'] %>-empty">
       <% if (tags[i]['class'] === 'location') { %>Anywhere<% } else { %>None<% } %>
     </li>
   </ul>
+  <% } %>
 </div>
 <% } %>
 <% if (data.userId) { %>
