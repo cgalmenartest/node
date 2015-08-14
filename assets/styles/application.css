@@ -1611,10 +1611,6 @@ ul.task-tags > li {
   font-weight: 300;
 }
 
-#task-form label h3 {
-  padding-left: 0;
-}
-
 #task-form .dropdown {
   margin-top: -7px;
   min-width: 100px;
