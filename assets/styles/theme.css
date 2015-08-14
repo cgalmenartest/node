@@ -119,7 +119,8 @@ fieldset + fieldset {
 }
 
 fieldset aside {
-  background-color: #39B7EA;
+  background-color: #797979;
+  color: white;
   line-height: 1.2;
   padding: 1em;
 }
@@ -132,7 +133,7 @@ fieldset aside {
   }
 }
 aside h4 {
-  color: black;
+  color: white;
 }
 
 /* including #task-form to test for adverse effects */

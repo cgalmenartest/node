@@ -83,7 +83,7 @@ var TaskFormView = Backbone.View.extend({
   initializeSelect2: function () {
     var self = this;
 
-    self.tagFactory.createTagDropDown({type:"skill",selector:"#task_tag_skills",width: "100%",tokenSeparators: [","]});
+    self.tagFactory.createTagDropDown({type:"skill",selector:"#task_tag_skills",width: "100%",tokenSeparators: [","],placeholder:"Start typing to select a tag."});
     self.tagFactory.createTagDropDown({type:"location",selector:"#task_tag_location",tokenSeparators: [","]});
 
     // ------------------------------ //
@@ -118,7 +118,6 @@ var TaskFormView = Backbone.View.extend({
       data: '',
       el: ".markdown-edit",
       id: 'task-description',
-      placeholder: 'Description of ' + i18n.t('task') + ' including goals, expected outcomes and deliverables.',
       title: i18n.t('Task') + ' Description',
       rows: 6,
       validate: ['empty']
@@ -192,11 +191,11 @@ var TaskFormView = Backbone.View.extend({
     if (draft) data['state'] = this.$('#draft-button').data('state');
     if (effortType == 1 && !draft) { // time selection is "One time"
       data['completedBy'] = this.$('#estimated-completion-date').val();
-      if (data['completedBy'] == '') {
-        $('#time-options-completion-date .help-block').show();
-        $('#estimated-completion-date').css('border', '1px solid #a94442');
-        return this;
-      }
+      // if (data['completedBy'] == '') {
+      //   $('#time-options-completion-date .help-block').show();
+      //   $('#estimated-completion-date').css('border', '1px solid #a94442');
+      //   return this;
+      // }
     }
     console.log('submitting with', data);
     this.collection.trigger("task:save", data);
