@@ -1496,6 +1496,30 @@ ul.task-tags > li {
   font-weight: normal;
 }
 
+#task-form fieldset aside a,
+#task-form fieldset aside a:hover,
+#task-form fieldset aside a:focus {
+  color: #333;
+  text-decoration: underline;
+}
+#task-form fieldset aside ol,
+#task-form fieldset aside ul {
+  padding-left: 1.5em;
+}
+
+#task-form fieldset h3 {
+  padding-left: 0;
+}
+
+#task-form .tag-row {
+  margin-top: 2em;
+}
+
+#task-form fieldset {
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+
 /**********************************
 =  TASKS INFINITE SCROLL OVERFLOW
 ***********************************/
