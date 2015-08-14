@@ -1520,6 +1520,16 @@ ul.task-tags > li {
     margin-bottom: 2em;
 }
 
+#task-form fieldset:first-child {
+  margin-top: 0;
+}
+
+#task-form .buttons {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 2em;
+}
+
 /**********************************
 =  TASKS INFINITE SCROLL OVERFLOW
 ***********************************/
