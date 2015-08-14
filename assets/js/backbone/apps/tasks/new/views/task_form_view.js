@@ -83,7 +83,7 @@ var TaskFormView = Backbone.View.extend({
   initializeSelect2: function () {
     var self = this;
 
-    self.tagFactory.createTagDropDown({type:"skill",selector:"#task_tag_skills",width: "100%",tokenSeparators: [","],placeholder:"Start typing to select a tag."});
+    self.tagFactory.createTagDropDown({type:"skill",selector:"#task_tag_skills",width: "100%",tokenSeparators: [","],placeholder:"Start typing to select a tag"});
     self.tagFactory.createTagDropDown({type:"location",selector:"#task_tag_location",tokenSeparators: [","]});
 
     // ------------------------------ //
