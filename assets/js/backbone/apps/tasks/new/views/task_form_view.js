@@ -190,8 +190,12 @@ var TaskFormView = Backbone.View.extend({
     };
 
     if (draft) data['state'] = this.$('#draft-button').data('state');
-    if (effortType == 1) { // time selection is "One time"
+    if (effortType == 1 && !draft) { // time selection is "One time"
       data['completedBy'] = this.$('#estimated-completion-date').val();
+      if (data['completedBy'] == '') {
+        $('#time-options-completion-date .help-block').show();
+        return this;
+      }
     }
     console.log('submitting with', data);
     this.collection.trigger("task:save", data);
