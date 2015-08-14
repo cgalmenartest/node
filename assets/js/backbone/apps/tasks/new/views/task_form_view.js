@@ -194,6 +194,7 @@ var TaskFormView = Backbone.View.extend({
       data['completedBy'] = this.$('#estimated-completion-date').val();
       if (data['completedBy'] == '') {
         $('#time-options-completion-date .help-block').show();
+        $('#estimated-completion-date').css('border', '1px solid #a94442');
         return this;
       }
     }
