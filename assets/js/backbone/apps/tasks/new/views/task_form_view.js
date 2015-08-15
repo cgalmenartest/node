@@ -47,12 +47,24 @@ var TaskFormView = Backbone.View.extend({
           if (type === 'task-time-estimate' || type === 'task-length') {
             data = _.sortBy(data, 'updatedAt');
           }
+          else if (type === 'task-time-required') {
+            data = _.map(data, function (item) {
+              if (item.name == 'One time') {
+                item.description = 'A one time task with a defined timeline'
+              }
+              else if (item.name == 'On going') {
+                item.description = 'Requires a portion of participant’s time until a goal is reached'
+              }
+              return item;
+            });
+          }
           self.tagSources[type] = data;
         }
       });
     };
 
     async.each(types, requestAllTagsByType, function (err) {
+      console.log('self.tagSources', self.tagSources);
       self.render();
     });
   },

@@ -93,12 +93,13 @@
             <div class="radio">
               <label>
                 <input type="radio" name="task-time-required" value="<%- time.id %>">
-                <%- time.name %>
+                <%- time.name %><% if (time.description) { %> &mdash; <%= time.description %> <% } %>
               </label>
             </div>
           <% }); %>
         </div>
-        <div class="col-md-4"></div>
+        <div class="col-md-4">
+        </div>
       </div>
       <div id="time-options">
 
