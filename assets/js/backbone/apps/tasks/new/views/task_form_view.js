@@ -64,7 +64,6 @@ var TaskFormView = Backbone.View.extend({
     };
 
     async.each(types, requestAllTagsByType, function (err) {
-      console.log('self.tagSources', self.tagSources);
       self.render();
     });
   },
