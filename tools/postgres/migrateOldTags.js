@@ -15,6 +15,7 @@ Sails.lift(opts, function(err, sails) {
   var tagsToRename = {
     'Part Time': 'One time',
     'Full Time': 'Ongoing',
+    'On going': 'Ongoing',
     '1 week': 'Weekly',
     '1 Week': 'Weekly',
     '1 month': 'Monthly',
