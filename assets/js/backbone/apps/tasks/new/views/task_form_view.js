@@ -139,19 +139,22 @@ var TaskFormView = Backbone.View.extend({
     var currentValue      = this.$('[name=task-time-required]:checked').val(),
         timeOptionsParent = this.$('#time-options'),
         timeRequired      = this.$('#time-options-time-required'),
+        timeRequiredAside = this.$('#time-options-time-required aside'),
         completionDate    = this.$('#time-options-completion-date'),
         timeFrequency     = this.$('#time-options-time-frequency');
 
     timeOptionsParent.css('display', 'block');
     if (currentValue == 1) { // time selection is "One time"
-      timeRequired.css('display', 'block');
-      completionDate.css('display', 'block');
-      timeFrequency.css('display', 'none');
+      timeRequired.show();
+      completionDate.show();
+      timeRequiredAside.hide();
+      timeFrequency.hide();
     }
     else if (currentValue == 2) { // time selection is "On going"
-      timeRequired.css('display', 'block');
-      completionDate.css('display', 'none');
-      timeFrequency.css('display', 'block');
+      timeRequired.show();
+      timeRequiredAside.show();
+      timeFrequency.show();
+      completionDate.hide();
     }
   },
 
