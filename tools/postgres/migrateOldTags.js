@@ -158,6 +158,7 @@ Sails.lift(opts, function(err, sails) {
     orderedTaskLengthTags.forEach(function(tag) {
       TagEntity.find().where({ name: tag }).exec(function (err, t) {
         if (err) return cb(err);
+        if (!t.length) return cb();
 
         t[0].updatedAt = new Date();
         t[0].save();
