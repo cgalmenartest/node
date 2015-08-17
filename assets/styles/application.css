@@ -1499,7 +1499,7 @@ ul.task-tags > li {
 #task-form fieldset aside a,
 #task-form fieldset aside a:hover,
 #task-form fieldset aside a:focus {
-  color: #333;
+  color: #00FFFF;
   text-decoration: underline;
 }
 #task-form fieldset aside ol,
