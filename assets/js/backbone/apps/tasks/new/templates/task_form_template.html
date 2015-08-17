@@ -17,11 +17,11 @@
             <p>Write a few words that describe what needs to happen, inspires someone about the outcome, or entices them to learn something new.</p>
             <p><em>(Maximum of 100 characters)</em></p>
           </label>
-          <input type="text" id="task-title" class="fullwidth form-control validate"
-              data-validate="empty,count100"/>
-          <span class="help-b lock error-empty" style="display:none;">You must enter headline for this <span
+          <span class="help-block error-empty" style="display:none;">You must enter headline for this <span
               data-i18n="task">opportunity</span></span>
           <span class="help-block error-count100" style="display:none;">The short description of the problem must be less than 100 characters.</span>
+          <input type="text" id="task-title" class="fullwidth form-control validate"
+              data-validate="empty,count100"/>
         </div>
         <div class="col-md-4">
           <aside>
@@ -44,8 +44,8 @@
             <p>Write a description that explains the <span data-i18n="task">opportunity</span>. Add details so that people can imagine what this will be like when completed.</p>
             <p><em>(There is no limit on length, but we recommend 200 words or less.)</em></p>
           </label>
-          <div class="markdown-edit"></div>
           <span class="help-block error-empty" style="display:none;">You must enter a description for this <span data-i18n="task">opportunity</span></span>
+          <div class="markdown-edit"></div>
         </div>
         <div class="col-md-4">
           <aside>
