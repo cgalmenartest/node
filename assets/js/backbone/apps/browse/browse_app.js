@@ -149,7 +149,12 @@ var BrowseRouter = Backbone.Router.extend({
 
     this.listenTo(tasks, 'task:save:success', function(data) {
       Backbone.history.navigate('/tasks/' + data, { trigger: true });
-    })
+    });
+    this.listenTo(tasks, 'task:save:error', function(model, response, options) {
+      var alertText = response.statusText + '. Please try again.';
+      $('.alert.alert-danger').text(alertText).show();
+      window.scroll(0,0);
+    });
   },
 
   showProfile: function (id, action) {

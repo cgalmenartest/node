@@ -1,24 +1,27 @@
+<div class="alert alert-danger" style="display: none;">Yo</div>
 <div class="box box-main">
 <h1>Create an <span data-i18n="task">opportunity</span></h1>
-<p>If you’re new to posting opportunities, <a href="https://openopps-staging.18f.us/tasks/new" target="-_blank">10 Tips for Creating the Perfect Open Opportunity Task</a> will get you headed in the right direction.</p>
-<p>Information on the task creation process is in the <a href="http://www.digitalgov.gov/resources/open-opportunities-task-creator-toolkit/" target="_blank">Task Creator Toolkit</a>.</p>
-<p>All fields are required.</p>
+<div class="alert alert-info">
+  <p>If you’re new to posting opportunities, <a href="http://www.digitalgov.gov/resources/open-opportunities-task-creator-toolkit/10-tips-for-creating-the-perfect-open-opportunity-task/" target="_blank">10 Tips for Creating the Perfect Open Opportunity Task</a> will get you headed in the right direction.</p>
+  <p>Information on the task creation process is in the <a href="http://www.digitalgov.gov/resources/open-opportunities-task-creator-toolkit/" target="_blank">Task Creator Toolkit</a>.</p>
+</div>
+<p>Optional fields are indicated.</p>
 <form id="task-form" action="/api/task">
   <fieldset>
-    <legend><h2>Step 1 - Create a headline</h2></legend>
+    <legend><h2>Step 1 - Create a Headline</h2></legend>
     <div class="form-group fullwidth">
       <div class="row">
         <div class="col-md-8">
           <label for="task-title">
             <h3>Headline</h3>
             <p>Write a few words that describe what needs to happen, inspires someone about the outcome, or entices them to learn something new.</p>
-            <p>(maximum 100 characters)</p>
+            <p><em>(Maximum of 100 characters)</em></p>
           </label>
-          <input type="text" id="task-title" class="fullwidth form-control validate"
-                 placeholder="A short description of the problem." data-validate="empty,count100"/>
-          <span class="help-b lock error-empty" style="display:none;">You must enter headline for this <span
+          <span class="help-block error-empty" style="display:none;">You must enter headline for this <span
               data-i18n="task">opportunity</span></span>
           <span class="help-block error-count100" style="display:none;">The short description of the problem must be less than 100 characters.</span>
+          <input type="text" id="task-title" class="fullwidth form-control validate"
+              data-validate="empty,count100"/>
         </div>
         <div class="col-md-4">
           <aside>
@@ -32,16 +35,17 @@
   </fieldset>
 
   <fieldset>
-    <legend><h2>Step 2 - Describe the <span data-i18n="task">opportunity</span></h2></legend>
+    <legend><h2>Step 2 - Describe the <span data-i18n="Task">opportunity</span></h2></legend>
     <div class="form-group fullwidth">
       <div class="row">
         <div class="col-md-8">
           <label for="task-description">
             <h3>Description</h3>
-            <p>Describe the <span data-i18n="task">opportunity</span> details, including goals, expected outcomes and deliverables.</p>
+            <p>Write a description that explains the <span data-i18n="task">opportunity</span>. Add details so that people can imagine what this will be like when completed.</p>
+            <p><em>(There is no limit on length, but we recommend 200 words or less.)</em></p>
           </label>
-          <div class="markdown-edit"></div>
           <span class="help-block error-empty" style="display:none;">You must enter a description for this <span data-i18n="task">opportunity</span></span>
+          <div class="markdown-edit"></div>
         </div>
         <div class="col-md-4">
           <aside>
@@ -59,8 +63,8 @@
         <div class="col-md-8">
           <label for="skills">
             <h3>Tags</h3>
-            <p>Create tags using keywords that describe the opportunity. Include the focus area, mission of the work and skills they will develop through as part of the <span data-i18n="task">opportunity</span></p>
-            <p>(Put a comma between each one. Example: Cyber Security, Research, employee engagement)</p>
+            <p>Create tags using keywords that describe the opportunity. Include the focus area, mission of the work and skills they will develop through as part of the <span data-i18n="task">opportunity</span>.</p>
+            <p><em>(Put a comma between each one. Example: Cyber Security, Research, employee engagement)</em></p>
           </label>
           <div class="">
             <input type="hidden" id="task_tag_skills" name="skills" class="fullwidth" />
@@ -89,12 +93,13 @@
             <div class="radio">
               <label>
                 <input type="radio" name="task-time-required" value="<%- time.id %>">
-                <%- time.name %>
+                <%- time.name %><% if (time.description) { %> &mdash; <%= time.description %> <% } %>
               </label>
             </div>
           <% }); %>
         </div>
-        <div class="col-md-4"></div>
+        <div class="col-md-4">
+        </div>
       </div>
       <div id="time-options">
 
@@ -109,7 +114,14 @@
               <% }); %>
             </select>
           </div>
-          <div class="col-md-4"></div>
+          <div class="col-md-4">
+            <aside>
+              <h4>Example</h4>
+              <p>If 2 hours are needed each week, then select:</p>
+              <p>How much time is needed? 2 hours</p>
+              <p>How often is the time needed? weekly</p>
+            </aside>
+          </div>
         </div>
 
         <div class="row" id="time-options-completion-date">
@@ -118,6 +130,7 @@
               <h3>Estimated completion date (optional)</h3>
             </label>
             <input id="estimated-completion-date" type="date">
+            <span class="help-block error-empty" style="display:none;">You must enter a completion date for this one-time <span data-i18n="task">opportunity</span></span>
           </div>
           <div class="col-md-4"></div>
         </div>
@@ -152,7 +165,7 @@
           </div>
           <div class="radio">
             <label>
-              <input type="radio" name="time-required" id="specific-location">Specific location(s): <input type="hidden" id="task_tag_location" name="location" />
+              <input type="radio" name="time-required" id="specific-location">At specific locations: <input type="hidden" id="task_tag_location" name="location" />
             </label>
           </div>
         </div>
@@ -162,19 +175,21 @@
   </fieldset>
 
   <fieldset>
-    <legend><h2>Step 4 - Submit for review</h2></legend>
+    <legend><h2>Step 4 - Submit for Review</h2></legend>
     <div class="row">
       <div class="col-md-8">
-        <p>Once you submit your task, it will be reviewed by Open Opportunities staff. You will receive an email within X business days. We will either send you recommended edits to, or a notice that your task is approved and live on the website.</p>
-        <button type="button" id="cancel-button" class="btn btn-c0 wizard-cancel" data-dismiss="modal">
-          Cancel
-        </button>
-        <button type="button" id="draft-button" class="btn btn-c0 wizard-submit" data-state="draft">
-          Save Draft
-        </button>
-        <button type="button" id="create-button" class="btn btn-c2 wizard-submit">
-          Create
-        </button>
+        <p>Once you submit your task, it will be reviewed by Open Opportunities staff. You will receive an email within two business days. We will either send you recommended edits to, or a notice that your task is approved and live on the website.</p>
+        <div class="buttons">
+          <button type="button" id="cancel-button" class="btn btn-c0 wizard-cancel" data-dismiss="modal">
+            Cancel
+          </button>
+          <button type="button" id="draft-button" class="btn btn-c0 wizard-submit" data-state="draft">
+            Save Draft
+          </button>
+          <button type="button" id="create-button" class="btn btn-c2 wizard-submit">
+            Submit for Review
+          </button>
+        </div>
       </div>
       <div class="col-md-4">
         <aside>

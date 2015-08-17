@@ -61,6 +61,7 @@ TagFactory = BaseComponent.extend({
 
     optional:
     @param {String}   options.width='500px'      - CSS width attribute for the dropdown
+		@param {String}		options.placeholder='Yo'	 - Text that is initially displayed as a placeholder in field
     @param {Boolean}  options.multiple=true      - Whether to allow multiple tags to be selected
     @param {Boolean}  options.allowCreate=true   - Whether a `createSearchChoice` option will be given
     @param {String[]} options.tokenSeparators=[] - Array of valid tag delimeters
@@ -80,7 +81,7 @@ TagFactory = BaseComponent.extend({
     //construct the settings for this tag type
     var settings = {
 
-      placeholder:        "Start typing to select a " + options.type,
+      placeholder:        options.placeholder || "Start typing to select a " + options.type,
       minimumInputLength: (isLocation ? 1 : 2),
       selectOnBlur:       !isLocation,
       width:              options.width || "500px",

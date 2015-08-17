@@ -1499,7 +1499,7 @@ ul.task-tags > li {
 #task-form fieldset aside a,
 #task-form fieldset aside a:hover,
 #task-form fieldset aside a:focus {
-  color: #333;
+  color: #00FFFF;
   text-decoration: underline;
 }
 #task-form fieldset aside ol,
@@ -1520,6 +1520,18 @@ ul.task-tags > li {
     margin-bottom: 2em;
 }
 
+#task-form fieldset:first-child {
+  margin-top: 0;
+}
+
+#task-form .buttons {
+  margin-top: 2em;
+  text-align: right;
+}
+
+#task-form .buttons .btn {
+  margin-left: 24px;
+}
 /**********************************
 =  TASKS INFINITE SCROLL OVERFLOW
 ***********************************/
@@ -1592,7 +1604,7 @@ ul.task-tags > li {
 =  TASKS MADLIBS FORM
 ******************/
 #task-form {
-  line-height: 2.1em;
+  line-height: 1.3em;
 }
 
 #task-form #section-1 {

@@ -36,6 +36,9 @@ var TasksCollection = Backbone.Collection.extend({
     self.task.save(null,{
       success: function (model) {
         self.trigger("task:save:success", self.task.id);
+      },
+      error: function (model, response, options) {
+        self.trigger("task:save:error", model, response, options);
       }
     });
   }

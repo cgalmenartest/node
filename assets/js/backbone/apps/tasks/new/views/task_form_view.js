@@ -47,6 +47,17 @@ var TaskFormView = Backbone.View.extend({
           if (type === 'task-time-estimate' || type === 'task-length') {
             data = _.sortBy(data, 'updatedAt');
           }
+          else if (type === 'task-time-required') {
+            data = _.map(data, function (item) {
+              if (item.name == 'One time') {
+                item.description = 'A one time task with a defined timeline'
+              }
+              else if (item.name == 'On going') {
+                item.description = 'Requires a portion of participant’s time until a goal is reached'
+              }
+              return item;
+            });
+          }
           self.tagSources[type] = data;
         }
       });
@@ -83,7 +94,7 @@ var TaskFormView = Backbone.View.extend({
   initializeSelect2: function () {
     var self = this;
 
-    self.tagFactory.createTagDropDown({type:"skill",selector:"#task_tag_skills",width: "100%",tokenSeparators: [","]});
+    self.tagFactory.createTagDropDown({type:"skill",selector:"#task_tag_skills",width: "100%",tokenSeparators: [","],placeholder:"Start typing to select a tag"});
     self.tagFactory.createTagDropDown({type:"location",selector:"#task_tag_location",tokenSeparators: [","]});
 
     // ------------------------------ //
@@ -118,7 +129,6 @@ var TaskFormView = Backbone.View.extend({
       data: '',
       el: ".markdown-edit",
       id: 'task-description',
-      placeholder: 'Description of ' + i18n.t('task') + ' including goals, expected outcomes and deliverables.',
       title: i18n.t('Task') + ' Description',
       rows: 6,
       validate: ['empty']
@@ -129,19 +139,22 @@ var TaskFormView = Backbone.View.extend({
     var currentValue      = this.$('[name=task-time-required]:checked').val(),
         timeOptionsParent = this.$('#time-options'),
         timeRequired      = this.$('#time-options-time-required'),
+        timeRequiredAside = this.$('#time-options-time-required aside'),
         completionDate    = this.$('#time-options-completion-date'),
         timeFrequency     = this.$('#time-options-time-frequency');
 
     timeOptionsParent.css('display', 'block');
     if (currentValue == 1) { // time selection is "One time"
-      timeRequired.css('display', 'block');
-      completionDate.css('display', 'block');
-      timeFrequency.css('display', 'none');
+      timeRequired.show();
+      completionDate.show();
+      timeRequiredAside.hide();
+      timeFrequency.hide();
     }
     else if (currentValue == 2) { // time selection is "On going"
-      timeRequired.css('display', 'block');
-      completionDate.css('display', 'none');
-      timeFrequency.css('display', 'block');
+      timeRequired.show();
+      timeRequiredAside.show();
+      timeFrequency.show();
+      completionDate.hide();
     }
   },
 
@@ -177,7 +190,7 @@ var TaskFormView = Backbone.View.extend({
   submit: function (e, draft) {
     var fieldsToValidate  = ['#task-title', '#task-description', '[name=task-time-required]:checked', '[name=time-required]:checked'],
         validForm         = this.validateBeforeSubmit(fieldsToValidate),
-        effortType        = this.$('[name=task-time-required]:checked').val(),
+        completedBy       = this.$('#estimated-completion-date').val(),
         data;
 
     if (!validForm && !draft) return this;
@@ -190,9 +203,7 @@ var TaskFormView = Backbone.View.extend({
     };
 
     if (draft) data['state'] = this.$('#draft-button').data('state');
-    if (effortType == 1) { // time selection is "One time"
-      data['completedBy'] = this.$('#estimated-completion-date').val();
-    }
+    if (completedBy != '') data['completedBy'] = completedBy;
     console.log('submitting with', data);
     this.collection.trigger("task:save", data);
 

@@ -15,15 +15,17 @@ Sails.lift(opts, function(err, sails) {
   var tagsToRename = {
     'Part Time': 'One time',
     'Full Time': 'Ongoing',
-    '1 Week': '1 week',
-    '1 Month': '1 month',
-    'A Few Months': '3 months',
+    'On going': 'Ongoing',
+    '1 week': 'Weekly',
+    '1 Week': 'Weekly',
+    '1 month': 'Monthly',
+    '1 Month': 'Monthly',
     '1 - 3 hours': 'Up to 2 hours',
     '9 - 24 hours': '8 - 16 hours'
   };
 
   var newTagNamesToAdd = [
-    { type: 'task-length', name: '6 months' },
+    { type: 'task-length', name: 'Biweekly' },
     { type: 'task-time-estimate', name: '2 - 4 hours' },
     { type: 'task-time-estimate', name: '16 - 24 hours' },
     { type: 'task-time-estimate', name: '24 - 40 hours' }
@@ -31,11 +33,20 @@ Sails.lift(opts, function(err, sails) {
 
   var tagNamesToMigrate = {
     '20% Time': 'Ongoing',
-    '1 Day': '1 week',
-    '1 - 3 Days': '1 week',
+    '1 Day': 'Weekly',
+    '1 - 3 Days': 'Weekly',
+    'A Few Months': 'Monthly',
+    '3 months': 'Monthly',
+    '6 months': 'Monthly',
     'longer than 40 hours': '24 - 40 hours',
     '25 - 40 hours': '24 - 40 hours'
   };
+
+  var orderedTaskLengthTags = [
+    'Weekly',
+    'Biweekly',
+    'Monthly'
+  ];
 
   var orderedTaskTimeEstimateTags = [
     'Less than 1 hour',
@@ -142,7 +153,22 @@ Sails.lift(opts, function(err, sails) {
     });
   }
 
+  function orderTaskLength (cb) {
+    console.log('Ensuring order of task-length tags');
+    orderedTaskLengthTags.forEach(function(tag) {
+      TagEntity.find().where({ name: tag }).exec(function (err, t) {
+        if (err) return cb(err);
+        if (!t.length) return cb();
+
+        t[0].updatedAt = new Date();
+        t[0].save();
+      });
+    });
+    cb(null);
+  }
+
   function orderTaskTimeEstimate (cb) {
+    console.log('Ensuring order of task-time-estimate tags');
     orderedTaskTimeEstimateTags.forEach(function(tag) {
       TagEntity.find().where({ name: tag }).exec(function (err, t) {
         if (err) return cb(err);
@@ -153,8 +179,8 @@ Sails.lift(opts, function(err, sails) {
     });
     cb(null);
   }
-//renameTags, addTags, migrateTags,
-  async.series([migrateTags, orderTaskTimeEstimate], function (err, result) {
+
+  async.series([renameTags, addTags, migrateTags, orderTaskLength, orderTaskTimeEstimate], function (err, result) {
     if (err) return err;
 
     console.log('Migration done');
