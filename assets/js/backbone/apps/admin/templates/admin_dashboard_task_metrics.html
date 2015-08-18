@@ -1,42 +1,49 @@
-<div class="row"><div class="col-md-12">
+<div class="row"><div class="col-md-12 form-inline text-right">
+  <label for="group">Period:</label>
+  <select name="group" class="group form-control">
+    <option value="week">Week</option>
+    <option value="month">Month</option>
+    <option value="quarter">Quarter</option>
+    <option value="year">Year</option>
+    <option value="fyquarter">Fiscal Quarter</option>
+    <option value="fy">Fiscal Year</option>
+  </select>
+</div></div>
+
+<div class="row overflow-x"><div class="col-md-12">
   <table class="table task-metrics-table">
     <thead>
       <tr>
         <th scope="col">Completed Opportunities</th>
-        <% _.each(fiscalYears, function(fy) { %>
-        <th scope="col">FY<%- fy %></th>
+        <% _.each(range, function(key) { %>
+        <th scope="col"><%- label(key) %></th>
         <% }); %>
-        <th scope="col">Goal</th>
       </tr>
     </thead>
     <tbody>
       <tr>
         <th scope="row">Carryover <small>(still published or assigned)</small></th>
-        <% _.each(fiscalYears, function(fy) { %>
-        <td><%- tasks.carryOver[fy] || 0 %></td>
+        <% _.each(range, function(key) { %>
+        <td><%- tasks.carryOver[key] || 0 %></td>
         <% }); %>
-        <td></td>
       </tr>
       <tr>
         <th scope="row">Published</th>
-        <% _.each(fiscalYears, function(fy) { %>
-        <td><%- tasks.published[fy] || 0 %></td>
+        <% _.each(range, function(key) { %>
+        <td><%- tasks.published[key] || 0 %></td>
         <% }); %>
-        <td></td>
       </tr>
       <tr>
         <th scope="row">Completed</th>
-        <% _.each(fiscalYears, function(fy) { %>
-          <td><%- tasks.completed[fy] || 0 %></td>
+        <% _.each(range, function(key) { %>
+          <td><%- tasks.completed[key] || 0 %></td>
         <% }); %>
-        <td></td>
       </tr>
       <tr class="small">
         <th scope="row">Percentage Completed</th>
-        <% _.each(fiscalYears, function(fy) { %>
-        <td><%- Math.round(tasks.completed[fy] / tasks.published[fy] * 100, 4) || 0 %>%</td>
+        <% _.each(range, function(key) { %>
+        <td><%- Math.round(tasks.completed[key] / tasks.published[key] * 100, 4) || 0 %>%</td>
         <% }); %>
-        <td></td>
       </tr>
       <!-- We don't track the date a task was archived
       <tr>
@@ -102,47 +109,43 @@
 </div></div>
 -->
 
-<div class="row"><div class="col-md-12">
+<div class="row overflow-x"><div class="col-md-12">
   <table class="table task-metrics-table">
     <thead>
       <tr>
         <th scope="col">Participants</th>
-        <% _.each(fiscalYears, function(fy) { %>
-        <th scope="col">FY<%- fy %></th>
+        <% _.each(range, function(key) { %>
+        <th scope="col"><%- label(key) %></th>
         <% }); %>
-        <th scope="col"></th>
       </tr>
     </thead>
     <tbody>
       <tr>
         <th scope="row">Participants <small>(people who have signed up for tasks)</small></th>
-        <% _.each(fiscalYears, function(fy) { %>
-        <td><%- volunteers[fy] || 0 %></td>
+        <% _.each(range, function(key) { %>
+        <td><%- volunteers[key] || 0 %></td>
         <% }); %>
-        <td></td>
       </tr>
     </tbody>
   </table>
 </div></div>
 
-<div class="row"><div class="col-md-12">
+<div class="row overflow-x"><div class="col-md-12">
   <table class="table task-metrics-table">
     <thead>
       <tr>
         <th scope="col">Agencies</th>
-        <% _.each(fiscalYears, function(fy) { %>
-        <th scope="col">FY<%- fy %></th>
+        <% _.each(range, function(key) { %>
+        <th scope="col"><%- label(key) %></th>
         <% }); %>
-        <th scope="col"></th>
       </tr>
     </thead>
     <tbody>
       <tr>
         <th scope="row">Agencies <small>(with people who have signed up for tasks)</small></th>
-        <% _.each(fiscalYears, function(fy) { %>
-        <td><%- agencies[fy] || 0 %></td>
+        <% _.each(range, function(key) { %>
+        <td><%- agencies[key] || 0 %></td>
         <% }); %>
-        <td></td>
       </tr>
     </tbody>
   </table>

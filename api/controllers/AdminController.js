@@ -246,46 +246,94 @@ module.exports = {
    * with the above endpoint.
    */
   taskMetrics: function(req, res) {
-    var getFY = function(input) {
+    var pad = function(num, size) {
+          size = size || 2;
+          var s = num + '';
+          while (s.length < size) s = '0' + s;
+          return s;
+        },
+        getFY = function(input) {
           if (!input) return undefined;
           var date = new Date(input);
           return new Date(date.setMonth(date.getMonth() + 3)).getFullYear();
         },
-        currentFY = getFY(new Date()),
-        fiscalYears = _.range(2014, currentFY + 1),
+        getYear = function(input) {
+          if (!input) return undefined;
+          return new Date(input).getFullYear();
+        },
+        getMonth = function(input) {
+          if (!input) return undefined;
+          var date = new Date(input);
+          return +date.getFullYear() + pad((date.getMonth() + 1));
+        },
+        getWeek = function(input) {
+          if (!input) return undefined;
+          var date = new Date(input);
+          var getWeekNumber = function(date) {
+                var d = new Date(date);
+                d.setHours(0,0,0);
+                d.setDate(d.getDate()+4-(d.getDay()||7));
+                return Math.ceil((((d-new Date(d.getFullYear(),0,1))/8.64e7)+1)/7);
+              };
+          return +date.getFullYear() + pad(getWeekNumber(date));
+        },
+        getQuarter = function(input) {
+          if (!input) return undefined;
+          var date = new Date(input),
+              month = date.getMonth() + 1,
+              quarter = month <= 3 ? '1' :
+                        month <= 6 ? '2' :
+                        month <= 9 ? '3' : '4';
+          return +date.getFullYear() + quarter;
+        },
+        getFYQuarter = function(input) {
+          if (!input) return undefined;
+          var date = new Date(input),
+              fyDate = new Date(date.setMonth(date.getMonth() + 3)),
+              month = fyDate.getMonth() + 1,
+              quarter = month <= 3 ? '1' :
+                        month <= 6 ? '2' :
+                        month <= 9 ? '3' : '4';
+          return +fyDate.getFullYear() + quarter;
+        },
         output = {
           tasks: {},
           volunteers: {},
-          agencies: {},
-          fiscalYears: fiscalYears
-        };
+          agencies: {}
+        },
+        count = req.param('group') === 'week' ? getWeek :
+                req.param('group') === 'month' ? getMonth :
+                req.param('group') === 'quarter' ? getQuarter :
+                req.param('group') === 'fyquarter' ? getFYQuarter :
+                req.param('group') === 'year' ? getYear : getFY;
 
     async.parallel([
       function(done) {
         Task.find({}).exec(function(err, tasks) {
           if (err) return done('task');
-
           var groups = {
                 carryOver: {},
                 published: _.countBy(tasks, function(task) {
-                  return getFY(task.publishedAt);
+                  return count(task.publishedAt);
                 }),
                 completed: _.countBy(tasks, function(task) {
-                  return getFY(task.completedAt);
+                  return count(task.completedAt);
                 })
-              };
+              },
+              range = _.keys(groups.published);
 
           // Evaluate whether a task was started and remained open in a previous FY
           _.each(tasks, function(task) {
-            fiscalYears.forEach(function(fy) {
-              var openedBeforeFY = getFY(task.publishedAt) < fy,
-                  openAfterFY = task.state !== 'archived' &&
-                    (!task.completedAt || getFY(task.completedAt) > fy);
-              groups.carryOver[fy] = groups.carryOver[fy] || 0;
-              if (openedBeforeFY && openAfterFY) groups.carryOver[fy] += 1;
+            range.forEach(function(i) {
+              var openedBefore = count(task.publishedAt) < i,
+                  openAfter = task.state !== 'archived' &&
+                    (!task.completedAt || count(task.completedAt) > i);
+              groups.carryOver[i] = groups.carryOver[i] || 0;
+              if (openedBefore && openAfter) groups.carryOver[i] += 1;
             });
           });
 
+          output.range = range;
           output.tasks = groups;
           done();
         });
@@ -296,7 +344,7 @@ module.exports = {
 
           // Group volunteers by created FY
           output.volunteers = _.groupBy(volunteers, function(volunteer) {
-            return getFY(volunteer.createdAt);
+            return count(volunteer.createdAt);
           });
 
           // Get volunteer users and tags to count agencies

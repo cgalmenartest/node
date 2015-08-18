@@ -13,6 +13,7 @@ var marked = require('marked');
 var AdminDashboardView = Backbone.View.extend({
 
   events: {
+    'change .group': 'renderTasks'
   },
 
   initialize: function (options) {
@@ -50,13 +51,37 @@ var AdminDashboardView = Backbone.View.extend({
     self.$(".metric-block").show();
   },
 
-  renderTasks: function(self, data) {
-    var template = _.template(AdminDashboardTasks)(data);
-    self.$(".task-metrics").html(template);
-    this.$el.i18n();
-    // hide spinner and show results
-    self.$(".spinner").hide();
-    self.$(".task-metrics").show();
+  renderTasks: function() {
+    var self = this,
+        data = this.data,
+        group = this.$('.group').val() || 'fy',
+        months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+    function label(key) {
+      if (key === 'undefined') return 'No date';
+      return group === 'week' ? 'W' + (+key.slice(4)) + '\n' + key.slice(0,4):
+        group === 'month' ? months[key.slice(4) - 1]  + '\n' + key.slice(0,4) :
+        group === 'quarter' ? 'Q' + (+key.slice(4)) + '\n' + key.slice(0,4) :
+        group === 'fyquarter' ? 'Q' + (+key.slice(4)) + '\nFY' + key.slice(0,4) :
+        group === 'fy' ? 'FY' + key : key;
+    }
+
+    $.ajax({
+      url: '/api/admin/taskmetrics?group=' + group,
+      dataType: 'json',
+      success: function (data) {
+        data.label = label;
+        var template = _.template(AdminDashboardTasks)(data);
+        data.tasks.active = self.data.tasks;
+        self.$(".task-metrics").html(template);
+        self.$el.i18n();
+        // hide spinner and show results
+        self.$(".spinner").hide();
+        self.$(".task-metrics").show();
+        self.$('.group').val(group);
+      }
+    });
   },
 
   renderActivities: function (self, data) {
@@ -93,6 +118,7 @@ var AdminDashboardView = Backbone.View.extend({
     // hide spinner and show results
     self.$(".spinner").hide();
     self.$(".activity-block").show();
+    self.renderTasks(self, this.data);
   },
 
   fetchData: function (self, data) {
@@ -110,14 +136,6 @@ var AdminDashboardView = Backbone.View.extend({
               return sum + value;
             }, 0);
             self.renderMetrics(self, data);
-          }
-        });
-        $.ajax({
-          url: '/api/admin/taskmetrics',
-          dataType: 'json',
-          success: function (data) {
-            data.tasks.active = self.data.tasks;
-            self.renderTasks(self, data);
           }
         });
       }
