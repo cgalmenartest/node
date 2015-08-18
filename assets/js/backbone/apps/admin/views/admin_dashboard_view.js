@@ -59,6 +59,7 @@ var AdminDashboardView = Backbone.View.extend({
                   'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
     function label(key) {
+      if (key === 'undefined') return 'No date';
       return group === 'week' ? 'W' + (+key.slice(4)) + '\n' + key.slice(0,4):
         group === 'month' ? months[key.slice(4) - 1]  + '\n' + key.slice(0,4) :
         group === 'quarter' ? 'Q' + (+key.slice(4)) + '\n' + key.slice(0,4) :
