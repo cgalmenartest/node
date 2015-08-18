@@ -22,7 +22,6 @@ Browse.ListController = BaseController.extend({
   events: {
     "click .link-backbone"  : linkBackbone,
     "click .project-background-image" : "showProject",
-    "click .task-box"       : "showTask",
     "click .add-project"    : "addProject",
     "click .add-opportunity": "addTask"
   },
@@ -30,9 +29,10 @@ Browse.ListController = BaseController.extend({
   initialize: function ( options ) {
     // this.options = options;
     this.target = options.target;
+    this.queryParams = options.queryParams || false;
+
     this.fireUpCollection();
     this.initializeView();
-
     this.collection.trigger('browse:' + this.target + ":fetch");
 
     this.listenTo(this.projectsCollection, "project:save:success", function (data) {
@@ -51,7 +51,8 @@ Browse.ListController = BaseController.extend({
     this.browseMainView = new BrowseMainView({
       el: "#container",
       target: this.target,
-      collection: this.collection
+      collection: this.collection,
+      queryParams: this.queryParams
     }).render();
   },
 
@@ -71,6 +72,7 @@ Browse.ListController = BaseController.extend({
       self.collection.fetch({
         success: function (collection) {
           self.collection = collection;
+          if (_.has(self.queryParams, 'search')) return;
           self.browseMainView.renderList(self.collection.toJSON());
           if (self.target == 'profiles') {
             self.browseMainView.renderMap(self.collection.toJSON());
@@ -87,12 +89,6 @@ Browse.ListController = BaseController.extend({
     if (e.preventDefault) e.preventDefault();
     var id = $($(e.currentTarget).parents('li.project-box')[0]).data('id');
     Backbone.history.navigate('projects/' + id, { trigger: true });
-  },
-
-  showTask: function (e) {
-    if (e.preventDefault) e.preventDefault();
-    var id = $(e.currentTarget).data('id') || $($(e.currentTarget).parents('li.task-box')[0]).data('id');
-    Backbone.history.navigate('tasks/' + id, { trigger: true });
   },
 
   addProject: function (e) {

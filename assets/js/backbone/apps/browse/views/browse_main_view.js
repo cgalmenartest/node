@@ -66,9 +66,16 @@ var BrowseMainView = Backbone.View.extend({
   },
 
   initializeSearch: function() {
-    var self = this;
+    var self  = this,
+        query = false;
     this.searchTerms = [];
     this.tags = [];
+
+    if (this.options.queryParams['search']) {
+      query = this.options.queryParams['search'].split('+').map(function(i) {
+        return { id: i, name: i };
+      });
+    }
 
     // figure out which tags apply
     for (var i = 0; i < TagConfig[this.options.target].length; i++) {
@@ -136,6 +143,11 @@ var BrowseMainView = Backbone.View.extend({
           e.choice.name = e.val;
         }
       });
+
+    if (query) {
+      $("#search").select2('data', query);
+      self.searchBar({});
+    }
   },
 
   submitOnEnter: function (e) {
@@ -177,7 +189,7 @@ var BrowseMainView = Backbone.View.extend({
   },
 
   searchBar: function (e) {
-    var self=this;
+    var self = this;
     if (e.preventDefault) e.preventDefault();
     // get values from select2
     var searchTerms = $("#search").select2("data");
@@ -394,6 +406,9 @@ var BrowseMainView = Backbone.View.extend({
     $("#search-none").show();
     $(".search-clear").hide();
     this.searchExec(self.searchTerms);
+
+    if (this.options.target == 'tasks') Backbone.history.navigate('/tasks');
+    if (this.options.target == 'projects') Backbone.history.navigate('/projects');
   },
 
   cleanup: function() {
