@@ -52,7 +52,7 @@ var TaskFormView = Backbone.View.extend({
               if (item.name == 'One time') {
                 item.description = 'A one time task with a defined timeline'
               }
-              else if (item.name == 'On going') {
+              else if (item.name == 'Ongoing') {
                 item.description = 'Requires a portion of participant’s time until a goal is reached'
               }
               return item;
