@@ -41,7 +41,8 @@ module.exports.connections = {
     user        : 'midas',
     password    : 'midas',
     database    : 'midas',
-    softDelete  : true
+    softDelete  : true,
+    populateFast: true
   }
 
 };
