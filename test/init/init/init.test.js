@@ -8,11 +8,17 @@ require('sails').lift({
     grunt: false,
     sockets: false,
     pubsub: false,
-    csrf: false
+    csrf: false,
+    http: false,
+    views: false
   }
 }, function(err, sails) {
   if (err) throw err;
-  async.forEach(conf.tags, TagEntity.create, function(err) {
-    sails.lower();
+  TagEntity.count({}).exec(function(err, count) {
+    if (err) throw 'Failed to init tags.';
+    if (count > 0) return console.log('Skipping tag init.');
+    async.forEach(conf.tags, TagEntity.create, function(err) {
+      sails.lower();
+    });
   });
 });

@@ -57,7 +57,7 @@ module.exports = {
         level: 'error'
       },
       adapters: {
-        'default': 'disk'
+        'default': 'test'
       }
     },
   'project': {

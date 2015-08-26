@@ -38,7 +38,7 @@ function copyFile(source, target, cb) {
     }
   }
 }
-copyFile('./test/data/disk.db', './.tmp/disk.db', start);
+copyFile('./test/data/disk.db', './.tmp/test.db', start);
 
 function start(err) {
   if (err) return console.log('error: ', err);
