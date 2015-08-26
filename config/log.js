@@ -122,7 +122,7 @@ var logger = new (winston.Logger)({
 });
 
 module.exports.log = {
-  level: 'debug',
+  level: process.env.SAILS_LOG_LEVEL || 'info',
   colors: false, // To get clean logs without prefixes or color codings
   custom: logger
 };

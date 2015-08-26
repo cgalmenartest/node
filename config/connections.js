@@ -28,7 +28,11 @@ module.exports.connections = {
     inMemory: true
   },
 
-  disk: {
+  test: {
+    adapter: 'sails-disk'
+  },
+
+  local: {
     adapter: 'sails-disk'
   },
 
