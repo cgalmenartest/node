@@ -50,9 +50,10 @@ function populateFast(attr) {
   var Model = this._context,
       schema = Model._attributes[attr],
       connection = Model.adapter.dictionary.identity,
-      connectionConfig = Model.connections[connection].config;
+      connectionConfig = Model.connections[connection].config,
+      singleMatch = (this._criteria.where || {})[this._context.primaryKey];
 
-  if (!connectionConfig.populateFast || !schema || !schema.dominant) {
+  if (!connectionConfig.populateFast || !schema || !schema.dominant || singleMatch) {
     return this.populateOriginal.apply(this, arguments);
   }
 

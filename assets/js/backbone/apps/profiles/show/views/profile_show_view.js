@@ -87,6 +87,12 @@ var ProfileShowView = Backbone.View.extend({
     this.initializeTextArea();
     this.updatePhoto();
     this.updateProfileEmail();
+
+    // Force reloading of image (in case it was changed recently)
+    if (data.user.id === data.data.id) {
+      var url = '/api/user/photo/' + data.user.id + "?" + new Date().getTime();
+      $("#project-header").css('background-image', "url('" + url + "')");
+    }
     return this;
   },
 
@@ -204,15 +210,12 @@ var ProfileShowView = Backbone.View.extend({
     this.model.on("profile:updatedPhoto", function (data) {
       //added timestamp to URL to force FF to reload image from server
       var url = '/api/user/photo/' + data.attributes.id + "?" + new Date().getTime();
-      // force the new image to be loaded
-      $.get(url, function (data) {
-        $("#project-header").css('background-image', "url('" + url + "')");
-        $('#file-upload-progress-container').hide();
-        // notify listeners of the new user image, but only for the current user
-        if (self.model.toJSON().id == window.cache.currentUser.id) {
-          window.cache.userEvents.trigger("user:profile:photo:save", url);
-        }
-      });
+      $("#project-header").css('background-image', "url('" + url + "')");
+      $('#file-upload-progress-container').hide();
+      // notify listeners of the new user image, but only for the current user
+      if (self.model.toJSON().id == window.cache.currentUser.id) {
+        window.cache.userEvents.trigger("user:profile:photo:save", url);
+      }
     });
   },
 
