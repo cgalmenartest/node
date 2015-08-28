@@ -15,7 +15,7 @@ var d3 = require('d3');
 var leaflet = require('leaflet');
 var topojson = require('topojson');
 var tooltipTemplate = require('../templates/profile_map_tooltip.html');
-var countryData = require('../../../../../data/countries.geo.json');
+var countryData = require('../../../../../data/ne_110m_admin_0_countries.json');
 
 // Forcing a re-render will cause us to lose part of the map's state, but
 // we can save it off.
