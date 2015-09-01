@@ -14,11 +14,11 @@ module.exports = {
     // See: https://github.com/andris9/Nodemailer#well-known-services-for-smtp
     service             : '',
     // remote SMTP host
-    host                : 'localhost',
+    host                : '',
     // true to use SSL connections
-    secureConnection    : false,
+    secureConnection    : true,
     // 25 (non-secure) or 465 (secure)
-    port                : 1025,
+    port                : 465,
     // username and password settings for secure connections
     auth                : {
       user              : '',
