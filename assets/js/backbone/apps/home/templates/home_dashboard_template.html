@@ -1,5 +1,12 @@
   <div class="container" id="container">
-
+    <div class="row" id="opportunity-count">
+      <div class="col-md-8">
+        <h1>There are <span>20</span> open opportunities right now.</h1>
+      </div>
+      <div class="col-md-4">
+        <a href="/tasks" class="btn btn-large btn-primary">Find yours</a>
+      </div>
+    </div>
     <div class="row box">
       <div class="col-md-8 box-pad-lr">
         <h2><i class="fa fa-newspaper-o"></i><span class="box-icon-text">Latest Achievements</span></h2>
@@ -13,13 +20,13 @@
                 <%= a.user.name %>
               </a>
               <% if (a.type === 'newTask') { %>
-                created <a href="/tasks/<%= a.task.id %>"><%= a.task.title %></a> on <%= a.createdAt %>
+                created <a href="/tasks/<%= a.task.id %>"><%= a.task.title %></a>.
               <% } %>
               <% if (a.type === 'newComment') { %>
-                commented on <a href="/tasks/<%= a.item.id %>"><%= a.item.title %></a> on <%= a.createdAt %>
+                commented on <a href="/tasks/<%= a.item.id %>"><%= a.item.title %></a>.
               <% } %>
               <% if (a.type === 'newVolunteer') { %>
-                is now a participant for <a href="/tasks/<%= a.task.id %>"><%= a.task.title %></a> on <%= a.createdAt %>
+                is now a participant for <a href="/tasks/<%= a.task.id %>"><%= a.task.title %></a>.
               <% } %>
             </li>
 
