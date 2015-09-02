@@ -24,6 +24,8 @@ module.exports.policies = {
     '*': ['sspi']
   },
 
+  ActivityController: ['passport', 'authenticated', 'requireUserId'],
+
   // Only admins can access the AdminController API
   AdminController : {
     '*': ['passport', 'authenticated', 'admin']
