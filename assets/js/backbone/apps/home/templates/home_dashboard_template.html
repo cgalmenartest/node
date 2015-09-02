@@ -1,48 +1,22 @@
   <div class="container" id="container">
-    <div class="row" id="opportunity-count">
+    <div class="row box box-banner" id="opportunity-count">
       <div class="col-md-8">
-        <h1>There are <span>20</span> open opportunities right now.</h1>
+        <h1>There are <span>many</span> open opportunities right now.</h1>
       </div>
       <div class="col-md-4">
         <a href="/tasks" class="btn btn-large btn-primary">Find yours</a>
       </div>
     </div>
     <div class="row box">
-      <div class="col-md-8 box-pad-lr">
-        <h2><i class="fa fa-newspaper-o"></i><span class="box-icon-text">Latest Achievements</span></h2>
-        <ul class="activity-feed list-unstyled">
-          <% _.forEach(data, function(a) { %>
-            <% console.log('a', a); %>
+      <div data-target="badges-feed" class="col-md-8 box-pad-lr">
 
-            <li>
-              <a href="/profile/<%= a.user.id %>" class="avatar">
-                <img src="/api/file/get/<%= a.user.photoId %>" class="navbar-people" alt="Profile image for <%= a.user.name %>">
-                <%= a.user.name %>
-              </a>
-              <% if (a.type === 'newTask') { %>
-                created <a href="/tasks/<%= a.task.id %>"><%= a.task.title %></a>.
-              <% } %>
-              <% if (a.type === 'newComment') { %>
-                commented on <a href="/tasks/<%= a.item.id %>"><%= a.item.title %></a>.
-              <% } %>
-              <% if (a.type === 'newVolunteer') { %>
-                is now a participant for <a href="/tasks/<%= a.task.id %>"><%= a.task.title %></a>.
-              <% } %>
-            </li>
-
-          <% }); %>
-
-        </ul>
       </div>
       <div class="col-md-4 box box-pad-lr">
-        <div>
-          <h2>Welcome</h2>
+        <div data-target="users-feed">
+
         </div>
-        <div>
-          <h2>Tasks completed this year</h2>
-        </div>
-        <div>
-          <h2>Kudos</h2>
+        <div data-target="network-stats">
+
         </div>
       </div>
     </div>

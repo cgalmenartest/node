@@ -1,0 +1,39 @@
+<h2><i class="fa fa-newspaper-o"></i><span class="box-icon-text">Latest Achievements</span></h2>
+<ul class="activity-feed list-unstyled">
+  <% _.forEach(badges, function(b) { %>
+    <li>
+      <div class="activity-feed--item">
+        <% if (b.type === 'participantBadge') { %>
+          <div class="activity-feed--badge"></div>
+          <div class="activity-feed--text">
+            <div><%= b.user.name %> earned a badge!</div>
+            <a href="/tasks/<%= b.task.id %>"><%= b.task.title %></a>
+            </div>
+        <% } else if (b.type === 'taskCompleted') { %>
+          <% if (b.participants.length === 0) { %>
+            <div class="activity-feed--text">
+              <a href="/tasks/<%= b.task.id %>"><%= b.task.title %></a> was completed.
+            </div>
+          <% } else { %>
+            <% console.log('p', b.participants); %>
+            <% var ps = b.participants.map(function(p) { %>
+              <% return '<a href="/profile/' + p.id + '">' + p.name + '</a>' %>
+            <% }) %>
+            <% if (b.participants.length === 1) var pText = ps; %>
+            <% if (b.participants.length === 2) var pText = ps.join(' and '); %>
+            <% if (b.participants.length > 2) { %>
+              <% var last  = ps.slice(-1); %>
+              <% var rest  = ps.slice(0, -1).join(', '); %>
+              <% var pText = [rest, last].join(' and '); %>
+            <% } %>
+            <div class="activity-feed--text">
+              <a href="/tasks/<%= b.task.id %>"><%= b.task.title %></a> was completed with the help of <%= pText %>.
+            </div>
+          <% } %>
+        <% } %>
+      </div>
+    </li>
+
+  <% }); %>
+
+</ul>

@@ -132,6 +132,22 @@ input {
   padding-bottom: 10px;
 }
 
+.box-banner {
+  background-color: black;
+  line-height: 2.1em;
+  padding-top: 1.3em;
+  padding-bottom: 1.3em;
+}
+
+.box-banner h1 {
+  font-size: 2.1em;
+  text-align: right;
+}
+
+.box-banner .btn {
+  padding: 1em 2em;
+}
+
 .box-icon-text {
   margin-left: 5px;
 }
@@ -565,6 +581,30 @@ ul.password-rules {
 
 .white .comment-created-at {
   color: #FFFFFF;
+}
+
+/*****************
+=  DASHBOARD
+******************/
+.activity-feed--item {
+  padding: 1em;
+}
+
+.activity-feed--item:after {
+  display: table;
+  content: '';
+  clear: both;
+}
+.activity-feed--badge {
+   background-color:black;
+   border-radius:100%;
+   float: left;
+   margin-right: 1em;
+   min-height:40px;
+   width:40px;
+}
+.activity-feed--text {
+  float: left;
 }
 
 /*****************
