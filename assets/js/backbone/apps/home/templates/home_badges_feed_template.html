@@ -6,7 +6,7 @@
         <% if (b.type === 'participantBadge') { %>
           <div class="activity-feed--badge"></div>
           <div class="activity-feed--text">
-            <div><%= b.user.name %> earned a badge!</div>
+            <div><a href="/profile/<%= b.user.id %>"><%= b.user.name %></a> earned a badge!</div>
             <a href="/tasks/<%= b.task.id %>"><%= b.task.title %></a>
             </div>
         <% } else if (b.type === 'taskCompleted') { %>

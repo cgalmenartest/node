@@ -132,22 +132,6 @@ input {
   padding-bottom: 10px;
 }
 
-.box-banner {
-  background-color: black;
-  line-height: 2.1em;
-  padding-top: 1.3em;
-  padding-bottom: 1.3em;
-}
-
-.box-banner h1 {
-  font-size: 2.1em;
-  text-align: right;
-}
-
-.box-banner .btn {
-  padding: 1em 2em;
-}
-
 .box-icon-text {
   margin-left: 5px;
 }
@@ -586,27 +570,64 @@ ul.password-rules {
 /*****************
 =  DASHBOARD
 ******************/
+.box-banner {
+  line-height: 2.1em;
+  padding-top: 1.3em;
+  padding-bottom: 1.3em;
+}
+.box-banner h1 {
+  color: black;
+  font-size: 2.1em;
+  padding-top: .3em;
+  text-align: right;
+}
+@media (max-width: 1000px) {
+  .box-banner h1,
+  .box-banner .col-md-4 {
+    text-align: center;
+  }
+}
+.box-banner .btn {
+  padding: 1em 2em;
+}
 .activity-feed--item {
   padding: 1em;
 }
-
 .activity-feed--item:after {
   display: table;
   content: '';
   clear: both;
 }
 .activity-feed--badge {
-   background-color:black;
-   border-radius:100%;
+   background-color: black;
+   border-radius: 100%;
    float: left;
    margin-right: 1em;
-   min-height:40px;
-   width:40px;
+   min-height: 40px;
+   width: 40px;
 }
 .activity-feed--text {
   float: left;
+  width: 90%;
+}
+@media (max-width: 768px) {
+  .activity-feed--text {
+    width: 80%;
+  }
 }
 
+.tasks-completed {
+  text-align: center;
+}
+.tasks-completed input {
+  border: none;
+  font-size: 3.2em;
+  text-align: center;
+  width: 100%;
+}
+.tasks-completed label {
+  font-weight: 300;
+}
 /*****************
 =  PROFILES
 ******************/
