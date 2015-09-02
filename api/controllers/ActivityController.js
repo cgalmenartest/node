@@ -54,8 +54,9 @@ module.exports = {
   },
 
   network: function(req, res) {
-    // TODO: support date range params
-    Task.find({ state: 'completed' }).exec(function(err, tasks) {
+    var query = JSON.parse(req.param('where', '{}')),
+        where = _.extend(query, { state: 'completed' });
+    Task.find(where).exec(function(err, tasks) {
       if (err) return res.negotiate(err);
       var ids = _.pluck(tasks, 'id');
       Volunteer.count({ userId: ids }).exec(function(err, count) {
@@ -66,8 +67,9 @@ module.exports = {
   },
 
   count: function(req, res) {
-    // TODO: support date range params
-    Task.count({ state: 'completed' }).exec(function(err, count) {
+    var query = JSON.parse(req.param('where', '{}')),
+        where = _.extend(query, { state: 'completed' });
+    Task.count(where).exec(function(err, count) {
       if (err) return res.negotiate(err);
       res.json(count);
     });
