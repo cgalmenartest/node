@@ -5,11 +5,20 @@ var ActivityModel = require('./activity_model');
 var ActivityCollection = Backbone.Collection.extend({
 
   model: ActivityModel,
-  url: '/api/admin/activities',
+  url: function () {
+    return '/api/activity/' + this.type;
+  },
 
-  initialize: function () {
-    var self = this;
+  initialize: function (opts) {
+    var self = this,
+        data;
+
+    opts = opts || {};
+    data = opts.params || {};
+
+    this.type = opts.type || 'badges';
     this.fetch({
+      data: data,
       success: function (data) {
         self.trigger("activity:collection:fetch:success", data);
       },
