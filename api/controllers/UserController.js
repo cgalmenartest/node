@@ -375,6 +375,7 @@ module.exports = {
     User.find().populate('tags').exec(function (err, users) {
 
       users.forEach(function(user) {
+        if (!user.tags) return;
         user.tags.forEach(function(tag) {
           user[tag.type] = tag.name;
         });
