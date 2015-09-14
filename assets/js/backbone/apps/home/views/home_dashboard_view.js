@@ -52,7 +52,9 @@ var DashboardView = Backbone.View.extend({
         var open = collection.filter(function(t) {
           return t.attributes.state !== 'completed';
         });
-        self.$('#opportunity-count span').text(open.length);
+        self.$('#opportunity-count span')
+            .addClass('loaded')
+            .text(open.length);
       },
       error: function () {
         console.log('err with fetching task collection\n', err);
