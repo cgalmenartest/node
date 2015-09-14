@@ -285,7 +285,7 @@ input[type="submit"] {
 
 h1, h2, h3, h4, h5, h6 {
   margin-top: 0;
-  font-family: 'Lato', 'Roboto', Helvetica, Arial, sans-serif;
+  font-family: 'Roboto', Helvetica, Arial, sans-serif;
   font-weight: 300;
 }
 
@@ -636,10 +636,6 @@ ul.password-rules {
    margin-right: .3em;
    min-height: 40px;
    width: 40px;
-}
-.activity-feed--text {
-  /*float: left;
-  width: 90%;*/
 }
 @media (max-width: 768px) {
   .activity-feed--text {
