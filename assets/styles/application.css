@@ -596,7 +596,7 @@ ul.password-rules {
 .box-banner h1 {
   color: #fff;
   font-size: 24px;
-  line-height: 2em;
+  line-height: 1.7em;
   margin-bottom: 0;
   text-align: right;
 }
@@ -655,7 +655,7 @@ ul.password-rules {
 .tasks-completed input {
   border: none;
   color: #2e8540;
-  font-size: 24px;
+  font-size: 40px;
   text-align: center;
   width: 100%;
 }

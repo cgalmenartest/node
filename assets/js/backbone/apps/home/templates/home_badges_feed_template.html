@@ -1,7 +1,8 @@
 <h2>Latest Achievements</h2>
 <ul class="activity-feed list-unstyled">
-  <% _.forEach(badges, function(b) { %>
-    <% if (b.type === 'taskCompleted' && b.participants.length !== 0) { %>
+    <% var activities = _.filter(badges, function (b) { return b.type === 'taskCompleted'; }); %>
+    <% _.forEach(activities.slice(0,25), function(b) { %>
+    <% if (b.participants.length !== 0) { %>
       <li>
         <div class="activity-feed--item">
           <% var ps = b.participants.map(function(p) { %>
