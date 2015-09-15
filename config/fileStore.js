@@ -1,9 +1,9 @@
 module.exports.fileStore = {
-  service: 'local',
+  service: process.env.FILESTORE || 'local',
 
   local: {
     dirname: 'assets/uploads'
-  }
+  },
 
   /**
    * Store files on AWS S3
@@ -18,9 +18,9 @@ module.exports.fileStore = {
    * @prefix: prefix string / virtual path within bucket
    */
 
-  // s3: {
-  //   bucket: 'midas-filestore',
-  //   prefix: 'assets/uploads'
-  // }
+  s3: {
+    bucket: process.env.S3_BUCKET || 'midas-filestore',
+    prefix: process.env.S3_PREFIX || 'assets/uploads'
+  }
 
 };

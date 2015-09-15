@@ -14,15 +14,15 @@ module.exports = {
     // See: https://github.com/andris9/Nodemailer#well-known-services-for-smtp
     service             : '',
     // remote SMTP host
-    host                : '',
+    host                : process.env.EMAIL_HOST || '',
     // true to use SSL connections
     secureConnection    : true,
     // 25 (non-secure) or 465 (secure)
     port                : 465,
     // username and password settings for secure connections
     auth                : {
-      user              : '',
-      pass              : ''
+      user              : process.env.EMAIL_USER || '',
+      pass              : process.env.EMAIL_PASS || ''
     },
     // ignore server support for STARTTLS (defaults to false)
     ignoreTLS           : false,
@@ -53,6 +53,9 @@ module.exports = {
   },
 
   // system email address (from address)
-  systemEmail: 'test@example.com'
+  systemEmail: process.env.EMAIL_SYSTEM_ADDRESS || 'example@example.com',
+
+  notificationsCC  : process.env.NOTIFICATIONS_CC || '',
+  notificationsBCC : process.env.NOTIFICATIONS_BCC || ''
 
 };

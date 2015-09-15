@@ -28,7 +28,7 @@ var session = {
 };
 
 // Build database config
-if (process.env.NODE_ENV !== 'test') {
+if (process.env.NODE_ENV !== 'test' && process.env.DATASTORE !== 'local') {
 
   var pgSession = require('connect-pg-simple'),
       express = require('sails/node_modules/express'),
@@ -42,7 +42,7 @@ if (process.env.NODE_ENV !== 'test') {
   });
 
   function extend(obj, props) {
-    for (prop in props) {
+    for (var prop in props) {
       if (props.hasOwnProperty(prop)) { obj[prop] = props[prop]; }
     }
   }

@@ -32,11 +32,11 @@ before(function(done) {
 
   if (process.env.NODE_ENV == 'test') {
     // remove the database directories
-    if (fs.existsSync('./.tmp/disk.db')) {
-      fs.unlinkSync('./.tmp/disk.db');
+    if (fs.existsSync('./.tmp/test.db')) {
+      fs.unlinkSync('./.tmp/test.db');
     }
     config.adapters = {
-      'default': 'disk'
+      'default': 'test'
     };
   }
   // Lift Sails and store the app reference

@@ -8,7 +8,7 @@ module.exports.models = {
   * connections (see `config/connections.js`)                                *
   *                                                                          *
   ***************************************************************************/
-  connection: 'postgresql',
+  connection: process.env.DATASTORE || 'postgresql',
 
   /***************************************************************************
   *                                                                          *
