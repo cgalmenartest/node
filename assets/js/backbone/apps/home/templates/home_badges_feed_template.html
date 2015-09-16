@@ -6,7 +6,7 @@
       <li>
         <div class="activity-feed--item">
           <% var ps = b.participants.map(function(p) { %>
-            <% return '<a href="/profile/' + p.id + '">' + p.name + '</a>' %>
+            <% return '<a href="/profile/' + _.escape(p.id) + '">' + _.escape(p.name) + '</a>' %>
           <% }) %>
           <% if (b.participants.length === 1) var pText = ps; %>
           <% if (b.participants.length === 2) var pText = ps.join(' and '); %>
@@ -16,7 +16,7 @@
             <% var pText = [rest, last].join(' and '); %>
           <% } %>
           <div class="activity-feed--text">
-            <a href="/tasks/<%= b.task.id %>"><%= b.task.title %></a> was completed with the help of <%= pText %>.
+            <a href="/tasks/<%- b.task.id %>"><%- b.task.title %></a> was completed with the help of <%= pText %>.
           </div>
 
           <div class="activity-feed--avatars">
