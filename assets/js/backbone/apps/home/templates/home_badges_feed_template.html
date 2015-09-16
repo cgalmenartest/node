@@ -13,7 +13,7 @@
           <% if (b.participants.length > 2) { %>
             <% var last  = ps.slice(-1); %>
             <% var rest  = ps.slice(0, -1).join(', '); %>
-            <% var pText = [rest, last].join(' and '); %>
+            <% var pText = [rest, last].join(', and '); %>
           <% } %>
           <div class="activity-feed--text">
             <a href="/tasks/<%- b.task.id %>"><%- b.task.title %></a> was completed with the help of <%= pText %>.
