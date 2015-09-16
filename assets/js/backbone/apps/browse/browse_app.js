@@ -1,4 +1,3 @@
-
 var _ = require('underscore');
 var Backbone = require('backbone');
 var utils = require('../../mixins/utilities');
@@ -21,6 +20,7 @@ var BrowseRouter = Backbone.Router.extend({
 
   routes: {
     ''                          : 'showHome',
+    'dashboard(/)'              : 'showHome',
     'projects(/)(?:queryStr)'   : 'listProjects',
     'projects/:id(/)'           : 'showProject',
     'projects/:id/:action(/)'   : 'showProject',

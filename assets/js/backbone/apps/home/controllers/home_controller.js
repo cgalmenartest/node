@@ -1,23 +1,23 @@
 
 var _ = require('underscore');
-var async = require('async');
-var Backbone = require('backbone');
 var utils = require('../../../mixins/utilities');
 var BaseController = require('../../../base/base_controller');
 var HomeView = require('../views/home_view');
+var DashboardView = require('../views/home_dashboard_view');
 
-
-Home = {};
-
-Home.Controller = BaseController.extend({
-
-  events: {
-  },
-
+var HomeController = BaseController.extend({
   // The initialize method is mainly used for event bindings (for efficiency)
   initialize: function (options) {
     var self = this;
-    this.homeView = new HomeView().render();
+
+    if (!window.cache.currentUser) {
+      this.homeView = new HomeView().render();
+      Backbone.history.navigate('/');
+      return this;
+    }
+    this.homeView = new DashboardView().render();
+    Backbone.history.navigate('/dashboard');
+    return this;
   },
 
   // ---------------------
@@ -30,5 +30,4 @@ Home.Controller = BaseController.extend({
 
 });
 
-module.exports = Home.Controller;
-
+module.exports = HomeController;

@@ -255,7 +255,7 @@ aside h4 {
 }
 
 .btn-default {
-  text-shadow: 0 1px 0 #fff;
+  /*text-shadow: 0 1px 0 #fff;*/
   background-image: -webkit-gradient(linear, left 0%, left 100%, from(#ffffff), to(#e6e6e6));
   background-image: -webkit-linear-gradient(top, #ffffff, 0%, #e6e6e6, 100%);
   background-image: -moz-linear-gradient(top, #ffffff 0%, #e6e6e6 100%);
@@ -286,6 +286,19 @@ aside h4 {
 .btn-primary.active {
   background-color: #3071a9;
   border-color: #2d6ca2;
+}
+
+.btn-primary.btn-inverse {
+  border: 1px solid #fff;
+  background-color: #043b73;
+  background-image: none;
+  color: #fff;
+  font-size: 18px;
+  padding: .5em 2em;
+}
+
+.btn-primary.btn-inverse:hover {
+  background-color: #227292;
 }
 
 .btn-success {

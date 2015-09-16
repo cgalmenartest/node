@@ -6,7 +6,7 @@
 	  "useSupervisorEmail": false
   },
   "home": {
-    "logged_in_path": "/projects"
+    "logged_in_path": "/dashboard"
   },
   "faq" : {
     "show" : false,
