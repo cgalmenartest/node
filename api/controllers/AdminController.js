@@ -311,14 +311,34 @@ module.exports = {
       function(done) {
         Task.find({}).exec(function(err, tasks) {
           if (err) return done('task');
+
+          // Default missing dates to createdAt
+          tasks.forEach(function(task) {
+            if ((task.state === 'open' ||
+              task.state === 'assigned' ||
+              task.state === 'completed') &&
+              !task.publishedAt) task.publishedAt = task.createdAt;
+            if ((task.state === 'assigned' ||
+              task.state === 'completed') &&
+              !task.assignedAt) task.assignedAt = task.createdAt;
+            if (task.state === 'completed' &&
+              !task.completedAt) task.completedAt = task.createdAt;
+          });
+
           var groups = {
                 carryOver: {},
-                published: _.countBy(tasks, function(task) {
+                published: _(tasks).filter(function(task) {
+                  return task.state === 'open' ||
+                    task.state === 'assigned' ||
+                    task.state === 'completed';
+                }).countBy(function(task) {
                   return count(task.publishedAt);
-                }),
-                completed: _.countBy(tasks, function(task) {
+                }).value(),
+                completed: _(tasks).filter(function(task) {
+                  return task.state === 'completed';
+                }).countBy(function(task) {
                   return count(task.completedAt);
-                })
+                }).value()
               },
               range = _.keys(groups.published);
 
