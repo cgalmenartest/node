@@ -65,6 +65,7 @@ var AdminUserView = Backbone.View.extend({
     // render the pagination
     var paginate = _.template(Paginate)(data);
     self.$("#user-page").html(paginate);
+    self.$("#filter-count").html(data.users.length);
     self.$(".table-responsive").html(template);
     self.$(".btn").tooltip();
     // hide spinner and show results
