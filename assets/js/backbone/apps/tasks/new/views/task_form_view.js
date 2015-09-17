@@ -44,11 +44,20 @@ var TaskFormView = Backbone.View.extend({
         type: 'GET',
         async: false,
         success: function (data) {
+          var userAgency = _.where(window.cache.currentUser.tags, { type: 'agency' })[0];
           if (type === 'task-time-estimate' || type === 'task-length') {
             data = _.sortBy(data, 'updatedAt');
           }
           else if (type === 'task-time-required') {
-            data = _.map(data, function (item) {
+            data = _.chain(data).filter(function(item) {
+              // if an agency is included in the data of a tag
+              // then restrict it to users who are also
+              // in that agency
+              var agencyId = false;
+              if (item.data && item.data.agency) agencyId = item.data.agency.id;
+              if ((!agencyId) || (agencyId === userAgency.id)) return true;
+              return false;
+            }).map(function (item) {
               if (item.name == 'One time') {
                 item.description = 'A one time task with a defined timeline'
               }
@@ -56,7 +65,7 @@ var TaskFormView = Backbone.View.extend({
                 item.description = 'Requires a portion of participant’s time until a goal is reached'
               }
               return item;
-            });
+            }).value();
           }
           self.tagSources[type] = data;
         }
@@ -156,6 +165,12 @@ var TaskFormView = Backbone.View.extend({
       timeFrequency.show();
       completionDate.hide();
     }
+    else {
+      timeRequired.hide();
+      timeRequiredAside.hide();
+      timeFrequency.hide();
+      completionDate.hide();
+    }
   },
 
   locationChange: function (e) {
@@ -204,7 +219,6 @@ var TaskFormView = Backbone.View.extend({
 
     if (draft) data['state'] = this.$('#draft-button').data('state');
     if (completedBy != '') data['completedBy'] = completedBy;
-    console.log('submitting with', data);
     this.collection.trigger("task:save", data);
 
     return this;
@@ -221,12 +235,14 @@ var TaskFormView = Backbone.View.extend({
     if (tagSkills != []) tags.push.apply(tags, tagSkills);
     if (tagLocation != []) tags.push.apply(tags, tagLocation);
     if (effortType) tags.push.apply(tags,[{ id: effortType }]);
-    tags.push.apply(tags,[this.$("#time-estimate").select2('data')]);
 
+    // if time selection is NOT full-time, make sure to include
+    // the other tags
     if (effortType == 1) { // time selection is "One time"
-
+      tags.push.apply(tags,[this.$("#time-estimate").select2('data')]);
     }
     else if (effortType == 2) { // time selection is "On going"
+      tags.push.apply(tags,[this.$("#time-estimate").select2('data')]);
       tags.push.apply(tags,[this.$("#task-length").select2('data')]);
     }
 
