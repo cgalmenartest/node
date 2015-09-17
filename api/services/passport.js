@@ -412,7 +412,10 @@ passport.serializeUser(function (user, next) {
 });
 
 passport.deserializeUser(function (id, next) {
-  User.findOne(id, next);
+  User.findOne(id).populate('tags').exec(function(err, user){
+    if (err) next(err);
+    next(null, user);
+  });
 });
 
 module.exports = passport;
