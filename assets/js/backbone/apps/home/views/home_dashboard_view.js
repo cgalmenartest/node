@@ -33,7 +33,6 @@ var DashboardView = Backbone.View.extend({
         tasks           = new TaskCollection();
 
     this.$el.html(templates.main());
-    this.$el.addClass('home');
 
     this.listenTo(badges, 'activity:collection:fetch:success', function (e) {
       var data = { badges: e.toJSON() },
