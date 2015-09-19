@@ -238,9 +238,13 @@ var BrowseMainView = Backbone.View.extend({
       // projects and tasks get tiles
       filteredCollection = _.filter(filteredCollection, function (item) {
         // filter out tasks that are full time details with other agencies
-        var userAgency = _.where(window.cache.currentUser.tags, { type: 'agency' })[0],
+        var userAgency = { id: false },
             timeRequiredTag = _.where(item.tags, { type: 'task-time-required'})[0];
             fullTimeTag     = false;
+
+        if (window.cache.currentUser) {
+          userAgency = _.where(window.cache.currentUser.tags, { type: 'agency' })[0];
+        }
 
         if (timeRequiredTag && timeRequiredTag.name === 'Full Time Detail') {
           fullTimeTag = true;
