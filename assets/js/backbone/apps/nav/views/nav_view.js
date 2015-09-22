@@ -49,10 +49,15 @@ var NavView = Backbone.View.extend({
 
     // update the navbar when the profile changes
     this.listenTo(window.cache.userEvents, "user:profile:save", function (data) {
-      // reset the currentUser object
-      window.cache.currentUser = data;
-      // re-render the view
-      self.render();
+      $.ajax({
+        url: '/api/user',
+        dataType: 'json'
+      }).done(function(data) {
+        // reset the currentUser object
+        window.cache.currentUser = data;
+        // re-render the view
+        self.render();
+      });
     });
 
     // update the user's photo when they change it
