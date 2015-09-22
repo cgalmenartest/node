@@ -119,9 +119,14 @@ var LoginView = Backbone.View.extend({
       type: 'POST',
       data: data
     }).done(function (success) {
-      // Set the user object and trigger the user login event
-      window.cache.currentUser = success;
-      window.cache.userEvents.trigger("user:login", success);
+      $.ajax({
+        url: 'http://localhost:1337/api/user',
+        dataType: 'json'
+      }).done(function(data) {
+        // Set the user object and trigger the user login event
+        window.cache.currentUser = data;
+        window.cache.userEvents.trigger("user:login", data);
+      });
     }).fail(function (error) {
       var d = JSON.parse(error.responseText);
       self.$("#login-error").html(d.message);
