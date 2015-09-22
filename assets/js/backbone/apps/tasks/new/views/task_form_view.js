@@ -59,7 +59,7 @@ var TaskFormView = Backbone.View.extend({
               // in that agency
               var agencyId = false;
               if (item.data && item.data.agency) agencyId = item.data.agency.id;
-              if ((!agencyId) || (agencyId === userAgency.id)) return true;
+              if ((!agencyId) || (userAgency && agencyId === userAgency.id)) return true;
               return false;
             }).map(function (item) {
               if (item.name == 'One time') {
