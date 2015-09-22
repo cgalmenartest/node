@@ -1080,6 +1080,26 @@ body > .popover {
   margin-top: 10px;
 }
 
+.profile-tags .tag-title {
+  margin-top: .3em;
+}
+
+.profile-tags .tag-title > h2 {
+  color: black;
+  font-size: 14px;
+  margin-bottom: .3em;
+}
+
+.edit-profile .tag-title {
+  margin-top: 0px;
+}
+
+.edit-profile .tag-title h2 {
+  color: black;
+  font-size: 14px;
+  font-weight: 700;
+}
+
 .tag-delete {
   cursor: pointer;
 }

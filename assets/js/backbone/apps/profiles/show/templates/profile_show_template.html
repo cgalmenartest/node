@@ -4,11 +4,7 @@
   <div class="alert alert-info">
     You are an administrator.
     <% if (user.id !== data.id) { %>
-      <% if (edit === true) { %>
-        <strong>You are editing another user's profile.</strong>
-      <% } else { %>
-        You are viewing another user's profile.
-      <% } %>
+      You are viewing another user's profile.
     <% } %>
   </div>
   <% } %>
@@ -21,10 +17,6 @@
     <div class="box row">
       <div class="col-md-4">
         <div id="project-header" style="background-image:url('/api/user/photo/<%- data.id %>');">
-          <div class="btn btn-c2 fileinput-button" <% if (!((data.isOwner || user.isAdmin) && edit)) { %>style="display:none;"<% } %>>
-            <i class="fa fa-camera fa-lg" title="Change Cover Photo" id="fileupload-icon"></i>
-            <input id="fileupload" type="file" name="files[]" title="Upload Photo">
-          </div>
         </div>
         <div id="file-upload-progress-container" style="display: none;" class="progress progress-striped active">
           <div id="file-upload-progress" class="progress-bar" style="width: 0"></div>
@@ -39,14 +31,16 @@
         <div class="profile-company"><% if (data.agency) { %><i class="icon-library"></i> <span class="box-icon-text"><%- data.agency.name %></span><% } %></div>
         <div class="profile-location"><% if (data.location) { %><span class="fa fa-map-marker"></span> <span class="box-icon-text"><%- data.location.name %></span><% } %></div>
         <div class="profile-email">
-          <% if (email) { %>
-          <%- email %>
-          <% } else { %>
-          No email addresses
-          <% } %>
+          <i class="fa fa-envelope"></i> <span class="box-icon-text">
+            <% if (email) { %>
+              <%- email %>
+            <% } else { %>
+            No email addresses
+            <% } %>
+          </span>
         </div>
 
-        <div class="tag-wrapper"></div>
+        <div class="profile-tags tag-wrapper"></div>
 
       </div>
       <div class="col-md-12 profile-bio box-pad-t">
@@ -86,94 +80,6 @@
 <div class="row">
   <div class="col-sm-9 col-md-8">
     <!-- LEFT MAIN BAR -->
-    <% if (edit) { %> <!-- in edit mode -->
-    <div class="box box-main">
-
-      <form class="form-horizontal" role="form" id="profile-form">
-        <h1>
-          <div class="form-group">
-            <input type="text" class="form-control validate input-lg" id="name" name="name" placeholder="Your Full Name" value="<% if (data.name) { %><%- data.name %><% } %>" data-validate="empty" title="Your Full Name"/>
-            <span class="help-block error-empty" style="display:none;font-size:14px;">Please enter your full name.</span>
-          </div>
-        </h1>
-
-        <h2> Bio </h2>
-
-        <div class="form-group">
-          <label for="title" class="col-md-3 control-label">Title</label>
-          <div class="col-md-9">
-            <input type="text" class="form-control" id="title" name="title" placeholder="Title" value="<% if (data.title) { %><%- data.title %><% } %>"/>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="company" class="col-md-3 control-label">Agency</label>
-          <div class="col-md-9">
-            <input type="hidden" id="company" name="company" style="width: 100%"/>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="location" class="col-md-3 control-label">Location</label>
-          <div class="col-md-9">
-            <input type="hidden" id="location" name="location" style="width: 100%"/>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="bio" class="col-md-3 control-label">A brief public biography</label>
-          <div class="col-md-9">
-            <div class="markdown-edit"></div>
-          </div>
-        </div>
-
-        <h2> Account Information </h2>
-
-        <div class="form-group">
-          <label for="profile-email" class="col-md-3 control-label">Email</label>
-          <div class="col-md-9">
-            <input type="text" class="form-control" id="profile-email" name="username"
-              placeholder="Email" value="<%- email %>">
-            <div id="email-update-alert" class="alert alert-warning" style="display:none;"></div>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <% if (login.oauth.length > 0) { %>
-          <label for="services" class="col-md-3 control-label">Connected Accounts</label>
-          <div class="col-md-9" id="services">
-            <form class="form-horizontal" role="form">
-            <% _.each(login.oauth, function (a) { %>
-              <div class="form-group">
-                <div class="col-xs-8 col-sm-9 col-md-9">
-                  <img src="<%- login.config[a].image %>" alt="<%- login.config[a].name %>" style="height: 30px"/>
-                </div>
-                <div class="col-xs-4 col-sm-3 col-md-3">
-                  <% if (_.findWhere(data.auths, { provider: a })) { %>
-                  <a href="#" class="btn btn-danger btn-sm removeAuth pull-right" data-service="<%- a %>" data-id="<%- _.findWhere(data.auths, { provider: a }).id %>"><span class="fa fa-remove"></span> Disconnect</a>
-                  <% } else { %>
-                  <a href="<%- login.config[a].endpoint %>" class="btn btn-success btn-sm pull-right"><span class="fa fa-plus"></span> Connect</a>
-                  <% } %>
-                  <!-- <%- login.config[a].name %> -->
-                </div>
-              </div>
-            <% }); %>
-          </div>
-          <% } %>
-        </div>
-        <div class="form-group">
-          <div class="col-md-offset-3 col-md-9">
-            <div class="pull-right">
-              <a href="#" class="btn btn-c0" id="profile-cancel">Discard Changes</a>
-
-              <button id="submit" type="submit" class="btn btn-c2" disabled="disabled" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Saving..." data-success-text="Saved!" data-fail-text="Save Failed.">Save Profile</button>
-            </div>
-          </div>
-        </div>
-
-      </form>
-    </div>
-    <% } else { %> <!-- not in edit mode -->
     <div class="row">
       <!--
       <div class="col-md-3 sm-nopadding md-nopadding padding-left-none">
@@ -218,14 +124,11 @@
           <div class="task-createdactivity-wrapper"></div>
         </div>
       </div>
-
-    <% } %> <!-- /edit check -->
-
     </div>
   </div>
   <div class="col-sm-3 col-md-4">
-    <div class="box box-pad-lr">
+    <!-- <div class="box box-pad-lr">
       <h2>Badges</h2>
-    </div>
+    </div> -->
   </div>
 </div>
