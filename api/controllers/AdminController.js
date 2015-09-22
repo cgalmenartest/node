@@ -1,3 +1,5 @@
+var json2csv = require('json2csv');
+
 /**
  * AdminController
  *
@@ -720,6 +722,79 @@ module.exports = {
       res.json(output);
     });
 
+  },
+
+  /**
+  * List participants
+  * eg: /api/admin/tasks
+  */
+  participants: function (req, res) {
+    var vols, users, tasks;
+
+    async.waterfall([
+      function(cb) { Volunteer.find({}).exec(cb); },
+      function(newVols, cb) {
+        vols = newVols;
+        Task.find({ id: _.pluck(vols, 'taskId')}).populate('tags').exec(cb);
+      },
+      function(newTasks, cb) {
+        var ids;
+        tasks = newTasks;
+        ids = _.pluck(vols, 'userId').concat(_.pluck(tasks, 'userId'));
+        User.find({ id: ids }).populate('tags').exec(cb);
+      }
+    ], function(err, newUsers) {
+      if (err) return res.serverError(err);
+      users = newUsers;
+      vols.map(function(vol) {
+        vol.user = _.findWhere(users, { id: vol.userId });
+        vol.task = _.findWhere(tasks, { id: vol.taskId });
+        vol.task.user = _.findWhere(users, { id: vol.task.userId });
+      });
+      vols = vols.map(function(d) {
+        return {
+          'Participant': d.user.name,
+          'Participant Agency': (_.findWhere(d.user.tags, {
+            type: 'agency'
+          }) || {}).name,
+          'Task Title': d.task.title,
+          'Task Categories': _(d.task.tags).chain().filter(function(tag) {
+            return tag.type === 'skill' || tag.type === 'topic';
+          }).pluck('name').value().join(', '),
+          'Task Type': (_.findWhere(d.task.tags, {
+            type: 'task-time-required'
+          }) || {}).name,
+          'Task Status': d.task.state,
+          'Task Location': (_.findWhere(d.task.tags, {
+            type: 'location'
+          }) || {}).name,
+          'Task Creator': d.task.user.name,
+          'Task Creator Agency': (_.findWhere(d.task.user.tags, {
+            type: 'agency'
+          }) || {}).name,
+          'Task Date Published': d.task.publishedAt &&
+            new Date(d.task.publishedAt).toLocaleDateString(),
+          'Task Date Completed': d.task.completedAt &&
+            new Date(d.task.completedAt).toLocaleDateString(),
+          'Task Date Closes': d.task.completedBy &&
+            new Date(d.task.completedBy).toLocaleDateString()
+        };
+      });
+      if (req.param('export')) {
+        json2csv({
+          data: vols,
+          fields: _.keys(vols[0])
+        }, function (err, csv) {
+          if (err) return res.serverError(err);
+          res.set('Content-Type', 'text/csv');
+          res.set('Content-disposition', 'attachment; filename=participants.csv');
+          res.send(200, csv);
+        });
+
+      } else {
+        res.json(vols);  
+      }
+    });
   },
 
   /**
