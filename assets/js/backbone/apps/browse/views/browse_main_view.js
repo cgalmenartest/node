@@ -251,7 +251,7 @@ var BrowseMainView = Backbone.View.extend({
         }
 
         if (!fullTimeTag) return item;
-        if (fullTimeTag && (timeRequiredTag.data.agency.id === userAgency.id)) return item;
+        if (fullTimeTag && userAgency && (timeRequiredTag.data.agency.id === userAgency.id)) return item;
       });
 
       $("#browse-map").hide();
