@@ -13,18 +13,12 @@ var TaskListTemplate = require('../templates/task_collection_view_template.html'
 
 		initialize: function (options) {
 			this.options = options;
-			this.requestTagData();
-		},
-
-		requestTagData: function () {
-			var self = this;
-
 			this.tasksJson = {
 				tasks: this.options.collection.toJSON(),
 				user: window.cache.currentUser
 			};
 
-			self.render();
+			this.render();
 		},
 
 		render: function () {

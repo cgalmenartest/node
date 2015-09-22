@@ -231,12 +231,29 @@ var BrowseMainView = Backbone.View.extend({
 
   renderList: function (collection) {
     var filteredCollection = this.applyStateFilters(collection);
-
     // create a new view for the returned data
     if (this.browseListView) { this.browseListView.cleanup(); }
 
     if (this.options.target == 'projects' || this.options.target == 'tasks') {
       // projects and tasks get tiles
+      filteredCollection = _.filter(filteredCollection, function (item) {
+        // filter out tasks that are full time details with other agencies
+        var userAgency = { id: false },
+            timeRequiredTag = _.where(item.tags, { type: 'task-time-required'})[0];
+            fullTimeTag     = false;
+
+        if (window.cache.currentUser) {
+          userAgency = _.where(window.cache.currentUser.tags, { type: 'agency' })[0];
+        }
+
+        if (timeRequiredTag && timeRequiredTag.name === 'Full Time Detail') {
+          fullTimeTag = true;
+        }
+
+        if (!fullTimeTag) return item;
+        if (fullTimeTag && (timeRequiredTag.data.agency.id === userAgency.id)) return item;
+      });
+
       $("#browse-map").hide();
       this.browseListView = new BrowseListView({
         el: '#browse-list',

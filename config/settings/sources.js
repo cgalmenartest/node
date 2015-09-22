@@ -57,6 +57,7 @@ console.log('Loading... ', __filename);
       include: [
         'name',
         'type',
+        'data',
         'updatedAt'
       ]
     },
