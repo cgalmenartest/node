@@ -30,6 +30,9 @@ var TagShowView = Backbone.View.extend({
     this.edit = options.edit;
     this.tagFactory = new TagFactory();
     this.tags = [];
+
+    this.showTags = (options.showTags !== false) ? true : false;
+
     // Figure out which tags apply
     for (var i = 0; i < TagConfig[this.target].length; i++) {
       this.tags.push(TagConfig.tags[TagConfig[this.target][i]]);
@@ -39,6 +42,7 @@ var TagShowView = Backbone.View.extend({
   render: function () {
     var data = {
       data: this.model.toJSON(),
+      showTags: this.showTags,
       tags: this.tags,
       edit: this.edit,
       user: window.cache.currentUser || {}
