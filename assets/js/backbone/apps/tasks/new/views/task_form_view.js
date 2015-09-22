@@ -44,6 +44,10 @@ var TaskFormView = Backbone.View.extend({
         type: 'GET',
         async: false,
         success: function (data) {
+          if (!window.cache.currentUser) {
+            window.location = '/';
+            return;
+          }
           var userAgency = _.where(window.cache.currentUser.tags, { type: 'agency' })[0];
           if (type === 'task-time-estimate' || type === 'task-length') {
             data = _.sortBy(data, 'updatedAt');
