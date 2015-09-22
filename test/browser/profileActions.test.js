@@ -96,7 +96,7 @@ describe('Profile actions', function() {
         '#title': config.user.title,
         '#bio': config.user.bio
       }, false);
-      casper.click('#submit');
+      casper.click('#profile-save');
       casper.waitForSelector('.profile-jobtitle');
     });
 
