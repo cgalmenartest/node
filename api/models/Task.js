@@ -75,6 +75,7 @@ module.exports = {
       switch (values.state) {
         case 'open':
           values.publishedAt = new Date();
+          action = 'task.update.opened';
           break;
         case 'assigned':
           values.assignedAt = new Date();
