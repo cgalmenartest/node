@@ -792,7 +792,7 @@ module.exports = {
         });
 
       } else {
-        res.json(vols);  
+        res.json(vols);
       }
     });
   },
