@@ -19,6 +19,9 @@ var AdminParticipantsView = Backbone.View.extend({
 
   render: function () {
     var self = this;
+
+    this.$el.show();
+
     $.ajax({
       url: '/api/admin/participants',
       data: this.data,
@@ -28,7 +31,6 @@ var AdminParticipantsView = Backbone.View.extend({
               variable: 'data'
             })(data);
         self.$el.html(template);
-        self.$el.show();
         $('.tip').tooltip();
       }
     });
