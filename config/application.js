@@ -40,6 +40,9 @@ module.exports = {
   ui: require(process.cwd() + '/assets/js/backbone/config/ui.json'),
 
   // survey to send out after task is complete
-  survery: process.env.SURVEY_LINK
+  survey: process.env.SURVEY_LINK,
+
+  // token to validate cron request is internal
+  cron_token : process.env.CRON_TOKEN || 'cron_token'
 
 };
