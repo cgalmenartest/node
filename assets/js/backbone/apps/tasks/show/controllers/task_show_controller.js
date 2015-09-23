@@ -80,7 +80,7 @@ var TaskShowController = BaseView.extend({
 
     if (this.taskEditFormView) this.taskEditFormView.cleanup();
     this.taskEditFormView = new TaskEditFormView({
-      el: '.edit-task-section',
+      el: '.edit-task-container',
       elVolunteer: '#task-volunteers',
       edit: true,
       taskId: this.model.attributes.id,
@@ -92,7 +92,7 @@ var TaskShowController = BaseView.extend({
     this.$(".task-show-madlib").hide();
     this.$(".li-task-view").show();
     this.$(".li-task-edit").hide();
-    this.$(".task-view").hide();
+    this.$(".task-container").hide();
     this.$(".li-task-copy").hide();
   },
 
