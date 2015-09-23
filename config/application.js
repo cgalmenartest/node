@@ -37,6 +37,9 @@ module.exports = {
   // environment: process.env.NODE_ENV || 'development'
 
   // import client configuration
-  ui: require(process.cwd() + '/assets/js/backbone/config/ui.json')
+  ui: require(process.cwd() + '/assets/js/backbone/config/ui.json'),
+
+  // survey to send out after task is complete
+  survery: process.env.SURVEY_LINK
 
 };

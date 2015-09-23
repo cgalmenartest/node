@@ -82,7 +82,7 @@ module.exports = {
           break;
         case 'completed':
           values.completedAt = new Date();
-          //Not implemented: action = 'taskCompleted';
+          action = 'task.update.completed';
           break;
       }
 
