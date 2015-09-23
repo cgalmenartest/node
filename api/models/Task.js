@@ -130,7 +130,10 @@ module.exports = {
       tasks.forEach(function(task) {
         var find = { action: action, callerId: task.id },
             model = { action: action, callerId: task.id, model: task };
-        Notification.findOrCreate(find, model, console.log);
+        Notification.findOrCreate(find, model, function(err, notification) {
+          if (err) sails.log.error(err);
+          if (notification) sails.log.verbose('New notification', notification);
+        });
       });
 
     });
