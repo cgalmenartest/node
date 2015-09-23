@@ -113,6 +113,12 @@ input {
   box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
 }
 
+.small-box {
+  background-color: lightgray;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
 .box-main {
   padding: 10px;
   padding-left: 20px;
@@ -1536,6 +1542,25 @@ a.delete-comment {
 .task-scroll {
   max-height: 350px;
   overflow-y: auto;
+}
+
+.task-container {
+  padding-bottom: 20px;
+}
+
+.task-container h2 {
+  color: black;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: .1em;
+  margin-top: .3em;
+}
+
+.task-container .table>tbody>tr>td,
+.task-container .table>tbody>tr>th,
+.task-container .table>thead>tr>td,
+.task-container .table>thead>tr>th {
+  border-top: none;
 }
 
 .task-title {
