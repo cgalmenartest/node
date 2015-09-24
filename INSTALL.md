@@ -1,7 +1,25 @@
 Installation
 =====
 
-## Step by Step Installation
+## Deploy Midas as a Docker Container from the Docker Hub (Mac, Windows, Linux):
+
+1. Download and install the [Docker Toolbox](https://www.docker.com/toolbox)
+2. Open Kitematic on your Mac (it's installed with the Docker Toolkit), search for "open-opps", and click create:
+  ![screen shot 2015-08-27 at 11 12 21 am](https://cloud.githubusercontent.com/assets/170641/9524361/8e21aba6-4cac-11e5-9e45-07c1d4450d13.png)
+3. You'll see the log of Midas starting up. (You may need to wait a minute for the application to start up.) Click the arrow next to "Web Preview" to open up Midas in your browser:
+  ![screen shot 2015-08-27 at 11 13 27 am](https://cloud.githubusercontent.com/assets/170641/9524382/af4dc864-4cac-11e5-89df-1f4290e6b2fb.png)
+4. You're now running Midas in a local container and you can do all the things you'd usually do with it
+  ![screen shot 2015-08-27 at 11 14 13 am](https://cloud.githubusercontent.com/assets/170641/9524433/f2adb3ee-4cac-11e5-9068-5e2d2de67631.png)
+  ![screen shot 2015-08-27 at 11 14 19 am](https://cloud.githubusercontent.com/assets/170641/9524434/f46fe6a2-4cac-11e5-88fd-cdee0517ed46.png)
+  ![screen shot 2015-08-27 at 11 14 49 am](https://cloud.githubusercontent.com/assets/170641/9524437/f61f4bbe-4cac-11e5-86b4-75b482a462fa.png)
+5. **Bonus:** you can try our other branches of Midas (useful for reviewing pull requests). Get the branch  name from GitHub:
+  ![screen shot 2015-08-27 at 11 16 27 am](https://cloud.githubusercontent.com/assets/170641/9524463/180170a4-4cad-11e5-9ed4-d7d3a4a253f2.png)
+6. Go back to "Settings" in Kitematic, set the `BRANCH` environment variable, and click "Save":
+  ![screen shot 2015-08-27 at 11 17 08 am](https://cloud.githubusercontent.com/assets/170641/9524485/2fd9ea94-4cad-11e5-9a8d-09322c46a857.png)
+9. Now on "Home", you'll see the log of Midas rebuilding with the new branch. Give it a chance to build, then relaunch the web preview to try the new branch
+
+
+## Step by Step Installation from Source
 The following installation steps for Mac, Linux, and Windows can be used for setting up a development or production environment manually.
 
 ### Mac OSX
