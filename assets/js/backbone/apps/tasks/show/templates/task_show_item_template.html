@@ -1,10 +1,10 @@
 <!-- ALERTS -->
 <div class="alert alert-danger" id="alert-closed" style="<% if (model.state != 'closed') { %>display: none;<% } %>">This <span data-i18n="task">opportunity</span> is <strong>closed</strong>.  It is no longer active, and no more modifications may be made.</div>
 
-<div class="row edit-task-container">
+<div class="row edit-task-container edit-task-section">
 </div>
 
-<div class="task-container">
+<div class="task-container main-section">
   <div class="row">
     <div class="col-md-9 tight-box">
       <div class="row">
@@ -53,7 +53,7 @@
             <% } %>
             &mdash;
             <% if (madlibTags['task-time-estimate']) { %>
-               <%= madlibTags['task-time-estimate'][0].name %>
+               <%= madlibTags['task-time-estimate'][0].name %> per week
             <% } else { %>
               None
             <% } %>
