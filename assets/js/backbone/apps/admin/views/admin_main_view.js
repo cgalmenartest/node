@@ -5,6 +5,7 @@ var utils = require('../../../mixins/utilities');
 var AdminUserView = require('./admin_user_view');
 var AdminTagView = require('./admin_tag_view');
 var AdminTaskView = require('./admin_task_view');
+var AdminParticipantsView = require('./admin_participants_view');
 var AdminDashboardView = require('./admin_dashboard_view');
 var AdminMainTemplate = require('../templates/admin_main_template.html');
 
@@ -54,6 +55,12 @@ var AdminMainView = Backbone.View.extend({
       }
       this.hideOthers();
       this.adminTaskView.render();
+    } else if (target == 'participants') {
+      if (!this.adminParticipantsView) {
+        this.initializeAdminParticipantsView();
+      }
+      this.hideOthers();
+      this.adminParticipantsView.render();
     } else if (target == 'dashboard') {
       if (!this.adminDashboardView) {
         this.initializeAdminDashboardView();
@@ -97,6 +104,15 @@ var AdminMainView = Backbone.View.extend({
     }
     this.adminTaskView = new AdminTaskView({
       el: "#admin-task"
+    });
+  },
+
+  initializeAdminParticipantsView: function () {
+    if (this.adminParticipantsView) {
+      this.adminParticipantsView.cleanup();
+    }
+    this.adminParticipantsView = new AdminParticipantsView({
+      el: "#admin-participants"
     });
   },
 
