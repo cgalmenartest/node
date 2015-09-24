@@ -118,6 +118,7 @@ fieldset + fieldset {
   margin-top:2em;
 }
 
+aside,
 fieldset aside {
   background-color: #797979;
   color: white;

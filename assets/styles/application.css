@@ -104,6 +104,10 @@ input {
   box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
 }
 
+.equal-box {
+  padding: 10px;
+}
+
 .tight-box {
   margin-bottom: 10px;
   background-color: #fff;
@@ -111,12 +115,6 @@ input {
   border-radius: 3px;
   -webkit-box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
   box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
-}
-
-.small-box {
-  background-color: lightgray;
-  padding-top: 10px;
-  padding-bottom: 10px;
 }
 
 .box-main {
@@ -1610,6 +1608,26 @@ ul.task-tags > li {
   line-height: 1.2em;
 }
 
+#task-edit-form .center {
+  text-align: center;
+}
+
+.center [type=submit] {
+  margin-right: 1em;
+}
+
+.center .btn {
+  margin-left: 1em;
+}
+
+#task-edit-form label {
+  display: block;
+}
+
+#task-edit-form h3 {
+  padding-left: 0;
+}
+
 .task-show-creation {
   font-size: 13px;
   color: #9a9a9a;
@@ -1623,9 +1641,9 @@ ul.task-tags > li {
   font-weight: normal;
 }
 
-#task-form fieldset aside a,
-#task-form fieldset aside a:hover,
-#task-form fieldset aside a:focus {
+aside a,
+aside a:hover,
+aside a:focus {
   color: #00FFFF;
   text-decoration: underline;
 }
@@ -1658,6 +1676,10 @@ ul.task-tags > li {
 
 #task-form .buttons .btn {
   margin-left: 24px;
+}
+
+#task-form .center {
+  text-align: center;
 }
 /**********************************
 =  TASKS INFINITE SCROLL OVERFLOW
