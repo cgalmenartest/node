@@ -49,7 +49,7 @@ var DashboardView = Backbone.View.extend({
     tasks.fetch({
       success: function (collection) {
         var open = collection.filter(function(t) {
-          return t.attributes.state !== 'completed';
+          return t.attributes.state === 'open';
         });
         self.$('#opportunity-count span')
             .addClass('loaded')
