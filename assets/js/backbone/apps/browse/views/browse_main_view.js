@@ -119,7 +119,7 @@ var BrowseMainView = Backbone.View.extend({
 
 
   searchMap: function (loc) {
-    loc = loc || '';
+    loc = !loc ? '' : loc === this.term ? '' : loc;
     $('#search').val(loc);
     this.filter(loc);
   },
