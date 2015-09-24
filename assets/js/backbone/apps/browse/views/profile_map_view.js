@@ -70,7 +70,7 @@ var PeopleMapView = Backbone.View.extend({
 
   renderUserDots: function () {
     var self = this;
-
+    if (!this.people.length) return;
     // massage data: pivot list of people by city, flatten that into a list with
     // cityname, people in that city, sorted largest first (so largest cities get
     // drawn first (bottom).
@@ -143,7 +143,7 @@ var PeopleMapView = Backbone.View.extend({
             self.trigger("browseRemove", {type: "location", render: false});
             self.trigger("browseSearchLocation", cp.cityname);
           }
-          d3.event.stopPropagation();
+          //d3.event.stopPropagation();
         })
         // gobble up the doubleclick and mousedown events on the map since these go on
         // to cause ugly selection on the table.
@@ -171,8 +171,8 @@ var PeopleMapView = Backbone.View.extend({
       $('svg').on('click', function () {
         $('.userDot-select').attr("class", "userDot");
         self.trigger("browseRemove", {type: "location", render: true});
-        d3.event.stopPropagation();
-        d3.event.preventDefault();
+        //d3.event.stopPropagation();
+        //d3.event.preventDefault();
       });
     }, this);
   },

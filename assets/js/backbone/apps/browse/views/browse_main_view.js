@@ -27,16 +27,25 @@ var BrowseMainView = Backbone.View.extend({
     this.options = options;
     this.term = options.queryParams.search;
     this.filters = options.queryParams.filters ?
-      JSON.parse(options.queryParams.filters) : { state: 'open' };
+      JSON.parse(options.queryParams.filters) :
+      options.target === 'profiles' ? {} : { state: 'open' };
     window.foo = this;
   },
 
   render: function () {
-    var options = {
-      target: this.options.target,
-      user: window.cache.currentUser,
-      ui: UIConfig
-    };
+    var target = this.options.target,
+      options = {
+        target: target,
+        user: window.cache.currentUser,
+        ui: UIConfig,
+        placeholder: target === 'tasks' ?
+          "I'm looking for opportunities by name, agency, skill, topic, description..." :
+          target === 'projects' ?
+          "I'm looking for working groups by name, agency, skill, topic, description..." :
+          target === 'profiles' ?
+          "I'm looking for people by name, title, agency, location..." :
+          "I'm looking for..."
+      };
     this.rendered = _.template(BrowseMainTemplate)(options);
     this.$el.html(this.rendered);
     this.$el.i18n();
@@ -89,24 +98,14 @@ var BrowseMainView = Backbone.View.extend({
     }).value();
 
     this.renderList(items);
+    if (this.options.target === 'profiles') this.renderMap(items);
   },
 
 
   searchMap: function (loc) {
-    // this is a hack to make a location search mimic a menu bar search. If this worked
-    // properly, field = type = "location" but search doesn't work like that now (broken).
-    var locItem = {
-      field: "location",
-      id: loc,
-      name: loc,
-      type: "location",
-      value: loc,
-      unmatched: true
-    };
-    if (this.existingSearchTerm(locItem)) {
-      return;
-    }
-    this.addSearchTerm(locItem);
+    loc = loc || '';
+    $('#search').val(loc);
+    this.filter(loc);
   },
 
   renderList: function (collection) {
