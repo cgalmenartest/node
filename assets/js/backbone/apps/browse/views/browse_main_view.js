@@ -80,7 +80,23 @@ var BrowseMainView = Backbone.View.extend({
     term = this.term;
     filters = this.filters;
 
-    items = this.collection.chain().pluck('attributes').filter(function(data) {
+    items = this.collection.chain().pluck('attributes').filter(function(item) {
+      // filter out tasks that are full time details with other agencies
+      var userAgency = { id: false },
+          timeRequiredTag = _.where(item.tags, { type: 'task-time-required'})[0];
+          fullTimeTag     = false;
+
+      if (window.cache.currentUser) {
+        userAgency = _.where(window.cache.currentUser.tags, { type: 'agency' })[0];
+      }
+
+      if (timeRequiredTag && timeRequiredTag.name === 'Full Time Detail') {
+        fullTimeTag = true;
+      }
+
+      if (!fullTimeTag) return item;
+      if (fullTimeTag && userAgency && (timeRequiredTag.data.agency.id === userAgency.id)) return item;
+    }).filter(function(data) {
       var searchBody = JSON.stringify(_.values(data)).toLowerCase();
       return !term || searchBody.indexOf(term.toLowerCase()) >= 0;
     }).filter(function(data) {
