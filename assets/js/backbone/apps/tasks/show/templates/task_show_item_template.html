@@ -8,9 +8,8 @@
   <div class="row">
     <div class="col-md-9 tight-box">
       <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-10">
           <h1><%- model.title %></h1>
-          <% console.log('madlibTags', madlibTags); %>
           <% if (madlibTags['skill']) { %>
           <div class="skill">
             <h2>Tags</h2>
@@ -26,30 +25,13 @@
             <%= model.descriptionHtml %>
           </div>
         </div>
-        <div class="col-md-4 small-box">
-          <h2>Progress</h2>
-          <ul class="tags">
-            <li class="tag-empty" id="task-length-empty" style="display: none;">None</li>
-            <li>Published: <%- model.publishedAt ? moment(model.publishedAt).format('ddd, MMM D, YYYY') : '--' %></li><br>
-            <li>Assigned: <%- model.assignedAt ? moment(model.assignedAt).format('ddd, MMM D, YYYY') : '--' %></li><br>
-            <li>Completed: <%- model.completedAt ? moment(model.completedAt).format('ddd, MMM D, YYYY') : '--' %></li>
-          </ul>
+        <div class="col-md-2">
+
           <h2>Requestor</h2>
           <div class="project-people-show-div" data-userid="<%- model.userId %>">
             <img src="/api/user/photo/<%- model.userId %>" alt="<%- model.owner.name %>"/>
             <label class="project-people-show-label"><%- model.owner.name %></label>
           </div>
-          <h2>Participants</h2>
-          <% if (model.volunteers.length > 0) { %>
-            <% _.each(model.volunteers, function (v) { %>
-            <div class="project-people-show-div" data-userid="<%- v.userId %>" data-voluserid="<%- v.userId %>">
-              <img src="/api/user/photo/<%- v.userId %>" alt="<%- v.name %>"/>
-              <label class="project-people-show-label"><%- v.name %></label>
-            </div>
-            <% }); %>
-          <% } else { %>
-            None assigned
-          <% } %>
         </div>
       </div>
       <div class="row border-top box-pad-t box-pad-b">
@@ -64,8 +46,14 @@
           </div>
           <h2>Time Committment</h2>
           <div>
+            <% if (madlibTags['task-time-required']) { %>
+              <%= madlibTags['task-time-required'][0].name %>
+            <% } else { %>
+              None
+            <% } %>
+            &mdash;
             <% if (madlibTags['task-time-estimate']) { %>
-              <%= madlibTags['task-time-required'][0].name %> &mdash; <%= madlibTags['task-time-estimate'][0].name %>
+               <%= madlibTags['task-time-estimate'][0].name %>
             <% } else { %>
               None
             <% } %>
@@ -137,6 +125,27 @@
           </ul>
         </div>
         <% } %>
+      </div>
+
+      <div class="box equal-box">
+        <h2>Participants</h2>
+        <% if (model.volunteers.length > 0) { %>
+          <% _.each(model.volunteers, function (v) { %>
+          <div class="project-people-show-div" data-userid="<%- v.userId %>" data-voluserid="<%- v.userId %>">
+            <img src="/api/user/photo/<%- v.userId %>" alt="<%- v.name %>"/>
+            <label class="project-people-show-label"><%- v.name %></label>
+          </div>
+          <% }); %>
+        <% } else { %>
+          None assigned
+        <% } %>
+        <h2 class="border-top box-pad-t">Progress</h2>
+        <ul class="tags">
+          <li class="tag-empty" id="task-length-empty" style="display: none;">None</li>
+          <li>Published: <%- model.publishedAt ? moment(model.publishedAt).format('ddd, MMM D, YYYY') : '--' %></li><br>
+          <li>Assigned: <%- model.assignedAt ? moment(model.assignedAt).format('ddd, MMM D, YYYY') : '--' %></li><br>
+          <li>Completed: <%- model.completedAt ? moment(model.completedAt).format('ddd, MMM D, YYYY') : '--' %></li>
+        </ul>
       </div>
     </div>
   </div>
