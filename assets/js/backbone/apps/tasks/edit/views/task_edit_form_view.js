@@ -127,7 +127,7 @@ var TaskEditFormView = Backbone.View.extend({
     this.tagFactory.createTagDropDown({
       type: "location",
       selector: "#task_tag_location",
-      width: "100%",
+      width: "40%",
       data: this.data['madlibTags'].location
     });
 
