@@ -104,6 +104,10 @@ input {
   box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
 }
 
+.equal-box {
+  padding: 10px;
+}
+
 .tight-box {
   margin-bottom: 10px;
   background-color: #fff;
@@ -1538,10 +1542,37 @@ a.delete-comment {
   overflow-y: auto;
 }
 
+.task-container {
+  padding-bottom: 20px;
+}
+
+.task-container h2 {
+  color: black;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: .1em;
+  margin-top: .3em;
+}
+
+.task-container .table>tbody>tr>td,
+.task-container .table>tbody>tr>th,
+.task-container .table>thead>tr>td,
+.task-container .table>thead>tr>th {
+  border-top: none;
+}
+
 .task-title {
   font-size: 16px;
   font-weight: 400;
   line-height: 1.8em;
+  -ms-word-break: break-all;
+  /* Be VERY careful with this, breaks normal words wh_erever */
+  word-break: break-all;
+  /* Non standard for webkit */
+  word-break: break-word;
+  -webkit-hyphens: auto;
+     -moz-hyphens: auto;
+          hyphens: auto;
 }
 
 .task-project {
@@ -1570,7 +1601,14 @@ ul.task-tags > li {
   font-size: 18px;
   margin-bottom: 10px;
   line-height: 1.5em;
+  -ms-word-break: break-all;
+  /* Be VERY careful with this, breaks normal words wh_erever */
   word-break: break-all;
+  /* Non standard for webkit */
+  word-break: break-word;
+  -webkit-hyphens: auto;
+     -moz-hyphens: auto;
+          hyphens: auto;
 }
 
 .task-edit-description {
@@ -1583,6 +1621,38 @@ ul.task-tags > li {
 
 #task-edit-form .select2-container-multi {
   line-height: 1.2em;
+}
+
+#task-edit-form .center {
+  text-align: center;
+}
+
+.center [type=submit] {
+  margin-right: 1em;
+}
+
+.center .btn {
+  margin-left: 1em;
+}
+
+#task-edit-form .form-group:not(:first-child) {
+  margin-top: 15px;
+  margin-bottom: 23px;
+}
+
+#task-edit-form label {
+  display: block;
+}
+
+#task-edit-form h3 {
+  margin-bottom: 5px;
+  padding-bottom: 0;
+  padding-left: 0;
+}
+
+#task-edit-form .radio {
+  margin-bottom: 0;
+  margin-top: 0;
 }
 
 .task-show-creation {
@@ -1598,9 +1668,9 @@ ul.task-tags > li {
   font-weight: normal;
 }
 
-#task-form fieldset aside a,
-#task-form fieldset aside a:hover,
-#task-form fieldset aside a:focus {
+aside a,
+aside a:hover,
+aside a:focus {
   color: #00FFFF;
   text-decoration: underline;
 }
@@ -1633,6 +1703,10 @@ ul.task-tags > li {
 
 #task-form .buttons .btn {
   margin-left: 24px;
+}
+
+#task-form .center {
+  text-align: center;
 }
 /**********************************
 =  TASKS INFINITE SCROLL OVERFLOW

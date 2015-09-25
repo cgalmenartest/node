@@ -38,6 +38,8 @@ var CommentFormView = Backbone.View.extend({
       this.$el.append(template);
     }
 
+    this.$('[type="submit"]').prop("disabled", false);
+
     var genTemplate = function (template, data) {
       if (!data) {
         return '';
@@ -129,6 +131,8 @@ var CommentFormView = Backbone.View.extend({
 
   post: function (e) {
     if (e.preventDefault) e.preventDefault();
+
+    this.$('[type="submit"]').prop("disabled", true);
 
     var commentHtml = this.$(".comment-input").html();
     var commentText = this.$(".comment-input").text().trim();

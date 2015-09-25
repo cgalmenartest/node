@@ -73,8 +73,7 @@ describe('Task actions', function() {
     casper.then(function() {
       casper.fillSelectors('#task-form', {
         '#task-title': config.task.title,
-        '#task-description': config.task.description,
-        '#anywhere': true
+        '#task-description': config.task.description
       });
     }, false);
 
@@ -86,9 +85,10 @@ describe('Task actions', function() {
 
     // Verify new task
     casper.then(function() {
-      var title = casper.fetchText('.edit-task-section h1'),
-          description = casper.fetchText('.edit-task-section .task-show-description').trim(),
+      var title = casper.fetchText('.main-section h1'),
+          description = casper.fetchText('.main-section .task-show-description').trim(),
           people = casper.fetchText('#task-people-empty+li').trim();
+
       assert.equal(config.task.title, title);
       assert.equal(config.task.description, description);
     });
@@ -114,8 +114,8 @@ describe('Task actions', function() {
 
     // Verify updated task
     casper.then(function() {
-      var title = casper.fetchText('.edit-task-section h1'),
-          description = casper.fetchText('.edit-task-section .task-show-description').trim(),
+      var title = casper.fetchText('.main-section h1'),
+          description = casper.fetchText('.main-section .task-show-description').trim(),
           people = casper.fetchText('#task-people-empty+li').trim();
       assert.equal(config.task.titleChange, title);
       assert.equal(config.task.descriptionChange, description);

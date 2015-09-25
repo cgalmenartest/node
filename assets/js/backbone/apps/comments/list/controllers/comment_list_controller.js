@@ -40,6 +40,7 @@ Comment = Backbone.View.extend({
         // cleanup the topic form
         if (this.topicForm) this.topicForm.empty();
       }
+      this.$('[type="submit"]').prop("disabled", false);
       self.addNewCommentToDom(modelJson, currentTarget);
     });
 
