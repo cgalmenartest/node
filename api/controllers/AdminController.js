@@ -749,9 +749,10 @@ module.exports = {
       vols.map(function(vol) {
         vol.user = _.findWhere(users, { id: vol.userId });
         vol.task = _.findWhere(tasks, { id: vol.taskId });
+        if (!vol.task || !vol.user) return false;
         vol.task.user = _.findWhere(users, { id: vol.task.userId });
       });
-      vols = vols.map(function(d) {
+      vols = _.compact(vols).map(function(d) {
         return {
           'Participant': d.user.name,
           'Participant Agency': (_.findWhere(d.user.tags, {
