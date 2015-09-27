@@ -754,31 +754,31 @@ module.exports = {
       });
       vols = _.compact(vols).map(function(d) {
         return {
-          'Participant': d.user.name,
+          'Participant': d.user.name || '',
           'Participant Agency': (_.findWhere(d.user.tags, {
             type: 'agency'
-          }) || {}).name,
-          'Task Title': d.task.title,
+          }) || {}).name || '',
+          'Task Title': d.task.title || '',
           'Task Categories': _(d.task.tags).chain().filter(function(tag) {
             return tag.type === 'skill' || tag.type === 'topic';
-          }).pluck('name').value().join(', '),
+          }).pluck('name').value().join(', ') || '',
           'Task Type': (_.findWhere(d.task.tags, {
             type: 'task-time-required'
-          }) || {}).name,
-          'Task Status': d.task.state,
+          }) || {}).name || '',
+          'Task Status': d.task.state || '',
           'Task Location': (_.findWhere(d.task.tags, {
             type: 'location'
-          }) || {}).name,
-          'Task Creator': d.task.user.name,
+          }) || {}).name || '',
+          'Task Creator': d.task.user.name || '',
           'Task Creator Agency': (_.findWhere(d.task.user.tags, {
             type: 'agency'
-          }) || {}).name,
+          }) || {}).name || '',
           'Task Date Published': d.task.publishedAt &&
-            new Date(d.task.publishedAt).toLocaleDateString(),
+            new Date(d.task.publishedAt).toLocaleDateString() || '',
           'Task Date Completed': d.task.completedAt &&
-            new Date(d.task.completedAt).toLocaleDateString(),
+            new Date(d.task.completedAt).toLocaleDateString() || '',
           'Task Date Closes': d.task.completedBy &&
-            new Date(d.task.completedBy).toLocaleDateString()
+            new Date(d.task.completedBy).toLocaleDateString() || ''
         };
       });
       if (req.param('export')) {
