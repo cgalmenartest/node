@@ -184,51 +184,74 @@ describe('Profile actions', function() {
     casper.then(function() {
       casper.click('.task-box a');
       casper.waitForSelector('#volunteer');
+      casper.capture('ss/a.png');
     });
 
     // Click volunteer button
     casper.then(function() {
       casper.click('#volunteer');
       casper.waitForSelector('#login-register');
+      casper.capture('ss/b.png');
     });
 
     // Fill out the login form
     casper.then(function() {
-      casper.fillSelectors('#login-password-form', {
+      casper.capture('ss/c.png');
+      var fields = {
         '#username': config.user.username,
         '#password': config.user.password
-      }, false);
+      };
+      casper.fillSelectors('#login-password-form', fields, false);
       casper.waitForSelector(submitButton);
     });
 
     // Click the "sign in" button
     casper.then(function() {
       casper.click(submitButton);
-      casper.waitForSelector('#submit');
+      casper.then(function(){
+
+      });
+      casper.waitForSelector('#volunteer');
     });
 
   });
 
   it('should volunteer after logging in', function() {
+    // casper.thenEvaluate(function() {
+    //   var testTags = [{ type: 'location' }, { type: 'agency' }];
+    //   window.cache.currentUser.tags = testTags;
+    // });
+
+    // Click participate again
+    casper.then(function() {
+      casper.click('#volunteer');
+      casper.waitUntilVisible('#submit');
+      casper.capture('ss/e.png');
+    });
 
     // Click "I agree" to volunteer
     casper.then(function() {
       casper.click('#submit');
+      var user = casper.evaluate(function() {
+        return window.cache.currentUser;
+      });
+      console.log('user', user);
+      casper.capture('ss/f.png');
       casper.waitUntilVisible('.volunteer-true');
     });
 
     // Get the task data from the API and confirm volunteer is set
     casper.then(function() {
       var user = casper.evaluate(function() {
-            return window.cache.currentUser.id;
-          }),
-          task = casper.getCurrentUrl().split('/').pop(),
-          data = casper.evaluate(function(url, userId) {
-            return JSON.parse(__utils__.sendAJAX(url, 'GET', null, false));
-          }, {
-            url: system.env.TEST_ROOT + '/api/task/' + task,
-            userId: user
-          });
+        return window.cache.currentUser.id;
+      }),
+      task = casper.getCurrentUrl().split('/').pop(),
+      data = casper.evaluate(function(url, userId) {
+        return JSON.parse(__utils__.sendAJAX(url, 'GET', null, false));
+      }, {
+        url: system.env.TEST_ROOT + '/api/task/' + task,
+        userId: user
+      });
       assert(data.volunteers[0].userId, user);
     });
 
