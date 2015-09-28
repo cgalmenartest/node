@@ -303,16 +303,24 @@ module.exports = {
           volunteers: {},
           agencies: {}
         },
+        filter = req.param('filter'),
+        ids,
         count = req.param('group') === 'week' ? getWeek :
                 req.param('group') === 'month' ? getMonth :
                 req.param('group') === 'quarter' ? getQuarter :
                 req.param('group') === 'fyquarter' ? getFYQuarter :
                 req.param('group') === 'year' ? getYear : getFY;
 
-    async.parallel([
+    async.series([
       function(done) {
-        Task.find({}).exec(function(err, tasks) {
+        Task.find({}).populate('tags').exec(function(err, tasks) {
           if (err) return done('task');
+
+          if (filter) tasks = _.filter(tasks, function(task) {
+            return _.findWhere(task.tags, { name: filter });
+          });
+
+          ids = _.pluck(tasks, 'id');
 
           // Default missing dates to createdAt
           tasks.forEach(function(task) {
@@ -361,7 +369,7 @@ module.exports = {
         });
       },
       function(done) {
-        Volunteer.find({}).exec(function(err, volunteers) {
+        Volunteer.find({ taskId: ids }).exec(function(err, volunteers) {
           if (err) return done('volunteer');
 
           // Group volunteers by created FY
