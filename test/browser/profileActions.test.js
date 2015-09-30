@@ -52,11 +52,28 @@ describe('Profile actions', function() {
         '#rpassword': config.user.password,
         '#rpassword-confirm': config.user.password
       };
+      casper.fillSelectors('#registration-form', registration, false);
 
       // If the build settings enable agency or location include thos
-      if (buildSettings.agency.enabled) registration['#ragency'] = config.user.agency;
-      if (buildSettings.location.enabled) registration['#rlocation'] = config.user.location;
-      casper.fillSelectors('#registration-form', registration, false);
+      if (buildSettings.agency.enabled) {
+        casper.evaluate(function(agencyId) {
+          $('#ragency').select2('data', {
+            id: agencyId,
+            type: 'agency',
+            target: 'tagentity'
+          });
+        }, config.user.agency);
+      }
+      if (buildSettings.location.enabled) {
+        casper.evaluate(function(locationId) {
+          $('#rlocation').select2('data', {
+            id: locationId,
+            type: 'location',
+            target: 'tagentity'
+          });
+        }, config.user.location);
+      }
+
       casper.waitForSelector(submitButton);
     });
 
@@ -178,20 +195,18 @@ describe('Profile actions', function() {
   });
 
   it('should log in from task page', function() {
-    var submitButton = '#login-password-form button[type="submit"]';
+      var submitButton = '#login-password-form button[type="submit"]';
 
     // Click task title
     casper.then(function() {
       casper.click('.task-box a');
       casper.waitForSelector('#volunteer');
-      casper.capture('ss/a.png');
     });
 
     // Click volunteer button
     casper.then(function() {
       casper.click('#volunteer');
       casper.waitForSelector('#login-register');
-      casper.capture('ss/b.png');
     });
 
     // Fill out the login form
@@ -208,25 +223,16 @@ describe('Profile actions', function() {
     // Click the "sign in" button
     casper.then(function() {
       casper.click(submitButton);
-      casper.then(function(){
-
-      });
-      casper.waitForSelector('#volunteer');
     });
 
   });
 
   it('should volunteer after logging in', function() {
-    // casper.thenEvaluate(function() {
-    //   var testTags = [{ type: 'location' }, { type: 'agency' }];
-    //   window.cache.currentUser.tags = testTags;
-    // });
 
     // Click participate again
     casper.then(function() {
       casper.click('#volunteer');
       casper.waitUntilVisible('#submit');
-      casper.capture('ss/e.png');
     });
 
     // Click "I agree" to volunteer
@@ -235,8 +241,6 @@ describe('Profile actions', function() {
       var user = casper.evaluate(function() {
         return window.cache.currentUser;
       });
-      console.log('user', user);
-      casper.capture('ss/f.png');
       casper.waitUntilVisible('.volunteer-true');
     });
 

@@ -307,7 +307,6 @@ var TaskShowController = BaseView.extend({
       // If user's profile doesn't location, ask them to enter one
       // Includes  quick check to make sure these fields are required
       else if (requiredTags.length !== 2 && (agencyRequired && locationRequired)) {
-        console.log('')
         var modalContent = _.template(UpdateLocationAgencyTemplate)({});
         this.modalComponent = new ModalComponent({
           el: "#modal-volunteer",
@@ -324,7 +323,8 @@ var TaskShowController = BaseView.extend({
           callback: function(e) {
             var agency = $('#ragency').select2('data');
             var location = $('#rlocation').select2('data');
-            var data = _.extend({}, window.cache.currentUser);
+            var data = {};
+            data.username = window.cache.currentUser.username;
             data.tags = [agency, location].map(function(t) {
               return { id: t.id };
             });
@@ -350,7 +350,7 @@ var TaskShowController = BaseView.extend({
           width: "100%",
           multiple: false
         });
-        // return;
+        return;
       }
 
       this.modalComponent = new ModalComponent({
