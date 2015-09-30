@@ -303,16 +303,24 @@ module.exports = {
           volunteers: {},
           agencies: {}
         },
+        filter = req.param('filter'),
+        ids,
         count = req.param('group') === 'week' ? getWeek :
                 req.param('group') === 'month' ? getMonth :
                 req.param('group') === 'quarter' ? getQuarter :
                 req.param('group') === 'fyquarter' ? getFYQuarter :
                 req.param('group') === 'year' ? getYear : getFY;
 
-    async.parallel([
+    async.series([
       function(done) {
-        Task.find({}).exec(function(err, tasks) {
+        Task.find({}).populate('tags').exec(function(err, tasks) {
           if (err) return done('task');
+
+          if (filter) tasks = _.filter(tasks, function(task) {
+            return _.findWhere(task.tags, { name: filter });
+          });
+
+          ids = _.pluck(tasks, 'id');
 
           // Default missing dates to createdAt
           tasks.forEach(function(task) {
@@ -361,7 +369,7 @@ module.exports = {
         });
       },
       function(done) {
-        Volunteer.find({}).exec(function(err, volunteers) {
+        Volunteer.find({ taskId: ids }).exec(function(err, volunteers) {
           if (err) return done('volunteer');
 
           // Group volunteers by created FY
@@ -754,31 +762,31 @@ module.exports = {
       });
       vols = _.compact(vols).map(function(d) {
         return {
-          'Participant': d.user.name,
+          'Participant': d.user.name || '',
           'Participant Agency': (_.findWhere(d.user.tags, {
             type: 'agency'
-          }) || {}).name,
-          'Task Title': d.task.title,
+          }) || {}).name || '',
+          'Task Title': d.task.title || '',
           'Task Categories': _(d.task.tags).chain().filter(function(tag) {
             return tag.type === 'skill' || tag.type === 'topic';
-          }).pluck('name').value().join(', '),
+          }).pluck('name').value().join(', ') || '',
           'Task Type': (_.findWhere(d.task.tags, {
             type: 'task-time-required'
-          }) || {}).name,
-          'Task Status': d.task.state,
+          }) || {}).name || '',
+          'Task Status': d.task.state || '',
           'Task Location': (_.findWhere(d.task.tags, {
             type: 'location'
-          }) || {}).name,
-          'Task Creator': d.task.user.name,
+          }) || {}).name || '',
+          'Task Creator': d.task.user.name || '',
           'Task Creator Agency': (_.findWhere(d.task.user.tags, {
             type: 'agency'
-          }) || {}).name,
+          }) || {}).name || '',
           'Task Date Published': d.task.publishedAt &&
-            new Date(d.task.publishedAt).toLocaleDateString(),
+            new Date(d.task.publishedAt).toLocaleDateString() || '',
           'Task Date Completed': d.task.completedAt &&
-            new Date(d.task.completedAt).toLocaleDateString(),
+            new Date(d.task.completedAt).toLocaleDateString() || '',
           'Task Date Closes': d.task.completedBy &&
-            new Date(d.task.completedBy).toLocaleDateString()
+            new Date(d.task.completedBy).toLocaleDateString() || ''
         };
       });
       if (req.param('export')) {

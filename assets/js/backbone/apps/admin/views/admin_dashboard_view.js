@@ -13,7 +13,8 @@ var marked = require('marked');
 var AdminDashboardView = Backbone.View.extend({
 
   events: {
-    'change .group': 'renderTasks'
+    'change .group': 'renderTasks',
+    'change .filter': 'renderTasks'
   },
 
   initialize: function (options) {
@@ -55,6 +56,7 @@ var AdminDashboardView = Backbone.View.extend({
     var self = this,
         data = this.data,
         group = this.$('.group').val() || 'fy',
+        filter = this.$('.filter').val() || '',
         months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
                   'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -68,7 +70,7 @@ var AdminDashboardView = Backbone.View.extend({
     }
 
     $.ajax({
-      url: '/api/admin/taskmetrics?group=' + group,
+      url: '/api/admin/taskmetrics?group=' + group + '&filter=' + filter,
       dataType: 'json',
       success: function (data) {
         data.label = label;
@@ -80,6 +82,7 @@ var AdminDashboardView = Backbone.View.extend({
         self.$(".spinner").hide();
         self.$(".task-metrics").show();
         self.$('.group').val(group);
+        self.$('.filter').val(filter);
       }
     });
   },
