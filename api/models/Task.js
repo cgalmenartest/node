@@ -2,7 +2,8 @@
     :: Task
     -> model
 ---------------------*/
-var exportUtils = require('../services/utils/export');
+var exportUtils = require('../services/utils/export'),
+    moment = require('moment');
 
 module.exports = {
 
@@ -75,6 +76,7 @@ module.exports = {
       switch (values.state) {
         case 'open':
           values.publishedAt = new Date();
+          action = 'task.update.opened';
           break;
         case 'assigned':
           values.assignedAt = new Date();
@@ -82,7 +84,7 @@ module.exports = {
           break;
         case 'completed':
           values.completedAt = new Date();
-          //Not implemented: action = 'taskCompleted';
+          action = 'task.update.completed';
           break;
       }
 
@@ -109,6 +111,32 @@ module.exports = {
       action: 'task.create.thanks',
       model: model
     }, done);
+  },
+
+  sendNotifications: function(i) {
+    i = i || 0;
+
+    var now = new Date(new Date().toISOString().split('T')[0]),
+        begin = moment(now).add(i, 'days').toDate(),
+        end = moment(now).add(i+1, 'days').toDate();
+
+    Task.find({
+      completedBy: { '>=': begin, '<': end },
+      state: 'assigned'
+    }).exec(function(err, tasks) {
+      if (err) return sails.log.error(err);
+      var action = i ? 'task.due.soon' : 'task.due.today';
+
+      tasks.forEach(function(task) {
+        var find = { action: action, callerId: task.id },
+            model = { action: action, callerId: task.id, model: task };
+        Notification.findOrCreate(find, model, function(err, notification) {
+          if (err) sails.log.error(err);
+          if (notification) sails.log.verbose('New notification', notification);
+        });
+      });
+
+    });
   }
 
 };

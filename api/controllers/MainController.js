@@ -25,5 +25,18 @@ module.exports = {
       res.set('Cache-Control', 'no-transform,public,max-age=3600,s-maxage=3600'); // HTTP 1.1.
       res.view(data);
     });
+  },
+
+  // Tasks the should run on a cron schedule
+  cron: function(req, res) {
+    if (req.param('token') !== sails.config.cron_token) return res.send(400, 'No token');
+    res.send(200);
+
+    // Check for near due tasks
+    Task.sendNotifications(7);
+
+    // Check for due tasks
+    Task.sendNotifications();
+
   }
 };
