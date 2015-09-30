@@ -678,6 +678,18 @@ ul.password-rules {
   color: #c12e2a;
 }
 
+.custom-popup .leaflet-popup-content-wrapper {
+  background: #89a6c7;
+  color: #333333;
+  opacity: 0.8;
+  border-radius: 10%;
+}
+
+.custom-popup .leaflet-popup-tip-container {
+  display: none;
+}
+
+
 /*****************
 =  PROJECTS
 ******************/

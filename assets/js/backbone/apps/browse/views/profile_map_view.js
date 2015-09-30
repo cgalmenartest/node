@@ -12,9 +12,14 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
 var d3 = require('d3');
+var leaflet = require('leaflet');
 var topojson = require('topojson');
 var tooltipTemplate = require('../templates/profile_map_tooltip.html');
-var countryData = require('../../../../../data/world-110m.json');
+var countryData = require('../../../../../data/ne_110m_admin_0_countries.json');
+
+// Forcing a re-render will cause us to lose part of the map's state, but
+// we can save it off.
+var _currentView = null;
 
 var PeopleMapView = Backbone.View.extend({
 
@@ -24,53 +29,59 @@ var PeopleMapView = Backbone.View.extend({
     this.router = options.router;
     this.people = options.people;
 
+    this.width = this.$el.width();
+    this.height = Math.round(this.width / 2) - 50;
+    this.staticScale = this.width / 960;
+    this.$el.height(this.height);
+
     this.smallestDotPx = 5;         // size of smallest dot
+    this.minRadius = 40000;         // smallest radius size, in meters
     this.dotSizeFactor = options.dotSizeFactor || 3;
-    this.center = [0, 25];          // favor the northern hemisphere
-    this.rotate = [-10, 0];         // break map cleanly in pacific
+    this.center = [25.0, 0.0];          // favor the northern hemisphere
     this.tipDescTemplate = _.template(tooltipTemplate);
 
-    this.countries = topojson.feature(countryData, countryData.objects.countries).features;
+    this.countryFillColor = '#cccccc';
+    this.countryOutline = '#ffffff';
+    this.circleFillColor = '#6191b9';
+    this.circleSelectedFillColor = '#f5cb51';
+    this.circleOutline = '#ffffff';
+
+    this.map = L.map('browse-map', { scrollWheelZoom: false });
+    if (_currentView) {
+      this.map.setView(_currentView.center, _currentView.zoom);
+    }
+    else {
+      this.map.setView(this.center, 2);
+    }
   },
 
   render: function () {
     var self = this;
-    // mercator projection is 960 x 500 @ 150 points, scale relative to that
-    this.width = this.$el.width();
-    this.height = Math.round(this.width / 2) - 50;
-    this.staticScale = this.width / 960;
-
-    this.svg = d3.select(this.el).append('svg')
-      .attr("preserveAspectRatio", "xMaxYMid")
-      .attr("meetOrSlice", "slice")
-      .attr("viewBox", "0 0 " + this.width + " " + this.height);
-
     this.renderCountries();
     this.renderUserDots();
   },
 
+  /**
+   * Render the country basemap from GeoJSON
+   */
   renderCountries: function () {
-    this.projection = d3.geo.mercator()
-      .scale(150 * this.staticScale)
-      .translate([Math.round(this.width / 2), Math.round(this.height / 2)])
-      .center(this.center)
-      .rotate(this.rotate);
-
-    this.path = d3.geo.path()
-      .projection(this.projection);
-
-    this.svg.append("g")
-      .selectAll(".country")
-      .data(this.countries)
-      .enter()
-      .insert("path", ".boundary")
-      .attr("class", "country")
-      .attr("d", this.path);
+    var self = this;
+    var countryStyle = {
+      'color': self.countryOutline,
+      'fillColor': self.countryFillColor,
+      'weight': 1,
+      'fillOpacity': 1.00,
+      'opacity': 1.00
+    };
+    L.geoJson(countryData, {style: countryStyle}).addTo(self.map);
   },
 
+  /**
+   * Render the user data as dots on the map
+   */
   renderUserDots: function () {
     var self = this;
-
+    if (!this.people.length) return;
     // massage data: pivot list of people by city, flatten that into a list with
     // cityname, people in that city, sorted largest first (so largest cities get
     // drawn first (bottom).
@@ -91,23 +102,12 @@ var PeopleMapView = Backbone.View.extend({
       return cp.people.length * -1;
     });
 
-    var dotScale = d3.scale.linear()
-      .domain([1, cityPeopleList[0].people.length])
-      .range([
-        this.smallestDotPx * this.staticScale,
-        this.smallestDotPx * this.staticScale * this.dotSizeFactor
-      ]);
+    var previouslySelected = null;
+    var allCircles = [];
 
-    var tooltip = d3.select("body")
-      .append("div")
-      .attr("class", "d3-tooltip")
-      .style("position", "absolute")
-      .style("z-index", "10")
-      .style("visibility", "hidden");
-
-    var usersG = this.svg.append("g");
     _.values(cityPeopleList).forEach(function (cp) {
       var cityLoc = cp.people[0].location;
+
       var tipDesc = this.tipDescTemplate({
         city: cp.cityname,
         count: cp.people.length,
@@ -117,67 +117,84 @@ var PeopleMapView = Backbone.View.extend({
       });
 
       if (!cityLoc.data || !cityLoc.data.lon || !cityLoc.data.lat) {
-        console.log("Warning: skipped city, missing data:", cp.cityname + ",",
-          cp.people.length, "users");
+        //Warning: skipped city, missing data
         return;
       }
 
-      var projectedPoint = this.projection([cityLoc.data.lon, cityLoc.data.lat]);
-      usersG.append("g")
-        .append("svg:circle")
-        .attr("class", "userDot")
-        .attr("cx", projectedPoint[0])
-        .attr("cy", projectedPoint[1])
-        .attr("r", dotScale(cp.people.length))
-        .attr("pointer-events", "all")
-        .on("click", function () {
-          var previouslySelected = this.classList.contains('userDot-select');
-          // jQuery removeClass() doesn't work on svg elements, but this does
-          $('.userDot-select').attr("class", "userDot");
-          if (previouslySelected) {
-            // unselect city: remove styling & re-render list w/ default
-            self.trigger("browseRemove", {type: "location", render: true});
-          } else {
-            // select city: add styling, render people detail list below
-            this.classList.add('userDot-select');
-            self.trigger("browseRemove", {type: "location", render: false});
-            self.trigger("browseSearchLocation", cp.cityname);
-          }
-          d3.event.stopPropagation();
-        })
-        // gobble up the doubleclick and mousedown events on the map since these go on
-        // to cause ugly selection on the table.
-        .on("dblclick", function () {
-          d3.event.stopPropagation();
-          d3.event.preventDefault();
-        })
-        .on("mousedown", function () {
-          d3.event.stopPropagation();
-          d3.event.preventDefault();
-        })
-        // mouseenter/out events for displaying the floating legend (tooltip)
-        .on("mouseenter", function () {
-          tooltip.html(tipDesc)
-            .style("visibility", "visible")
-            .style("left", String(d3.event.pageX + 20) + "px")
-            .style("top", String(d3.event.pageY - 20) + "px")
-          return true;
-        })
-        .on("mouseout", function () {
-          return tooltip.style("visibility", "hidden");
-        });
+      var dotScale = d3.scale.linear()
+        .domain([1, cityPeopleList[0].people.length])
+        .range([
+          this.smallestDotPx * this.staticScale,
+          this.smallestDotPx * this.staticScale * this.dotSizeFactor
+        ]);
+      var scale = dotScale(cp.people.length);
 
-      // fallthrough click handler: deselect all dots & re-render list w/ default
-      $('svg').on('click', function () {
-        $('.userDot-select').attr("class", "userDot");
-        self.trigger("browseRemove", {type: "location", render: true});
-        d3.event.stopPropagation();
-        d3.event.preventDefault();
+      var circle = L.circleMarker([cityLoc.data.lat, cityLoc.data.lon], {
+        weight: 1.0,
+        opacity: 1.0,
+        color: self.circleOutline,
+        fill: true,
+        fillColor: self.circleFillColor,
+        fillOpacity: 1.0
       });
+      var radius = scale;
+      circle.setRadius(radius);
+      allCircles.push(circle);
+
+      var popup = L.popup({'offset': L.point(0, -20 - radius),
+                           'closeButton': false,
+                           'autoPan': false});
+      popup.setContent(tipDesc);
+      circle.bindPopup(popup);
+
+      circle.on('mouseover', function(e) {
+        this.openPopup();
+      });
+      circle.on('mouseout', function(e) {
+        this.closePopup();
+      });
+      circle.on('click', function(e) {
+        if (previouslySelected === this) {
+          // unselect city: remove styling & re-render list w/ default
+          this.setStyle({
+            fillColor: self.circleFillColor
+          });
+          self.trigger("browseRemove", {type: "location", render: true});
+          previouslySelected = null;
+        } else {
+          // select city: add styling, render people detail list below
+          allCircles.forEach(function(c) {
+            c.setStyle({
+              fillColor: self.circleFillColor
+            });
+          });
+
+          this.setStyle({
+            fillColor: self.circleSelectedFillColor
+          });
+          self.trigger("browseRemove", {type: "location", render: false});
+          self.trigger("browseSearchLocation", cp.cityname);
+          previouslySelected = this;
+        }
+        e.originalEvent.stopPropagation();
+      });
+      circle.on("doubleclick", function(e) {
+        e.originalEvent.stopPropagation();
+      });
+      circle.on("mousedown", function(e) {
+        e.originalEvent.stopPropagation();
+      });
+
+      circle.addTo(this.map);
     }, this);
   },
 
   cleanup: function () {
+    _currentView = {
+      center: this.map.getCenter(),
+      zoom: this.map.getZoom()
+    }
+    this.map.remove();
     removeView(this);
   }
 
