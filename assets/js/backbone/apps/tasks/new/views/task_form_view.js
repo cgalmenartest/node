@@ -34,7 +34,13 @@ var TaskFormView = Backbone.View.extend({
 
   initializeSelect2Data: function () {
     var self = this;
-    var types = ["task-time-required", "task-length", "task-time-estimate", "task-skills-required"];
+    var types = [
+      "task-time-required",
+      "task-length",
+      "task-time-estimate",
+      "task-skills-required",
+      "task-people"
+    ];
 
     this.tagSources = {};
 
@@ -134,6 +140,11 @@ var TaskFormView = Backbone.View.extend({
       width: 'resolve'
     });
 
+    self.$("#people").select2({
+      placeholder: 'People required',
+      width: 'resolve'
+    });
+
   },
 
   initializeTextArea: function () {
@@ -223,6 +234,7 @@ var TaskFormView = Backbone.View.extend({
 
     if (draft) data['state'] = this.$('#draft-button').data('state');
     if (completedBy != '') data['completedBy'] = completedBy;
+
     this.collection.trigger("task:save", data);
 
     return this;
@@ -231,13 +243,15 @@ var TaskFormView = Backbone.View.extend({
     var tags          = [],
         effortType    = this.$('[name=task-time-required]:checked').val(),
         tagSkills     = this.$("#task_tag_skills").select2('data'),
-        tagLocation   = this.$("#task_tag_location").select2('data');
+        tagLocation   = this.$("#task_tag_location").select2('data'),
+        peopleCount   = this.$("#people").select2('data');
 
     // check for the presence of data in these fields
     // no data means no tags are supplied
     // don't send those tags because the API returns 500
     if (tagSkills != []) tags.push.apply(tags, tagSkills);
     if (tagLocation != []) tags.push.apply(tags, tagLocation);
+    if (peopleCount != []) tags.push(peopleCount);
     if (effortType) tags.push.apply(tags,[{ id: effortType }]);
 
     // if time selection is NOT full-time, make sure to include
