@@ -168,6 +168,14 @@
               <input type="radio" name="time-required" id="specific-location">At specific locations: <input type="hidden" id="task_tag_location" name="location" />
             </label>
           </div>
+          <label for="people">
+            <h3>How many people are needed?</h3>
+          </label>
+          <select id="people" class="dropdown">
+            <% _.each(tags['task-people'], function (person) { %>
+              <option value="<%- person.id %>"><%- person.name %></option>
+            <% }); %>
+          </select>
         </div>
         <div class="col-md-4"></div>
       </div>
