@@ -1,3 +1,11 @@
+var extend = require('util')._extend,
+    cfenv = require('cfenv'),
+    appEnv = cfenv.getAppEnv(),
+    userEnv = appEnv.getServiceCreds('env-openopps');
+
+// Import vars from Cloud Foundry service
+if (userEnv) extend(process.env, userEnv);
+
 // If settings present, start New Relic
 if (process.env.NEW_RELIC_APP_NAME && process.env.NEW_RELIC_LICENSE_KEY) {
   console.log('Activating New Relic: ', process.env.NEW_RELIC_APP_NAME);

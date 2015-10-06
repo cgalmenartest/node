@@ -1,3 +1,7 @@
+var cfenv = require('cfenv'),
+    appEnv = cfenv.getAppEnv(),
+    dbURL = appEnv.getServiceURL('psql-openopps');
+
 console.log('Loading... ', __filename);
 
 /**
@@ -50,3 +54,17 @@ module.exports.connections = {
   }
 
 };
+
+if (dbURL) {
+  module.exports.connections = {
+    postgresql: {
+      adapter: 'sails-postgresql',
+      url: dbURL,
+      softDelete: true,
+      populateFast: true
+    }
+  };
+  module.exports.models = {
+    connection: 'postgresql'
+  };
+}
