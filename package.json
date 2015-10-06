@@ -58,8 +58,7 @@
     "topojson": "^1.6.19",
     "uglifyify": "^3.0.1",
     "underscore": "^1.8.2",
-    "validator": "3.4.0",
-    "winston": "^0.9.0"
+    "validator": "3.4.0"
   },
   "devDependencies": {
     "casper-chai": "^0.2.1",
