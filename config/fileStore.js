@@ -1,3 +1,16 @@
+var AWS = require('aws-sdk'),
+    cfenv = require('cfenv'),
+    appEnv = cfenv.getAppEnv(),
+    s3Creds = appEnv.getServiceCreds('s3-midas-assets');
+
+// If running in Cloud Foundry with an S3 credential service available
+if (s3Creds) {
+  AWS.config.update({
+    accessKeyId: s3Creds.access_key,
+    secretAccessKey: s3Creds.secret_key
+  });
+}
+
 module.exports.fileStore = {
   service: process.env.FILESTORE || 'local',
 
