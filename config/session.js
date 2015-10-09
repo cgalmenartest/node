@@ -1,5 +1,10 @@
 console.log('Loading... ', __filename);
 
+var cfenv = require('cfenv'),
+    appEnv = cfenv.getAppEnv(),
+    dbURL = appEnv.getServiceURL('psql-openopps'),
+    redisCreds = appEnv.getServiceCreds('redis-openopps');
+
 /**
  * Session
  *
@@ -27,8 +32,17 @@ var session = {
 
 };
 
-// Build database config
-if (process.env.NODE_ENV !== 'test' && process.env.DATASTORE !== 'local') {
+// Use redis for sessions
+if (redisCreds) {
+  extend(session, {
+    adapter: 'redis',
+    host: redisCreds.hostname,
+    port: redisCreds.port,
+    db: 0,
+    pass: redisCreds.password
+  });
+// Use postgres for sesssions
+} else if (process.env.NODE_ENV !== 'test' && process.env.DATASTORE !== 'local') {
 
   var pgSession = require('connect-pg-simple'),
       express = require('sails/node_modules/express'),
@@ -37,23 +51,27 @@ if (process.env.NODE_ENV !== 'test' && process.env.DATASTORE !== 'local') {
       configs = ['./connections', './env/' + environment, './local'],
       config = {};
 
-  configs.forEach(function(c) {
-    try { extend(config, require(c).connections.postgresql); } catch(e) {}
-  });
-
-  function extend(obj, props) {
-    for (var prop in props) {
-      if (props.hasOwnProperty(prop)) { obj[prop] = props[prop]; }
-    }
+  if (dbURL) {
+    config = dbURL;
+  } else {
+    configs.forEach(function(c) {
+      try { extend(config, require(c).connections.postgresql); } catch(e) {}
+    });
   }
 
-  if (Object.keys(config).length > 0) {
+  if (typeof config === 'string' || Object.keys(config).length > 0) {
     session.store = new (pgSession(express.session))({
       conString: config,
       pg: pg
     });
   }
 
+}
+
+function extend(obj, props) {
+  for (var prop in props) {
+    if (props.hasOwnProperty(prop)) { obj[prop] = props[prop]; }
+  }
 }
 
 module.exports.session = session;

@@ -20,7 +20,7 @@ We also have a public Slack chat room. If you're interested in following along w
 
 You should be using the master branch for most stable release, please review [release notes](https://github.com/18F/midas/releases) regularly. We do releases every week or two and send out notes.  We're generally using [semantic versioning](http://semver.org/), but we're pre-1.0, so API can change at any time. We use the minor version for changes where there are significant installation process changes or API changes or a database migration is needed.
 
-If you want to keep up with the latest changes, we work in the "devel" branch.  If you are using devel, keep an eagle-eye on commits and/or join our daily standup.
+If you want to keep up with the latest changes, we work in the "dev" branch.  If you are using dev, keep an eagle-eye on commits and/or join our daily standup.
 
 Currently stand-ups are at 11a PT / 2p ET, but we may reschedule now and then, so here is our calendar of public meetings:  https://www.google.com/calendar/embed?src=gsa.gov_689f3n1dfi539lv0g5p7lvobdc%40group.calendar.google.com&ctz=America/Los_Angeles
 
@@ -76,7 +76,7 @@ Since Midas accepts and displays user-generated content, take care to make sure 
 
 Escape all content that doesn't need to render as HTML in the client template file with [HTML-escaped filters](http://underscorejs.org/#template) `<%- ... %>`.
 
-Any content that does need to display HTML, such as the user's profile, should be escaped in the view with `_.escape(content)` or by passing markdown content through `marked()`, which will sanitize HTML by default. Also include [a comment](https://github.com/18F/midas/blob/devel/assets/js/backbone/apps/profiles/show/templates/profile_show_template.html#L148) about how the content has been escaped so we can easily audit the templates.
+Any content that does need to display HTML, such as the user's profile, should be escaped in the view with `_.escape(content)` or by passing markdown content through `marked()`, which will sanitize HTML by default. Also include [a comment](https://github.com/18F/midas/blob/dev/assets/js/backbone/apps/profiles/show/templates/profile_show_template.html#L148) about how the content has been escaped so we can easily audit the templates.
 
 Note: server-side templates use [node-ejs](https://github.com/tj/ejs) instead of [underscore](http://underscorejs.org/#template) for templates. The syntax is very similar, but HTML-escaping is done by default with `<%= ... %>` with EJS instead of `<%- ... %>` like underscore.
 
@@ -155,7 +155,7 @@ Before you submit your pull request consider the following guidelines:
 * Make your changes in a new git branch
 
      ```shell
-     git checkout -b my-fix-branch devel
+     git checkout -b my-fix-branch dev
      ```
 
 * Create your patch, **including appropriate test cases**.
@@ -184,14 +184,14 @@ Before you submit your pull request consider the following guidelines:
     git push origin my-fix-branch
     ```
 
-* In GitHub, send a pull request to `midas:devel`.
+* In GitHub, send a pull request to `midas:dev`.
 * If we suggest changes then:
   * Make the required updates.
   * Re-run the Midas test suite to ensure tests are still passing.
   * Rebase your branch and force push to your GitHub repository (this will update your Pull Request):
 
     ```shell
-    git rebase devel -i
+    git rebase dev -i
     git push -f
     ```
 
@@ -208,10 +208,10 @@ from the main (upstream) repository:
     git push origin --delete my-fix-branch
     ```
 
-* Check out the devel branch:
+* Check out the dev branch:
 
     ```shell
-    git checkout devel -f
+    git checkout dev -f
     ```
 
 * Delete the local branch:
@@ -220,14 +220,12 @@ from the main (upstream) repository:
     git branch -D my-fix-branch
     ```
 
-* Update your devel with the latest upstream version:
+* Update your dev with the latest upstream version:
 
     ```shell
-    git pull --ff upstream devel
+    git pull --ff upstream dev
     ```
 
 ### Reviewing Pull Requests
 
 Except for critical, urgent or very small fixes, we try to leave pull requests open for most of the day or overnight if something comes in late in the day, so that multiple people have the chance to review/comment.  Anyone who reviews a pull request should leave a note to let others know that someone has looked at it.  For larger commits, we like to have a +1 from someone else on the core team and/or from other contributor(s).  Please note if you reviewed the code or tested locally -- a +1 by itself will typically be interpreted as your thinking its a good idea, but not having reviewed in detail.
-
-
