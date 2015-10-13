@@ -8,7 +8,7 @@ before_deploy: npm install -g cf-blue-green
 env:
   global:
     - CF_APP=openopps
-    - CF_API=https://api.18f.gov
+    - CF_API=https://api.cloud.gov
     - CF_USERNAME=deploy-open-opportunities
     - CF_ORGANIZATION=open-opportunities
     - secure: "Zc1gYl0cfuZsVsxB5RY0oFWmqlELgefOUmj8vLZHubB0OIOYmZ6UNanXgITVwdSNOyKhK7Kizh2C7fsJVMVh2m1YeJjlyU5BF+LjcxV2lmklW56vQ/Gf0zbDt9tvPE+txWGvduFBIGYEOKio1qKSgR6gpYIoFA4irmXOo90x86s="
