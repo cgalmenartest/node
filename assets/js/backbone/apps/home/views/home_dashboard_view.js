@@ -46,24 +46,25 @@ var DashboardView = Backbone.View.extend({
       self.setTarget('users-feed', usersHtml);
     });
 
-    tasks.fetch({
-      success: function (collection) {
-        var open = collection.filter(function(t) {
-          return t.attributes.state === 'open';
-        });
-        self.$('#opportunity-count span')
-            .addClass('loaded')
-            .text(open.length);
+    $.ajax({
+      url: '/api/activity/count',
+      data: { where: { state: 'completed' }},
+      success: function (d) {
+        var html = templates.network({ count: d });
+        self.setTarget('network-stats', html);
       },
-      error: function () {
-        console.log('err with fetching task collection\n', err);
+      error: function (err) {
+        console.log('err with /api/activity/count\n', err);
       }
     });
 
-    $.ajax('/api/activity/count', {
+    $.ajax({
+      url: '/api/activity/count',
+      data: { where: { state: 'open' }},
       success: function (d) {
-        var html = templates.network({ count: d })
-        self.setTarget('network-stats', html);
+        self.$('#opportunity-count span')
+            .addClass('loaded')
+            .text(d);
       },
       error: function (err) {
         console.log('err with /api/activity/count\n', err);
