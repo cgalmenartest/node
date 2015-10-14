@@ -14,14 +14,14 @@ env:
     - secure: "Zc1gYl0cfuZsVsxB5RY0oFWmqlELgefOUmj8vLZHubB0OIOYmZ6UNanXgITVwdSNOyKhK7Kizh2C7fsJVMVh2m1YeJjlyU5BF+LjcxV2lmklW56vQ/Gf0zbDt9tvPE+txWGvduFBIGYEOKio1qKSgR6gpYIoFA4irmXOo90x86s="
 deploy:
   - provider: script
-    script: CF_SPACE=prod && cf-blue-green-travis
+    script: export CF_SPACE=prod && cf-blue-green-travis
     on:
       branch: master
   - provider: script
-    script: CF_SPACE=staging && cf-blue-green-travis
+    script: export CF_SPACE=staging && cf-blue-green-travis
     on:
       branch: staging
   - provider: script
-    script: CF_SPACE=dev && cf-blue-green-travis
+    script: export CF_SPACE=dev && cf-blue-green-travis
     on:
       branch: dev
