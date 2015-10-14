@@ -11,7 +11,7 @@ env:
     - CF_API=https://api.cloud.gov
     - CF_USERNAME=deploy-open-opportunities
     - CF_ORGANIZATION=open-opportunities
-    - secure: "Zc1gYl0cfuZsVsxB5RY0oFWmqlELgefOUmj8vLZHubB0OIOYmZ6UNanXgITVwdSNOyKhK7Kizh2C7fsJVMVh2m1YeJjlyU5BF+LjcxV2lmklW56vQ/Gf0zbDt9tvPE+txWGvduFBIGYEOKio1qKSgR6gpYIoFA4irmXOo90x86s="
+    - secure: "DTYvUyBEyP2RIk4n2KNRKhcrGo6R+KbmF/x+GUVgeVUQTL8r4jYOwjynovYmECrU4aWed68wgtA5l9KZ3tyBRZf1qJLhJBp+XD/XOLyXRvXao8HFDJD3LyQjassW9FtwXaJr8PpFGdJ45Ccn0cstEiUw9OAehMhSv26q08+gYPc="
 deploy:
   - provider: script
     script: export CF_SPACE=prod && cf-blue-green-travis
