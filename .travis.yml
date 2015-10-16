@@ -1,6 +1,27 @@
-sudo: false
+sudo: true
 language: node_js
 node_js:
   - "0.10"
 before_install:
   - "npm install npm@2.1.x -g"
+before_deploy: npm install -g cf-blue-green
+env:
+  global:
+    - CF_APP=openopps
+    - CF_API=https://api.cloud.gov
+    - CF_USERNAME=deploy-open-opportunities
+    - CF_ORGANIZATION=open-opportunities
+    - secure: "DTYvUyBEyP2RIk4n2KNRKhcrGo6R+KbmF/x+GUVgeVUQTL8r4jYOwjynovYmECrU4aWed68wgtA5l9KZ3tyBRZf1qJLhJBp+XD/XOLyXRvXao8HFDJD3LyQjassW9FtwXaJr8PpFGdJ45Ccn0cstEiUw9OAehMhSv26q08+gYPc="
+deploy:
+  - provider: script
+    script: export CF_SPACE=prod && cf-blue-green-travis
+    on:
+      branch: master
+  - provider: script
+    script: export CF_SPACE=staging && cf-blue-green-travis
+    on:
+      branch: staging
+  - provider: script
+    script: export CF_SPACE=dev && cf-blue-green-travis
+    on:
+      branch: dev

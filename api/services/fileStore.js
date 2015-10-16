@@ -59,7 +59,10 @@ module.exports = {
             Key: p.join(config.s3.prefix || '', name)
           };
       s3.getObject(params).createReadStream()
-        .on('error', function() { res.send(404); }).pipe(res);
+        .on('error', function(e) {
+          sails.log.verbose('s3 get error:', e);
+          res.send(404);
+        }).pipe(res);
 
     }
   }

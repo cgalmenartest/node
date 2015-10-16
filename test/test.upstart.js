@@ -22,6 +22,8 @@ before(function(done) {
     requireAgency: false,
     requireLocation: false,
     emailProtocol: '',
+    taskState: 'open',
+    draftAdminOnly: false,
     hooks: {
       grunt: false,
       sockets: false,

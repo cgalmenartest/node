@@ -36,7 +36,7 @@ var ProfileActivityView = Backbone.View.extend({
       if (_.isUndefined(data.count[this.options.data[i].state])) {
         data.count[this.options.data[i].state] = 1;
       } else {
-        data.count[this.options.data[i].state]++
+        data.count[this.options.data[i].state]++;
       }
     }
     var template = _.template(ActTemplate)(data);

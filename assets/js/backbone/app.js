@@ -45,15 +45,16 @@ $(function () {
   $(document).ajaxError(function (e, jqXHR, settings, errorText) {
     $('.spinner').hide();
     if (jqXHR.status === 401 || jqXHR.status === 403) {
-      if (!window.cache || !window.cache.userEvents
-        || !('trigger' in window.cache.userEvents)) return;
+      if (!window.cache || !window.cache.userEvents ||
+        !('trigger' in window.cache.userEvents)) return;
       window.cache.userEvents.trigger("user:request:login", {
         disableClose: false,
-        message: jqXHR.responseJSON.message || ""
+        message: (jqXHR.responseJSON && jqXHR.responseJSON.message) || ""
       });
     } else {
       $('.alert-global')
-        .html("<strong>" + errorText + "</strong>. " + jqXHR.responseJSON.message || "")
+        .html("<strong>" + errorText + "</strong>. " +
+          (jqXHR.responseJSON && jqXHR.responseJSON.message) || "")
         .show();
     }
   });

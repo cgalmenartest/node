@@ -20,8 +20,7 @@
           </div>
 
           <div class="activity-feed--avatars">
-            <% window.x = b.participants; %>
-            <% b.participants.slice(0, 3).map(function(p, i) { %>
+            <% b.participants.map(function(p, i) { %>
               <a href="/profile/<%- p.id %>">
                 <div class="activity-feed--avatar" style="background-image: url(/api/user/photo/<%- p.id %>);left: <%- i * 10 %>px">&nbsp;</div>
               </a>
