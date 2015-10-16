@@ -760,7 +760,8 @@ module.exports = {
         if (!vol.task || !vol.user) return false;
         vol.task.user = _.findWhere(users, { id: vol.task.userId });
       });
-      vols = _.compact(vols).map(function(d) {
+      vols = _(vols).compact().map(function(d) {
+        if (!d.task || !d.user) return false;
         return {
           'Participant': d.user.name || '',
           'Participant Agency': (_.findWhere(d.user.tags, {
@@ -788,7 +789,7 @@ module.exports = {
           'Task Date Closes': d.task.completedBy &&
             new Date(d.task.completedBy).toLocaleDateString() || ''
         };
-      });
+      }).compact().value();
       if (req.param('export')) {
         json2csv({
           data: vols,
