@@ -17,7 +17,7 @@
               <% if (data[i].state == 'draft') { %>
               <span class="label label-warning">draft</span>
               <% } %>
-              <a href="<%- target %>s/<%- data[i].id %>" class="activity-link" data-id="<%- data[i].id %>"><%- data[i].title %></a>
+              <a href="/<%- target %>s/<%- data[i].id %>" class="activity-link" data-id="<%- data[i].id %>"><%- data[i].title %></a>
             </td>
             <td>
               <% var created = new Date(data[i].createdAt); %>
