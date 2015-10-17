@@ -13,10 +13,11 @@ Installation
   ![screen shot 2015-08-27 at 11 14 19 am](https://cloud.githubusercontent.com/assets/170641/9524434/f46fe6a2-4cac-11e5-88fd-cdee0517ed46.png)
   ![screen shot 2015-08-27 at 11 14 49 am](https://cloud.githubusercontent.com/assets/170641/9524437/f61f4bbe-4cac-11e5-86b4-75b482a462fa.png)
 5. **Bonus:** you can try our other branches of Midas (useful for reviewing pull requests). Get the branch  name from GitHub:
+
   ![screen shot 2015-08-27 at 11 16 27 am](https://cloud.githubusercontent.com/assets/170641/9524463/180170a4-4cad-11e5-9ed4-d7d3a4a253f2.png)
 6. Go back to "Settings" in Kitematic, set the `BRANCH` environment variable, and click "Save":
   ![screen shot 2015-08-27 at 11 17 08 am](https://cloud.githubusercontent.com/assets/170641/9524485/2fd9ea94-4cad-11e5-9a8d-09322c46a857.png)
-9. Now on "Home", you'll see the log of Midas rebuilding with the new branch. Give it a chance to build, then relaunch the web preview to try the new branch
+7. Now on "Home", you'll see the log of Midas rebuilding with the new branch. Give it a chance to build, then relaunch the web preview to try the new branch
 
 
 ## Step by Step Installation from Source
@@ -56,11 +57,11 @@ Start the postgres console acting on the midas database with: `psql midas`
     ALTER SCHEMA public OWNER TO midas;
     \q
 
-Install node.js. As of Feb 2015 Node.js has moved to 0.12 for its stable version. But many dependencies, especially native compiled packages, don't work with 0.12 yet. So consider running Node.js 0.10.  Consider using [nvm](https://github.com/creationix/nvm) to manage Node versions. Once installed and sourced into your environment nvm can handle manage versions. 
+Install node.js. As of Feb 2015 Node.js has moved to 0.12 for its stable version. But many dependencies, especially native compiled packages, don't work with 0.12 yet. So consider running Node.js 0.10.  Consider using [nvm](https://github.com/creationix/nvm) to manage Node versions. Once installed and sourced into your environment nvm can handle manage versions.
 
 So back to the command line. We assume that nvm is installed and set up
 (added to `.bashrc` or equivalent).
-    
+
     nvm install 0.10
     nvm alias default 0.10
     nvm version             # should be something like v0.10.38
@@ -155,7 +156,7 @@ From the root of the midas directory, initialize the database:
 
      npm run migrate
      npm run init
-     
+
 Please note, run `npm run init` once per database, otherwise you'll see an error. If you get an error you can skip that step.
 
 If you'd like to include a sample project and users, also run:
@@ -306,39 +307,3 @@ Start Midas with
      npm start
 
 You can now access the server at `http://localhost:1337`
-
-
-## Vagrant
-
-You can install Midas natively on Mac, Linux or Windows, or you can use a Vagrant virtual machine for development.
-
-Using vagrant is a quick and easy way to get a local midas instance up and running on a virtual machine. We use [Chef](http://www.getchef.com/chef/) for automated deployment, which can also be used for deploying to cloud servers.
-
-Install:
-* [Vagrant](https://www.vagrantup.com/downloads)
-* [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
-* [Chef Development Kit](http://downloads.getchef.com/chef-dk)
-
-Clone the git repository:
-
-     git clone https://github.com/18F/midas.git
-     cd midas
-
-Additonal plugins:
-
-     vagrant plugin install vagrant-berkshelf
-     vagrant plugin install vagrant-omnibus
-
-Startup the virtual machine:
-
-     vagrant up
-
-If you are modifying vagrant or chef setup, then you can configure to pull from your own repo by overriding attributes in your local `chef/nodes/localhost.json` adding:
-```
-  "midas": {
-    "git_repo": "https://github.com/myrepo/midas.git",
-    "git_revision": "devel-mybranch"
-  }
-```
-
-Go to [http://localhost:8080/](http://localhost:8080/) to see Midas running on your local virtual machine

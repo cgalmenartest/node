@@ -12,6 +12,8 @@ logs
 results
 
 .env
+.cf-env
+cf-ssh.yml
 
 npm-debug.log
 
