@@ -121,6 +121,7 @@
     <% if (data.volunteers.length > 0) { %>
       <% _.each(data.volunteers, function (v) { %>
       <div class="project-people-show-div" data-userid="<%- v.userId %>" data-voluserid="<%- v.userId %>">
+        <a href="#" class="delete-volunteer volunteer-delete fa fa-times"  id="delete-volunteer-<%- v.id %>" data-uid="<%- v.userId %>" data-vid="<%- v.id %>"></a>
         <img src="/api/user/photo/<%- v.userId %>" alt="<%- v.name %>"/>
         <label class="project-people-show-label"><%- v.name %></label>
       </div>
