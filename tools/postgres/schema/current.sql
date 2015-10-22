@@ -1085,6 +1085,7 @@ CREATE TABLE volunteer (
     "taskId" integer,
     "userId" integer,
     id integer NOT NULL,
+    silent boolean,
     "createdAt" timestamp with time zone,
     "updatedAt" timestamp with time zone,
     "deletedAt" timestamp with time zone

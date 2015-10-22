@@ -14,6 +14,7 @@ var TaskEditFormView = Backbone.View.extend({
   events: {
     'blur .validate'         : 'v',
     'click #change-owner'    : 'displayChangeOwner',
+    'click #add-participant' : 'displayAddParticipant',
     'click #task-view'       : 'view',
     'submit #task-edit-form' : 'submit'
   },
@@ -116,6 +117,26 @@ var TaskEditFormView = Backbone.View.extend({
       this.$("#owner").select2('data', this.data.data.owner);
     }
 
+    this.$("#participant").select2({
+      placeholder: "Add participant",
+      multiple: false,
+      formatResult: formatResult,
+      formatSelection: formatResult,
+      allowClear: false,
+      ajax: {
+        url: '/api/ac/user',
+        dataType: 'json',
+        data: function (term) {
+          return {
+            q: term
+          };
+        },
+        results: function (data) {
+          return { results: data };
+        }
+      }
+    });
+
     this.tagFactory.createTagDropDown({
       type: "skill",
       selector: "#task_tag_skills",
@@ -181,7 +202,9 @@ var TaskEditFormView = Backbone.View.extend({
 
     self.on("task:tags:save:done", function (){
       var owner       = this.$("#owner").select2('data'),
-          completedBy = this.$('#estimated-completion-date').val();
+          completedBy = this.$('#estimated-completion-date').val(),
+          newParticipant = this.$('#participant').select2('data'),
+          silent = true;
 
       var modelData = {
         title: this.$("#task-title").val(),
@@ -194,6 +217,24 @@ var TaskEditFormView = Backbone.View.extend({
 
       if (owner) modelData['userId'] = owner.id;
       if (completedBy != '') modelData['completedBy'] = completedBy;
+      if (newParticipant) {
+        if (this.$('#participant-notify:checked').length > 0) silent = false;
+        $.ajax({
+          url: '/api/volunteer',
+          method: 'POST',
+          data: {
+            taskId: self.model.get('id'),
+            userId: newParticipant.id,
+            silent: silent
+          },
+          success: function (e) {
+            console.log('success adding participant', e);
+          },
+          error: function (e) {
+            console.log('error adding participant', e);
+          }
+        });
+      }
 
       var tags = _(this.getTagsFromPage()).chain()
             .map(function(tag) {
@@ -238,6 +279,13 @@ var TaskEditFormView = Backbone.View.extend({
     e.preventDefault();
     this.$('.project-owner').hide();
     this.$('.change-project-owner').show();
+
+    return this;
+  },
+  displayAddParticipant: function (e) {
+    e.preventDefault();
+    this.$('.project-no-people').hide();
+    this.$('.add-participant').show();
 
     return this;
   },
