@@ -12,12 +12,15 @@ module.exports = {
     // The task which a user volunteers for
     taskId: 'INTEGER',
     // the user that is volunteering
-    userId: 'INTEGER'
+    userId: 'INTEGER',
+    // send notification or not, after create
+    silent: 'BOOLEAN'
 
   },
 
   // create notification after creating a volunteer
   afterCreate: function(model, done) {
+    if (model.silent === true) return done();
     Notification.create({
       action: 'volunteer.create.thanks',
       model: model
