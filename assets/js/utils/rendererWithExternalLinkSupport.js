@@ -1,6 +1,8 @@
-var marked = require('marked');
+var exports = module.exports = {};
 
-marked.Renderer.prototype.link = function(href, title, text) {
+var marked = require('marked');
+var renderer = new marked.Renderer();
+renderer.link = function(href, title, text) {
   if (this.options.sanitize) {
     try {
       var prot = decodeURIComponent(unescape(href))
@@ -23,3 +25,5 @@ marked.Renderer.prototype.link = function(href, title, text) {
   out += '>' + text + '</a>';
   return out;
 };
+
+exports.renderer = renderer;
