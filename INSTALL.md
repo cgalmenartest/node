@@ -138,47 +138,47 @@ AND modify `pg_hba.conf`:
 
      sudo apt-get install graphicsmagick
 
- ### Windows (Windows 2008 Server)
+### Windows (Windows 2008 Server)
 
- #### Install Visual C++ 2008 x64 or x86 Redistributable Package
+#### Install Visual C++ 2008 x64 or x86 Redistributable Package
 
- [Runtime 64](http://www.microsoft.com/en-us/download/details.aspx?id=15336)
-      or
- [Runtime 32](http://www.microsoft.com/en-us/download/details.aspx?id=29)
+[Runtime 64](http://www.microsoft.com/en-us/download/details.aspx?id=15336)
+  or
+[Runtime 32](http://www.microsoft.com/en-us/download/details.aspx?id=29)
 
- Reboot server once finished
+Reboot server once finished
 
- #### Install/Configure Postgres 9.2+ via windows msi installer
+#### Install/Configure Postgres 9.2+ via windows msi installer
 
- [PostgreSQL](http://www.postgresql.org/download/windows/`)
+[PostgreSQL](http://www.postgresql.org/download/windows/`)
 
- Establish admin user account during the wizard and verify that PostgreSQL is running as a service
+Establish admin user account during the wizard and verify that PostgreSQL is running as a service
 
- Open pgAdmin
+Open pgAdmin
 
-      Create database 'midas', user account 'midas' with password 'midas', and assign user 'midas' full rights to administer DB 'midas'
+  Create database 'midas', user account 'midas' with password 'midas', and assign user 'midas' full rights to administer DB 'midas'
 
- #### Install Node.js via Windows MSI, select all available add-ons
- **_Note that currently Midas has a dependency on nodejs version .10+ and is not tested to work with .11 or .12, do not attempt to install a version higher than node ver .10.38_**
+#### Install Node.js via Windows MSI, select all available add-ons
+**_Note that currently Midas has a dependency on nodejs version .10+ and is not tested to work with .11 or .12, do not attempt to install a version higher than node ver .10.38_**
 
- [Node.js](http://nodejs.org/dist/v0.10.38/)
+[Node.js](http://nodejs.org/dist/v0.10.38/)
 
- #### Install GraphicsMagick
+#### Install GraphicsMagick
 
- [GraphicsMagick](ftp://ftp.graphicsmagick.org/pub/GraphicsMagick/windows/`)
+[GraphicsMagick](ftp://ftp.graphicsmagick.org/pub/GraphicsMagick/windows/`)
 
- Select Q8 version along with latest corresponding to 32 bit vs. 64 bit OS
+Select Q8 version along with latest corresponding to 32 bit vs. 64 bit OS
 
- #### Set System Path Variables
+#### Set System Path Variables
 
- Go to Control Panel -> System -> Advanced System Settings -> Environment Variables
- Find "Path" Variable in System Variables table and double click to edit it. Make sure it contains all of the following parts (in 	addition to anything else) separated by a semi-colon.
+Go to Control Panel -> System -> Advanced System Settings -> Environment Variables
+Find "Path" Variable in System Variables table and double click to edit it. Make sure it contains all of the following parts (in 	addition to anything else) separated by a semi-colon.
 
- 	DRIVE:\program files\graphicsmagick-1.3.18-q8;
- 	(or similar, depending on your graphicsmagick version)
- 	DRIVE:\Program Files\nodejs\;
+	DRIVE:\program files\graphicsmagick-1.3.18-q8;
+	(or similar, depending on your graphicsmagick version)
+	DRIVE:\Program Files\nodejs\;
 
- Save.
+Save.
 
 ### All Platforms
 
