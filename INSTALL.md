@@ -13,10 +13,11 @@ Installation
   ![screen shot 2015-08-27 at 11 14 19 am](https://cloud.githubusercontent.com/assets/170641/9524434/f46fe6a2-4cac-11e5-88fd-cdee0517ed46.png)
   ![screen shot 2015-08-27 at 11 14 49 am](https://cloud.githubusercontent.com/assets/170641/9524437/f61f4bbe-4cac-11e5-86b4-75b482a462fa.png)
 5. **Bonus:** you can try our other branches of Midas (useful for reviewing pull requests). Get the branch  name from GitHub:
+
   ![screen shot 2015-08-27 at 11 16 27 am](https://cloud.githubusercontent.com/assets/170641/9524463/180170a4-4cad-11e5-9ed4-d7d3a4a253f2.png)
 6. Go back to "Settings" in Kitematic, set the `BRANCH` environment variable, and click "Save":
   ![screen shot 2015-08-27 at 11 17 08 am](https://cloud.githubusercontent.com/assets/170641/9524485/2fd9ea94-4cad-11e5-9a8d-09322c46a857.png)
-9. Now on "Home", you'll see the log of Midas rebuilding with the new branch. Give it a chance to build, then relaunch the web preview to try the new branch
+7. Now on "Home", you'll see the log of Midas rebuilding with the new branch. Give it a chance to build, then relaunch the web preview to try the new branch
 
 
 ## Step by Step Installation from Source

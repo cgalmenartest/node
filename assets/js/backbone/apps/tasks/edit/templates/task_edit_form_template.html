@@ -112,17 +112,31 @@
     <div class="change-project-owner" style="display: none;">
       <input style="width: 100%" id="owner" name="owner" type="hidden" value="Edit Owner"/>
     </div>
-    <h3>Participants</h3>
+    <div>
+      <h3 style="display: inline-block;">Participants</h3>
+      <% if (window.cache.currentUser.isAdmin) { %>
+      <a id="add-participant" href="#">Add</a>
+      <% } %>
+    </div>
     <% if (data.volunteers.length > 0) { %>
       <% _.each(data.volunteers, function (v) { %>
       <div class="project-people-show-div" data-userid="<%- v.userId %>" data-voluserid="<%- v.userId %>">
+        <a href="#" class="delete-volunteer volunteer-delete fa fa-times"  id="delete-volunteer-<%- v.id %>" data-uid="<%- v.userId %>" data-vid="<%- v.id %>"></a>
         <img src="/api/user/photo/<%- v.userId %>" alt="<%- v.name %>"/>
         <label class="project-people-show-label"><%- v.name %></label>
       </div>
       <% }); %>
     <% } else { %>
-      None assigned
+      <div class="project-no-people">
+        None assigned
+      </div>
     <% } %>
+    <div class="add-participant" style="display: none;">
+      <input style="width: 100%" id="participant" name="participant" type="hidden" value="Add participant"/>
+      <div>
+        <input type="checkbox" id="participant-notify" name="participant-notify">Notify participant</input>
+      </div>
+    </div>
 
     <h3>Progress</h3>
     <div id="div-publishedAt">
