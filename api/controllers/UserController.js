@@ -6,7 +6,6 @@
  */
 var async = require('async');
 var _ = require('underscore');
-var bcrypt = require('bcrypt');
 var projUtils = require('../services/utils/project');
 var taskUtils = require('../services/utils/task');
 var exportUtil = require('../services/utils/export');

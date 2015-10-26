@@ -45,6 +45,7 @@ var authorized = function (id, userId, user, cb) {
 };
 
 var getMetadata = function(task, user, cb) {
+  if (!task) return cb();
   task.like = false;
   task.volunteer = false;
   // get owner information

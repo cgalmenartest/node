@@ -54,7 +54,9 @@ function start(err) {
       grunt: false
     },
     validateDomains: false,
-    emailProtocol: ''
+    emailProtocol: '',
+    taskState: 'open',
+    draftAdminOnly: false
   };
 
   // Lift Sails and store the app reference

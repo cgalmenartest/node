@@ -27,8 +27,8 @@ Midas can benefit all organizations, but it’s especially useful for those with
 ## How you can help
 * Use our [community test server](https://openopps-test.18f.gov/) and write up [issues](https://github.com/18F/midas/issues)
 * Join our [Google Group](https://groups.google.com/forum/#!forum/midascrowd) and introduce yourself, please ask any general questions here -- how the product is supposed to work, usability issues, technical questions, whatever you want to know, we want to hear about.  If you are interested in using Midas for your organization, let us know.
-* Read our [Contribution Guide](https://github.com/18F/midas/blob/devel/CONTRIBUTING.md) -- everything you do with us is a contribution to the public domain, there are also some tips for getting started
-* If you are a developer, [install](https://github.com/18F/midas/blob/devel/INSTALL.md) the software for development
+* Read our [Contribution Guide](https://github.com/18F/midas/blob/dev/CONTRIBUTING.md) -- everything you do with us is a contribution to the public domain, there are also some tips for getting started
+* If you are a developer, [install](https://github.com/18F/midas/blob/dev/INSTALL.md) the software for development
 * Dive into our [help wanted issues](https://github.com/18F/midas/labels/help%20wanted) -- there are both dev and design opportunities there
 
 
@@ -39,4 +39,4 @@ This project is in the public domain within the United States, and
 copyright and related rights in the work worldwide are waived through
 the [CC0 1.0 Universal public domain dedication](https://creativecommons.org/publicdomain/zero/1.0/).
 
-For more information, see [license](https://github.com/18F/midas/blob/devel/LICENSE.md).
+For more information, see [license](https://github.com/18F/midas/blob/dev/LICENSE.md).
