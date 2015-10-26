@@ -18,9 +18,13 @@ var ProfileActivityView = Backbone.View.extend({
 
   render: function () {
     // sort initially by date, descending.
-    var results = this.options.data.sort(function (a, b) {
-      return new Date(b.createdAt) - new Date(a.createdAt);
-    });
+    var results = this.options.data
+        .filter(function(i) {
+          return i && i.createdAt;
+        })
+        .sort(function (a, b) {
+          return new Date(b.createdAt) - new Date(a.createdAt);
+        });
     var data = {
       ui: UIConfig,
       target: this.options.target,
