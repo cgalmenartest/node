@@ -76,7 +76,7 @@
     <div class="col-md-3">
       <div class="box padding-none">
 
-        <div class="navbar-side border-bottom" <% if (!vol) {%>style="display: none;"<%}%>>
+        <div class="navbar-side border-bottom" <% if (!vol || (model.state === 'completed') || (model.state === 'archived') ) {%>style="display: none;"<%}%>>
           <div id="modal-volunteer"></div>
           <ul class="nav nav-pills nav-stacked">
             <li class="volunteer-true" style="display: none;">
