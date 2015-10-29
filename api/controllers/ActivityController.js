@@ -1,38 +1,52 @@
 module.exports = {
 
   badges: function(req, res) {
-    var events = [];
-    Task.find({
-      state: 'completed',
-      sort: 'completedAt DESC',
+    var items = [];
+    Badge.find({
+      sort: 'createdAt DESC',
       limit: 25
-    }).exec(function(err, tasks) {
+    }).populate('user').exec(function(err, badges) {
       if (err) return res.negotiate(err);
-      Volunteer.find({ taskId: _.pluck(tasks, 'id') }).exec(function(err, vols) {
+
+      badges = badges.map(function(b) {
+        b.description = 'The ' + b.type + ' badge is awarded when you ' + b.getDescription();
+        b.activityType = 'badgeEarned';
+        return b;
+      });
+
+      Task.find({
+        state: 'completed',
+        sort: 'completedAt DESC',
+        limit: 25
+      }).exec(function(err, tasks) {
         if (err) return res.negotiate(err);
-        User.find({ id: _.pluck(vols, 'userId') }).exec(function(err, users) {
+
+        Volunteer.find({ taskId: _.pluck(tasks, 'id') }).exec(function(err, vols) {
           if (err) return res.negotiate(err);
-          tasks.forEach(function(task) {
-            var ids = _(vols).chain()
-                  .where({ taskId: task.id })
-                  .pluck('userId').value(),
-                participants = _.filter(users, function(user) {
-                  return _.contains(ids, user.id);
-                });
-            events.push({
-              type: 'taskCompleted',
-              task: task,
-              participants: participants
-            });
-            participants.forEach(function(user) {
-              events.push({
-                type: 'participantBadge',
-                task: task,
-                user: user
+
+          User.find({ id: _.pluck(vols, 'userId') }).exec(function(err, users) {
+            if (err) return res.negotiate(err);
+
+            tasks = tasks.map(function(task) {
+              var ids = _(vols).chain()
+                    .where({ taskId: task.id })
+                    .pluck('userId').value();
+
+              task.activityType = 'taskCompleted';
+              task.participants = _.filter(users, function(user) {
+                return _.contains(ids, user.id);
               });
+
+              return task;
             });
+
+            items = _.union(tasks, badges).sort(function(a, b) {
+              return a.updatedAt < b.updatedAt;
+            });
+
+            res.json(items);
+
           });
-          res.send(events);
         });
       });
     });
