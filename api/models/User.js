@@ -14,7 +14,8 @@ module.exports = {
   attributes: {
     // Login information
     username: { type: 'email', unique: true },
-    passports : { collection: 'Passport', via: 'user' },
+    passports: { collection: 'Passport', via: 'user' },
+    badges: { collection: 'badge', via: 'user'},
 
     // Core attributes about a user
     name: 'STRING',
@@ -49,6 +50,17 @@ module.exports = {
       type: 'INTEGER',
       defaultsTo: 0
     },
+
+    // Store the number of completedTasks
+    completedTasks: {
+      type: 'INTEGER',
+      defaultsTo: 0
+    },
+
+    // Store the agency of each completed tasks (not unique)
+    // completedTaskAgencies: {
+    //   type: 'JSON'
+    // },
 
     // Tag association
     tags: {
@@ -104,6 +116,23 @@ module.exports = {
       action: 'user.create.welcome',
       model: model
     }, done);
+  },
+
+  afterUpdate: function(model, done) {
+    var badgeType = false;
+    if (model.completedTasks === 1) badgeType = 'newcomer';
+    else if (model.completedTasks === 3) badgeType = 'maker';
+    else if (model.completedTasks === 5) badgeType = 'game changer';
+    else if (model.completedTasks === 10) badgeType = 'disruptor';
+    else if (model.completedTasks === 15) badgeType = 'partner';
+
+    if (badgeType) {
+      var b = { type: badgeType, user: model.id };
+      Badge.findOrCreate(b, b, function(err, badge){
+        if (err) return done(err);
+        done();
+      });
+    }
   }
 
 };
