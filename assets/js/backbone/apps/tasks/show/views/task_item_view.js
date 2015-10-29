@@ -43,7 +43,11 @@ var TaskItemView = BaseView.extend({
     self.model.trigger('task:tag:data', self.tags, self.data['madlibTags']);
 
     var d = self.data,
-        vol = ((!d.user || d.user.id !== d.model.userId) && d.model.state !== 'draft');
+        // Unauthed users, current participants, authed users who are
+        // not the task creator on an open task can see the participate
+        // button on a task
+        vol = ((!d.user || d.user.id !== d.model.userId) &&
+              (d.model.volunteer || d.model.state === 'open'));
     self.data.ui = UIConfig;
     self.data.vol = vol;
     var compiledTemplate = _.template(TaskShowTemplate)(self.data);
