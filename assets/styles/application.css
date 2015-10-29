@@ -628,6 +628,14 @@ ul.password-rules {
   content: '';
   clear: both;
 }
+.activity-feed--badge {
+   background-position: center;
+   background-size: contain;
+   float: right;
+   margin-top: -5px;
+   min-height: 50px;
+   width: 50px;
+}
 .activity-feed--avatars {
   margin-top: .3em;
 }
@@ -669,6 +677,22 @@ ul.password-rules {
 /*****************
 =  PROFILES
 ******************/
+
+.profile-badges {
+  list-style-type: none;
+  padding: 0;
+}
+
+.profile-badge {
+  display: inline-block;
+  text-align: center;
+  text-transform: capitalize;
+}
+
+.profile-badge img {
+  min-height: 70px;
+  width: 70px;
+}
 
 .profile-reset h1 {
   font-size: 1.8em;
