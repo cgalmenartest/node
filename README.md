@@ -25,7 +25,8 @@ Midas can benefit all organizations, but it’s especially useful for those with
 ![screen shot 2014-10-06 at 3 17 53 pm](https://cloud.githubusercontent.com/assets/633088/4531895/555718c4-4d8e-11e4-8960-9585b2adb640.png)
 
 ## How you can help
-* Use our [community test server](https://openopps-test.18f.gov/) and write up [issues](https://github.com/18F/midas/issues)
+
+* Use our [community test server](https://openopps-test.18f.gov) and write up [issues](https://github.com/18F/midas/issues)
 * Join our [Google Group](https://groups.google.com/forum/#!forum/midascrowd) and introduce yourself, please ask any general questions here -- how the product is supposed to work, usability issues, technical questions, whatever you want to know, we want to hear about.  If you are interested in using Midas for your organization, let us know.
 * Read our [Contribution Guide](https://github.com/18F/midas/blob/dev/CONTRIBUTING.md) -- everything you do with us is a contribution to the public domain, there are also some tips for getting started
 * If you are a developer, [install](https://github.com/18F/midas/blob/dev/INSTALL.md) the software for development

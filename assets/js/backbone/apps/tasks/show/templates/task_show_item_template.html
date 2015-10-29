@@ -75,7 +75,6 @@
     </div>
     <div class="col-md-3">
       <div class="box padding-none">
-
         <div class="navbar-side border-bottom" <% if (!vol) {%>style="display: none;"<%}%>>
           <div id="modal-volunteer"></div>
           <ul class="nav nav-pills nav-stacked">
@@ -95,6 +94,7 @@
         <% if (model.isOwner || (user && user.isAdmin)) { %>
         <div class="navbar-side <% if (user) { %>border-bottom<% } %>">
           <div id="modal-close"></div>
+          <div id="modal-copy"></div>
           <ul class="nav nav-pills nav-stacked">
             <li class="li-task-edit">
               <a href="#" id="task-edit"><i class="fa fa-pencil"></i> <span class="box-icon-text">Edit <span data-i18n="Task">Opportunity</span></span></a>

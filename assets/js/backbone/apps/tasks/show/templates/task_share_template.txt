@@ -1,8 +1,9 @@
-Opportunity: <%- opportunityTitle %>
-Description: <%- opportunityDescription %>
+Opportunity: <%= opportunityTitle %>
 
-<%- opportunityMadlibs %>
+Description: <%= opportunityDescription %>
 
-I wanted to let you know about this great opportunity to help a colleague. 
+<%= opportunityMadlibs %>
 
-Click on the link to find out more: <%- opportunityLink %>
+I wanted to let you know about this great opportunity to help a colleague.
+
+Click on the link to find out more: <%= opportunityLink %>
