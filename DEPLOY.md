@@ -23,7 +23,7 @@ PRs that are merged into `staging` will go through [Travis](https://travis-ci.or
 
 Once a release has been validated on staging, open a new PR for the release against `master`.
 
-PRs that are merged into `dev` will go through [Travis](https://travis-ci.org/18F/midas/builds/) for continuous integration testing and deployment.
+PRs that are merged into `master` will go through [Travis](https://travis-ci.org/18F/midas/builds/) for continuous integration testing and deployment.
 
 
 ## Cloud Foundry configuration
