@@ -100,13 +100,29 @@ module.exports = {
 
     });
   },
+  afterUpdate: function(task, done) {
+    var self = this;
+    Volunteer.find({ taskId: task.id }).exec(function(err, volunteers){
+      if (err) return done(err);
 
+      volunteers.forEach(function(vol) {
+        self.updateVolunteerCounts(task, vol);
+      });
+    });
+
+    Task.find({ userId: task.userId }).populate('tags').exec(function(err, tasks) {
+      if (err) return done(err);
+      self.assignTaskCreationBadges(tasks, task.userId);
+    });
+  },
   beforeCreate: function(values, done) {
     // If default state is not draft, we need to set dates
     this.beforeUpdate(values, done);
   },
 
   afterCreate: function(model, done) {
+    console.log('model', model);
+
     Notification.create({
       action: 'task.create.thanks',
       model: model
@@ -137,6 +153,47 @@ module.exports = {
       });
 
     });
+  },
+
+  updateVolunteerCounts: function(task, volunteer) {
+    if (task.state === 'completed') {
+      User.findOne({ id: volunteer.userId }).exec(function(err, user) {
+        user.completedTasks += 1;
+        user.save(function(err, u) {
+          if (err) return console.error(err);
+        });
+      });
+    }
+  },
+
+  assignTaskCreationBadges: function (tasks, userId) {
+    var counter = {
+      ongoing: 0,
+      oneTime: 0
+    };
+
+    tasks.forEach(function(t) {
+      var taskType = _.where(t.tags, { type: 'task-time-required' });
+      if (taskType[0] && taskType[0].name) {
+        if (taskType[0].name === 'One time') {
+          counter.oneTime++;
+        }
+        else if (taskType[0].name === 'Ongoing') {
+          counter.ongoing++;
+        }
+      }
+    });
+
+    if (counter.ongoing === 1) {
+      Badge.create({ user: userId, type: 'mentor' }).exec(function(err, b){
+        if (err) return console.error(err);
+      });
+    }
+    if (counter.oneTime === 1) {
+      Badge.create({ user: userId, type: 'instigator' }).exec(function(err, b){
+        if (err) return console.error(err);
+      });
+    }
   }
 
 };
