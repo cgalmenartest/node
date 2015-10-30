@@ -4,46 +4,51 @@ var Sails = require('sails'),
 Sails.lift({}, function(err, sails) {
   if (err) return console.error(err);
 
-  User.query('SELECT * FROM midas_user', function(err, results) {
+  Task.find({ state: 'completed' }).exec(function(err, tasks) {
     if (err) return console.error(err);
 
-    async.series(results.rows.map(function(user) {
-      return function(cb) {
-        calculateCompletedTasks(user.id, cb);
-      }
-    }), function (err, results) {
-      console.log('top err', err);
-    });
-  });
+    var ts = tasks.map(function(task) {
+      return function(callback) {
+        Volunteer.find({ taskId: task.id }).exec(function(err, vols) {
+          if (err) return callback(err);
 
-  function calculateCompletedTasks(userId, cb) {
-    Volunteer.find({ userId: userId }).exec(function(err, vols) {
-      if (err) return cb(err);
-      async.series(vols.map(function(v) {
-        return function(callback) {
-          Task.findOne({ id: v.taskId }).exec(function(err, task) {
+          var volUserIds = vols.filter(function(v) {
+            return v.userId;
+          }).map(function(v) {
+            return v.userId;
+          });
+
+          if (volUserIds.length === 0) return callback();
+
+          User.find({ id: volUserIds }).exec(function(err, users) {
             if (err) return callback(err);
-            if (task.state === 'completed') {
-              User.findOne({ id: userId }).populate('badges').exec(function(err, user) {
-                if (err) return callback(err);
 
-                var oldBadges = user.badges.map(function(i) { return i.id; });
+            async.series(users.map(function(user) {
+              return function(cb) {
                 user.completedTasks += 1;
                 user.save(function(err, u){
-                  if (err) return callback(err);
-                  return callback();
+                  // nothing happens in this function because
+                  // its unreliable for sails to call the callback
                 });
-              });
-            }
-            return callback(null, 'task wasn\'t completed yet');
-          });
-        }
-      }), function (err, results) {
-        if (err) return cb(err);
-        cb(null, results);
-      });
+                setTimeout(function() { cb(); }, 500);
+              }
+            }), function(err, result) {
+              if (err) callback(err);
+              callback(null, result);
+            });
 
+          });
+
+        });
+      }
     });
-  }
+
+    async.series(ts, function(err, result) {
+      console.log('all done');
+      console.log('error', err);
+      Sails.lower();
+    });
+
+  });
 
 });
