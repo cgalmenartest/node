@@ -101,15 +101,14 @@ module.exports = {
    * @return a new user object
    */
   cleanUser: function (user, reqId) {
-    var badges = user.badges.map(function(b) { b.description = b.getDescription(); return b; }),
-        u = {
+    var u = {
           id: user.id,
           username: user.username,
           name: user.name,
           title: user.title,
           bio: user.bio,
           tags: user.tags,
-          badges: badges,
+          badges: user.badges,
           createdAt: user.createdAt,
           updatedAt: user.updatedAt
       };
@@ -141,6 +140,10 @@ module.exports = {
       .exec(function (err, user) {
         if (err || !user) { return cb("Error finding User.", null); }
         delete user.deletedAt;
+        user.badges = user.badges.map(function(b) {
+          b.description = b.getDescription();
+          return b; 
+        });
         if (userId != reqId) {
           user = self.cleanUser(user, reqId);
         }
