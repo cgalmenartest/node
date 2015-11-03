@@ -628,16 +628,26 @@ ul.password-rules {
   content: '';
   clear: both;
 }
+.activity-feed--item ul {
+  margin-left: 2.2em;
+}
 .activity-feed--badge {
    background-position: center;
    background-size: contain;
-   float: right;
    margin-top: -5px;
    min-height: 50px;
    width: 50px;
 }
 .activity-feed--avatars {
   margin-top: .3em;
+}
+.activity-feed--avatars::before,
+.activity-feed--avatars::after {
+  content: " ";
+  display: table;
+}
+.activity-feed--avatars::after {
+  clear: both;
 }
 .activity-feed--avatar {
    background-position: center;

@@ -2,12 +2,8 @@
 <ul class="activity-feed list-unstyled">
   <% _.forEach(badges, function(b) { %>
     <li>
+
       <div class="activity-feed--item">
-      <% if (b.activityType === "badgeEarned") { %>
-        <% b.type = b.type.replace(' ', '-'); %>
-        <img class="activity-feed--badge" src="/images/badges/<%- b.type %>.png" alt="<%- b.description %>">
-        <a href="/profile/<%- b.user.id %>"><%- b.user.name %></a> earned the <%- b.type %> badge. <%- b.description %>
-      <% } else if (b.activityType === "taskCompleted") { %>
         <% var ps = b.participants.map(function(p) { %>
           <% return '<a href="/profile/' + _.escape(p.id) + '">' + _.escape(p.name) + '</a>' %>
         <% }); %>
@@ -29,8 +25,23 @@
             </a>
           <% }); %>
         </div>
-      <% } %>
+
+        <% if (b.badges.length > 0) { %>
+        <ul class="list-unstyled">
+          <% b.badges.forEach(function(badge) { %>
+            <% console.log('badge', badge); %>
+            <li>
+              <% badge.type = badge.type.replace(' ', '-'); %>
+              <a href="/profile/<%- badge.user.id %>"><%- badge.user.name %></a> earned the <%- badge.type %> badge. <%- badge.description %>
+              <img class="activity-feed--badge" src="/images/badges/<%- badge.type %>.png" alt="<%- badge.description %>">
+            </li>
+          <% }); %>
+        </ul>
+        <% } %>
+
       </div>
+
     </li>
+
   <% }); %>
 </ul>

@@ -1,38 +1,32 @@
 module.exports = {
 
   badges: function(req, res) {
-    var items = [];
-    Badge.find({
+    Task.find({
+      state: 'completed',
       sort: 'createdAt DESC',
-      limit: 25
-    }).populate('user').exec(function(err, badges) {
+      limit: 30
+    }).exec(function(err, tasks) {
       if (err) return res.negotiate(err);
-
-      badges = badges.map(function(b) {
-        b.description = 'The ' + b.type + ' badge is awarded when you ' + b.getDescription();
-        b.activityType = 'badgeEarned';
-        return b;
-      });
-
-      Task.find({
-        state: 'completed',
-        sort: 'completedAt DESC',
-        limit: 25
-      }).exec(function(err, tasks) {
+      var taskIds = _.pluck(tasks, 'id');
+      Badge.find({ task: taskIds }).exec(function(err, badges){
         if (err) return res.negotiate(err);
 
-        Volunteer.find({ taskId: _.pluck(tasks, 'id') }).exec(function(err, vols) {
+        Volunteer.find({ taskId: taskIds }).exec(function(err, vols) {
           if (err) return res.negotiate(err);
 
           User.find({ id: _.pluck(vols, 'userId') }).exec(function(err, users) {
             if (err) return res.negotiate(err);
+
+            badges.forEach(function(badge){
+              badge.user = _.where(users, { id: badge.user })[0];
+            });
 
             tasks = tasks.map(function(task) {
               var ids = _(vols).chain()
                     .where({ taskId: task.id })
                     .pluck('userId').value();
 
-              task.activityType = 'taskCompleted';
+              task.badges = _.where(badges, { task: task.id });
               task.participants = _.filter(users, function(user) {
                 return _.contains(ids, user.id);
               });
@@ -40,11 +34,7 @@ module.exports = {
               return task;
             });
 
-            items = _.union(tasks, badges).sort(function(a, b) {
-              return a.updatedAt < b.updatedAt;
-            });
-
-            res.json(items);
+            res.json(tasks);
 
           });
         });
