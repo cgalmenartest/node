@@ -30,7 +30,7 @@ Sails.lift({}, function(err, sails) {
                   // nothing happens in this function because
                   // its unreliable for sails to call the callback
                 });
-                setTimeout(function() { cb(); }, 500);
+                setTimeout(function() { cb(); }, 1000);
               }
             }), function(err, result) {
               if (err) callback(err);
