@@ -112,7 +112,7 @@ module.exports = {
 
     Task.find({ userId: task.userId }).populate('tags').exec(function(err, tasks) {
       if (err) return done(err);
-      self.assignTaskCreationBadges(tasks, task.userId);
+      self.assignTaskCreationBadges(tasks, task.userId, done);
     });
   },
   beforeCreate: function(values, done) {
@@ -121,8 +121,6 @@ module.exports = {
   },
 
   afterCreate: function(model, done) {
-    console.log('model', model);
-
     Notification.create({
       action: 'task.create.thanks',
       model: model
@@ -166,34 +164,38 @@ module.exports = {
     }
   },
 
-  assignTaskCreationBadges: function (tasks, userId) {
-    var counter = {
-      ongoing: 0,
-      oneTime: 0
-    };
+  assignTaskCreationBadges: function (tasks, userId, done) {
+    var badge   = { user: userId },
+        counter = { ongoing: 0, oneTime: 0 },
+        ongoingTaskId, oneTimeTaskId;
 
     tasks.forEach(function(t) {
       var taskType = _.where(t.tags, { type: 'task-time-required' });
       if (taskType[0] && taskType[0].name) {
         if (taskType[0].name === 'One time') {
           counter.oneTime++;
+          oneTimeTaskId = t.id;
         }
         else if (taskType[0].name === 'Ongoing') {
           counter.ongoing++;
+          ongoingTaskId = t.id;
         }
       }
     });
 
     if (counter.ongoing === 1) {
-      Badge.create({ user: userId, type: 'mentor' }).exec(function(err, b){
-        if (err) return console.error(err);
-      });
+      badge.type = 'mentor';
+      badge.task = ongoingTaskId;
     }
-    if (counter.oneTime === 1) {
-      Badge.create({ user: userId, type: 'instigator' }).exec(function(err, b){
-        if (err) return console.error(err);
-      });
+    else if (counter.oneTime === 1) {
+      badge.type = 'instigator';
+      badge.task = oneTimeTaskId;
     }
+
+    Badge.findOrCreate(badge, badge).exec(function(err, b){
+      if (err) return done(err);
+      done();
+    });
   }
 
 };

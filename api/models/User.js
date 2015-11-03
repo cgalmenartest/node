@@ -128,10 +128,28 @@ module.exports = {
 
     if (badgeType) {
       var b = { type: badgeType, user: model.id };
-      Badge.findOrCreate(b, b, function(err, badge){
-        if (err) return done(err);
-        done();
+
+      Volunteer.find({ userId: model.id }).then(function(vols) {
+        if (!vols) return done(new Error('This user has not participated in any tasks'));
+
+        var taskIds = vols.map(function(v) { return v.taskId; }),
+            q = { id: taskIds, state: 'completed', };
+
+        Task.find({ where: q, sort: 'completedAt' }).then(function(tasks) {
+          if (!tasks) return done(new Error('This user has not completed any tasks'));
+          var taskIndex = model.completedTasks - 1;
+          b.task = tasks[taskIndex].id;
+
+          Badge.findOrCreate(b, b, function(err, badge){
+            if (err) return done(err);
+            done();
+          });
+        });
       });
+
+    }
+    else {
+      done();
     }
   }
 

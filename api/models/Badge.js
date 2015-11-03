@@ -22,6 +22,10 @@ module.exports = {
       model: 'user'
     },
 
+    task: {
+      model: 'task'
+    },
+
     // type of the badge
     type: 'string',
 
