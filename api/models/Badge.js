@@ -75,7 +75,7 @@ module.exports = {
       }, done);
     });
   },
-  awardForTaskCompletion: function(task, user) {
+  awardForTaskCompletion: function(task, user, done) {
     var completedAwards = {
           1: 'newcomer',
           3: 'maker',
@@ -84,15 +84,20 @@ module.exports = {
           15: 'partner'
         };
 
-    if (_.findKey(completedAwards, user.completedTasks)) {
+    if (_.has(completedAwards, user.completedTasks)) {
       var b = {
         type: completedAwards[user.completedTasks],
         user: user.id,
         task: task.id
       };
       Badge.findOrCreate(b, b, function(err, badge){
-        if (err) return sails.log.error(err);
+        if (err) sails.log.error(err);
+        if (done) return done(err, [badge]);
+        return;
       });
+    } else {
+      // result is empty array for no badges!
+      if (done) done(null, []);
     }
   },
   awardForTaskPublish: function (tasks, userId) {
