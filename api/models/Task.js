@@ -46,6 +46,18 @@ module.exports = {
             return true;
         }
         return false;
+    },
+    volunteersCompleted: function() {
+      var task = this;
+      Volunteer.find({ taskId: task.id }).exec(function(err, volunteers){
+        if (err) return done(err);
+
+        volunteers.forEach(function(vol) {
+          User.findOne({ id: vol.userId }).exec(function(err, user) {
+            user.taskCompleted(task);
+          });
+        });
+      });
     }
   },
 
@@ -85,6 +97,7 @@ module.exports = {
         case 'completed':
           values.completedAt = new Date();
           action = 'task.update.completed';
+          task.volunteersCompleted();
           break;
       }
 
@@ -102,17 +115,11 @@ module.exports = {
   },
   afterUpdate: function(task, done) {
     var self = this;
-    Volunteer.find({ taskId: task.id }).exec(function(err, volunteers){
-      if (err) return done(err);
-
-      volunteers.forEach(function(vol) {
-        self.updateVolunteerCounts(task, vol);
-      });
-    });
 
     Task.find({ userId: task.userId }).populate('tags').exec(function(err, tasks) {
       if (err) return done(err);
-      self.assignTaskCreationBadges(tasks, task.userId, done);
+      Badge.awardForTaskPublish(tasks, task.userId);
+      done();
     });
   },
   beforeCreate: function(values, done) {
@@ -150,51 +157,6 @@ module.exports = {
         });
       });
 
-    });
-  },
-
-  updateVolunteerCounts: function(task, volunteer) {
-    if (task.state === 'completed') {
-      User.findOne({ id: volunteer.userId }).exec(function(err, user) {
-        user.completedTasks += 1;
-        user.save(function(err, u) {
-          if (err) return console.error(err);
-        });
-      });
-    }
-  },
-
-  assignTaskCreationBadges: function (tasks, userId, done) {
-    var badge   = { user: userId },
-        counter = { ongoing: 0, oneTime: 0 },
-        ongoingTaskId, oneTimeTaskId;
-
-    tasks.forEach(function(t) {
-      var taskType = _.where(t.tags, { type: 'task-time-required' });
-      if (taskType[0] && taskType[0].name) {
-        if (taskType[0].name === 'One time') {
-          counter.oneTime++;
-          oneTimeTaskId = t.id;
-        }
-        else if (taskType[0].name === 'Ongoing') {
-          counter.ongoing++;
-          ongoingTaskId = t.id;
-        }
-      }
-    });
-
-    if (counter.ongoing === 1) {
-      badge.type = 'mentor';
-      badge.task = ongoingTaskId;
-    }
-    else if (counter.oneTime === 1) {
-      badge.type = 'instigator';
-      badge.task = oneTimeTaskId;
-    }
-
-    Badge.findOrCreate(badge, badge).exec(function(err, b){
-      if (err) return done(err);
-      done();
     });
   }
 

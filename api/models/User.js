@@ -68,7 +68,13 @@ module.exports = {
       via: 'users',
       dominant: true
     },
-
+    taskCompleted: function(task) {
+      this.completedTasks += 1;
+      this.save(function(err, u) {
+        if (err) return sails.log.error(err);
+        Badge.awardForTaskCompletion(task, user);
+      });
+    },
     toJSON: function() {
       var obj = this.toObject();
       delete obj.passports;
@@ -116,41 +122,6 @@ module.exports = {
       action: 'user.create.welcome',
       model: model
     }, done);
-  },
-
-  afterUpdate: function(model, done) {
-    var badgeType = false;
-    if (model.completedTasks === 1) badgeType = 'newcomer';
-    else if (model.completedTasks === 3) badgeType = 'maker';
-    else if (model.completedTasks === 5) badgeType = 'game changer';
-    else if (model.completedTasks === 10) badgeType = 'disruptor';
-    else if (model.completedTasks === 15) badgeType = 'partner';
-
-    if (badgeType) {
-      var b = { type: badgeType, user: model.id };
-
-      Volunteer.find({ userId: model.id }).then(function(vols) {
-        if (!vols) return done(new Error('This user has not participated in any tasks'));
-
-        var taskIds = vols.map(function(v) { return v.taskId; }),
-            q = { id: taskIds, state: 'completed', };
-
-        Task.find({ where: q, sort: 'completedAt' }).then(function(tasks) {
-          if (!tasks) return done(new Error('This user has not completed any tasks'));
-          var taskIndex = model.completedTasks - 1;
-          b.task = tasks[taskIndex].id;
-
-          Badge.findOrCreate(b, b, function(err, badge){
-            if (err) return done(err);
-            done();
-          });
-        });
-      });
-
-    }
-    else {
-      done();
-    }
   }
 
 };
