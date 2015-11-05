@@ -98,7 +98,7 @@ describe('BadgeModel', function() {
           }
         ];
         Badge.awardForTaskPublish(tasks, user.id, function(err, badges) {
-          assert.isDefined(err);
+          assert.equal(badges.length, 0, 'badge should not be created');
           done();
         });
 
@@ -133,7 +133,7 @@ describe('BadgeModel', function() {
           }
         ];
         Badge.awardForTaskPublish(tasks, user.id, function(err, badges) {
-          assert.isDefined(err);
+          assert.equal(badges.length, 0, 'badge should not be created');
           done();
         });
 

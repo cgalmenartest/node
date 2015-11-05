@@ -48,7 +48,7 @@ module.exports = {
     Badge.findOne(b).exec(function (err, found) {
       if (err) return done(err);
       if (found) {
-        done({ 'error': 'duplicate entry' });
+        done(new Error('Badge already exists'));
       }
       else {
         done();
@@ -99,14 +99,23 @@ module.exports = {
         };
 
     if (_.has(completedAwards, user.completedTasks)) {
-      var b = {
+      var badge = {
         type: completedAwards[user.completedTasks],
         user: user.id,
         task: task.id
       };
-      Badge.findOrCreate(b, b, function(err, badge){
+      Badge.findOrCreate(badge, badge, function(err, b){
+        b = [b];
         if (err) sails.log.error(err);
-        if (done) return done(err, [badge]);
+        if (done) {
+          // swallow a potential error (expected) that the badge
+          // already exists
+          if (err && err._e.toString().match('Badge already exists')) {
+            err = null;
+            badge = [];
+          }
+          return done(err, b);
+        }
         return;
       });
     } else {
@@ -155,8 +164,17 @@ module.exports = {
 
     if (badge.type) {
       Badge.findOrCreate(badge, badge).exec(function(err, b){
+        b = [b];
         if (err) sails.log.error(err);
-        if (done) return done(err, [badge]);
+        if (done) {
+          // swallow a potential error (expected) that the badge
+          // already exists
+          if (err && err._e.toString().match('Badge already exists')) {
+            err = null;
+            b = [];
+          }
+          return done(err, b);
+        }
         return;
       });
     } else {
