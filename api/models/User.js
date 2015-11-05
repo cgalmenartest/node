@@ -14,7 +14,8 @@ module.exports = {
   attributes: {
     // Login information
     username: { type: 'email', unique: true },
-    passports : { collection: 'Passport', via: 'user' },
+    passports: { collection: 'Passport', via: 'user' },
+    badges: { collection: 'badge', via: 'user'},
 
     // Core attributes about a user
     name: 'STRING',
@@ -50,13 +51,36 @@ module.exports = {
       defaultsTo: 0
     },
 
+    // Store the number of completedTasks
+    completedTasks: {
+      type: 'INTEGER',
+      defaultsTo: 0
+    },
+
+    // Store the agency of each completed tasks (not unique)
+    // completedTaskAgencies: {
+    //   type: 'JSON'
+    // },
+
     // Tag association
     tags: {
       collection: 'tagEntity',
       via: 'users',
       dominant: true
     },
-
+    /**
+     * Increment the task counter by one and
+     * check to see if a badge should be awarded
+     *
+     * @param {object} task
+     */
+    taskCompleted: function(task) {
+      this.completedTasks += 1;
+      this.save(function(err, u) {
+        if (err) return sails.log.error(err);
+        Badge.awardForTaskCompletion(task, user);
+      });
+    },
     toJSON: function() {
       var obj = this.toObject();
       delete obj.passports;
