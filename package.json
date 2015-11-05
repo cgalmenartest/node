@@ -77,7 +77,7 @@
     "test:api": "mocha test/test.upstart.js --recursive test/api",
     "test:browser": "npm run build && node test/browser/upstart.js",
     "test:unit": "mocha test/test.upstart.js --recursive test/unit",
-    "test": "npm run test:api && npm run test:browser",
+    "test": "npm run test:unit && npm run test:api && npm run test:browser",
     "build": "$npm_package_config_grunt build",
     "start": "node app.js",
     "migrate": "./tools/postgres/init.sh",
