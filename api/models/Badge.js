@@ -106,16 +106,14 @@ module.exports = {
       };
       Badge.findOrCreate(badge, badge, function(err, b){
         b = [b];
-        if (err) sails.log.error(err);
-        if (done) {
-          // swallow a potential error (expected) that the badge
-          // already exists
-          if (err && err._e.toString().match('Badge already exists')) {
-            err = null;
-            badge = [];
-          }
-          return done(err, b);
+        // swallow a potential error (expected) that the badge
+        // already exists
+        if (err && err._e.toString().match('Badge already exists')) {
+          err = null;
+          b = [];
         }
+        if (err) sails.log.error(err);
+        if (done) return done(err, b);
         return;
       });
     } else {
@@ -163,18 +161,16 @@ module.exports = {
     }
 
     if (badge.type) {
-      Badge.findOrCreate(badge, badge).exec(function(err, b){
+      Badge.findOrCreate(badge, badge, function(err, b){
         b = [b];
-        if (err) sails.log.error(err);
-        if (done) {
-          // swallow a potential error (expected) that the badge
-          // already exists
-          if (err && err._e.toString().match('Badge already exists')) {
-            err = null;
-            b = [];
-          }
-          return done(err, b);
+        // swallow a potential error (expected) that the badge
+        // already exists
+        if (err && err._e.toString().match('Badge already exists')) {
+          err = null;
+          b = [];
         }
+        if (err) sails.log.error(err);
+        if (done) return done(err, b);
         return;
       });
     } else {
