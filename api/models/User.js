@@ -68,6 +68,12 @@ module.exports = {
       via: 'users',
       dominant: true
     },
+    /**
+     * Increment the task counter by one and
+     * check to see if a badge should be awarded
+     *
+     * @param {object} task
+     */
     taskCompleted: function(task) {
       this.completedTasks += 1;
       this.save(function(err, u) {

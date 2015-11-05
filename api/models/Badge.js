@@ -55,6 +55,8 @@ module.exports = {
       }
     });
   },
+  // if the badge was not explicitly set to be silent
+  // send out a notification to the user
   afterCreate: function(model, done) {
     if (model.silent === true) return done();
 
@@ -75,6 +77,18 @@ module.exports = {
       }, done);
     });
   },
+
+  /**
+   *
+   * Determines if the completion of a task makes a
+   * user eligible for a badge, and if so, awards
+   * that badge to the user.
+   * Takes an optional callback
+   *
+   * @param {object} task
+   * @param {object} user
+   * @param {function} done
+   */
   awardForTaskCompletion: function(task, user, done) {
     var completedAwards = {
           1: 'newcomer',
@@ -100,7 +114,18 @@ module.exports = {
       if (done) done(null, []);
     }
   },
-  awardForTaskPublish: function (tasks, userId) {
+  /**
+   *
+   * Determines if the publishing of a task makes the
+   * task creator eligible for a badge, and if so, awards
+   * that badge to the user.
+   * Takes an optional callback
+   *
+   * @param {tasks} task
+   * @param {number} userId
+   * @param {function} done
+   */
+  awardForTaskPublish: function (tasks, userId, done) {
     var badge   = { user: userId },
         counter = { ongoing: 0, oneTime: 0 },
         ongoingTaskId, oneTimeTaskId;
@@ -128,8 +153,15 @@ module.exports = {
       badge.task = oneTimeTaskId;
     }
 
-    Badge.findOrCreate(badge, badge).exec(function(err, b){
-      if (err) return sails.log.error(err);
-    });
+    if (badge.type) {
+      Badge.findOrCreate(badge, badge).exec(function(err, b){
+        if (err) sails.log.error(err);
+        if (done) return done(err, [badge]);
+        return;
+      });
+    } else {
+      // result is empty array for no badges!
+      if (done) done(null, []);
+    }
   }
 };
