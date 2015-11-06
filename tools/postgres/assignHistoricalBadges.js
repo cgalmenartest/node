@@ -2,53 +2,35 @@ var Sails = require('sails'),
     async = require('async');
 
 Sails.lift({}, function(err, sails) {
-  if (err) return console.error(err);
-
+// use nested async loops because the .findOrCreate() isn't
+// transactional, which means that at a high frequency it
+// doesn't ensure that duplicate records don't get created
   Task.find({ state: 'completed' }).exec(function(err, tasks) {
-    if (err) return console.error(err);
+    var ts = tasks.map(function(task, taskIndex) {
+      return function(cb) {
+        console.log('Assigning badges for ' + taskIndex + ' of ' + tasks.length + ' tasks.');
+        Volunteer.find({ taskId: task.id }).exec(function(err, volunteers){
 
-    var ts = tasks.map(function(task) {
-      return function(callback) {
-        Volunteer.find({ taskId: task.id }).exec(function(err, vols) {
-          if (err) return callback(err);
-
-          var volUserIds = vols.filter(function(v) {
-            return v.userId;
-          }).map(function(v) {
-            return v.userId;
+          var vs = volunteers.map(function(vol) {
+            return function(callback) {
+              User.findOne({ id: vol.userId }).exec(function(err, user) {
+                user.taskCompleted(task);
+                setTimeout(function(){ callback(); }, 500);
+              });
+            };
           });
 
-          if (volUserIds.length === 0) return callback();
-
-          User.find({ id: volUserIds }).exec(function(err, users) {
-            if (err) return callback(err);
-
-            async.series(users.map(function(user) {
-              return function(cb) {
-                user.completedTasks += 1;
-                user.save(function(err, u){
-                  // nothing happens in this function because
-                  // its unreliable for sails to call the callback
-                });
-                setTimeout(function() { cb(); }, 1000);
-              }
-            }), function(err, result) {
-              if (err) callback(err);
-              callback(null, result);
-            });
-
+          async.series(vs, function(err, result) {
+            cb();
           });
 
         });
-      }
+      };
     });
 
     async.series(ts, function(err, result) {
-      console.log('all done');
-      console.log('error', err);
       Sails.lower();
     });
 
   });
-
 });
