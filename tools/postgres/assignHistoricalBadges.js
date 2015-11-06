@@ -14,7 +14,7 @@ Sails.lift({}, function(err, sails) {
           var vs = volunteers.map(function(vol) {
             return function(callback) {
               User.findOne({ id: vol.userId }).exec(function(err, user) {
-                user.taskCompleted(task);
+                user.taskCompleted(task, { silent: true });
                 setTimeout(function(){ callback(); }, 500);
               });
             };
