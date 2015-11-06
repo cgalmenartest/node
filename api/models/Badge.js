@@ -99,12 +99,13 @@ module.exports = {
         };
 
     if (_.has(completedAwards, user.completedTasks)) {
-      var badge = {
-        type: completedAwards[user.completedTasks],
-        user: user.id,
-        task: task.id
-      };
-      Badge.findOrCreate(badge, badge, function(err, b){
+      var badgeQuery = {
+            type: completedAwards[user.completedTasks],
+            user: user.id
+          },
+          badge = _.extend({}, badgeQuery, { task: task.id });
+
+      Badge.findOrCreate(badgeQuery, badge, function(err, b){
         b = [b];
         // swallow a potential error (expected) that the badge
         // already exists
