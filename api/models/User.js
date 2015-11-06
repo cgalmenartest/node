@@ -75,6 +75,7 @@ module.exports = {
      * @param {object} task
      */
     taskCompleted: function(task) {
+      var user = this;
       this.completedTasks += 1;
       this.save(function(err, u) {
         if (err) return sails.log.error(err);
