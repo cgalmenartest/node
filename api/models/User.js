@@ -74,19 +74,20 @@ module.exports = {
      *
      * @param {object} task
      */
-    taskCompleted: function(task) {
+    taskCompleted: function(task, opts) {
       var user = this;
+      opts = opts || {};
       this.completedTasks += 1;
       this.save(function(err, u) {
         if (err) return sails.log.error(err);
-        Badge.awardForTaskCompletion(task, user);
+        Badge.awardForTaskCompletion(task, user, opts);
       });
     },
     toJSON: function() {
       var obj = this.toObject();
       delete obj.passports;
       return obj;
-    }
+    },
   },
 
   // TODO: add more fields, likely driven off subqueries
