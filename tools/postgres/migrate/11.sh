@@ -6,7 +6,7 @@ psql -U midas -d $DATABASE_URL -c "CREATE TABLE badge (
     \"task\" integer,
     id integer NOT NULL,
     \"type\" varchar,
-    \"silent\" boolean DEFAULT false,
+    \"silent\" boolean DEFAULT true,
     \"createdAt\" timestamp with time zone,
     \"updatedAt\" timestamp with time zone,
     \"deletedAt\" timestamp with time zone
