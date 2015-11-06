@@ -29,7 +29,6 @@
         <% if (b.badges.length > 0) { %>
         <ul class="list-unstyled">
           <% b.badges.forEach(function(badge) { %>
-            <% console.log('badge', badge); %>
             <li>
               <% badge.type = badge.type.replace(' ', '-'); %>
               <a href="/profile/<%- badge.user.id %>"><%- badge.user.name %></a> earned the <%- badge.type %> badge. <%- badge.description %>
