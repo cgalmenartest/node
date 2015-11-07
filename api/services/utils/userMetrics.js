@@ -27,8 +27,10 @@ var addUserMetrics = function(user, callback) {
       // add created projects
       user.projectsCreatedOpen = 0;
       user.projectsCreatedClosed = 0;
-      ProjectOwner.find().where({id:user.id}).exec(function(err, owners) {
+
+      ProjectOwner.find().where({userId: user.id}).exec(function(err, owners) {
         if (err) { done('Failed to retrieve ProjectOwners ' +  err);}
+
         if (owners.length !== 0) {
           var projIds = [];
           for (var j in owners) {
