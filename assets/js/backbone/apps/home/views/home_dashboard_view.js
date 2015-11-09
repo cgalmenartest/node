@@ -35,8 +35,11 @@ var DashboardView = Backbone.View.extend({
     this.$el.html(templates.main());
 
     this.listenTo(badges, 'activity:collection:fetch:success', function (e) {
-      var data = { badges: e.toJSON() },
-          badgesHtml = templates.badges(data);
+      var bs = e.toJSON().filter(function(b) {
+            return b.participants.length > 0;
+          }),
+          badgesHtml = templates.badges({ badges: bs });
+
       self.setTarget('badges-feed', badgesHtml);
     });
 
