@@ -87,24 +87,30 @@ module.exports = {
    *
    * @param {object} task
    * @param {object} user
+   * @param {object} opts - optional
    * @param {function} done
    */
-  awardForTaskCompletion: function(task, user, done) {
+  awardForTaskCompletion: function(task, user, opts, done) {
     var completedAwards = {
           1: 'newcomer',
           3: 'maker',
           5: 'game changer',
           10: 'disruptor',
           15: 'partner'
-        };
+        },
+        silent = (opts && !_.isUndefined(opts.silent)) ? opts.silent : false;
+
+    // opts is optional, so the third param migth be a function
+    if (typeof opts === 'function' && !done) done = opts;
 
     if (_.has(completedAwards, user.completedTasks)) {
-      var badge = {
-        type: completedAwards[user.completedTasks],
-        user: user.id,
-        task: task.id
-      };
-      Badge.findOrCreate(badge, badge, function(err, b){
+      var badgeQuery = {
+            type: completedAwards[user.completedTasks],
+            user: user.id
+          },
+          badge = _.extend({}, badgeQuery, { task: task.id, silent: silent });
+
+      Badge.findOrCreate(badgeQuery, badge, function(err, b){
         b = [b];
         // swallow a potential error (expected) that the badge
         // already exists
