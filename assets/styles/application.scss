@@ -1,0 +1,41 @@
+// Vendor libraries brought in via `assets/styles` and `node_modules`.
+// @see: `tools/grunt/config/sass` for `includePaths`
+// -----------------------------------------------------------------------------
+@import 'font-awesome/css/font-awesome.min',
+        'font-custom/css/style',
+        'bootstrap/dist/css/bootstrap',
+        'bootstrap-datetimepicker/build/css/bootstrap-datetimepicker',
+        'timepicker/jquery.timepicker',
+        'blueimp-file-upload/css/jquery.fileupload',
+        'Select2/select2',
+        'leaflet/dist/leaflet';
+
+// Partials
+// -----------------------------------------------------------------------------
+@import 'partials/fonts',
+        'partials/base',
+        'partials/overrides/bootstrap',
+        'partials/overrides/select2';
+
+// Blocks
+// -----------------------------------------------------------------------------
+@import 'blocks/dashboard',
+        'blocks/modal',
+        'blocks/profile',
+        'blocks/project/base',
+        'blocks/task/base',
+        'blocks/files',
+        'blocks/comments',
+        'blocks/autocomplete',
+        'blocks/navigation',
+        'blocks/login',
+        'blocks/text',
+        'blocks/people-map';
+
+// Pages
+// -----------------------------------------------------------------------------
+@import 'pages/home';
+
+// Theme CSS
+// -----------------------------------------------------------------------------
+@import 'theme/base';
