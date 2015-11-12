@@ -1,3 +1,15 @@
+/*
+ * Script for importing historical participants and updating task data
+ *
+ * - To run, download a spreadsheet as defined here: https://github.com/18F/midas/issues/1039#issuecomment-148751267
+ * - Save spreadsheet as `participants.txt` in the same directory as this script
+ * - From this directory, run this script with `node ./importParticipants.js`
+ * 
+ * The script will add participants for any rows in the spreadsheet that do not already exist. It will also
+ * update tasks with information (like `task_state` or `completion_date`) specified in the spreadsheet.
+ *
+ */
+
 var async = require('async'),
     csv = require('csv'),
     fs = require('fs'),
