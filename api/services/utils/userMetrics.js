@@ -50,11 +50,11 @@ Decorator.prototype.findOwnedProjects = function(err, owners, done) {
 
 Decorator.prototype.sortProjectAndAddMetrics = function(err, projects, done) {
   var openProjectCount = _.countBy(projects, function(project) {
-    return project.state == 'open';
+    return project.state;
   });
 
-  this.data.projectsCreatedOpen = openProjectCount[true];
-  this.data.projectsCreatedClosed = openProjectCount[false];
+  this.data.projectsCreatedOpen = openProjectCount['open'];
+  this.data.projectsCreatedClosed = projects.length - openProjectCount['open'];
 
   done();
 }
@@ -83,6 +83,37 @@ Decorator.prototype.countTaskType = function(state, countName) {
   }.bind(this);
 };
 
+Decorator.prototype.setVolunteerStats = function(done) {
+  this.data.volCountOpen = 0;
+  this.data.volCountAssigned= 0;
+  this.data.volCountCompleted = 0;
+  this.data.volCountArchived = 0;
+
+  Volunteer.find().where({userId: this.data.id}).exec(
+    this.curryHandler(this.findVolunteeredTasks, 'Volunteers', done)
+  );
+};
+
+Decorator.prototype.findVolunteeredTasks = function(err, volunteers, done) {
+  taskIds = _.pluck(volunteers, 'taskId');
+  Task.find().where({id: taskIds}).exec(
+    this.curryHandler(this.sortAndCountVolunteeredTasks, 'volunteered tasks', done)
+  );
+};
+
+Decorator.prototype.sortAndCountVolunteeredTasks = function(err, tasks, done) {
+  var taskCounts = _.countBy(tasks, function(task) {
+    return task.state;
+  });
+
+  this.data.volCountOpen = taskCounts['open'];
+  this.data.volCountAssigned = taskCounts['assigned'];
+  this.data.volCountCompleted = taskCounts['completed'];
+  this.data.volCountArchived = taskCounts['archived'];
+
+  done();
+};
+
 var addUserMetrics = function(user, callback) {
   var decorator = new Decorator(user, callback);
   decorator.addMetrics();
@@ -90,53 +121,8 @@ var addUserMetrics = function(user, callback) {
   async.parallel([
     decorator.setProjectStats.bind(decorator),
     decorator.setTaskStats.bind(decorator),
-
-    // add volunteer counts
-    function(done) {
-      user.volCountOpen = 0;
-      user.volCountAssigned= 0;
-      user.volCountCompleted = 0;
-      user.volCountArchived = 0;
-      Volunteer.find().where({userId:user.id}).exec(function(err, volunteers) {
-        if (err) { done('Failed to retrieve volunteers ' +  err);}
-        if (volunteers.length !== 0) {
-          var taskIds = [];
-          for (var i in volunteers) {
-            taskIds.push(volunteers[i].taskId);
-          }
-          Task.find().where({id: taskIds}).exec(function(err, tasks) {
-            if (err) { done('Failed to retrieve tasks for volunteers ' +  err);}
-            async.each(tasks, function(task, cb) {
-              if (task.state === "open") {
-                user.volCountOpen++;
-                cb();
-              }
-              else if (task.state === "assigned") {
-                user.volCountAssigned++;
-                cb();
-              }
-              else if (task.state === "completed") {
-                user.volCountCompleted++;
-                cb();
-              }
-              else if (task.state === "archived") {
-                user.volCountArchived++;
-                cb();
-              }
-              else {
-                cb();
-              }
-            }, function(err) {
-              done(null);
-            });
-          });
-        } else {
-          done(null);
-        }
-      });
-    }], function(err) {
-      callback(null);
-    });
+    decorator.setVolunteerStats.bind(decorator)
+  ], function(err) { callback(null); });
 };
 
 module.exports = {

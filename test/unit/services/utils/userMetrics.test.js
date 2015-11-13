@@ -107,38 +107,96 @@ describe('userMetrics.add(user, callback)', function() {
 
       userMetrics.add(user, doAssertions);
     });
+  });
 
-    describe('when there are various tasks created by the user', function() {
-      var expectedCounts;
+  describe('when there are various tasks created by the user', function() {
+    var expectedCounts;
 
-      beforeEach(function(done) {
-        expectedCounts = {};
+    beforeEach(function(done) {
+      expectedCounts = {};
 
-        async.each(['open', 'assigned', 'completed', 'archived'], function(state, next) {
-          var numberOfTimes = Math.floor(Math.random() * 10) + 1;
-          expectedCounts[state] = numberOfTimes;
+      async.each(['open', 'assigned', 'completed', 'archived'], function(state, next) {
+        var numberOfTimes = Math.floor(Math.random() * 10) + 1;
+        expectedCounts[state] = numberOfTimes;
 
-          async.times(numberOfTimes, function(n, nextNext) {
-            Task.create({
-              userId: user.id,
-              state: state
-            }).exec(nextNext);
-          }, next);
+        async.times(numberOfTimes, function(n, nextNext) {
+          Task.create({
+            userId: user.id,
+            state: state
+          }).exec(nextNext);
+        }, next);
+      }, done);
+    });
+
+    it('returns the correct stats', function(done) {
+      doAssertions = function() {
+        assert.equal(user.tasksCreatedOpen,       expectedCounts['open']);
+        assert.equal(user.tasksCreatedAssigned,   expectedCounts['assigned']);
+        assert.equal(user.tasksCreatedCompleted,  expectedCounts['completed']);
+        assert.equal(user.tasksCreatedArchived,   expectedCounts['archived']);
+
+        done();
+      }
+
+      userMetrics.add(user, doAssertions);
+    });
+  });
+
+  describe('when the user has not volunteered', function() {
+    it('should have zero values for everything', function(done) {
+      doAssertions = function() {
+        assert.equal(user.volCountOpen, 0);
+        assert.equal(user.volCountAssigned, 0);
+        assert.equal(user.volCountCompleted, 0);
+        assert.equal(user.volCountArchived, 0);
+
+        done();
+      };
+
+      userMetrics.add(user, doAssertions);
+    });
+  });
+
+  describe('when the user has volunteered for several tasks', function() {
+    var expectedCounts;
+
+    beforeEach(function(done) {
+      expectedCounts = {};
+      tasks = [];
+
+      var createVolunteers = function(err) {
+        async.each(tasks, function(task, next) {
+          Volunteer.create({userId: user.id, taskId: task.id}).exec(next);
         }, done);
-      });
+      };
 
-      it('returns the correct stats', function(done) {
-        doAssertions = function() {
-          assert.equal(user.tasksCreatedOpen,       expectedCounts['open']);
-          assert.equal(user.tasksCreatedAssigned,   expectedCounts['assigned']);
-          assert.equal(user.tasksCreatedCompleted,  expectedCounts['completed']);
-          assert.equal(user.tasksCreatedArchived,   expectedCounts['archived']);
+      async.each(['open', 'assigned', 'completed', 'archived'], function(state, next) {
+        var numberOfTimes = Math.floor(Math.random() * 10) + 1;
+        expectedCounts[state] = numberOfTimes;
 
-          done();
-        }
+        async.times(numberOfTimes, function(n, nextNext) {
+          Task.create({
+            userId: user.id,
+            state: state
+          }).exec(function(err, task) {
+            tasks.push(task);
+            nextNext();
+          });
+        }, next);
+      }, createVolunteers);
+    });
 
-        userMetrics.add(user, doAssertions);
-      });
+    it('returns the correct stats', function(done) {
+      doAssertions = function() {
+        assert.equal(user.volCountOpen, expectedCounts['open']);
+        assert.equal(user.volCountAssigned, expectedCounts['assigned']);
+        assert.equal(user.volCountCompleted, expectedCounts['completed']);
+        assert.equal(user.volCountArchived, expectedCounts['archived']);
+
+        done();
+      }
+
+      userMetrics.add(user, doAssertions);
     });
   });
 });
