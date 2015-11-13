@@ -93,4 +93,52 @@ describe('userMetrics.add(user, callback)', function() {
       userMetrics.add(user, doAssertions);
     });
   });
+
+  describe('when there are no tasks created by the user', function() {
+    it('should have zero values for everything', function(done) {
+      doAssertions = function() {
+        assert.equal(user.tasksCreatedOpen, 0);
+        assert.equal(user.tasksCreatedAssigned, 0);
+        assert.equal(user.tasksCreatedCompleted, 0);
+        assert.equal(user.tasksCreatedArchived, 0);
+
+        done();
+      };
+
+      userMetrics.add(user, doAssertions);
+    });
+
+    describe('when there are various tasks created by the user', function() {
+      var expectedCounts;
+
+      beforeEach(function(done) {
+        expectedCounts = {};
+
+        async.each(['open', 'assigned', 'completed', 'archived'], function(state, next) {
+          var numberOfTimes = Math.floor(Math.random() * 10) + 1;
+          expectedCounts[state] = numberOfTimes;
+
+          async.times(numberOfTimes, function(n, nextNext) {
+            Task.create({
+              userId: user.id,
+              state: state
+            }).exec(nextNext);
+          }, next);
+        }, done);
+      });
+
+      it('returns the correct stats', function(done) {
+        doAssertions = function() {
+          assert.equal(user.tasksCreatedOpen,       expectedCounts['open']);
+          assert.equal(user.tasksCreatedAssigned,   expectedCounts['assigned']);
+          assert.equal(user.tasksCreatedCompleted,  expectedCounts['completed']);
+          assert.equal(user.tasksCreatedArchived,   expectedCounts['archived']);
+
+          done();
+        }
+
+        userMetrics.add(user, doAssertions);
+      });
+    });
+  });
 });

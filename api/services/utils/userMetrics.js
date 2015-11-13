@@ -11,7 +11,6 @@ Decorator.prototype.addMetrics = function() {
 };
 
 Decorator.prototype.curryHandler = function(handler, collectionName, done) {
-  console.log('handling', handler, collectionName);
   var handler = handler.bind(this);
 
   return function(err, collection) {
@@ -33,37 +32,12 @@ Decorator.prototype.setLockedAttribute = function() {
   }
 };
 
+// TODO: this could probably be handled better by an association!
 Decorator.prototype.setProjectStats = function(done) {
   this.data.projectsCreatedOpen = 0;
   this.data.projectsCreatedClosed = 0;
 
-  ProjectOwner.find().where({userId: this.data.id}).exec(function(err, owners) {
-    if (err) { done('Failed to retrieve ProjectOwners ' +  err);}
-
-    if (owners.length !== 0) {
-      var projIds = [];
-      for (var j in owners) {
-        projIds.push(owners[j].projectId);
-      }
-      Project.find().where({id: projIds}).exec(function(err, projects) {
-        if (err) { done('Failed to retrieve projects ' +  err);}
-        async.each(projects, function(project, cb) {
-          if (project.state === "open") {
-            this.data.projectsCreatedOpen++;
-            cb();
-          }
-          else {
-            this.data.projectsCreatedClosed++;
-            cb();
-          }
-        }.bind(this), function(err) {
-          done(null);
-        });
-      }.bind(this));
-    } else {
-      done(null);
-    }
-  }.bind(this));
+  ProjectOwner.find().where({userId: this.data.id}).exec(this.curryHandler(this.findOwnedProjects, 'Owners', done));
 };
 
 Decorator.prototype.findOwnedProjects = function(err, owners, done) {
@@ -79,11 +53,35 @@ Decorator.prototype.sortProjectAndAddMetrics = function(err, projects, done) {
     return project.state == 'open';
   });
 
-  this.data.projectsCreatedOpen = openProjectCount;
-  this.data.projectsCreatedClosed = projects.length - openProjectCount;
+  this.data.projectsCreatedOpen = openProjectCount[true];
+  this.data.projectsCreatedClosed = openProjectCount[false];
 
   done();
 }
+
+Decorator.prototype.setTaskStats = function(done) {
+  this.data.tasksCreatedOpen = 0;
+  this.data.tasksCreatedAssigned = 0;
+  this.data.tasksCreatedCompleted = 0;
+  this.data.tasksCreatedArchived = 0;
+
+  async.parallel([
+    this.countTaskType('open', 'tasksCreatedOpen'),
+    this.countTaskType('assigned', 'tasksCreatedAssigned'),
+    this.countTaskType('completed', 'tasksCreatedCompleted'),
+    this.countTaskType('archived', 'tasksCreatedArchived')
+  ], function(err) { done(null); });
+};
+
+Decorator.prototype.countTaskType = function(state, countName) {
+  var user = this.data;
+  return function(next) {
+    Task.countByState(state).where({userId: user.id}).exec(function(err, count) {
+      user[countName] = count;
+      next();
+    }.bind(this));
+  }.bind(this);
+};
 
 var addUserMetrics = function(user, callback) {
   var decorator = new Decorator(user, callback);
@@ -91,41 +89,8 @@ var addUserMetrics = function(user, callback) {
 
   async.parallel([
     decorator.setProjectStats.bind(decorator),
+    decorator.setTaskStats.bind(decorator),
 
-    // add task counts
-    function(done) {
-      user.tasksCreatedOpen = 0;
-      user.tasksCreatedAssigned = 0;
-      user.tasksCreatedCompleted = 0;
-      user.tasksCreatedArchived = 0;
-      async.parallel([
-        function(cb) {
-          Task.countByState("open").where({userId:user.id}).exec(function(err, openCount) {
-            user.tasksCreatedOpen = openCount;
-            cb();
-          });
-        },
-        function(cb) {
-          Task.countByState("assigned").where({userId:user.id}).exec(function(err, assignedCount) {
-            user.tasksCreatedAssigned = assignedCount;
-            cb();
-          });
-        },
-        function(cb) {
-          Task.countByState("completed").where({userId:user.id}).exec(function(err, completedCount) {
-            user.tasksCreatedCompleted = completedCount;
-            cb();
-          });
-        },
-        function(cb) {
-          Task.countByState("archived").where({userId:user.id}).exec(function(err, archivedCount) {
-            user.tasksCreatedArchived = archivedCount;
-            cb();
-          });
-        }], function(err) {
-          done(null);
-        });
-    },
     // add volunteer counts
     function(done) {
       user.volCountOpen = 0;
