@@ -1,13 +1,19 @@
 var async = require('async');
 var _ = require('underscore');
 
-function Decorator(data, callback) {
+function Decorator(data) {
   this.data = data;
-  this.callback = callback;
 };
 
-Decorator.prototype.addMetrics = function() {
-  this.setLockedAttribute();
+_.extend(Decorator.prototype, {});
+
+Decorator.prototype.addMetrics = function(callback) {
+  async.parallel([
+    this.addLockedMetrics.bind(this),
+    this.addCreatedProjectMetrics.bind(this),
+    this.addCreatedTaskMetrics.bind(this),
+    this.addVolunteeredTaskMetrics.bind(this)
+  ], function(err) { callback(); } );
 };
 
 Decorator.prototype.curryHandler = function(handler, collectionName, done) {
@@ -24,16 +30,18 @@ Decorator.prototype.curryHandler = function(handler, collectionName, done) {
   };
 };
 
-Decorator.prototype.setLockedAttribute = function() {
+Decorator.prototype.addLockedMetrics = function(done) {
   this.data.locked = false;
   var passwordAttemptLimit = sails.config.auth.auth.local.passwordAttempts;
   if (this.data.passwordAttempts >= passwordAttemptLimit) {
     this.data.locked = true;
   }
+
+  done();
 };
 
 // TODO: this could probably be handled better by an association!
-Decorator.prototype.setProjectStats = function(done) {
+Decorator.prototype.addCreatedProjectMetrics = function(done) {
   this.data.projectsCreatedOpen = 0;
   this.data.projectsCreatedClosed = 0;
 
@@ -59,7 +67,7 @@ Decorator.prototype.sortProjectAndAddMetrics = function(err, projects, done) {
   done();
 }
 
-Decorator.prototype.setTaskStats = function(done) {
+Decorator.prototype.addCreatedTaskMetrics = function(done) {
   this.data.tasksCreatedOpen = 0;
   this.data.tasksCreatedAssigned = 0;
   this.data.tasksCreatedCompleted = 0;
@@ -83,7 +91,7 @@ Decorator.prototype.countTaskType = function(state, countName) {
   }.bind(this);
 };
 
-Decorator.prototype.setVolunteerStats = function(done) {
+Decorator.prototype.addVolunteeredTaskMetrics = function(done) {
   this.data.volCountOpen = 0;
   this.data.volCountAssigned= 0;
   this.data.volCountCompleted = 0;
@@ -115,16 +123,11 @@ Decorator.prototype.sortAndCountVolunteeredTasks = function(err, tasks, done) {
 };
 
 var addUserMetrics = function(user, callback) {
-  var decorator = new Decorator(user, callback);
-  decorator.addMetrics();
-
-  async.parallel([
-    decorator.setProjectStats.bind(decorator),
-    decorator.setTaskStats.bind(decorator),
-    decorator.setVolunteerStats.bind(decorator)
-  ], function(err) { callback(null); });
+  var decorator = new Decorator(user);
+  decorator.addMetrics(callback);
 };
 
 module.exports = {
-  add: addUserMetrics
+  add: addUserMetrics,
+  Decorator: Decorator
 };
