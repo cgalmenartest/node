@@ -44,7 +44,8 @@ module.exports = function (grunt) {
     require( './tools/grunt/config/cssmin' ),
     require( './tools/grunt/config/copy' ),
     require( './tools/grunt/config/clean' ),
-    require( './tools/grunt/config/jsonlint' )
+    require( './tools/grunt/config/jsonlint' ),
+    require( './tools/grunt/config/watch' )
 
   );
 
