@@ -18,10 +18,19 @@ Open Opportunities can benefit all organizations, but it’s especially useful f
 
 ## Screenshots
 
-![screen shot 2014-10-06 at 3 43 43 pm](https://cloud.githubusercontent.com/assets/633088/4532245/294ef4d8-4d91-11e4-8fb9-f2b43bbedcca.png)
-
-
-![screen shot 2014-10-06 at 3 17 53 pm](https://cloud.githubusercontent.com/assets/633088/4531895/555718c4-4d8e-11e4-8960-9585b2adb640.png)
+<table>
+    <tr>
+        <td>
+            <img width="565" style="width:33%;display:inline-block;" alt="open opps 1" src="https://cloud.githubusercontent.com/assets/706004/11192976/044ece76-8c72-11e5-97bd-92801293abc2.png">
+        </td>
+        <td>
+            <img width="565" style="width:33%;display:inline-block;" alt="open opps 2" src="https://cloud.githubusercontent.com/assets/706004/11192975/04252698-8c72-11e5-8add-5d9eaf119257.png">
+        </td>
+        <td>
+            <img width="566" style="width:33%;display:inline-block;" alt="open opps 3" src="https://cloud.githubusercontent.com/assets/706004/11192974/03d40d62-8c72-11e5-8c06-b49b1b4a99ea.png">
+        </td>
+    </tr>
+</table>
 
 ## How you can help
 
@@ -44,7 +53,7 @@ Solution: provide a software platform that enables a program with very small cen
 Our Goal: to foster innovation across team boundaries by connecting individuals who identify challenges and then work collaboratively to implement solutions.
 
 A cross-agency working group meets regularly to discuss program needs.
-We use an [Agile Roadmap](https://github.com/18F/midas/wiki/Roadmap) where the product team selects features that we believe will meet goals.  We strive to make data-driven decisions based on metrics and qualitative user research and to validate the outcomes based on observed community behavior.  This is an iterative process.  
+We use an [Agile Roadmap](https://github.com/18F/midas/wiki/Roadmap) where the product team selects features that we believe will meet goals.  We strive to make data-driven decisions based on metrics and qualitative user research and to validate the outcomes based on observed community behavior.  This is an iterative process.
 
 We also welcome [direct participation][contributing] from government and private sector and are always in need of people who can write documentation or marketing material, visual and UX designers, as well as software coders.
 
