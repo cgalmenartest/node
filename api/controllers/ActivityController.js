@@ -18,6 +18,7 @@ module.exports = {
             if (err) return res.negotiate(err);
 
             badges.forEach(function(badge){
+              badge.description = badge.getDescription();
               badge.user = _.where(users, { id: badge.user })[0];
             });
 
