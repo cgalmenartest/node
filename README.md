@@ -1,10 +1,7 @@
-![midas](assets/images/logo.png) [![Build Status](https://travis-ci.org/18F/midas.png?branch=master)](https://travis-ci.org/18F/midas) [![Dependency Status](https://gemnasium.com/18F/midas.png)](https://gemnasium.com/18F/midas)
-<a href="https://codeclimate.com/github/18F/midas"><img src="https://codeclimate.com/github/18F/midas/badges/gpa.svg" /></a>
+![midas](assets/images/logo.png)
+
+[![Build Status](https://travis-ci.org/18F/midas.png?branch=master)](https://travis-ci.org/18F/midas) [![Dependency Status](https://gemnasium.com/18F/midas.png)](https://gemnasium.com/18F/midas) <a href="https://codeclimate.com/github/18F/midas"><img src="https://codeclimate.com/github/18F/midas/badges/gpa.svg" /></a>
 =====
-
-### OpenOpps Open Source Platform
-
-a “Kickstarter for people’s time.”
 
 [Open Opportunities](http://www.digitalgov.gov/join-digitalgov/open-opportunities-in-digitalgov/) is creating a network of federal employees that will lead to a more effective, efficient, responsive government by sharing skills and collaborating on projects that support the mission of an agency or the government as a whole.
 
