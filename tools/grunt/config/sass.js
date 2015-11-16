@@ -14,6 +14,7 @@ module.exports = {
       includePaths: [
         require( 'bourbon' ).includePaths,
         'assets/styles',
+        'assets/styles/vendor',
         'node_modules',
       ],
 

@@ -174,9 +174,10 @@ aside a:focus {
 }
 
 // Import further block modifiers after the initial base styles
+// TODO: Refactor into components that are relied on by this module.
 // -----------------------------------------------------------------------------
-@import 'blocks/task/form';
-@import 'blocks/task/infinite-scroll';
-@import 'blocks/task/list';
-@import 'blocks/task/attachments';
-@import 'blocks/task/markdown-editor';
+@import 'modules/task/form',
+        'modules/task/infinite-scroll',
+        'modules/task/list',
+        'modules/task/attachments',
+        'modules/task/markdown-editor';

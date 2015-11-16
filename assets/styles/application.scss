@@ -10,31 +10,33 @@
         'Select2/select2',
         'leaflet/dist/leaflet';
 
-// Partials
+// Elements
 // -----------------------------------------------------------------------------
-@import 'partials/fonts',
-        'partials/base',
-        'partials/overrides/bootstrap',
-        'partials/overrides/select2';
+@import 'elements/fonts',
+        'elements/base';
+
+// Overrides
+// -----------------------------------------------------------------------------
+@import 'overrides/bootstrap',
+        'overrides/select2';
 
 // Blocks
 // -----------------------------------------------------------------------------
-@import 'blocks/dashboard',
-        'blocks/modal',
-        'blocks/profile',
-        'blocks/project/base',
-        'blocks/task/base',
-        'blocks/files',
-        'blocks/comments',
-        'blocks/autocomplete',
-        'blocks/navigation',
-        'blocks/login',
-        'blocks/text',
-        'blocks/people-map';
+@import 'components/modal',
+        'components/profile',
+        'components/files',
+        'components/comments',
+        'components/autocomplete',
+        'components/navigation',
+        'components/login',
+        'components/text',
+        'components/people-map';
 
-// Pages
-// -----------------------------------------------------------------------------
-@import 'pages/home';
+@import 'modules/dashboard',
+        'modules/homepage',
+        'modules/project/base',
+        'modules/task/base';
+
 
 // Theme CSS
 // -----------------------------------------------------------------------------

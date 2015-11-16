@@ -165,8 +165,9 @@ a.search-tag-remove:hover {
 }
 
 // Import further block modifiers after the initial base styles
+// TODO: Refactor into components that are relied on by this module.
 // -----------------------------------------------------------------------------
-@import 'blocks/project/show';
-@import 'blocks/project/tags';
-@import 'blocks/project/likes';
-@import 'blocks/project/events';
+@import 'modules/project/show',
+        'modules/project/tags',
+        'modules/project/likes',
+        'modules/project/events';

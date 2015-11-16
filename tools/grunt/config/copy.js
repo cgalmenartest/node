@@ -16,14 +16,14 @@ module.exports = {
         expand: true,
         flatten: true,
         cwd: './assets',
-        src: ['styles/font-awesome/fonts/*'],
+        src: ['styles/vendor/font-awesome/fonts/*'],
         dest: 'assets/build/fonts'
       },
       {
         expand: true,
         flatten: true,
         cwd: './assets',
-        src: ['styles/font-custom/fonts/*'],
+        src: ['styles/vendor/font-custom/fonts/*'],
         dest: 'assets/build/fonts'
       },
       {
@@ -51,8 +51,8 @@ module.exports = {
         {
           expand: true,
           flatten: true,
-          cwd: './',
-          src: 'assets/styles/*.css.map',
+          cwd: './assets/styles/vendor',
+          src: '*.css.map',
           dest: 'assets/build/css',
         },
       ],
