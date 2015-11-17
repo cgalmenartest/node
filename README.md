@@ -21,13 +21,13 @@ Open Opportunities can benefit all organizations, but it’s especially useful f
 <table>
     <tr>
         <td>
-            <img width="565" style="width:33%;display:inline-block;" alt="open opps 1" src="https://cloud.githubusercontent.com/assets/706004/11192976/044ece76-8c72-11e5-97bd-92801293abc2.png">
+            <img style="width:33%;display:inline-block;" alt="open opps 1" src="docs/open-opps-screenshot-01.png">
         </td>
         <td>
-            <img width="565" style="width:33%;display:inline-block;" alt="open opps 2" src="https://cloud.githubusercontent.com/assets/706004/11192975/04252698-8c72-11e5-8add-5d9eaf119257.png">
+            <img style="width:33%;display:inline-block;" alt="open opps 2" src="docs/open-opps-screenshot-02.png">
         </td>
         <td>
-            <img width="566" style="width:33%;display:inline-block;" alt="open opps 3" src="https://cloud.githubusercontent.com/assets/706004/11192974/03d40d62-8c72-11e5-8c06-b49b1b4a99ea.png">
+            <img style="width:33%;display:inline-block;" alt="open opps 3" src="docs/open-opps-screenshot-03.png">
         </td>
     </tr>
 </table>
