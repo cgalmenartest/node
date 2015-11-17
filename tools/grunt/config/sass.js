@@ -1,3 +1,5 @@
+var _ = require( 'lodash' );
+
 module.exports = {
 
   sass: {
@@ -11,12 +13,12 @@ module.exports = {
       // README: Be mindful of path name collisions as everything in Sass shares
       // the same namespace.
       // --------------------------------------------------------------------
-      includePaths: [
+      includePaths: _.flatten( [
         require( 'bourbon' ).includePaths,
         'assets/styles',
         'assets/styles/vendor',
         'node_modules',
-      ],
+      ] ),
 
     },
 
