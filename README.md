@@ -21,13 +21,13 @@ Open Opportunities can benefit all organizations, but it’s especially useful f
 <table>
     <tr>
         <td>
-            <img style="width:33%;display:inline-block;" alt="open opps 1" src="docs/screenshots/open-opps-01.png">
+            <img alt="open opps 1" src="docs/screenshots/open-opps-01.png">
         </td>
         <td>
-            <img style="width:33%;display:inline-block;" alt="open opps 2" src="docs/screenshots/open-opps-02.png">
+            <img alt="open opps 2" src="docs/screenshots/open-opps-02.png">
         </td>
         <td>
-            <img style="width:33%;display:inline-block;" alt="open opps 3" src="docs/screenshots/open-opps-03.png">
+            <img alt="open opps 3" src="docs/screenshots/open-opps-03.png">
         </td>
     </tr>
 </table>
