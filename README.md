@@ -1,6 +1,8 @@
-![midas](assets/images/logo.png)
+![OpenOpps Platform](assets/images/logo.png)
 
-[![Build Status](https://travis-ci.org/18F/midas.png?branch=master)](https://travis-ci.org/18F/midas) [![Dependency Status](https://gemnasium.com/18F/midas.png)](https://gemnasium.com/18F/midas) <a href="https://codeclimate.com/github/18F/midas"><img src="https://codeclimate.com/github/18F/midas/badges/gpa.svg" /></a>
+[![Build Status](https://travis-ci.org/18F/openopps-platform.png?branch=master)](https://travis-ci.org/18F/openopps-platform)
+[![Dependency Status](https://gemnasium.com/18F/midas.png)](https://gemnasium.com/18F/midas)
+<a href="https://codeclimate.com/github/18F/openopps-platform"><img src="https://codeclimate.com/github/18F/openopps-platform/badges/gpa.svg" /></a>
 =====
 
 [Open Opportunities](http://www.digitalgov.gov/join-digitalgov/open-opportunities-in-digitalgov/) is creating a network of federal employees that will lead to a more effective, efficient, responsive government by sharing skills and collaborating on projects that support the mission of an agency or the government as a whole.
@@ -35,10 +37,10 @@ Open Opportunities can benefit all organizations, but it’s especially useful f
 ## How you can help
 
 * Use our [community test server](https://openopps-test.18f.gov) and write up [issues](https://github.com/18F/midas/issues)
-* Join our [Google Group](https://groups.google.com/forum/#!forum/midascrowd) and introduce yourself, please ask any general questions here -- how the product is supposed to work, usability issues, technical questions, whatever you want to know, we want to hear about.  If you are interested in using Midas for your organization, let us know.
+* Join our [Google Group](https://groups.google.com/forum/#!forum/midascrowd) and introduce yourself, please ask any general questions here -- how the product is supposed to work, usability issues, technical questions, whatever you want to know, we want to hear about.  If you are interested in using Open Opportunities for your organization, let us know.
 * Read our [Contribution Guide][contributing] -- everything you do with us is a contribution to the public domain, there are also some tips for getting started
-* If you are a developer, [install](https://github.com/18F/midas/blob/dev/INSTALL.md) the software for development
-* Dive into our [help wanted issues](https://github.com/18F/midas/labels/help%20wanted) -- there are both dev and design opportunities there
+* If you are a developer, [install](https://github.com/18F/openopps-platform/blob/dev/INSTALL.md) the software for development
+* Dive into our [help wanted issues](https://github.com/18F/openopps-platform/labels/help%20wanted) -- there are both dev and design opportunities there
 
 ## More Project Details
 
@@ -53,7 +55,7 @@ Solution: provide a software platform that enables a program with very small cen
 Our Goal: to foster innovation across team boundaries by connecting individuals who identify challenges and then work collaboratively to implement solutions.
 
 A cross-agency working group meets regularly to discuss program needs.
-We use an [Agile Roadmap](https://github.com/18F/midas/wiki/Roadmap) where the product team selects features that we believe will meet goals.  We strive to make data-driven decisions based on metrics and qualitative user research and to validate the outcomes based on observed community behavior.  This is an iterative process.
+We use an [Agile Roadmap](https://github.com/18F/openopps-platform/wiki/Roadmap) where the product team selects features that we believe will meet goals.  We strive to make data-driven decisions based on metrics and qualitative user research and to validate the outcomes based on observed community behavior.  This is an iterative process.
 
 We also welcome [direct participation][contributing] from government and private sector and are always in need of people who can write documentation or marketing material, visual and UX designers, as well as software coders.
 
@@ -67,6 +69,6 @@ This project is in the public domain within the United States, and
 copyright and related rights in the work worldwide are waived through
 the [CC0 1.0 Universal public domain dedication](https://creativecommons.org/publicdomain/zero/1.0/).
 
-For more information, see [license](https://github.com/18F/midas/blob/dev/LICENSE.md).
+For more information, see [license](https://github.com/18F/openopps-platform/blob/dev/LICENSE.md).
 
-[contributing]: https://github.com/18F/midas/blob/dev/CONTRIBUTING.md
+[contributing]: https://github.com/18F/openopps-platform/blob/dev/CONTRIBUTING.md
