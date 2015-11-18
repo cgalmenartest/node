@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset=utf-8 />
-  <title>Midas</title>
+  <title>OpenOpps Platform</title>
   <link href='static/highlight.min.css' rel='stylesheet'>
   <style>
     html, body {
@@ -64,7 +64,7 @@ marked.setOptions({
 });
 
 function load() {
-  corslite('https://api.github.com/repos/18F/midas/readme', function(err, x) {
+  corslite('https://api.github.com/repos/18F/openopps-platform/readme', function(err, x) {
     if (err) return content.innerHTML = 'Error loading Gist';
     var d = JSON.parse(x.responseText);
     if (d && d.content) content.innerHTML = marked(Base64.decode(d.content));
