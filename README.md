@@ -3,7 +3,8 @@
 [![Build Status](https://travis-ci.org/18F/openopps-platform.png?branch=master)](https://travis-ci.org/18F/openopps-platform)
 [![Dependency Status](https://gemnasium.com/18F/midas.png)](https://gemnasium.com/18F/midas)
 <a href="https://codeclimate.com/github/18F/openopps-platform"><img src="https://codeclimate.com/github/18F/openopps-platform/badges/gpa.svg" /></a>
-=====
+
+---
 
 [Open Opportunities](http://www.digitalgov.gov/join-digitalgov/open-opportunities-in-digitalgov/) is creating a network of federal employees that will lead to a more effective, efficient, responsive government by sharing skills and collaborating on projects that support the mission of an agency or the government as a whole.
 
