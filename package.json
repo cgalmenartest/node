@@ -75,7 +75,7 @@
     "dir": "."
   },
   "scripts": {
-    "preinstall": "if [ \"$THEME\" ]; then git clone $THEME _theme; npm run import --midas:dir=_theme; fi",
+    "preinstall": "if [ \"$THEME\" ]; then git clone $THEME _theme; npm run import --openopps-platform:dir=_theme; fi",
     "install": "npm run build",
     "test:api": "mocha test/test.upstart.js --recursive test/api",
     "test:browser": "npm run build && node test/browser/upstart.js",
