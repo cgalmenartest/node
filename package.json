@@ -1,5 +1,5 @@
 {
-  "name": "midas",
+  "name": "openopps-platform",
   "private": true,
   "version": "0.7.6",
   "description": "Innovation platform providing collaboration and crowdsourcing tools",
@@ -58,7 +58,10 @@
     "topojson": "^1.6.19",
     "uglifyify": "^3.0.1",
     "underscore": "^1.8.2",
-    "validator": "3.4.0"
+    "validator": "3.4.0",
+    "bourbon": "^4.2.6",
+    "bourbon-neat": "^1.7.2",
+    "grunt-sass": "^1.1.0"
   },
   "devDependencies": {
     "casper-chai": "^0.2.1",
@@ -89,9 +92,9 @@
   "main": "app.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/18F/midas.git"
+    "url": "https://github.com/18F/openopps-platform.git"
   },
-  "bugs": "https://github.com/18F/midas/issues",
+  "bugs": "https://github.com/18F/openopps-platform/issues",
   "license": "MIT",
   "engines": {
     "node": "0.10.x",
