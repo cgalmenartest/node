@@ -26,15 +26,17 @@
           <% }); %>
         </div>
 
-        <% if (b.badges.length > 0) { %>
+        <% if ( b.badges.length > 0 ) { %>
         <ul class="list-unstyled">
-          <% b.badges.forEach(function(badge) { %>
+          <% b.badges.forEach( function( badge ) { %>
+            <% if ( ! badge.silent ) { %>
             <li>
-              <% badge.type = badge.type.replace(' ', '-'); %>
+              <% badge.type = badge.type.replace( ' ', '-' ); %>
               <a href="/profile/<%- badge.user.id %>"><%- badge.user.name %></a> earned the <%- badge.type %> badge. <%- badge.description %>
               <img class="activity-feed--badge" src="/images/badges/<%- badge.type %>.png" alt="The <%- badge.type %> badge is awarded when you <%- badge.description %>" title="The <%- badge.type %> badge is awarded when you <%- badge.description %>">
             </li>
-          <% }); %>
+            <% } %>
+          <% } ); %>
         </ul>
         <% } %>
 
