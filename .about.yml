@@ -32,14 +32,32 @@ milestones:
 - "May 2014: HHS launches Alpha as FairTrade"
 - "January 2014: 18F begins work on project"
 - "June 2013: State Department begins project Discovery stage with Presidential Innovation Fellows"
-contact:
-- openopps@gsa.gov
-stack: "JavaScript (Node/Sails, Backbone), CSS"
-team: sarah, dhcole
-licenses:
-  midas: Public Domain (CC0)
+
 links:
-- https://openopps.digitalgov.gov
+- url: https://openopps.digitalgov.gov
+  text: Live Open Opportunities
+
+# Email addresses of points-of-contact
+contact:
+- url: mailto:openopps@gsa.gov
+  text: Open Opportunities Team
+
 blog:
 - midas
-status:
+status: active
+
+team:
+- github: ultrasaurus
+  role: lead
+- github: rogeruiz
+  role: contributor
+
+licenses:
+  dashboard:
+    name: CC0-1.0
+    url: https://github.com/18F/openopps-platform/blob/master/LICENSE.md
+
+stack:
+- JavaScript ( Node, Sails, Backbone )
+- Sass
+- Grunt
