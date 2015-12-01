@@ -57,6 +57,12 @@ module.exports = {
       defaultsTo: 0
     },
 
+    // Store the number of assignedTasks
+    assignedTasks: {
+      type: 'INTEGER',
+      defaultsTo: 0
+    },
+
     // Store the agency of each completed tasks (not unique)
     // completedTaskAgencies: {
     //   type: 'JSON'
@@ -68,6 +74,7 @@ module.exports = {
       via: 'users',
       dominant: true
     },
+
     /**
      * Increment the task counter by one and
      * check to see if a badge should be awarded
