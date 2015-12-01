@@ -58,10 +58,10 @@ module.exports = {
     },
 
     // Store the number of assignedTasks
-    assignedTasks: {
-      type: 'INTEGER',
-      defaultsTo: 0
-    },
+    //assignedTasks: {
+      //type: 'INTEGER',
+      //defaultsTo: 0,
+    //},
 
     // Store the agency of each completed tasks (not unique)
     // completedTaskAgencies: {
@@ -84,17 +84,20 @@ module.exports = {
     taskCompleted: function(task, opts) {
       var user = this;
       opts = opts || {};
+      Badge.awardForTaskPublish( [ task ], task.userId, opts );
       this.completedTasks += 1;
       this.save(function(err, u) {
         if (err) return sails.log.error(err);
         Badge.awardForTaskCompletion(task, user, opts);
       });
     },
+
     toJSON: function() {
       var obj = this.toObject();
       delete obj.passports;
       return obj;
     },
+
   },
 
   // TODO: add more fields, likely driven off subqueries
