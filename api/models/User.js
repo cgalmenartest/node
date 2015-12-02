@@ -82,7 +82,7 @@ module.exports = {
 
       opts = opts || {};
 
-      user.completedTasks = 1 + user.completedTasks;
+      user.completedTasks += 1;
 
       this.save( function ( err, u ) {
 
