@@ -144,8 +144,10 @@ module.exports = {
         counter = { ongoing: 0, oneTime: 0 },
         ongoingTaskId, oneTimeTaskId;
 
+    // Check if the badge update should be occurring silently by checking the `opts`.
     badge.silent = ( opts && ! _.isUndefined( opts.silent ) ) ? opts.silent : false;
 
+    // Catch if `opts` is an actual callback and reassign it to `done`.
     if ( _.isFunction( opts ) && _.isUndefined( done ) ) {
 
       done = opts;
