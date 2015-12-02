@@ -79,17 +79,25 @@ module.exports = {
      * Increment the task counter by one and
      * check to see if a badge should be awarded
      *
-     * @param {object} task
+     * @param { Task } task
+     * @param { Object } opts
      */
-    taskCompleted: function(task, opts) {
+    taskCompleted: function ( task, opts ) {
+
       var user = this;
+
       opts = opts || {};
-      Badge.awardForTaskPublish( [ task ], task.userId, opts );
-      this.completedTasks += 1;
-      this.save(function(err, u) {
-        if (err) return sails.log.error(err);
-        Badge.awardForTaskCompletion(task, user, opts);
-      });
+
+      user.completedTasks = 1 + user.completedTasks;
+
+      this.save( function ( err, u ) {
+
+        if ( err ) { return sails.log.error( err ); }
+
+        Badge.awardForTaskCompletion( task, user, opts );
+
+      } );
+
     },
 
     toJSON: function() {
