@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Add new badge table and relations
-psql -U midas -d $DATABASE_URL -c "CREATE TABLE badge (
+psql $DATABASE_URL -c "CREATE TABLE badge (
     \"user\" integer,
     \"task\" integer,
     id integer NOT NULL,
@@ -29,7 +29,7 @@ ALTER TABLE ONLY badge ALTER COLUMN id SET DEFAULT nextval('badge_id_seq'::regcl
 "
 
 # update user table with new attributes
-psql -U midas -d $DATABASE_URL -c "ALTER TABLE midas_user ADD COLUMN \"completedTasks\" integer NOT NULL DEFAULT 0;"
+psql $DATABASE_URL -c "ALTER TABLE midas_user ADD COLUMN \"completedTasks\" integer NOT NULL DEFAULT 0;"
 
 # Update the schema version
-psql -U midas -d $DATABASE_URL -c "UPDATE schema SET version = 11 WHERE schema = 'current';"
+psql $DATABASE_URL -c "UPDATE schema SET version = 11 WHERE schema = 'current';"
