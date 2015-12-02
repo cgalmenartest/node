@@ -57,12 +57,6 @@ module.exports = {
       defaultsTo: 0
     },
 
-    // Store the number of assignedTasks
-    //assignedTasks: {
-      //type: 'INTEGER',
-      //defaultsTo: 0,
-    //},
-
     // Store the agency of each completed tasks (not unique)
     // completedTaskAgencies: {
     //   type: 'JSON'
