@@ -134,14 +134,25 @@ module.exports = {
    * that badge to the user.
    * Takes an optional callback
    *
-   * @param {tasks} task
-   * @param {number} userId
-   * @param {function} done
+   * @param { Array } tasks
+   * @param { Number } userId
+   * @param { Object } opts - optional
+   * @param { Function } done
    */
-  awardForTaskPublish: function (tasks, userId, done) {
+  awardForTaskPublish: function (tasks, userId, opts, done) {
     var badge   = { user: userId },
         counter = { ongoing: 0, oneTime: 0 },
         ongoingTaskId, oneTimeTaskId;
+
+    // Check if the badge update should be occurring silently by checking the `opts`.
+    badge.silent = ( opts && ! _.isUndefined( opts.silent ) ) ? opts.silent : false;
+
+    // Catch if `opts` is an actual callback and reassign it to `done`.
+    if ( _.isFunction( opts ) && _.isUndefined( done ) ) {
+
+      done = opts;
+
+    }
 
     tasks.forEach(function(t) {
       var taskType = _.where(t.tags, { type: 'task-time-required' });
