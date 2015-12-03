@@ -14,7 +14,16 @@ module.exports = {
         Volunteer.find({ taskId: taskIds }).exec(function(err, vols) {
           if (err) return res.negotiate(err);
 
-          User.find({ id: _.pluck(vols, 'userId') }).exec(function(err, users) {
+          // Ensure that the User model is being queried for both the original
+          // task creator and the users that are labeled as volunteers.
+          var allUserIds = [
+
+            { id: _.pluck( tasks, 'userId' ) },
+            { id: _.pluck( vols, 'userId' ) },
+
+          ];
+
+          User.find( allUserIds ).exec(function(err, users) {
             if (err) return res.negotiate(err);
 
             badges.forEach(function(badge){
