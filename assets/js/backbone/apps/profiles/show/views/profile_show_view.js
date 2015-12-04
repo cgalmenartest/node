@@ -52,6 +52,16 @@ var ProfileShowView = Backbone.View.extend({
 
         this.edit = false;
 
+        // Navigate to the proper route replacing the `/edit` route in the user's
+        // history.
+        Backbone.history.navigate(
+          'profile/' + model.id,
+          {
+            trigger: false,
+            replace: true,
+          }
+        );
+
       }
 
     }
