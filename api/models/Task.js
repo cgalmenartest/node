@@ -51,7 +51,6 @@ module.exports = {
     // each participant's completedTasks counter
     volunteersCompleted: function() {
       var task = this;
-      if (task.state !== 'completed') return;
 
       Volunteer.find({ taskId: task.id }).exec(function(err, volunteers){
         if (err) return done(err);
@@ -101,7 +100,7 @@ module.exports = {
         case 'completed':
           values.completedAt = new Date();
           action = 'task.update.completed';
-          task.volunteersCompleted();
+          task && task.volunteersCompleted();
           break;
       }
 
@@ -137,7 +136,7 @@ module.exports = {
       model: model
     }, done);
   },
-  
+
   sendNotifications: function(i) {
     i = i || 0;
 

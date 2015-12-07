@@ -133,7 +133,7 @@
         <% _.map(data.badges, function (b) { %>
           <li class="profile-badge">
             <% var filename = b.type.replace(' ', '-'); %>
-            <img src="/images/badges/<%- filename %>.png" alt="The <%- b.type %> badge is awarded when you <%- b.description %>">
+            <img src="/images/badges/<%- filename %>.png" alt="The <%- b.type %> badge is awarded when you <%- b.description %>" title="The <%- b.type %> badge is awarded when you <%- b.description %>">
             <p><%- b.type %></p>
           </li>
         <% }); %>
