@@ -257,22 +257,16 @@ module.exports = {
     });
   },
 
-  findUserById: function(res, err, userInfo) {
-      userInfo.userDisabled = typeof userInfo.userDisabled === 'undefined' ? false : userInfo.userDisabled;
-      userInfo.errMsg = typeof userInfo.errMsg === 'undefined' ? '' : userInfo.errMsg;
-      if (err) { return res.send(400, { message: 'An error occurred looking up this user.', error: err }); }
-      user.disabled = userInfo.userDisabled;
-      user.save(function (err) {
-        if (err) { return res.send(400, { message: userInfo.errMsg, error: err }); }
-        return res.send(user);
-      });
-  },
-
   // Enable a disabled user
   enable: function (req, res) {
     // policies will ensure only admins can run this function
     User.findOneById(req.route.params.id, function (err, user) {
-      return findUserById(res, err, { user: user, userDisabled: false, errMsg: 'An error occurred enabling this user.' });
+      if (err) { return res.send(400, { message: 'An error occurred looking up this user.', error: err }); }
+      user.disabled = false;
+      user.save(function (err) {
+        if (err) { return res.send(400, { message: 'An error occurred enabling this user.', error: err }); }
+        return res.send(user);
+      });
     });
   },
 
@@ -288,7 +282,12 @@ module.exports = {
         });
       } else {
         User.findOneById(req.route.params.id, function (err, user) {
-          return findUserById(res, err, { user: user, userDisabled: true, errMsg: 'An error occurred disabling this user.' });
+          if (err) { return res.send(400, { message: 'An error occurred looking up this user.', error: err }); }
+          user.disabled = true;
+          user.save(function (err) {
+            if (err) { return res.send(400, { message: 'An error occurred disabling this user.', error: err }); }
+            return res.send(user);
+          });
         });
       }
     }
