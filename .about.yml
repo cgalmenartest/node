@@ -18,9 +18,9 @@ partners:
 stage: live
 
 impact: >
-  now: 65 agencies, 278 projects completed, 40 in progress, 3000 subscribers\n
-  goal: 10,000 subscribers by FY17\n
-  total market: 2.7 million federal employees\n
+  now: 65 agencies, 278 projects completed, 40 in progress, 3000 subscribers\n\n
+  goal: 10,000 subscribers by FY17\n\n
+  total market: 2.7 million federal employees\n\n
 
 milestones:
 - "September 2014: GSA OHRM signs IAA for GSA Rotational Details and Project Network to move to Open Opportunities"
