@@ -185,5 +185,43 @@ describe('admin:', function () {
         }
       );
     });
+
+
+    // Check disabling a user functionality
+    //
+    it( 'disables user', function ( done ) {
+
+      var userId = 2;
+
+      request.get(
+        { url: conf.url + '/user/disable/' + userId },
+        function ( error, response, body ) {
+          var user = JSON.parse( body );
+          expect( response.statusCode ).to.equal( 200 );
+          expect( user.disabled ).to.equal( true );
+          done();
+        }
+      );
+
+    } );
+
+    // Check enabling a user functionality
+    //
+    it( 'enables user', function ( done ) {
+
+      var userId = 2;
+
+      request.get(
+        { url: conf.url + '/user/enable/' + userId },
+        function ( error, response, body ) {
+          var user = JSON.parse( body );
+          expect( response.statusCode ).to.equal( 200 );
+          expect( user.disabled ).to.equal( false );
+          done();
+        }
+      );
+
+    } );
+
   });
 });
