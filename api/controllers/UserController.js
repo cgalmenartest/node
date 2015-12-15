@@ -258,42 +258,95 @@ module.exports = {
   },
 
   // Enable a disabled user
-  enable: function (req, res) {
-    // policies will ensure only admins can run this function
-    User.findOneById(req.route.params.id, function (err, user) {
-      if (err) { return res.send(400, { message: 'An error occurred looking up this user.', error: err }); }
+  //
+  enable: function ( request, response ) {
+
+    var requestedUserId = request.route.params.id;
+
+    User.findOneById( requestedUserId, function ( error, user ) {
+
+      if ( error || ! user ) {
+        return response.send(
+          400,
+          { message: 'An error occured looking up this user.', error: error }
+        );
+      }
+
       user.disabled = false;
-      user.save(function (err) {
-        if (err) { return res.send(400, { message: 'An error occurred enabling this user.', error: err }); }
-        return res.send(user);
-      });
-    });
+
+      user.save( function ( error ) {
+
+        if ( error ) {
+          return response.send(
+            400,
+            { message: 'An error occured enabling this user.', error: error }
+          );
+        }
+
+        return response.send( user );
+
+      } );
+
+    } );
+
+
   },
 
   // Disable a user so that they cannot log in
-  disable: function (req, res) {
-    // check that we're permitted to disable this user
-    if ((req.user[0].id == req.route.params.id) || (req.user[0].isAdmin)) {
-      if (req.user[0].id == req.route.params.id) {
-        req.user[0].disabled = true;
-        req.user[0].save(function (err) {
-          if (err) { return res.send(400, { message: 'An error occurred disabling this user.', error: err }); }
-          return res.send(req.user[0]);
-        });
+  //
+  disable: function ( request, response ) {
+
+    var currentUser     = request.user[ 0 ];
+    var requestedUserId = request.route.params.id;
+    var isSelfEditing   = ( currentUser.id === requestedUserId );
+
+    // Check that we're permitted to disable this user
+    //
+    if ( isSelfEditing || currentUser.isAdmin ) {
+
+      if ( isSelfEditing ) {
+
+        currentUser.disabled = true;
+
+        currentUser.save( function ( error ) {
+          if ( error ) {
+            return response.send(
+              400,
+              { message: 'An error occurred disabling this user.', error: error }
+            );
+          }
+          return response.send( currentUser );
+        } );
+
       } else {
-        User.findOneById(req.route.params.id, function (err, user) {
-          if (err) { return res.send(400, { message: 'An error occurred looking up this user.', error: err }); }
+
+        User.findOneById( requestedUserId, function( error, user ) {
+          if ( error ) {
+            return response.send(
+              400,
+              { message: 'An error occurred looking up this user.', error: error }
+            );
+          }
           user.disabled = true;
-          user.save(function (err) {
-            if (err) { return res.send(400, { message: 'An error occurred disabling this user.', error: err }); }
-            return res.send(user);
-          });
-        });
+          user.save( function ( error ) {
+            if ( error ) {
+              return response.send(
+                400,
+                { message: 'An error occurred disabling this user.', error: error }
+              );
+            }
+            return response.send( user );
+          } );
+        } );
+
       }
+
+    } else {
+
+      response.send( 403, { message: 'Not authorized.' } );
+
     }
-    else {
-      res.send(403, { message: 'Not authorized.' });
-    }
+
   },
 
   /**
