@@ -141,16 +141,17 @@ var BrowseRouter = Backbone.Router.extend({
     this.taskShowController = new TaskShowController({ model: model, router: this, id: id, action: action, data: this.data });
   },
 
-  newTask: function() {
+  newTask: function () {
     this.cleanupChildren();
     var tasks = new TaskCollection();
     this.taskCreateController = new TaskCreateFormView({ collection: tasks });
     this.taskCreateController.render();
 
-    this.listenTo(tasks, 'task:save:success', function(data) {
+    this.listenTo(tasks, 'task:save:success', function (data) {
       Backbone.history.navigate('/tasks/' + data, { trigger: true });
     });
-    this.listenTo(tasks, 'task:save:error', function(model, response, options) {
+
+    this.listenTo(tasks, 'task:save:error', function (model, response, options) {
       var alertText = response.statusText + '. Please try again.';
       $('.alert.alert-danger').text(alertText).show();
       window.scroll(0,0);
