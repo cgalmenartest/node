@@ -8,7 +8,8 @@
         "semi": [ 2, "always" ],
         "comma-dangle": [ 1, "always-multiline" ],
         "no-console": [ 0 ],
-        "no-undef": [ 0 ]
+        "no-undef": [ 0 ],
+        "space-before-function-paren": [ 2, "always" ]
     },
     "env": {
         "node": true,
