@@ -113,36 +113,36 @@ var TaskFormView = Backbone.View.extend({
   initializeSelect2: function () {
     var self = this;
 
-    self.tagFactory.createTagDropDown({type:"skill",selector:"#task_tag_skills",width: "100%",tokenSeparators: [","],placeholder:"Start typing to select a tag"});
-    self.tagFactory.createTagDropDown({type:"location",selector:"#task_tag_location",tokenSeparators: [","]});
+    self.tagFactory.createTagDropDown({type:'skill',selector:'#task_tag_skills',width: '100%',tokenSeparators: [','],placeholder:'Start typing to select a tag'});
+    self.tagFactory.createTagDropDown({type:'location',selector:'#task_tag_location',tokenSeparators: [',']});
 
     // ------------------------------ //
     // PRE-DEFINED SELECT MENUS BELOW //
     // ------------------------------ //
 
-    self.$("#time-required").select2({
+    self.$('#time-required').select2({
       placeholder: 'Time Commitment',
-      width: 'resolve'
+      width: 'resolve',
     });
 
-    self.$("#task-length").select2({
+    self.$('#task-length').select2({
       placeholder: 'Frequency of work',
-      width: 'fullwidth'
+      width: 'fullwidth',
     });
 
-    self.$("#time-estimate").select2({
+    self.$('#time-estimate').select2({
       placeholder: 'Estimated Time Required',
-      width: 'resolve'
+      width: 'resolve',
     });
 
-    self.$("#task-location").select2({
+    self.$('#task-location').select2({
       placeholder: 'Work Location',
-      width: 'resolve'
+      width: 'resolve',
     });
 
-    self.$("#people").select2({
+    self.$('#people').select2({
       placeholder: 'People required',
-      width: 'resolve'
+      width: 'resolve',
     });
 
   },
