@@ -463,7 +463,6 @@ describe('user:', function() {
     });
   });
 
-
   it('lockout user', function (done) {
     var count = 0;
     async.whilst(
@@ -499,4 +498,5 @@ describe('user:', function() {
     );
 
   });
+
 });
