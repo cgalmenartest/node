@@ -70,3 +70,46 @@
 }
 
 
+// Task Creation Form
+//
+
+$form-legend-color: #297bb5;
+
+.create--task {
+
+  legend {
+
+    font-weight: 300;
+    color: $form-legend-color;
+    font-size: 22px;
+
+    > span {
+
+      line-height: 100%;
+      display: block;
+      margin-bottom: 10px;
+
+  padding-top: 10px;
+    }
+
+  }
+
+  label {
+
+    > span {
+
+      display: block;
+      padding-bottom: 10px;
+
+    }
+
+  }
+
+}
+
+.create__label {
+
+  padding: 10px 0 20px;
+  font-size: 21px;
+
+}
