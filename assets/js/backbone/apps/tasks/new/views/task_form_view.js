@@ -10,14 +10,14 @@ var TagFactory = require('../../../../components/tag_factory');
 
 var TaskFormView = Backbone.View.extend({
 
-  el: "#container",
+  el: '#container',
 
   events: {
-    "change .validate"                : "v",
-    "click [name=task-time-required]" : "toggleTimeOptions",
-    "change #task-location"           : "locationChange",
-    "click #draft-button"             : "saveDraft",
-    "click #create-button"            : "submit"
+    'change .validate'                : 'v',
+    'click [name=task-time-required]' : 'toggleTimeOptions',
+    'change #task-location'           : 'locationChange',
+    'click #draft-button'             : 'saveDraft',
+    'click #create-button'            : 'submit',
   },
 
   initialize: function (options) {
@@ -35,11 +35,11 @@ var TaskFormView = Backbone.View.extend({
   initializeSelect2Data: function () {
     var self = this;
     var types = [
-      "task-time-required",
-      "task-length",
-      "task-time-estimate",
-      "task-skills-required",
-      "task-people"
+      'task-time-required',
+      'task-length',
+      'task-time-estimate',
+      'task-skills-required',
+      'task-people',
     ];
 
     this.tagSources = {};
@@ -87,7 +87,7 @@ var TaskFormView = Backbone.View.extend({
     });
   },
 
-  initializeListeners: function() {
+  initializeListeners: function () {
     var self = this;
     _.extend(this, Backbone.Events);
   },
@@ -155,7 +155,7 @@ var TaskFormView = Backbone.View.extend({
       id: 'task-description',
       title: i18n.t('Task') + ' Description',
       rows: 6,
-      validate: ['empty']
+      validate: ['empty'],
     }).render();
   },
 
@@ -214,14 +214,21 @@ var TaskFormView = Backbone.View.extend({
     return true;
   },
   saveDraft: function (e) {
+
     var draft = true;
     this.submit(e, draft);
   },
+
   submit: function (e, draft) {
-    var fieldsToValidate  = ['#task-title', '#task-description', '[name=task-time-required]:checked', '[name=time-required]:checked'],
-        validForm         = this.validateBeforeSubmit(fieldsToValidate),
-        completedBy       = this.$('#estimated-completion-date').val(),
-        data;
+    var fieldsToValidate  = [
+      '#task-title',
+      '#task-description',
+      '[name=task-time-required]:checked',
+      '[name=time-required]:checked',
+    ];
+    var validForm = this.validateBeforeSubmit(fieldsToValidate);
+    var completedBy = this.$('#estimated-completion-date').val();
+    var data;
 
     if (!validForm && !draft) return this;
 
@@ -229,17 +236,18 @@ var TaskFormView = Backbone.View.extend({
       'title'      : this.$('#task-title').val(),
       'description': this.$('#task-description').val(),
       'projectId'  : null,
-      'tags'       : this.getTags()
+      'tags'       : this.getTags(),
     };
 
     if (draft) data['state'] = this.$('#draft-button').data('state');
     if (completedBy != '') data['completedBy'] = completedBy;
 
-    this.collection.trigger("task:save", data);
+    this.collection.trigger('task:save', data);
 
     return this;
   },
-  getTags: function getTags() {
+
+  getTags: function getTags () {
     var tags          = [],
         effortType    = this.$('[name=task-time-required]:checked').val(),
         tagSkills     = this.$("#task_tag_skills").select2('data'),
@@ -273,10 +281,11 @@ var TaskFormView = Backbone.View.extend({
     });
     return tags;
   },
+
   cleanup: function () {
     if (this.md) { this.md.cleanup(); }
     removeView(this);
-  }
+  },
 
 });
 

@@ -156,6 +156,7 @@ var TaskShowController = BaseView.extend({
       }
     });
   },
+
   initializeTaskItemView: function () {
     var self = this;
     // Get the tag type info from the view so we don't have to refetch

@@ -13,6 +13,7 @@ var TaskModel = Backbone.Model.extend({
   urlRoot: '/api/task',
 
   initialize: function () {
+
     this.listenTo(this, "task:save", function (data) {
       this.save(data);
     });
