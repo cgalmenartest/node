@@ -71,7 +71,7 @@
             <span><em>(Put a comma between each one. Example: Cyber Security, Research, employee engagement)</em></span>
           </label>
           <div>
-            <input type="hidden" id="task_tag_skills" name="skills" class="fullwidth" />
+            <input type="hidden" id="js-task-tag" name="skills" class="fullwidth" />
           </div>
         </div>
         <div class="col-md-4">
@@ -110,10 +110,10 @@
       <div id="time-options">
         <div class="row" id="time-options-time-required">
           <div class="col-md-8 display-block">
-            <label for="time-estimate">
+            <label for="js-task-time-estimate">
               <span class="create__label">How much time is needed?</span>
             </label>
-            <select id="time-estimate" class="dropdown">
+            <select id="js-task-time-estimate" class="dropdown">
               <% _.each(tags['task-time-estimate'], function (timeEstimate) { %>
                 <option value="<%- timeEstimate.id %>"><%- timeEstimate.name %></option>
               <% }); %>
@@ -142,10 +142,10 @@
 
         <div class="row" id="time-options-time-frequency">
           <div class="col-md-8 display-block">
-            <label for="time-frequency-estimate">
+            <label for="js-time-frequency-estimate">
               <span>How often is this time needed?</span>
             </label>
-            <select id="time-frequency-estimate" class="dropdown">
+            <select id="js-time-frequecy-estimate" class="dropdown">
               <% _.each(tags['task-length'], function (timeEstimate) { %>
                 <option value="<%- timeEstimate.id %>"><%- timeEstimate.name %></option>
               <% }); %>
@@ -159,7 +159,7 @@
     <div class="form-group fullwidth">
       <div class="row">
         <div class="col-md-8 display-block">
-          <label for="participant-location">
+          <label>
             <span>Where can participants be located?</span>
           </label>
           <div class="radio">
@@ -170,13 +170,14 @@
           </div>
           <div class="radio">
             <label>
-              <input type="radio" name="participant-location" id="specific-location">At specific locations: <input type="hidden" id="task_tag_location" name="location" />
+              <input type="radio" name="participant-location" id="specific-location" />
+              At specific locations: <input type="hidden" id="js-task-location" name="location" />
             </label>
           </div>
           <label for="participants">
             <span>How many people are needed?</span>
           </label>
-          <select id="participants" class="dropdown">
+          <select id="js-participant-selection" class="dropdown">
             <% _.each(tags['task-people'], function (person) { %>
               <option value="<%- person.id %>"><%- person.name %></option>
             <% }); %>
@@ -195,14 +196,14 @@
       <div class="col-md-8">
         <p>Once you submit your task, it will be reviewed by Open Opportunities staff. You will receive an email within two business days. We will either send you recommended edits to, or a notice that your task is approved and live on the website.</p>
         <div class="buttons">
-          <button type="button" id="cancel-button" class="btn btn-c0 wizard-cancel" data-dismiss="modal">
-            Cancel
-          </button>
-          <button type="button" id="draft-button" class="btn btn-c0 wizard-submit" data-state="draft">
-            Save Draft
-          </button>
+          <!--<button type="button" id="cancel-button" class="btn btn-c0 wizard-cancel" data-dismiss="modal">-->
+            <!--Cancel-->
+          <!--</button>-->
           <button type="button" id="create-button" class="btn btn-c2 wizard-submit">
             Submit for Review
+          </button>
+          <button type="button" id="draft-button" class="btn btn-c0 wizard-submit" data-state="draft">
+            Save as Draft
           </button>
         </div>
       </div>

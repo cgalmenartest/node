@@ -113,8 +113,18 @@ var TaskFormView = Backbone.View.extend({
   initializeSelect2: function () {
     var self = this;
 
-    self.tagFactory.createTagDropDown({type:'skill',selector:'#task_tag_skills',width: '100%',tokenSeparators: [','],placeholder:'Start typing to select a tag'});
-    self.tagFactory.createTagDropDown({type:'location',selector:'#task_tag_location',tokenSeparators: [',']});
+    self.tagFactory.createTagDropDown( {
+      type:'skill',
+      selector:'#js-task-tag',
+      width: '100%',
+      tokenSeparators: [','],
+      placeholder:'Start typing to select a tag',
+    } );
+    self.tagFactory.createTagDropDown( {
+      type:'location',
+      selector:'#js-task-location',
+      tokenSeparators: [','],
+    } );
 
     // ------------------------------ //
     // PRE-DEFINED SELECT MENUS BELOW //
@@ -130,7 +140,7 @@ var TaskFormView = Backbone.View.extend({
       width: 'fullwidth',
     });
 
-    self.$('#time-estimate').select2({
+    self.$('#js-task-time-estimate').select2({
       placeholder: 'Estimated Time Required',
       width: 'resolve',
     });
@@ -140,7 +150,7 @@ var TaskFormView = Backbone.View.extend({
       width: 'resolve',
     });
 
-    self.$('#people').select2({
+    self.$('#js-participant-selection').select2({
       placeholder: 'People required',
       width: 'resolve',
     });
@@ -247,39 +257,47 @@ var TaskFormView = Backbone.View.extend({
     return this;
   },
 
+  /*
+   * Get tags from the "New Task" form. This method will sanatize and serialize
+   * the data related to tags in the new task form. If there is no data in the tag
+   * fields it must be removed otherwise the server will respond with a 500 error
+   * when attempting to parse non-existant tags in the Waterline ORM.
+   * @return { Array } A collection of tags mapped to an array
+   *
+   */
   getTags: function getTags () {
-    var tags          = [],
-        effortType    = this.$('[name=task-time-required]:checked').val(),
-        tagSkills     = this.$("#task_tag_skills").select2('data'),
-        tagLocation   = this.$("#task_tag_location").select2('data'),
-        peopleCount   = this.$("#people").select2('data');
+
+    var tags        = [];
+    var effortType  = this.$( '[name=task-time-required]:checked' ).val();
+    var tagSkills   = this.$( '#js-task-tag' ).select2( 'data' );
+    var tagLocation = this.$( '#js-task-location' ).select2( 'data' );
+    var peopleCount = this.$( '#js-participant-selection' ).select2( 'data' );
 
     // check for the presence of data in these fields
     // no data means no tags are supplied
     // don't send those tags because the API returns 500
-    if (tagSkills != []) tags.push.apply(tags, tagSkills);
-    if (tagLocation != []) tags.push.apply(tags, tagLocation);
-    if (peopleCount != []) tags.push(peopleCount);
-    if (effortType) tags.push.apply(tags,[{ id: effortType }]);
+    if ( tagSkills != [] ) tags.push.apply( tags, tagSkills );
+    if ( tagLocation != [] ) tags.push.apply( tags, tagLocation );
+    if ( peopleCount != [] ) tags.push( peopleCount );
+    if ( effortType ) tags.push.apply( tags,[ { id: effortType } ] );
 
     // if time selection is NOT full-time, make sure to include
     // the other tags
-    if (effortType == 1) { // time selection is "One time"
-      tags.push.apply(tags,[this.$("#time-estimate").select2('data')]);
-    }
-    else if (effortType == 2) { // time selection is "On going"
-      tags.push.apply(tags,[this.$("#time-estimate").select2('data')]);
-      tags.push.apply(tags,[this.$("#task-length").select2('data')]);
+    if ( effortType == 1 ) { // time selection is 'One time'
+      tags.push.apply( tags,[ this. $( '#js-task-time-estimate' ).select2( 'data' ) ] );
+    } else if ( effortType == 2 ) { // time selection is 'On going'
+      tags.push.apply( tags,[ this. $( '#js-task-time-estimate' ).select2( 'data' ) ] );
+      tags.push.apply( tags,[ this. $( '#js-time-frequency-estimate' ).select2( 'data' ) ] );
     }
 
-    return _(tags).map(function(tag) {
-      return (tag.id && tag.id !== tag.name && tag.id !== undefined) ? +tag.id : {
+    return _( tags ).map( function ( tag ) {
+      return ( tag.id && tag.id !== tag.name && tag.id !== undefined ) ? +tag.id : {
         name: tag.name,
         type: tag.tagType,
-        data: tag.data
+        data: tag.data,
       };
-    });
-    return tags;
+    } );
+
   },
 
   cleanup: function () {
