@@ -4,7 +4,7 @@ node_js:
   - "0.10"
 before_install:
   - "npm install npm@2.1.x -g"
-before_deploy: npm install -g https://github.com/18F/cf-blue-green/tarball/env-var-domain
+before_deploy: npm install -g https://github.com/18F/cf-blue-green/tarball/master
 env:
   global:
     - CF_APP=openopps
