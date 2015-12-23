@@ -97,7 +97,7 @@
   "bugs": "https://github.com/18F/openopps-platform/issues",
   "license": "MIT",
   "engines": {
-    "node": "0.10.x",
+    "node": "~0.10.41",
     "npm": "2.1.x"
   }
 }
