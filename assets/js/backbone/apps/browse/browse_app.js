@@ -24,7 +24,7 @@ var BrowseRouter = Backbone.Router.extend({
     'projects(/)(?:queryStr)'   : 'listProjects',
     'projects/:id(/)'           : 'showProject',
     'projects/:id/:action(/)'   : 'showProject',
-    'tasks/new'                 : 'newTask',
+    'tasks/new(?*queryString)'  : 'newTask',
     'tasks(/)(?:queryStr)'      : 'listTasks',
     'tasks/:id(/)'              : 'showTask',
     'tasks/:id/:action(/)'      : 'showTask',
@@ -141,15 +141,46 @@ var BrowseRouter = Backbone.Router.extend({
     this.taskShowController = new TaskShowController({ model: model, router: this, id: id, action: action, data: this.data });
   },
 
-  newTask: function () {
-    this.cleanupChildren();
+  newTask: function ( params ) {
+
+    var self = this;
     var tasks = new TaskCollection();
+
+    params = this.parseQueryParams( params );
+
+    this.cleanupChildren();
+
+    if ( params.draft ) {
+
+      params.draft = parseInt( params.draft, 10 );
+
+      var draft = new TaskModel( { id: params.draft } );
+
+      draft.fetch( {
+
+        success: function ( draftModel ) {
+          tasks.push( draftModel );
+          self.taskCreateController.render();
+        },
+
+      } );
+
+    }
+
     this.taskCreateController = new TaskCreateFormView({ collection: tasks });
     this.taskCreateController.render();
 
     this.listenTo(tasks, 'task:save:success', function (data) {
+
       Backbone.history.navigate('/tasks/' + data, { trigger: true });
+
     });
+
+    this.listenTo( tasks, 'task:draft:success', function ( data ) {
+
+      Backbone.history.navigate( '/tasks/new?draft=' + data.id, { replace: true } );
+
+    } );
 
     this.listenTo(tasks, 'task:save:error', function (model, response, options) {
       var alertText = response.statusText + '. Please try again.';

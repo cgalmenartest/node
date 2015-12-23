@@ -22,8 +22,18 @@
           <span class="help-block error-empty" style="display:none;">You must enter headline for this <span
               data-i18n="task">opportunity</span></span>
           <span class="help-block error-count100" style="display:none;">The short description of the problem must be less than 100 characters.</span>
-          <input type="text" id="task-title" class="fullwidth form-control validate"
-              data-validate="empty,count100"/>
+          <%
+            var _draftTitle = '';
+            if ( draft && draft.title ) {
+              _draftTitle = draft.title;
+            }
+           %>
+          <input type="text"
+                 id="task-title"
+                 class="fullwidth form-control validate"
+                 data-validate="empty,count100"
+                 value="<%- _draftTitle  %>"/>
+
         </div>
         <div class="col-md-4">
           <aside>
@@ -202,7 +212,7 @@
           <button type="button" id="create-button" class="btn btn-c2 wizard-submit">
             Submit for Review
           </button>
-          <button type="button" id="draft-button" class="btn btn-c0 wizard-submit" data-state="draft">
+          <button type="button" id="js-draft-create" class="btn btn-c0 wizard-submit" data-state="draft">
             Save as Draft
           </button>
         </div>

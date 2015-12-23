@@ -13,13 +13,16 @@ var TaskFormView = Backbone.View.extend({
   el: '#container',
 
   events: {
-    'change .validate'                : 'v',
-    'click [name=task-time-required]' : 'toggleTimeOptions',
-    'change #task-location'           : 'locationChange',
-    'click #draft-button'             : 'saveDraft',
-    'click #create-button'            : 'submit',
+    'change .validate'                :  'v',
+    'click [name=task-time-required]' :  'toggleTimeOptions',
+    'change #task-location'           :  'locationChange',
+    'click #js-draft-create'          :  'saveDraft',
+    'click #create-button'            :  'submit',
   },
 
+  /*
+   * Initialize the Task Creation Form ViewController.
+   */
   initialize: function (options) {
     this.options = _.extend(options, this.defaults);
     this.tasks = this.options.tasks;
@@ -32,6 +35,9 @@ var TaskFormView = Backbone.View.extend({
     this.initializeListeners();
   },
 
+ /*
+  * Initialize the Select2Data custom select components.
+  */
   initializeSelect2Data: function () {
     var self = this;
     var types = [
@@ -87,29 +93,89 @@ var TaskFormView = Backbone.View.extend({
     });
   },
 
+  /*
+   * Initialize the event listeners for this ViewController.
+   */
   initializeListeners: function () {
+
     var self = this;
+
     _.extend(this, Backbone.Events);
+
+    this.listenTo( this, 'task:save:draft', function () {
+
+      self.renderStateModal();
+
+    } );
+
   },
 
+  /*
+   * Render the View
+   */
   render: function () {
-    var template = _.template(TaskFormTemplate)({ tags: this.tagSources });
-    this.$el.html(template);
-    this.initializeSelect2();
-    this.initializeTextArea();
 
-    this.$('#time-options').css('display', 'none');
+    // Template data
+    //
+    var data = {
+
+      tags: this.tagSources,
+      draft: {
+        title: '',
+        description: '',
+      },
+
+    };
+
+    // If there are any models in the collection, populate the draft within
+    // the collection into data for the template.
+    //
+    if ( this.collection.length ) {
+
+      data.draft = this.collection.first().attributes;
+
+    }
+
+    var template = _.template( TaskFormTemplate )( data );
+
+    this.$el.html( template );
+    this.initializeSelect2();
+    this.initializeTextArea( { data: data.draft.description } );
+
+    this.$( '#time-options' ).css( 'display', 'none' );
 
     this.$el.i18n();
 
     // Return this for chaining.
     return this;
+
   },
 
+  /*
+   * Render modal for the Task Creation Form ViewController
+   */
+  renderStateModal: function () {
+
+    // Grab the section of the DOM that is going to be updated.
+    // Build up an object to display data
+    // Render this template
+    // Maybe make this a child view?
+    //
+    console.log( 'renderStateModal' );
+    alert( 'renderStateModal' );
+
+  },
+
+  /*
+   * Validation event handler
+   */
   v: function (e) {
     return validate(e);
   },
 
+  /*
+   * Initialize Select2Data again?
+   */
   initializeSelect2: function () {
     var self = this;
 
@@ -157,25 +223,36 @@ var TaskFormView = Backbone.View.extend({
 
   },
 
-  initializeTextArea: function () {
-    if (this.md) { this.md.cleanup(); }
-    this.md = new MarkdownEditor({
+  /*
+   * Initialize Markdown Editor Text Area
+   */
+  initializeTextArea: function ( options ) {
+
+    var defaults = _.extend( {
       data: '',
-      el: ".markdown-edit",
+      el: '.markdown-edit',
       id: 'task-description',
       title: i18n.t('Task') + ' Description',
       rows: 6,
       validate: ['empty'],
-    }).render();
+    }, options );
+
+    if ( this.md ) { this.md.cleanup(); }
+
+    this.md = new MarkdownEditor( defaults ).render();
+
   },
 
+  /*
+   * Setup Time Options toggling
+   */
   toggleTimeOptions: function (e) {
-    var currentValue      = this.$('[name=task-time-required]:checked').val(),
-        timeOptionsParent = this.$('#time-options'),
-        timeRequired      = this.$('#time-options-time-required'),
-        timeRequiredAside = this.$('#time-options-time-required aside'),
-        completionDate    = this.$('#time-options-completion-date'),
-        timeFrequency     = this.$('#time-options-time-frequency');
+    var currentValue     = this.$('[name=task-time-required]:checked').val(),
+      timeOptionsParent  = this.$('#time-options'),
+      timeRequired       = this.$('#time-options-time-required'),
+      timeRequiredAside  = this.$('#time-options-time-required aside'),
+      completionDate     = this.$('#time-options-completion-date'),
+      timeFrequency      = this.$('#time-options-time-frequency');
 
     timeOptionsParent.css('display', 'block');
     if (currentValue == 1) { // time selection is "One time"
@@ -199,16 +276,16 @@ var TaskFormView = Backbone.View.extend({
   },
 
   locationChange: function (e) {
-    if (_.isEqual(e.currentTarget.value, "true")) {
-      this.$(".el-specific-location").show();
+    if (_.isEqual(e.currentTarget.value, 'true')) {
+      this.$('.el-specific-location').show();
     } else {
-      this.$(".el-specific-location").hide();
+      this.$('.el-specific-location').hide();
     }
   },
 
   validateBeforeSubmit: function (fields) {
     var self  = this,
-        field, validation;
+      field, validation;
 
     for (var i=0; i<fields.length; i++) {
       // remember: this.v() return true if there IS a validation error
@@ -223,12 +300,62 @@ var TaskFormView = Backbone.View.extend({
 
     return true;
   },
+
+  /*
+   * Parse the fields in the form for saving a task.
+   * @param { Object } e jQuery event object
+   * @return { Object } data An object of the fields parsed from the form
+   */
+  parseFields: function ( event ) {
+
+    debugger;
+    var getData = _.property( 'dataset' );
+    var getTarget = _.property( 'target' );
+    var DS = getData( getTarget( event ) );
+    var isDraft = ( 'draft' === DS.state );
+
+    if ( this.collection.length ) {
+
+      alert( 'we have an item in the collection' );
+      debugger;
+
+    }
+
+    var data = {
+      'title': this.$( '#task-title' ).val(),
+      'description': this.$( '#task-description' ).val(),
+      'projectId': null,
+      'tags': this.getTags(),
+      'state': 'draft',
+    };
+
+    console.log( data );
+
+    return data;
+  },
+
+  /*
+   * Save a draft
+   * This method sends the data to the server and saves the task.
+   * @param { Object } e jQuery event object
+   */
   saveDraft: function (e) {
 
     var draft = true;
-    this.submit(e, draft);
+
+    var data = this.parseFields( event );
+
+    this.collection.trigger( 'task:draft', data );
+
   },
 
+  /*
+   * Submit event handler.
+   * This method sends the data to the server and saves the task
+   * @param { Object } e jQuery event object
+   * @param { Boolean } draft
+   * @return { TaskFormView } this
+   */
   submit: function (e, draft) {
     var fieldsToValidate  = [
       '#task-title',
@@ -249,7 +376,7 @@ var TaskFormView = Backbone.View.extend({
       'tags'       : this.getTags(),
     };
 
-    if (draft) data['state'] = this.$('#draft-button').data('state');
+    if (draft) data['state'] = this.$('#js-draft-create').data('state');
     if (completedBy != '') data['completedBy'] = completedBy;
 
     this.collection.trigger('task:save', data);
@@ -300,6 +427,9 @@ var TaskFormView = Backbone.View.extend({
 
   },
 
+  /*
+   * Clean up the review by removing it and child components from memory.
+   */
   cleanup: function () {
     if (this.md) { this.md.cleanup(); }
     removeView(this);

@@ -63,6 +63,8 @@ module.exports = {
   */
   trigger: function(notification) {
 
+    sails.log.debug( notification );
+
     // Get notification script
     var path = __dirname + '/../notifications/' +
           notification.action + '/notification',
@@ -125,6 +127,12 @@ module.exports = {
 
   // Send an email
   send: function(options, done) {
+
+    if ( 'development' === process.env.NODE_ENV ) {
+      if ( _.isFunction( done ) ) { done(); }
+      sails.log.debug( options );
+      return;
+    }
 
     // Extend options with config defaults
     options.from = sails.config.systemName +

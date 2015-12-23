@@ -23,25 +23,49 @@ var TasksCollection = Backbone.Collection.extend({
   initialize: function () {
     var self = this;
 
-    this.listenTo(this, "task:save", function (data) {
+    this.listenTo(this, 'task:save', function (data) {
       self.addAndSave(data);
     });
+
+    this.listenTo( this, 'task:draft', function ( data ) {
+
+      self.addAndSave( data );
+
+    } );
+
   },
 
-  addAndSave: function (data) {
+  addAndSave: function ( data ) {
+
     var self = this;
 
-    self.task = new TaskModel(data);
+    self.task = new TaskModel( data );
 
-    self.task.save(null,{
-      success: function (model) {
-        self.trigger("task:save:success", self.task.id);
+    self.task.save( null, {
+
+      success: function ( model ) {
+
+        if ( 'draft' !== model.attributes.state ) {
+
+          self.trigger( 'task:save:success', model.attributes.id );
+
+        } else {
+
+          self.trigger( 'task:draft:success', model );
+
+        }
+
       },
-      error: function (model, response, options) {
-        self.trigger("task:save:error", model, response, options);
-      }
-    });
-  }
+
+      error: function ( model, response, options ) {
+
+        self.trigger( 'task:save:error', model, response, options );
+
+      },
+
+    } );
+
+  },
 
 });
 

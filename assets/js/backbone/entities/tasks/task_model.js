@@ -14,6 +14,10 @@ var TaskModel = Backbone.Model.extend({
 
   initialize: function () {
 
+    this.listenTo( this, 'task:draft', function ( data ) {
+      this.save( data );
+    } );
+
     this.listenTo(this, "task:save", function (data) {
       this.save(data);
     });

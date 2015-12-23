@@ -79,8 +79,8 @@ module.exports = {
     'completion_date': {field: 'completedAt', filter: exportUtils.excelDateFormat}
   },
 
-  beforeUpdate: function(values, done) {
-    Task.findOne({ id: values.id }).exec(function(err, task) {
+  beforeUpdate: function (values, done) {
+    Task.findOne({ id: values.id }).exec(function (err, task) {
       if (err) done(err);
 
       // If task state hasn't changed, continue
@@ -89,23 +89,25 @@ module.exports = {
       // If new task or state has changed, update timestamps
       var action = false;
       switch (values.state) {
-        case 'open':
-          values.publishedAt = new Date();
-          action = 'task.update.opened';
-          break;
-        case 'assigned':
-          values.assignedAt = new Date();
-          action = 'task.update.assigned';
-          break;
-        case 'completed':
-          values.completedAt = new Date();
-          action = 'task.update.completed';
-          task && task.volunteersCompleted();
-          break;
+      case 'open':
+        values.publishedAt = new Date();
+        action = 'task.update.opened';
+        break;
+      case 'assigned':
+        values.assignedAt = new Date();
+        action = 'task.update.assigned';
+        break;
+      case 'completed':
+        values.completedAt = new Date();
+        action = 'task.update.completed';
+        task && task.volunteersCompleted();
+        break;
       }
 
       // If no notification specified, continue
       if (!values.id || !action) return done();
+
+      sails.log.debug( 'A notification will be triggered on beforeUpdate %s',  action );
 
       // Set up notification for updates (needs to happen here instead
       // of afterUpdate so we can compare to see if state changed)
@@ -125,16 +127,38 @@ module.exports = {
       done();
     });
   },
-  beforeCreate: function(values, done) {
+  beforeCreate: function ( values, done ) {
+    sails.log.debug( values );
     // If default state is not draft, we need to set dates
-    this.beforeUpdate(values, done);
+    this.beforeUpdate( values, done );
   },
 
-  afterCreate: function(model, done) {
-    Notification.create({
+  afterCreate: function( model, done ) {
+
+    var isDraft = ( 'draft' === model.state );
+
+    if ( isDraft ) {
+
+      sails.log.debug( 'drafting' );
+
+      Notification.create( {
+
+        action: 'task.create.draft',
+        model: model,
+
+      }, done );
+
+    } else {
+
+    Notification.create( {
+
       action: 'task.create.thanks',
-      model: model
-    }, done);
+      model: model,
+
+    }, done );
+
+    }
+
   },
 
   sendNotifications: function(i) {
