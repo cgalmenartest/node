@@ -1,7 +1,7 @@
 {
   "name": "openopps-platform",
   "private": true,
-  "version": "0.8.3",
+  "version": "0.8.4",
   "description": "Innovation platform providing collaboration and crowdsourcing tools",
   "dependencies": {
     "async": "^0.2.9",
@@ -97,7 +97,7 @@
   "bugs": "https://github.com/18F/openopps-platform/issues",
   "license": "MIT",
   "engines": {
-    "node": "0.10.x",
+    "node": "~0.10.41",
     "npm": "2.1.x"
   }
 }

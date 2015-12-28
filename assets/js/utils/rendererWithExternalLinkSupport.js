@@ -19,9 +19,7 @@ renderer.link = function(href, title, text) {
   if (title) {
     out += ' title="' + title + '"';
   }
-  if (href.startsWith('http')) {
-    out += ' target="blank"'
-  }
+  if ( href && /^http/i.test( href ) ) { out += ' target="blank"'; }
   out += '>' + text + '</a>';
   return out;
 };
