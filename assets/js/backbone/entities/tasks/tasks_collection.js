@@ -41,7 +41,10 @@ var TasksCollection = Backbone.Collection.extend({
 
     self.task = new TaskModel( data );
 
-    self.task.save( null, {
+  /*
+   * Add data to the collection
+   */
+  addAndSave: function ( data ) {
 
       success: function ( model ) {
 

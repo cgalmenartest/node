@@ -141,7 +141,13 @@ var BrowseRouter = Backbone.Router.extend({
     this.taskShowController = new TaskShowController({ model: model, router: this, id: id, action: action, data: this.data });
   },
 
-  newTask: function ( params ) {
+  /*
+   * Create a new task. This method first populates and generates a new collection
+   * with a single empty model. It also creates a new TaskCreationForm adding the
+   * collection to it. This collection is then managed by the view using events
+   * on the collection.
+   */
+  newTask: function ( /*params*/ ) {
 
     var self = this;
     var tasks = new TaskCollection();

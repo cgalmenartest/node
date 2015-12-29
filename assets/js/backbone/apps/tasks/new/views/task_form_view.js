@@ -283,6 +283,10 @@ var TaskFormView = Backbone.View.extend({
     }
   },
 
+  /*
+   * Validate before submitting the form, thus saving the task.
+   * @param { Object? } fields
+   */
   validateBeforeSubmit: function (fields) {
     var self  = this,
       field, validation;
