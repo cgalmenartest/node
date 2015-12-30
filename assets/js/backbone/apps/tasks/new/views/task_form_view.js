@@ -4,7 +4,7 @@ var Backbone = require('backbone');
 var async = require('async');
 var utilities = require('../../../../mixins/utilities');
 var MarkdownEditor = require('../../../../components/markdown_editor');
-var TasksCollection = require('../../../../entities/tasks/tasks_collection');
+var TaskModel = require('../../../../entities/tasks/task_model');
 var TaskFormTemplate = require('../templates/task_form_template.html');
 var TagFactory = require('../../../../components/tag_factory');
 
@@ -16,8 +16,8 @@ var TaskFormView = Backbone.View.extend({
     'change .validate'                :  'v',
     'click [name=task-time-required]' :  'toggleTimeOptions',
     'change #task-location'           :  'locationChange',
-    'click #js-draft-create'          :  'saveDraft',
-    'click #create-button'            :  'submit',
+    'click #js-task-draft'            :  'saveDraft',
+    'click #js-task-create'           :  'submit',
   },
 
   /*
@@ -33,6 +33,16 @@ var TaskFormView = Backbone.View.extend({
     this.data.existingTags = [];
     this.initializeSelect2Data();
     this.initializeListeners();
+
+    // Check if the collection already contains a task. Otherwise, create one.
+    this.model = this.collection.first();
+
+    if ( _.isUndefined( this.model ) ) {
+
+      this.model = new TaskModel();
+
+    }
+
   },
 
  /*
@@ -120,27 +130,15 @@ var TaskFormView = Backbone.View.extend({
     var data = {
 
       tags: this.tagSources,
-      draft: {
-        title: '',
-        description: '',
-      },
+      model: this.model
 
     };
-
-    // If there are any models in the collection, populate the draft within
-    // the collection into data for the template.
-    //
-    if ( this.collection.length ) {
-
-      data.draft = this.collection.first().attributes;
-
-    }
 
     var template = _.template( TaskFormTemplate )( data );
 
     this.$el.html( template );
     this.initializeSelect2();
-    this.initializeTextArea( { data: data.draft.description } );
+    this.initializeTextArea();
 
     this.$( '#time-options' ).css( 'display', 'none' );
 
@@ -201,7 +199,7 @@ var TaskFormView = Backbone.View.extend({
       width: 'resolve',
     });
 
-    self.$('#task-length').select2({
+    self.$('#js-time-frequency-estimate').select2({
       placeholder: 'Frequency of work',
       width: 'fullwidth',
     });
@@ -306,50 +304,24 @@ var TaskFormView = Backbone.View.extend({
   },
 
   /*
-   * Parse the fields in the form for saving a task.
-   * @param { Object } e jQuery event object
-   * @return { Object } data An object of the fields parsed from the form
-   */
-  parseFields: function ( event ) {
-
-    debugger;
-    var getData = _.property( 'dataset' );
-    var getTarget = _.property( 'target' );
-    var DS = getData( getTarget( event ) );
-    var isDraft = ( 'draft' === DS.state );
-
-    if ( this.collection.length ) {
-
-      alert( 'we have an item in the collection' );
-      debugger;
-
-    }
-
-    var data = {
-      'title': this.$( '#task-title' ).val(),
-      'description': this.$( '#task-description' ).val(),
-      'projectId': null,
-      'tags': this.getTags(),
-      'state': 'draft',
-    };
-
-    console.log( data );
-
-    return data;
-  },
-
-  /*
    * Save a draft
    * This method sends the data to the server and saves the task.
-   * @param { Object } e jQuery event object
+   * @param { Object } event A jQuery event object
    */
-  saveDraft: function (e) {
+  saveDraft: function ( event ) {
 
-    var draft = true;
+    var view = this;
 
-    var data = this.parseFields( event );
+    this.model.set( {
 
-    this.collection.trigger( 'task:draft', data );
+      title        :  this.$( '#task-title' ).val(),
+      description  :  this.$( '#task-description' ).val(),
+      state        :  'draft',
+      tags         :  this.getTags(),
+
+    } );
+
+    this.collection.trigger( 'task:draft', this.model );
 
   },
 
