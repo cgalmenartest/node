@@ -84,3 +84,49 @@
   float: left;
 }
 
+
+%task__label {
+
+  display: inline;
+  padding: 0.2em 0.6em 0.3em;
+  font-size: 75%;
+  color: #fff;
+  border-radius: 0.25em;
+
+}
+
+
+.task__label--assigned {
+
+  @extend %task__label;
+  background-color: #2E8540;
+
+}
+
+.task__label--completed {
+
+  @extend %task__label;
+  background-color: #777;
+
+}
+
+.task__label--submitted {
+
+  @extend %task__label;
+  background-color: #065289;
+
+}
+
+.task__label--open {
+
+  @extend %task__label;
+  background-color: #2E8540;
+
+}
+
+.task__label--draft {
+
+  @extend %task__label;
+  background-color: #E31C3D;
+
+}
