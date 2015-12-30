@@ -130,7 +130,7 @@ var TaskFormView = Backbone.View.extend({
     var data = {
 
       tags: this.tagSources,
-      model: this.model
+      model: this.model,
 
     };
 
@@ -154,7 +154,7 @@ var TaskFormView = Backbone.View.extend({
   /*
    * Render modal for the Task Creation Form ViewController
    */
-  renderSaveSuccessModal: function ( task ) {
+  renderSaveSuccessModal: function () {
 
     var $modal = this.$( '.js-success-message' );
     var userId = this.model.attributes.userId;
@@ -291,25 +291,34 @@ var TaskFormView = Backbone.View.extend({
   },
 
   /*
-   * Validate before submitting the form, thus saving the task.
-   * @param { Object? } fields
+   * Validate before submitting the form and saving the task.
    */
-  validateBeforeSubmit: function (fields) {
-    var self  = this,
-      field, validation;
+  validateBeforeSubmit: function () {
 
-    for (var i=0; i<fields.length; i++) {
-      // remember: this.v() return true if there IS a validation error
-      // it returns false if there is not
-      field = fields[i];
-      valid = self.v({ currentTarget: field });
+    var view = this;
+    var fieldsToValidate  = [
+      '#task-title',
+      '#task-description',
+      '[name=task-time-required]:checked',
+      '[name=time-required]:checked',
+    ];
+    var field = '';
+    var valid = false;
 
-      if (valid === true) {
-        return false;
-      }
+    for ( var i = 0; i < fieldsToValidate.length; i++ ) {
+
+      // README: view.v() return true if there *is* a validation error
+      // it returns false if there *is not*.
+      //
+      field = fieldsToValidate[ i ];
+      valid = view.v( { currentTarget: field } );
+
+      if ( true === valid ) { return false; }
+
     }
 
     return true;
+
   },
 
   /*
@@ -338,33 +347,27 @@ var TaskFormView = Backbone.View.extend({
    * Submit event handler.
    * This method sends the data to the server and saves the task
    * @param { Object } e jQuery event object
-   * @param { Boolean } draft
    * @return { TaskFormView } this
    */
-  submit: function (e, draft) {
-    var fieldsToValidate  = [
-      '#task-title',
-      '#task-description',
-      '[name=task-time-required]:checked',
-      '[name=time-required]:checked',
-    ];
-    var validForm = this.validateBeforeSubmit(fieldsToValidate);
-    var completedBy = this.$('#estimated-completion-date').val();
-    var data;
+  submit: function ( e ) {
 
-    if (!validForm && !draft) return this;
+    var validForm = this.validateBeforeSubmit();
+    var completedBy = this.$( '#estimated-completion-date' ).val();
 
-    data = {
-      'title'      : this.$('#task-title').val(),
-      'description': this.$('#task-description').val(),
-      'projectId'  : null,
-      'tags'       : this.getTags(),
-    };
+    if ( ! validForm ) { return this; }
 
-    if (draft) data['state'] = this.$('#js-draft-create').data('state');
-    if (completedBy != '') data['completedBy'] = completedBy;
+    this.model.set( 'title', this.$( '#task-title' ).val() );
+    this.model.set( 'description', this.$( '#task-description' ).val() );
+    this.model.set( 'state', 'submitted' );
+    this.model.set( 'tags', this.getTags() );
 
-    this.collection.trigger('task:save', data);
+    if ( ! _.isEmpty( completedBy ) ) {
+
+      this.model.set( 'completedBy', completedBy );
+
+    }
+
+    this.collection.trigger( 'task:save', this.model );
 
     return this;
   },
