@@ -14,9 +14,7 @@
           <% if (data[i].state == 'archived') { continue; } %>
           <tr>
             <td>
-              <% if (data[i].state == 'draft') { %>
-              <span class="label label-warning">draft</span>
-              <% } %>
+              <span class="task__label--<%= data[ i ].state %>"><%= data[ i ].state.charAt( 0 ).toUpperCase() +  data[ i ].state.slice( 1 ) %></span>
               <a href="/<%- target %>s/<%- data[i].id %>" class="activity-link" data-id="<%- data[i].id %>"><%- data[i].title %></a>
             </td>
             <td>

@@ -9,12 +9,12 @@
 
           <!-- Nav tabs -->
           <ul class="nav nav-tabs box-pad-t" role="tablist">
-            <li role="presentation">
-              <a href="#drafts" aria-controls="open" role="tab" data-toggle="tab">
-                Drafts: <%- drafts.length %>
+            <li role="presentation" class="active">
+              <a href="#submitted" aria-controls="open" role="tab" data-toggle="tab">
+                Submitted: <%- submitted.length %>
               </a>
             </li>
-            <li role="presentation" class="active">
+            <li role="presentation">
               <a href="#open" aria-controls="open" role="tab" data-toggle="tab">
                 Open: <%- open.length %>
               </a>
@@ -34,6 +34,11 @@
                 Completed: <%- completed.length %>
               </a>
             </li>
+            <li role="presentation">
+              <a href="#drafts" aria-controls="open" role="tab" data-toggle="tab">
+                Drafts: <%- drafts.length %>
+              </a>
+            </li>
 
             <!-- Export button -->
             <div class="export-button pull-right tip" data-toggle="tooltip" data-placement="left"
@@ -51,6 +56,7 @@
               <ul class="metrics">
                 <% _(drafts).forEach(function(task) { %>
                 <li>
+                  <span class="task__label--<%= task.state %>"><%= task.state.charAt( 0 ).toUpperCase() +  task.state.slice( 1 ) %></span>
                   <a href="/tasks/<%- task.id %>"><%- task.title %></a>,
                   <a href="/profile/<%- task.user.id %>"><%- task.user.name || task.user.username %></a>
                   <a href="#delete/<%- task.id %>" data-task-id="<%- task.id %>" data-task-title="<%- task.title %>" class="delete-task"><span class='fa fa-times'></span></a>
@@ -65,10 +71,31 @@
                 <% }); %>
               </ul>
             </div>
-            <div role="tabpanel" class="tab-pane active" id="open">
+            <div role="tabpanel" class="tab-pane active" id="submitted">
+              <ul class="metrics">
+                <% _(submitted).forEach(function(task) { %>
+                <li>
+                  <span class="task__label--<%= task.state %>"><%= task.state.charAt( 0 ).toUpperCase() +  task.state.slice( 1 ) %></span>
+                  <a href="/tasks/<%- task.id %>"><%- task.title %></a>,
+                  <a href="/profile/<%- task.user.id %>"><%- task.user.name || task.user.username %></a>
+                  <a href="#open/<%- task.id %>" data-task-id="<%- task.id %>" data-task-title="<%- task.title %>" class="js-task-open open-task"><span class='fa fa-check-circle'></span></a>
+                  <a href="#delete/<%- task.id %>" data-task-id="<%- task.id %>" data-task-title="<%- task.title %>" class="delete-task"><span class='fa fa-times-circle'></span></a>
+                  <% if (task.volunteers.length) { %>
+                  <p>Sign-ups:
+                    <% _(task.volunteers).forEach(function(vol) { %>
+                    <a href="/profile/<%- vol.user.id %>"><%- vol.user.name || vol.user.username %></a>
+                    <% }); %>
+                  </p>
+                  <% } %>
+                </li>
+                <% }); %>
+              </ul>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="open">
               <ul class="metrics">
                 <% _(open).forEach(function(task) { %>
                 <li>
+                  <span class="task__label--<%= task.state %>"><%= task.state.charAt( 0 ).toUpperCase() +  task.state.slice( 1 ) %></span>
                   <a href="/tasks/<%- task.id %>"><%- task.title %></a>,
                   <a href="/profile/<%- task.user.id %>"><%- task.user.name || task.user.username %></a>
                   <% if (task.volunteers.length) { %>
@@ -86,6 +113,7 @@
               <ul class="metrics">
                 <% _(withSignups).forEach(function(task) { %>
                 <li>
+                  <span class="task__label--<%= task.state %>"><%= task.state.charAt( 0 ).toUpperCase() +  task.state.slice( 1 ) %></span>
                   <a href="/tasks/<%- task.id %>"><%- task.title %></a>,
                   <a href="/profile/<%- task.user.id %>"><%- task.user.name || task.user.username %></a>
                   <% if (task.volunteers.length) { %>
@@ -103,6 +131,7 @@
               <ul class="metrics">
                 <% _(assigned).forEach(function(task) { %>
                 <li>
+                  <span class="task__label--<%= task.state %>"><%= task.state.charAt( 0 ).toUpperCase() +  task.state.slice( 1 ) %></span>
                   <a href="/tasks/<%- task.id %>"><%- task.title %></a>,
                   <a href="/profile/<%- task.user.id %>"><%- task.user.name || task.user.username %></a>
                   <% if (task.volunteers.length) { %>
@@ -120,6 +149,7 @@
               <ul class="metrics">
                 <% _(completed).forEach(function(task) { %>
                 <li>
+                  <span class="task__label--<%= task.state %>"><%= task.state.charAt( 0 ).toUpperCase() +  task.state.slice( 1 ) %></span>
                   <a href="/tasks/<%- task.id %>"><%- task.title %></a>,
                   <a href="/profile/<%- task.user.id %>"><%- task.user.name || task.user.username %></a>
                   <% if (task.volunteers.length) { %>
