@@ -10,6 +10,7 @@ var json2csv = require('json2csv');
 var async = require('async');
 
 var addUserMetrics = require(__dirname + '/../services/utils/userMetrics').add;
+var TaskMetrics = require(__dirname + '/../services/utils/taskMetrics');
 
 module.exports = {
 
@@ -129,169 +130,10 @@ module.exports = {
    * with the above endpoint.
    */
   taskMetrics: function(req, res) {
-    var pad = function(num, size) {
-          size = size || 2;
-          var s = num + '';
-          while (s.length < size) s = '0' + s;
-          return s;
-        },
-        getFY = function(input) {
-          if (!input) return undefined;
-          var date = new Date(input);
-          return new Date(date.setMonth(date.getMonth() + 3)).getFullYear();
-        },
-        getYear = function(input) {
-          if (!input) return undefined;
-          return new Date(input).getFullYear();
-        },
-        getMonth = function(input) {
-          if (!input) return undefined;
-          var date = new Date(input);
-          return +date.getFullYear() + pad((date.getMonth() + 1));
-        },
-        getWeek = function(input) {
-          if (!input) return undefined;
-          var date = new Date(input);
-          var getWeekNumber = function(date) {
-                var d = new Date(date);
-                d.setHours(0,0,0);
-                d.setDate(d.getDate()+4-(d.getDay()||7));
-                return Math.ceil((((d-new Date(d.getFullYear(),0,1))/8.64e7)+1)/7);
-              };
-          return +date.getFullYear() + pad(getWeekNumber(date));
-        },
-        getQuarter = function(input) {
-          if (!input) return undefined;
-          var date = new Date(input),
-              month = date.getMonth() + 1,
-              quarter = month <= 3 ? '1' :
-                        month <= 6 ? '2' :
-                        month <= 9 ? '3' : '4';
-          return +date.getFullYear() + quarter;
-        },
-        getFYQuarter = function(input) {
-          if (!input) return undefined;
-          var date = new Date(input),
-              fyDate = new Date(date.setMonth(date.getMonth() + 3)),
-              month = fyDate.getMonth() + 1,
-              quarter = month <= 3 ? '1' :
-                        month <= 6 ? '2' :
-                        month <= 9 ? '3' : '4';
-          return +fyDate.getFullYear() + quarter;
-        },
-        output = {
-          tasks: {},
-          volunteers: {},
-          agencies: {}
-        },
-        filter = req.param('filter'),
-        ids,
-        count = req.param('group') === 'week' ? getWeek :
-                req.param('group') === 'month' ? getMonth :
-                req.param('group') === 'quarter' ? getQuarter :
-                req.param('group') === 'fyquarter' ? getFYQuarter :
-                req.param('group') === 'year' ? getYear : getFY;
-
-    async.series([
-      function(done) {
-        Task.find({}).populate('tags').exec(function(err, tasks) {
-          if (err) return done('task');
-
-          if (filter) tasks = _.filter(tasks, function(task) {
-            return _.findWhere(task.tags, { name: filter });
-          });
-
-          ids = _.pluck(tasks, 'id');
-
-          // Default missing dates to createdAt
-          tasks.forEach(function(task) {
-            if ((task.state === 'open' ||
-              task.state === 'assigned' ||
-              task.state === 'completed') &&
-              !task.publishedAt) task.publishedAt = task.createdAt;
-            if ((task.state === 'assigned' ||
-              task.state === 'completed') &&
-              !task.assignedAt) task.assignedAt = task.createdAt;
-            if (task.state === 'completed' &&
-              !task.completedAt) task.completedAt = task.createdAt;
-          });
-
-          var groups = {
-                carryOver: {},
-                published: _(tasks).filter(function(task) {
-                  return task.state === 'open' ||
-                    task.state === 'assigned' ||
-                    task.state === 'completed';
-                }).countBy(function(task) {
-                  return count(task.publishedAt);
-                }).value(),
-                completed: _(tasks).filter(function(task) {
-                  return task.state === 'completed';
-                }).countBy(function(task) {
-                  return count(task.completedAt);
-                }).value()
-              },
-              range = _.keys(groups.published);
-
-          // Evaluate whether a task was started and remained open in a previous FY
-          _.each(tasks, function(task) {
-            range.forEach(function(i) {
-              var openedBefore = count(task.publishedAt) < i,
-                  openAfter = task.state !== 'archived' &&
-                    (!task.completedAt || count(task.completedAt) > i);
-              groups.carryOver[i] = groups.carryOver[i] || 0;
-              if (openedBefore && openAfter) groups.carryOver[i] += 1;
-            });
-          });
-
-          output.range = range;
-          output.tasks = groups;
-          done();
-        });
-      },
-      function(done) {
-        Volunteer.find({ taskId: ids }).exec(function(err, volunteers) {
-          if (err) return done('volunteer');
-
-          // Group volunteers by created FY
-          output.volunteers = _.groupBy(volunteers, function(volunteer) {
-            return count(volunteer.createdAt);
-          });
-
-          // Get volunteer users and tags to count agencies
-          User.find({ id: _.pluck(volunteers, 'userId') })
-            .populate('tags', { type: 'agency' })
-            .exec(function(err, users) {
-              if (err) return done('volunteer');
-
-              // Get unique agencies with volunteers
-              output.agencies = _.reduce(output.volunteers, function(o, vols, fy) {
-
-                // Return agency (first tag) for matching user
-                o[fy] = _(vols).map(function(vol) {
-                  var volUser = _.findWhere(users, { id: vol.userId });
-                  if (!volUser || !volUser.tags || !volUser.tags[0]) return undefined;
-                  return (volUser.tags[0] || {}).id;
-                }).compact().uniq().value().length;
-
-                return o;
-
-              }, {});
-
-              // Count volunteers
-              output.volunteers = _.reduce(output.volunteers, function(o, vols, fy) {
-                o[fy] = vols.length;
-                return o;
-              }, {});
-
-              done();
-            });
-
-        });
-      }
-    ], function(err) {
+    var generator = new TaskMetrics(req.param);
+    generator.generateMetrics(function(err) {
       if (err) res.serverError(err + ' metrics are unavailable.');
-      res.send(output);
+      res.send(generator.metrics);
     });
   },
 
