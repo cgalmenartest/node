@@ -6,8 +6,13 @@ var Backbone = require('backbone');
 var TaskModel = Backbone.Model.extend({
 
   defaults: {
-    name        : null,
-    description : null
+
+    projectId: null,
+    title : null,
+    description : null,
+    tags: null,
+    state: 'draft',
+
   },
 
   urlRoot: '/api/task',
