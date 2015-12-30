@@ -125,35 +125,39 @@ module.exports = {
       done();
     });
   },
+
   beforeCreate: function ( values, done ) {
     sails.log.debug( values );
     // If default state is not draft, we need to set dates
     this.beforeUpdate( values, done );
   },
 
-  afterCreate: function( model, done ) {
+  /*
+   * After creation of the model, the
+   */
+  afterCreate: function ( model, done ) {
 
-    var isDraft = ( 'draft' === model.state );
+    if ( 'draft' === model.state ) {
 
-    if ( isDraft ) {
+      if ( model.createdAt === model.updatedAt ) {
 
-      sails.log.debug( 'drafting' );
+        Notification.create( {
 
-      Notification.create( {
+          action: 'task.create.draft',
+          model: model,
 
-        action: 'task.create.draft',
-        model: model,
+        }, done );
 
-      }, done );
+      }
 
     } else {
 
-    Notification.create( {
+      Notification.create( {
 
-      action: 'task.create.thanks',
-      model: model,
+        action: 'task.create.thanks',
+        model: model,
 
-    }, done );
+      }, done );
 
     }
 
