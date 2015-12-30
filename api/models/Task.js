@@ -107,8 +107,6 @@ module.exports = {
       // If no notification specified, continue
       if (!values.id || !action) return done();
 
-      sails.log.debug( 'A notification will be triggered on beforeUpdate %s',  action );
-
       // Set up notification for updates (needs to happen here instead
       // of afterUpdate so we can compare to see if state changed)
       Notification.create({
