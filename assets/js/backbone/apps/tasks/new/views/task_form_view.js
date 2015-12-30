@@ -108,13 +108,13 @@ var TaskFormView = Backbone.View.extend({
    */
   initializeListeners: function () {
 
-    var self = this;
+    var view = this;
 
     _.extend(this, Backbone.Events);
 
-    this.listenTo( this, 'task:save:draft', function () {
+    this.collection.on( 'task:draft:success', function ( task ) {
 
-      self.renderStateModal();
+      view.renderSaveSuccessModal();
 
     } );
 
@@ -144,6 +144,8 @@ var TaskFormView = Backbone.View.extend({
 
     this.$el.i18n();
 
+    this.renderSaveSuccessModal();
+
     // Return this for chaining.
     return this;
 
@@ -152,15 +154,22 @@ var TaskFormView = Backbone.View.extend({
   /*
    * Render modal for the Task Creation Form ViewController
    */
-  renderStateModal: function () {
+  renderSaveSuccessModal: function ( task ) {
 
-    // Grab the section of the DOM that is going to be updated.
-    // Build up an object to display data
-    // Render this template
-    // Maybe make this a child view?
-    //
-    console.log( 'renderStateModal' );
-    alert( 'renderStateModal' );
+    var $modal = this.$( '.js-success-message' );
+    var userId = this.model.attributes.userId;
+
+    if ( null == userId ) {
+
+      $modal.hide();
+
+    } else {
+
+      $modal.slideDown( 'slow' )
+        .find( '.js-profile-link' )
+        .attr( 'href', '/profile/' + userId );
+
+    }
 
   },
 
