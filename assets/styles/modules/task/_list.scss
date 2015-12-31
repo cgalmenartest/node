@@ -103,6 +103,13 @@
 
 }
 
+.task__label--archived {
+
+  @extend %task__label;
+  background-color: #777;
+
+}
+
 .task__label--completed {
 
   @extend %task__label;
