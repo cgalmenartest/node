@@ -61,7 +61,7 @@ When you run either of these commands it will start running the server. It's bes
 
     createdb midas
 
-Start the postgres console acting on the midas database with: `psql midas`
+Start the postgres console acting on the `midas` database with: `psql midas`
 
     CREATE USER midas WITH PASSWORD 'midas';
     GRANT ALL PRIVILEGES ON DATABASE midas to midas;
@@ -156,7 +156,7 @@ Establish admin user account during the wizard and verify that PostgreSQL is run
 
 Open pgAdmin
 
-  Create database 'midas', user account 'midas' with password 'midas', and assign user 'midas' full rights to administer DB 'midas'
+Create database 'midas', user account 'midas' with password 'midas', and assign user 'midas' full rights to administer DB 'midas'
 
 #### Install Node.js via Windows MSI, select all available add-ons
 **_Note that currently Midas has a dependency on nodejs version .10+ and is not tested to work with .11 or .12, do not attempt to install a version higher than node ver .10.38_**
