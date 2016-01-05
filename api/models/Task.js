@@ -83,7 +83,7 @@ module.exports = {
 
   beforeUpdate: function (values, done) {
     Task.findOne({ id: values.id }).exec(function (err, task) {
-      if (err) done(err);
+      if ( err ) { return done( err ); }
 
       // If task state hasn't changed, continue
       if (task && task.state === values.state) return done();
@@ -132,7 +132,6 @@ module.exports = {
   },
 
   beforeCreate: function ( values, done ) {
-    sails.log.debug( values );
     // If default state is not draft, we need to set dates
     this.beforeUpdate( values, done );
   },

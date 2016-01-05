@@ -401,7 +401,7 @@ module.exports = {
 
       },
 
-      newVolunteer: function(event, done) {
+      newVolunteer: function (event, done) {
         var activity = {
           type: 'newVolunteer',
           createdAt: event.createdAt
