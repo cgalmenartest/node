@@ -182,6 +182,18 @@ Save.
 
 ### All Platforms
 
+#### Upgrade NPM
+
+The version that ships with `node 0.10.x` is out of date with the required `npm`
+version from the [engine's hash in the `package.json`] [project_engine_hash]. To
+install this version of `npm` you can run the following command.
+[See the official documentation here] [npm_upgrade_documentation].
+
+    sudo npm upgrade --global npm@2.1.x
+
+[project_engine_hash]: https://github.com/18F/openopps-platform/blob/dev/package.json#L99-L101 "Engine Hash for the project in package.json"
+[npm_upgrade_documentation]: https://docs.npmjs.com/getting-started/installing-node#updating-npm "Link to Updating NPM ( official documentation )"
+
 #### Clone the git repository.
 
      git clone https://github.com/18F/openopps-platform.git
