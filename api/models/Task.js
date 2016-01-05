@@ -153,6 +153,10 @@ module.exports = {
 
         }, done );
 
+      } else {
+
+        done();
+
       }
 
     } else {
