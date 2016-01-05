@@ -78,8 +78,8 @@ describe('Task actions', function () {
     }, false);
 
     // Click "Create"
-    casper.then(function() {
-      casper.click('#create-button');
+    casper.then(function () {
+      casper.click('#js-task-create');
       casper.waitForSelector('.edit-task-section');
     });
 
