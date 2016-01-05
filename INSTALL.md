@@ -1,6 +1,6 @@
 Installation
 =====
-- [Deploy Midas as a Docker Container from the Docker Hub](#deploy-midas-as-a-docker-container-from-the-docker-hub-mac-windows-linux)
+- [Deploy OpenOpps as a Docker Container from the Docker Hub](#deploy-openopps-as-a-docker-container-from-the-docker-hub-mac-windows-linux)
 - [Step by Step Installation from Source](#step-by-step-installation-from-source)
     - [Mac OSX](#mac-osx)
     - [Linux (Ubuntu 12.04 LTS)](#linux-ubuntu-1204-lts)
@@ -12,23 +12,23 @@ Installation
 
 
 
-## Deploy Midas as a Docker Container from the Docker Hub (Mac, Windows, Linux):
+## Deploy OpenOpps as a Docker Container from the Docker Hub (Mac, Windows, Linux):
 
 1. Download and install the [Docker Toolbox](https://www.docker.com/toolbox)
 2. Open Kitematic on your Mac (it's installed with the Docker Toolkit), search for "open-opps", and click create:
   ![screen shot 2015-08-27 at 11 12 21 am](https://cloud.githubusercontent.com/assets/170641/9524361/8e21aba6-4cac-11e5-9e45-07c1d4450d13.png)
-3. You'll see the log of Midas starting up. (You may need to wait a minute for the application to start up.) Click the arrow next to "Web Preview" to open up Midas in your browser:
+3. You'll see the log of OpenOpps starting up. (You may need to wait a minute for the application to start up.) Click the arrow next to "Web Preview" to open up OpenOpps in your browser:
   ![screen shot 2015-08-27 at 11 13 27 am](https://cloud.githubusercontent.com/assets/170641/9524382/af4dc864-4cac-11e5-89df-1f4290e6b2fb.png)
-4. You're now running Midas in a local container and you can do all the things you'd usually do with it
+4. You're now running OpenOpps in a local container and you can do all the things you'd usually do with it
   ![screen shot 2015-08-27 at 11 14 13 am](https://cloud.githubusercontent.com/assets/170641/9524433/f2adb3ee-4cac-11e5-9068-5e2d2de67631.png)
   ![screen shot 2015-08-27 at 11 14 19 am](https://cloud.githubusercontent.com/assets/170641/9524434/f46fe6a2-4cac-11e5-88fd-cdee0517ed46.png)
   ![screen shot 2015-08-27 at 11 14 49 am](https://cloud.githubusercontent.com/assets/170641/9524437/f61f4bbe-4cac-11e5-86b4-75b482a462fa.png)
-5. **Bonus:** you can try our other branches of Midas (useful for reviewing pull requests). Get the branch  name from GitHub:
+5. **Bonus:** you can try our other branches of OpenOpps (useful for reviewing pull requests). Get the branch  name from GitHub:
 
   ![screen shot 2015-08-27 at 11 16 27 am](https://cloud.githubusercontent.com/assets/170641/9524463/180170a4-4cad-11e5-9ed4-d7d3a4a253f2.png)
 6. Go back to "Settings" in Kitematic, set the `BRANCH` environment variable, and click "Save":
   ![screen shot 2015-08-27 at 11 17 08 am](https://cloud.githubusercontent.com/assets/170641/9524485/2fd9ea94-4cad-11e5-9a8d-09322c46a857.png)
-7. Now on "Home", you'll see the log of Midas rebuilding with the new branch. Give it a chance to build, then relaunch the web preview to try the new branch
+7. Now on "Home", you'll see the log of OpenOpps rebuilding with the new branch. Give it a chance to build, then relaunch the web preview to try the new branch
 
 
 ## Step by Step Installation from Source
@@ -184,10 +184,10 @@ Save.
 
 #### Clone the git repository.
 
-     git clone https://github.com/18F/midas.git
-     cd midas
+     git clone https://github.com/18F/openopps-platform.git
+     cd openopps-platform
 
-#### Install midas node packages (from the midas git folder)
+#### Install openopps node packages (from the openopps git folder)
 
 Then run the normal npm package installer
 
@@ -207,7 +207,7 @@ It is not necessary to edit any config files to run the demo locally.  You may o
 
 #### Setup the database
 
-From the root of the midas directory, initialize the database:
+From the root of the openopps directory, initialize the database:
 
      npm run migrate
      npm run init
@@ -261,7 +261,7 @@ messages after running `npm start`. This is an issue with OSX and Grunt; there a
 
 ## For production
 
-#### Compile production JS and CSS (from the midas git folder)
+#### Compile production JS and CSS (from the openopps git folder)
 
      npm run build
 
@@ -271,7 +271,7 @@ The database needs to be populated with the tag defaults for your application's 
 
 Edit the configuration file at `test/init/init/config.js` to match your tags in `assets/js/backbone/components/tag.js`
 
-### Start the forever server (from the midas git folder)
+### Start the forever server (from the openopps git folder)
 
 Install forever with from npm:
 
@@ -309,11 +309,11 @@ Install NPM Modules as directed above.
 
 #### If hosting on an off-line server
 
-Retrieve Midas from GitHub as above on an online pc. Install NPM modules as directed. Copy to offline server your local npm_modules directory (in project home) as well as the contents of the directory found in Users/YOUR_USER_NAME/AppData/Roaming/npm to corresponding locations on offline-server.
+Retrieve OpenOpps from GitHub as above on an online pc. Install NPM modules as directed. Copy to offline server your local npm_modules directory (in project home) as well as the contents of the directory found in Users/YOUR_USER_NAME/AppData/Roaming/npm to corresponding locations on offline-server.
 
-#### Starting Midas
+#### Starting OpenOpps
 
-Navigate to Midas directory via windows cmd.exe prompt
+Navigate to OpenOpps directory via windows cmd.exe prompt
 
 Enter the following commands
 
