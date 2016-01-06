@@ -93,6 +93,7 @@ module.exports = {
       switch (values.state) {
       case 'submitted':
         values.submittedAt = new Date();
+        action = 'task.update.submitted';
         break;
       case 'open':
         values.publishedAt = new Date();
