@@ -194,6 +194,18 @@ install this version of `npm` you can run the following command.
 [project_engine_hash]: https://github.com/18F/openopps-platform/blob/dev/package.json#L99-L101 "Engine Hash for the project in package.json"
 [npm_upgrade_documentation]: https://docs.npmjs.com/getting-started/installing-node#updating-npm "Link to Updating NPM ( official documentation )"
 
+#### Installing the Open Opportunities Theme
+
+This theme is contained in [a separate repository] [openopps_theme_repo]. To
+hook into the `npm preinstall` hook's theme copy mechanism, you must have an
+environment variable pointing the Github URL to the `$THEME` variable.
+Here's an example using `export`:
+
+    export THEME="https://github.com/18F/open-opportunities-theme.git" && \
+    npm install
+
+[openopps_theme_repo]: https://github.com/18F/open-opportunities-theme "Open Opportunities Theme"
+
 #### Clone the git repository.
 
      git clone https://github.com/18F/openopps-platform.git
