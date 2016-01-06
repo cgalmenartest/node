@@ -1,6 +1,6 @@
 module.exports = {
 
-  subject: 'New Open Opportunity Draft',
+  subject: 'New Open Opportunity Draft Created',
 
   to: '<%= user.username %>',
 
