@@ -37,8 +37,8 @@ Open Opportunities can benefit all organizations, but it’s especially useful f
 
 ## How you can help
 
-* Use our [community test server](https://openopps-test.18f.gov) and write up [issues](https://github.com/18F/midas/issues)
-* Join our [Google Group](https://groups.google.com/forum/#!forum/midascrowd) and introduce yourself, please ask any general questions here -- how the product is supposed to work, usability issues, technical questions, whatever you want to know, we want to hear about.  If you are interested in using Open Opportunities for your organization, let us know.
+* Use our [community test server](https://openopps-test.18f.gov) and write up [issues](https://github.com/18F/openopps-platform/issues)
+* Join our [Google Group](https://groups.google.com/forum/#!forum/openopps-platform) and introduce yourself, please ask any general questions here -- how the product is supposed to work, usability issues, technical questions, whatever you want to know, we want to hear about.  If you are interested in using Open Opportunities for your organization, let us know.
 * Read our [Contribution Guide][contributing] -- everything you do with us is a contribution to the public domain, there are also some tips for getting started
 * If you are a developer, [install](https://github.com/18F/openopps-platform/blob/dev/INSTALL.md) the software for development
 * Dive into our [help wanted issues](https://github.com/18F/openopps-platform/labels/help%20wanted) -- there are both dev and design opportunities there
