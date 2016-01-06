@@ -32,11 +32,28 @@ var TaskItemView = BaseView.extend({
 
   render: function ( self ) {
 
+    var taskState = self.model.attributes.state;
+
+    if ( _.isString( taskState ) ) {
+
+      taskState = taskState.charAt( 0 ).toUpperCase() + taskState.slice( 1 );
+
+    }
+
+
     self.data = {
 
       user: window.cache.currentUser,
       model: self.model.toJSON(),
       tags: self.model.toJSON().tags,
+
+      state: {
+
+        humanReadable: taskState,
+        value: taskState.toLowerCase(),
+
+      },
+
     };
 
     self.data[ 'madlibTags' ] = organizeTags( self.data.tags );

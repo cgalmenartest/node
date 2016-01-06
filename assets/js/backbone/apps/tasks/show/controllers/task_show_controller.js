@@ -492,6 +492,7 @@ var TaskShowController = BaseView.extend({
       callback: function ( e ) {
         // user clicked the submit button
         self.model.trigger( 'task:update:state', $( 'input[name=opportunityState]:checked' ).val() );
+        self.taskItemView.render( self.taskItemView );
       },
 
     } ).render();

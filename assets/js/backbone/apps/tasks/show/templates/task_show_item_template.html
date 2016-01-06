@@ -10,9 +10,9 @@
       <div class="row">
         <div class="col-md-10">
           <h1><%- model.title %></h1>
+          <span class="task__label--<%- state.value %>"><%- state.humanReadable %></span>
           <% if (madlibTags['skill']) { %>
           <div class="skill">
-            <h2>Tags</h2>
             <ul class="tags">
               <% _.each(madlibTags['skill'], function (t) { %>
                 <li><a href="/tasks?search=<%= t.name %>"><%= t.name %></a></li>
