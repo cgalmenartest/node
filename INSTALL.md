@@ -9,6 +9,7 @@ Installation
 - [For development](#for-development)
 - [For production](#for-production)
 - [Host and Configure Application](#host-and-configure-application)
+- [Troubleshooting Cross Platform Issues](#troubleshooting-cross-platform-issues)
 
 
 
@@ -348,3 +349,40 @@ Start Midas with
      npm start
 
 You can now access the server at `http://localhost:1337`
+
+## Troubleshooting Cross Platform Issues
+
+#### `Unable to parse HTTP body- error occurred ::`
+
+Having an error on `npm start` which begins the Sails server with an error along
+the lines of the following:
+
+    error: Unable to parse HTTP body- error occurred :: { [error: relation "<TABLE_NAME>" does not exist] name: 'error',}
+
+Can mean that your database is corrupt or misconfigured. A potential fix is to
+clean your database using the scripts found in `tools/postgres`. **This will
+delete everything in your database**.
+
+    ./tools/postgres/cleandb.sh
+
+Once that's done, you need to run the `init.sh` script again.
+
+    ./tools/postgres/init.sh
+
+Any migrations that you're aware of should also be run, the files can be found
+in the `./tools/postgres/migrate` directory. Running them sequentially will
+update the database's schema.
+
+You can also verify that the correct `midas` user exists for the `<TABLE_NAME>`.
+
+```sql
+ALTER TABLE session OWNER TO midas;
+---                          ^^^^^
+```
+
+This should also work if you run into issues with other tables.
+
+```sql
+ALTER TABLE * OWNER TO midas;
+---                    ^^^^^
+```
