@@ -446,16 +446,18 @@ var TaskShowController = BaseView.extend({
     }
   },
 
-  stateChange: function (e) {
-    if (e.preventDefault) e.preventDefault();
+  stateChange: function ( e ) {
+
+    if ( e && _.isFunction( e.preventDefault ) ) { e.preventDefault(); }
+
     var self = this;
 
-    if (this.modalAlert) { this.modalAlert.cleanup(); }
-    if (this.modalComponent) { this.modalComponent.cleanup(); }
+    if ( this.modalAlert ) { this.modalAlert.cleanup(); }
+    if ( this.modalComponent ) { this.modalComponent.cleanup(); }
 
     var states = UIConfig.states;
 
-    if ( draftAdminOnly && !window.cache.currentUser.isAdmin ) {
+    if ( draftAdminOnly && ! window.cache.currentUser.isAdmin ) {
 
       states = _( states ).reject( function ( state ) {
         return state.value === 'draft';
@@ -480,17 +482,20 @@ var TaskShowController = BaseView.extend({
 
     } ).render();
 
-    this.modalAlert = new ModalAlert({
-      el: "#check-close .modal-template",
+    this.modalAlert = new ModalAlert( {
+
+      el: '#check-close .modal-template',
       modalDiv: '#check-close',
       content: modalContent,
       cancel: 'Cancel',
-      submit: 'Change '+i18n.t("Task")+' State',
-      callback: function (e) {
+      submit: 'Change '+i18n.t( 'Task' )+' State',
+      callback: function ( e ) {
         // user clicked the submit button
-        self.model.trigger("task:update:state", $('input[name=opportunityState]:checked').val());
-      }
-    }).render();
+        self.model.trigger( 'task:update:state', $( 'input[name=opportunityState]:checked' ).val() );
+      },
+
+    } ).render();
+
   },
 
   stateReopen: function (e) {
