@@ -24,7 +24,7 @@ var BrowseRouter = Backbone.Router.extend({
     'projects(/)(?:queryStr)'   : 'listProjects',
     'projects/:id(/)'           : 'showProject',
     'projects/:id/:action(/)'   : 'showProject',
-    'tasks/new'                 : 'newTask',
+    'tasks/new(?*queryString)'  : 'newTask',
     'tasks(/)(?:queryStr)'      : 'listTasks',
     'tasks/:id(/)'              : 'showTask',
     'tasks/:id/:action(/)'      : 'showTask',
@@ -141,20 +141,36 @@ var BrowseRouter = Backbone.Router.extend({
     this.taskShowController = new TaskShowController({ model: model, router: this, id: id, action: action, data: this.data });
   },
 
-  newTask: function() {
+  /*
+   * Create a new task. This method first populates and generates a new collection
+   * with a single empty model. It also creates a new TaskCreationForm adding the
+   * collection to it. This collection is then managed by the view using events
+   * on the collection.
+   */
+  newTask: function ( /*params*/ ) {
+
+    var self = this;
+    var tasks = new TaskCollection( [ {} ] );
+
     this.cleanupChildren();
-    var tasks = new TaskCollection();
-    this.taskCreateController = new TaskCreateFormView({ collection: tasks });
+
+    this.taskCreateController = new TaskCreateFormView( { collection: tasks } );
     this.taskCreateController.render();
 
-    this.listenTo(tasks, 'task:save:success', function(data) {
+    this.listenTo( tasks, 'task:save:success', function ( data ) {
+
       Backbone.history.navigate('/tasks/' + data, { trigger: true });
-    });
-    this.listenTo(tasks, 'task:save:error', function(model, response, options) {
+
+    } );
+
+    this.listenTo( tasks, 'task:save:error', function ( model, response, options ) {
+
       var alertText = response.statusText + '. Please try again.';
-      $('.alert.alert-danger').text(alertText).show();
-      window.scroll(0,0);
-    });
+      $( '.alert.alert-danger' ).text( alertText ).show();
+      $( window ).animate( { scrollTop: 0 }, 500 );
+
+    } );
+
   },
 
   showProfile: function (id, action) {

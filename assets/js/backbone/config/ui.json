@@ -3,7 +3,7 @@
     "show": true
   },
   "supervisorEmail": {
-	  "useSupervisorEmail": false
+    "useSupervisorEmail": false
   },
   "home": {
     "logged_in_path": "/dashboard"
@@ -17,8 +17,33 @@
     "pageSize" : 27,
     "useInfiniteScroll" : false
   },
-  "states" : [{"value": "draft","label":"Draft"},{"value": "open","label":"Open"},{"value":"assigned","label":"Assigned"},{"value": "completed","label":"Completed"},{"value":"archived","label":"Archived"}],
-    "modalHome" : {
+  "states" : [
+    {
+      "value": "draft",
+      "label":"Draft"
+    },
+    {
+      "value": "submitted",
+      "label":"Submitted"
+    },
+    {
+      "value": "open",
+      "label":"Open"
+    },
+    {
+      "value":"assigned",
+      "label":"Assigned"
+    },
+    {
+      "value": "completed",
+      "label":"Completed"
+    },
+    {
+      "value":"archived",
+      "label":"Archived"
+    }
+  ],
+  "modalHome" : {
     "show" : false
   }
 }

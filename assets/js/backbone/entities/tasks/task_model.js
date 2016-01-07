@@ -6,30 +6,36 @@ var Backbone = require('backbone');
 var TaskModel = Backbone.Model.extend({
 
   defaults: {
-    name        : null,
-    description : null
+
+    projectId: null,
+    title : null,
+    description : null,
+    tags: null,
+    state: 'draft',
+
   },
 
   urlRoot: '/api/task',
 
   initialize: function () {
-    this.listenTo(this, "task:save", function (data) {
+
+    this.listenTo(this, 'task:save', function (data) {
       this.save(data);
     });
 
-    this.listenTo(this, "task:model:fetch", function (data) {
+    this.listenTo(this, 'task:model:fetch', function (data) {
       this.remoteGet(data);
     });
 
-    this.listenTo(this, "task:update", function (data) {
+    this.listenTo(this, 'task:update', function (data) {
       this.update(data);
     });
 
-    this.listenTo(this, "task:update:state", function (state) {
+    this.listenTo(this, 'task:update:state', function (state) {
       this.updateState(state);
     });
 
-    this.listenTo(this, "task:update:orphan", function (data) {
+    this.listenTo(this, 'task:update:orphan', function (data) {
       this.orphan(data);
     });
   },
@@ -38,8 +44,8 @@ var TaskModel = Backbone.Model.extend({
     var self = this;
     this.save(data, {
       success: function (data) {
-        self.trigger("task:update:success", data);
-      }
+        self.trigger('task:update:success', data);
+      },
     });
   },
 
@@ -83,4 +89,4 @@ var TaskModel = Backbone.Model.extend({
 
 });
 
-  module.exports = TaskModel;
+module.exports = TaskModel;

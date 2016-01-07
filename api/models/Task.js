@@ -11,7 +11,7 @@ module.exports = {
     // Current state of the task
     state: {
         type: 'STRING',
-        defaultsTo: sails.config.taskState || 'open'
+        defaultsTo: sails.config.taskState || 'draft',
     },
     // user id of the task owner
     userId: 'INTEGER',
@@ -26,6 +26,7 @@ module.exports = {
     publishedAt: 'datetime',
     assignedAt: 'datetime',
     completedAt: 'datetime',
+    submittedAt: 'datetime',
 
     // Tag association
     tags: {
@@ -71,17 +72,18 @@ module.exports = {
     'created_date': {field: 'createdAt', filter: exportUtils.excelDateFormat},
     'published_date': {field: 'publishedAt', filter: exportUtils.excelDateFormat},
     'assigned_date': {field: 'assignedAt', filter: exportUtils.excelDateFormat},
+    'submitted_date': {field: 'submittedAt', filter: exportUtils.excelDateFormat},
     'creator_name': {field: 'creator_name', filter: exportUtils.nullToEmptyString},
     'signups': 'signups',
     'task_id': 'id',
     'task_state': 'state',
     'agency_name': {field: 'agency_name', filter: exportUtils.nullToEmptyString},
-    'completion_date': {field: 'completedAt', filter: exportUtils.excelDateFormat}
+    'completion_date': {field: 'completedAt', filter: exportUtils.excelDateFormat},
   },
 
-  beforeUpdate: function(values, done) {
-    Task.findOne({ id: values.id }).exec(function(err, task) {
-      if (err) done(err);
+  beforeUpdate: function (values, done) {
+    Task.findOne({ id: values.id }).exec(function (err, task) {
+      if ( err ) { return done( err ); }
 
       // If task state hasn't changed, continue
       if (task && task.state === values.state) return done();
@@ -89,19 +91,23 @@ module.exports = {
       // If new task or state has changed, update timestamps
       var action = false;
       switch (values.state) {
-        case 'open':
-          values.publishedAt = new Date();
-          action = 'task.update.opened';
-          break;
-        case 'assigned':
-          values.assignedAt = new Date();
-          action = 'task.update.assigned';
-          break;
-        case 'completed':
-          values.completedAt = new Date();
-          action = 'task.update.completed';
-          task && task.volunteersCompleted();
-          break;
+      case 'submitted':
+        values.submittedAt = new Date();
+        action = 'task.update.submitted';
+        break;
+      case 'open':
+        values.publishedAt = new Date();
+        action = 'task.update.opened';
+        break;
+      case 'assigned':
+        values.assignedAt = new Date();
+        action = 'task.update.assigned';
+        break;
+      case 'completed':
+        values.completedAt = new Date();
+        action = 'task.update.completed';
+        task && task.volunteersCompleted();
+        break;
       }
 
       // If no notification specified, continue
@@ -125,16 +131,45 @@ module.exports = {
       done();
     });
   },
-  beforeCreate: function(values, done) {
+
+  beforeCreate: function ( values, done ) {
     // If default state is not draft, we need to set dates
-    this.beforeUpdate(values, done);
+    this.beforeUpdate( values, done );
   },
 
-  afterCreate: function(model, done) {
-    Notification.create({
-      action: 'task.create.thanks',
-      model: model
-    }, done);
+  /*
+   * After creation of the model, the
+   */
+  afterCreate: function ( model, done ) {
+
+    if ( 'draft' === model.state ) {
+
+      if ( model.createdAt === model.updatedAt ) {
+
+        Notification.create( {
+
+          action: 'task.create.draft',
+          model: model,
+
+        }, done );
+
+      } else {
+
+        done();
+
+      }
+
+    } else {
+
+      Notification.create( {
+
+        action: 'task.create.thanks',
+        model: model,
+
+      }, done );
+
+    }
+
   },
 
   sendNotifications: function(i) {

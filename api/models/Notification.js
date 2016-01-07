@@ -45,7 +45,7 @@ module.exports = {
 
   },
 
-  afterCreate: function(model, done) {
+  afterCreate: function (model, done) {
 
     // Trigger a notification message
     this.trigger(model);
@@ -61,7 +61,9 @@ module.exports = {
     @param {object} model triggering the notification
     @param {sting} the triggering model's type
   */
-  trigger: function(notification) {
+  trigger: function (notification) {
+
+    sails.log.debug( notification );
 
     // Get notification script
     var path = __dirname + '/../notifications/' +
@@ -69,7 +71,7 @@ module.exports = {
         template = require(path);
 
     // Populate notification data
-    template.data(notification.model, function(err, data) {
+    template.data(notification.model, function (err, data) {
       if (err) sails.log.error(err);
 
       // Set notification action on the data object
@@ -84,8 +86,8 @@ module.exports = {
       };
 
       // Render and send notification
-      Notification.render(template, data, function(err, options) {
-        Notification.send(options, function(err, info) {
+      Notification.render(template, data, function (err, options) {
+        Notification.send(options, function (err, info) {
           if (info) sails.log.info(info);
         });
       });
@@ -95,7 +97,7 @@ module.exports = {
   },
 
   // Render a notification's templates
-  render: function(template, data, done) {
+  render: function (template, data, done) {
 
     // Set up mail headers
     var html = __dirname + '/../notifications/' +
@@ -109,12 +111,12 @@ module.exports = {
         };
 
     // Template html content
-    fs.readFile(html, function(err, template) {
+    fs.readFile(html, function (err, template) {
       if (err) sails.log.error(err);
       data._content = _.template(template)(data);
 
       // Inject template html into layout
-      fs.readFile(layout, function(err, layout) {
+      fs.readFile(layout, function (err, layout) {
         if (err) sails.log.error(err);
         mailOptions.html = _.template(layout)(data);
         done(err, mailOptions);
@@ -124,7 +126,7 @@ module.exports = {
   },
 
   // Send an email
-  send: function(options, done) {
+  send: function (options, done) {
 
     // Extend options with config defaults
     options.from = sails.config.systemName +
@@ -140,7 +142,7 @@ module.exports = {
 
     // Send mail over SMTP with node-mailer
     sails.log.info('Sending SMTP message', options);
-    this._transport.sendMail(options, function(err, info) {
+    this._transport.sendMail(options, function (err, info) {
       if (err) sails.log.error('Failed to send mail. If this is unexpected, ' +
         'please check your email configuration in config/local.js.', err);
       if (done) return done(err, info);

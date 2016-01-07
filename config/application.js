@@ -46,7 +46,7 @@ module.exports = {
   cron_token : process.env.CRON_TOKEN || 'cron_token',
 
   // Default task state
-  taskState: process.env.TASK_STATE || 'open',
+  taskState: process.env.TASK_STATE || 'draft',
   draftAdminOnly: process.env.DRAFT_ADMIN_ONLY || false,
 
   validateDomains: process.env.VALIDATE_DOMAINS || false,
