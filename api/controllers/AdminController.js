@@ -393,6 +393,7 @@ module.exports = {
       steps = [];
 
     // Get tasks
+    //
     steps.push( function ( done ) {
       Task.find( { state: [ 'draft', 'submitted', 'open', 'public', 'assigned', 'completed' ] } )
         .sort( sort )
@@ -412,6 +413,7 @@ module.exports = {
     } );
 
     // Get volunteers
+    //
     steps.push( function (done) {
 
       Volunteer
@@ -435,6 +437,7 @@ module.exports = {
     } );
 
     // Build API response
+    //
     async.series( steps, function ( err, results ) {
       if ( err ) { return res.send( 400, { message: 'Error looking up tasks', err: err} ); }
 
@@ -442,11 +445,13 @@ module.exports = {
         volunteers = results[ 1 ];
 
       // Populate volunteers for each task
+      //
       tasks.forEach( function ( task, i ) {
         tasks[ i ].volunteers = _.where( volunteers, { taskId: task.id } );
       } );
 
       // Set output properties
+      //
       output.drafts = _.where( tasks, function (task) { return task.state === 'draft'; } );
       output.submitted = _.where( tasks, function (task) { return task.state === 'submitted'; } );
       output.assigned = _.where( tasks, function ( task ) { return task.state === 'assigned'; } );
@@ -456,7 +461,8 @@ module.exports = {
       } );
 
       // Output the remaining open tasks
-      output.open = openTasks;
+      //
+      output.open = _.where( tasks, function ( task ) { return task.state === 'open'; } );
 
       res.json( output );
 
