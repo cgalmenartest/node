@@ -196,13 +196,17 @@ var BrowseRouter = Backbone.Router.extend({
     this.profileShowController = new ProfileShowController({ id: id, action: action, data: this.data });
   },
 
-  showAdmin: function (action) {
+  showAdmin: function ( action ) {
+
     this.cleanupChildren();
-    this.adminMainController = new AdminMainController({
-      el: "#container",
-      action: action
-    });
-  }
+    this.adminMainController = new AdminMainController( {
+
+      el: '#container',
+      action: action,
+
+    } );
+
+  },
 
 });
 
