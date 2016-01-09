@@ -15,7 +15,6 @@ describe('attachments:', function () {
   before(function ( done ) {
     request = utils.init();
     Task.create( { userId: 2, state: 'draft' } ).exec( function ( err, t ) {
-      console.log( 'taskCreate exec callback', err );
       if ( err ) { return done( err ); }
       task = t;
       utils.logout(request, done);
