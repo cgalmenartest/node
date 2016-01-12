@@ -472,6 +472,12 @@ var TaskShowController = BaseView.extend({
 
     };
 
+    var submitValue = 'Change '+i18n.t( 'Task' )+' State';
+
+    if ( self.model.isDraft() ) {
+      submitValue = false;
+    }
+
     var modalContent = _.template( ChangeStateTemplate )( modalData );
 
     this.modalComponent = new ModalComponent( {
@@ -488,7 +494,7 @@ var TaskShowController = BaseView.extend({
       modalDiv: '#check-close',
       content: modalContent,
       cancel: 'Cancel',
-      submit: 'Change '+i18n.t( 'Task' )+' State',
+      submit: submitValue,
       callback: function ( e ) {
         // user clicked the submit button
         self.model.trigger( 'task:update:state', $( 'input[name=opportunityState]:checked' ).val() );

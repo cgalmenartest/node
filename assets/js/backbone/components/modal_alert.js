@@ -8,7 +8,7 @@ var ModalTemplate = require('./modal_alert_template.html');
 var ModalAlert = Backbone.View.extend({
 
   events: {
-    "submit #modal-form"    : "post"
+    'submit #modal-form' : 'post',
   },
 
   initialize: function (options) {

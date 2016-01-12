@@ -1,4 +1,17 @@
 <div class="form-group">
+
+  <% if ( model.isDraft() ) { %>
+  <p>This task is still a <span class="task__label--draft">Draft</span></p>
+  <p>To change the opportunity state:</p>
+  <ol>
+    <li>Close this dialog box.</li>
+    <li>
+      Click on the link &nbsp;
+      <span class="task-edit-example"><i class="fa fa-pencil"></i><span class="box-icon-text">Edit <span data-i18n="Task">Opportunity</span></span></span>
+    </li>
+    <li>Submit the opportunity for review.</li>
+  </ol>
+  <% } else { %>
 	<p>Please select the new state for the opportunity. The current state is checked and the available states are:
 		<ul style='list-style-type:none'>
 			<% _.each(states, function (t) { %>
@@ -13,4 +26,5 @@
 			<% }); %>
 		</ul>
 	</p>
+  <% } %>
 </div>
