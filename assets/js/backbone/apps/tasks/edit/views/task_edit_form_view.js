@@ -265,7 +265,7 @@ var TaskEditFormView = Backbone.View.extend({
 
       // Check if draft is being saved or if this is a submission.
       //
-      if ( ! event.draft && _.isUndefined( modelData.submittedAt ) ) {
+      if ( ! event.draft ) {
         modelData.state = 'submitted';
       }
 
