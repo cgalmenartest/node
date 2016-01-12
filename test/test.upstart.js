@@ -22,7 +22,7 @@ before(function(done) {
     requireAgency: false,
     requireLocation: false,
     emailProtocol: '',
-    taskState: 'open',
+    taskState: 'draft',
     draftAdminOnly: false,
     hooks: {
       grunt: false,

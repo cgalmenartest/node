@@ -5,7 +5,6 @@ var utils = require( './helpers/utils' );
 var request;
 
 describe('admin:', function () {
-
   describe('not admin:', function () {
     before(function (done) {
       request = utils.init();
@@ -91,6 +90,16 @@ describe('admin:', function () {
           assert.isDefined(b.count);
           assert.isDefined(b.limit);
           assert.isTrue(b.count > 0);
+          done(err);
+        }
+      );
+    });
+
+    it('get task metrics', function (done) {
+      request.get(
+        { url: conf.url + '/admin/taskMetrics' },
+        function (err, response, body) {
+          assert.equal(response.statusCode, 200);
           done(err);
         }
       );

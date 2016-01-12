@@ -21,27 +21,56 @@ var TasksCollection = Backbone.Collection.extend({
   url: '/api/task',
 
   initialize: function () {
-    var self = this;
 
-    this.listenTo(this, "task:save", function (data) {
-      self.addAndSave(data);
-    });
+    var collection = this;
+
+    this.listenTo( this, 'task:save', function ( data ) {
+
+      collection.addAndSave( data );
+
+    } );
+
+    this.listenTo( this, 'task:draft', function ( data ) {
+
+      collection.addAndSave( data );
+
+    } );
+
   },
 
-  addAndSave: function (data) {
-    var self = this;
+  /*
+   * Add data to the collection
+   */
+  addAndSave: function ( data ) {
 
-    self.task = new TaskModel(data);
+    var collection = this;
 
-    self.task.save(null,{
-      success: function (model) {
-        self.trigger("task:save:success", self.task.id);
-      },
-      error: function (model, response, options) {
-        self.trigger("task:save:error", model, response, options);
-      }
-    });
-  }
+    this.add( data )
+      .save( null, {
+
+        success: function ( model ) {
+
+          if ( 'draft' !== model.attributes.state ) {
+
+            collection.trigger( 'task:save:success', model.attributes.id );
+
+          } else {
+
+            collection.trigger( 'task:draft:success', model );
+
+          }
+
+        },
+
+        error: function ( model, response, options ) {
+
+          collection.trigger( 'task:save:error', model, response, options );
+
+        },
+
+      } );
+
+  },
 
 });
 

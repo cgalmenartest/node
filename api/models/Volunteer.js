@@ -19,15 +19,17 @@ module.exports = {
   },
 
   // create notification after creating a volunteer
-  afterCreate: function(model, done) {
-    this.assignVolunteerCountBadges(model);
+  afterCreate: function ( model, done ) {
 
-    if (model.silent === true) return done();
+    this.assignVolunteerCountBadges( model );
 
-    Notification.create({
+    if ( true === model.silent ) { return done(); }
+
+    Notification.create( {
       action: 'volunteer.create.thanks',
-      model: model
-    }, done);
+      model: model,
+    }, done );
+
   },
 
   afterDestroy: function(model, done) {

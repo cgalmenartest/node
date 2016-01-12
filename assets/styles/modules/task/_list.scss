@@ -84,3 +84,135 @@
   float: left;
 }
 
+
+%task__label {
+
+  display: inline;
+  padding: 0.2em 0.6em 0.3em;
+  font-size: 75%;
+  color: #fff;
+  border-radius: 0.25em;
+
+  &:hover {
+
+    color: #fff;
+    text-decoration: none;
+
+  }
+
+}
+
+
+.task__label--assigned {
+
+  @extend %task__label;
+  background-color: #2E8540;
+
+}
+
+.task__label--archived {
+
+  @extend %task__label;
+  background-color: #777;
+
+}
+
+.task__label--completed {
+
+  @extend %task__label;
+  background-color: #777;
+
+}
+
+.task__label--submitted {
+
+  @extend %task__label;
+  background-color: #065289;
+
+}
+
+.task__label--open {
+
+  @extend %task__label;
+  background-color: #2E8540;
+
+}
+
+.task__label--draft {
+
+  @extend %task__label;
+  background-color: #E31C3D;
+
+}
+
+// Tab Pane Styles
+// @appears Tab Panes appear in the Administration Tasks panel
+//
+.metrics-table {
+
+  tr:nth-child( even ) {
+
+    background: darken( #fff, 2.5% );
+
+  }
+
+  td {
+
+    padding: 10px;
+
+  }
+
+  thead {
+
+    border-bottom: 1px solid #e3e3e3;
+    margin-bottom: 10px;
+
+  }
+
+}
+
+.metrics-table__header {
+
+  font-weight: bold;
+  font-size: 0.8em;
+  text-transform: uppercase;
+
+}
+
+.metrics-table__label {
+
+  text-align: center;
+
+  a {
+
+    width: 100%;
+    display: block;
+
+  }
+
+}
+
+.metrics-table__title {
+
+  width: 80%;
+
+}
+
+.metrics-table__author {
+
+  width: 20%;
+
+}
+
+.metrics-table__button {
+
+  text-align: center;
+  font-size: 16px;
+
+  a {
+
+    padding-right: 10px;
+
+  }
+
+}

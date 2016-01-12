@@ -9,7 +9,7 @@ var ActTemplate = require('../templates/profile_activity_template.html');
 var ProfileActivityView = Backbone.View.extend({
 
   events: {
-    'click .activity-link'    : 'link'
+    'click .js-clickable-row' : 'followLink',
   },
 
   initialize: function (options) {
@@ -50,7 +50,7 @@ var ProfileActivityView = Backbone.View.extend({
     return this;
   },
 
-  link: function (e) {
+  followLink: function (e) {
     if (e.preventDefault) e.preventDefault();
     Backbone.history.navigate(this.options.target + 's/' + $(e.currentTarget).data('id'), { trigger: true });
   },

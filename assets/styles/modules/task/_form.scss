@@ -70,3 +70,131 @@
 }
 
 
+// Task Creation Form
+//
+
+$form-legend-color: #297bb5;
+$success-message-background: #E7F4E4;
+$success-message-body: #323A45;
+$success-message-link: #317AB9;
+$button-border: #0872B9;
+
+.create--task {
+
+  legend {
+
+    font-weight: 300;
+    color: $form-legend-color;
+    font-size: 22px;
+
+    > span {
+
+      line-height: 100%;
+      display: block;
+      margin-bottom: 10px;
+
+  padding-top: 10px;
+    }
+
+  }
+
+  label {
+
+    > span {
+
+      display: block;
+      padding-bottom: 10px;
+
+    }
+
+  }
+
+}
+
+.create__label {
+
+  padding: 10px 0 20px;
+  font-size: 21px;
+
+}
+
+.create__buttons {
+
+  margin-top: 2em;
+  margin-bottom: 13px;
+  text-align: left;
+
+  button {
+
+    margin-left: 0 !important;
+    margin-right: 1em !important;
+
+  }
+
+  .btn-border {
+
+    border: 2px solid $button-border;
+    background-color: #fff;
+    color: $success-message-link;
+
+  }
+
+}
+
+.task-edit-button-bar {
+
+  padding: 10px;
+
+}
+
+.create__success-message {
+
+  background-color: $success-message-background;
+  color: $success-message-body;
+  overflow: hidden;
+  _overflow: visible;
+  zoom: 1;
+  padding: 20px;
+  max-width: 480px;
+  text-align: left;
+
+  h4 {
+
+    color: inherit;
+    font-size: 24px;
+
+  }
+
+  a {
+
+    color: $success-message-link;
+
+    &:hover {
+
+      color: darken( $success-message-link, 10% );
+
+    }
+
+  }
+
+}
+.success-message__head {
+
+  float: left;
+  margin-right: 10px;
+
+  span {
+
+    display: block;
+    font-size: 33px;
+
+  }
+
+}
+.success-message__body {
+
+  overflow: hidden;
+  _overflow: visible;
+  zoom: 1;
+
+}

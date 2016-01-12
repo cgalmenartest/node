@@ -16,26 +16,59 @@ var TaskEditFormView = Backbone.View.extend({
     'click #change-owner'    : 'displayChangeOwner',
     'click #add-participant' : 'displayAddParticipant',
     'click #task-view'       : 'view',
-    'submit #task-edit-form' : 'submit'
+    'submit #task-edit-form' : 'submit',
+    'click .js-task-draft'   : 'saveDraft',
   },
 
   initialize: function (options) {
+
     _.extend(this, Backbone.Events);
 
-    this.options = options;
-    this.tagFactory = new TagFactory();
-    this.data = {};
-    this.data.newTag = {};
+    var view                    = this;
+    this.options                = options;
+    this.tagFactory             = new TagFactory();
+    this.data                   = {};
+    this.data.newTag            = {};
+
     this.initializeListeners();
+
     // Register listener to task update, the last step of saving
-    this.listenTo(this.options.model, "task:update:success", function (data) {
-      Backbone.history.navigate('tasks/' + data.attributes.id, { trigger: true });
-    });
+    //
+    this.listenTo( this.options.model, 'task:update:success', function ( data ) {
+
+      if ( 'draft' !== data.attributes.state ) {
+
+        Backbone.history.navigate( 'tasks/' + data.attributes.id, { trigger: true } );
+
+      } else {
+
+        view.renderSaveSuccessModal();
+
+      }
+
+    } );
+
   },
 
   view: function (e) {
     if (e.preventDefault) e.preventDefault();
     Backbone.history.navigate('tasks/' + this.model.attributes.id, { trigger: true });
+  },
+
+  /*
+   * Render modal for the Task Creation Form ViewController
+   */
+  renderSaveSuccessModal: function () {
+
+    var $modal = this.$( '.js-success-message' );
+
+    $modal.slideDown( 'slow' );
+
+    $modal.one( 'mouseout', function ( e ) {
+      _.delay( _.bind( $modal.slideUp, $modal, 'slow' ), 4200 );
+    } );
+
+
   },
 
   v: function (e) {
@@ -64,6 +97,10 @@ var TaskEditFormView = Backbone.View.extend({
     this.initializeTextArea();
 
     // Set up time pickers
+    this.$( '#js-edit-date-submitted' ).datetimepicker( {
+      defaultDate: this.data.data.submittedAt,
+    } );
+
     $('#publishedAt').datetimepicker({
       defaultDate: this.data.data.publishedAt
     });
@@ -79,6 +116,8 @@ var TaskEditFormView = Backbone.View.extend({
         defaultDate: this.data.data.completedAt
       });
     }
+
+    this.$( '.js-success-message' ).hide();
 
   },
 
@@ -197,82 +236,110 @@ var TaskEditFormView = Backbone.View.extend({
     }).render();
   },
 
-  initializeListeners: function() {
-    var self = this;
+  /*
+   * Initialize the `task:tags:save:done` listener for this view.
+   * The event is triggered from the `submit` & `saveDraft` methods.
+   */
+  initializeListeners: function () {
 
-    self.on("task:tags:save:done", function (){
-      var owner       = this.$("#owner").select2('data'),
-          completedBy = this.$('#estimated-completion-date').val(),
-          newParticipant = this.$('#participant').select2('data'),
-          silent = true;
+    var view = this;
+
+    this.on( 'task:tags:save:done', function ( event ) {
+
+      var owner          = this.$( '#owner' ).select2( 'data' );
+      var completedBy    = this.$( '#estimated-completion-date' ).val();
+      var newParticipant = this.$( '#participant' ).select2( 'data' );
+      var silent         = true;
 
       var modelData = {
-        title: this.$("#task-title").val(),
-        description: this.$("#task-description").val(),
-        publishedAt: this.$("#publishedAt").val() || undefined,
-        assignedAt: this.$("#assignedAt").val() || undefined,
-        completedAt: this.$("#completedAt").val() || undefined,
-        projectId: null
+        id          : this.model.get( 'id' ),
+        title       : this.$( '#task-title' ).val(),
+        description : this.$( '#task-description' ).val(),
+        submittedAt : this.$( '#js-edit-date-submitted' ).val() || undefined,
+        publishedAt : this.$( '#publishedAt' ).val() || undefined,
+        assignedAt  : this.$( '#assignedAt' ).val() || undefined,
+        completedAt : this.$( '#completedAt' ).val() || undefined,
+        projectId   : null,
       };
 
-      if (owner) modelData['userId'] = owner.id;
-      if (completedBy != '') modelData['completedBy'] = completedBy;
-      if (newParticipant) {
-        if (this.$('#participant-notify:checked').length > 0) silent = false;
-        $.ajax({
+
+      // Check if draft is being saved or if this is a submission.
+      //
+      if ( ! event.draft ) {
+        modelData.state = 'submitted';
+      }
+
+      if ( owner ) { modelData[ 'userId' ] = owner.id; }
+      if ( completedBy != '' ) { modelData[ 'completedBy' ] = completedBy; }
+      if ( newParticipant ) {
+        if ( this.$( '#participant-notify:checked' ).length > 0 ) { silent = false; }
+        $.ajax( {
           url: '/api/volunteer',
           method: 'POST',
           data: {
-            taskId: self.model.get('id'),
+            taskId: view.model.get( 'id' ),
             userId: newParticipant.id,
-            silent: silent
+            silent: silent,
           },
-          success: function (e) {
-            console.log('success adding participant', e);
+          success: function ( e ) {
+            console.log( 'success adding participant', e );
           },
-          error: function (e) {
-            console.log('error adding participant', e);
-          }
-        });
+          error: function ( e ) {
+            console.log( 'error adding participant', e );
+          },
+        } );
       }
 
-      var tags = _(this.getTagsFromPage()).chain()
-            .map(function(tag) {
-              if (!tag || !tag.id) return;
-              return (tag.id && tag.id !== tag.name) ? +tag.id : {
-                name: tag.name,
-                type: tag.tagType,
-                data: tag.data
-              };
-            })
-            .compact()
-            .value();
+      var tags = _( this.getTagsFromPage() )
+        .chain()
+        .map( function ( tag ) {
+          if ( ! tag || ! tag.id ) { return; }
+          return ( tag.id && tag.id !== tag.name ) ? parseInt( tag.id, 10 ) : {
+            name: tag.name,
+            type: tag.tagType,
+            data: tag.data,
+          };
+        } )
+        .compact()
+        .value();
 
       modelData.tags = tags;
 
-      self.options.model.trigger("task:update", modelData);
-    });
+      this.options.model.trigger( 'task:update', modelData );
+
+    } );
+
   },
 
-  submit: function (e) {
-    var self = this;
-    if (e.preventDefault) e.preventDefault();
+  saveDraft: function ( event ) {
 
-    var tags = [];
+    this.trigger( 'task:tags:save:done', { draft: true } );
+
+  },
+
+  submit: function ( e ) {
+
+    if ( e.preventDefault ) { e.preventDefault(); }
+
+    var tags    = [];
     var oldTags = [];
-    var diff = [];
+    var diff    = [];
 
     // check all of the field validation before submitting
-    var children = this.$el.find('.validate');
+    var children = this.$el.find( '.validate' );
     var abort = false;
-    _.each(children, function (child) {
-      var iAbort = validate({ currentTarget: child });
+
+    _.each( children, function ( child ) {
+      var iAbort = validate( { currentTarget: child } );
       abort = abort || iAbort;
-    });
-    if (abort === true) {
+    } );
+
+    if ( abort === true ) {
       return;
     }
-    return self.trigger("task:tags:save:done");
+
+    return this.trigger( 'task:tags:save:done', { draft: false } );
+
   },
 
   displayChangeOwner: function (e) {

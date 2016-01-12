@@ -6,22 +6,27 @@
   <p>Information on the task creation process is in the <a href="http://www.digitalgov.gov/resources/open-opportunities-task-creator-toolkit/" target="_blank">Task Creator Toolkit</a>.</p>
 </div>
 <p>Optional fields are indicated.</p>
-<form id="task-form" action="/api/task">
-  <fieldset>
-    <legend><h2>Step 1 - Create a Headline</h2></legend>
+<form id="task-form" class="create--task" action="/api/task">
+  <fieldset id="step-1">
+    <legend>
+      <span>Step 1 - Create a Headline</span>
+    </legend>
     <div class="form-group fullwidth">
       <div class="row">
         <div class="col-md-8">
           <label for="task-title">
-            <h3>Headline</h3>
-            <p>Write a few words that describe what needs to happen, inspires someone about the outcome, or entices them to learn something new.</p>
-            <p><em>(Maximum of 100 characters)</em></p>
+            <span class="create__label">Headline</span>
+            <span>Write a few words that describe what needs to happen, inspires someone about the outcome, or entices them to learn something new.</span>
+            <span><em>(Maximum of 100 characters)</em></span>
           </label>
           <span class="help-block error-empty" style="display:none;">You must enter headline for this <span
               data-i18n="task">opportunity</span></span>
           <span class="help-block error-count100" style="display:none;">The short description of the problem must be less than 100 characters.</span>
-          <input type="text" id="task-title" class="fullwidth form-control validate"
-              data-validate="empty,count100"/>
+          <input type="text"
+                 id="task-title"
+                 class="fullwidth form-control validate"
+                 data-validate="empty,count100"/>
+
         </div>
         <div class="col-md-4">
           <aside>
@@ -34,15 +39,17 @@
     </div>
   </fieldset>
 
-  <fieldset>
-    <legend><h2>Step 2 - Describe the <span data-i18n="Task">opportunity</span></h2></legend>
+  <fieldset id="step-2">
+    <legend>
+      <span>Step 2 - Describe the <span data-i18n="Task">opportunity</span></span>
+    </legend>
     <div class="form-group fullwidth">
       <div class="row">
         <div class="col-md-8">
           <label for="task-description">
-            <h3>Description</h3>
-            <p>Write a description that explains the <span data-i18n="task">opportunity</span>. Add details so that people can imagine what this will be like when completed.</p>
-            <p><em>(There is no limit on length, but we recommend 200 words or less.)</em></p>
+            <span class="create__label">Description</span>
+            <span>Write a description that explains the <span data-i18n="task">opportunity</span>. Add details so that people can imagine what this will be like when completed.</span>
+            <span><em>(There is no limit on length, but we recommend 200 words or less.)</em></span>
           </label>
           <span class="help-block error-empty" style="display:none;">You must enter a description for this <span data-i18n="task">opportunity</span></span>
           <div class="markdown-edit"></div>
@@ -62,12 +69,12 @@
       <div class="row tag-row">
         <div class="col-md-8">
           <label for="skills">
-            <h3>Tags</h3>
-            <p>Create tags using keywords that describe the opportunity. Include the focus area, mission of the work and skills they will develop through as part of the <span data-i18n="task">opportunity</span>.</p>
-            <p><em>(Put a comma between each one. Example: Cyber Security, Research, employee engagement)</em></p>
+            <span class="create__label">Tags</span>
+            <span>Create tags using keywords that describe the opportunity. Include the focus area, mission of the work and skills they will develop through as part of the <span data-i18n="task">opportunity</span>.</span>
+            <span><em>(Put a comma between each one. Example: Cyber Security, Research, employee engagement)</em></span>
           </label>
-          <div class="">
-            <input type="hidden" id="task_tag_skills" name="skills" class="fullwidth" />
+          <div>
+            <input type="hidden" id="js-task-tag" name="skills" class="fullwidth" />
           </div>
         </div>
         <div class="col-md-4">
@@ -81,13 +88,15 @@
     </div>
   </fieldset>
 
-  <fieldset>
-    <legend><h2>Step 3 - Define Who, When, and Where</h2></legend>
+  <fieldset id="step-3">
+    <legend>
+      <span>Step 3 - Define Who, When, and Where</span>
+    </legend>
     <div class="form-group fullwidth">
       <div class="row">
         <div class="col-md-8">
           <label for="time-required">
-            <h3>What type of effort is needed?</h3>
+            <span class="create__label">What type of effort is needed?</span>
           </label>
           <% _.each(tags['task-time-required'], function (time) { %>
             <div class="radio">
@@ -102,13 +111,12 @@
         </div>
       </div>
       <div id="time-options">
-
         <div class="row" id="time-options-time-required">
-          <div class="col-md-8" class="display-block">
-            <label for="time-required">
-              <h3>How much time is needed?</h3>
+          <div class="col-md-8 display-block">
+            <label for="js-task-time-estimate">
+              <span class="create__label">How much time is needed?</span>
             </label>
-            <select id="time-estimate" class="dropdown">
+            <select id="js-task-time-estimate" class="dropdown">
               <% _.each(tags['task-time-estimate'], function (timeEstimate) { %>
                 <option value="<%- timeEstimate.id %>"><%- timeEstimate.name %></option>
               <% }); %>
@@ -125,9 +133,9 @@
         </div>
 
         <div class="row" id="time-options-completion-date">
-          <div class="col-md-8" class="display-block">
+          <div class="col-md-8 display-block">
             <label for="estimated-completion-date">
-              <h3>Estimated completion date (optional)</h3>
+              <span class="create__label">Estimated completion date (optional)</span>
             </label>
             <input id="estimated-completion-date" type="date">
             <span class="help-block error-empty" style="display:none;">You must enter a completion date for this one-time <span data-i18n="task">opportunity</span></span>
@@ -136,11 +144,11 @@
         </div>
 
         <div class="row" id="time-options-time-frequency">
-          <div class="col-md-8" class="display-block">
-            <label for="time-frequency-estimate">
-              <h3>How often is this time needed?</h3>
+          <div class="col-md-8 display-block">
+            <label for="js-time-frequency-estimate">
+              <span>How often is this time needed?</span>
             </label>
-            <select id="task-length" class="dropdown">
+            <select id="js-time-frequency-estimate" class="dropdown">
               <% _.each(tags['task-length'], function (timeEstimate) { %>
                 <option value="<%- timeEstimate.id %>"><%- timeEstimate.name %></option>
               <% }); %>
@@ -153,25 +161,26 @@
     </div>
     <div class="form-group fullwidth">
       <div class="row">
-        <div class="col-md-8" class="display-block">
-          <label for="time-required">
-            <h3>Where can participants be located?</h3>
+        <div class="col-md-8 display-block">
+          <label>
+            <span>Where can participants be located?</span>
           </label>
           <div class="radio">
             <label>
-              <input type="radio" name="time-required" id="anywhere">
+              <input type="radio" name="participant-location" id="anywhere">
               Anywhere
             </label>
           </div>
           <div class="radio">
             <label>
-              <input type="radio" name="time-required" id="specific-location">At specific locations: <input type="hidden" id="task_tag_location" name="location" />
+              <input type="radio" name="participant-location" id="specific-location" />
+              At specific locations: <input type="hidden" id="js-task-location" name="location" />
             </label>
           </div>
-          <label for="people">
-            <h3>How many people are needed?</h3>
+          <label for="participants">
+            <span>How many people are needed?</span>
           </label>
-          <select id="people" class="dropdown">
+          <select id="js-participant-selection" class="dropdown">
             <% _.each(tags['task-people'], function (person) { %>
               <option value="<%- person.id %>"><%- person.name %></option>
             <% }); %>
@@ -182,21 +191,29 @@
     </div>
   </fieldset>
 
-  <fieldset>
-    <legend><h2>Step 4 - Submit for Review</h2></legend>
+  <fieldset id="step-4">
+    <legend>
+      <span>Step 4 - Submit for Review</span>
+    </legend>
     <div class="row">
       <div class="col-md-8">
         <p>Once you submit your task, it will be reviewed by Open Opportunities staff. You will receive an email within two business days. We will either send you recommended edits to, or a notice that your task is approved and live on the website.</p>
-        <div class="buttons">
-          <button type="button" id="cancel-button" class="btn btn-c0 wizard-cancel" data-dismiss="modal">
-            Cancel
-          </button>
-          <button type="button" id="draft-button" class="btn btn-c0 wizard-submit" data-state="draft">
-            Save Draft
-          </button>
-          <button type="button" id="create-button" class="btn btn-c2 wizard-submit">
+        <div class="create__buttons">
+          <button type="button" id="js-task-create" class="btn btn-c2 wizard-submit" data-state="submit">
             Submit for Review
           </button>
+          <button type="button" id="js-task-draft" class="btn btn-border wizard-submit" data-state="draft">
+            Save as Draft
+          </button>
+        </div>
+        <div class="create__success-message js-success-message">
+          <div class="success-message__head">
+            <span class="fa fa-check-circle"></span>
+          </div>
+          <div class="success-message__body">
+            <h4>Saved</h4>
+            <p>Your draft has been saved. You can find your draft <a class="js-profile-link" target="_blank" href="javascript:void(0);">on your profile page</a>.</p>
+          </div>
         </div>
       </div>
       <div class="col-md-4">
@@ -207,7 +224,6 @@
       </div>
     </div>
   </fieldset>
-
 
 </form>
 </div>
