@@ -87,6 +87,41 @@ var TaskModel = Backbone.Model.extend({
     });
   },
 
+  /*
+   * Check if the current model is a draft.
+   * @return { Boolean } Returns true if current state is draft.
+   */
+  isDraft: function () {
+
+    return 'draft' === this.attributes.state;
+
+  },
+
+  /*
+   * Check if the current model is a submission.
+   * @return { Boolean } Returns true if current state is submitted.
+   */
+  isSubmission: function () {
+
+    return 'submitted' === this.attributes.state;
+
+  },
+
+  /*
+   * Check if the current task has been submitted by checking the current
+   * state to not be `draft` or `submitted` or to check if it has a `submittedAt`
+   * date associated with it.
+   * @return { Boolean }
+   */
+  hasBeenSubmitted: function () {
+
+    return (
+      this.attributes.submittedAt ||
+      ( ! this.isDraft() && ! this.isSubmission() )
+    );
+
+  },
+
 });
 
 module.exports = TaskModel;

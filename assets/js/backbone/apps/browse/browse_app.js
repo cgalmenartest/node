@@ -19,21 +19,21 @@ var HomeController = require('../home/controllers/home_controller');
 var BrowseRouter = Backbone.Router.extend({
 
   routes: {
-    ''                          : 'showHome',
-    'dashboard(/)'              : 'showHome',
-    'projects(/)(?:queryStr)'   : 'listProjects',
-    'projects/:id(/)'           : 'showProject',
-    'projects/:id/:action(/)'   : 'showProject',
-    'tasks/new(?*queryString)'  : 'newTask',
-    'tasks(/)(?:queryStr)'      : 'listTasks',
-    'tasks/:id(/)'              : 'showTask',
-    'tasks/:id/:action(/)'      : 'showTask',
-    'profiles(/)(?:queryStr)'   : 'listProfiles',
-    'profile(/)'                : 'showProfile',
-    'profile/:id(/)'            : 'showProfile',
-    'profile/:id(/)/:action'    : 'showProfile',
-    'admin(/)'                  : 'showAdmin',
-    'admin(/):action(/)'        : 'showAdmin'
+    ''                               : 'showHome',
+    'dashboard(/)'                   : 'showHome',
+    'projects(/)(?:queryStr)'        : 'listProjects',
+    'projects/:id(/)'                : 'showProject',
+    'projects/:id/:action(/)'        : 'showProject',
+    'tasks/new(?*queryString)'       : 'newTask',
+    'tasks(/)(?:queryStr)'           : 'listTasks',
+    'tasks/:id(/)'                   : 'showTask',
+    'tasks/:id/:action(/)'           : 'showTask',
+    'profiles(/)(?:queryStr)'        : 'listProfiles',
+    'profile(/)'                     : 'showProfile',
+    'profile/:id(/)'                 : 'showProfile',
+    'profile/:id(/)/:action'         : 'showProfile',
+    'admin(/)'                       : 'showAdmin',
+    'admin(/):action(/)(?:queryStr)' : 'showAdmin'
   },
 
   data: { saved: false },
@@ -196,13 +196,17 @@ var BrowseRouter = Backbone.Router.extend({
     this.profileShowController = new ProfileShowController({ id: id, action: action, data: this.data });
   },
 
-  showAdmin: function (action) {
+  showAdmin: function ( action ) {
+
     this.cleanupChildren();
-    this.adminMainController = new AdminMainController({
-      el: "#container",
-      action: action
-    });
-  }
+    this.adminMainController = new AdminMainController( {
+
+      el: '#container',
+      action: action,
+
+    } );
+
+  },
 
 });
 

@@ -16,7 +16,7 @@ module.exports = {
       user: {},
     };
 
-    User.findOne( { id: model.userId } ).exec( function ( err, user ) {
+    User.findOne( { id: model.owner.userId } ).exec( function ( err, user ) {
       if ( err ) return done( err );
       data.user = user;
       done( null, data );

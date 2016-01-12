@@ -165,9 +165,12 @@ var TaskFormView = Backbone.View.extend({
 
     } else {
 
-      $modal.slideDown( 'slow' )
-        .find( '.js-profile-link' )
-        .attr( 'href', '/profile/' + userId );
+      $modal.find( '.js-profile-link' ).attr( 'href', '/profile/' + userId );
+
+      $modal.slideDown( 'slow' );
+      $modal.one( 'mouseout', function ( e ) {
+        _.delay( _.bind( $modal.slideUp, $modal, 'slow' ), 4200 );
+      } );
 
     }
 

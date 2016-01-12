@@ -34,6 +34,11 @@ MarkdownEditor = BaseComponent.extend({
   initialize: function (options) {
     this.options = options;
     this.actions = {
+      'header': {
+        before: '## ',
+        text: 'Heading',
+        after: '\n',
+      },
       'bold': {
         before: '**',
         text: 'text',
@@ -58,8 +63,18 @@ MarkdownEditor = BaseComponent.extend({
         before: '[Link Title](',
         text: 'http://',
         after: ')'
-      }
-    }
+      },
+      'list-ul': {
+        before: '- ',
+        text: 'List item X',
+        after: '\n- List item Y\n- List item Z\n',
+      },
+      'list-ol': {
+        before: '1. ',
+        text: 'Numbered List item 1',
+        after: '\n1. Numbered List item 2\n1. Numbered List item 3\n',
+      },
+    };
     return this;
   },
 

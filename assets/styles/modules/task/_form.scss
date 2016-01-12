@@ -126,7 +126,8 @@ $button-border: #0872B9;
 
   button {
 
-    // display: block;
+    margin-left: 0 !important;
+    margin-right: 1em !important;
 
   }
 
@@ -140,6 +141,12 @@ $button-border: #0872B9;
 
 }
 
+.task-edit-button-bar {
+
+  padding: 10px;
+
+}
+
 .create__success-message {
 
   background-color: $success-message-background;
@@ -149,6 +156,7 @@ $button-border: #0872B9;
   zoom: 1;
   padding: 20px;
   max-width: 480px;
+  text-align: left;
 
   h4 {
 

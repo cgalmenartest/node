@@ -108,7 +108,7 @@ describe('Task actions', function () {
         '#task-title': config.task.titleChange,
         '#task-description': config.task.descriptionChange,
       }, false);
-      casper.click('#task-edit-form input[type="submit"]');
+      casper.click('#task-edit-form #js-task-create');
       casper.waitUntilVisible('.li-task-edit');
     });
 

@@ -5,6 +5,8 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-c0" data-dismiss="modal"><%- cancel %></button>
-    <input type="submit" class="btn btn-c2" id="submit" value="<%- submit %>"/>
+    <% if ( submit ) { %>
+      <input type="submit" class="btn btn-c2" id="submit" value="<%- submit %>"/>
+    <% } %>
   </div>
 </form>

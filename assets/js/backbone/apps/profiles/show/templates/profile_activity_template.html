@@ -12,17 +12,21 @@
         <tbody>
         <% for (var i in data) { %>
           <% if (data[i].state == 'archived') { continue; } %>
-          <tr>
+          <tr class="clickable-row js-clickable-row" data-id="<%- data[i].id %>">
             <td>
-              <span class="task__label--<%= data[ i ].state %>"><%= data[ i ].state.charAt( 0 ).toUpperCase() +  data[ i ].state.slice( 1 ) %></span>
+              <% if ( '' === data[ i ].title && 'draft' === data[ i ].state ) {
+                data[ i ].title = 'Untitled Draft';
+              } %>
               <a href="/<%- target %>s/<%- data[i].id %>" class="activity-link" data-id="<%- data[i].id %>"><%- data[i].title %></a>
             </td>
             <td>
               <% var created = new Date(data[i].createdAt); %>
               <%- created.toLocaleDateString() %></td>
             <td>
-              <% var s = data[i].state; %>
-              <%- [s[0].toUpperCase(), s.slice(1)].join('') %></td>
+              <span class="task__label--<%= data[ i ].state %>">
+                <%= data[ i ].state.charAt( 0 ).toUpperCase() + data[ i ].state.slice( 1 ) %>
+              </span>
+            </td>
           </tr>
         <% } %>
         </tbody>

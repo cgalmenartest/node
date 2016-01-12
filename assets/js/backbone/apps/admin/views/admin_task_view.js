@@ -23,21 +23,23 @@ var AdminTaskView = Backbone.View.extend({
   },
 
   render: function () {
-    var self = this;
+    var view = this;
     $.ajax({
       url: '/api/admin/tasks',
       data: this.data,
       dataType: 'json',
-      success: function (data) {
-        var template = _.template(AdminTaskTemplate)(data);
-        self.$el.html(template);
-        self.$el.show();
-        $('.tip').tooltip();
-      }
+      success: function ( data ) {
+        var template = _.template( AdminTaskTemplate )( data );
+        view.$el.html( template );
+        view.$el.show();
+        $( '.tip' ).tooltip();
+        $( '.js-tip' ).tooltip();
+      },
     });
 
-    Backbone.history.navigate('/admin/tasks');
+    Backbone.history.navigate( '/admin/tasks' );
     return this;
+
   },
 
 
