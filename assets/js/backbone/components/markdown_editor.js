@@ -34,6 +34,11 @@ MarkdownEditor = BaseComponent.extend({
   initialize: function (options) {
     this.options = options;
     this.actions = {
+      'header': {
+        before: '## ',
+        text: 'Heading',
+        after: '\n',
+      },
       'bold': {
         before: '**',
         text: 'text',
