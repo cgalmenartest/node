@@ -10,6 +10,7 @@ var json2csv = require('json2csv');
 var async = require('async');
 
 var addUserMetrics = require(__dirname + '/../services/utils/userMetrics').add;
+var TaskMetrics = require(__dirname + '/../services/utils/taskMetrics');
 
 module.exports = {
 
@@ -64,62 +65,116 @@ module.exports = {
    * Retrieve metrics not tied to a particular user
    * eg: /api/admin/metrics
    */
-  metrics: function (req, res) {
+  metrics: function ( req, res ) {
+
     var metrics = {
+
       users: {
         count: 0,
-        withTasks: 0
+        withTasks: 0,
       },
+
       tasks: {
         count: 0,
+        submitted: 0,
         draft: 0,
         open: 0,
         assigned: 0,
         completed: 0,
-        archived: 0
+        archived: 0,
       },
+
       projects: {
-        count: 0
-      }
+        count: 0,
+      },
+
     };
 
-    User.count({ disabled: false }).exec(function(err, userCount) {
-      if (err) { return res.send(400, { message: 'An error occurred looking up user metrics.', error: err }); }
-      metrics.users.count = userCount;
-      Task.find().sort('userId').exec(function(err, tasks) {
-        if (err) { return res.send(400, { message: 'An error occurred looking up task metrics.', error: err }); }
-        metrics.users.withTasks = _(tasks).pluck('userId').uniq().value().length;
-        metrics.tasks.count = tasks.length;
-        for(var i = 0; i < metrics.tasks.count; i++) {
-          if (tasks[i].state === "open") {
-            metrics.tasks.open++;
-          } else if (tasks[i].state === "assigned") {
-            metrics.tasks.assigned++;
-          } else if (tasks[i].state === "completed") {
-            metrics.tasks.completed++;
-          } else if (tasks[i].state === "archived") {
-            metrics.tasks.archived++;
-          } else if (tasks[i].state === "draft") {
-            metrics.tasks.draft++;
-          }
-        }
-        Volunteer.find().sort('taskId').exec(function(err, vols) {
-          if (err) { return res.send(400, { message: 'An error occurred looking up task metrics.', error: err }); }
-          var lastId = -1;
-          for (var j = 0; j < vols.length; j++) {
-            if (vols[j].taskId !== lastId) {
-              metrics.tasks.withVolunteers++;
-              lastId = vols[j].taskId;
+    User.count( { disabled: false } )
+      .exec( function ( err, userCount ) {
+
+        if ( err ) {
+          return res.send(
+            400,
+            {
+              message: 'An error occurred looking up user metrics.',
+              error: err,
             }
-          }
-          Project.count().exec(function(err, projectCount) {
-            if (err) { return res.send(400, { message: 'An error occurred looking up project metrics.', error: err }); }
-            metrics.projects.count = projectCount;
-            return res.send(metrics);
-          });
-        });
-      });
-    });
+          );
+        }
+
+        metrics.users.count = userCount;
+
+        Task.find()
+          .sort( 'userId' )
+          .exec( function (err, tasks) {
+
+            if (err) {
+              return res.send(
+                400,
+                {
+                  message: 'An error occurred looking up task metrics.',
+                  error: err,
+                }
+              );
+            }
+
+            metrics.users.withTasks = _( tasks ).pluck( 'userId' ).uniq().value().length;
+            metrics.tasks.count = tasks.length;
+
+            var taskState = '';
+            _( tasks ).each( function ( task ) {
+
+              taskState = _.property( 'state' )( task );
+
+              if ( _.isNumber( metrics.tasks[ taskState ] ) ) {
+                metrics.tasks[ taskState ] += 1;
+              }
+
+            } );
+
+            Volunteer.find().sort( 'taskId' ).exec( function ( err, vols ) {
+
+              if ( err ) {
+                return res.send(
+                  400,
+                  {
+                    message: 'An error occurred looking up task metrics.',
+                    error: err,
+                  }
+                );
+              }
+
+              var lastId = -1;
+              for ( var j = 0; j < vols.length; j++ ) {
+                if ( vols[j].taskId !== lastId ) {
+                  metrics.tasks.withVolunteers++;
+                  lastId = vols[j].taskId;
+                }
+              }
+
+              Project.count().exec( function ( err, projectCount ) {
+                if ( err ) {
+                  return res.send(
+                    400,
+                    {
+                      message: 'An error occurred looking up project metrics.',
+                      error: err,
+                    }
+                  );
+                }
+
+                metrics.projects.count = projectCount;
+                return res.send(metrics);
+
+              } );
+
+            } );
+
+          } );
+
+      } );
+
   },
 
   /**
@@ -129,169 +184,10 @@ module.exports = {
    * with the above endpoint.
    */
   taskMetrics: function(req, res) {
-    var pad = function(num, size) {
-          size = size || 2;
-          var s = num + '';
-          while (s.length < size) s = '0' + s;
-          return s;
-        },
-        getFY = function(input) {
-          if (!input) return undefined;
-          var date = new Date(input);
-          return new Date(date.setMonth(date.getMonth() + 3)).getFullYear();
-        },
-        getYear = function(input) {
-          if (!input) return undefined;
-          return new Date(input).getFullYear();
-        },
-        getMonth = function(input) {
-          if (!input) return undefined;
-          var date = new Date(input);
-          return +date.getFullYear() + pad((date.getMonth() + 1));
-        },
-        getWeek = function(input) {
-          if (!input) return undefined;
-          var date = new Date(input);
-          var getWeekNumber = function(date) {
-                var d = new Date(date);
-                d.setHours(0,0,0);
-                d.setDate(d.getDate()+4-(d.getDay()||7));
-                return Math.ceil((((d-new Date(d.getFullYear(),0,1))/8.64e7)+1)/7);
-              };
-          return +date.getFullYear() + pad(getWeekNumber(date));
-        },
-        getQuarter = function(input) {
-          if (!input) return undefined;
-          var date = new Date(input),
-              month = date.getMonth() + 1,
-              quarter = month <= 3 ? '1' :
-                        month <= 6 ? '2' :
-                        month <= 9 ? '3' : '4';
-          return +date.getFullYear() + quarter;
-        },
-        getFYQuarter = function(input) {
-          if (!input) return undefined;
-          var date = new Date(input),
-              fyDate = new Date(date.setMonth(date.getMonth() + 3)),
-              month = fyDate.getMonth() + 1,
-              quarter = month <= 3 ? '1' :
-                        month <= 6 ? '2' :
-                        month <= 9 ? '3' : '4';
-          return +fyDate.getFullYear() + quarter;
-        },
-        output = {
-          tasks: {},
-          volunteers: {},
-          agencies: {}
-        },
-        filter = req.param('filter'),
-        ids,
-        count = req.param('group') === 'week' ? getWeek :
-                req.param('group') === 'month' ? getMonth :
-                req.param('group') === 'quarter' ? getQuarter :
-                req.param('group') === 'fyquarter' ? getFYQuarter :
-                req.param('group') === 'year' ? getYear : getFY;
-
-    async.series([
-      function(done) {
-        Task.find({}).populate('tags').exec(function(err, tasks) {
-          if (err) return done('task');
-
-          if (filter) tasks = _.filter(tasks, function(task) {
-            return _.findWhere(task.tags, { name: filter });
-          });
-
-          ids = _.pluck(tasks, 'id');
-
-          // Default missing dates to createdAt
-          tasks.forEach(function(task) {
-            if ((task.state === 'open' ||
-              task.state === 'assigned' ||
-              task.state === 'completed') &&
-              !task.publishedAt) task.publishedAt = task.createdAt;
-            if ((task.state === 'assigned' ||
-              task.state === 'completed') &&
-              !task.assignedAt) task.assignedAt = task.createdAt;
-            if (task.state === 'completed' &&
-              !task.completedAt) task.completedAt = task.createdAt;
-          });
-
-          var groups = {
-                carryOver: {},
-                published: _(tasks).filter(function(task) {
-                  return task.state === 'open' ||
-                    task.state === 'assigned' ||
-                    task.state === 'completed';
-                }).countBy(function(task) {
-                  return count(task.publishedAt);
-                }).value(),
-                completed: _(tasks).filter(function(task) {
-                  return task.state === 'completed';
-                }).countBy(function(task) {
-                  return count(task.completedAt);
-                }).value()
-              },
-              range = _.keys(groups.published);
-
-          // Evaluate whether a task was started and remained open in a previous FY
-          _.each(tasks, function(task) {
-            range.forEach(function(i) {
-              var openedBefore = count(task.publishedAt) < i,
-                  openAfter = task.state !== 'archived' &&
-                    (!task.completedAt || count(task.completedAt) > i);
-              groups.carryOver[i] = groups.carryOver[i] || 0;
-              if (openedBefore && openAfter) groups.carryOver[i] += 1;
-            });
-          });
-
-          output.range = range;
-          output.tasks = groups;
-          done();
-        });
-      },
-      function(done) {
-        Volunteer.find({ taskId: ids }).exec(function(err, volunteers) {
-          if (err) return done('volunteer');
-
-          // Group volunteers by created FY
-          output.volunteers = _.groupBy(volunteers, function(volunteer) {
-            return count(volunteer.createdAt);
-          });
-
-          // Get volunteer users and tags to count agencies
-          User.find({ id: _.pluck(volunteers, 'userId') })
-            .populate('tags', { type: 'agency' })
-            .exec(function(err, users) {
-              if (err) return done('volunteer');
-
-              // Get unique agencies with volunteers
-              output.agencies = _.reduce(output.volunteers, function(o, vols, fy) {
-
-                // Return agency (first tag) for matching user
-                o[fy] = _(vols).map(function(vol) {
-                  var volUser = _.findWhere(users, { id: vol.userId });
-                  if (!volUser || !volUser.tags || !volUser.tags[0]) return undefined;
-                  return (volUser.tags[0] || {}).id;
-                }).compact().uniq().value().length;
-
-                return o;
-
-              }, {});
-
-              // Count volunteers
-              output.volunteers = _.reduce(output.volunteers, function(o, vols, fy) {
-                o[fy] = vols.length;
-                return o;
-              }, {});
-
-              done();
-            });
-
-        });
-      }
-    ], function(err) {
+    var generator = new TaskMetrics(req.param);
+    generator.generateMetrics(function(err) {
       if (err) res.serverError(err + ' metrics are unavailable.');
-      res.send(output);
+      res.send(generator.metrics);
     });
   },
 
@@ -401,7 +297,7 @@ module.exports = {
 
       },
 
-      newVolunteer: function(event, done) {
+      newVolunteer: function (event, done) {
         var activity = {
           type: 'newVolunteer',
           createdAt: event.createdAt
@@ -536,80 +432,95 @@ module.exports = {
   * List tasks
   * eg: /api/admin/tasks
   */
-  tasks: function (req, res) {
-    var page = parseInt(req.param('page', 1)),
-        limit = req.param('limit', 1000),
-        sort = req.param('sort', 'createdAt desc'),
-        output = {
-          open: 0,
-          withSignups: 0,
-          assigned: 0,
-          completed: 0
-        },
-        openTasks,
-        steps = [];
+  tasks: function ( req, res ) {
+
+    var page = parseInt( req.param( 'page', 1 ) ),
+      limit = req.param( 'limit', 1000 ),
+      sort = req.param( 'sort', 'createdAt desc' ),
+      output = {
+        open: 0,
+        withSignups: 0,
+        assigned: 0,
+        completed: 0,
+      },
+      openTasks,
+      steps = [];
 
     // Get tasks
-    steps.push(function(done) {
-      Task.find({ state: ['draft', 'open', 'public', 'assigned', 'completed'] })
-        .sort(sort)
-        .paginate({ page: page, limit: limit})
-        .exec(function(err, tasks) {
-          if (err) { return done(err); }
-          openTasks = _.where(tasks, function(task) { return task.isOpen(); });
-          User.find({ id: _.pluck(tasks, 'userId') }).exec(function(err, users) {
-            if (err) { return done(err); }
+    //
+    steps.push( function ( done ) {
+      Task.find( { state: [ 'draft', 'submitted', 'open', 'public', 'assigned', 'completed' ] } )
+        .sort( sort )
+        .paginate( { page: page, limit: limit } )
+        .exec( function ( err, tasks ) {
+          if ( err ) { return done( err ); }
+          openTasks = _.where( tasks, function ( task ) { return task.isOpen(); } );
+          User.find( { id: _.pluck(tasks, 'userId') } ).exec(function ( err, users ) {
+            if ( err ) { return done( err ); }
 
-            tasks.forEach(function(task, i) {
-              tasks[i].user = _.findWhere(users, { id: task.userId });
-            });
-            done(null, tasks);
+            tasks.forEach( function ( task, i ) {
+              tasks[ i ].user = _.findWhere( users, { id: task.userId } );
+            } );
+            done( null, tasks );
           });
-        });
-    });
+        } );
+    } );
 
     // Get volunteers
-    steps.push(function(done) {
-      Volunteer.find({ taskId: _.pluck(openTasks, 'id') }).exec(function(err, result) {
-        if (err) { return done(err); }
+    //
+    steps.push( function (done) {
 
-        var userIds = _.pluck(result, 'userId');
-        User.find({ id: userIds }).exec(function(err, users) {
-          if (err) { return done(err); }
+      Volunteer
+        .find( { taskId: _.pluck( openTasks, 'id' ) } )
+        .exec( function ( err, result ) {
+          if ( err ) { return done( err ); }
 
-          result.forEach(function(volunteer, i) {
-            result[i].user = _.findWhere(users, { id: volunteer.userId });
+          var userIds = _.pluck( result, 'userId' );
+          User.find( { id: userIds } ).exec(function ( err, users ) {
+            if (err) { return done( err ); }
+
+            result.forEach( function ( volunteer, i ) {
+              result[ i ].user = _.findWhere( users, { id: volunteer.userId } );
+            } );
+            done( null, result );
+
           });
-          done(null, result);
-        });
-      });
-    });
+
+        } );
+
+    } );
 
     // Build API response
-    async.series(steps, function(err, results) {
-      if (err) { return res.send(400, { message: 'Error looking up tasks', err: err}); }
+    //
+    async.series( steps, function ( err, results ) {
+      if ( err ) { return res.send( 400, { message: 'Error looking up tasks', err: err} ); }
 
-      var tasks = results[0],
-          volunteers = results[1];
+      var tasks = results[ 0 ],
+        volunteers = results[ 1 ];
 
       // Populate volunteers for each task
-      tasks.forEach(function(task, i) {
-        tasks[i].volunteers = _.where(volunteers, { taskId: task.id });
-      });
+      //
+      tasks.forEach( function ( task, i ) {
+        tasks[ i ].volunteers = _.where( volunteers, { taskId: task.id } );
+      } );
 
       // Set output properties
-      output.drafts = _.where(tasks, function(task) { return task.state === 'draft'; });
-      output.assigned = _.where(tasks, function(task) { return task.state === 'assigned'; });
-      output.completed = _.where(tasks, function(task) { return task.state === 'completed'; });
-      output.withSignups = _.where(tasks, function(task) {
-        return _(volunteers).pluck('taskId').uniq().value().indexOf(task.id) >= 0;
-      });
+      //
+      output.drafts = _.where( tasks, function (task) { return task.state === 'draft'; } );
+      output.submitted = _.where( tasks, function (task) { return task.state === 'submitted'; } );
+      output.assigned = _.where( tasks, function ( task ) { return task.state === 'assigned'; } );
+      output.completed = _.where( tasks, function ( task ) { return task.state === 'completed'; } );
+      output.withSignups = _.where( tasks, function ( task ) {
+        return _( volunteers ).pluck( 'taskId' ).uniq().value().indexOf( task.id ) >= 0;
+      } );
 
       // Output the remaining open tasks
-      output.open = openTasks;
+      //
+      output.open = _.where( tasks, function ( task ) { return task.state === 'open'; } );
 
-      res.json(output);
-    });
+      res.json( output );
+
+    } );
 
   },
 
@@ -692,7 +603,7 @@ module.exports = {
   * Measure key interactions: http://git.io/AOkF
   * eg: /api/admin/interactions
   */
-  interactions: function(req, res) {
+  interactions: function ( req, res ) {
     /**
     * The interaction metric is the total of the following actions:
     * + someone signs up for an opportunity
@@ -703,71 +614,99 @@ module.exports = {
     * + an opportunity is published
     */
     var interactions = {
-          signups: 0,
-          assignments: 0,
-          posts: 0,
-          completions: 0,
-          drafts: 0,
-          publishes: 0
-        },
-        page = parseInt(req.param('page', 1)),
-        limit = req.param('limit', 1000),
-        sort = req.param('sort', 'createdAt desc'),
-        steps = [];
+        submitted: 0,
+        signups: 0,
+        assignments: 0,
+        posts: 0,
+        completions: 0,
+        drafts: 0,
+        publishes: 0,
+      },
+      page = parseInt( req.param( 'page', 1 ) ),
+      limit = req.param( 'limit', 1000 ),
+      sort = req.param( 'sort', 'createdAt desc' ),
+      steps = [];
 
-    steps.push(function(done) {
-      Task.find({}).sort(sort).paginate({
+    steps.push( function ( done ) {
+
+      Task.find( {} ).sort( sort ).paginate( {
+
         page: page,
-        limit: limit
-      }).exec(function(err, tasks) {
-        if (err) { return done(err); }
-        interactions.assignments = tasks.reduce(function(count, task) {
-          return (task.assignedAt) ? count + 1 : count;
-        }, 0);
-        interactions.completions = tasks.reduce(function(count, task) {
-          return (task.completedAt) ? count + 1 : count;
-        }, 0);
-        interactions.drafts = tasks.reduce(function(count, task) {
-          return (task.createdAt) ? count + 1 : count;
-        }, 0);
-        interactions.publishes = tasks.reduce(function(count, task) {
-          return (task.publishedAt) ? count + 1 : count;
-        }, 0);
-        done();
-      });
-    });
+        limit: limit,
 
-    steps.push(function(done) {
-      Comment.count({}).exec(function(err, count) {
-        if (err) { return done(err); }
+      } ).exec( function ( err, tasks ) {
+
+        if ( err ) { return done( err ); }
+
+        interactions.assignments = tasks.reduce( function ( count, task ) {
+          return ( task.assignedAt ) ? count + 1 : count;
+        }, 0 );
+
+        interactions.completions = tasks.reduce( function ( count, task ) {
+          return ( task.completedAt ) ? count + 1 : count;
+        }, 0 );
+
+        interactions.drafts = tasks.reduce( function ( count, task ) {
+          return ( task.createdAt ) ? count + 1 : count;
+        }, 0 );
+
+        interactions.publishes = tasks.reduce( function ( count, task ) {
+          return ( task.publishedAt ) ? count + 1 : count;
+        }, 0 );
+
+        interactions.submitted = tasks.reduce( function ( count, task ) {
+          return ( task.submittedAt ) ? count + 1 : count;
+        }, 0 );
+
+        done();
+
+      } );
+
+    } );
+
+    steps.push(function ( done ) {
+
+      Comment.count( {} ).exec( function ( err, count ) {
+
+        if ( err ) { return done( err ); }
         interactions.posts = count;
         done();
-      });
+
+      } );
+
     });
 
-    steps.push(function(done) {
-      Volunteer.count({}).exec(function(err, count) {
-        if (err) { return done(err); }
+    steps.push( function ( done ) {
+
+      Volunteer.count( {} ).exec( function ( err, count ) {
+
+        if ( err ) { return done( err ); }
         interactions.signups = count;
         done();
-      });
-    });
 
-    async.parallel(steps, function(err) {
-      if (err) {
-        return res.send(400, {
+      } );
+
+    } );
+
+    async.parallel( steps, function ( err ) {
+
+      if ( err ) {
+        return res.send( 400, {
           message: 'Error generating interactions.',
-          err: err
-        });
+          err: err,
+        } );
       }
-      res.send(interactions);
-    });
+
+      res.send( interactions );
+
+    } );
+
   },
 
   /**
    * Overrides for the settings in `config/controllers.js`
    * (specific to AdminController)
    */
-  _config: {}
+  _config: {},
 
 };

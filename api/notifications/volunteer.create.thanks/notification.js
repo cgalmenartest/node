@@ -12,29 +12,39 @@ module.exports = {
   * @param {function} callback called with err, data
   * data.globals defaults to sails.config
   */
-  data: function(model, done) {
+  data: function ( model, done ) {
     var data = {
-          task: {},
-          owner: {},
-          user: {}
-        };
-    User.findOne({ id: model.userId }).exec(function(err, user) {
-      if (err) return done(err);
+      task: {},
+      owner: {},
+      user: {},
+    };
+
+    User.findOne( { id: model.userId } ).exec( function ( err, user ) {
+
+      if ( err ) { return done( err ); }
+
       data.user = user;
 
-      Task.findOne({ id: model.taskId}).exec(function(err, task) {
-        if (err) return done(err);
+      Task.findOne( { id: model.taskId} ).exec( function ( err, task ) {
+
+        if ( err ) { return done( err ); }
+
         data.task = task;
 
-        User.findOne({ id: task.userId }).exec(function(err, owner) {
-          if (err) return done(err);
+        User.findOne( { id: task.userId } ).exec( function ( err, owner ) {
+
+          if ( err ) { return done( err ); }
+
           data.owner = owner;
 
-          done(null, data);
-        });
+          done( null, data );
 
-      });
+        } );
 
-    });
-  }
+      } );
+
+    } );
+
+  },
+
 };

@@ -1,7 +1,30 @@
 <form action="" id="task-edit-form">
-<div class="col-md-12 box center">
-  <input type="submit" class="btn btn-c2" data-i18n="[value]SaveTask" value="Save Opportunity"/>
-  <button class="btn btn-c0" id="task-view">Discard Changes</button>
+<div class="col-md-12 box center task-edit-button-bar">
+  <div class="create__buttons">
+    <button type="submit" id="js-task-create" class="btn btn-c2 wizard-submit" data-state="submit">
+      Submit for Review
+    </button>
+    <% if ( 'draft' === data.state ) { %>
+    <button type="button" class="js-task-draft btn btn-border wizard-submit" data-state="draft">
+      Save as Draft
+    </button>
+    <% } %>
+    <button class="btn btn-c0" id="task-view">Discard Changes</button>
+  </div>
+  <% if ( 'draft' === data.state ) { %>
+  <div class="create__success-message js-success-message">
+    <div class="success-message__head">
+      <span class="fa fa-check-circle"></span>
+    </div>
+    <div class="success-message__body">
+      <h4>Saved</h4>
+      <p>
+        Your draft has been saved. You can find your draft
+        <a class="js-profile-link" target="_blank" href="/profile/<%= data.userId %>"> on your profile page</a>.
+      </p>
+    </div>
+  </div>
+  <% } %>
 </div>
 <div class="col-md-9 tight-box">
 
@@ -139,6 +162,12 @@
     </div>
 
     <h3>Progress</h3>
+
+    <div class="progress--date">
+      <label for="submittedAt">Submitted date</label>
+      <input id="js-edit-date-submitted" class="form-control timepicker" type="text" name="submittedAt">
+    </div>
+
     <div id="div-publishedAt">
       <label for="publishedAt">Published date</label>
       <input id="publishedAt" name="publishedAt" class="form-control timepicker" type="text">
@@ -169,8 +198,31 @@
     <p>Information on the task creation process is in the <a>Task Creator Toolkit</a>.</p>
   </aside>
 </div>
-<div class="col-md-12 box center">
-  <input type="submit" class="btn btn-c2" data-i18n="[value]SaveTask" value="Save Opportunity"/>
-  <button class="btn btn-c0" id="task-view">Discard Changes</button>
+<div class="col-md-12 box center task-edit-button-bar">
+  <div class="create__buttons">
+    <button type="submit" class="btn btn-c2 wizard-submit" data-state="submit">
+      Submit for Review
+    </button>
+    <% if ( 'draft' === data.state ) { %>
+    <button type="button" class="js-task-draft btn btn-border wizard-submit" data-state="draft">
+      Save as Draft
+    </button>
+    <% } %>
+    <button class="btn btn-c0" id="task-view">Discard Changes</button>
+  </div>
+  <% if ( 'draft' === data.state ) { %>
+  <div class="create__success-message js-success-message">
+    <div class="success-message__head">
+      <span class="fa fa-check-circle"></span>
+    </div>
+    <div class="success-message__body">
+      <h4>Saved</h4>
+      <p>
+        Your draft has been saved. You can find your draft
+        <a class="js-profile-link" target="_blank" href="/profile/<%= data.userId %>"> on your profile page</a>.
+      </p>
+    </div>
+  </div>
+  <% } %>
 </div>
 </form>

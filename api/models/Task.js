@@ -3,15 +3,15 @@
     -> model
 ---------------------*/
 var exportUtils = require('../services/utils/export'),
-    moment = require('moment');
+  moment = require('moment');
 
 module.exports = {
 
   attributes: {
     // Current state of the task
     state: {
-        type: 'STRING',
-        defaultsTo: sails.config.taskState || 'open'
+      type: 'STRING',
+      defaultsTo: sails.config.taskState || 'draft',
     },
     // user id of the task owner
     userId: 'INTEGER',
@@ -26,42 +26,43 @@ module.exports = {
     publishedAt: 'datetime',
     assignedAt: 'datetime',
     completedAt: 'datetime',
+    submittedAt: 'datetime',
 
     // Tag association
     tags: {
       collection: 'tagEntity',
       via: 'tasks',
-      dominant: true
+      dominant: true,
     },
 
-    isOpen: function(){
-        if ( _.indexOf(['open','public','assigned'],this.state) != -1 ){
-            return true;
-        }
-        return false;
+    isOpen: function (){
+      if ( _.indexOf(['open','public','assigned'],this.state) != -1 ){
+        return true;
+      }
+      return false;
     },
 
-    isClosed: function(){
-        if ( _.indexOf(['closed','archived','completed'],this.state) != -1 ){
-            return true;
-        }
-        return false;
+    isClosed: function (){
+      if ( _.indexOf(['closed','archived','completed'],this.state) != -1 ){
+        return true;
+      }
+      return false;
     },
     // Called when a task is marked as complete, and increments
     // each participant's completedTasks counter
-    volunteersCompleted: function() {
+    volunteersCompleted: function () {
       var task = this;
 
-      Volunteer.find({ taskId: task.id }).exec(function(err, volunteers){
+      Volunteer.find({ taskId: task.id }).exec(function (err, volunteers){
         if (err) return done(err);
 
-        volunteers.forEach(function(vol) {
-          User.findOne({ id: vol.userId }).exec(function(err, user) {
+        volunteers.forEach(function (vol) {
+          User.findOne({ id: vol.userId }).exec(function (err, user) {
             user.taskCompleted(task);
           });
         });
       });
-    }
+    },
   },
 
   exportFormat: {
@@ -71,17 +72,18 @@ module.exports = {
     'created_date': {field: 'createdAt', filter: exportUtils.excelDateFormat},
     'published_date': {field: 'publishedAt', filter: exportUtils.excelDateFormat},
     'assigned_date': {field: 'assignedAt', filter: exportUtils.excelDateFormat},
+    'submitted_date': {field: 'submittedAt', filter: exportUtils.excelDateFormat},
     'creator_name': {field: 'creator_name', filter: exportUtils.nullToEmptyString},
     'signups': 'signups',
     'task_id': 'id',
     'task_state': 'state',
     'agency_name': {field: 'agency_name', filter: exportUtils.nullToEmptyString},
-    'completion_date': {field: 'completedAt', filter: exportUtils.excelDateFormat}
+    'completion_date': {field: 'completedAt', filter: exportUtils.excelDateFormat},
   },
 
-  beforeUpdate: function(values, done) {
-    Task.findOne({ id: values.id }).exec(function(err, task) {
-      if (err) done(err);
+  beforeUpdate: function (values, done) {
+    Task.findOne({ id: values.id }).exec(function (err, task) {
+      if ( err ) { return done( err ); }
 
       // If task state hasn't changed, continue
       if (task && task.state === values.state) return done();
@@ -89,19 +91,23 @@ module.exports = {
       // If new task or state has changed, update timestamps
       var action = false;
       switch (values.state) {
-        case 'open':
-          values.publishedAt = new Date();
-          action = 'task.update.opened';
-          break;
-        case 'assigned':
-          values.assignedAt = new Date();
-          action = 'task.update.assigned';
-          break;
-        case 'completed':
-          values.completedAt = new Date();
-          action = 'task.update.completed';
-          task && task.volunteersCompleted();
-          break;
+      case 'submitted':
+        values.submittedAt = new Date();
+        action = 'task.update.submitted';
+        break;
+      case 'open':
+        values.publishedAt = new Date();
+        action = 'task.update.opened';
+        break;
+      case 'assigned':
+        values.assignedAt = new Date();
+        action = 'task.update.assigned';
+        break;
+      case 'completed':
+        values.completedAt = new Date();
+        action = 'task.update.completed';
+        task && task.volunteersCompleted();
+        break;
       }
 
       // If no notification specified, continue
@@ -111,56 +117,85 @@ module.exports = {
       // of afterUpdate so we can compare to see if state changed)
       Notification.create({
         action: action,
-        model: values
+        model: values,
       }, done);
 
     });
   },
-  afterUpdate: function(task, done) {
+  afterUpdate: function (task, done) {
     var self = this;
 
-    Task.find({ userId: task.userId }).populate('tags').exec(function(err, tasks) {
+    Task.find({ userId: task.userId }).populate('tags').exec(function (err, tasks) {
       if (err) return done(err);
       Badge.awardForTaskPublish(tasks, task.userId);
       done();
     });
   },
-  beforeCreate: function(values, done) {
+
+  beforeCreate: function ( values, done ) {
     // If default state is not draft, we need to set dates
-    this.beforeUpdate(values, done);
+    this.beforeUpdate( values, done );
   },
 
-  afterCreate: function(model, done) {
-    Notification.create({
-      action: 'task.create.thanks',
-      model: model
-    }, done);
+  /*
+   * After creation of the model, the
+   */
+  afterCreate: function ( model, done ) {
+
+    if ( 'draft' === model.state ) {
+
+      if ( model.createdAt === model.updatedAt ) {
+
+        Notification.create( {
+
+          action: 'task.create.draft',
+          model: model,
+
+        }, done );
+
+      } else {
+
+        done();
+
+      }
+
+    } else {
+
+      Notification.create( {
+
+        action: 'task.create.thanks',
+        model: model,
+
+      }, done );
+
+    }
+
   },
 
-  sendNotifications: function(i) {
+  sendNotifications: function (i) {
     i = i || 0;
 
     var now = new Date(new Date().toISOString().split('T')[0]),
-        begin = moment(now).add(i, 'days').toDate(),
-        end = moment(now).add(i+1, 'days').toDate();
+      begin = moment(now).add(i, 'days').toDate(),
+      end = moment(now).add(i+1, 'days').toDate();
 
     Task.find({
       completedBy: { '>=': begin, '<': end },
-      state: 'assigned'
-    }).exec(function(err, tasks) {
+      state: 'assigned',
+    }).exec(function (err, tasks) {
       if (err) return sails.log.error(err);
       var action = i ? 'task.due.soon' : 'task.due.today';
 
-      tasks.forEach(function(task) {
+      tasks.forEach(function (task) {
         var find = { action: action, callerId: task.id },
-            model = { action: action, callerId: task.id, model: task };
-        Notification.findOrCreate(find, model, function(err, notification) {
+          model = { action: action, callerId: task.id, model: task };
+        Notification.findOrCreate(find, model, function (err, notification) {
           if (err) sails.log.error(err);
           if (notification) sails.log.verbose('New notification', notification);
         });
       });
 
     });
-  }
+  },
 
 };

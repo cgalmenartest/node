@@ -6,30 +6,36 @@ var Backbone = require('backbone');
 var TaskModel = Backbone.Model.extend({
 
   defaults: {
-    name        : null,
-    description : null
+
+    projectId: null,
+    title : null,
+    description : null,
+    tags: null,
+    state: 'draft',
+
   },
 
   urlRoot: '/api/task',
 
   initialize: function () {
-    this.listenTo(this, "task:save", function (data) {
+
+    this.listenTo(this, 'task:save', function (data) {
       this.save(data);
     });
 
-    this.listenTo(this, "task:model:fetch", function (data) {
+    this.listenTo(this, 'task:model:fetch', function (data) {
       this.remoteGet(data);
     });
 
-    this.listenTo(this, "task:update", function (data) {
+    this.listenTo(this, 'task:update', function (data) {
       this.update(data);
     });
 
-    this.listenTo(this, "task:update:state", function (state) {
+    this.listenTo(this, 'task:update:state', function (state) {
       this.updateState(state);
     });
 
-    this.listenTo(this, "task:update:orphan", function (data) {
+    this.listenTo(this, 'task:update:orphan', function (data) {
       this.orphan(data);
     });
   },
@@ -38,8 +44,8 @@ var TaskModel = Backbone.Model.extend({
     var self = this;
     this.save(data, {
       success: function (data) {
-        self.trigger("task:update:success", data);
-      }
+        self.trigger('task:update:success', data);
+      },
     });
   },
 
@@ -81,6 +87,41 @@ var TaskModel = Backbone.Model.extend({
     });
   },
 
+  /*
+   * Check if the current model is a draft.
+   * @return { Boolean } Returns true if current state is draft.
+   */
+  isDraft: function () {
+
+    return 'draft' === this.attributes.state;
+
+  },
+
+  /*
+   * Check if the current model is a submission.
+   * @return { Boolean } Returns true if current state is submitted.
+   */
+  isSubmission: function () {
+
+    return 'submitted' === this.attributes.state;
+
+  },
+
+  /*
+   * Check if the current task has been submitted by checking the current
+   * state to not be `draft` or `submitted` or to check if it has a `submittedAt`
+   * date associated with it.
+   * @return { Boolean }
+   */
+  hasBeenSubmitted: function () {
+
+    return (
+      this.attributes.submittedAt ||
+      ( ! this.isDraft() && ! this.isSubmission() )
+    );
+
+  },
+
 });
 
-  module.exports = TaskModel;
+module.exports = TaskModel;

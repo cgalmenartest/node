@@ -30,40 +30,69 @@ var TaskItemView = BaseView.extend({
 
   },
 
-  render: function (self) {
+  render: function ( self ) {
+
+    var taskState = self.model.attributes.state;
+
+    if ( _.isString( taskState ) ) {
+
+      taskState = taskState.charAt( 0 ).toUpperCase() + taskState.slice( 1 );
+
+    }
+
+
     self.data = {
+
       user: window.cache.currentUser,
       model: self.model.toJSON(),
-      tags: self.model.toJSON().tags
+      tags: self.model.toJSON().tags,
+
+      state: {
+
+        humanReadable: taskState,
+        value: taskState.toLowerCase(),
+
+      },
+
     };
 
-    self.data['madlibTags'] = organizeTags(self.data.tags);
+    self.data[ 'madlibTags' ] = organizeTags( self.data.tags );
     // convert description from markdown to html
-    self.data.model.descriptionHtml = marked(self.data.model.description);
-    self.model.trigger('task:tag:data', self.tags, self.data['madlibTags']);
+    self.data.model.descriptionHtml = marked( self.data.model.description );
+    self.model.trigger( 'task:tag:data', self.tags, self.data[ 'madlibTags' ] );
 
     var d = self.data,
-        // Unauthed users, current participants, authed users who are
-        // not the task creator on an open task can see the participate
-        // button on a task
-        vol = ((!d.user || d.user.id !== d.model.userId) &&
-              (d.model.volunteer || d.model.state === 'open'));
+      // Unauthed users, current participants, authed users who are
+      // not the task creator on an open task can see the participate
+      // button on a task
+      vol = ( ( ! d.user || d.user.id !== d.model.userId ) &&
+            ( d.model.volunteer || 'open' === d.model.state ) );
+
     self.data.ui = UIConfig;
     self.data.vol = vol;
+
     var compiledTemplate = _.template(TaskShowTemplate)(self.data);
+
     self.$el.html(compiledTemplate);
     self.$el.i18n();
-    $("time.timeago").timeago();
+    $( 'time.timeago' ).timeago();
     self.updateTaskEmail();
-    self.model.trigger('task:show:render:done');
-    if (window.location.search === '?volunteer' &&
-        !self.model.attributes.volunteer) {
-      $('#volunteer').click();
-      Backbone.history.navigate(window.location.pathname, {
+    self.model.trigger( 'task:show:render:done' );
+
+    if ( '?volunteer' === window.location.search &&
+        ! self.model.attributes.volunteer ) {
+
+      $( '#volunteer' ).click();
+
+      Backbone.history.navigate( window.location.pathname, {
+
         trigger: false,
-        replace: true
-      });
+        replace: true,
+
+      } );
+
     }
+
   },
 
   updateTaskEmail: function() {

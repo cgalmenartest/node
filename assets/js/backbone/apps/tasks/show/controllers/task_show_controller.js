@@ -15,7 +15,7 @@ var UIConfig = require('../../../../config/ui.json');
 var LoginConfig = require('../../../../config/login.json');
 var VolunteerSupervisorNotifyTemplate = require('../templates/volunteer_supervisor_notify_template.html');
 var VolunteerTextTemplate = require('../templates/volunteer_text_template.html');
-var ChangeStateTemplate = require('../templates/change_state_template.html')
+var ChangeStateTemplate = require('../templates/change_state_template.html');
 var UpdateLocationAgencyTemplate = require('../templates/update_location_agency_template.html');
 var UpdateNameTemplate = require('../templates/update_name_template.html');
 var CopyTaskTemplate = require('../templates/copy_task_template.html');
@@ -25,22 +25,22 @@ var popovers = new Popovers();
 
 var TaskShowController = BaseView.extend({
 
-  el: "#container",
+  el: '#container',
 
   events: {
-    'change .validate'                : 'v',
-    'keyup .validate'                 : 'v',
-    'click #task-edit'                : 'edit',
-    'click #task-view'                : 'view',
-    'click #volunteer'                : 'volunteer',
-    'click #volunteered'              : 'volunteered',
-    "click #task-close"               : "stateChange",
-    "click #task-reopen"              : "stateReopen",
-    "click #task-copy"                : "copy",
-    "click .link-backbone"            : linkBackbone,
-    "click .delete-volunteer"         : 'removeVolunteer',
-    "mouseenter .project-people-show-div"  : popovers.popoverPeopleOn,
-    "click .project-people-show-div"       : popovers.popoverClick
+    'change .validate'                    : 'v',
+    'keyup .validate'                     : 'v',
+    'click #task-edit'                    : 'edit',
+    'click #task-view'                    : 'view',
+    'click #volunteer'                    : 'volunteer',
+    'click #volunteered'                  : 'volunteered',
+    'click #task-close'                   : 'stateChange',
+    'click #task-reopen'                  : 'stateReopen',
+    'click #task-copy'                    : 'copy',
+    'click .link-backbone'                : linkBackbone,
+    'click .delete-volunteer'             : 'removeVolunteer',
+    'mouseenter .project-people-show-div' : popovers.popoverPeopleOn,
+    'click .project-people-show-div'      : popovers.popoverClick,
   },
 
   initialize: function (options) {
@@ -156,6 +156,7 @@ var TaskShowController = BaseView.extend({
       }
     });
   },
+
   initializeTaskItemView: function () {
     var self = this;
     // Get the tag type info from the view so we don't have to refetch
@@ -445,37 +446,63 @@ var TaskShowController = BaseView.extend({
     }
   },
 
-  stateChange: function (e) {
-    if (e.preventDefault) e.preventDefault();
+  stateChange: function ( e ) {
+
+    if ( e && _.isFunction( e.preventDefault ) ) { e.preventDefault(); }
+
     var self = this;
 
-    if (this.modalAlert) { this.modalAlert.cleanup(); }
-    if (this.modalComponent) { this.modalComponent.cleanup(); }
+    if ( this.modalAlert ) { this.modalAlert.cleanup(); }
+    if ( this.modalComponent ) { this.modalComponent.cleanup(); }
+
     var states = UIConfig.states;
-    if (draftAdminOnly && !window.cache.currentUser.isAdmin) {
-      states = _(states).reject(function(state) {
+
+    if ( draftAdminOnly && ! window.cache.currentUser.isAdmin ) {
+
+      states = _( states ).reject( function ( state ) {
         return state.value === 'draft';
-      });
+      } );
+
     }
 
-    var modalContent = _.template(ChangeStateTemplate)({model:self.model,states: states});
-    this.modalComponent = new ModalComponent({
-      el: "#modal-close",
-      id: "check-close",
-      modalTitle: "Change "+i18n.t("Task")+" State"
-    }).render();
+    var modalData = {
 
-    this.modalAlert = new ModalAlert({
-      el: "#check-close .modal-template",
+      model: self.model,
+      states: states,
+
+    };
+
+    var submitValue = 'Change '+i18n.t( 'Task' )+' State';
+
+    if ( self.model.isDraft() ) {
+      submitValue = false;
+    }
+
+    var modalContent = _.template( ChangeStateTemplate )( modalData );
+
+    this.modalComponent = new ModalComponent( {
+
+      el: '#modal-close',
+      id: 'check-close',
+      modalTitle: 'Change '+i18n.t( 'Task' ) + ' State',
+
+    } ).render();
+
+    this.modalAlert = new ModalAlert( {
+
+      el: '#check-close .modal-template',
       modalDiv: '#check-close',
       content: modalContent,
       cancel: 'Cancel',
-      submit: 'Change '+i18n.t("Task")+' State',
-      callback: function (e) {
+      submit: submitValue,
+      callback: function ( e ) {
         // user clicked the submit button
-        self.model.trigger("task:update:state", $('input[name=opportunityState]:checked').val());
-      }
-    }).render();
+        self.model.trigger( 'task:update:state', $( 'input[name=opportunityState]:checked' ).val() );
+        self.taskItemView.render( self.taskItemView );
+      },
+
+    } ).render();
+
   },
 
   stateReopen: function (e) {
