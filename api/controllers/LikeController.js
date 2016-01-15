@@ -95,7 +95,7 @@ module.exports = {
 
   /**
    * Helper function so you don't have to call create
-   * Syntax: /like/likeu/:userId where :id is the userId
+   * Syntax: /like/liket/:userId where :id is the userId
    */
   liket: function (req, res) {
     new LikeActions(req, res, 'taskId').like();
@@ -119,7 +119,7 @@ module.exports = {
 
   /**
    * Helper function so you don't have to call destroy
-   * Syntax: Call /like/unlikeu/:userId where :id is the userId
+   * Syntax: Call /like/unliket/:userId where :id is the userId
    */
   unliket: function (req, res) {
     new LikeActions(req, res, 'taskId').unlike();
