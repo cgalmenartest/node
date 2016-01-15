@@ -260,6 +260,7 @@ var TaskEditFormView = Backbone.View.extend({
         assignedAt  : this.$( '#assignedAt' ).val() || undefined,
         completedAt : this.$( '#completedAt' ).val() || undefined,
         projectId   : null,
+        state       : this.model.get( 'state' ),
       };
 
 
@@ -347,7 +348,7 @@ var TaskEditFormView = Backbone.View.extend({
       return;
     }
 
-    return this.trigger( 'task:tags:save:done', { draft: false, save: saveState } );
+    return this.trigger( 'task:tags:save:done', { draft: false, saveState: saveState } );
 
   },
 
