@@ -1,12 +1,16 @@
 <form action="" id="task-edit-form">
 <div class="col-md-12 box center task-edit-button-bar">
   <div class="create__buttons">
+    <% if ( 'draft' === data.state ) { %>
     <button type="submit" id="js-task-create" class="btn btn-c2 wizard-submit" data-state="submit">
       Submit for Review
     </button>
-    <% if ( 'draft' === data.state ) { %>
     <button type="button" class="js-task-draft btn btn-border wizard-submit" data-state="draft">
       Save as Draft
+    </button>
+    <% } else { %>
+    <button type="submit" id="js-task-create" class="btn btn-c2 wizard-submit" data-state="save">
+      Save Changes
     </button>
     <% } %>
     <button class="btn btn-c0" id="task-view">Discard Changes</button>
@@ -200,12 +204,16 @@
 </div>
 <div class="col-md-12 box center task-edit-button-bar">
   <div class="create__buttons">
+    <% if ( 'draft' === data.state ) { %>
     <button type="submit" class="btn btn-c2 wizard-submit" data-state="submit">
       Submit for Review
     </button>
-    <% if ( 'draft' === data.state ) { %>
     <button type="button" class="js-task-draft btn btn-border wizard-submit" data-state="draft">
       Save as Draft
+    </button>
+    <% } else { %>
+    <button type="submit" class="btn btn-c2 wizard-submit" data-state="save">
+      Save Changes
     </button>
     <% } %>
     <button class="btn btn-c0" id="task-view">Discard Changes</button>

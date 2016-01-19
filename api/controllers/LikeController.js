@@ -5,26 +5,7 @@
  * @description	:: Contains logic for handling requests.
  */
 
-var like = function (l, cb) {
-  Like.findOne({ where: l }, function (err, existing) {
-    if (err) { return cb(err, null); }
-    if (existing) { return cb(null, existing); }
-    Like.create(l, function (err, newLike) {
-      if (err) { return cb(err, null); }
-      return cb(null, newLike);
-    });
-  });
-};
-
-var unlike = function (l, cb) {
-  Like.findOne({ where: l}, function (err, newLike) {
-    if (err) { return cb(err); }
-    if (!newLike) { return cb(null); }
-    newLike.destroy(function(err) {
-      return cb(err);
-    });
-  });
-};
+var LikeActions = require(__dirname + "/../services/utils/likeActions");
 
 module.exports = {
 
@@ -109,23 +90,15 @@ module.exports = {
    * Syntax: /like/like/:projectId where :id is the projectId
    */
   like: function (req, res) {
-    var l = { projectId: req.params.id, userId: req.user[0].id };
-    like(l, function (err, like) {
-      if (err) { return res.send(400, { message: 'Error creating like.' }); }
-      return res.send(like);
-    });
+    new LikeActions(req, res, 'projectId').like();
   },
 
   /**
    * Helper function so you don't have to call create
-   * Syntax: /like/likeu/:userId where :id is the userId
+   * Syntax: /like/liket/:userId where :id is the userId
    */
   liket: function (req, res) {
-    var l = { taskId: req.params.id, userId: req.user[0].id };
-    like(l, function (err, like) {
-      if (err) { return res.send(400, { message: 'Error creating like.' }); }
-      return res.send(like);
-    });
+    new LikeActions(req, res, 'taskId').like();
   },
 
   /**
@@ -133,11 +106,7 @@ module.exports = {
    * Syntax: /like/likeu/:userId where :id is the userId
    */
   likeu: function (req, res) {
-    var l = { targetId: req.params.id, userId: req.user[0].id };
-    like(l, function (err, like) {
-      if (err) { return res.send(400, { message: 'Error creating like.' }); }
-      return res.send(like);
-    });
+    new LikeActions(req, res, 'targetId').like();
   },
 
   /**
@@ -145,23 +114,15 @@ module.exports = {
    * Syntax: Call /like/unlike/:projectId where :id is the projectId
    */
   unlike: function (req, res) {
-    var l = { projectId: req.params.id, userId: req.user[0].id };
-    unlike(l, function (err) {
-      if (err) { return res.send(400, { message: 'Error destroying like.' }); }
-      return res.send(null);
-    });
+    new LikeActions(req, res, 'projectId').unlike();
   },
 
   /**
    * Helper function so you don't have to call destroy
-   * Syntax: Call /like/unlikeu/:userId where :id is the userId
+   * Syntax: Call /like/unliket/:userId where :id is the userId
    */
   unliket: function (req, res) {
-    var l = { taskId: req.params.id, userId: req.user[0].id };
-    unlike(l, function (err) {
-      if (err) { return res.send(400, { message: 'Error destroying like.' }); }
-      return res.send(null);
-    });
+    new LikeActions(req, res, 'taskId').unlike();
   },
 
   /**
@@ -169,10 +130,6 @@ module.exports = {
    * Syntax: Call /like/unlikeu/:userId where :id is the userId
    */
   unlikeu: function (req, res) {
-    var l = { targetId: req.params.id, userId: req.user[0].id };
-    unlike(l, function (err) {
-      if (err) { return res.send(400, { message: 'Error destroying like.' }); }
-      return res.send(null);
-    });
+    new LikeActions(req, res, 'targetId').unlike();
   }
 };
