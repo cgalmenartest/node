@@ -36,13 +36,13 @@ var TaskEditFormView = Backbone.View.extend({
     //
     this.listenTo( this.options.model, 'task:update:success', function ( data ) {
 
-      if ( 'draft' !== data.attributes.state ) {
+      if ( 'draft' === data.attributes.state ) {
 
-        Backbone.history.navigate( 'tasks/' + data.attributes.id, { trigger: true } );
+        view.renderSaveSuccessModal();
 
       } else {
 
-        view.renderSaveSuccessModal();
+        Backbone.history.navigate( 'tasks/' + data.attributes.id, { trigger: true } );
 
       }
 
@@ -260,12 +260,17 @@ var TaskEditFormView = Backbone.View.extend({
         assignedAt  : this.$( '#assignedAt' ).val() || undefined,
         completedAt : this.$( '#completedAt' ).val() || undefined,
         projectId   : null,
+        state       : this.model.get( 'state' ),
       };
 
 
-      // Check if draft is being saved or if this is a submission.
+      // README: Check if draft is being saved or if this is a submission.
+      // If the state isn't a draft and it isn't simply being saved, then it will
+      // be submitted for review. `event.saveState` is true if the task is not a
+      // `draft` and assumes that the task is simply being updated rather than
+      // there being a need to "Submit for Review".
       //
-      if ( ! event.draft ) {
+      if ( ! event.draft && ! event.saveState ) {
         modelData.state = 'submitted';
       }
 
@@ -321,9 +326,14 @@ var TaskEditFormView = Backbone.View.extend({
 
     if ( e.preventDefault ) { e.preventDefault(); }
 
-    var tags    = [];
-    var oldTags = [];
-    var diff    = [];
+    var tags      = [];
+    var oldTags   = [];
+    var diff      = [];
+    var saveState = false;
+
+    if ( 'save' === this.$( '#js-task-create' ).data( 'state' ) ) {
+      saveState = true;
+    }
 
     // check all of the field validation before submitting
     var children = this.$el.find( '.validate' );
@@ -338,7 +348,7 @@ var TaskEditFormView = Backbone.View.extend({
       return;
     }
 
-    return this.trigger( 'task:tags:save:done', { draft: false } );
+    return this.trigger( 'task:tags:save:done', { draft: false, saveState: saveState } );
 
   },
 
