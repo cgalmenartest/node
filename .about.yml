@@ -57,6 +57,20 @@ team:
 - github: rogeruiz
   role: contributor
 
+services:
+- name: Travis CI
+  category: CI
+  url: https://travis-ci.org/18F/openopps-platform
+  badge: https://travis-ci.org/18F/openopps-platform.png?branch=master
+- name: Gemnasium
+  category: dependency management
+  url: https://gemnasium.com/18F/midas
+  badge: https://gemnasium.com/18F/midas.png
+- name: Code Climate
+  category: code quality
+  url: https://codeclimate.com/github/18F/openopps-platform
+  badge: https://codeclimate.com/github/18F/openopps-platform/badges/gpa.svg
+
 licenses:
   dashboard:
     name: CC0-1.0
