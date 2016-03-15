@@ -46,18 +46,21 @@
           </div>
           <h2>Time Committment</h2>
           <div>
-            <% if (madlibTags['task-time-required']) { %>
+            <% if (madlibTags['task-time-required']) { %>   <!-- One-time, On-going, Full-Time Detail -->
               <%= madlibTags['task-time-required'][0].name %>
-            <% } else { %>
-              None
             <% } %>
-            &mdash;
-            <% if (madlibTags['task-time-estimate']) { %>
+            <% if (madlibTags['task-time-estimate']) { %>  <!-- 2-4 hours, etc. -->
+              &mdash;
                <%= madlibTags['task-time-estimate'][0].name %> per week
-            <% } else { %>
-              None
             <% } %>
           </div>
+          <% if (model.completedBy) { %>  <!-- estimated completion date -->
+          <h2>Target Date</h2>
+          <div>
+               <%= moment(model.completedBy).format('ddd, MMM D, YYYY') %>
+          </div>
+          <% } %>
+
           <h2>Work Location</h2>
           <div>
             <% if (madlibTags.location) { %>
