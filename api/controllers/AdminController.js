@@ -193,7 +193,7 @@ module.exports = {
 
 
   /**
-   * Add or remove admin priviledges from a user account
+   * Add or remove admin privileges from a user account
    * @param id the user id to make an admin or remove
    * @param action true to make admin, false to revoke
    * eg: /api/admin/admin/:id?action=true
