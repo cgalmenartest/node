@@ -115,23 +115,53 @@ references", such as which issues were fixed.
 
 ### Database changes
 
-The database schema is managed in this repository under `/tools/postgres/`. When
-you first set up Midas and run `npm run init` the `init.sh` script sets up the database
-with the latest schema. Each subsequent run of `init.sh` checks the database version
-and runs migration scripts to update it if the database is out of data.
+The database schema is managed in this repository under `/migrations/`. When
+you first set up Midas and run `npm run init`, all migrations will be run, the
+first of which creates the initial schema.  Each subsequent run of `npm run
+migrate` checks the database version and runs migration scripts to update it if
+the database is out of date.  `npm run check-migrate` can be used to check for
+any pending migrations without applying them.
 
-When making a database change, write a shell script that updates the database to
-your desired schema. Save this shell script as `[version].sh` where `[version]`
-is the new version of the schema. Migration scripts should be saved in
-`/tools/postgres/migrate`. See scripts in that directory like `2.sh` for examples.
+When running `npm run start` or `npm run watch`, `npm run check-migrate` will
+be run automatically, alerting you to any pending migrations.
 
-Then, export the updated schema:
+Grunt tasks, `grunt db:migrate:up` and `grunt db:migrate:down`, can also be
+used to run specific migration scripts or to downgrade.  See the
+[sails-db-migrate
+documentation](https://github.com/building5/sails-db-migrate#running-migrations)
+or the [db-migrate
+documentation](http://umigrate.readthedocs.org/projects/db-migrate/en/v0.10.x/Getting%20Started/the%20commands/)
+for more details.
 
-```sh
-pg_dump -h localhost -p 5432 -U midas -s midas > ./tools/postgres/schema/current.sql
+Also note that running `npm run init`, `npm run install`, or `npm run demo`
+will automatically run `npm run migrate`, applying any pending migrations
+before continuing.
+
+#### Creating New Migrations
+
+Database migrations are written in javascript as
+[db-migrate](http://umigrate.readthedocs.org/projects/db-migrate/) scripts.
+
+New migrations are created using the `db:migrate:create` grunt task.
+
+```
+$ grunt db:migrate:create --name add-new-feature
++ db-migrate create add-new-feature
+DATABASE_URL=postgres://midas:****@localhost/midas
+[INFO] Created migration at /home/user/git/openopps-platform/migrations/20160316214102-add-new-feature.js
+
+Done, without errors.
 ```
 
-The schema is also updated each time you run `make build`.
+Edit the new file created by `grunt db:migrate:create` to add the new migration
+steps needed.  The `up` and `down` functions exported from the new migration
+file will be used to perform the migration.  See the [db-migrate
+documentation](http://umigrate.readthedocs.org/projects/db-migrate/en/latest/Getting%20Started/usage/#creating-migrations)
+for the function signatures, examples, and tips.
+
+Many common SQL statements for manipulating the database schema and data are
+supported by the db-migrate's
+[javascript API](http://umigrate.readthedocs.org/projects/db-migrate/en/latest/API/SQL/).
 
 ## <a name="submit"></a> Submission Guidelines
 
