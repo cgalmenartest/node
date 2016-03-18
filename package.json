@@ -88,7 +88,7 @@
     "build": "$npm_package_config_grunt build",
     "start": "npm run check-migrate && node app.js",
     "migrate": "$npm_package_config_grunt db:migrate:up",
-    "check-migrate": "$npm_package_config_grunt db:migrate:up --dry-run | sed -rn 's/.*Processed migration (.*)/\\x1b[41m[WARNING] Pending Migration: \\1\\x1b[0m (Run `npm run migrate`)/p'",
+    "check-migrate": "$npm_package_config_grunt db:migrate:up --dry-run | perl -ne 's/.*Processed migration (.*)/\\x1b[41m[WARNING] Pending Migration: \\1\\x1b[0m (Run `npm run migrate`)/ && print'",
     "init": "npm run migrate && node test/init/init/init.test.js",
     "demo": "npm run migrate && mocha test/test.upstart.js --development --recursive test/demo",
     "import": "cp -v $npm_package_config_dir/exclude.txt exclude.txt | true && rsync -av --exclude-from=exclude.txt $npm_package_config_dir/* .",
