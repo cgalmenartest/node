@@ -279,7 +279,6 @@ It is not necessary to edit any config files to run the demo locally.  You may o
 
 From the root of the openopps directory, initialize the database:
 
-     npm run migrate
      npm run init
 
 Please note, run `npm run init` once per database, otherwise you'll see an error. If you get an error you can skip that step.
@@ -410,13 +409,7 @@ delete everything in your database**.
 
     ./tools/postgres/cleandb.sh
 
-Once that's done, you need to run the `init.sh` script again.
-
-    ./tools/postgres/init.sh
-
-Any migrations that you're aware of should also be run, the files can be found
-in the `./tools/postgres/migrate` directory. Running them sequentially will
-update the database's schema.
+Once that's done, you need to run `npm run init` again.
 
 You can also verify that the correct `midas` user exists for the `<TABLE_NAME>`.
 

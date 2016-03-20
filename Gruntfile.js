@@ -32,6 +32,7 @@ module.exports = function (grunt) {
   grunt.loadTasks(depsPath + '/grunt-contrib-concat/tasks');
   grunt.loadTasks(depsPath + '/grunt-contrib-watch/tasks');
   grunt.loadTasks( 'node_modules/grunt-sass/tasks' );
+  require('sails-db-migrate').gruntTasks(grunt);
 
   // -------------------------------------------------------------------
   // Tooling Configuration
