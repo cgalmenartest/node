@@ -98,8 +98,8 @@ describe('Task actions', function () {
     // Click "Show Default Description"
     casper.then(function () {
       casper.click('a[id=show-default-description]');
-      var preview = casper.getHTML('.preview-description').substr(0,60);
-      assert.equal('<p>Default description for <strong>Full Time Detail</strong>', preview);
+      var preview = casper.getHTML('.preview-description').substr(0,32);
+      assert.equal('<p><strong>Description:</strong>', preview);
     });
 
     // Click "Part Time", link should not be visible.
@@ -165,8 +165,8 @@ describe('Task actions', function () {
     // Click "Show Default Description"
     casper.then(function () {
       casper.click('a[id=show-default-description]');
-      var preview = casper.getHTML('.preview-description').substr(0,60);
-      assert.equal('<p>Default description for <strong>Full Time Detail</strong>', preview);
+      var preview = casper.getHTML('.preview-description').substr(0,32);
+      assert.equal('<p><strong>Description:</strong>', preview);
     });
 
     // Click "Part Time", link should not be visible.

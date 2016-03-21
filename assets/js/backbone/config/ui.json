@@ -47,6 +47,6 @@
     "show" : false
   },
   "fullTimeDetail": {
-    "description": "Default description for **Full Time Detail**.... \n\n_Awesome!_\n\nLinks are also supported: [i18next](http://i18next.com/)."
+    "description": "**Description:** What is the _impact_ of this opportunity? What kind of _experience_ will someone gain from the work? You can add links to provide [more info](https://www.usa.gov/)\n\n**Title/Series/Grade:** fill in _requirements_ for this position (or _Unclassified Duties_ if there are no specific title or grade requirements)\n\n**Service/Staff Office:**\n\n**Region:**\n\n"
   }
 }
