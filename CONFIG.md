@@ -1,6 +1,30 @@
 Configuration
 =====
 
+## Task Configuration
+
+### Task attributes
+
+Part of the test framework is actually used to bootstrap the app when you run `npm run init` it creates tags specified in `test/init/init`. This configuration file defines the standard tags for this installation which control options on the task creation and editing page, as well as icons for skills, topics, agency.
+
+### Full Time Details
+
+Full Time Details are only available to agencies that are specifically enabled in the database.  (For context, inside the federal government, Open Opportunities is deployed with a freemium model, where any federal employee can post or respond to an opportunity, but if an agency wants to run a program within their agency, they may help fund platform development and access additional features.  One of those features is full-time details).
+
+Full Time Details appear as an option on the Task create and edit pages, implemented in `assets/js/backbone/apps/tasks/new/views/task_form_view.js`.
+
+The code checks the agency that the auth’d user has, and compares with db some fields which whitelist a specific agency for this feature.  There's no UI yet, to set this up.  For GSA specifically, [this script](https://github.com/18F/openopps-platform/blob/dev/tools/postgres/addGSAFullTimeDetail.js) was developed, which adds a `Full Time Detail` tag for `task-time-required` with the agency to enable (in the future, this could be a list of agencies).
+
+```
+select type,name,data from tagentity where "name"='Full Time Detail';
+```
+
+```
+        type        |       name       |                                data
+--------------------+------------------+---------------------------------------------------------------------
+ task-time-required | Full Time Detail | {"agency":{"name":"General Services Administration (GSA)","id":20}}
+```
+
 ## Customizing UI Text
 
 We use an internationalization approach for customizing product text.  Keys and associated translation strings are stored in ```assets/locales/<language>/translation.json```
@@ -30,9 +54,9 @@ It is possible to turn off the ability to have Projects (which serve as a way to
 }
 ```
 
-### Full Time Detail Sample Text
+### Full Time Details Sample Text
 
-When the user creates or edits a task and selects "Full Time Detail" in Step 1 (What type of effort is needed?), the sample text will be added to the task description, if there was no previous description text. There is also an extra link available (Show Default Description) that shows the sample text once it is clicked. The link is not available if the 'Full Time Detail' sample text is not setup.
+When the Full Time Detail option is enabled (see above), a user may create or edit a task and select "Full Time Detail" in Step 1 (What type of effort is needed?), then the sample text will be added to the task description, if there was no previous description text. There is also an extra link available (Show Default Description) that shows the sample text once it is clicked. The link is not available if the 'Full Time Detail' sample text is not setup.
 
 The value of the description field supports markdown with links and formatting. The description field in the ui.json config file does not support a multiline string; newlines should be escaped as \n.
 
