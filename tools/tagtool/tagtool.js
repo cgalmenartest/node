@@ -19,7 +19,7 @@ var pg = require('pg');
 
 // load db config file
 try {
-  var config = require('../../config/local');
+  var config = require('../../config/connections');
 } catch(e) {
   help_and_quit("Please create a config/local.js file with your postgresql information");
 }
@@ -48,10 +48,10 @@ else {
 
 // open database
 var client = new pg.Client({
-  user: config.adapters.postgresql.user, 
-  password: config.adapters.postgresql.password,
-  database: config.adapters.postgresql.database,
-  host: config.adapters.postgresql.host,
+  user: config.connections.postgresql.user,
+  password: config.connections.postgresql.password,
+  database: config.connections.postgresql.database,
+  host: config.connections.postgresql.host,
   port: 5432
 });
 
