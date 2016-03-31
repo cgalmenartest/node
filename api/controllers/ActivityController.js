@@ -8,6 +8,7 @@ module.exports = {
     }).exec(function(err, tasks) {
       if (err) return res.negotiate(err);
       var taskIds = _.pluck(tasks, 'id');
+      // could also use badge createdAt?
       Badge.find({ task: taskIds }).exec(function(err, badges){
         if (err) return res.negotiate(err);
 
@@ -16,20 +17,21 @@ module.exports = {
 
           // Ensure that the User model is being queried for both the original
           // task creator and the users that are labeled as volunteers.
-          var allUserIds = [
 
-            { id: _.pluck( tasks, 'userId' ) },
-            { id: _.pluck( vols, 'userId' ) },
+          var allUserIds = _.uniq(_.union( _.pluck( tasks, 'userId' ),
+                                           _.pluck( vols, 'userId' )));
 
-          ];
-
-          User.find( allUserIds ).exec(function(err, users) {
+          User.find( {id: allUserIds} ).exec(function(err, users) {
             if (err) return res.negotiate(err);
 
             badges.forEach(function(badge){
               badge.description = badge.getDescription();
               badge.user = _.where(users, { id: badge.user })[0];
+              // user will be null when user signed up, but was not assigned
             });
+
+            // don't show newcomer badges for tasks where user was removed
+            badges = _.reject(badges, function(b) { return b.user == null } );
 
             tasks = tasks.map(function(task) {
               var ids = _(vols).chain()
