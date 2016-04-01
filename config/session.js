@@ -1,77 +1,91 @@
-console.log('Loading... ', __filename);
-
-var cfenv = require('cfenv'),
-    appEnv = cfenv.getAppEnv(),
-    dbURL = appEnv.getServiceURL('psql-openopps'),
-    redisCreds = appEnv.getServiceCreds('redis-openopps');
-
 /**
- * Session
+ * Session Configuration
+ * (sails.config.session)
  *
- * Sails session integration leans heavily on the great work already done by Express, but also unifies
- * Socket.io with the Connect session store. It uses Connect's cookie parser to normalize configuration
- * differences between Express and Socket.io and hooks into Sails' middleware interpreter to allow you
- * to access and auto-save to `req.session` with Socket.io the same way you would with Express.
+ * Sails session integration leans heavily on the great work already done by
+ * Express, but also unifies Socket.io with the Connect session store. It uses
+ * Connect's cookie parser to normalize configuration differences between Express
+ * and Socket.io and hooks into Sails' middleware interpreter to allow you to access
+ * and auto-save to `req.session` with Socket.io the same way you would with Express.
  *
  * For more information on configuring the session, check out:
- * http://sailsjs.org/#documentation
+ * http://sailsjs.org/#!/documentation/reference/sails.config/sails.config.session.html
  */
 
-var session = {
+module.exports.session = {
 
-  // Session secret is automatically generated when your new app is created
-  // Replace at your own risk in production-- you will invalidate the cookies of your users,
-  // forcing them to log in again.
-  secret: '0fa32505a53e70cd2b5626d70dd15b6c',
+  /***************************************************************************
+  *                                                                          *
+  * Session secret is automatically generated when your new app is created   *
+  * Replace at your own risk in production-- you will invalidate the cookies *
+  * of your users, forcing them to log in again.                             *
+  *                                                                          *
+  ***************************************************************************/
+  secret: '3b4e90e98eaa39a4c45c729c20e1d11e',
 
-  // Set the cookie maximum age (timeout).  If this is not set, then cookies
-  // will persist forever.
-  cookie: {
-    maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
-  }
+
+  /***************************************************************************
+  *                                                                          *
+  * Set the session cookie expire time The maxAge is set by milliseconds,    *
+  * the example below is for 24 hours                                        *
+  *                                                                          *
+  ***************************************************************************/
+
+  // cookie: {
+  //   maxAge: 24 * 60 * 60 * 1000
+  // },
+
+  /***************************************************************************
+  *                                                                          *
+  * In production, uncomment the following lines to set up a shared redis    *
+  * session store that can be shared across multiple Sails.js servers        *
+  ***************************************************************************/
+
+  // adapter: 'redis',
+
+  /***************************************************************************
+  *                                                                          *
+  * The following values are optional, if no options are set a redis         *
+  * instance running on localhost is expected. Read more about options at:   *
+  * https://github.com/visionmedia/connect-redis                             *
+  *                                                                          *
+  *                                                                          *
+  ***************************************************************************/
+
+  // host: 'localhost',
+  // port: 6379,
+  // ttl: <redis session TTL in seconds>,
+  // db: 0,
+  // pass: <redis auth password>,
+  // prefix: 'sess:',
+
+
+  /***************************************************************************
+  *                                                                          *
+  * Uncomment the following lines to use your Mongo adapter as a session     *
+  * store                                                                    *
+  *                                                                          *
+  ***************************************************************************/
+
+  // adapter: 'mongo',
+  // host: 'localhost',
+  // port: 27017,
+  // db: 'sails',
+  // collection: 'sessions',
+
+  /***************************************************************************
+  *                                                                          *
+  * Optional Values:                                                         *
+  *                                                                          *
+  * # Note: url will override other connection settings url:                 *
+  * 'mongodb://user:pass@host:port/database/collection',                     *
+  *                                                                          *
+  ***************************************************************************/
+
+  // username: '',
+  // password: '',
+  // auto_reconnect: false,
+  // ssl: false,
+  // stringify: true
 
 };
-
-// Use redis for sessions
-if (redisCreds) {
-  extend(session, {
-    adapter: 'redis',
-    host: redisCreds.hostname,
-    port: redisCreds.port,
-    db: 0,
-    pass: redisCreds.password
-  });
-// Use postgres for sesssions
-} else if (process.env.NODE_ENV !== 'test' && process.env.DATASTORE !== 'local') {
-
-  var pgSession = require('connect-pg-simple'),
-      express = require('sails/node_modules/express'),
-      pg = require('sails-postgresql/node_modules/pg'),
-      environment = process.env.NODE_ENV || 'development',
-      configs = ['./connections', './env/' + environment, './local'],
-      config = {};
-
-  if (dbURL) {
-    config = dbURL;
-  } else {
-    configs.forEach(function(c) {
-      try { extend(config, require(c).connections.postgresql); } catch(e) {}
-    });
-  }
-
-  if (typeof config === 'string' || Object.keys(config).length > 0) {
-    session.store = new (pgSession(express.session))({
-      conString: config,
-      pg: pg
-    });
-  }
-
-}
-
-function extend(obj, props) {
-  for (var prop in props) {
-    if (props.hasOwnProperty(prop)) { obj[prop] = props[prop]; }
-  }
-}
-
-module.exports.session = session;
