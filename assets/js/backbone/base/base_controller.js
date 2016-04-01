@@ -2,7 +2,7 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
 
-console.log("Backbone: ", Backbone)
+console.log("base_controller: ", Backbone)
 BaseController = Backbone.View.extend({
 
 		initialize: function () {},

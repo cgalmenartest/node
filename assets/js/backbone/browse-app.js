@@ -1,5 +1,6 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
+var $ = jQuery = require('jquery');
 // TODO: var utils = require('../../mixins/utilities');
 // var NavView = require('../nav/views/nav_view');
 // var FooterView = require('../footer/views/footer_view');
