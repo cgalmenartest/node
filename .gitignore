@@ -29,6 +29,7 @@ config/local.js
 # Ignore production files
 assets/build
 assets/uploads
+assets/js/bundle.js
 
 # Ignore uswds files, these are set up during npm install
 assets/fonts
