@@ -23,6 +23,7 @@
     "grunt-sails-linker": "~0.10.1",
     "grunt-sync": "0.2.4",
     "include-all": "~0.1.6",
+    "nodemon": "^1.9.1",
     "passport": "^0.3.2",
     "passport-http-bearer": "^1.0.1",
     "passport-local": "^1.0.0",
@@ -31,11 +32,18 @@
     "sails": "~0.12.1",
     "sails-disk": "~0.10.9",
     "sails-postgresql": "^0.12.1",
+    "uswds": "^0.9.1",
     "validator": "^5.1.0"
   },
   "scripts": {
+    "install": "npm run uswds",
     "debug": "node debug app.js",
-    "start": "node app.js"
+    "start": "node app.js",
+    "watch": "nodemon --watch assets --watch api --watch config --watch views -i assets/build -e js,html,css",
+    "uswds": "npm run uswds:css && npm run uswds:images && npm run uswds:fonts",
+    "uswds:css": "cp node_modules/uswds/dist/css/uswds.css assets/styles/",
+    "uswds:images": "cp -r node_modules/uswds/dist/img/ ./assets/images/uswds",
+    "uswds:fonts": "mkdir -p ./assets/fonts && cp node_modules/uswds/dist/fonts/* ./assets/fonts/."
   },
   "main": "app.js",
   "repository": {

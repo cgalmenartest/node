@@ -30,6 +30,11 @@ config/local.js
 assets/build
 assets/uploads
 
+# Ignore uswds files, these are set up during npm install
+assets/fonts
+assets/styles/uswds.css
+assets/images/uswds
+
 # Ignore vagrant & chef tmp files
 .vagrant/*
 chef/cookbooks/*
