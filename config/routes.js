@@ -34,12 +34,26 @@ module.exports.routes = {
 
   '/': {
     view: 'homepage'
-  }
+  },
+
+  // Authentication routes
+  'get /api/auth/logout': 'AuthController.logout',
+
+  'post /api/auth/local': 'AuthController.callback',
+
+  // TODO: what is this for?
+  // 'post /api/auth/local/:action': 'AuthController.callback',
+
+  // TODO: google auth?
+  // 'post /api/auth/disconnect/:provider': 'AuthController.disconnect',
+  // 'get /api/auth/checkToken/:token': 'AuthController.checkToken',
+  //
+  // 'get /api/auth/:provider': 'AuthController.provider',
+  // 'get /api/auth/callback/:provider': 'AuthController.callback',
+  // 'get /api/auth/:provider/:action': 'AuthController.callback'
+
 
   /***************************************************************************
-  *                                                                          *
-  * Custom routes here...                                                    *
-  *                                                                          *
   * If a request to a URL doesn't match any of the custom routes above, it   *
   * is matched against Sails route blueprints. See `config/blueprints.js`    *
   * for configuration options and examples.                                  *

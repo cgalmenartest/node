@@ -1,0 +1,33 @@
+{
+  "signin": true,
+  "oauth": [
+    "myusa"
+  ],
+  "config": {
+    "myusa": {
+      "name": "MyUSA",
+      "image": "/images/login/myusa.png",
+      "endpoint": "/api/auth/myusa"
+    }
+  },
+  "local": {
+    "enabled": true,
+    "expand": true,
+    "logout": true
+  },
+  "terms": {
+    "enabled": false,
+    "name": "Terms and Conditions",
+    "link": "https://18f.gsa.gov/"
+  },
+  "profile": {
+    "edit": true,
+    "editUrl": null
+  },
+  "agency": {
+    "enabled": true
+  },
+  "location": {
+    "enabled": true
+  }
+}

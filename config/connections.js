@@ -1,3 +1,8 @@
+var cfenv = require('cfenv'),
+    appEnv = cfenv.getAppEnv(),
+    dbURL = appEnv.getServiceURL('psql-openopps');
+
+
 /**
  * Connections
  * (sails.config.connections)
@@ -21,72 +26,44 @@
 
 module.exports.connections = {
 
-  /***************************************************************************
-  *                                                                          *
-  * Local disk storage for DEVELOPMENT ONLY                                  *
-  *                                                                          *
-  * Installed by default.                                                    *
-  *                                                                          *
-  ***************************************************************************/
-  localDiskDb: {
-    adapter: 'sails-disk'
-  },
 
-  /***************************************************************************
-  *                                                                          *
-  * MySQL is the world's most popular relational database.                   *
-  * http://en.wikipedia.org/wiki/MySQL                                       *
-  *                                                                          *
-  * Run: npm install sails-mysql                                             *
-  *                                                                          *
-  ***************************************************************************/
-  someMysqlServer: {
-    adapter: 'sails-mysql',
-    host: 'YOUR_MYSQL_SERVER_HOSTNAME_OR_IP_ADDRESS',
-    user: 'YOUR_MYSQL_USER',
-    password: 'YOUR_MYSQL_PASSWORD',
-    database: 'YOUR_MYSQL_DB'
-  },
+    memory: {
+      adapter: 'sails-disk',
+      inMemory: true
+    },
 
-  /***************************************************************************
-  *                                                                          *
-  * MongoDB is the leading NoSQL database.                                   *
-  * http://en.wikipedia.org/wiki/MongoDB                                     *
-  *                                                                          *
-  * Run: npm install sails-mongo                                             *
-  *                                                                          *
-  ***************************************************************************/
-  someMongodbServer: {
-    adapter: 'sails-mongo',
-    host: 'localhost',
-    port: 27017,
-    // user: 'username',
-    // password: 'password',
-    // database: 'your_mongo_db_name_here'
-  },
+    test: {
+      adapter: 'sails-disk'
+    },
 
-  /***************************************************************************
-  *                                                                          *
-  * PostgreSQL is another officially supported relational database.          *
-  * http://en.wikipedia.org/wiki/PostgreSQL                                  *
-  *                                                                          *
-  * Run: npm install sails-postgresql                                        *
-  *                                                                          *
-  *                                                                          *
-  ***************************************************************************/
-  somePostgresqlServer: {
-    adapter: 'sails-postgresql',
-    host: 'YOUR_POSTGRES_SERVER_HOSTNAME_OR_IP_ADDRESS',
-    user: 'YOUR_POSTGRES_USER',
-    password: 'YOUR_POSTGRES_PASSWORD',
-    database: 'YOUR_POSTGRES_DB'
+    local: {
+      adapter: 'sails-disk'
+    },
+
+    // POSTGRES
+    // Set your postgres database settings here, including the username, password
+    // and database name
+    postgresql: {
+      adapter     : 'sails-postgresql',
+      host        : 'localhost',
+      user        : 'midas',
+      password    : 'midas',
+      database    : 'midas',
+      // populateFast: true  -- removed with sails 0.12.1 upgrade
+      // TODO: delete?       -- was this part of soft-delete implementation?
+    }
+
+  };
+
+  if (dbURL) {
+    module.exports.connections = {
+      postgresql: {
+        adapter: 'sails-postgresql',
+        url: dbURL,
+        populateFast: true
+      }
+    };
+    module.exports.models = {
+      connection: 'postgresql'
+    };
   }
-
-
-  /***************************************************************************
-  *                                                                          *
-  * More adapters: https://github.com/balderdashy/sails                      *
-  *                                                                          *
-  ***************************************************************************/
-
-};
