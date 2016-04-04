@@ -18,7 +18,7 @@ var EmptyModalView = Backbone.View.extend({
 
   var template = _.template(ModalPagesTemplate);
     this.$el.html(template);
-    //TODO: this.$el.i18n();
+    //TODO: this.$el.localize();
     // Return this for chaining.
     return this;
   },

@@ -36,6 +36,58 @@ module.exports.routes = {
     controller: 'main',
     action: 'index'
   },
+  '/dashboard': {
+    controller: 'main',
+    action: 'index'
+  },
+
+  // These routes are for backbone push state to work
+  '/tasks': {
+    controller: 'main',
+    action: 'index'
+  },
+  '/tasks/new': {
+    controller: 'main',
+    action: 'index'
+  },
+  '/tasks/:unknownRoute': {
+    controller: 'main',
+    action: 'index'
+  },
+  '/tasks/:id/:unknownRoute': {
+    controller: 'main',
+    action: 'index'
+  },
+  '/profile': {
+    controller: 'main',
+    action: 'index'
+  },
+  '/profile/:id/:unknownRoute': {
+    controller: 'main',
+    action: 'index'
+  },
+  '/profile/:unknownRoute': {
+    controller: 'main',
+    action: 'index'
+  },
+  '/profiles': {
+    controller: 'main',
+    action: 'index'
+  },
+  '/admin': {
+    controller: 'main',
+    action: 'index'
+  },
+  '/admin/:unknownRoute': {
+    controller: 'main',
+    action: 'index'
+  },
+  '/cron': {
+    controller: 'main',
+    action: 'cron'
+  },
+
+  '/index.html': '/',
 
   // Authentication routes
   'get /api/auth/logout': 'AuthController.logout',

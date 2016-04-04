@@ -8,7 +8,6 @@ Application = {
 
   // Initialize and fire up the application.
   initialize: function () {
-    console.log('hello app-run');
     var self = this;
     // Cache user
     // Check if a user is already defined

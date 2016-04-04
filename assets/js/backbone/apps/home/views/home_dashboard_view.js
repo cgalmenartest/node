@@ -86,7 +86,7 @@ var DashboardView = Backbone.View.extend({
       }
     });
 
-    // TODO: this.$el.i18n();
+    // TODO: this.$el.localize();
     return this;
   },
   setTarget: function (target, inner) {

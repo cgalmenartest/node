@@ -4,7 +4,7 @@ var $ = jQuery = require('jquery');
 // TODO: var utils = require('../../mixins/utilities');
 // var NavView = require('../nav/views/nav_view');
 // var FooterView = require('../footer/views/footer_view');
-// var BrowseListController = require('./controllers/browse_list_controller');
+var BrowseListController = require('./apps/browse/controllers/browse_list_controller');
 // var ProjectModel = require('../../entities/projects/project_model');
 // var ProjectShowController = require('../project/show/controllers/project_show_controller');
 // var ProfileShowController = require('../profiles/show/controllers/profile_show_controller');
@@ -22,9 +22,6 @@ var BrowseRouter = Backbone.Router.extend({
   routes: {
     ''                               : 'showHome',
     'dashboard(/)'                   : 'showHome',
-    'projects(/)(?:queryStr)'        : 'listProjects',
-    'projects/:id(/)'                : 'showProject',
-    'projects/:id/:action(/)'        : 'showProject',
     'tasks/new(?*queryString)'       : 'newTask',
     'tasks(/)(?:queryStr)'           : 'listTasks',
     'tasks/:id(/)'                   : 'showTask',
@@ -40,6 +37,8 @@ var BrowseRouter = Backbone.Router.extend({
   data: { saved: false },
 
   initialize: function () {
+    console.log("Backbone.Router initialize")
+
     /** TODO
     this.navView = new NavView({
       el: '.navigation'
@@ -61,8 +60,8 @@ var BrowseRouter = Backbone.Router.extend({
   },
 
   cleanupChildren: function () {
+    console.log("cleanupChildren")
     if (this.browseListController) { this.browseListController.cleanup(); }
-    if (this.projectShowController) { this.projectShowController.cleanup(); }
     if (this.profileShowController) { this.profileShowController.cleanup(); }
     if (this.taskShowController) { this.taskShowController.cleanup(); }
     if (this.taskCreateController) { this.taskCreateController.cleanup(); }
@@ -108,6 +107,7 @@ var BrowseRouter = Backbone.Router.extend({
   },
 
   listTasks: function (queryStr) {
+    console.log("listTasks")
     this.cleanupChildren();
     this.browseListController = new BrowseListController({
       target: 'tasks',

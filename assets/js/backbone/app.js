@@ -10,6 +10,7 @@ var Backbone = require('backbone');
 var $ = jQuery = require('jquery');
 Backbone.$ = jQuery;
 
+require('./global-utils')
 
 // Set CSRF header
 $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
@@ -24,7 +25,6 @@ $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
 
 // Install jQuery plugins
 // TODO require('blueimp-file-upload/js/vendor/jquery.ui.widget');
-// TODO i18n = require('i18next-client/i18next.commonjs.withJQuery');
 moment = require('moment');
 
 // Set markdown defaults

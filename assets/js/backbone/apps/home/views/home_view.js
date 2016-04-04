@@ -51,7 +51,7 @@ var HomeView = Backbone.View.extend({
     this.$el.addClass('home');
     compiledTemplate = _.template(HomeTemplate)(data);
     this.$el.html(compiledTemplate);
-    // TODO: this.$el.i18n();
+    // TODO: this.$el.localize();
 
   return this;
   },
