@@ -1,15 +1,16 @@
+var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var async = require('async');
 //var utils = require('../../../mixins/utilities');
 var UIConfig = require('../../../config/ui.json');
-//var marked = require('marked');
+var marked = require('marked');
 var TagConfig = require('../../../config/tag');
 // TODO:
 //var ProjectListItem = require('../templates/project_list_item.html');
-//var TaskListItem = require('../templates/task_list_item.html');
-//var NoListItem = require('../templates/no_search_results.html');
-
+var fs = require('fs');
+var TaskListItem = fs.readFileSync(__dirname + '/../templates/task_list_item.html').toString();
+var NoListItem = fs.readFileSync(__dirname + '/../templates/no_search_results.html').toString();
 
 var BrowseListView = Backbone.View.extend({
 
