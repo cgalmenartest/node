@@ -1,7 +1,16 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%=typeof title == 'undefined' ? 'New Sails App' : title%></title>
+    <title><%=typeof title == 'undefined' ? 'Open Opportunities' : title%></title>
+
+    <!-- Application data -->
+    <script type="text/javascript">
+    console.log("hello");
+    systemName = "Midas"; // TODO: JSON.stringify(systemName)
+    draftAdminOnly = <%- JSON.stringify(draftAdminOnly) %>;
+    version = <%- JSON.stringify(version) %>;
+    backendUser = <%- JSON.stringify(user) %>;
+    </script>
 
     <!-- Viewport mobile tag for sensible mobile support -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -91,5 +100,6 @@
     <!--SCRIPTS-->
     <script src="/js/dependencies/sails.io.js"></script>
     <!--SCRIPTS END-->
+    <script type="text/javascript" src="/js/bundle.js"></script>
   </body>
 </html>
