@@ -22,6 +22,7 @@
 		 res.set('Cache-Control', 'no-transform,public,max-age=3600,s-maxage=3600'); // HTTP 1.1.
 		 // Hack for this issue: https://github.com/balderdashy/sails/issues/2094
 		 if (!res.view) return res.send(200);
+     res.locals.layout = "main-layout"
 		 res.view(data);
 	 },
 
