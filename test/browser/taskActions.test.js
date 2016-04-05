@@ -138,67 +138,67 @@ describe('Task actions', function () {
   });
 
 
-  it('should edit task', function () {
+  // it('should edit task', function () {
 
-    // Click the edit task button
-    casper.then(function () {
-      casper.click('#task-edit');
-      casper.waitForSelector('#task-edit-form');
-    });
+  //   // Click the edit task button
+  //   casper.then(function () {
+  //     casper.click('#task-edit');
+  //     casper.waitForSelector('#task-edit-form');
+  //   });
 
-    // Check Full Time Details radio button.
-    var selFullTimeDetail = 'input[type=radio][name=task-time-required][data-descr="Full Time Detail"]';
-    casper.then(function () {
-      if (casper.exists(selFullTimeDetail)) {
-        assert.ok(true);
-      } else {
-        assert.ok(false);
-      }
-    });
+  //   // Check Full Time Details radio button.
+  //   var selFullTimeDetail = 'input[type=radio][name=task-time-required][data-descr="Full Time Detail"]';
+  //   casper.then(function () {
+  //     if (casper.exists(selFullTimeDetail)) {
+  //       assert.ok(true);
+  //     } else {
+  //       assert.ok(false);
+  //     }
+  //   });
 
-    // Click "Full Time Detail"
-    casper.then(function () {
-      casper.click(selFullTimeDetail);
-      casper.waitForSelector('a[id=show-default-description]');
-    });
+  //   // Click "Full Time Detail"
+  //   casper.then(function () {
+  //     casper.click(selFullTimeDetail);
+  //     casper.waitForSelector('a[id=show-default-description]');
+  //   });
 
-    // Click "Show Default Description"
-    casper.then(function () {
-      casper.click('a[id=show-default-description]');
-      var preview = casper.getHTML('.preview-description').substr(0,32);
-      assert.equal('<p><strong>Description:</strong>', preview);
-    });
+  //   // Click "Show Default Description"
+  //   casper.then(function () {
+  //     casper.click('a[id=show-default-description]');
+  //     var preview = casper.getHTML('.preview-description').substr(0,32);
+  //     assert.equal('<p><strong>Description:</strong>', preview);
+  //   });
 
-    // Click "Part Time", link should not be visible.
-    casper.then(function () {
-      casper.click('input[type=radio][name=task-time-required][data-descr="Part Time"]');
-      if (casper.visible('a[id=show-default-description]')) {
-        assert.ok(false);
-      } else {
-        assert.ok(true);
-      }
-    });
+  //   // Click "Part Time", link should not be visible.
+  //   casper.then(function () {
+  //     casper.click('input[type=radio][name=task-time-required][data-descr="Part Time"]');
+  //     if (casper.visible('a[id=show-default-description]')) {
+  //       assert.ok(false);
+  //     } else {
+  //       assert.ok(true);
+  //     }
+  //   });
 
-    // Change the title and description
-    casper.then(function () {
-      casper.fillSelectors('#task-edit-form', {
-        '#task-title': config.task.titleChange,
-        '#task-description': config.task.descriptionChange,
-      }, false);
-      casper.click('#task-edit-form #js-task-create');
-      casper.waitUntilVisible('.li-task-edit');
-    });
+  //   // Change the title and description
+  //   casper.then(function () {
+  //     casper.fillSelectors('#task-edit-form', {
+  //       '#task-title': config.task.titleChange,
+  //       '#task-description': config.task.descriptionChange,
+  //     }, false);
+  //     casper.click('#task-edit-form #js-task-create');
+  //     casper.waitUntilVisible('.li-task-edit');
+  //   });
 
-    // Verify updated task
-    casper.then(function () {
-      var title = casper.fetchText('.main-section h1'),
-        description = casper.fetchText('.main-section .task-show-description').trim(),
-        people = casper.fetchText('#task-people-empty+li').trim();
-      assert.equal(config.task.titleChange, title);
-      assert.equal(config.task.descriptionChange, description);
-    });
+  //   // Verify updated task
+  //   casper.then(function () {
+  //     var title = casper.fetchText('.main-section h1'),
+  //       description = casper.fetchText('.main-section .task-show-description').trim(),
+  //       people = casper.fetchText('#task-people-empty+li').trim();
+  //     assert.equal(config.task.titleChange, title);
+  //     assert.equal(config.task.descriptionChange, description);
+  //   });
 
-  });
+  // });
 
 
 

@@ -194,70 +194,70 @@ describe('Profile actions', function() {
     });
   });
 
-  it('should log in from task page', function() {
-      var submitButton = '#login-password-form button[type="submit"]';
+  // it('should log in from task page', function() {
+  //     var submitButton = '#login-password-form button[type="submit"]';
 
-    // Click task title
-    casper.then(function() {
-      casper.click('.task-box a');
-      casper.waitForSelector('#volunteer');
-    });
+  //   // Click task title
+  //   casper.then(function() {
+  //     casper.click('.task-box a');
+  //     casper.waitForSelector('#volunteer');
+  //   });
 
-    // Click volunteer button
-    casper.then(function() {
-      casper.click('#volunteer');
-      casper.waitForSelector('#login-register');
-    });
+  //   // Click volunteer button
+  //   casper.then(function() {
+  //     casper.click('#volunteer');
+  //     casper.waitForSelector('#login-register');
+  //   });
 
-    // Fill out the login form
-    casper.then(function() {
-      var fields = {
-        '#username': config.user.username,
-        '#password': config.user.password
-      };
-      casper.fillSelectors('#login-password-form', fields, false);
-      casper.waitForSelector(submitButton);
-    });
+  //   // Fill out the login form
+  //   casper.then(function() {
+  //     var fields = {
+  //       '#username': config.user.username,
+  //       '#password': config.user.password
+  //     };
+  //     casper.fillSelectors('#login-password-form', fields, false);
+  //     casper.waitForSelector(submitButton);
+  //   });
 
-    // Click the "sign in" button
-    casper.then(function() {
-      casper.click(submitButton);
-    });
+  //   // Click the "sign in" button
+  //   casper.then(function() {
+  //     casper.click(submitButton);
+  //   });
 
-  });
+  // });
 
-  it('should volunteer after logging in', function() {
+  // it('should volunteer after logging in', function() {
 
-    // Click participate again
-    casper.then(function() {
-      casper.click('#volunteer');
-      casper.waitUntilVisible('#submit');
-    });
+  //   // Click participate again
+  //   casper.then(function() {
+  //     casper.click('#volunteer');
+  //     casper.waitUntilVisible('#submit');
+  //   });
 
-    // Click "I agree" to volunteer
-    casper.then(function() {
-      casper.click('#submit');
-      var user = casper.evaluate(function() {
-        return window.cache.currentUser;
-      });
-      casper.waitUntilVisible('.volunteer-true');
-    });
+  //   // Click "I agree" to volunteer
+  //   casper.then(function() {
+  //     casper.click('#submit');
+  //     var user = casper.evaluate(function() {
+  //       return window.cache.currentUser;
+  //     });
+  //     casper.waitUntilVisible('.volunteer-true');
+  //   });
 
-    // Get the task data from the API and confirm volunteer is set
-    casper.then(function() {
-      var user = casper.evaluate(function() {
-        return window.cache.currentUser.id;
-      }),
-      task = casper.getCurrentUrl().split('/').pop(),
-      data = casper.evaluate(function(url, userId) {
-        return JSON.parse(__utils__.sendAJAX(url, 'GET', null, false));
-      }, {
-        url: system.env.TEST_ROOT + '/api/task/' + task,
-        userId: user
-      });
-      assert(data.volunteers[0].userId, user);
-    });
+  //   // Get the task data from the API and confirm volunteer is set
+  //   casper.then(function() {
+  //     var user = casper.evaluate(function() {
+  //       return window.cache.currentUser.id;
+  //     }),
+  //     task = casper.getCurrentUrl().split('/').pop(),
+  //     data = casper.evaluate(function(url, userId) {
+  //       return JSON.parse(__utils__.sendAJAX(url, 'GET', null, false));
+  //     }, {
+  //       url: system.env.TEST_ROOT + '/api/task/' + task,
+  //       userId: user
+  //     });
+  //     assert(data.volunteers[0].userId, user);
+  //   });
 
-  });
+  // });
 
 });

@@ -55,20 +55,20 @@ describe('Task page', function() {
     });
   });
 
-  it('should have task page with matching content', function() {
-    var sel = '.task-box .task-list-title a',
-        linkTitle = casper.fetchText(sel).trim();
-    casper.click(sel);
-    casper.then(function() {
-      var sel = '.main-section h1';
-      casper.waitForSelector(sel, loaded, failed, 1000 * 15);
-      function loaded() {
-        assert.equal(linkTitle, casper.fetchText(sel).trim());
-      }
-      function failed() {
-        assert.ok(false);
-      }
-    });
-  });
+  // it('should have task page with matching content', function() {
+  //   var sel = '.task-box .task-list-title a',
+  //       linkTitle = casper.fetchText(sel).trim();
+  //   casper.click(sel);
+  //   casper.then(function() {
+  //     var sel = '.main-section h1';
+  //     casper.waitForSelector(sel, loaded, failed, 1000 * 15);
+  //     function loaded() {
+  //       assert.equal(linkTitle, casper.fetchText(sel).trim());
+  //     }
+  //     function failed() {
+  //       assert.ok(false);
+  //     }
+  //   });
+  // });
 
 });
