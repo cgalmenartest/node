@@ -60,10 +60,6 @@ module.exports = {
         'default': 'test'
       }
     },
-  'project': {
-    'title': 'Project Title',
-    'description': 'Project Description'
-  },
   'tasks': [
     {
       'title': 'task1',

@@ -101,35 +101,6 @@ describe('attachments:', function () {
     });
   });
 
-  describe('project non-owner:', function () {
-    it('should fail', function (done) {
-      delete attachment.taskId;
-      attachment.projectId = 1;
-      request.post({
-        url: conf.url + '/attachment',
-        json: attachment,
-      }, function (err, res, body) {
-        assert.equal(res.statusCode, 403);
-        done(err);
-      });
-    });
-  });
-
-  describe('project owner:', function () {
-    before(function (done) {
-      ProjectOwner.create({ projectId: 1, userId: 4 }, done);
-    });
-    it('should pass', function (done) {
-      request.post({
-        url: conf.url + '/attachment',
-        json: attachment,
-      }, function (err, res, body) {
-        assert.equal(res.statusCode, 200);
-        done(err);
-      });
-    });
-  });
-
   describe('admin:', function () {
     before(function (done) {
       async.series([

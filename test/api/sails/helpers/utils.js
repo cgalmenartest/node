@@ -63,21 +63,6 @@ module.exports = {
     });
   },
 
-  createProject: function(request, open, cb) {
-    if (!open) {
-      conf.project.state = 'draft';
-    } else {
-      conf.project.state = 'open';
-    }
-    request.post({ url: conf.url + '/project',
-                   body: JSON.stringify(conf.project)
-                 }, function(err, response, body) {
-      if (err) { return cb(err, null); }
-      var b = JSON.parse(body);
-      cb(null, b);
-    });
-  },
-
   createTasks: function (request, outerCallback) {
     async.each(conf.tasks,
         function (task, innerCallback) {

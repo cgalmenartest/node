@@ -50,52 +50,6 @@ describe('userMetrics.Decorator(user)', function() {
     });
   });
 
-  describe('#addCreatedProjectMetrics(callback)', function() {
-    describe('when there are no created projects', function() {
-      it('sets the related counts to 0', function(done) {
-        decorator.addCreatedProjectMetrics(function() {
-          assert.equal(user.projectsCreatedOpen, 0);
-          assert.equal(user.projectsCreatedClosed, 0);
-          done();
-        });
-      });
-    });
-
-    describe('when both open and closed projects have been created', function() {
-      beforeEach(function(done) {
-        var projects = [];
-
-        function createAssociations() {
-          async.each(projects, function(project, next) {
-            ProjectOwner.create({userId: user.id, projectId: project.id}, next);
-          }, done);
-        }
-
-        projectData = [
-          conf.project, // open project by default
-          {state: 'completed', title: 'not-open'},
-          {state: 'archived', title: 'in-flux'}
-        ];
-
-        async.each(projectData, function(project, next) {
-          Project.create(project).exec(function(err, newProject) {
-            projects.push(newProject);
-            next();
-          });
-        }, createAssociations);
-      });
-
-      it('sets those attributes to the right numbers', function(done) {
-        decorator.addCreatedProjectMetrics(function() {
-          assert.equal(user.projectsCreatedOpen, 1);
-          assert.equal(user.projectsCreatedClosed, 2);
-
-          done();
-        });
-      });
-    });
-  });
-
   describe('#addCreatedTaskMetrics', function() {
     describe('when there are no tasks created by the user', function() {
       it('should have zero values for everything', function(done) {

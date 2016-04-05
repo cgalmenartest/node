@@ -15,14 +15,6 @@ describe('event:', function() {
     request = utils.init();
     utils.login(request, function(err) {
       if (err) { return done(err); }
-      utils.createProject(request, true, function(err, proj) {
-        if (err) { return done(err); }
-        publicProject = proj;
-        utils.createProject(request, false, function(err, proj) {
-          draftProject = proj;
-          done(err);
-        });
-      });
     });
   });
 
