@@ -52,3 +52,6 @@ chef/cookbooks/*
 
 # ruby version manager
 .rvmrc
+
+# code coverage
+coverage
