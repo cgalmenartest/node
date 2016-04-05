@@ -1,25 +1,18 @@
 var chai = require('chai');
 var assert = chai.assert;
 chai.use(require('chai-datetime'));
+var users = require('../../fixtures/user')
 
 describe('UserModel', function() {
-  var createAttrs = {
-    'name': 'Maria Sanchez',
-    'username': 'MARIA@openopps.org',
-    'password': 'TestTest123#',
-    'bio': 'JavaScript expert with an interest in public policy.'
-  };
-  var expectedAttrs = {
-    'id': 1,
-    'name': 'Maria Sanchez',
-    'username': 'maria@openopps.org',
-    'bio': 'JavaScript expert with an interest in public policy.'
-    // also expect createdAt and updatedAt
-  };
+  var createAttrs = users.allAttrs;
+  createAttrs.username.toUpperCase();   // shouldn't matter, saves as lower
+  var expectedAttrs = (JSON.parse(JSON.stringify(users.allAttrs)));
+  expectedAttrs.id = 1;
+  delete expectedAttrs.password;
 
   describe('new user', function() {
     var newUser = {};
-    before(function(done) {
+    beforeEach(function(done) {
       User.create(createAttrs)
       .then(function(result) {
           newUser = result;
@@ -67,12 +60,10 @@ describe('UserModel', function() {
 
   describe('errors:', function() {
     var newUser = {};
-    before(function(done) {
+    beforeEach(function(done) {
       User.create(createAttrs)
       .then(function(result) {
           newUser = result;
-          //done();
-
           User.find({username: createAttrs.username}, function(err, records) {
             assert(!err);
             assert.equal(records.length, 1);
@@ -81,17 +72,14 @@ describe('UserModel', function() {
       })
       .catch(done);
     });
-    //WLValidationError
+
     describe('#create', function() {
       it('should fail with duplicate username (email)', function (done) {
+        console.log("should fail")
         User.create({username: createAttrs.username}, function(err, records) {
-          //assert.isNotNull(err, 'expect an error from User.create');
-          //assert.equal(err.code, 'E_VALIDATION');
-          User.find({username: createAttrs.username}, function(err, records) {
-            assert(!err);
-            assert.equal(records.length, 1);
-            done();
-          });
+          assert.isNotNull(err, 'expect an error from User.create');
+          assert.equal(err.code, 'E_VALIDATION');
+          done();
         });
       });
     });
