@@ -15,8 +15,6 @@ module.exports = {
     },
     // user id of the task owner
     userId: 'INTEGER',
-    // project id of the parent project
-    projectId: 'INTEGER',
     // title of the task
     title: 'STRING',
     // description of the task
@@ -66,7 +64,6 @@ module.exports = {
   },
 
   exportFormat: {
-    'project_id': 'projectId',
     'name': {field: 'title', filter: exportUtils.nullToEmptyString},
     'description': {field: 'description', filter: exportUtils.nullToEmptyString},
     'created_date': {field: 'createdAt', filter: exportUtils.excelDateFormat},

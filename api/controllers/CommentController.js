@@ -18,13 +18,6 @@ module.exports = {
     });
   },
 
-  findAllByProjectId: function (req, res) {
-    sails.services.utils['comment'].commentAssemble({ projectId: req.params.id }, function (err, comments) {
-      if (err) { return res.send(400, { message: 'Error looking up coments'}); }
-      return res.send({ comments: comments });
-    });
-  },
-
   findAllParentsById: function(req, res) {
     sails.services.utils['comment'].commentAssemble({ id: req.params.id }, function (err, comments) {
       if (err) { return res.send(400, { message: 'Error looking up coments'}); }

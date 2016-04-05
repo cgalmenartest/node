@@ -29,8 +29,6 @@ module.exports = {
     location: 'STRING',
     // User ID of the creator
     userId: 'INTEGER',
-    // ID of the project associated with this event
-    projectId: 'INTEGER'
   }
 
 };

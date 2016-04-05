@@ -195,7 +195,6 @@ Comment = Backbone.View.extend({
       el: "#comment-list",
       model: comment,
       target: this.options.target,
-      projectId: comment.projectId,
       taskId: comment.taskId,
       collection: collection
     }).render();

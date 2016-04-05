@@ -27,7 +27,6 @@ var CommentCollection = Backbone.Collection.extend({
       parentId  : data['parentId'],
       value     : data['comment'],
       taskId    : data['taskId'],
-      projectId : data['projectId'],
       topic     : data['topic']
     })
 

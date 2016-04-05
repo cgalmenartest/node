@@ -5,7 +5,6 @@ var utils = require('../../../mixins/utilities');
 var UIConfig = require('../../../config/ui.json');
 var marked = require('marked');
 var TagConfig = require('../../../config/tag');
-var ProjectListItem = require('../templates/project_list_item.html');
 var TaskListItem = require('../templates/task_list_item.html');
 var NoListItem = require('../templates/no_search_results.html');
 
@@ -91,12 +90,7 @@ var BrowseListView = Backbone.View.extend({
         if (this.options.collection[i].description) {
           item.item.descriptionHtml = marked(this.options.collection[i].description);
         }
-        var compiledTemplate = '';
-        if (this.options.target == 'projects') {
-          compiledTemplate = _.template(ProjectListItem)(item);
-        } else {
-          compiledTemplate = _.template(TaskListItem)(item);
-        }
+        var compiledTemplate = _.template(TaskListItem)(item);
         this.$el.append(compiledTemplate);
       }
     }

@@ -10,8 +10,6 @@ module.exports = {
 
   attributes: {
 
-    // project that is liked
-    projectId: 'INTEGER',
     // task that is liked
     taskId: 'INTEGER',
     // person that is liked

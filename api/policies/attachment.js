@@ -27,18 +27,6 @@ module.exports = function(req, res, next) {
       }
     });
 
-  } else if (req.param('projectId')) {
-
-    ProjectOwner.find({
-      projectId: req.param('projectId')
-    }).exec(function(err, owners) {
-      if (err || !owners) return res.badRequest('Error uploading file.');
-
-      // Task creators can attach to projects
-      if (_.pluck(owners, 'userId').indexOf(req.user.id) !== -1) return next();
-      return res.forbidden();
-    });
-
   } else {
     return res.forbidden('Files must be attached to a task or project.');
   }

@@ -8,7 +8,6 @@
 var _ = require('underscore');
 var async = require('async');
 var icalendar = require('icalendar');
-var projUtils = require('../services/utils/project');
 
 module.exports = {
 
@@ -19,23 +18,6 @@ module.exports = {
       if (req.user) {
         userId = req.user[0].id;
       }
-      projUtils.authorized(ev.projectId, userId, function (err, proj) {
-        if (err) { return res.send(400, { message: err }); }
-        if (!err && !proj) { return res.send(403, { message: 'Not authorized.'}); }
-        // Get RSVP's for display
-        EventRsvp.findByEventId(ev.id, function (err, rsvps) {
-          ev.rsvps = [];
-          for (var i = 0; i < rsvps.length; i++) {
-            ev.rsvps.push(rsvps[i].userId);
-          }
-          // Check if this user has RSVP'd
-          ev.rsvp = false;
-          if (userId && _.contains(ev.rsvps, userId)) {
-            ev.rsvp = true;
-          }
-          return res.send(ev);
-        });
-      });
     });
   },
 
@@ -87,19 +69,6 @@ module.exports = {
       if (req.user) {
         userId = req.user[0].id;
       }
-      projUtils.authorized(ev.projectId, userId, function (err, proj) {
-        if (err) { return res.send(400, { message: err }); }
-        if (!err && !proj) { return res.send(403, { message: 'Not authorized.'}); }
-        attend = { eventId: ev.id, userId: userId };
-        EventRsvp.findOne({ where: attend}, function (err, existing) {
-          if (err) { return res.send(400, { message: 'Error creating attendance.' }); }
-          if (existing) { return res.send(existing); }
-          EventRsvp.create(attend, function (err, attend) {
-            if (err) { return res.send(400, { message: 'Error creating attendance.' }); }
-            return res.send(attend);
-          });
-        });
-      });
     });
   },
 

@@ -4,8 +4,6 @@ var utils = require('../../mixins/utilities');
 var NavView = require('../nav/views/nav_view');
 var FooterView = require('../footer/views/footer_view');
 var BrowseListController = require('./controllers/browse_list_controller');
-var ProjectModel = require('../../entities/projects/project_model');
-var ProjectShowController = require('../project/show/controllers/project_show_controller');
 var ProfileShowController = require('../profiles/show/controllers/profile_show_controller');
 var TaskModel = require('../../entities/tasks/task_model');
 var TaskCollection = require('../../entities/tasks/tasks_collection');
@@ -21,9 +19,6 @@ var BrowseRouter = Backbone.Router.extend({
   routes: {
     ''                               : 'showHome',
     'dashboard(/)'                   : 'showHome',
-    'projects(/)(?:queryStr)'        : 'listProjects',
-    'projects/:id(/)'                : 'showProject',
-    'projects/:id/:action(/)'        : 'showProject',
     'tasks/new(?*queryString)'       : 'newTask',
     'tasks(/)(?:queryStr)'           : 'listTasks',
     'tasks/:id(/)'                   : 'showTask',
@@ -60,7 +55,6 @@ var BrowseRouter = Backbone.Router.extend({
 
   cleanupChildren: function () {
     if (this.browseListController) { this.browseListController.cleanup(); }
-    if (this.projectShowController) { this.projectShowController.cleanup(); }
     if (this.profileShowController) { this.profileShowController.cleanup(); }
     if (this.taskShowController) { this.taskShowController.cleanup(); }
     if (this.taskCreateController) { this.taskCreateController.cleanup(); }
@@ -94,17 +88,6 @@ var BrowseRouter = Backbone.Router.extend({
     return params;
   },
 
-  listProjects: function (queryStr) {
-    this.cleanupChildren();
-    this.browseListController = new BrowseListController({
-      target: 'projects',
-      el: '#container',
-      router: this,
-      queryParams: this.parseQueryParams(queryStr),
-      data: this.data
-    });
-  },
-
   listTasks: function (queryStr) {
     this.cleanupChildren();
     this.browseListController = new BrowseListController({
@@ -125,13 +108,6 @@ var BrowseRouter = Backbone.Router.extend({
       queryParams: this.parseQueryParams(queryStr),
       data: this.data
     });
-  },
-
-  showProject: function (id, action) {
-    this.cleanupChildren();
-    var model = new ProjectModel();
-    model.set({ id: id });
-    this.projectShowController = new ProjectShowController({ model: model, router: this, id: id, action: action, data: this.data });
   },
 
   showTask: function (id, action) {

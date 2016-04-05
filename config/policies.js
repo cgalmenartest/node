@@ -74,23 +74,9 @@ module.exports.policies = {
     '*': ['passport', 'protectedFile']
   },
 
-  ProjectController : {
-    '*': ['passport', 'authenticated', 'addUserId', 'project'],
-    'find': ['passport', 'authenticated', 'requireId', 'project'],
-    'findOne': ['passport', 'authenticated', 'requireId', 'project'],
-    'update': ['passport', 'authenticated', 'requireUserId', 'requireId', 'project', 'ownerOrAdmin'],
-    'destroy': ['passport', 'authenticated', 'requireUserId', 'requireId', 'project', 'ownerOrAdmin']
-  },
-
-  ProjectOwnerController : {
-    '*': false,
-    'create': ['passport', 'authenticated', 'requireUserId', 'projectId'],
-    'destroy': ['passport', 'authenticated', 'requireUserId', 'requireId']
-  },
-
   LikeController : {
     '*': ['passport', 'authenticated', 'addUserId'],
-    'count': ['passport', 'authenticated', 'requireId', 'project'],
+    'count': ['passport', 'authenticated', 'requireId'],
     'countt': ['passport', 'authenticated', 'requireId', 'task'],
     'countu': ['passport', 'authenticated', 'requireId', 'requireUserId'],
     'like': ['passport', 'authenticated', 'requireUserId', 'addUserId', 'requireId'],
@@ -114,23 +100,21 @@ module.exports.policies = {
     '*': false,
     'find': ['passport', 'authenticated'],
     'findOne': ['passport', 'authenticated'],
-    'create': ['passport', 'authenticated', 'requireUserId', 'addUserId', 'projectId', 'eventUuid'],
-    'update': ['passport', 'authenticated', 'requireUserId', 'projectId'],
-    'findAllByProjectId': ['passport', 'authenticated', 'addUserId', 'requireId', 'project'],
+    'create': ['passport', 'authenticated', 'requireUserId', 'addUserId', 'eventUuid'],
+    'update': ['passport', 'authenticated', 'requireUserId'],
     'attend': ['passport', 'authenticated', 'requireUserId', 'addUserId', 'requireId'],
     'cancel': ['passport', 'authenticated', 'requireUserId', 'addUserId', 'requireId'],
     'rsvp': ['passport', 'authenticated', 'requireUserId', 'addUserId'],
-    'ical': ['passport', 'authenticated', 'addUserId', 'project'],
+    'ical': ['passport', 'authenticated', 'addUserId'],
     'destroy': ['passport', 'authenticated', 'requireId', 'admin']
   },
 
   CommentController : {
     'find': false,
     'findOne': false,
-    'create': ['passport', 'authenticated', 'requireUserId', 'addUserId', 'projectId', 'taskId'],
-    'update': ['passport', 'authenticated', 'requireUserId', 'projectId', 'taskId', 'comment', 'ownerOrAdmin'],
+    'create': ['passport', 'authenticated', 'requireUserId', 'addUserId', 'taskId'],
+    'update': ['passport', 'authenticated', 'requireUserId', 'taskId', 'comment', 'ownerOrAdmin'],
     'destroy': ['passport', 'authenticated', 'requireUserId', 'requireId', 'admin'],
-    'findAllByProjectId': ['passport', 'authenticated', 'requireId', 'project'],
     'findAllByTaskId': ['passport', 'authenticated', 'requireId', 'task']
   },
 
@@ -143,10 +127,9 @@ module.exports.policies = {
   TaskController : {
     'find': ['passport', 'authenticated', 'task'],
     'findOne': ['passport', 'authenticated', 'task'],
-    'findAllByProjectId': ['passport', 'authenticated', 'requireId', 'project'],
     'copy': ['passport', 'authenticated', 'requireUserId', 'addUserId'],
     'create': ['passport', 'authenticated', 'requireUserId', 'addUserId'],
-    'update': ['passport', 'authenticated', 'requireUserId', 'requireId', 'projectId', 'task', 'ownerOrAdmin'],
+    'update': ['passport', 'authenticated', 'requireUserId', 'requireId', 'task', 'ownerOrAdmin'],
     'destroy': ['passport', 'authenticated', 'requireUserId', 'requireId', 'task', 'ownerOrAdmin'],
     'export': ['passport', 'authenticated', 'admin']
   },
@@ -154,7 +137,6 @@ module.exports.policies = {
   AttachmentController: {
     'find': ['passport', 'authenticated', 'requireId'],
     'findOne': ['passport', 'authenticated', 'requireId'],
-    'findAllByProjectId': ['passport', 'authenticated', 'requireId', 'project'],
     'findAllByTaskId': ['passport', 'authenticated', 'requireId', 'task'],
     'create': ['passport', 'authenticated', 'requireUserId', 'addUserId', 'attachment'],
     'update': false,

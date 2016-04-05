@@ -40,8 +40,6 @@ var BrowseMainView = Backbone.View.extend({
         ui: UIConfig,
         placeholder: target === 'tasks' ?
           "I'm looking for opportunities by name, " + i18n.t("tag.agency") + ", skill, topic, description..." :
-          target === 'projects' ?
-          "I'm looking for working groups by name, " + i18n.t("tag.agency") + ", skill, topic, description..." :
           target === 'profiles' ?
           "I'm looking for people by name, title,  " + i18n.t("tag.agency") + ", location..." :
           "I'm looking for..."
@@ -129,8 +127,8 @@ var BrowseMainView = Backbone.View.extend({
     // create a new view for the returned data
     if (this.browseListView) { this.browseListView.cleanup(); }
 
-    if (this.options.target == 'projects' || this.options.target == 'tasks') {
-      // projects and tasks get tiles
+    if (this.options.target == 'tasks') {
+      // tasks get tiles
       $("#browse-map").hide();
       this.browseListView = new BrowseListView({
         el: '#browse-list',

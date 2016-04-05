@@ -32,13 +32,7 @@ function findAll (target, req, res) {
 };
 
 module.exports = {
-
-  findAllByProjectId: function (req, res) {
-    return findAll('projectId', req, res);
-  },
-
   findAllByTaskId: function (req, res) {
     return findAll('taskId', req, res);
   }
-
 };

@@ -4,20 +4,6 @@ console.log('Loading... ', __filename);
   // SOURCE SETTINGS
   // Set the sources of externally linked data/files
   sources: {
-    'project': {
-      type: 'model',
-      target: 'Project',
-      fields: [
-        {
-          name: 'title'
-        }
-      ],
-      include: [
-        'title',
-        'description'
-      ],
-      link: '/projects/'
-    },
     'task': {
       type: 'model',
       target: 'Task',
@@ -71,17 +57,16 @@ console.log('Loading... ', __filename);
   },
   // Determine the autocomplete search order
   // search is the main search bar
-  // inline is for general text boxes (comments, project, tasks)
+  // inline is for general text boxes (comments, tasks)
   // attachments is for the attachment sidebar
   autocomplete: {
-    'search': ['project', 'tag'],
-    'inline': ['user', 'project', 'wikipedia'],
+    'search': ['tag'],
+    'inline': ['user', 'wikipedia'],
     'tag': ['tag'],
     'attachments': ['user', 'wikipedia'],
     'user': ['user'],
-    'project': ['project'],
     // these are sub-ids of search, for powering the browse view
-    'search-projects': ['project', 'tag'],
+    'search-projects': ['tag'],
     'search-tasks': ['task', 'tag'],
     'search-profiles': ['user', 'tag']
   }

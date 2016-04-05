@@ -84,10 +84,6 @@ module.exports = {
         archived: 0,
       },
 
-      projects: {
-        count: 0,
-      },
-
     };
 
     User.count( { disabled: false } )
@@ -152,22 +148,6 @@ module.exports = {
                   lastId = vols[j].taskId;
                 }
               }
-
-              Project.count().exec( function ( err, projectCount ) {
-                if ( err ) {
-                  return res.send(
-                    400,
-                    {
-                      message: 'An error occurred looking up project metrics.',
-                      error: err,
-                    }
-                  );
-                }
-
-                metrics.projects.count = projectCount;
-                return res.send(metrics);
-
-              } );
 
             } );
 

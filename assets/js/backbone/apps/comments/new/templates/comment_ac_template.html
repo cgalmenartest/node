@@ -2,8 +2,6 @@
   <div class="ac-container">
     <% if (image !== null) { %>
     <img src="<%- image %>" alt="<%- value %>" class="ac-image"/>
-    <% } else if (target == 'project') { %>
-    <img src="/images/project_default.png" alt="<%- value %>" class="ac-image"/>
     <% } else { %>
     <div class="ac-image"></div>
     <% } %>
@@ -12,7 +10,7 @@
         <%- value %>
       </div>
       <div class="ac-description">
-        <% if ((target == 'project') || (target == 'user')) { %>
+        <% if (target == 'user') { %>
         <% /* Escaped in view and with marked() */ %>
         <%= description %>
         <% } %>

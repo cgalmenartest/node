@@ -5,7 +5,6 @@
  * was found but access is denied.
  */
 var async = require('async');
-var util = require('./project');
 var userUtil = require('./user');
 
 var authorized = function (id, userId, user, cb) {
@@ -27,20 +26,6 @@ var authorized = function (id, userId, user, cb) {
       }
       return cb(null, null);
     }
-    // check if the user is authorized for the project
-    // or the project is open
-    util.authorized(task.projectId, userId, function (err, proj) {
-      if (err) { return cb(err, null); }
-      if (!err && !proj) { return cb(null, null); }
-      task.project = proj;
-      // user has access to the task, but is not the task owner
-      // check the task state to make sure it is publicly accessible
-      if ((task.state !== 'draft') || (task.isOwner === true) || (user && user.isAdmin)) {
-        return cb(null, task);
-      }
-      // In any other state, you have to be the owner.  Denied.
-      return cb(null, null);
-    });
   });
 };
 

@@ -58,15 +58,6 @@ var CommentFormView = Backbone.View.extend({
           data.description = '';
         }
       }
-      // convert descriptions to markdown/html
-      if (data.target == 'project') {
-        if (data.description) {
-          data.description = marked(data.description);
-        }
-        if (!data.coverId) {
-          data.coverId = null;
-        }
-      }
       if (!data.image) {
         data.image = null;
       }

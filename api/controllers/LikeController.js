@@ -58,16 +58,6 @@ module.exports = {
   },
 
   /**
-   * Get the number of likes for a project
-   * Syntax: /like/count/:projectId
-   */
-  count: function (req, res) {
-    Like.countByProjectId( req.params.id, function (err, likes) {
-      return res.send({ projectId: req.params.id, count: likes });
-    });
-  },
-
-  /**
    * Get the number of likes for a target user
    */
   countt: function (req, res) {
@@ -87,14 +77,6 @@ module.exports = {
 
   /**
    * Helper function so you don't have to call create
-   * Syntax: /like/like/:projectId where :id is the projectId
-   */
-  like: function (req, res) {
-    new LikeActions(req, res, 'projectId').like();
-  },
-
-  /**
-   * Helper function so you don't have to call create
    * Syntax: /like/liket/:userId where :id is the userId
    */
   liket: function (req, res) {
@@ -107,14 +89,6 @@ module.exports = {
    */
   likeu: function (req, res) {
     new LikeActions(req, res, 'targetId').like();
-  },
-
-  /**
-   * Helper function so you don't have to call destroy
-   * Syntax: Call /like/unlike/:projectId where :id is the projectId
-   */
-  unlike: function (req, res) {
-    new LikeActions(req, res, 'projectId').unlike();
   },
 
   /**

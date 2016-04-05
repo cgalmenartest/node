@@ -30,8 +30,6 @@ module.exports = {
         type: 'BOOLEAN',
         defaultsTo: false
     },
-    // project id for this comment (null if it is a task comment)
-    projectId: 'INTEGER',
     // task id for this comment (null if it is a project comment)
     taskId: 'INTEGER',
     // parent comment id for nested comments

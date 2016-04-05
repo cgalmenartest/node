@@ -44,18 +44,6 @@ module.exports.routes = {
   },
 
   // These routes are for backbone push state to work
-  '/projects': {
-    controller: 'main',
-    action: 'index'
-  },
-  '/projects/:unknownRoute': {
-    controller: 'main',
-    action: 'index'
-  },
-  '/projects/:id/:unknownRoute': {
-    controller: 'main',
-    action: 'index'
-  },
   '/tasks': {
     controller: 'main',
     action: 'index'

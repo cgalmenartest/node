@@ -7,7 +7,6 @@
 
 var _ = require('underscore');
 var async = require('async');
-var projUtil = require('../services/utils/project');
 var taskUtil = require('../services/utils/task');
 
 
@@ -100,23 +99,6 @@ function taskProjectSearch(target, req, res) {
 
     if ( target == 'tasks' ){
       taskUtil.findTasks({id:results}, function (err, items) {
-        if ( _.isNull(items) ){
-          res.send([]);
-        } else {
-          res.send(items);
-        }
-      });
-    } else {
-      //this each is required so we can add the counts which are need for project cards only
-      async.each(results, function(id,fcb){
-        Project.findOneById(id,function(err,proj){
-          projUtil.addCounts(proj, function (err) {
-            items.push(proj);
-            fcb();
-          });
-        });
-      }, function(err) {
-        if (err) return res.serverError(err);
         if ( _.isNull(items) ){
           res.send([]);
         } else {
