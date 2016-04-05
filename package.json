@@ -46,10 +46,16 @@
     "validator": "^5.1.0",
     "watchify": "^3.7.0"
   },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.4.5",
+    "sails-memory": "^0.10.6"
+  },
   "scripts": {
     "install": "npm run uswds",
     "build": "npm run browserify",
     "start": "npm run build && node app.js",
+    "test": "node ./node_modules/mocha/bin/mocha test/bootstrap.test.js test/integration/**/*.test.js",
     "debug": "node debug app.js",
     "browserify": "browserify -t brfs assets/js/backbone/app.js -o assets/js/bundle.js",
     "watch": "npm run watch:server & npm run watch:client",
