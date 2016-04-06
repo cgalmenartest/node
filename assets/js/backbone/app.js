@@ -7,10 +7,14 @@
 // Set up Backbone to use jQuery
 var _ = require('underscore');
 var Backbone = require('backbone');
-var $ = jQuery = require('jquery');
-Backbone.$ = jQuery;
+var $ = require('jquery');
+Backbone.$ = $;
 
-require('./global-utils')
+require('./global-utils');
+
+// let foo = 2;
+
+
 
 // Set CSRF header
 $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
@@ -25,7 +29,8 @@ $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
 
 // Install jQuery plugins
 // TODO require('blueimp-file-upload/js/vendor/jquery.ui.widget');
-moment = require('moment');
+var moment = require('moment');
+
 
 // Set markdown defaults
 var marked = require('marked');
@@ -44,8 +49,7 @@ window.cache            = { userEvents: {}, currentUser: null, system: {} };
 
 // Events
 window.entities = { request: {} };
-rendering       = {};
-
+window.rendering       = {};
 
 
 // Global AJAX error listener. If we ever get an auth error, prompt to log

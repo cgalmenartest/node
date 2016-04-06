@@ -2,7 +2,7 @@
 //var Bootstrap = require('bootstrap');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var $ = jQuery = require('jquery');
+var $ = require('jquery');
 //var utils = require('../../../mixins/utilities');
 var BaseController = require('../../../base/base_controller');
 var BrowseMainView = require('../views/browse_main_view');
@@ -14,7 +14,7 @@ var TaskModel = require('../../../entities/tasks/task_model');
 // var ModalComponent = require('../../../components/modal');
 
 
-Browse = {};
+var Browse = {};
 
 Browse.ListController = BaseController.extend({
 
@@ -26,7 +26,7 @@ Browse.ListController = BaseController.extend({
   },
 
   initialize: function ( options ) {
-    console.log("Browse.ListController initialize")
+    console.log("Browse.ListController initialize");
     // this.options = options;
     this.target = options.target;
     this.queryParams = options.queryParams || {};

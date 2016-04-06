@@ -1,13 +1,14 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
-var $ = jQuery = require('jquery');
+import $ from 'jquery';
 
 var fs = require('fs');
 var i18n = require('i18next');
 var XHR = require ('i18next-xhr-backend');
-i18nextJquery = require('jquery-i18next');
+var i18nextJquery = require('jquery-i18next');
 
 var BrowseApp = require('./browse-app');
+
 
 
 var initialize = function () {
@@ -29,7 +30,7 @@ var initialize = function () {
 
       });
 
-}
+};
 
 module.exports = {
   initialize: initialize

@@ -1,6 +1,6 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
-var $ = jQuery = require('jquery');
+var $ = require('jquery');
 // TODO: var utils = require('../../mixins/utilities');
 // var NavView = require('../nav/views/nav_view');
 // var FooterView = require('../footer/views/footer_view');
@@ -37,7 +37,7 @@ var BrowseRouter = Backbone.Router.extend({
   data: { saved: false },
 
   initialize: function () {
-    console.log("Backbone.Router initialize")
+    console.log("Backbone.Router initialize");
 
     /** TODO
     this.navView = new NavView({
@@ -60,7 +60,7 @@ var BrowseRouter = Backbone.Router.extend({
   },
 
   cleanupChildren: function () {
-    console.log("cleanupChildren")
+    console.log("cleanupChildren");
     if (this.browseListController) { this.browseListController.cleanup(); }
     if (this.profileShowController) { this.profileShowController.cleanup(); }
     if (this.taskShowController) { this.taskShowController.cleanup(); }
@@ -107,7 +107,7 @@ var BrowseRouter = Backbone.Router.extend({
   },
 
   listTasks: function (queryStr) {
-    console.log("listTasks")
+    console.log("listTasks");
     this.cleanupChildren();
     this.browseListController = new BrowseListController({
       target: 'tasks',
