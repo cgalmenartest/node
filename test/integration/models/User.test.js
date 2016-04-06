@@ -38,6 +38,15 @@ describe('UserModel', function() {
           assert.equal(newUser.passports.length, 0);
           done();
       });
+      describe('errors:', function() {
+        it('should fail with duplicate username (email)', function() {
+          User.create({username: createAttrs.username}, function(err, records) {
+            assert.isNotNull(err, 'expect an error from User.create');
+            assert.equal(err.code, 'E_VALIDATION');
+            done();
+          });
+        });
+      });
     });
     describe('#toJSON', function() {
       it('has created date', function (done) {
@@ -56,32 +65,6 @@ describe('UserModel', function() {
           done();
       });
     });
-  });
+  }); // 'new user'
 
-  describe('errors:', function() {
-    var newUser = {};
-    beforeEach(function(done) {
-      User.create(createAttrs)
-      .then(function(result) {
-          newUser = result;
-          User.find({username: createAttrs.username}, function(err, records) {
-            assert(!err);
-            assert.equal(records.length, 1);
-            done();
-          });
-      })
-      .catch(done);
-    });
-
-    describe('#create', function() {
-      it('should fail with duplicate username (email)', function (done) {
-        console.log("should fail")
-        User.create({username: createAttrs.username}, function(err, records) {
-          assert.isNotNull(err, 'expect an error from User.create');
-          assert.equal(err.code, 'E_VALIDATION');
-          done();
-        });
-      });
-    });
-  });
 });
