@@ -3,6 +3,7 @@
  *
  * @description :: User model, unique by email
  */
+var crypto    = require('crypto');
 
 module.exports = {
   schema: true,
@@ -28,5 +29,32 @@ module.exports = {
     }
     done();
   },
+  register: function(attributes, done) {
+    User.create({
+      username : attributes.username,
+      name: attributes.name,
+      tags: attributes.tags
+    }, function (err, user) {
+      if (err) return done(err);
 
+      // Generating accessToken for API authentication
+      var token = crypto.randomBytes(48).toString('base64');
+
+      Passport.create({
+        protocol    : 'local'
+      , password    : attributes.password
+      , user        : user.id
+      , accessToken : token
+      }, function (err, passport) {
+        if (err) {
+          return user.destroy(function (destroyErr) {
+            done(destroyErr || err);
+          });
+        }
+
+        done(null, user);
+      });
+    });
+
+  }
 };

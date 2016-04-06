@@ -1,14 +1,18 @@
 var chai = require('chai');
 var assert = chai.assert;
 chai.use(require('chai-datetime'));
-var users = require('../../fixtures/user')
+var users = require('../../fixtures/user');
 
 describe('UserModel', function() {
-  var createAttrs = users.allAttrs;
-  createAttrs.username.toUpperCase();   // shouldn't matter, saves as lower
-  var expectedAttrs = (JSON.parse(JSON.stringify(users.allAttrs)));
-  expectedAttrs.id = 1;
-  delete expectedAttrs.password;
+  var createAttrs, expectedAttrs;
+  beforeEach(function(done) {
+    createAttrs = (JSON.parse(JSON.stringify(users.allAttrs)));
+    createAttrs.username.toUpperCase();   // shouldn't matter, saves as lower
+    expectedAttrs = (JSON.parse(JSON.stringify(users.allAttrs)));
+    expectedAttrs.id = 1;
+    delete expectedAttrs.password;
+    done();
+  })
 
   describe('new user', function() {
     var newUser = {};
@@ -67,4 +71,84 @@ describe('UserModel', function() {
     });
   }); // 'new user'
 
+  describe('#register', function() {
+    describe('with valid params', function() {
+      var user;
+      beforeEach(function(done) {
+        User.register(createAttrs, function(err, record) {
+          assert.isNull(err)
+          user = record;
+          done();
+        });
+      });
+      describe('result', function() {
+        it ('should have correct attributes', function(done) {
+          assert.equal(user.username, createAttrs.username);
+          assert.equal(user.name, createAttrs.name);
+          done();
+        });
+      });
+      it('should create a user', function (done) {
+          User.find({username: createAttrs.username})
+          .exec(function(err, records) {
+            if (err) done(err);
+            assert.equal(records.length, 1);
+            found_user = records[0]
+            assert.equal(found_user.username, createAttrs.username);
+            assert.equal(found_user.name, createAttrs.name);
+            done();
+          });
+      });
+      it('should create a passport', function (done) {
+          Passport.find({user: user.id})
+          .exec(function(err, records) {
+            if (err) done(err);
+            assert.equal(records.length, 1);
+            passport = records[0]
+            assert.equal(passport.user, 1);
+            assert.equal(passport.protocol, 'local');
+
+            done();
+
+          });
+      });
+      it('should create a user with a passport', function (done) {
+          User.find({username: createAttrs.username})
+          .populate('passports')
+          .exec(function(err, records) {
+            if (err) done(err);
+            assert.equal(records.length, 1);
+            found_user = records[0]
+            assert.equal(found_user.passports.length, 1);
+            done();
+
+          });
+      });
+    });
+    describe('with invalid params', function() {
+      it ('should fail with invalid user name', function(done) {
+        createAttrs.username = "foo"; // should be an email address
+        User.register(createAttrs, function(err, record) {
+          assert.isNotNull(err)
+          done();
+        });
+      });
+      it ('should fail with no password', function(done) {
+        createAttrs.password = ""; // should be an email address
+        User.register(createAttrs, function(err, record) {
+          assert.isNotNull(err)
+          done();
+        });
+      });
+      it ('should require password of 8 chars', function(done) {
+        createAttrs.password = "1234567"; // should be an email address
+        User.register(createAttrs, function(err, record) {
+          assert.isNotNull(err)
+          done();
+        });
+      });
+
+    });
+
+  });
 });
