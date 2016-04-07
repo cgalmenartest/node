@@ -35,8 +35,11 @@ module.exports = {
       name: attributes.name,
       tags: attributes.tags
     }, function (err, user) {
-      if (err) return done(err);
-
+      if (err) {
+        // used to set req.flash: Error.Passport.User.Exists 
+        sails.log.verbose('register: failed to create user ', attributes.username);
+        return done(err);
+      }
       // Generating accessToken for API authentication
       var token = crypto.randomBytes(48).toString('base64');
 
@@ -47,6 +50,8 @@ module.exports = {
       , accessToken : token
       }, function (err, passport) {
         if (err) {
+          // used to set req.flash: Error.Passport.Password.Invalid
+          sails.log.verbose('register: failed to create passport for user ', user.id);
           return user.destroy(function (destroyErr) {
             done(destroyErr || err);
           });

@@ -89,6 +89,8 @@ module.exports = {
             'You need to have a .gov or .mil email address.' :
             'Invalid email address or password.';
 
+      sails.log.verbose('error message:', message);
+
       if (req.param('json')) {
         return res.send(403, { message: message });
       } else {
