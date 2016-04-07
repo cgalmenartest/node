@@ -28,12 +28,11 @@ module.exports = {
     completedAt: 'datetime',
     submittedAt: 'datetime',
 
-    // TODO: Tag association
-    // tags: {
-    //   collection: 'tagEntity',
-    //   via: 'tasks',
-    //   dominant: true,
-    // },
+    tags: {
+      collection: 'tagEntity',
+      via: 'tasks',
+      dominant: true,
+    },
 
     isOpen: function (){
       if ( _.indexOf(['open','public','assigned'],this.state) != -1 ){
