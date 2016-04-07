@@ -10,7 +10,6 @@ describe('UserController', function() {
     newUserAttrs = users.minAttrs;
     User.register(newUserAttrs, function(err, user) {
       assert.isNull(err);
-      console.log(user);
       done();
     })
   });
