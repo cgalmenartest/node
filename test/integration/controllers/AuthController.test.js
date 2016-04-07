@@ -29,7 +29,7 @@ describe('AuthController', function() {
 
   });
 
-  describe('local user sign-up', function() {
+  describe('local user', function() {
     var users;  // user fixtures loaded fresh for each test
 
     beforeEach(function(done) {
@@ -42,7 +42,7 @@ describe('AuthController', function() {
       assert.equal(res.body.username, users.minAttrs.username);
       assert.notProperty(res.body, 'password');
     }
-    it('should return json user', function (done) {
+    it('sign up should return json user', function (done) {
       newUserAttrs = users.minAttrs;
       newUserAttrs.json = true;
       request(sails.hooks.http.app)
@@ -51,6 +51,23 @@ describe('AuthController', function() {
         .expect(200)
         .expect(isValidMinUserResult)
         .end(done)
+    });
+    it('login should return json user', function (done) {
+      newUserAttrs = users.minAttrs;
+      newUserAttrs.json = true;
+      User.register(users.minAttrs, function(err, user) {
+        assert.isNull(err);
+        request(sails.hooks.http.app)
+          .post('/api/auth/local')
+          .send({
+            identifier: newUserAttrs.username,
+            password: newUserAttrs.password,
+            json: true
+          })
+          .expect(200)
+          .expect(isValidMinUserResult)
+          .end(done)
+      })
     });
 
   });
