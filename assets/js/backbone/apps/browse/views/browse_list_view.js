@@ -14,7 +14,7 @@ var NoListItem = fs.readFileSync(__dirname + '/../templates/no_search_results.ht
 
 var BrowseListView = Backbone.View.extend({
 
-  initialize: function (options) {
+  initialize: function(options) {
     var self = this;
 
     var pageSize = 27;
@@ -26,12 +26,12 @@ var BrowseListView = Backbone.View.extend({
       pageSize: pageSize,
       page: 1
     };
-    $(window).on('scroll',function(e){
+    $(window).on('scroll', function(e) {
       self.scrollCheck(e);
     });
   },
 
-  organizeTags: function (tags) {
+  organizeTags: function(tags) {
     // put the tags into their types
     return _(tags).groupBy('type');
   },
@@ -39,28 +39,28 @@ var BrowseListView = Backbone.View.extend({
   scrollCheck: function(e) {
     var currentScrollPos = $(window).scrollTop();
     var currentMaxHeight = $('#container').height();
-    var buffer           = 600;
+    var buffer = 600;
 
-    if ( (this.options.collection.length / this.data.page) > 1 && Math.ceil(this.options.collection.length / this.data.pageSize) >= this.data.page && currentScrollPos + buffer > currentMaxHeight ){
+    if ((this.options.collection.length / this.data.page) > 1 && Math.ceil(this.options.collection.length / this.data.pageSize) >= this.data.page && currentScrollPos + buffer > currentMaxHeight) {
       this.data.page += 1;
       this.render();
     }
   },
 
-  render: function () {
-    var start, limit;
+  render: function() {
+    var start, limit, compiledTemplate;
 
     //settings for infinite scroll
-    if ( UIConfig.browse && UIConfig.browse.useInfiniteScroll ) {
-      if ( this.data.page == 1 ){
+    if (UIConfig.browse && UIConfig.browse.useInfiniteScroll) {
+      if (this.data.page == 1) {
         start = 0;
       } else {
-        start = (this.data.page-1) * this.data.pageSize;
+        start = (this.data.page - 1) * this.data.pageSize;
       }
       limit = start + this.data.pageSize;
     } else {
       //reset page to 1 and return
-      if ( this.data.page > 1 ) {
+      if (this.data.page > 1) {
         this.data.page = 1;
         return this;
       }
@@ -68,7 +68,7 @@ var BrowseListView = Backbone.View.extend({
       start = 0;
     }
 
-    if ( this.options.collection.length === 0 ){
+    if (this.options.collection.length === 0) {
       var settings = {
         ui: UIConfig
       };
@@ -76,9 +76,11 @@ var BrowseListView = Backbone.View.extend({
       this.$el.append(compiledTemplate);
     } else {
 
-      for (var i = start; i < limit; i++ ){
+      for (var i = start; i < limit; i++) {
 
-      if ( typeof this.options.collection[i] == 'undefined' ){ break; }
+        if (typeof this.options.collection[i] == 'undefined') {
+          break;
+        }
         var item = {
           item: this.options.collection[i],
           user: window.cache.currentUser,
@@ -88,12 +90,12 @@ var BrowseListView = Backbone.View.extend({
         if (this.options.collection[i].tags) {
           item.tags = this.organizeTags(this.options.collection[i].tags);
         } else {
-          item.tags =[];
+          item.tags = [];
         }
         if (this.options.collection[i].description) {
           item.item.descriptionHtml = marked(this.options.collection[i].description);
         }
-        var compiledTemplate = '';
+        compiledTemplate = '';
         if (this.options.target == 'projects') {
           compiledTemplate = _.template(ProjectListItem)(item);
         } else {
@@ -106,7 +108,7 @@ var BrowseListView = Backbone.View.extend({
     return this;
   },
 
-  cleanup: function () {
+  cleanup: function() {
     removeView(this);
   }
 

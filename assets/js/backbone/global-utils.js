@@ -5,7 +5,7 @@
  * such as 'click .link-backbone' : linkBackbone
  * @param e the event fired by jquery/backbone
  */
-global.linkBackbone = function (e) {
+global.linkBackbone = function(e) {
   // if meta or control is held, or if the middle mouse button is pressed,
   // let the link process normally.
   // eg: open a new tab or window based on the browser prefs

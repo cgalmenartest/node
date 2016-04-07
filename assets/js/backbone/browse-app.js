@@ -20,23 +20,23 @@ var HomeController = require('./apps/home/controllers/home_controller');
 var BrowseRouter = Backbone.Router.extend({
 
   routes: {
-    ''                               : 'showHome',
-    'dashboard(/)'                   : 'showHome',
-    'tasks/new(?*queryString)'       : 'newTask',
-    'tasks(/)(?:queryStr)'           : 'listTasks',
-    'tasks/:id(/)'                   : 'showTask',
-    'tasks/:id/:action(/)'           : 'showTask',
-    'profiles(/)(?:queryStr)'        : 'listProfiles',
-    'profile(/)'                     : 'showProfile',
-    'profile/:id(/)'                 : 'showProfile',
-    'profile/:id(/)/:action'         : 'showProfile',
-    'admin(/)'                       : 'showAdmin',
-    'admin(/):action(/)(?:queryStr)' : 'showAdmin'
+    ''                              : 'showHome',
+    'dashboard(/)'                  : 'showHome',
+    'tasks/new(?*queryString)'      : 'newTask',
+    'tasks(/)(?:queryStr)'          : 'listTasks',
+    'tasks/:id(/)'                  : 'showTask',
+    'tasks/:id/:action(/)'          : 'showTask',
+    'profiles(/)(?:queryStr)'       : 'listProfiles',
+    'profile(/)'                    : 'showProfile',
+    'profile/:id(/)'                : 'showProfile',
+    'profile/:id(/)/:action'        : 'showProfile',
+    'admin(/)'                      : 'showAdmin',
+    'admin(/):action(/)(?:queryStr)': 'showAdmin'
   },
 
   data: { saved: false },
 
-  initialize: function () {
+  initialize: function() {
     console.log("Backbone.Router initialize");
 
     /** TODO
@@ -59,7 +59,7 @@ var BrowseRouter = Backbone.Router.extend({
     });
   },
 
-  cleanupChildren: function () {
+  cleanupChildren: function() {
     console.log("cleanupChildren");
     if (this.browseListController) { this.browseListController.cleanup(); }
     if (this.profileShowController) { this.profileShowController.cleanup(); }
@@ -69,7 +69,7 @@ var BrowseRouter = Backbone.Router.extend({
     this.data = { saved: false };
   },
 
-  showHome: function () {
+  showHome: function() {
     this.cleanupChildren();
     this.homeController = new HomeController({
       target: 'home',
@@ -79,7 +79,7 @@ var BrowseRouter = Backbone.Router.extend({
     });
   },
 
-  parseQueryParams: function (str) {
+  parseQueryParams: function(str) {
     var params = {};
     if (str) {
       var terms = str.split('&');
@@ -95,7 +95,7 @@ var BrowseRouter = Backbone.Router.extend({
     return params;
   },
 
-  listProjects: function (queryStr) {
+  listProjects: function(queryStr) {
     this.cleanupChildren();
     this.browseListController = new BrowseListController({
       target: 'projects',
@@ -106,7 +106,7 @@ var BrowseRouter = Backbone.Router.extend({
     });
   },
 
-  listTasks: function (queryStr) {
+  listTasks: function(queryStr) {
     console.log("listTasks");
     this.cleanupChildren();
     this.browseListController = new BrowseListController({
@@ -118,7 +118,7 @@ var BrowseRouter = Backbone.Router.extend({
     });
   },
 
-  listProfiles: function (queryStr) {
+  listProfiles: function(queryStr) {
     this.cleanupChildren();
     this.browseListController = new BrowseListController({
       target: 'profiles',
@@ -129,14 +129,14 @@ var BrowseRouter = Backbone.Router.extend({
     });
   },
 
-  showProject: function (id, action) {
+  showProject: function(id, action) {
     this.cleanupChildren();
     var model = new ProjectModel();
     model.set({ id: id });
     this.projectShowController = new ProjectShowController({ model: model, router: this, id: id, action: action, data: this.data });
   },
 
-  showTask: function (id, action) {
+  showTask: function(id, action) {
     this.cleanupChildren();
     var model = new TaskModel();
     model.set({ id: id });
@@ -149,33 +149,33 @@ var BrowseRouter = Backbone.Router.extend({
    * collection to it. This collection is then managed by the view using events
    * on the collection.
    */
-  newTask: function ( /*params*/ ) {
+  newTask: function( /*params*/ ) {
 
     var self = this;
-    var tasks = new TaskCollection( [ {} ] );
+    var tasks = new TaskCollection([{}]);
 
     this.cleanupChildren();
 
-    this.taskCreateController = new TaskCreateFormView( { collection: tasks } );
+    this.taskCreateController = new TaskCreateFormView({ collection: tasks });
     this.taskCreateController.render();
 
-    this.listenTo( tasks, 'task:save:success', function ( data ) {
+    this.listenTo(tasks, 'task:save:success', function(data) {
 
       Backbone.history.navigate('/tasks/' + data, { trigger: true });
 
-    } );
+    });
 
-    this.listenTo( tasks, 'task:save:error', function ( model, response, options ) {
+    this.listenTo(tasks, 'task:save:error', function(model, response, options) {
 
       var alertText = response.statusText + '. Please try again.';
-      $( '.alert.alert-danger' ).text( alertText ).show();
-      $( window ).animate( { scrollTop: 0 }, 500 );
+      $('.alert.alert-danger').text(alertText).show();
+      $(window).animate({ scrollTop: 0 }, 500);
 
-    } );
+    });
 
   },
 
-  showProfile: function (id, action) {
+  showProfile: function(id, action) {
     this.cleanupChildren();
     // normalize input
     if (id) {
@@ -189,8 +189,7 @@ var BrowseRouter = Backbone.Router.extend({
       if (id == 'edit') {
         action = id;
         id = window.cache.currentUser.id;
-      }
-      else if (id == 'settings') {
+      } else if (id == 'settings') {
         action = id;
         id = window.cache.currentUser.id;
       }
@@ -198,21 +197,21 @@ var BrowseRouter = Backbone.Router.extend({
     this.profileShowController = new ProfileShowController({ id: id, action: action, data: this.data });
   },
 
-  showAdmin: function ( action ) {
+  showAdmin: function(action) {
 
     this.cleanupChildren();
-    this.adminMainController = new AdminMainController( {
+    this.adminMainController = new AdminMainController({
 
       el: '#container',
       action: action,
 
-    } );
+    });
 
   },
 
 });
 
-var initialize = function () {
+var initialize = function() {
   var router = new BrowseRouter();
   return router;
 };

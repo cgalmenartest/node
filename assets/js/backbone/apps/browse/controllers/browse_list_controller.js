@@ -1,4 +1,3 @@
-
 //var Bootstrap = require('bootstrap');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -19,13 +18,13 @@ var Browse = {};
 Browse.ListController = BaseController.extend({
 
   events: {
-    "click .link-backbone"  : linkBackbone,
-    "click .project-background-image" : "showProject",
-    "click .add-project"    : "addProject",
+    "click .link-backbone": linkBackbone,
+    "click .project-background-image": "showProject",
+    "click .add-project": "addProject",
     "click .add-opportunity": "addTask"
   },
 
-  initialize: function ( options ) {
+  initialize: function(options) {
     console.log("Browse.ListController initialize");
     // this.options = options;
     this.target = options.target;
@@ -35,7 +34,7 @@ Browse.ListController = BaseController.extend({
     this.initializeView();
     this.collection.trigger('browse:' + this.target + ":fetch");
 
-    this.listenTo(this.projectsCollection, "project:save:success", function (data) {
+    this.listenTo(this.projectsCollection, "project:save:success", function(data) {
       // hide the modal
       $('#addProject').bind('hidden.bs.modal', function() {
         Backbone.history.navigate('projects/' + data.attributes.id, { trigger: true });
@@ -44,7 +43,7 @@ Browse.ListController = BaseController.extend({
 
   },
 
-  initializeView: function () {
+  initializeView: function() {
     if (this.browseMainView) {
       this.browseMainView.cleanup();
     }
@@ -56,7 +55,7 @@ Browse.ListController = BaseController.extend({
     }).render();
   },
 
-  fireUpCollection: function () {
+  fireUpCollection: function() {
     var self = this;
     this.tasksCollection = new TasksCollection();
     // TODO: this.profilesCollection = new ProfilesCollection();
@@ -65,9 +64,9 @@ Browse.ListController = BaseController.extend({
     } else {
       this.collection = this.profilesCollection;
     }
-    this.listenToOnce(this.collection, 'browse:' + this.target + ":fetch", function () {
+    this.listenToOnce(this.collection, 'browse:' + this.target + ":fetch", function() {
       self.collection.fetch({
-        success: function (collection) {
+        success: function(collection) {
           self.collection = collection;
           self.browseMainView.collection = collection;
           self.browseMainView.filter();
@@ -80,13 +79,13 @@ Browse.ListController = BaseController.extend({
   //= BEGIN CLASS METHODS
   // -----------------------
   // TODO: delete?
-  showProject: function (e) {
+  showProject: function(e) {
     if (e.preventDefault) e.preventDefault();
     var id = $($(e.currentTarget).parents('li.project-box')[0]).data('id');
     Backbone.history.navigate('projects/' + id, { trigger: true });
   },
 
-  addProject: function (e) {
+  addProject: function(e) {
     if (e.preventDefault) e.preventDefault();
 
     if (this.projectFormView) this.projectFormView.cleanup();
@@ -105,7 +104,7 @@ Browse.ListController = BaseController.extend({
 
   },
 
-  addTask: function () {
+  addTask: function() {
     Backbone.history.navigate('/tasks/new', { trigger: true });
   },
 

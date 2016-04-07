@@ -5,15 +5,13 @@
  */
 
 // Set up Backbone to use jQuery
+var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var $ = require('jquery');
-Backbone.$ = $;
 
 require('./global-utils');
 
-// let foo = 2;
-
+Backbone.$ = $;
 
 
 // Set CSRF header
@@ -44,18 +42,18 @@ marked.setOptions({
 **/
 
 // App
-window.Application      = window.Application || {};
-window.cache            = { userEvents: {}, currentUser: null, system: {} };
+window.Application = window.Application || {};
+window.cache = { userEvents: {}, currentUser: null, system: {} };
 
 // Events
 window.entities = { request: {} };
-window.rendering       = {};
+window.rendering = {};
 
 
 // Global AJAX error listener. If we ever get an auth error, prompt to log
 // in otherwise show the error.
-$(function () {
-  $(document).ajaxError(function (e, jqXHR, settings, errorText) {
+$(function() {
+  $(document).ajaxError(function(e, jqXHR, settings, errorText) {
     $('.spinner').hide();
     if (jqXHR.status === 401 || jqXHR.status === 403) {
       if (!window.cache || !window.cache.userEvents ||
