@@ -55,6 +55,7 @@
     "chai-datetime": "^1.4.1",
     "istanbul": "^0.4.2",
     "mocha": "^2.4.5",
+    "replay": "^2.0.6",
     "sails-memory": "^0.10.6",
     "supertest": "^1.2.0"
   },
