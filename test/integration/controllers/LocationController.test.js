@@ -1,6 +1,7 @@
 var assert = require('chai').assert;
 var request = require('supertest');
-const replay  = require('replay');
+replay  = require('replay');
+replay.fixtures = 'test/fixtures';
 
 // this uses replay module which stores data in /fixtures
 // if the geonames API ever changes or to create new test cases
