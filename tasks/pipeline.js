@@ -18,9 +18,8 @@
 //  to change `assets/styles/importer.less` instead.)
 var cssFilesToInject = [
   'styles/uswds.css',
-  'styles/main.css',
+  'styles/main_new.css',
 ];
-
 
 
 // Client-side javascript files to inject in order
