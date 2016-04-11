@@ -1,5 +1,48 @@
-$foo: lightblue;
+// Vendor libraries brought in via `assets/styles` and `node_modules`.
+// @see: `tools/grunt/config/sass` for `includePaths`
+// -----------------------------------------------------------------------------
+// @import 'font-awesome/css/font-awesome.min.css',
+//         'font-custom/css/style.css',
+//         'bootstrap/dist/css/bootstrap.css',
+//         'bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css',
+//         'timepicker/jquery.timepicker.css',
+//         'blueimp-file-upload/css/jquery.fileupload.css',
+//         'Select2/select2.css',
+//         'leaflet/dist/leaflet.css';
 
-body {
-    background-color: $foo;
-}
+
+// TODO: IMPORT & INLINE THIS FILE (with fonts)
+@import 'vendor/font-awesome/css/font-awesome.min.css';
+
+// @import 'vendor/_bootstrap';
+
+// Elements
+// -----------------------------------------------------------------------------
+@import 'elements/base';
+
+// Overrides
+// -----------------------------------------------------------------------------
+@import 'overrides/bootstrap',
+        'overrides/select2';
+
+// Blocks
+// -----------------------------------------------------------------------------
+@import 'components/modal',
+        'components/profile',
+        'components/files',
+        'components/comments',
+        'components/autocomplete',
+        'components/navigation',
+        'components/login',
+        'components/text',
+        'components/people-map';
+
+@import 'modules/dashboard',
+        'modules/homepage',
+        'modules/project/base',
+        'modules/task/base';
+
+
+// Theme CSS
+// -----------------------------------------------------------------------------
+@import 'theme/base';
