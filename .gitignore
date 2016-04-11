@@ -55,3 +55,7 @@ chef/cookbooks/*
 
 # code coverage
 coverage
+
+.python-version
+.sass-cache/*
+npm-debug.log*
