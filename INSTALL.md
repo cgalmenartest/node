@@ -119,9 +119,9 @@ Install node.js. As of Feb 2015 Node.js has moved to 0.12 for its stable version
 So back to the command line. We assume that nvm is installed and set up
 (added to `.bashrc` or equivalent).
 
-    nvm install 0.10
-    nvm alias default 0.10
-    nvm version             # should be something like v0.10.38
+    nvm install 4.2.2
+    nvm alias default 4.2.2
+    nvm version             # should be v4.2.2
 
 Then follow platform-independent steps below starting at [clone the git repository](#clone-the-git-repository).
 
@@ -205,9 +205,8 @@ Open pgAdmin
 Create database 'midas', user account 'midas' with password 'midas', and assign user 'midas' full rights to administer DB 'midas'
 
 #### Install Node.js via Windows MSI, select all available add-ons
-**_Note that currently Midas has a dependency on nodejs version .10+ and is not tested to work with .11 or .12, do not attempt to install a version higher than node ver .10.38_**
 
-[Node.js](http://nodejs.org/dist/v0.10.38/)
+[Node.js](http://nodejs.org/dist/v4.2.2/)
 
 #### Install GraphicsMagick
 
@@ -228,19 +227,10 @@ Save.
 
 ### All Platforms
 
-#### Upgrade NPM
+#### Installing the Open Opportunities Theme (Optional)
 
-The version that ships with `node 0.10.x` is out of date with the required `npm`
-version from the [engine's hash in the `package.json`] [project_engine_hash]. To
-install this version of `npm` you can run the following command.
-[See the official documentation here] [npm_upgrade_documentation].
-
-    sudo npm upgrade --global npm@2.1.x
-
-[project_engine_hash]: https://github.com/18F/openopps-platform/blob/dev/package.json#L99-L101 "Engine Hash for the project in package.json"
-[npm_upgrade_documentation]: https://docs.npmjs.com/getting-started/installing-node#updating-npm "Link to Updating NPM ( official documentation )"
-
-#### Installing the Open Opportunities Theme
+Typically we do development without the theme.  Tests are designed
+to run without the theme, which sets up alternate configuration.
 
 This theme is contained in [a separate repository] [openopps_theme_repo]. To
 hook into the `npm preinstall` hook's theme copy mechanism, you must have an
