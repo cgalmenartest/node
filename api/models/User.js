@@ -17,6 +17,13 @@ module.exports = {
     title: 'STRING',   // Professional Title
     bio: 'STRING',     // Biography
 
+    // Tag association
+    tags: {
+      collection: 'tagEntity',
+      via: 'users',
+      dominant: true
+    },
+
     toJSON: function() {
       var obj = this.toObject();
       delete obj.passports;
@@ -36,7 +43,7 @@ module.exports = {
       tags: attributes.tags
     }, function (err, user) {
       if (err) {
-        // used to set req.flash: Error.Passport.User.Exists 
+        // used to set req.flash: Error.Passport.User.Exists
         sails.log.verbose('register: failed to create user ', attributes.username);
         return done(err);
       }

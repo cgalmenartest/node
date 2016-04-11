@@ -43,6 +43,7 @@
     "rc": "1.0.1",
     "request": "^2.69.0",
     "sails": "~0.12.1",
+    "sails-build-dictionary": "^0.10.1",
     "sails-disk": "~0.10.9",
     "sails-postgresql": "^0.12.1",
     "underscore": "^1.8.3",
@@ -55,6 +56,7 @@
     "chai-datetime": "^1.4.1",
     "istanbul": "^0.4.2",
     "mocha": "^2.4.5",
+    "replay": "^2.0.6",
     "sails-memory": "^0.10.6",
     "supertest": "^1.2.0"
   },
