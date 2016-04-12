@@ -13,7 +13,7 @@ module.exports = function(grunt) {
           'assets/styles/vendor',
           'node_modules',
         ],
-        src: ['main.scss', 'main_new.scss'],
+        src: ['old/main.scss', 'new/main.scss'],
         dest: '.tmp/public/styles/',
         ext: '.css',
       }]

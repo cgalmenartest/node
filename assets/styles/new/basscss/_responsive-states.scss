@@ -63,37 +63,47 @@ $breakpoint-sm: '(min-width: 40em)' !default;
 $breakpoint-md: '(min-width: 52em)' !default;
 $breakpoint-lg: '(min-width: 64em)' !default;
 
-/* Basscss Border Colors */
+/* Basscss Utility Responsive States */
 
-.border-black  { border-color: $black }
-.border-gray   { border-color: $gray }
-.border-silver { border-color: $silver }
-.border-white  { border-color: $white }
+.sm-show, .md-show, .lg-show {
+  display: none !important
+}
 
-.border-aqua  { border-color: $aqua }
-.border-blue  { border-color: $blue }
-.border-navy  { border-color: $navy }
-.border-teal  { border-color: $teal }
-.border-green { border-color: $green }
-.border-olive { border-color: $olive }
-.border-lime  { border-color: $lime }
+@media #{$breakpoint-sm} {
+  .sm-show { display: block !important }
+}
 
-.border-yellow  { border-color: $yellow }
-.border-orange  { border-color: $orange }
-.border-red     { border-color: $red }
-.border-fuchsia { border-color: $fuchsia }
-.border-purple  { border-color: $purple }
-.border-maroon  { border-color: $maroon }
+@media #{$breakpoint-md} {
+  .md-show { display: block !important }
+}
 
-.border-darken-1 { border-color: $darken-1 }
-.border-darken-2 { border-color: $darken-2 }
-.border-darken-3 { border-color: $darken-3 }
-.border-darken-4 { border-color: $darken-4 }
+@media #{$breakpoint-lg} {
+  .lg-show { display: block !important }
+}
 
-.border-lighten-1 { border-color: $lighten-1 }
-.border-lighten-2 { border-color: $lighten-2 }
-.border-lighten-3 { border-color: $lighten-3 }
-.border-lighten-4 { border-color: $lighten-4 }
+
+@media #{$breakpoint-sm} {
+  .sm-hide { display: none !important }
+}
+
+@media #{$breakpoint-md} {
+  .md-hide { display: none !important }
+}
+
+@media #{$breakpoint-lg} {
+  .lg-hide { display: none !important }
+}
+
+.display-none { display: none !important }
+
+.hide {
+  position: absolute !important;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+}
+
 
 /* Basscss Defaults */
 

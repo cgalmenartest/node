@@ -56,6 +56,11 @@ $lighten-4: rgba(255,255,255,.5) !default;
 $border-width: 1px !default;
 $border-radius: 3px !default;
 $border-color: $darken-2 !default;
+$button-small-padding-y: .25rem !default;
+$button-small-padding-x: .5rem !default;
+$button-big-padding-y: 1rem !default;
+$button-big-padding-x: 1.25rem !default;
+$button-narrow-padding-x: $space-1 !default;
 
 // Custom Media Query Variables
 
@@ -63,37 +68,21 @@ $breakpoint-sm: '(min-width: 40em)' !default;
 $breakpoint-md: '(min-width: 52em)' !default;
 $breakpoint-lg: '(min-width: 64em)' !default;
 
-/* Basscss Border Colors */
+/* Basscss UI Utility Button Sizes */
 
-.border-black  { border-color: $black }
-.border-gray   { border-color: $gray }
-.border-silver { border-color: $silver }
-.border-white  { border-color: $white }
+.btn-small {
+  padding: $button-small-padding-y $button-small-padding-x;
+}
 
-.border-aqua  { border-color: $aqua }
-.border-blue  { border-color: $blue }
-.border-navy  { border-color: $navy }
-.border-teal  { border-color: $teal }
-.border-green { border-color: $green }
-.border-olive { border-color: $olive }
-.border-lime  { border-color: $lime }
+.btn-big {
+  padding: $button-big-padding-y $button-big-padding-x;
+}
 
-.border-yellow  { border-color: $yellow }
-.border-orange  { border-color: $orange }
-.border-red     { border-color: $red }
-.border-fuchsia { border-color: $fuchsia }
-.border-purple  { border-color: $purple }
-.border-maroon  { border-color: $maroon }
+.btn-narrow {
+  padding-left: $button-narrow-padding-x;
+  padding-right: $button-narrow-padding-x;
+}
 
-.border-darken-1 { border-color: $darken-1 }
-.border-darken-2 { border-color: $darken-2 }
-.border-darken-3 { border-color: $darken-3 }
-.border-darken-4 { border-color: $darken-4 }
-
-.border-lighten-1 { border-color: $lighten-1 }
-.border-lighten-2 { border-color: $lighten-2 }
-.border-lighten-3 { border-color: $lighten-3 }
-.border-lighten-4 { border-color: $lighten-4 }
 
 /* Basscss Defaults */
 

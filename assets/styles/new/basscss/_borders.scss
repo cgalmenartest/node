@@ -63,37 +63,49 @@ $breakpoint-sm: '(min-width: 40em)' !default;
 $breakpoint-md: '(min-width: 52em)' !default;
 $breakpoint-lg: '(min-width: 64em)' !default;
 
-/* Basscss Border Colors */
+/* Basscss Color Borders */
 
-.border-black  { border-color: $black }
-.border-gray   { border-color: $gray }
-.border-silver { border-color: $silver }
-.border-white  { border-color: $white }
+.border {
+  border-style: solid;
+  border-width: $border-width;
+  border-color: $border-color;
+}
 
-.border-aqua  { border-color: $aqua }
-.border-blue  { border-color: $blue }
-.border-navy  { border-color: $navy }
-.border-teal  { border-color: $teal }
-.border-green { border-color: $green }
-.border-olive { border-color: $olive }
-.border-lime  { border-color: $lime }
+.border-top {
+  border-top-style: solid;
+  border-top-width: $border-width;
+  border-top-color: $border-color;
+}
 
-.border-yellow  { border-color: $yellow }
-.border-orange  { border-color: $orange }
-.border-red     { border-color: $red }
-.border-fuchsia { border-color: $fuchsia }
-.border-purple  { border-color: $purple }
-.border-maroon  { border-color: $maroon }
+.border-right {
+  border-right-style: solid;
+  border-right-width: $border-width;
+  border-right-color: $border-color;
+}
 
-.border-darken-1 { border-color: $darken-1 }
-.border-darken-2 { border-color: $darken-2 }
-.border-darken-3 { border-color: $darken-3 }
-.border-darken-4 { border-color: $darken-4 }
+.border-bottom {
+  border-bottom-style: solid;
+  border-bottom-width: $border-width;
+  border-bottom-color: $border-color;
+}
 
-.border-lighten-1 { border-color: $lighten-1 }
-.border-lighten-2 { border-color: $lighten-2 }
-.border-lighten-3 { border-color: $lighten-3 }
-.border-lighten-4 { border-color: $lighten-4 }
+.border-left {
+  border-left-style: solid;
+  border-left-width: $border-width;
+  border-left-color: $border-color;
+}
+
+.border-none { border: 0 }
+
+.rounded { border-radius: $border-radius }
+.circle  { border-radius: 50% }
+
+.rounded-top    { border-radius: $border-radius $border-radius 0 0 }
+.rounded-right  { border-radius: 0 $border-radius $border-radius 0 }
+.rounded-bottom { border-radius: 0 0 $border-radius $border-radius }
+.rounded-left   { border-radius: $border-radius 0 0 $border-radius }
+
+.not-rounded { border-radius: 0 }
 
 /* Basscss Defaults */
 

@@ -56,6 +56,10 @@ $lighten-4: rgba(255,255,255,.5) !default;
 $border-width: 1px !default;
 $border-radius: 3px !default;
 $border-color: $darken-2 !default;
+$field-focus-color: $blue !default;
+$field-success-color: $green !default;
+$field-warning-color: $yellow !default;
+$field-error-color: $red !default;
 
 // Custom Media Query Variables
 
@@ -63,37 +67,64 @@ $breakpoint-sm: '(min-width: 40em)' !default;
 $breakpoint-md: '(min-width: 52em)' !default;
 $breakpoint-lg: '(min-width: 64em)' !default;
 
-/* Basscss Border Colors */
+/* Basscss Color Forms */
 
-.border-black  { border-color: $black }
-.border-gray   { border-color: $gray }
-.border-silver { border-color: $silver }
-.border-white  { border-color: $white }
+.field {
+  border-style: solid;
+  border-width: $border-width;
+  border-color: $border-color;
+  border-radius: $border-radius;
+}
 
-.border-aqua  { border-color: $aqua }
-.border-blue  { border-color: $blue }
-.border-navy  { border-color: $navy }
-.border-teal  { border-color: $teal }
-.border-green { border-color: $green }
-.border-olive { border-color: $olive }
-.border-lime  { border-color: $lime }
+.field:focus,
+.field.is-focused {
+  outline: none;
+  border-color: $field-focus-color;
+  box-shadow: 0 0 0 2px color($field-focus-color a(.5));
+}
 
-.border-yellow  { border-color: $yellow }
-.border-orange  { border-color: $orange }
-.border-red     { border-color: $red }
-.border-fuchsia { border-color: $fuchsia }
-.border-purple  { border-color: $purple }
-.border-maroon  { border-color: $maroon }
+.field:disabled,
+.field.is-disabled {
+  background-color: $darken-2;
+  opacity: .5;
+}
 
-.border-darken-1 { border-color: $darken-1 }
-.border-darken-2 { border-color: $darken-2 }
-.border-darken-3 { border-color: $darken-3 }
-.border-darken-4 { border-color: $darken-4 }
+.field:read-only:not(select),
+.field.is-read-only {
+  background-color: $darken-2;
+}
 
-.border-lighten-1 { border-color: $lighten-1 }
-.border-lighten-2 { border-color: $lighten-2 }
-.border-lighten-3 { border-color: $lighten-3 }
-.border-lighten-4 { border-color: $lighten-4 }
+
+.field.is-success {
+  border-color: $field-success-color;
+}
+
+.field.is-success:focus,
+.field.is-success.is-focused {
+  box-shadow: 0 0 0 2px color($field-success-color a(.5));
+}
+
+.field.is-warning {
+  border-color: $field-warning-color;
+}
+
+.field.is-warning:focus,
+.field.is-warning.is-focused {
+  box-shadow: 0 0 0 2px color($field-warning-color a(.5));
+}
+
+.field:invalid,
+.field.is-error {
+  border-color: $field-error-color;
+}
+
+.field:invalid:focus,
+.field:invalid.is-focused,
+.field.is-error:focus,
+.field.is-error.is-focused {
+  box-shadow: 0 0 0 2px color($field-error-color a(.5));
+}
+
 
 /* Basscss Defaults */
 

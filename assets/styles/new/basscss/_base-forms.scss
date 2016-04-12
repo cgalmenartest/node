@@ -56,6 +56,11 @@ $lighten-4: rgba(255,255,255,.5) !default;
 $border-width: 1px !default;
 $border-radius: 3px !default;
 $border-color: $darken-2 !default;
+$form-field-font-family: inherit !default;
+$form-field-font-size: 1rem !default;
+$form-field-height: 2.25rem !default;
+$form-field-padding-y: .5rem !default;
+$form-field-padding-x: .5rem !default;
 
 // Custom Media Query Variables
 
@@ -63,37 +68,56 @@ $breakpoint-sm: '(min-width: 40em)' !default;
 $breakpoint-md: '(min-width: 52em)' !default;
 $breakpoint-lg: '(min-width: 64em)' !default;
 
-/* Basscss Border Colors */
+/* Basscss Base Forms */
 
-.border-black  { border-color: $black }
-.border-gray   { border-color: $gray }
-.border-silver { border-color: $silver }
-.border-white  { border-color: $white }
+input,
+select,
+textarea,
+fieldset {
+  font-family: $form-field-font-family;
+  font-size: $form-field-font-size;
+  box-sizing: border-box;
+  margin-top: 0;
+  margin-bottom: 0;
+}
 
-.border-aqua  { border-color: $aqua }
-.border-blue  { border-color: $blue }
-.border-navy  { border-color: $navy }
-.border-teal  { border-color: $teal }
-.border-green { border-color: $green }
-.border-olive { border-color: $olive }
-.border-lime  { border-color: $lime }
+label {
+  vertical-align: middle;
+}
 
-.border-yellow  { border-color: $yellow }
-.border-orange  { border-color: $orange }
-.border-red     { border-color: $red }
-.border-fuchsia { border-color: $fuchsia }
-.border-purple  { border-color: $purple }
-.border-maroon  { border-color: $maroon }
+input[type=text],
+input[type=date],
+input[type=datetime],
+input[type=datetime-local],
+input[type=email],
+input[type=month],
+input[type=number],
+input[type=password],
+input[type=search],
+input[type=tel],
+input[type=time],
+input[type=url],
+input[type=week] {
+  height: $form-field-height;
+  padding: $form-field-padding-y $form-field-padding-x;
+  vertical-align: middle;
+  -webkit-appearance: none;
+}
 
-.border-darken-1 { border-color: $darken-1 }
-.border-darken-2 { border-color: $darken-2 }
-.border-darken-3 { border-color: $darken-3 }
-.border-darken-4 { border-color: $darken-4 }
+select {
+  line-height: 1.75;
+  padding: $form-field-padding-y $form-field-padding-x;
+}
 
-.border-lighten-1 { border-color: $lighten-1 }
-.border-lighten-2 { border-color: $lighten-2 }
-.border-lighten-3 { border-color: $lighten-3 }
-.border-lighten-4 { border-color: $lighten-4 }
+select:not([multiple]) {
+  height: $form-field-height;
+  vertical-align: middle;
+}
+
+textarea {
+  line-height: 1.75;
+  padding: $form-field-padding-y $form-field-padding-x;
+}
 
 /* Basscss Defaults */
 

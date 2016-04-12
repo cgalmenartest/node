@@ -18,7 +18,7 @@
 //  to change `assets/styles/importer.less` instead.)
 var cssFilesToInject = [
   'styles/uswds.css',
-  'styles/main_new.css',
+  'styles/new/main.css',
 ];
 
 
