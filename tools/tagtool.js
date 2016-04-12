@@ -31,6 +31,15 @@ if (tagType.length === 0) {
   help_and_quit('Tag type must be provided.');
 }
 
-dbTools.importTagsFromFile(tagFile, tagType, function(err) {
-  if (err) console.log("Failed with error: ", err);
-});
+dbTools.checkTagTableSetup()
+.then(function() {
+  dbTools.importTagsFromFile(tagFile, tagType)
+  .then(function() {
+    console.log('done');
+    dbTools.end();
+  })
+  .catch(function(err) {
+    console.log("\n",err.message,"\n");
+    dbTools.end();
+  });
+})
