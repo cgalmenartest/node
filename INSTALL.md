@@ -255,23 +255,13 @@ Then run the normal npm package installer
 
 #### Optional: Edit the configuration files
 
-It is not necessary to edit any config files to run the demo locally.  You may optionally edit the config files that you made copies of above, or the front-end configuration (from the root directory):
-
-     cd assets/js/backbone/config
-     vi tag.js
-     vi login.json
-
-`tag.js` specifies the tags that the frontend understands and stores in the backend.
-
-`login.json` specifies the login options available on the frontend, and must have a corresponding backend component or configuration enabled (see `config/settings/auth.ex.js`).
+See the [Configuration Guide](CONFIG.md)
 
 #### Setup the database
 
 From the root of the openopps directory, initialize the database:
 
      npm run init
-
-Please note, run `npm run init` once per database, otherwise you'll see an error. If you get an error you can skip that step.
 
 If you'd like to include a sample project and users, also run:
 
@@ -299,9 +289,9 @@ Run the tests (all should pass)
 
     npm test
 
-Run the server
+Run the server (watch client files, compiling if needed)
 
-    npm start
+    npm run watch
 
 
 Go to [http://localhost:1337](http://localhost:1337) to see the app
@@ -324,11 +314,9 @@ messages after running `npm start`. This is an issue with OSX and Grunt; there a
 
      npm run build
 
-#### Initialize the database
+#### Initialize the database (once)
 
-The database needs to be populated with the tag defaults for your application's configuration.
-
-Edit the configuration file at `test/init/init/config.js` to match your tags in `assets/js/backbone/components/tag.js`
+     npm run init
 
 ### Start the forever server (from the openopps git folder)
 
