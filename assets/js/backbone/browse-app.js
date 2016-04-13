@@ -39,10 +39,10 @@ var BrowseRouter = Backbone.Router.extend({
   initialize: function() {
     console.log("Backbone.Router initialize");
 
-    /** TODO
     this.navView = new NavView({
       el: '.navigation'
     }).render();
+    /**
     this.footerView = new FooterView({
       el: '#footer'
     }).render();
