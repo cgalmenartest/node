@@ -1,24 +1,21 @@
-// Vendor libraries brought in via `assets/styles` and `node_modules`.
-// @see: `tools/grunt/config/sass` for `includePaths`
-// -----------------------------------------------------------------------------
-// @import 'font-awesome/css/font-awesome.min.css',
-//         'font-custom/css/style.css',
-//         'bootstrap/dist/css/bootstrap.css',
-//         'bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css',
-//         'timepicker/jquery.timepicker.css',
-//         'blueimp-file-upload/css/jquery.fileupload.css',
-//         'Select2/select2.css',
-//         'leaflet/dist/leaflet.css';
+// // Vendor libraries brought in via `assets/styles` and `node_modules`.
+// // @see: `tools/grunt/config/sass` for `includePaths`
+// // -----------------------------------------------------------------------------
+// @import 'font-awesome/css/font-awesome.min',
+//         'font-custom/css/style',
+//         'bootstrap/dist/css/bootstrap',
+//         'bootstrap-datetimepicker/build/css/bootstrap-datetimepicker',
+//         'timepicker/jquery.timepicker',
+//         'blueimp-file-upload/css/jquery.fileupload',
+//         'Select2/select2',
+//         'leaflet/dist/leaflet';
 
-
-// TODO: IMPORT & INLINE THIS FILE (with fonts)
 @import 'vendor/font-awesome/css/font-awesome.min.css';
-
-// @import 'vendor/_bootstrap';
 
 // Elements
 // -----------------------------------------------------------------------------
-@import 'elements/base';
+@import 'elements/fonts',
+        'elements/base';
 
 // Overrides
 // -----------------------------------------------------------------------------
