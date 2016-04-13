@@ -82,10 +82,10 @@ module.exports.routes = {
     controller: 'main',
     action: 'index'
   },
-  '/cron': {
-    controller: 'main',
-    action: 'cron'
-  },
+  // '/cron': {
+  //   controller: 'main',
+  //   action: 'cron'
+  // },
 
   '/index.html': '/',
 
