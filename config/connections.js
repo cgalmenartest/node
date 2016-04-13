@@ -2,7 +2,6 @@ var cfenv = require('cfenv'),
     appEnv = cfenv.getAppEnv(),
     dbURL = appEnv.getServiceURL('psql-openopps');
 
-
 /**
  * Connections
  * (sails.config.connections)
