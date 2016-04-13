@@ -21,7 +21,6 @@ var cssFilesToInject = [
   'styles/new/main.css',
 ];
 
-
 // Client-side javascript files to inject in order
 // (uses Grunt-style wildcard/glob/splat expressions)
 var jsFilesToInject = [
@@ -36,7 +35,6 @@ var jsFilesToInject = [
   // so we don't include any additional js files here
 ];
 
-
 // Client-side HTML templates are injected using the sources below
 // The ordering of these templates shouldn't matter.
 // (uses Grunt-style wildcard/glob/splat expressions)
@@ -49,12 +47,6 @@ var jsFilesToInject = [
 var templateFilesToInject = [
   'templates/**/*.html'
 ];
-
-
-
-
-
-
 
 // Default path for public folder (see documentation for more information)
 var tmpPath = '.tmp/public/';
@@ -69,5 +61,5 @@ module.exports.jsFilesToInject = jsFilesToInject.map(function(jsPath) {
   return require('path').join('.tmp/public/', jsPath);
 });
 module.exports.templateFilesToInject = templateFilesToInject.map(function(tplPath) {
-  return require('path').join('assets/',tplPath);
+  return require('path').join('assets/', tplPath);
 });
