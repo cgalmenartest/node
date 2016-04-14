@@ -1,10 +1,13 @@
 
+var fs = require('fs');
+var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var utils = require('../../../mixins/utilities');
 var Login = require('../../../config/login.json');
-var FooterTemplate = require('../templates/footer_template.html');
 
+var FooterTemplate = fs.readFileSync(
+  __dirname + '/../templates/footer_template.html'
+).toString();
 
 var FooterView = Backbone.View.extend({
 
@@ -21,8 +24,8 @@ var FooterView = Backbone.View.extend({
     this.$el.html(compiledTemplate);
 
     function resizeElements() {
-      headerHeight = $('.navbar').height();
-      footerHeight = $('footer').height();
+      var headerHeight = $('.navbar').height();
+      var footerHeight = $('footer').height();
       if (($(document.body).height() + footerHeight) < $(window).height()) {
         self.$el.addClass('navbar-fixed-bottom');
       } else {
@@ -40,4 +43,3 @@ var FooterView = Backbone.View.extend({
 });
 
 module.exports = FooterView;
-

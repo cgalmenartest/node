@@ -3,7 +3,7 @@ var Backbone = require('backbone');
 var $ = require('jquery');
 // TODO: var utils = require('../../mixins/utilities');
 var NavView = require('./apps/nav/views/nav_view');
-// var FooterView = require('../footer/views/footer_view');
+var FooterView = require('./apps/footer/views/footer_view');
 var BrowseListController = require('./apps/browse/controllers/browse_list_controller');
 // var ProjectModel = require('../../entities/projects/project_model');
 // var ProjectShowController = require('../project/show/controllers/project_show_controller');
@@ -42,11 +42,11 @@ var BrowseRouter = Backbone.Router.extend({
     this.navView = new NavView({
       el: '.navigation'
     }).render();
-    /**
+
     this.footerView = new FooterView({
       el: '#footer'
     }).render();
-    **/
+
     // set navigation state
     this.on('route', function(route, params) {
       var href = window.location.pathname;
