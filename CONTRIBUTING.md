@@ -16,7 +16,7 @@ with this waiver of copyright interest.
 ## Communication
 
 Anyone actively contributing or using Midas, should join our [Mailing List](https://groups.google.com/forum/#!forum/openopps-platform).
-We also have a public Slack chat room. If you're interested in following along with the development process or have questions, feel free to join us at http://chat.18f.gov/, and select "midas-public".
+We also have a public Slack chat room. If you're interested in following along with the development process or have questions, feel free to [join us](https://chat.18f.gov/?channel=openopps-public).
 
 You should be using the master branch for most stable release, please review [release notes](https://github.com/18F/midas/releases) regularly. We do releases every week or two and send out notes.  We're generally using [semantic versioning](http://semver.org/), but we're pre-1.0, so API can change at any time. We use the minor version for changes where there are significant installation process changes or API changes or a database migration is needed.
 
