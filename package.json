@@ -49,6 +49,7 @@
     "sails-build-dictionary": "^0.10.1",
     "sails-disk": "~0.10.9",
     "sails-postgresql": "^0.12.1",
+    "select2": "select2/select2#3.5.2",
     "underscore": "^1.8.3",
     "uswds": "^0.9.1",
     "validator": "^5.1.0",

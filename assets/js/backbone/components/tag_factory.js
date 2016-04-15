@@ -5,10 +5,16 @@
  *
  */
 
+var $ = require('jquery');
+window.jQuery = $;    // TODO: this is weird, but select2 wants it
+
 var _ = require('underscore');
-var Backbone = require('backbone');
 var async = require('async');
+var Backbone = require('backbone');
+var i18n = require('i18next');
 var marked = require('marked');
+var select2 = require('select2');
+
 var BaseComponent = require('../base/base_component');
 
 
@@ -115,7 +121,7 @@ var TagFactory = BaseComponent.extend({
     if (options.allowCreate) {
       settings.createSearchChoice = function(term, values) {
         values = values.map(function(v) {
-          return v.value.toLowerCase();
+          return (v.value || '').toLowerCase();
         });
 
         if (values.indexOf(term.toLowerCase()) >= 0)
@@ -136,7 +142,7 @@ var TagFactory = BaseComponent.extend({
     }
 
     //init Select2
-    var $sel = self.$(options.selector).select2(settings);
+    var $sel = $(options.selector).select2(settings);
 
     //event handlers
     $sel.on("select2-selecting", function(e) {

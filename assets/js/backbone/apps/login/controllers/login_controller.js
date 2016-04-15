@@ -1,6 +1,9 @@
 var $ = require('jquery');
+window.jQuery = $;    // TODO: this is weird, but Boostrap wants it
+
 var _ = require('underscore');
 var Backbone = require('backbone');
+var Bootstrap = require('bootstrap');
 var BaseController = require('../../../base/base_controller');
 var LoginView = require('../views/login_view');
 var login = require('../../../config/login.json');

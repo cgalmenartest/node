@@ -303,7 +303,7 @@ var LoginView = Backbone.View.extend({
   },
 
   checkPassword: function(e) {
-    var rules = validatePassword(this.$("#rusername").val(), this.$("#rpassword").val());
+    var rules = validatePassword($("#rusername").val(), $("#rpassword").val());
     var valuesArray = _.values(rules);
     var validRules = _.every(valuesArray);
     var success = true;
@@ -313,11 +313,11 @@ var LoginView = Backbone.View.extend({
     }
     _.each(rules, function(value, key) {
       if (value === true) {
-        this.$(".password-rules .success.rule-" + key).show();
-        this.$(".password-rules .error.rule-" + key).hide();
+        $(".password-rules .success.rule-" + key).show();
+        $(".password-rules .error.rule-" + key).hide();
       } else {
-        this.$(".password-rules .success.rule-" + key).hide();
-        this.$(".password-rules .error.rule-" + key).show();
+        $(".password-rules .success.rule-" + key).hide();
+        $(".password-rules .error.rule-" + key).show();
       }
       success = success && value;
     });
