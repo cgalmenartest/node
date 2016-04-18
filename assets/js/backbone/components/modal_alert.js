@@ -1,8 +1,12 @@
+var fs = require('fs');
 var $ = require('jquery');
 var _ = require('underscore');
 var Bootstrap = require('bootstrap');
 var Backbone = require('backbone');
-var ModalTemplate = require('./modal_alert_template.html');
+
+var ModalTemplate = fs.readFileSync(
+  __dirname + '/modal_alert_template.html'
+).toString();
 
 
 var ModalAlert = Backbone.View.extend({

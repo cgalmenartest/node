@@ -1,7 +1,8 @@
+var fs = require('fs');
 var _ = require('underscore');
 var marked = require('marked');
 var BaseComponent = require('../base/base_component');
-var Template = require('./show_markdown.html');
+var Template = fs.readFileSync(__dirname + '/show_markdown.html').toString();
 
 module.exports = BaseComponent.extend({
   events: {

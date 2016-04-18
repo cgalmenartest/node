@@ -102,11 +102,12 @@ var getVolunteers = function (task, cb) {
  * @return callback(error, tasks)
  */
 var findTasks = function (where, cb) {
+  console.log(where);
   var self = this;
   var w = where || {};
   Task.find()
   .where(w)
-  //.populate('tags')
+  .populate('tags')
   .sort({ publishedAt: 0, updatedAt: 0 })
   .exec(function (err, tasks) {
     if (err) { return cb({ message: 'Error looking up tasks.' }, null); }

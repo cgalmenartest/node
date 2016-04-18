@@ -1,3 +1,5 @@
+var $ = require('jquery');
+var fs = require('fs');
 var Bootstrap = require('bootstrap');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -7,21 +9,23 @@ var async = require('async');
 var marked = require('marked');
 var TimeAgo = require('../../../../../vendor/jquery.timeago');
 var BaseView = require('../../../../base/base_view');
-var TaskShowTemplate = require('../templates/task_show_item_template.html');
-var AlertTemplate = require('../../../../components/alert_template.html');
-var ShareTemplate = require('../templates/task_share_template.txt');
+
+var TaskShowTemplate = fs.readFileSync(__dirname + '/../templates/task_show_item_template.html').toString();
+var AlertTemplate = fs.readFileSync(__dirname + '/../../../../components/alert_template.html').toString();
+var ShareTemplate = fs.readFileSync(__dirname + '/../templates/task_share_template.txt').toString();
+
 
 var TaskItemView = BaseView.extend({
 
-  initialize: function (options) {
+  initialize: function(options) {
     var self = this;
     this.options = options;
     this.model.trigger("task:model:fetch", options.id);
-    this.listenTo(this.model, "task:model:fetch:success", function (model) {
+    this.listenTo(this.model, "task:model:fetch:success", function(model) {
       self.model = model;
       self.initializeTags(self);
     });
-    this.listenTo(this.model, "task:model:fetch:error", function (projectModel, xhr) {
+    this.listenTo(this.model, "task:model:fetch:error", function(projectModel, xhr) {
       //this template is populated by the Global AJAX error listener
       var template = _.template(AlertTemplate)();
       self.$el.html(template);
@@ -30,13 +34,13 @@ var TaskItemView = BaseView.extend({
 
   },
 
-  render: function ( self ) {
+  render: function(self) {
 
     var taskState = self.model.attributes.state;
 
-    if ( _.isString( taskState ) ) {
+    if (_.isString(taskState)) {
 
-      taskState = taskState.charAt( 0 ).toUpperCase() + taskState.slice( 1 );
+      taskState = taskState.charAt(0).toUpperCase() + taskState.slice(1);
 
     }
 
@@ -56,17 +60,18 @@ var TaskItemView = BaseView.extend({
 
     };
 
-    self.data[ 'madlibTags' ] = organizeTags( self.data.tags );
+    self.data['madlibTags'] = organizeTags(self.data.tags);
     // convert description from markdown to html
-    self.data.model.descriptionHtml = marked( self.data.model.description );
-    self.model.trigger( 'task:tag:data', self.tags, self.data[ 'madlibTags' ] );
+    console.log('----', self.data);
+    self.data.model.descriptionHtml = marked(self.data.model.description || '');
+    self.model.trigger('task:tag:data', self.tags, self.data['madlibTags']);
 
     var d = self.data,
       // Unauthed users, current participants, authed users who are
       // not the task creator on an open task can see the participate
       // button on a task
-      vol = ( ( ! d.user || d.user.id !== d.model.userId ) &&
-            ( d.model.volunteer || 'open' === d.model.state ) );
+      vol = ((!d.user || d.user.id !== d.model.userId) &&
+        (d.model.volunteer || 'open' === d.model.state));
 
     self.data.ui = UIConfig;
     self.data.vol = vol;
@@ -75,21 +80,21 @@ var TaskItemView = BaseView.extend({
 
     self.$el.html(compiledTemplate);
     self.$el.i18n();
-    $( 'time.timeago' ).timeago();
+    $('time.timeago').timeago();
     self.updateTaskEmail();
-    self.model.trigger( 'task:show:render:done' );
+    self.model.trigger('task:show:render:done');
 
-    if ( '?volunteer' === window.location.search &&
-        ! self.model.attributes.volunteer ) {
+    if ('?volunteer' === window.location.search &&
+      !self.model.attributes.volunteer) {
 
-      $( '#volunteer' ).click();
+      $('#volunteer').click();
 
-      Backbone.history.navigate( window.location.pathname, {
+      Backbone.history.navigate(window.location.pathname, {
 
         trigger: false,
         replace: true,
 
-      } );
+      });
 
     }
 
@@ -97,33 +102,33 @@ var TaskItemView = BaseView.extend({
 
   updateTaskEmail: function() {
     var subject = 'Take A Look At This Opportunity',
-        data = {
-          opportunityTitle: this.model.get('title'),
-          opportunityLink: window.location.protocol +
-            "//" + window.location.host + "" + window.location.pathname,
-          opportunityDescription: this.model.get('description'),
-          opportunityMadlibs: $('<div />', {
-              html: this.$('#task-show-madlib-description').html()
-            }).text().replace(/\s+/g, " ")
-        },
-        body = _.template(ShareTemplate)(data),
-        link = 'mailto:?subject=' + encodeURIComponent(subject) +
-          '&body=' + encodeURIComponent(body);
+      data = {
+        opportunityTitle: this.model.get('title'),
+        opportunityLink: window.location.protocol +
+          "//" + window.location.host + "" + window.location.pathname,
+        opportunityDescription: this.model.get('description'),
+        opportunityMadlibs: $('<div />', {
+          html: this.$('#task-show-madlib-description').html()
+        }).text().replace(/\s+/g, " ")
+      },
+      body = _.template(ShareTemplate)(data),
+      link = 'mailto:?subject=' + encodeURIComponent(subject) +
+      '&body=' + encodeURIComponent(body);
 
     this.$('#email').attr('href', link);
   },
 
-  initializeTags: function (self) {
+  initializeTags: function(self) {
     var types = ["task-skills-required", "task-time-required", "task-people", "task-length", "task-time-estimate"];
 
     self.tagSources = {};
 
-    var requestAllTagsByType = function (type, cb) {
+    var requestAllTagsByType = function(type, cb) {
       $.ajax({
         url: '/api/ac/tag?type=' + type + '&list',
         type: 'GET',
         async: false,
-        success: function (data) {
+        success: function(data) {
           // Dynamically create an associative
           // array based on that for the pointer to the list itself to be iterated through
           // on the front-end.
@@ -133,7 +138,7 @@ var TaskItemView = BaseView.extend({
       });
     }
 
-    async.each(types, requestAllTagsByType, function (err) {
+    async.each(types, requestAllTagsByType, function(err) {
       self.model.trigger('task:tag:types', self.tagSources);
       self.render(self);
     });

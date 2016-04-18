@@ -28,6 +28,17 @@ module.exports.policies = {
 
   // '*': true,
 
+  TaskController : {
+    'find': ['task'],
+    'findOne': ['task'],
+    // 'findAllByProjectId': ['passport', 'authenticated', 'requireId', 'project'],
+    // 'copy': ['passport', 'authenticated', 'requireUserId', 'addUserId'],
+    // 'create': ['passport', 'authenticated', 'requireUserId', 'addUserId'],
+    // 'update': ['passport', 'authenticated', 'requireUserId', 'requireId', 'projectId', 'task', 'ownerOrAdmin'],
+    // 'destroy': ['passport', 'authenticated', 'requireUserId', 'requireId', 'task', 'ownerOrAdmin'],
+    // 'export': ['passport', 'authenticated', 'admin']
+  },
+
   /***************************************************************************
   *                                                                          *
   * Here's an example of mapping some policies to run before a controller    *

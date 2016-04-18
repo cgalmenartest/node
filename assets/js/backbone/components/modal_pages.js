@@ -10,13 +10,17 @@
 // </div>
 //
 
+var fs = require('fs');
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var BaseView = require('../base/base_view');
-var ModalWizardTemplate = require('../components/modal_wizard_template.html');
 var ModalWizard = require('../components/modal_wizard');
 var EmptyModalView = require('../apps/home/views/empty_modal_view');
+
+var ModalWizardTemplate = fs.readFileSync(
+  __dirname + '/modal_wizard_template.html'
+).toString();
 
 
 var ModalPages = ModalWizard.extend({

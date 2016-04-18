@@ -1,11 +1,13 @@
+var fs = require('fs');
+var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var UIConfig = require('../../../../config/ui.json');
 var marked = require('marked');
 var MarkdownEditor = require('../../../../components/markdown_editor');
-var TaskEditFormTemplate = require('../templates/task_edit_form_template.html');
 var TagFactory = require('../../../../components/tag_factory');
 var ShowMarkdownMixin = require('../../../../components/show_markdown_mixin');
+var TaskEditFormTemplate = fs.readFileSync(__dirname + '/../templates/task_edit_form_template.html').toString();
 
 
 var TaskEditFormView = Backbone.View.extend({

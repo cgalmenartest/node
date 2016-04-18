@@ -16,11 +16,14 @@
 // then the Form itself for the addition to the list is scoped to the
 // modal-body within this modal-component template.
 
+var fs = require('fs');
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var BaseView = require('../base/base_view');
-var ModalWizardTemplate = require('./modal_wizard_template.html');
+var ModalWizardTemplate = fs.readFileSync(
+  __dirname + '/modal_wizard_template.html'
+).toString();
 
 
 var ModalWizard = BaseView.extend({

@@ -12,6 +12,7 @@ var i18n = require('i18next');
 module.exports = {
 
   find: function (req, res) {
+    console.log('find!');
     var user = (req.user) ? req.user[0] : null,
         where = {};
 
@@ -45,6 +46,7 @@ module.exports = {
   },
 
   findOne: function(req, res) {
+    console.log('find one!', req.task);
     module.exports.find(req, res);
   },
 

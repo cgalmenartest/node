@@ -24,6 +24,18 @@ global.linkBackbone = function(e) {
 };
 
 /**
+ * Organize the tags output into an associative array key'd by their type.
+ * If the tag has more than one value for said key, make it an array otherwise
+ * keep it as a top level object.
+ * @param  {[array]} tags           [array of tags]
+ * @return {[object]}               [bindingObject returned out]
+ */
+global.organizeTags = function (tags) {
+  // put the tags into their types
+  return _(tags).groupBy('type');
+};
+
+/**
  * Completely remove a backbone view and all of its
  * references.  This is needed to destroy the view
  * and all of its listeners, in order to start
