@@ -1,7 +1,19 @@
 @import 'variables';
 
+@import 'lib/font-awesome/scss/font-awesome';
+@import 'lib/font-custom';
+@import 'lib/select2';
+@import 'lib/leaflet';
+
 @import 'bootstrap/bootstrap';
 
 @import 'basscss/basscss';
 
+@import 'app/page/dashboard';
+@import 'app/page/project/project';
 @import 'app/page/task/task';
+
+
+html {
+    font-size: 14px;
+}
