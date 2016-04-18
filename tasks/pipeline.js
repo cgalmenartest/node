@@ -18,9 +18,8 @@
 //  to change `assets/styles/importer.less` instead.)
 var cssFilesToInject = [
   // 'styles/uswds.css',
-  'styles/new/main.css',
+  'styles/main.css',
 ];
-
 
 // Client-side javascript files to inject in order
 // (uses Grunt-style wildcard/glob/splat expressions)
