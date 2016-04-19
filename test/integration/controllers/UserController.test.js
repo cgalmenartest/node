@@ -21,6 +21,30 @@ describe('UserController', function() {
     assert.equal(res.body, false);
   }
 
+  describe('when logged in /api/user', function() {
+    beforeEach(function(done) {
+      request(sails.hooks.http.app)
+        .post('/api/auth/local')
+        .send({
+          identifier: newUserAttrs.username,
+          password: newUserAttrs.password,
+          json: true
+        })
+        .expect(200)
+        .end(done)
+    });
+    it('should return current user info', function (done) {
+      request(sails.hooks.http.app)
+        .get('/api/user')
+        .expect(200)
+        .expect(function(res) {
+          assert.deepEqual(res.body,{})
+        })
+        .end(done)
+    });
+  });
+
+
   describe('username', function() {
 
     describe('invalid new user ID:', function() {
