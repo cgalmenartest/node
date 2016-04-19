@@ -1,5 +1,4 @@
 module.exports = {
-  // used if no other user is specified
   'minAttrs': {
     'name': 'Default User',
     'username': 'tester1@midascrowd.com',

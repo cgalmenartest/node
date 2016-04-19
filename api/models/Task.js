@@ -123,11 +123,12 @@ module.exports = {
 
       // Set up notification for updates (needs to happen here instead
       // of afterUpdate so we can compare to see if state changed)
-      Notification.create({
-        action: action,
-        model: values,
-      }, done);
-
+      // TODO: Notification
+      // Notification.create({
+      //   action: action,
+      //   model: values,
+      // }, done);
+      done();
     });
   },
   /** TODO: tags & badges
@@ -142,6 +143,7 @@ module.exports = {
   },
 **/
   beforeCreate: function(values, done) {
+    sails.log.verbose("Task.beforeCreate")
     // If default state is not draft, we need to set dates
     this.beforeUpdate(values, done);
   },
@@ -150,18 +152,19 @@ module.exports = {
    * After creation of the model, the
    */
   afterCreate: function(model, done) {
+    sails.log.verbose("Task.afterCreate")
 
     if ('draft' === model.state) {
 
       if (model.createdAt === model.updatedAt) {
-
-        Notification.create({
-
-          action: 'task.create.draft',
-          model: model,
-
-        }, done);
-
+        // TODO: notification
+        // Notification.create({
+        //
+        //   action: 'task.create.draft',
+        //   model: model,
+        //
+        // }, done);
+        done();
       } else {
 
         done();
@@ -169,42 +172,43 @@ module.exports = {
       }
 
     } else {
-
-      Notification.create({
-
-        action: 'task.create.thanks',
-        model: model,
-
-      }, done);
-
+      // TODO: notification
+      // Notification.create({
+      //
+      //   action: 'task.create.thanks',
+      //   model: model,
+      //
+      // }, done);
+      done();
     }
 
   },
 
-  sendNotifications: function(i) {
-    i = i || 0;
-
-    var now = new Date(new Date().toISOString().split('T')[0]),
-      begin = moment(now).add(i, 'days').toDate(),
-      end = moment(now).add(i + 1, 'days').toDate();
-
-    Task.find({
-      completedBy: { '>=': begin, '<': end },
-      state: 'assigned',
-    }).exec(function(err, tasks) {
-      if (err) return sails.log.error(err);
-      var action = i ? 'task.due.soon' : 'task.due.today';
-
-      tasks.forEach(function(task) {
-        var find = { action: action, callerId: task.id },
-          model = { action: action, callerId: task.id, model: task };
-        Notification.findOrCreate(find, model, function(err, notification) {
-          if (err) sails.log.error(err);
-          if (notification) sails.log.verbose('New notification', notification);
-        });
-      });
-
-    });
-  },
+  // TODO: notifications
+  // sendNotifications: function(i) {
+  //   i = i || 0;
+  //
+  //   var now = new Date(new Date().toISOString().split('T')[0]),
+  //     begin = moment(now).add(i, 'days').toDate(),
+  //     end = moment(now).add(i + 1, 'days').toDate();
+  //
+  //   Task.find({
+  //     completedBy: { '>=': begin, '<': end },
+  //     state: 'assigned',
+  //   }).exec(function(err, tasks) {
+  //     if (err) return sails.log.error(err);
+  //     var action = i ? 'task.due.soon' : 'task.due.today';
+  //
+  //     tasks.forEach(function(task) {
+  //       var find = { action: action, callerId: task.id },
+  //         model = { action: action, callerId: task.id, model: task };
+  //       Notification.findOrCreate(find, model, function(err, notification) {
+  //         if (err) sails.log.error(err);
+  //         if (notification) sails.log.verbose('New notification', notification);
+  //       });
+  //     });
+  //
+  //   });
+  // },
 
 };
