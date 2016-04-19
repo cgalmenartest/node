@@ -69,6 +69,7 @@ run the following commands in the interactive terminal (which runs them
 in the Docker machine):
 
 ```
+npm install -g node-gyp@3.3.1 grunt-cli@0.1.13
 npm install
 npm run init
 npm start
@@ -251,6 +252,7 @@ Here's an example using `export`:
 
 Then run the normal npm package installer
 
+     npm install -g node-gyp@3.3.1 grunt-cli@0.1.13
      npm install
 
 #### Optional: Edit the configuration files
