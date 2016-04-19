@@ -11,6 +11,7 @@ module.exports = {
   attributes: {
     username: { type: 'email', unique: true },
     passports: { collection: 'Passport', via: 'user' },
+    badges: { collection: 'badge', via: 'user'},
 
     // Core attributes that appear in the user's profile
     name: 'STRING',    // Identifies people on the site

@@ -39,6 +39,24 @@ module.exports.policies = {
     // 'export': ['passport', 'authenticated', 'admin']
   },
 
+  UserController : {
+    '*': false,
+    'profile': ['passport', 'authenticated'],
+    // 'photo': ['passport', 'authenticated', 'requireId'],
+    // 'info': ['passport', 'authenticated', 'requireId'],
+    // 'update': ['passport', 'authenticated', 'requireUserId', 'requireId', 'user', 'protectAdmin'],
+    'username': ['passport', 'authenticated'],
+    'find': ['passport', 'authenticated', 'requireUserAuth'],
+    'all': ['passport', 'authenticated', 'requireUserAuth'],
+    'findOne': ['passport', 'authenticated', 'requireUserAuth'],
+    // 'activities': ['passport', 'authenticated'],
+    // 'disable': ['passport', 'authenticated', 'requireId', 'requireUserId'],
+    // 'enable': ['passport', 'authenticated', 'requireId', 'requireUserId', 'admin'],
+    // 'resetPassword': ['passport', 'authenticated', 'requireUserId'],
+    // 'emailCount': ['test'],
+    // 'export': ['passport', 'authenticated', 'admin']
+  },
+
   /***************************************************************************
   *                                                                          *
   * Here's an example of mapping some policies to run before a controller    *

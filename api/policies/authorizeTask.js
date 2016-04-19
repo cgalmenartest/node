@@ -8,7 +8,7 @@ module.exports = function authorizeTask(req, res, next) {
     // TODO: authorize task based on user
     // var userId = null;
     // if (req.user) {
-    //   userId = req.user[0].id;
+    //   userId = req.user.id;
     // }
 
     Task.authorized(req.params.id, function(err, task) {

@@ -127,6 +127,8 @@ module.exports = {
         }
         user.location = _.findWhere(user.tags, { type: 'location' });
         user.agency = _.findWhere(user.tags, { type: 'agency' });
+        // TODO: should we remove Like?
+        /**
         Like.countByTargetId(userId, function (err, likes) {
           if (err) { return cb(err, null); }
           user.likeCount = likes;
@@ -135,28 +137,25 @@ module.exports = {
           Like.findOne({ where: { userId: reqId, targetId: userId }}, function (err, like) {
             if (err) { return cb(err, null); }
             if (like) { user.like = true; }
+         **/
+        // stop here if the requester id is not the same as the user id
+        if (userId != reqId && !admin) return cb(null, user);
 
-            // stop here if the requester id is not the same as the user id
-            if (userId != reqId && !admin) return cb(null, user);
+        user.isOwner = true;
 
-            user.isOwner = true;
+        // Look up which providers the user has authorized
+        user.auths = [];
+        user.auths = _(user.passports).chain().filter(function(passport) {
+          return passport.provider && !passport.deletedAt;
+        }).map(function(passport) {
+          return {
+            provider: passport.provider,
+            id: passport.id,
+            token: passport.accessToken || passport.tokens.accessToken
+          };
+        }).value();
 
-            // Look up which providers the user has authorized
-            user.auths = [];
-            user.auths = _(user.passports).chain().filter(function(passport) {
-              return passport.provider && !passport.deletedAt;
-            }).map(function(passport) {
-              return {
-                provider: passport.provider,
-                id: passport.id,
-                token: passport.accessToken || passport.tokens.accessToken
-              };
-            }).value();
-
-            return cb(null, user);
-          });
-        });
-
+        return cb(null, user);
     });
   },
 
