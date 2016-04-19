@@ -29,8 +29,8 @@ module.exports.policies = {
   // '*': true,
 
   TaskController : {
-    'find': ['task'],
-    'findOne': ['task'],
+    //'find': ['passport', 'authenticated'],
+    'findOne': ['authorizeTask'],
     // 'findAllByProjectId': ['passport', 'authenticated', 'requireId', 'project'],
     // 'copy': ['passport', 'authenticated', 'requireUserId', 'addUserId'],
     // 'create': ['passport', 'authenticated', 'requireUserId', 'addUserId'],

@@ -62,12 +62,12 @@ module.exports = {
         });
       });
     },
-    authorized: function(taskId, done) {
-      // TODO: check user and task state
-      Task.findOne({ id: taskId }).exec(function(err, task) {
-        done(err, task);
-      });
-    }
+  },
+  authorized: function(taskId, done) {
+    // TODO: check user and task state
+    Task.findOne({ id: taskId }).exec(function(err, task) {
+      done(err, task);
+    });
   },
 
   /* TODO Export

@@ -10,21 +10,22 @@ var userUtil = require('../services/utils/user');
 var i18n = require('i18next');
 
 module.exports = {
-
   find: function (req, res) {
-    console.log('find!');
+    sails.log.verbose('Task.find')
     var user = (req.user) ? req.user[0] : null,
         where = {};
 
     if (req.task) {
-      taskUtil.getMetadata(req.task, user, function (err) {
-        if (err) { return res.send(400, { message: i18n.t('taskAPI.errMsg.likes', 'Error looking up task likes.') }); }
-        taskUtil.getVolunteers(req.task, function (err) {
-          if (err) { return res.send(400, { message: i18n.t('taskAPI.errMsg.volunteers','Error looking up task volunteers.') }); }
-          return res.send(req.task);
-        });
-      });
-      return;
+      // TODO: Task meta data
+      // taskUtil.getMetadata(req.task, user, function (err) {
+      //   if (err) { return res.send(400, { message: i18n.t('taskAPI.errMsg.likes', 'Error looking up task likes.') }); }
+      //   taskUtil.getVolunteers(req.task, function (err) {
+      //     if (err) { return res.send(400, { message: i18n.t('taskAPI.errMsg.volunteers','Error looking up task volunteers.') }); }
+      //     return res.send(req.task);
+      //   });
+      // });
+      sails.log.verbose('sending task:', req.task.id)
+      return res.send(req.task);
     }
     // Only show drafts for current user
     if (user) {
@@ -46,18 +47,8 @@ module.exports = {
   },
 
   findOne: function(req, res) {
-    console.log('find one!', req.task);
+    sails.log.verbose('Task.findOne')
     module.exports.find(req, res);
-  },
-
-  findAllByProjectId: function (req, res) {
-    Task.findByProjectId(req.params.id)
-    .populate('tags')
-    .sort({'updatedAt': -1})
-    .exec(function(err, tasks) {
-      if (err) return res.send(err, 500);
-      res.send({ tasks: tasks });
-    });
   },
 
   copy: function(req, res) {
