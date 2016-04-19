@@ -4,7 +4,9 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 // var utils = require('../../../../mixins/utilities');
 var LoginPasswordView = require('../../../login/views/login_password_view');
-var ProfileResetTemplate = require('../templates/profile_reset_template.html');
+
+var fs = require('fs');
+var ProfileResetTemplate = fs.readFileSync(`${__dirname}/../templates/profile_reset_template.html`).toString();
 
 
 var ProfileResetView = Backbone.View.extend({
@@ -128,4 +130,3 @@ var ProfileResetView = Backbone.View.extend({
 });
 
 module.exports = ProfileResetView;
-

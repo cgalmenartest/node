@@ -7,9 +7,12 @@ var ProfileView = require('../views/profile_show_view');
 var ProfileSettingsView = require('../views/profile_settings_view');
 var ProfileResetView = require('../views/profile_reset_view');
 var Login = require('../../../../config/login.json');
-var AlertTemplate = require('../../../../components/alert_template.html');
 
-Profile = BaseController.extend({
+var fs = require('fs');
+var AlertTemplate = fs.readFileSync(`${__dirname}/../../../../components/alert_template.html`).toString();
+
+
+var Profile = BaseController.extend({
 
   // Here we are defining wether or not this is a full-region object
   // or a sub-region of another region.

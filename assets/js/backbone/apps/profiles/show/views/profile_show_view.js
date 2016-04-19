@@ -1,20 +1,23 @@
+var $ = require('jquery');
 var _ = require('underscore');
-var Backbone = require('backbone');
-// var utils = require('../../../../mixins/utilities');
-var UIConfig = require('../../../../config/ui.json');
 var async = require('async');
+var Backbone = require('backbone');
+
+var UIConfig = require('../../../../config/ui.json');
 var jqIframe = require('blueimp-file-upload/js/jquery.iframe-transport');
 var jqFU = require('blueimp-file-upload/js/jquery.fileupload.js');
 var MarkdownEditor = require('../../../../components/markdown_editor');
 var marked = require('marked');
 var TagShowView = require('../../../tag/show/views/tag_show_view');
-var ProfileShowTemplate = require('../templates/profile_show_template.html');
-var ProfileEditTemplate = require('../templates/profile_edit_template.html');
-var ShareTemplate = require('../templates/profile_share_template.txt');
 var Login = require('../../../../config/login.json');
 var ModalComponent = require('../../../../components/modal');
 var PAView = require('./profile_activity_view');
 var TagFactory = require('../../../../components/tag_factory');
+
+var fs = require('fs');
+var ProfileShowTemplate = fs.readFileSync(`${__dirname}/../templates/profile_show_template.html`).toString();
+var ProfileEditTemplate = fs.readFileSync(`${__dirname}/../templates/profile_edit_template.html`).toString();
+var ShareTemplate = fs.readFileSync(`${__dirname}/../templates/profile_share_template.txt`).toString();
 
 
 var ProfileShowView = Backbone.View.extend({

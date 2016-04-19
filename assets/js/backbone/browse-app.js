@@ -1,13 +1,10 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
 var $ = require('jquery');
-// TODO: var utils = require('../../mixins/utilities');
 var NavView = require('./apps/nav/views/nav_view');
 var FooterView = require('./apps/footer/views/footer_view');
 var BrowseListController = require('./apps/browse/controllers/browse_list_controller');
-// var ProjectModel = require('../../entities/projects/project_model');
-// var ProjectShowController = require('../project/show/controllers/project_show_controller');
-// var ProfileShowController = require('../profiles/show/controllers/profile_show_controller');
+var ProfileShowController = require('./apps/profiles/show/controllers/profile_show_controller');
 var TaskModel = require('./entities/tasks/task_model');
 // var TaskCollection = require('../../entities/tasks/tasks_collection');
 var TaskShowController = require('./apps/tasks/show/controllers/task_show_controller');

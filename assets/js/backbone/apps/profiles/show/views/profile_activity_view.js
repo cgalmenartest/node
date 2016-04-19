@@ -1,9 +1,11 @@
 var _ = require('underscore');
-var Backbone = require('backbone');
-// var utils = require('../../../../mixins/utilities');
-var UIConfig = require('../../../../config/ui.json');
 var async = require('async');
-var ActTemplate = require('../templates/profile_activity_template.html');
+var Backbone = require('backbone');
+
+var UIConfig = require('../../../../config/ui.json');
+
+var fs = require('fs');
+var ActTemplate = fs.readFileSync(`${__dirname}/../templates/profile_activity_template.html`).toString();
 
 
 var ProfileActivityView = Backbone.View.extend({

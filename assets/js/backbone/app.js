@@ -5,7 +5,9 @@
  */
 
 // Set up Backbone to use jQuery
-var $ = require('jquery');
+var $ = window.jQuery = require('jquery');
+// TODO: ideally ^^^ wouldn't be global, blueimp-file-upload wants this
+
 var _ = require('underscore');
 var Backbone = require('backbone');
 
@@ -26,7 +28,8 @@ $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
 });
 
 // Install jQuery plugins
-// TODO require('blueimp-file-upload/js/vendor/jquery.ui.widget');
+// TODO: maybe this shouldn't be global vvv
+require('blueimp-file-upload/js/vendor/jquery.ui.widget');
 var moment = require('moment');
 
 
