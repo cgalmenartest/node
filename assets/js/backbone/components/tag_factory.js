@@ -13,7 +13,7 @@ var async = require('async');
 var Backbone = require('backbone');
 var i18n = require('i18next');
 var marked = require('marked');
-var select2 = require('select2');
+//var select2 = require('select2');
 
 var BaseComponent = require('../base/base_component');
 
