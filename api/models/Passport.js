@@ -85,7 +85,7 @@ module.exports = {
      * @param {Function} next
      */
     validatePassword: function (password, next) {
-      bcrypt.compare(password, this.password, next);
+      return bcrypt.compare(password, this.password, next);
     },
 
     toJSON: function() {
