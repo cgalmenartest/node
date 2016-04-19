@@ -29,7 +29,7 @@ describe('AuthController', function() {
 
   });
 
-  describe('local user', function() {
+  describe('local auth with no registered users', function() {
     var users;  // user fixtures loaded fresh for each test
 
     beforeEach(function(done) {
@@ -70,6 +70,13 @@ describe('AuthController', function() {
       })
     });
 
+    it('should forgot password', function (done) {
+      request(sails.hooks.http.app)
+        .post('/api/auth/forgot')
+        .send({username: users.minAttrs.username})
+        .expect(302)
+        .end(done)
+    });
   });
 
 });

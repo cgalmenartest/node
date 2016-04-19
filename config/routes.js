@@ -97,6 +97,7 @@ module.exports.routes = {
   // for register, and...?
   'post /api/auth/local/:action': 'AuthController.callback',
 
+  'post /api/auth/forgot': 'AuthController.callback',
   // TODO: google auth?
   // 'post /api/auth/disconnect/:provider': 'AuthController.disconnect',
   // 'get /api/auth/checkToken/:token': 'AuthController.checkToken',
