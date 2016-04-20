@@ -69,12 +69,15 @@
     "sails-memory": "^0.10.6",
     "supertest": "^1.2.0"
   },
+  "config": {
+    "grunt": "./node_modules/sails/node_modules/.bin/grunt"
+  },
   "scripts": {
     "install": "npm run uswds && npm run migrate",
     "init": "node ./tools/init.js",
     "build": "npm run browserify",
-    "migrate": "grunt db:migrate:up",
-    "check-migrate": "grunt db:migrate:up --dry-run | perl -ne 's/.*Processed migration (.*)/\\x1b[41m[WARNING] Pending Migration: \\1\\x1b[0m (Run `npm run migrate`)/ && print'",
+    "migrate": "$npm_package_config_grunt db:migrate:up",
+    "check-migrate": "$npm_package_config_grunt db:migrate:up --dry-run | perl -ne 's/.*Processed migration (.*)/\\x1b[41m[WARNING] Pending Migration: \\1\\x1b[0m (Run `npm run migrate`)/ && print'",
     "start": "npm run build && npm run watch",
     "test": "node ./node_modules/mocha/bin/mocha test/bootstrap.test.js test/integration/**/*.test.js",
     "cover": "istanbul cover ./node_modules/mocha/bin/_mocha -- test/bootstrap.test.js test/integration/**/*.test.js",
