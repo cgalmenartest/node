@@ -32,7 +32,6 @@ assets/uploads
 assets/js/bundle.js
 
 # Ignore uswds files, these are set up during npm install
-assets/fonts
 assets/styles/uswds.css
 assets/images/uswds
 
