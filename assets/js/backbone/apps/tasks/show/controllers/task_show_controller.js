@@ -1,4 +1,3 @@
-var fs = require('fs');
 var Bootstrap = require('bootstrap');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -6,8 +5,8 @@ var Popovers = require('../../../../mixins/popovers');
 
 
 var BaseView = require('../../../../base/base_view');
-// var CommentListController = require('../../../comments/list/controllers/comment_list_controller');
-// var AttachmentView = require('../../../attachment/views/attachment_show_view');
+var CommentListController = require('../../../comments/list/controllers/comment_list_controller');
+var AttachmentView = require('../../../attachment/views/attachment_show_view');
 var TaskItemView = require('../views/task_item_view');
 var TagFactory = require('../../../../components/tag_factory');
 var ModalComponent = require('../../../../components/modal');
@@ -15,7 +14,8 @@ var ModalAlert = require('../../../../components/modal_alert');
 var TaskEditFormView = require('../../edit/views/task_edit_form_view');
 var UIConfig = require('../../../../config/ui.json');
 var LoginConfig = require('../../../../config/login.json');
-// var VolunteerSupervisorNotifyTemplate = require('../templates/volunteer_supervisor_notify_template.html');
+
+var fs = require('fs');
 var VolunteerTextTemplate = fs.readFileSync(__dirname + '/../templates/volunteer_text_template.html').toString();
 var ChangeStateTemplate = fs.readFileSync(__dirname + '/../templates/change_state_template.html').toString();
 var UpdateLocationAgencyTemplate = fs.readFileSync(__dirname + '/../templates/update_location_agency_template.html').toString();

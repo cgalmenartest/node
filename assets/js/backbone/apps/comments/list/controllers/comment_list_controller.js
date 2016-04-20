@@ -1,13 +1,16 @@
 
 var _ = require('underscore');
 var Backbone = require('backbone');
-// var utils = require('../../../../mixins/utilities');
+
 var TimeAgo = require('../../../../../vendor/jquery.timeago');
 var Popovers = require('../../../../mixins/popovers');
 var CommentCollection = require('../../../../entities/comments/comment_collection');
 var CommentFormView = require('../../new/views/comment_form_view');
 var CommentItemView = require('../views/comment_item_view');
-var CommentWrapper = require('../templates/comment_wrapper_template.html');
+
+var fs = require('fs');
+var CommentWrapper = fs.readFileSync(`${__dirname}/../templates/comment_wrapper_template.html`).toString();
+
 var marked = require('marked');
 
 

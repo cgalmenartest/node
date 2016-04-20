@@ -49,7 +49,7 @@ module.exports.policies = {
     'find': ['passport', 'authenticated', 'requireUserAuth'],
     'all': ['passport', 'authenticated', 'requireUserAuth'],
     'findOne': ['passport', 'authenticated', 'requireUserAuth'],
-    // 'activities': ['passport', 'authenticated'],
+    'activities': ['passport', 'authenticated'],
     // 'disable': ['passport', 'authenticated', 'requireId', 'requireUserId'],
     // 'enable': ['passport', 'authenticated', 'requireId', 'requireUserId', 'admin'],
     // 'resetPassword': ['passport', 'authenticated', 'requireUserId'],

@@ -11,39 +11,38 @@ var i18n = require('i18next');
 
 module.exports = {
   find: function (req, res) {
-    sails.log.verbose('Task.find')
-    var user = (req.user) ? req.user[0] : null,
+    sails.log.verbose('Task.find', req.task)
+    var user = req.user,
         where = {};
 
     if (req.task) {
-      // TODO: Task meta data
-      // taskUtil.getMetadata(req.task, user, function (err) {
-      //   if (err) { return res.send(400, { message: i18n.t('taskAPI.errMsg.likes', 'Error looking up task likes.') }); }
-      //   taskUtil.getVolunteers(req.task, function (err) {
-      //     if (err) { return res.send(400, { message: i18n.t('taskAPI.errMsg.volunteers','Error looking up task volunteers.') }); }
-      //     return res.send(req.task);
-      //   });
-      // });
-      sails.log.verbose('sending task:', req.task.id)
-      return res.send(req.task);
-    }
-    // Only show drafts for current user
-    if (user) {
-      where = { or: [{
-        state: {'!': 'draft'}
-      }, {
-        state: 'draft',
-        userId: user.id
-      }]};
+      taskUtil.getMetadata(req.task, user, function (err) {
+        if (err) { return res.send(400, { message: i18n.t('taskAPI.errMsg.likes', 'Error looking up task likes.') }); }
+        taskUtil.getVolunteers(req.task, function (err) {
+          if (err) { return res.send(400, { message: i18n.t('taskAPI.errMsg.volunteers','Error looking up task volunteers.') }); }
+          sails.log.verbose('sending task:', req.task)
+          return res.send(req.task);
+        });
+      });
     } else {
-      where.state = {'!': 'draft'};
-    }
+      // Only show drafts for current user
+      if (user) {
+        where = { or: [{
+          state: {'!': 'draft'}
+        }, {
+          state: 'draft',
+          userId: user.id
+        }]};
+      } else {
+        where.state = {'!': 'draft'};
+      }
 
-    // run the common task find query
-    taskUtil.findTasks(where, function (err, tasks) {
-      if (err) { return res.send(400, err); }
-      return res.send({ tasks: tasks });
-    });
+      // run the common task find query
+      taskUtil.findTasks(where, function (err, tasks) {
+        if (err) { return res.send(400, err); }
+        return res.send({ tasks: tasks });
+      });
+    }
   },
 
   findOne: function(req, res) {

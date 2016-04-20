@@ -5,12 +5,13 @@ var jqIframe = require('blueimp-file-upload/js/jquery.iframe-transport');
 var jqFU = require('blueimp-file-upload/js/jquery.fileupload.js');
 var TimeAgo = require('../../../../vendor/jquery.timeago');
 var Backbone = require('backbone');
-var utils = require('../../../mixins/utilities');
+
 var async = require('async');
 var Popovers = require('../../../mixins/popovers');
-var AITemplate = require('../templates/attachment_item_template.html');
-var ASTemplate = require('../templates/attachment_show_template.html');
 
+var fs = require('fs');
+var AITemplate = fs.readFileSync(__dirname + '/../templates/attachment_item_template.html').toString();
+var ASTemplate = fs.readFileSync(__dirname + '/../templates/attachment_show_template.html').toString();
 
 var popovers = new Popovers();
 
@@ -111,7 +112,7 @@ var AttachmentShowView = Backbone.View.extend({
   },
 
   render: function () {
-    data = {
+    var data = {
       user: window.cache.currentUser,
       canAdd:
         // Admins

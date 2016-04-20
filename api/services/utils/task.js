@@ -51,32 +51,14 @@ var getMetadata = function(task, user, cb) {
   task.owner = { userId: task.userId };
   userUtil.addUserName(task.owner, function (err) {
     if (err) { return cb(err, task); }
-    // Get like information for the task
-    Like.countByTaskId(task.id, function (err, likes) {
-      if (err) { return cb(err, task); }
-      task.likeCount = likes;
-      if (!user) {
-        return cb(null, task);
-      }
-      Like.findOne({ where: { userId: user.id, taskId: task.id }}, function (err, like) {
-        if (err) { return cb(err, task); }
-        if (like) { task.like = true; }
-        Volunteer.findOne({ where: { userId: user.id, taskId: task.id }}, function (err, v) {
-          if (err) { return cb(err, task); }
-          if (v) { task.volunteer = true; }
-          return cb(null, task);
-        });
-      });
-    });
-  });
-};
+    return cb(null, task);
+    // TODO: not sure this is needed anymore...
+    // Volunteer.findOne({ where: { userId: user.id, taskId: task.id }}, function (err, v) {
+    //   if (err) { return cb(err, task); }
+    //   if (v) { task.volunteer = true; }
+    //   return cb(null, task);
+    // });
 
-var getLikes = function (task, cb) {
-  Like.countByTaskId(task.id, function (err, count) {
-    if (!err) {
-      task.likeCount = count;
-    }
-    cb(err);
   });
 };
 
@@ -132,7 +114,6 @@ var findTasks = function (where, cb) {
 module.exports = {
   authorized: authorized,
   getMetadata: getMetadata,
-  getLikes: getLikes,
   getVolunteers: getVolunteers,
   findTasks: findTasks
 };

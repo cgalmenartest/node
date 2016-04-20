@@ -6,6 +6,7 @@
   "keywords": [],
   "dependencies": {
     "async": "^2.0.0-rc.2",
+    "autolinker": "^0.26.0",
     "babel-preset-es2015": "^6.6.0",
     "babel-preset-stage-0": "^6.5.0",
     "babelify": "^7.2.0",
@@ -38,8 +39,13 @@
     "include-all": "~0.1.6",
     "jquery": "^2.2.2",
     "jquery-i18next": "^0.2.0",
+    "jquery.atwho": "ichord/At.js#v0.4.7",
+    "jquery.caret": "ichord/Caret.js#v0.0.7",
+    "jsdom": "^8.4.0",
+    "location": "0.0.1",
     "marked": "^0.3.5",
     "moment": "^2.12.0",
+    "navigator": "^1.0.1",
     "nodemon": "^1.9.1",
     "passport": "^0.3.2",
     "passport-http-bearer": "^1.0.1",
@@ -54,7 +60,8 @@
     "underscore": "^1.8.3",
     "uswds": "^0.9.1",
     "validator": "^5.1.0",
-    "watchify": "^3.7.0"
+    "watchify": "^3.7.0",
+    "xmlhttprequest": "^1.8.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
