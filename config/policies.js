@@ -33,8 +33,8 @@ module.exports.policies = {
     'findOne': ['authorizeTask'],
     'copy': ['requireAuth', 'addUserId'],
     'create': ['requireAuth', 'addUserId'],
-    // 'update': ['requireAuth', 'requireId', 'projectId', 'task', 'ownerOrAdmin'],
-    // 'destroy': ['requireAuth', 'requireId', 'task', 'ownerOrAdmin'],
+    'update': ['requireAuth', 'requireId', 'authorizeTask', 'ownerOrAdmin'],
+    'destroy': ['requireAuth', 'requireId', 'authorizeTask', 'ownerOrAdmin'],
     // 'export': ['admin']
   },
 
