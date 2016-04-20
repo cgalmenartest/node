@@ -22,9 +22,11 @@ describe('UserController', function() {
   }
 
   describe('when logged in /api/user', function() {
+    var agent;
     beforeEach(function(done) {
-      request(sails.hooks.http.app)
-        .post('/api/auth/local')
+      console.log('beforeEach')
+      agent = request.agent(sails.hooks.http.app);
+      agent.post('/api/auth/local')
         .send({
           identifier: newUserAttrs.username,
           password: newUserAttrs.password,
@@ -33,12 +35,14 @@ describe('UserController', function() {
         .expect(200)
         .end(done)
     });
-    xit('should return current user info', function (done) {
-      request(sails.hooks.http.app)
-        .get('/api/user')
+    it('should return current user info', function (done) {
+      agent.get('/api/user')
         .expect(200)
         .expect(function(res) {
-          assert.deepEqual(res.body,{})
+          assert.equal(res.body.username, newUserAttrs.username);
+          assert.equal(res.body.name, newUserAttrs.name);
+          assert.equal(res.body.id, 1);
+          assert.isUndefined(res.body['password']);
         })
         .end(done)
     });
