@@ -29,14 +29,13 @@ module.exports.policies = {
   // '*': true,  TODO: should default to false and whitelist APIs
 
   TaskController : {
-    //'find': ['passport', 'authenticated'],
-    'findOne': ['authorizeTask']
-    // 'findAllByProjectId': ['passport', 'authenticated', 'requireId', 'project'],
-    // 'copy': ['passport', 'authenticated', 'requireUserId', 'addUserId'],
-    // 'create': ['passport', 'authenticated', 'requireUserId', 'addUserId'],
-    // 'update': ['passport', 'authenticated', 'requireUserId', 'requireId', 'projectId', 'task', 'ownerOrAdmin'],
-    // 'destroy': ['passport', 'authenticated', 'requireUserId', 'requireId', 'task', 'ownerOrAdmin'],
-    // 'export': ['passport', 'authenticated', 'admin']
+    'find': true,
+    'findOne': ['authorizeTask'],
+    'copy': ['requireAuth', 'addUserId'],
+    'create': ['requireAuth', 'addUserId'],
+    // 'update': ['requireAuth', 'requireId', 'projectId', 'task', 'ownerOrAdmin'],
+    // 'destroy': ['requireAuth', 'requireId', 'task', 'ownerOrAdmin'],
+    // 'export': ['admin']
   },
 
   UserController : {
@@ -50,9 +49,9 @@ module.exports.policies = {
     'all': ['requireAuth'],
     'findOne': ['requireAuth'],
     'activities': true
-    // 'disable': ['passport', 'authenticated', 'requireId', 'requireUserId'],
-    // 'enable': ['passport', 'authenticated', 'requireId', 'requireUserId', 'admin'],
-    // 'resetPassword': ['passport', 'authenticated', 'requireUserId'],
+    // 'disable': ['passport', 'authenticated', 'requireId', 'requireAuth'],
+    // 'enable': ['passport', 'authenticated', 'requireId', 'requireAuth', 'admin'],
+    // 'resetPassword': ['passport', 'authenticated', 'requireAuth'],
     // 'emailCount': ['test'],
     // 'export': ['passport', 'authenticated', 'admin']
   },
