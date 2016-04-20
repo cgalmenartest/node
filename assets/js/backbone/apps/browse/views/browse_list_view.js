@@ -2,7 +2,7 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var async = require('async');
-//var utils = require('../../../mixins/utilities');
+
 var UIConfig = require('../../../config/ui.json');
 var marked = require('marked');
 var TagConfig = require('../../../config/tag');

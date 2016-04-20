@@ -3,7 +3,7 @@ var fs = require('fs');
 var Bootstrap = require('bootstrap');
 var _ = require('underscore');
 var Backbone = require('backbone');
-// var utils = require('../../../../mixins/utilities');
+
 var UIConfig = require('../../../../config/ui.json');
 var async = require('async');
 var marked = require('marked');
@@ -79,7 +79,7 @@ var TaskItemView = BaseView.extend({
     var compiledTemplate = _.template(TaskShowTemplate)(self.data);
 
     self.$el.html(compiledTemplate);
-    self.$el.i18n();
+    // TODO: self.$el.i18n();
     $('time.timeago').timeago();
     self.updateTaskEmail();
     self.model.trigger('task:show:render:done');

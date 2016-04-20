@@ -2,7 +2,7 @@
 var _ = require('underscore');
 var async = require('async');
 var Backbone = require('backbone');
-var utils = require('../../../mixins/utilities');
+
 var BaseController = require('../../../base/base_controller');
 var AdminMainView = require('../views/admin_main_view');
 

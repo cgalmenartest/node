@@ -1,7 +1,7 @@
 
 var _ = require('underscore');
 var Backbone = require('backbone');
-var utils = require('../../../mixins/utilities');
+
 var AdminParticipantsTemplate = require('../templates/admin_participants_template.html');
 
 

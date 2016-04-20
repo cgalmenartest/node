@@ -1,7 +1,7 @@
 
 var _ = require('underscore');
 var Backbone = require('backbone');
-var utils = require('../../../mixins/utilities');
+
 var AdminUserView = require('./admin_user_view');
 var AdminTagView = require('./admin_tag_view');
 var AdminTaskView = require('./admin_task_view');

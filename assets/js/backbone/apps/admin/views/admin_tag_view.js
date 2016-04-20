@@ -1,7 +1,7 @@
 
 var _ = require('underscore');
 var Backbone = require('backbone');
-var utils = require('../../../mixins/utilities');
+
 var AdminTagTemplate = require('../templates/admin_tag_template.html');
 var TagFactory = require('../../../components/tag_factory');
 

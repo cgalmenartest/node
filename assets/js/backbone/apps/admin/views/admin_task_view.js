@@ -1,7 +1,7 @@
 
 var _ = require('underscore');
 var Backbone = require('backbone');
-var utils = require('../../../mixins/utilities');
+
 var AdminTaskTemplate = require('../templates/admin_task_template.html');
 var TaskModel = require( '../../../entities/tasks/task_model' );
 

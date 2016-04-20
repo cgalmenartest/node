@@ -2,7 +2,7 @@
 var Bootstrap = require('bootstrap');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var utils = require('../../../mixins/utilities');
+
 var AdminUserPassword = require('../templates/admin_user_password.html');
 
 

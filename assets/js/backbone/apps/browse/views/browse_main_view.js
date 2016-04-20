@@ -4,7 +4,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var $ = require('jquery');
 
-//var utils = require('../../../mixins/utilities');
+
 var UIConfig = require('../../../config/ui.json');
 //var Popovers = require('../../../mixins/popovers');
 var TagConfig = require('../../../config/tag');

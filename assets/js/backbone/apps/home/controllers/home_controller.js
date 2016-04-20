@@ -1,6 +1,5 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
-// TODO var utils = require('../../../mixins/utilities');
 var BaseController = require('../../../base/base_controller');
 var HomeView = require('../views/home_view');
 

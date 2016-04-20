@@ -1,7 +1,7 @@
 
 var _ = require('underscore');
 var Backbone = require('backbone');
-// var utils = require('../../../../mixins/utilities');
+
 var async = require('async');
 var marked = require('marked');
 var TaskListTemplate = require('../templates/task_collection_view_template.html');

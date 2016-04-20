@@ -1,6 +1,6 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
-var utils = require('../../../mixins/utilities');
+
 var ModalComponent = require('../../../components/modal');
 var AdminUserPasswordView = require('./admin_user_password_view');
 var AdminUserTemplate = require('../templates/admin_user_template.html');

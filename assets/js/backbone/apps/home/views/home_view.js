@@ -1,7 +1,6 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
 var async = require('async');
-//TODO: var utils = require('../../../mixins/utilities');
 var UIConfig = require('../../../config/ui.json');
 /** TODO:
 var Login = require('../../../config/login.json');

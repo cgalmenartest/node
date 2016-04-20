@@ -2,7 +2,6 @@ var Bootstrap = require('bootstrap');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var async = require('async');
-//var utilities = require('../../../../mixins/utilities');
 var MarkdownEditor = require('../../../../components/markdown_editor');
 var TaskModel = require('../../../../entities/tasks/task_model');
 var TaskFormTemplate = require('../templates/task_form_template.html');
