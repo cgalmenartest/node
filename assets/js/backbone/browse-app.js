@@ -6,10 +6,10 @@ var FooterView = require('./apps/footer/views/footer_view');
 var BrowseListController = require('./apps/browse/controllers/browse_list_controller');
 var ProfileShowController = require('./apps/profiles/show/controllers/profile_show_controller');
 var TaskModel = require('./entities/tasks/task_model');
-// var TaskCollection = require('../../entities/tasks/tasks_collection');
+var TaskCollection = require('./entities/tasks/tasks_collection');
 var TaskShowController = require('./apps/tasks/show/controllers/task_show_controller');
-// var TaskEditFormView = require('../tasks/edit/views/task_edit_form_view');
-// var TaskCreateFormView = require('../tasks/new/views/task_form_view');
+var TaskEditFormView = require('./apps/tasks/edit/views/task_edit_form_view');
+var TaskCreateFormView = require('./apps/tasks/new/views/task_form_view');
 // var AdminMainController = require('../admin/controllers/admin_main_controller');
 var HomeController = require('./apps/home/controllers/home_controller');
 

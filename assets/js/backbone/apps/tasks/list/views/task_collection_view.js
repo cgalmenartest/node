@@ -4,7 +4,9 @@ var Backbone = require('backbone');
 
 var async = require('async');
 var marked = require('marked');
-var TaskListTemplate = require('../templates/task_collection_view_template.html');
+
+var fs = require('fs');
+var TaskListTemplate = fs.readFileSync(`${__dirname}/../templates/task_collection_view_template.html`).toString();
 
 
 	var TasksCollectionView = Backbone.View.extend({

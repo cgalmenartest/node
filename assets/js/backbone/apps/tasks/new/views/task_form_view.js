@@ -4,9 +4,14 @@ var Backbone = require('backbone');
 var async = require('async');
 var MarkdownEditor = require('../../../../components/markdown_editor');
 var TaskModel = require('../../../../entities/tasks/task_model');
-var TaskFormTemplate = require('../templates/task_form_template.html');
 var TagFactory = require('../../../../components/tag_factory');
 var ShowMarkdownMixin = require('../../../../components/show_markdown_mixin');
+
+var fs = require('fs');
+var TaskFormTemplate = fs.readFileSync(`${__dirname}/../templates/task_form_template.html`).toString();
+
+var i18n = require('i18next');
+require('jquery-i18next');
 
 var TaskFormView = Backbone.View.extend({
 
