@@ -26,11 +26,11 @@ module.exports.policies = {
   *                                                                          *
   ***************************************************************************/
 
-  // '*': true,
+  // '*': true,  TODO: should default to false and whitelist APIs
 
   TaskController : {
     //'find': ['passport', 'authenticated'],
-    'findOne': ['authorizeTask'],
+    'findOne': ['authorizeTask']
     // 'findAllByProjectId': ['passport', 'authenticated', 'requireId', 'project'],
     // 'copy': ['passport', 'authenticated', 'requireUserId', 'addUserId'],
     // 'create': ['passport', 'authenticated', 'requireUserId', 'addUserId'],
@@ -41,15 +41,15 @@ module.exports.policies = {
 
   UserController : {
     '*': false,
-    'profile': ['passport', 'authenticated'],
-    // 'photo': ['passport', 'authenticated', 'requireId'],
-    // 'info': ['passport', 'authenticated', 'requireId'],
-    // 'update': ['passport', 'authenticated', 'requireUserId', 'requireId', 'user', 'protectAdmin'],
-    'username': ['passport', 'authenticated'],
-    'find': ['passport', 'authenticated', 'requireUserAuth'],
-    'all': ['passport', 'authenticated', 'requireUserAuth'],
-    'findOne': ['passport', 'authenticated', 'requireUserAuth'],
-    'activities': ['passport', 'authenticated'],
+    'profile': true,
+    'photo': ['requireId'],
+    'info': ['requireId'],
+    'update': ['requireUserAuth', 'requireId'], //, 'user', 'protectAdmin'],
+    'username': true,
+    'find': ['requireUserAuth'],
+    'all': ['requireUserAuth'],
+    'findOne': ['requireUserAuth'],
+    'activities': true
     // 'disable': ['passport', 'authenticated', 'requireId', 'requireUserId'],
     // 'enable': ['passport', 'authenticated', 'requireId', 'requireUserId', 'admin'],
     // 'resetPassword': ['passport', 'authenticated', 'requireUserId'],
