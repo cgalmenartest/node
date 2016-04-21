@@ -14,6 +14,9 @@ var TaskShowTemplate = fs.readFileSync(__dirname + '/../templates/task_show_item
 var AlertTemplate = fs.readFileSync(__dirname + '/../../../../components/alert_template.html').toString();
 var ShareTemplate = fs.readFileSync(__dirname + '/../templates/task_share_template.txt').toString();
 
+var i18n = require('i18next');
+var i18nextJquery = require('jquery-i18next');
+
 
 var TaskItemView = BaseView.extend({
 
@@ -35,15 +38,11 @@ var TaskItemView = BaseView.extend({
   },
 
   render: function(self) {
-
     var taskState = self.model.attributes.state;
 
     if (_.isString(taskState)) {
-
       taskState = taskState.charAt(0).toUpperCase() + taskState.slice(1);
-
     }
-
 
     self.data = {
 
@@ -62,7 +61,6 @@ var TaskItemView = BaseView.extend({
 
     self.data['madlibTags'] = organizeTags(self.data.tags);
     // convert description from markdown to html
-    console.log('----', self.data);
     self.data.model.descriptionHtml = marked(self.data.model.description || '');
     self.model.trigger('task:tag:data', self.tags, self.data['madlibTags']);
 
@@ -79,7 +77,7 @@ var TaskItemView = BaseView.extend({
     var compiledTemplate = _.template(TaskShowTemplate)(self.data);
 
     self.$el.html(compiledTemplate);
-    // TODO: self.$el.i18n();
+    self.$el.localize();
     $('time.timeago').timeago();
     self.updateTaskEmail();
     self.model.trigger('task:show:render:done');
