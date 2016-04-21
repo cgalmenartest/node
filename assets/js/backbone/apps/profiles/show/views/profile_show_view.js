@@ -1,19 +1,24 @@
+// vendor libraries
 var $ = require('jquery');
 var _ = require('underscore');
 var async = require('async');
 var Backbone = require('backbone');
-
-var UIConfig = require('../../../../config/ui.json');
 var jqIframe = require('blueimp-file-upload/js/jquery.iframe-transport');
 var jqFU = require('blueimp-file-upload/js/jquery.fileupload.js');
-var MarkdownEditor = require('../../../../components/markdown_editor');
+var i18n = require('i18next');
+var i18nextJquery = require('jquery-i18next');
 var marked = require('marked');
+var MarkdownEditor = require('../../../../components/markdown_editor');
+
+// internal dependencies
+var UIConfig = require('../../../../config/ui.json');
 var TagShowView = require('../../../tag/show/views/tag_show_view');
 var Login = require('../../../../config/login.json');
 var ModalComponent = require('../../../../components/modal');
 var PAView = require('./profile_activity_view');
 var TagFactory = require('../../../../components/tag_factory');
 
+// templates
 var fs = require('fs');
 var ProfileShowTemplate = fs.readFileSync(`${__dirname}/../templates/profile_show_template.html`).toString();
 var ProfileEditTemplate = fs.readFileSync(`${__dirname}/../templates/profile_edit_template.html`).toString();
@@ -181,7 +186,8 @@ var ProfileShowView = Backbone.View.extend({
           profileLocation: this.model.get('location') ?
             this.model.get('location').name : '',
           profileAgency: this.model.get('agency') ?
-            this.model.get('agency').name : ''
+            this.model.get('agency').name : '',
+          i18n: i18n
         },
         body = _.template(ShareTemplate)(data),
         link = 'mailto:?subject=' + encodeURIComponent(subject) +

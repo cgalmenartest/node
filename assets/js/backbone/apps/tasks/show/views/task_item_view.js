@@ -1,21 +1,23 @@
+// vendor libraries
 var $ = require('jquery');
-var fs = require('fs');
-var Bootstrap = require('bootstrap');
 var _ = require('underscore');
-var Backbone = require('backbone');
-
-var UIConfig = require('../../../../config/ui.json');
 var async = require('async');
+var Bootstrap = require('bootstrap');
+var Backbone = require('backbone');
+var i18n = require('i18next');
+var i18nextJquery = require('jquery-i18next');
 var marked = require('marked');
 var TimeAgo = require('../../../../../vendor/jquery.timeago');
-var BaseView = require('../../../../base/base_view');
 
+// internal dependencies
+var BaseView = require('../../../../base/base_view');
+var UIConfig = require('../../../../config/ui.json');
+
+// templates
+var fs = require('fs');
 var TaskShowTemplate = fs.readFileSync(__dirname + '/../templates/task_show_item_template.html').toString();
 var AlertTemplate = fs.readFileSync(__dirname + '/../../../../components/alert_template.html').toString();
 var ShareTemplate = fs.readFileSync(__dirname + '/../templates/task_share_template.txt').toString();
-
-var i18n = require('i18next');
-var i18nextJquery = require('jquery-i18next');
 
 
 var TaskItemView = BaseView.extend({

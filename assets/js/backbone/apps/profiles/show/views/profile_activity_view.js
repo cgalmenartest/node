@@ -1,9 +1,14 @@
+// vendor libraries
 var _ = require('underscore');
 var async = require('async');
 var Backbone = require('backbone');
+var i18n = require('i18next');
+var i18nextJquery = require('jquery-i18next');
 
+// internal dependencies
 var UIConfig = require('../../../../config/ui.json');
 
+// templates
 var fs = require('fs');
 var ActTemplate = fs.readFileSync(`${__dirname}/../templates/profile_activity_template.html`).toString();
 
