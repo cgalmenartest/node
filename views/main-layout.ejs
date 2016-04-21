@@ -42,7 +42,7 @@
     <!--STYLES END-->
   </head>
 
-  <body>
+  <body class="site">
     <script type="text/javascript">
       // this will only return true for IE <= 8.
       if (window.attachEvent && !window.addEventListener) {
@@ -50,22 +50,19 @@
       }
     </script>
 
-    <div class="navigation">
-    </div>
-
-    <% if (alert) { %>
-    <div class="container">
-      <div class="alert alert-danger server-alert">
-        <%- alert.message %>
+    <div class="site-wrap">
+      <div class="navigation">
       </div>
+      <% if (alert) { %>
+      <div class="container">
+        <div class="alert alert-danger server-alert">
+          <%- alert.message %>
+        </div>
+      </div>
+      <% } %>
+      <%- body %>
     </div>
-    <% } %>
-
-    <%- body %>
-
-    <footer id="footer">
-    </footer>
-
+    <footer class="bg-white p1" id="footer"></footer>
 
     <!--
         Client-side Templates
