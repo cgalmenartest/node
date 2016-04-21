@@ -1,5 +1,5 @@
 /**
- * File
+ * Upload
  *
  * @module      :: Model
  * @description :: Store files and their metadata
@@ -7,11 +7,11 @@
  */
 
 module.exports = {
-
+  tableName: 'file',
   attributes: {
     // ID of the user that created the file
     userId: 'INTEGER',
-    // File name
+    // Upload name
     name: 'STRING',
     // Private file only accessible by the user
     isPrivate: {

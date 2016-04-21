@@ -57,7 +57,7 @@ var AttachmentShowView = Backbone.View.extend({
 
 
     $('#attachment-fileupload').fileupload({
-      url: "/api/file/create",
+      url: "/api/upload/create",
       dataType: 'text',
       acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
       add: function (e, data) {

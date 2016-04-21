@@ -1,5 +1,5 @@
 /**
- * FileController
+ * UploadController
  *
  * @module		:: Controller
  * @description	:: Contains logic for handling requests.
@@ -12,13 +12,13 @@ var async = require('async');
 module.exports = {
   find: function(req, res) {
     // Get requests return the file metadata, post requests store files
-    File.findOne({ where: { 'id': req.params.id }
+    Upload.findOne({ where: { 'id': req.params.id }
                    //groupBy: [ 'id', 'userId', 'name', 'isPrivate', 'mimeType', 'size']
                  }, function (err, file) {
       // XXX TODO: This is a hack until the following issue is resolved:
       // https://github.com/balderdashy/waterline/issues/73
       delete file['data'];
-      sails.log.debug('File:', file);
+      sails.log.debug('Upload:', file);
       // Make sure the user has access to the file
       res.send(file);
     });
@@ -28,8 +28,8 @@ module.exports = {
   get: function(req, res) {
     if (!req.params.id) { return res.send(400, {message:'No file id specified.'}); }
     if (_.isFinite(req.params.id)) {
-      // a File ID has been provided
-      File.findOneById(req.params.id, function(err, f) {
+      // a Upload ID has been provided
+      Upload.findOneById(req.params.id, function(err, f) {
         if (err) { return res.send(400, {message:'Error while finding file.'}); }
         if (!f || !f.fd) { return res.send(400, {message:'Error while finding file.'}); }
         fileStore.get(f.fd, res);
@@ -84,8 +84,8 @@ module.exports = {
               fileStore.store(f.fd, buffer, function(err) {
                 sails.log.verbose('fileStore.store (err)', err)
                 if (err) { return done({ message:'Error storing file.', error: err }); }
-                File.create(f, function(err, newFile) {
-                  sails.log.verbose('File.create (err)', err)
+                Upload.create(f, function(err, newFile) {
+                  sails.log.verbose('Upload.create (err)', err)
                   if (err || !newFile) { return done({ message:'Error storing file.', error: err }); }
                   delete newFile['data'];
                   results.push(newFile);
@@ -130,7 +130,7 @@ module.exports = {
               f.size = buffer.length;
               fileStore.store(f.fd, buffer, function(err) {
                 if (err) { return done({ message:'Error storing file.', error: err }); }
-                File.create(f, function(err, newFile) {
+                Upload.create(f, function(err, newFile) {
                   if (err || !newFile) { return done({ message:'Error storing file.', error: err }); }
                   delete newFile['data'];
                   results.push(newFile);
@@ -143,7 +143,7 @@ module.exports = {
           fileStore.store(f.fd, f.data, function(err) {
             if (err) { return done({ message:'Error storing file.', error: err }); }
             delete f.data;
-            File.create(f, function(err, newFile) {
+            Upload.create(f, function(err, newFile) {
               if (err || !newFile) { return done({ message:'Error storing file.', error: err }); }
               delete newFile['data'];
               results.push(newFile);

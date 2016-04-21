@@ -135,7 +135,7 @@ var ProfileShowView = Backbone.View.extend({
     var self = this;
 
     $('#fileupload').fileupload({
-        url: "/api/file/create",
+        url: "/api/upload/create",
         dataType: 'text',
         acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
         formData: { 'type': 'image_square' },
