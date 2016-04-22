@@ -56,33 +56,12 @@ $lighten-4: rgba(255,255,255,.5) !default;
 $border-width: 1px !default;
 $border-radius: 3px !default;
 $border-color: $darken-2 !default;
-$button-small-padding-y: .25rem !default;
-$button-small-padding-x: .5rem !default;
-$button-big-padding-y: 1rem !default;
-$button-big-padding-x: 1.25rem !default;
-$button-narrow-padding-x: $space-1 !default;
 
 // Custom Media Query Variables
 
 $breakpoint-sm: '(min-width: 40em)' !default;
 $breakpoint-md: '(min-width: 52em)' !default;
 $breakpoint-lg: '(min-width: 64em)' !default;
-
-/* Basscss UI Utility Button Sizes */
-
-.btn-small {
-  padding: $button-small-padding-y $button-small-padding-x;
-}
-
-.btn-big {
-  padding: $button-big-padding-y $button-big-padding-x;
-}
-
-.btn-narrow {
-  padding-left: $button-narrow-padding-x;
-  padding-right: $button-narrow-padding-x;
-}
-
 
 /* Basscss Defaults */
 

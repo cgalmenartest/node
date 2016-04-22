@@ -21,12 +21,14 @@
 
 @import 'app/elements/fonts';
 @import 'app/elements/base';
+@import 'app/elements/misc';
 
 @import 'app/misc/overrides';
 @import 'app/components/components';
 @import 'app/pages/pages';
 @import 'app/theme/theme';
 
+
 html {
-    font-size: 16px;
+    font-size: 15px;
 }

@@ -53,9 +53,7 @@ var TaskShowController = BaseView.extend({
     this.initializeTaskItemView();
     this.initializeChildren();
 
-    //load user settings so they are available as needed
-    this.getUserSettings(window.cache.currentUser);
-    this.tagFactory = new TagFactory;
+    this.tagFactory = new TagFactory();
   },
 
   initializeEdit: function () {
@@ -194,24 +192,6 @@ var TaskShowController = BaseView.extend({
   view: function (e) {
     if (e.preventDefault) e.preventDefault();
     Backbone.history.navigate('tasks/' + this.model.id, { trigger: true });
-  },
-
-  getUserSettings: function (userId) {
-    //does this belong somewhere else?
-    if ( _.isNull(userId) ){ return null; }
-    $.ajax({
-      url: '/api/usersetting/'+userId.id,
-      type: 'GET',
-      dataType: 'json'
-    })
-    .success(function(data){
-      _.each(data,function(setting){
-        //save active settings to the current user object
-        if ( setting.isActive ){
-          window.cache.currentUser[setting.key]=setting;
-        }
-      });
-    });
   },
 
   deleteUserSettingByKey: function(settingKey) {

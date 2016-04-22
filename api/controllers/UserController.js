@@ -38,7 +38,7 @@ module.exports = {
   info: function (req, res) {
     var reqId = null;
     if (req.user) {
-      reqId = req.user[0].id;
+      reqId = req.user.id;
     }
     sails.services.utils.user.getUser(req.route.params.id, reqId, function (err, user) {
       if (err) { return res.send(400, { message: err }); }
