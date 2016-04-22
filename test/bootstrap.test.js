@@ -39,8 +39,8 @@ after(function(done) {
 });
 
 beforeEach(function(done) {
-  // Drops database between each test.  This works because we use
-  // the memory database
+  // Drops database between each test. Also causes all models to be reloaded.
+  // This works because we use the memory database
   sails.once('hook:orm:reloaded', done);
   sails.emit('hook:orm:reload');
 });

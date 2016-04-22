@@ -62,7 +62,6 @@ module.exports = {
     @param {sting} the triggering model's type
   */
   trigger: function (notification) {
-
     sails.log.debug( notification );
 
     // Get notification script
@@ -151,6 +150,6 @@ module.exports = {
   },
 
   // Mailer transport
-  _transport: nodemailer.createTransport(protocol, transportConfig)
+  _transport: nodemailer.createTransport(transportConfig)
 
 };

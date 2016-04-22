@@ -131,7 +131,6 @@ module.exports = {
       done();
     });
   },
-  /** TODO: tags & badges
   afterUpdate: function (task, done) {
     var self = this;
 
@@ -141,7 +140,6 @@ module.exports = {
       done();
     });
   },
-**/
   beforeCreate: function(values, done) {
     sails.log.verbose("Task.beforeCreate")
     // If default state is not draft, we need to set dates

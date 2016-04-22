@@ -18,11 +18,34 @@ module.exports = {
     title: 'STRING',   // Professional Title
     bio: 'STRING',     // Biography
 
+    // Store the number of completedTasks
+    completedTasks: {
+      type: 'INTEGER',
+      defaultsTo: 0
+    },
+
     // Tag association
     tags: {
       collection: 'tagEntity',
       via: 'users',
       dominant: true
+    },
+
+    /**
+     * Increment the task counter by one and
+     * check to see if a badge should be awarded
+     *
+     * @param { Task } task
+     * @param { Object } opts
+     */
+    taskCompleted: function ( task, opts ) {
+      var user = this;
+      opts = opts || {};
+      user.completedTasks += 1;
+      this.save( function ( err, u ) {
+        if ( err ) { return sails.log.error( err ); }
+        Badge.awardForTaskCompletion( task, user, opts );
+      } );
     },
 
     toJSON: function() {

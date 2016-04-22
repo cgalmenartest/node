@@ -8,6 +8,7 @@ module.exports = {
     'name': 'Maria Sanchez',
     'username': 'maria@openopps.org',
     'password': 'TestTest123#',
+    'completedTasks': 0,
     'bio': 'JavaScript expert with an interest in public policy.'
   },
 }

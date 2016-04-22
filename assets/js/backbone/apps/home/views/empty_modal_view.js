@@ -2,7 +2,6 @@ var Bootstrap = require('bootstrap');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var async = require('async');
-// TODO: var utilities = require('../../../mixins/utilities');
 // TODO: var ModalPagesTemplate = require('../../../components/modal_pages_template.html');
 var ModalPagesTemplate = "";
 var ModalPages = require('../../../components/modal_pages');
