@@ -12,12 +12,10 @@
           <h1><%- model.title %></h1>
           <span class="task__label--<%- state.value %>"><%- state.humanReadable %></span>
           <% if (madlibTags['skill']) { %>
-          <div class="skill">
-            <ul class="tags">
-              <% _.each(madlibTags['skill'], function (t) { %>
-                <li><a href="/tasks?search=<%= t.name %>"><%= t.name %></a></li>
-              <% }) %>
-            </ul>
+          <div class="py1">
+            <% _.each(madlibTags['skill'], function (t) { %>
+              <a class="px2 bg-yellow black rounded" href="/tasks?search=<%= t.name %>"><%= t.name %></a>
+            <% }) %>
           </div>
           <% } %>
           <div class="py2">
@@ -26,7 +24,7 @@
           </div>
         </div>
         <div class="col col-12 md-col-2 px2">
-          <div data-userid="<%- model.userId %>">
+          <div class="center" data-userid="<%- model.userId %>">
             <img class="circle" width="50" src="/api/user/photo/<%- model.userId %>" alt="<%- model.owner.name %>"/>
             <h4 class="mt1 mb0">Requestor</h4>
             <div class="mb2"><%- model.owner.name %></div>

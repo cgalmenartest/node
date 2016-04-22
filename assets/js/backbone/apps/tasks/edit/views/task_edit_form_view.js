@@ -104,29 +104,7 @@ var TaskEditFormView = Backbone.View.extend({
       textAreaId       : 'task-description',
     });
 
-    // Set up time pickers
-    this.$( '#js-edit-date-submitted' ).datetimepicker( {
-      defaultDate: this.data.data.submittedAt,
-    } );
-
-    $('#publishedAt').datetimepicker({
-      defaultDate: this.data.data.publishedAt,
-    });
-
-    if (this.data.data.assignedAt) {
-      $('#assignedAt').datetimepicker({
-        defaultDate: this.data.data.assignedAt,
-      });
-    }
-
-    if (this.data.data.completedAt) {
-      $('#completedAt').datetimepicker({
-        defaultDate: this.data.data.completedAt,
-      });
-    }
-
     this.$( '.js-success-message' ).hide();
-
   },
 
   initializeSelect2: function () {

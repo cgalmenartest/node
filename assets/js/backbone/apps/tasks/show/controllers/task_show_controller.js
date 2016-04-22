@@ -3,6 +3,8 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var Popovers = require('../../../../mixins/popovers');
 
+var i18n = require('i18next');
+var i18nextJquery = require('jquery-i18next');
 
 var BaseView = require('../../../../base/base_view');
 var CommentListController = require('../../../comments/list/controllers/comment_list_controller');

@@ -65,7 +65,7 @@ module.exports = {
   },
   authorized: function(taskId, done) {
     // TODO: check user and task state
-    Task.findOne({ id: taskId }).exec(function(err, task) {
+    Task.findOne({ id: taskId }).populate('tags').exec(function(err, task) {
       done(err, task);
     });
   },
@@ -91,7 +91,8 @@ module.exports = {
   beforeUpdate: function(values, done) {
     Task.findOne({ id: values.id }).exec(function(err, task) {
       if (err) {
-        return done(err); }
+        return done(err);
+      }
 
       // If task state hasn't changed, continue
       if (task && task.state === values.state) return done();
@@ -131,10 +132,10 @@ module.exports = {
       done();
     });
   },
-  afterUpdate: function (task, done) {
+  afterUpdate: function(task, done) {
     var self = this;
 
-    Task.find({ userId: task.userId }).populate('tags').exec(function (err, tasks) {
+    Task.find({ userId: task.userId }).populate('tags').exec(function(err, tasks) {
       if (err) return done(err);
       Badge.awardForTaskPublish(tasks, task.userId);
       done();
@@ -142,7 +143,7 @@ module.exports = {
   },
   beforeCreate: function(values, done) {
     sails.log.verbose("Task.beforeCreate")
-    // If default state is not draft, we need to set dates
+      // If default state is not draft, we need to set dates
     this.beforeUpdate(values, done);
   },
 

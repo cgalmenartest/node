@@ -4,6 +4,9 @@ var _ = require('underscore');
 var Bootstrap = require('bootstrap');
 var Backbone = require('backbone');
 
+var i18n = require('i18next');
+var i18nextJquery = require('jquery-i18next');
+
 var ModalTemplate = fs.readFileSync(
   __dirname + '/modal_alert_template.html'
 ).toString();
@@ -21,7 +24,7 @@ var ModalAlert = Backbone.View.extend({
   render: function() {
     var template = _.template(ModalTemplate)(this.options);
     this.$el.html(template);
-    this.$el.i18n();
+    this.$el.localize();
     $(this.options.modalDiv).modal('show');
     return this;
   },

@@ -166,18 +166,18 @@
 
       <div class="progress--date">
         <label for="submittedAt">Submitted date</label>
-        <input id="js-edit-date-submitted" class="form-control timepicker" type="text" name="submittedAt">
+        <input id="js-edit-date-submitted" class="form-control timepicker" type="date" name="submittedAt">
       </div>
 
       <div id="div-publishedAt">
         <label for="publishedAt">Published date</label>
-        <input id="publishedAt" name="publishedAt" class="form-control timepicker" type="text">
+        <input id="publishedAt" name="publishedAt" class="form-control timepicker" type="date">
       </div>
 
       <div id="div-assignedAt">
         <label for="assignedAt">Assigned date</label>
         <% if (data.assignedAt) { %>
-          <input id="assignedAt" name="assignedAt" class="form-control timepicker" type="text">
+          <input id="assignedAt" name="assignedAt" class="form-control timepicker" type="date">
         <% } else { %>
           Not yet assigned.
         <% } %>
@@ -186,7 +186,7 @@
       <div id="div-completedAt">
         <label for="completedAt">Completed date</label>
         <% if (data.completedAt) { %>
-          <input id="completedAt" name="completedAt" class="form-control timepicker" type="text">
+          <input id="completedAt" name="completedAt" class="form-control timepicker" type="date">
         <% } else { %>
           Not yet completed.
         <% } %>

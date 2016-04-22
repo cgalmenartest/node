@@ -11,7 +11,7 @@ var i18n = require('i18next');
 
 module.exports = {
   find: function (req, res) {
-    sails.log.verbose('Task.find', req.task)
+    sails.log.verbose('Task.find', req.task);
     var user = req.user,
         where = {};
 
@@ -20,7 +20,7 @@ module.exports = {
         if (err) { return res.send(400, { message: i18n.t('taskAPI.errMsg.likes', 'Error looking up task likes.') }); }
         taskUtil.getVolunteers(req.task, function (err) {
           if (err) { return res.send(400, { message: i18n.t('taskAPI.errMsg.volunteers','Error looking up task volunteers.') }); }
-          sails.log.verbose('sending task:', req.task)
+          sails.log.verbose('sending task:', req.task);
           return res.send(req.task);
         });
       });
