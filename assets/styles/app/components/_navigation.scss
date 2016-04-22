@@ -7,10 +7,6 @@
  * make it so the space below navbar is actually space above container
  * so we can make the container flush with navbar on some pages */
 
-.navbar {
-  margin-bottom: 0px;
-}
-
 #container {
   margin-top: 20px;
 }
@@ -20,8 +16,6 @@
 
 .navbar .nav .navbar-title {
   font-size: 18px;
-  height: 40px;
-  padding-top: 10px;
 }
 
 .navbar .nav .navbar-divider {
@@ -45,15 +39,10 @@
 }
 
 .navbar-people {
-  height: 40px;
-  width: 40px;
-  max-height: 40px;
-  border-radius: 25px;
-}
-
-.navbar-1line {
-  margin-top: 10px;
-  margin-bottom: 5px;
+  height: 35px;
+  width: 35px;
+  max-height: 35px;
+  border-radius: 50%;
 }
 
 .navbar-side {
@@ -124,4 +113,29 @@ ul.nav-search > li {
 
 .admin .navbar-toggle {
   margin-top: 8px;
+}
+
+// new stuff
+.navbar {
+  margin-bottom: 0;
+  background-color: #fff;
+  min-height: 80px;
+  border: 0;
+}
+
+.navbar-brand {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  height: 80px;
+}
+
+@media (min-width: 768px) {
+  .navbar-nav > li > a {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+}
+
+.navbar-default .navbar-nav > li > a {
+  line-height: 40px;
 }

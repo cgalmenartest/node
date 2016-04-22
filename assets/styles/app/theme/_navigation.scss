@@ -1,27 +1,4 @@
-.navigation .navbar-brand {
-  background-image: url(/images/logo.png);
-  background-repeat: no-repeat;
-  background-position: left center;
-  width: 256px;
-  height: 60px;
-  margin-top: 6px;
-}
-
-@media only screen and (-moz-min-device-pixel-ratio: 1.5),
-only screen and (-o-min-device-pixel-ratio: 3/2),
-only screen and (-webkit-min-device-pixel-ratio: 1.5),
-only screen and (min-device-pixel-ratio: 1.5),
-only screen and (min-resolution: 144dppx) {
-  .navbar-brand {
-    background-image: url(/images/logo@2x.png);
-  }
-}
-
-.navbar {
-  background-color: #fff;
-  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 5px rgba(0, 0, 0, 0.075);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 5px rgba(0, 0, 0, 0.075);
-}
+// old stuff
 
 .navbar-default .navbar-brand {
   color: $color-c1;
