@@ -12,19 +12,8 @@
   font-size: 48px;
 }
 
-.box-border-right {
-  border-right: 2px solid #e5e5e5;
-}
-
-.box-border-top {
-  border-top: 2px solid #e5e5e5;
-}
-
 .box-banner {
   background-color: #0e5487;
-  line-height: 2.1em;
-  padding-top: 1.3em;
-  padding-bottom: 1.3em;
 }
 
 .box-banner h1 {
@@ -105,11 +94,6 @@
   .activity-feed--text {
     width: 80%;
   }
-}
-
-.users-feed {
-  margin-bottom: 20px;
-  margin-top: 10px;
 }
 
 .network-stats--heading {
