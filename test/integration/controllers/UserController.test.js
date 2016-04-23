@@ -15,35 +15,48 @@ describe('UserController', function() {
     })
   });
 
-  describe('when logged in /api/user', function() {
-    var agent;
-    beforeEach(function(done) {
-      console.log('beforeEach')
-      agent = request.agent(sails.hooks.http.app);
-      agent.post('/api/auth/local')
-        .send({
-          identifier: newUserAttrs.username,
-          password: newUserAttrs.password,
-          json: true
-        })
-        .expect(200)
-        .end(done)
+  describe('/api/user', function() {
+    describe('when not logged in', function() {
+      it('should be forbidden', function (done) {
+        request(sails.hooks.http.app)
+          .get('/api/user')
+          .expect(403)
+          .expect(resAssert.isEmptyObject)
+          .end(done)
+      });
     });
-    it('should return current user info', function (done) {
-      agent.get('/api/user')
-        .expect(200)
-        .expect(function(res) {
-          assert.equal(res.body.username, newUserAttrs.username);
-          assert.equal(res.body.name, newUserAttrs.name);
-          assert.equal(res.body.id, 1);
-          assert.isUndefined(res.body['password']);
-        })
-        .end(done)
+
+    describe('when logged in', function() {
+
+      var agent;
+      beforeEach(function(done) {
+        console.log('beforeEach')
+        agent = request.agent(sails.hooks.http.app);
+        agent.post('/api/auth/local')
+          .send({
+            identifier: newUserAttrs.username,
+            password: newUserAttrs.password,
+            json: true
+          })
+          .expect(200)
+          .end(done)
+      });
+      it('should return current user info', function (done) {
+        agent.get('/api/user')
+          .expect(200)
+          .expect(function(res) {
+            assert.equal(res.body.username, newUserAttrs.username);
+            assert.equal(res.body.name, newUserAttrs.name);
+            assert.equal(res.body.id, 1);
+            assert.isUndefined(res.body['password']);
+          })
+          .end(done)
+      });
     });
   });
 
 
-  describe('username', function() {
+  describe('/api/user/username', function() {
 
     describe('invalid new user ID:', function() {
       it('existing user', function (done) {

@@ -9,5 +9,9 @@ module.exports = {
   },
   isFalse: function(res) {
     assert.equal(res.body, false);
+  },
+  isEmptyObject: function(res) {
+    assert.deepEqual(res.body, {});
   }
+
 }
