@@ -10,8 +10,7 @@ var UIConfig = require('../../../../config/ui.json');
 
 // templates
 var fs = require('fs');
-var ActTemplate = fs.readFileSync(`${__dirname}/../templates/profile_activity_template.html`).toString();
-
+var ProfileActivityTemplate = fs.readFileSync(`${__dirname}/../templates/profile_activity_template.html`).toString();
 
 var ProfileActivityView = Backbone.View.extend({
 
@@ -50,7 +49,7 @@ var ProfileActivityView = Backbone.View.extend({
         data.count[this.options.data[i].state]++;
       }
     }
-    var template = _.template(ActTemplate)(data);
+    var template = _.template(ProfileActivityTemplate)(data);
     this.$el.html(template);
     this.$el.localize();
 

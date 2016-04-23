@@ -15,7 +15,7 @@ var UIConfig = require('../../../../config/ui.json');
 var TagShowView = require('../../../tag/show/views/tag_show_view');
 var Login = require('../../../../config/login.json');
 var ModalComponent = require('../../../../components/modal');
-var PAView = require('./profile_activity_view');
+var ProfileActivityView = require('./profile_activity_view');
 var TagFactory = require('../../../../components/tag_factory');
 
 // templates
@@ -69,9 +69,7 @@ var ProfileShowView = Backbone.View.extend({
             replace: true,
           }
         );
-
       }
-
     }
 
     if (this.data.saved) {
@@ -116,9 +114,8 @@ var ProfileShowView = Backbone.View.extend({
     this.initializeFileUpload();
     this.initializeForm();
     this.initializeSelect2();
-    this.initializeLikes();
     this.initializeTags();
-    this.initializePAView();
+    this.initializeProfileActivityView();
     this.initializeTextArea();
     this.updatePhoto();
     this.updateProfileEmail();
@@ -212,12 +209,12 @@ var ProfileShowView = Backbone.View.extend({
     this.tagView.render();
   },
 
-  initializePAView: function () {
+  initializeProfileActivityView: function () {
     if (this.projectView) { this.projectView.cleanup(); }
     if (this.taskView) { this.taskView.cleanup(); }
     if (this.volView) { this.volView.cleanup(); }
     $.ajax('/api/user/activities/' + this.model.attributes.id).done(function (data) {
-      this.projectView = new PAView({
+      this.projectView = new ProfileActivityView({
         model: this.model,
         el: '.project-activity-wrapper',
         target: 'project',
@@ -225,7 +222,7 @@ var ProfileShowView = Backbone.View.extend({
         data: data.projects
       });
       this.projectView.render();
-      this.taskView = new PAView({
+      this.taskView = new ProfileActivityView({
         model: this.model,
         el: '.task-createdactivity-wrapper',
         target: 'task',
@@ -233,7 +230,7 @@ var ProfileShowView = Backbone.View.extend({
         data: data.tasks
       });
       this.taskView.render();
-      this.volView = new PAView({
+      this.volView = new ProfileActivityView({
         model: this.model,
         el: '.task-activity-wrapper',
         target: 'task',
@@ -292,19 +289,6 @@ var ProfileShowView = Backbone.View.extend({
       $("#profile-save, #submit").removeClass("btn-success");
       $("#profile-save, #submit").addClass("btn-c2");
     });
-  },
-
-  initializeLikes: function() {
-    $("#like-number").text(this.model.attributes.likeCount);
-    if (parseInt(this.model.attributes.likeCount) === 1) {
-      $("#like-text").text($("#like-text").data('singular'));
-    } else {
-      $("#like-text").text($("#like-text").data('plural'));
-    }
-    if (this.model.attributes.like) {
-      $("#like-button-icon").removeClass('fa fa-star-o');
-      $("#like-button-icon").addClass('fa fa-star');
-    }
   },
 
   initializeSelect2: function () {
