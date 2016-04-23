@@ -47,6 +47,29 @@ module.exports = {
       }
       return false;
     },
+
+    // if user is given and is the owner, sets isOwner
+    // returns task if public or user has special access
+    // returns null if task should not be accessed based on given user
+    authorized: function(user) {
+        task = this;
+        task.isOwner = false;
+        // check if current user is owner
+        if (user && (user.id == task.userId)) {
+          task.isOwner = true;
+          return task;   // owners always have access
+        }
+        // admins always have access
+        if (user && user.isAdmin) return task;
+
+        // all states except draft and submitted are public
+        if ((task.state !== 'draft') && (task.state !== 'submitted')) {
+          return task;
+        }
+        // Default denied: return no task
+        return null;
+    },
+
     // Called when a task is marked as complete, and increments
     // each participant's completedTasks counter
     volunteersCompleted: function() {
@@ -63,10 +86,17 @@ module.exports = {
       });
     },
   },
-  authorized: function(taskId, done) {
-    // TODO: check user and task state
-    Task.findOne({ id: taskId }).populate('tags').exec(function(err, task) {
-      done(err, task);
+
+  //** CLASS METHODS **
+  // finds task based on taskId
+  // sets isOwner if user is given and is the owner
+  // only returns task if public or user has special access
+  authorized: function(taskId, user, done) {
+    Task.findOneById(taskId).populate('tags').exec(function(err, task) {
+      if (err) { return done(err) }
+      if (!task) { return done('Error finding task.'); }
+      result = task.authorized(user);
+      return done(null, result);
     });
   },
 
@@ -90,9 +120,7 @@ module.exports = {
 
   beforeUpdate: function(values, done) {
     Task.findOne({ id: values.id }).exec(function(err, task) {
-      if (err) {
-        return done(err);
-      }
+      if (err) return done(err);
 
       // If task state hasn't changed, continue
       if (task && task.state === values.state) return done();

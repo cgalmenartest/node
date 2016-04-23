@@ -16,21 +16,23 @@ module.exports = {
 	 *         false if the username is available
 	 */
 	username: function (req, res) {
+		sails.log.verbose('username', req.params)
 		// don't allow empty usernames
-		if (!req.route.params.id) {
+		if (!req.params.id) {
 			return res.send(true);
 		}
 
 		// only allow email usernames, so check if the email is valid
-		if (validator.isEmail(req.route.params.id) !== true) {
+		if (validator.isEmail(req.params.id) !== true) {
 			return res.send(true);
 		}
 		// check if a user already has this email
-		User.findOneByUsername(req.route.params.id.toLowerCase(), function (err, user) {
+		User.findOneByUsername(req.params.id.toLowerCase(), function (err, user) {
+			if (err || !user) sails.log.error('User.findOneByUsername failed', req.params, err, user);
 			if (err) { return res.send(400, { message:'Error looking up username.' }); }
 			if (!user) { return res.send(false); }
 			// TODO: why is this checking if user is logged in?
-			if (req.user && req.user[0].id == user.id) { return res.send(false); }
+			if (req.user && req.user.id == user.id) { return res.send(false); }
 			return res.send(true);
 		});
 	},

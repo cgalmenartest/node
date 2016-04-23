@@ -4,24 +4,15 @@
  */
 module.exports = function authorizeTask(req, res, next) {
   sails.log.verbose("authorizeTask", req.params)
-  if (req.params['id']) {
-    // TODO: authorize task based on user
-    // var userId = null;
-    // if (req.user) {
-    //   userId = req.user.id;
-    // }
 
-    Task.authorized(req.params.id, function(err, task) {
-      if (err) {
-        return res.send({ message: err });
-      }
-      if (!task) {
-        return res.send(403, { message: 'Not authorized.' });
-      }
-      sails.log.verbose("authorized:", task)
+  if (req.params['id']) {
+    Task.authorized(req.params.id, req.user, function(err, task) {
+      if (err) return res.send({ message: err });
+      if (!task) return res.send(403, { message: 'Not authorized.' });
       req.task = task;
       req.taskId = task.id;
       req.isOwner = task.isOwner;
+      sails.log.verbose("authorized:", task)
       next();
     });
     // no :id is specified, so continue
