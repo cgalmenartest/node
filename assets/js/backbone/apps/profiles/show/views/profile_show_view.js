@@ -220,33 +220,26 @@ var ProfileShowView = Backbone.View.extend({
   },
 
   initializeProfileActivityView: function () {
-    if (this.projectView) { this.projectView.cleanup(); }
     if (this.taskView) { this.taskView.cleanup(); }
     if (this.volView) { this.volView.cleanup(); }
     $.ajax('/api/user/activities/' + this.model.attributes.id).done(function (data) {
-      this.projectView = new ProfileActivityView({
-        model: this.model,
-        el: '.project-activity-wrapper',
-        target: 'project',
-        handle: 'project',
-        data: data.projects
-      });
-      this.projectView.render();
       this.taskView = new ProfileActivityView({
         model: this.model,
         el: '.task-createdactivity-wrapper',
         target: 'task',
-        handle: 'task',
-        data: data.tasks
+        handle: 'task',  // used in css id
+        data: data.tasks.created
       });
+      console.log('this.taskView.render')
       this.taskView.render();
       this.volView = new ProfileActivityView({
         model: this.model,
         el: '.task-activity-wrapper',
         target: 'task',
-        handle: 'volTask',
-        data: data.volTasks
+        handle: 'volTask',  // used in css id
+        data: data.tasks.volunteered
       });
+      console.log('this.volView.render')
       this.volView.render();
 
     });
@@ -452,7 +445,6 @@ var ProfileShowView = Backbone.View.extend({
   cleanup: function () {
     if (this.md) { this.md.cleanup(); }
     if (this.tagView) { this.tagView.cleanup(); }
-    if (this.projectView) { this.projectView.cleanup(); }
     if (this.taskView) { this.taskView.cleanup(); }
     if (this.volView) { this.volView.cleanup(); }
     removeView(this);

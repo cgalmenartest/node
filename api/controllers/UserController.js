@@ -137,18 +137,11 @@ module.exports = {
   },
 
   activities: function (req, res) {
-    var reqId = null;
-    var userId = (req.user || {}).id;
-    if (req.user) {
-      reqId = req.user.id;
-    }
-    if (req.params.id) {
-      reqId = req.params.id;
-    }
-    var projects = [];
-    var tasks = [];
-    var volTasks = [];
-    // Get projects owned by this user
+		sails.log.verbose('UserController.activities')
+		var userId = (req.user || req.params).id;
+		if (!userId) res.err("Cant't get activies: no user specified")
+    var result = {tasks: {created:[], volunteered:[]}};
+		// TODO: this should be refactored into User model
     async.parallel([
       // find tasks that the user has volunteered for
       function(callback) {
@@ -158,29 +151,33 @@ module.exports = {
           .exec(function(err, taskEntry) {
             taskUtils.getMetadata(taskEntry, userId, function(err, newTask) {
               if (!err) {
-                volTasks.push(newTask);
+                tasks.created.push(newTask);
               }
               return done(err);
             });
           });
         };
         Volunteer.find()
-        .where({ userId: reqId })
-        .exec(function (err, volList) {
+        .where({ userId: userId })
+        .exec(function(err, volList) {
           if (err) { return res.send(400, { message: 'Error looking up volunteered tasks.'}); }
           async.each(volList, getTask, function(err) {
             if (err) { return res.send(400, { message: 'Error looking up volunteered tasks.'}); }
             callback(err);
           });
         });
-      }],
+      },
+			function(callback) {
+				Task.find({userId: userId})
+				.exec(function(err, createdTasks) {
+					result.tasks.created = createdTasks;
+					callback(err);
+				})
+			}
+			],
       function(err) {
         if (err) { return res.send(400, { message: 'Error looking up tasks or projects.'}); }
-        return res.send({
-          projects: projects,
-          tasks: tasks,
-          volTasks: volTasks
-        });
+        return res.send(result);
       });
   },
 
