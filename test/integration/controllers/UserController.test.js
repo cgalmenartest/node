@@ -1,5 +1,6 @@
 var assert = require('chai').assert;
 var request = require('supertest');
+var resAssert = require('./resAssert');
 
 describe('UserController', function() {
   var users;  // user fixtures loaded fresh for each test
@@ -13,13 +14,6 @@ describe('UserController', function() {
       done();
     })
   });
-
-  var isTrueResult = function(res) {
-    assert.equal(res.body, true);
-  }
-  var isFalseResult = function(res) {
-    assert.equal(res.body, false);
-  }
 
   describe('when logged in /api/user', function() {
     var agent;
@@ -56,7 +50,7 @@ describe('UserController', function() {
         request(sails.hooks.http.app)
           .post('/api/user/username/'+newUserAttrs.username)
           .expect(200)
-          .expect(isTrueResult)
+          .expect(resAssert.isTrue)
           .end(done)
       });
 
@@ -65,21 +59,21 @@ describe('UserController', function() {
         request(sails.hooks.http.app)
           .post('/api/user/username/'+uppercaseUsername)
           .expect(200)
-          .expect(isTrueResult)
+          .expect(resAssert.isTrue)
           .end(done)
       });
       it('empty string should', function (done) {
         request(sails.hooks.http.app)
           .post('/api/user/username/')
           .expect(200)
-          .expect(isTrueResult)
+          .expect(resAssert.isTrue)
           .end(done)
       });
       it('non-email string should return false', function (done) {
         request(sails.hooks.http.app)
           .post('/api/user/username/foo')
           .expect(200)
-          .expect(isTrueResult)
+          .expect(resAssert.isTrue)
           .end(done)
       });
     });
@@ -88,7 +82,7 @@ describe('UserController', function() {
       request(sails.hooks.http.app)
         .post('/api/user/username/foo@bar.gov')
         .expect(200)
-        .expect(isFalseResult)
+        .expect(resAssert.isFalse)
         .end(done)
     });
 
