@@ -23,7 +23,6 @@ Browse.ListController = BaseController.extend({
   },
 
   initialize: function(options) {
-    console.log("Browse.ListController initialize");
     // this.options = options;
     this.target = options.target;
     this.queryParams = options.queryParams || {};

@@ -11,8 +11,6 @@ var fs = require('fs');
 var HomeTemplate = fs.readFileSync(__dirname + '/../templates/home_view_template.html').toString();
 // TODO: var EmptyModalView = require('../views/empty_modal_view');
 
-console.log("hello home_view", Backbone);
-
 var HomeView = Backbone.View.extend({
 
   el: "#container",

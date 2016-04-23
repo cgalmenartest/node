@@ -34,8 +34,7 @@ var BrowseRouter = Backbone.Router.extend({
   data: { saved: false },
 
   initialize: function() {
-    console.log("Backbone.Router initialize");
-
+    
     this.navView = new NavView({
       el: '.navigation'
     }).render();

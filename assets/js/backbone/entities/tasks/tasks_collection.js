@@ -22,20 +22,16 @@ var TasksCollection = Backbone.Collection.extend({
   url: '/api/task',
 
   initialize: function () {
-    console.log('TasksCollection initialize')
+
     var collection = this;
 
     this.listenTo( this, 'task:save', function ( data ) {
-
       collection.addAndSave( data );
-
-    } );
+    });
 
     this.listenTo( this, 'task:draft', function ( data ) {
-
       collection.addAndSave( data );
-
-    } );
+    });
 
   },
 

@@ -24,7 +24,6 @@ var ProfileActivityView = Backbone.View.extend({
 
   render: function () {
     // sort initially by date, descending.
-    console.log('activity view render', this.options.data)
     var results = this.options.data
         .filter(function(i) {
           return i && i.createdAt;
@@ -32,7 +31,6 @@ var ProfileActivityView = Backbone.View.extend({
         .sort(function (a, b) {
           return new Date(b.createdAt) - new Date(a.createdAt);
         });
-    console.log('results: ', results)
     var data = {
       ui: UIConfig,
       target: this.options.target,
@@ -51,7 +49,6 @@ var ProfileActivityView = Backbone.View.extend({
         data.count[this.options.data[i].state]++;
       }
     }
-    console.log('data', data);
     var template = _.template(ProfileActivityTemplate)(data);
     this.$el.html(template);
     this.$el.localize();

@@ -230,7 +230,6 @@ var ProfileShowView = Backbone.View.extend({
         handle: 'task',  // used in css id
         data: data.tasks.created
       });
-      console.log('this.taskView.render')
       this.taskView.render();
       this.volView = new ProfileActivityView({
         model: this.model,
@@ -239,7 +238,6 @@ var ProfileShowView = Backbone.View.extend({
         handle: 'volTask',  // used in css id
         data: data.tasks.volunteered
       });
-      console.log('this.volView.render')
       this.volView.render();
 
     });
