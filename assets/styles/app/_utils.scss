@@ -1,1 +1,9 @@
 .light { font-weight: 300; }
+
+.bg-fill {
+  width: 100%;
+  padding-bottom: 100% ; /* % of width, defines aspect ratio*/
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+}
