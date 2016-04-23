@@ -90,10 +90,18 @@ var ProfileShowView = Backbone.View.extend({
     });
   },
 
+  getTags: function(types) {
+    var allTags = this.model.attributes.tags
+    var result = _.filter(allTags, function(tag) {
+      return _.contains(types, tag.type);
+    })
+    return result;
+  },
   render: function () {
     var data = {
       login: Login,
       data: this.model.toJSON(),
+      tags: this.getTags(['skill', 'topic']),
       user: window.cache.currentUser || {},
       edit: false,
       saved: this.saved,
@@ -198,6 +206,8 @@ var ProfileShowView = Backbone.View.extend({
     if (this.tagView) { this.tagView.cleanup(); }
     if (this.edit) showTags = false;
 
+    // this is only used for edit view now
+    // TODO: refactor / rename, either reuse or simplify
     this.tagView = new TagShowView({
       model: this.model,
       el: '.tag-wrapper',
