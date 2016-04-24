@@ -63,12 +63,6 @@ var TaskShowController = BaseView.extend({
     // check if the user owns the task
     var owner = model.isOwner;
     if (owner !== true) {
-      // if they don't own the task, do they own the project?
-      if (!_.isUndefined(model.project)) {
-        if (model.project.isOwner === true) {
-          owner = true;
-        }
-      }
       // if none of these apply, are they an admin?
       if (window.cache.currentUser) {
         if (window.cache.currentUser.isAdmin === true) {

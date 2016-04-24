@@ -34,7 +34,7 @@ var BrowseRouter = Backbone.Router.extend({
   data: { saved: false },
 
   initialize: function() {
-    
+
     this.navView = new NavView({
       el: '.navigation'
     }).render();
@@ -91,17 +91,6 @@ var BrowseRouter = Backbone.Router.extend({
     return params;
   },
 
-  listProjects: function(queryStr) {
-    this.cleanupChildren();
-    this.browseListController = new BrowseListController({
-      target: 'projects',
-      el: '#container',
-      router: this,
-      queryParams: this.parseQueryParams(queryStr),
-      data: this.data
-    });
-  },
-
   listTasks: function(queryStr) {
     console.log("listTasks");
     this.cleanupChildren();
@@ -123,13 +112,6 @@ var BrowseRouter = Backbone.Router.extend({
       queryParams: this.parseQueryParams(queryStr),
       data: this.data
     });
-  },
-
-  showProject: function(id, action) {
-    this.cleanupChildren();
-    var model = new ProjectModel();
-    model.set({ id: id });
-    this.projectShowController = new ProjectShowController({ model: model, router: this, id: id, action: action, data: this.data });
   },
 
   showTask: function(id, action) {

@@ -17,8 +17,6 @@ Browse.ListController = BaseController.extend({
 
   events: {
     "click .link-backbone": linkBackbone,
-    "click .project-background-image": "showProject",
-    "click .add-project": "addProject",
     "click .add-opportunity": "addTask"
   },
 
@@ -30,14 +28,6 @@ Browse.ListController = BaseController.extend({
     this.fireUpCollection();
     this.initializeView();
     this.collection.trigger('browse:' + this.target + ":fetch");
-
-    this.listenTo(this.projectsCollection, "project:save:success", function(data) {
-      // hide the modal
-      $('#addProject').bind('hidden.bs.modal', function() {
-        Backbone.history.navigate('projects/' + data.attributes.id, { trigger: true });
-      }).modal('hide');
-    });
-
   },
 
   initializeView: function() {
@@ -75,32 +65,6 @@ Browse.ListController = BaseController.extend({
   // -----------------------
   //= BEGIN CLASS METHODS
   // -----------------------
-  // TODO: delete?
-  showProject: function(e) {
-    if (e.preventDefault) e.preventDefault();
-    var id = $($(e.currentTarget).parents('li.project-box')[0]).data('id');
-    Backbone.history.navigate('projects/' + id, { trigger: true });
-  },
-
-  addProject: function(e) {
-    if (e.preventDefault) e.preventDefault();
-
-    if (this.projectFormView) this.projectFormView.cleanup();
-    if (this.modalComponent) this.modalComponent.cleanup();
-
-    this.modalComponent = new ModalComponent({
-      el: ".wrapper-addProject",
-      id: "addProject",
-      modalTitle: "Add " + i18n.t("Project")
-    }).render();
-
-    this.projectFormView = new ProjectFormView({
-      el: ".modal-template",
-      collection: this.projectsCollection
-    }).render();
-
-  },
-
   addTask: function() {
     Backbone.history.navigate('/tasks/new', { trigger: true });
   },
@@ -111,7 +75,6 @@ Browse.ListController = BaseController.extend({
   cleanup: function() {
     if (this.taskFormView) { this.taskFormView.cleanup(); }
     if (this.modalWizardComponent) { this.modalWizardComponent.cleanup(); }
-    if (this.projectFormView) { this.projectFormView.cleanup(); }
     if (this.modalComponent) { this.modalComponent.cleanup(); }
     if (this.browseMainView) { this.browseMainView.cleanup(); }
     removeView(this);
