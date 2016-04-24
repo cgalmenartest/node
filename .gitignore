@@ -14,6 +14,7 @@ results
 .env
 .cf-env
 cf-ssh.yml
+*credentials.json
 
 npm-debug.log
 

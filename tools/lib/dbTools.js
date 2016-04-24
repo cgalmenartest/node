@@ -3,14 +3,18 @@ var pgp = require('pg-promise')();
 
 // load db config file
 try {
-  var config = require('../../config/connections').connections.postgresql;
-  var pgConfig = {
-    user: config.user,
-    password: config.password,
-    database: config.database,
-    host: config.host,
-    port: 5432
-  };
+  var pgConfig = process.env.DATABASE_URL;
+  console.log('DATABASE_URL=', pgConfig);
+  if (typeof(pgConfig) == 'undefined') {
+    var config = require('../../config/connections').connections.postgresql;
+    var pgConfig = {
+      user: config.user,
+      password: config.password,
+      database: config.database,
+      host: config.host,
+      port: 5432
+    };
+  }
   var db = pgp(pgConfig);
 } catch(e) {
   console.log("Please create postgresql configuration in config/connections file, err: ", e);
