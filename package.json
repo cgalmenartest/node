@@ -48,6 +48,7 @@
     "jquery.atwho": "ichord/At.js#v0.4.7",
     "jquery.caret": "ichord/Caret.js#v0.0.7",
     "jsdom": "^8.4.0",
+    "json2csv": "^3.3.0",
     "location": "0.0.1",
     "marked": "^0.3.5",
     "moment": "^2.12.0",

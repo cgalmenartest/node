@@ -27,7 +27,9 @@ module.exports.policies = {
   ***************************************************************************/
 
   // '*': true,  TODO: should default to false and whitelist APIs
-
+  AdminController : {
+    '*': 'admin',
+  },
   TaskController : {
     'find': true,
     'findOne': ['authorizeTask'],
