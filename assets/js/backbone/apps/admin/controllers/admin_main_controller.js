@@ -7,7 +7,7 @@ var BaseController = require('../../../base/base_controller');
 var AdminMainView = require('../views/admin_main_view');
 
 
-Admin = {};
+var Admin = {};
 
 Admin.ShowController = BaseController.extend({
 

@@ -1,14 +1,18 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
+var i18n = require('i18next');
+var i18nextJquery = require('jquery-i18next');
 
 var ModalComponent = require('../../../components/modal');
-var AdminDashboardTemplate = require('../templates/admin_dashboard_template.html');
-var AdminDashboardTable = require('../templates/admin_dashboard_table.html');
-var AdminDashboardTasks = require('../templates/admin_dashboard_task_metrics.html');
-var AdminDashboardActivities = require('../templates/admin_dashboard_activities.html');
 var LoginConfig = require('../../../config/login.json');
 var marked = require('marked');
 
+// templates
+var fs = require('fs');
+var AdminDashboardTemplate = fs.readFileSync(`${__dirname}/../templates/admin_dashboard_template.html`).toString();
+var AdminDashboardTable = fs.readFileSync(`${__dirname}/../templates/admin_dashboard_table.html`).toString();
+var AdminDashboardTasks = fs.readFileSync(`${__dirname}/../templates/admin_dashboard_task_metrics.html`).toString();
+var AdminDashboardActivities = fs.readFileSync(`${__dirname}/../templates/admin_dashboard_activities.html`).toString();
 
 var AdminDashboardView = Backbone.View.extend({
 
@@ -77,7 +81,7 @@ var AdminDashboardView = Backbone.View.extend({
         var template = _.template(AdminDashboardTasks)(data);
         data.tasks.active = self.data.tasks;
         self.$(".task-metrics").html(template);
-        self.$el.i18n();
+        self.$el.localize();
         // hide spinner and show results
         self.$(".spinner").hide();
         self.$(".task-metrics").show();

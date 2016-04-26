@@ -1,11 +1,12 @@
 var _ = require('underscore');
-var Backbone = require('backbone');
 var async = require('async');
-var UIConfig = require('../../../config/ui.json');
+var Backbone = require('backbone');
 
 var ActivityCollection = window.c = require('../../../entities/activities/activities_collection');
 var TaskCollection = require('../../../entities/tasks/tasks_collection');
+var UIConfig = require('../../../config/ui.json');
 
+// templates
 var fs = require('fs');
 var DashboardTemplate = fs.readFileSync(`${__dirname}/../templates/home_dashboard_template.html`).toString();
 var BadgesTemplate = fs.readFileSync(`${__dirname}/../templates/home_badges_feed_template.html`).toString();

@@ -109,7 +109,7 @@ module.exports = {
 
       matchingRecords = _.reject(matchingRecords, 'disabled');
       var ids  = matchingRecords.map(function(m) { return m.id; }),
-          reqId = req.user[0].id;
+          reqId = req.user.id;
 
       async.map(ids, function(userId, cb) {
         sails.services.utils.user.getUser(userId, reqId, req.user, function (err, user) {
@@ -318,8 +318,8 @@ module.exports = {
     // find the user
     User.findOneById(userId, function (err, user) {
       if (err) { return res.send(400, { message: 'User not found.' }); }
-      // Run password validator (but only if SSPI is disabled and not an admin)
-      if ((sails.config.auth.auth.sspi.enabled !== true) && (req.user[0].isAdmin !== true)) {
+      // Run password validator (but only if not an admin) - TODO: why?
+      if (req.user.isAdmin !== true) {
         // Check that the password meets validation rules
         var rules = userUtils.validatePassword(user.username, password);
         var success = true;

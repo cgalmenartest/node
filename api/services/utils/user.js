@@ -49,7 +49,7 @@ module.exports = {
     token = token.toLowerCase().trim();
     // compute the maximum token expiration time
     var expiry = new Date();
-    expiry.setTime(expiry.getTime() - sails.config.auth.auth.local.tokenExpiration);
+    expiry.setTime(expiry.getTime() - sails.config.auth.local.tokenExpiration);
     UserPasswordReset.find()
     .where({ token: token })
     .where({ createdAt:

@@ -1,10 +1,10 @@
-
-var Bootstrap = require('bootstrap');
 var _ = require('underscore');
 var Backbone = require('backbone');
+var Bootstrap = require('bootstrap');
 
-var AdminUserPassword = require('../templates/admin_user_password.html');
-
+// templates
+var fs = require('fs');
+var AdminUserPassword = fs.readFileSync(`${__dirname}/../templates/admin_user_password.html`).toString();
 
 var AdminUserPasswordView = Backbone.View.extend({
 

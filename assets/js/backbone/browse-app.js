@@ -10,7 +10,7 @@ var TaskCollection = require('./entities/tasks/tasks_collection');
 var TaskShowController = require('./apps/tasks/show/controllers/task_show_controller');
 var TaskEditFormView = require('./apps/tasks/edit/views/task_edit_form_view');
 var TaskCreateFormView = require('./apps/tasks/new/views/task_form_view');
-// var AdminMainController = require('../admin/controllers/admin_main_controller');
+var AdminMainController = require('./apps/admin/controllers/admin_main_controller');
 var HomeController = require('./apps/home/controllers/home_controller');
 
 
@@ -56,7 +56,6 @@ var BrowseRouter = Backbone.Router.extend({
   },
 
   cleanupChildren: function() {
-    console.log("cleanupChildren");
     if (this.browseListController) { this.browseListController.cleanup(); }
     if (this.profileShowController) { this.profileShowController.cleanup(); }
     if (this.taskShowController) { this.taskShowController.cleanup(); }
