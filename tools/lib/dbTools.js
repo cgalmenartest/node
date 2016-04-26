@@ -6,7 +6,7 @@ var parse = require('csv-parse/lib/sync');
 // load db config file
 try {
   var pgConfig = process.env.DATABASE_URL;
-  console.log('DATABASE_URL=', pgConfig);
+  console.log('DATABASE_URL =', pgConfig);
   if (typeof(pgConfig) == 'undefined') {
     var config = require('../../config/connections').connections.postgresql;
     var pgConfig = {
@@ -16,6 +16,7 @@ try {
       host: config.host,
       port: 5432
     };
+    console.log('using local config: ', pgConfig)
   }
   var db = pgp(pgConfig);
 } catch(e) {
@@ -61,10 +62,8 @@ module.exports = {
     console.log("importing:", userFile);
     if (fs.existsSync(userFile)) {
       input = fs.readFileSync(userFile);
-      console.log(input);
       var attrList = parse(input, {columns: true});
       var date = new Date();
-      console.log("attrList", attrList);
 
       // returns a promise
       return db.tx(function (t) {
@@ -75,13 +74,14 @@ module.exports = {
           var attr = attrList[i];
           var query_data = [attr.name, attr.username, attr.title, date, date];
           var query = t.none(query_text, query_data);
-          console.log('>', query);
           queries.push(query);
         }
         return t.batch(queries);
       });
     } else {
-      throw new Error("File Not Found: '" + tagFile + "'");
+      var msg = "File Not Found: '" + userFile + "'"
+      console.log(msg)
+      throw new Error(msg);
     }
   },
   importTagsFromFile: function(tagFile, tagType) {
@@ -91,7 +91,9 @@ module.exports = {
     if (fs.existsSync(tagFile)) {
       tags = fs.readFileSync(tagFile).toString().split("\n");
     } else {
-      throw new Error("File Not Found: '" + tagFile + "'");
+      var msg = "File Not Found: '" + tagFile + "'"
+      console.log(msg)
+      throw new Error(msg);
     }
 
     var date = new Date();

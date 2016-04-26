@@ -11,9 +11,7 @@ dbTools.checkTableSetup('midas_user')
       console.log('done');
     })
     .catch(function(err) {
-      if (err) {
-        console.log("Failed with error: ", err);
-        dbTools.end();
-      }
+      console.log("Failed with error: ", err);
+      dbTools.end();
     });
 });
