@@ -2,14 +2,14 @@ var _ = require('lodash');
 var assert = require('chai').assert;
 var request = require('supertest');
 var resAssert = require('./resAssert');
+var userFixtures = require('../../fixtures/user');
 
 describe('UserController', function() {
   var users;  // user fixtures loaded fresh for each test
   var newUserAttrs;
 
   beforeEach(function(done) {
-    users = require('../../fixtures/user');
-    newUserAttrs = users.minAttrs;
+    newUserAttrs = (JSON.parse(JSON.stringify(userFixtures.minAttrs)));
     User.register(newUserAttrs, function(err, user) {
       assert.isNull(err);
       done();
@@ -31,7 +31,6 @@ describe('UserController', function() {
 
       var agent;
       beforeEach(function(done) {
-        console.log('beforeEach')
         agent = request.agent(sails.hooks.http.app);
         agent.post('/api/auth/local')
           .send({

@@ -91,12 +91,10 @@ module.exports = {
     }
     done();
   },
+  // Note: this can be used to create admin users
+  // relies on filtering in controller actions for safety
   register: function(attributes, done) {
-    User.create({
-      username : attributes.username,
-      name: attributes.name,
-      tags: attributes.tags
-    }, function (err, user) {
+    User.create(attributes, function (err, user) {
       if (err) {
         // used to set req.flash: Error.Passport.User.Exists
         sails.log.verbose('register: failed to create user ', attributes.username);

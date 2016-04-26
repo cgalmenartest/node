@@ -1,5 +1,6 @@
 var assert = require('chai').assert;
 var request = require('supertest');
+var userFixtures = require('../../fixtures/user');
 
 describe('AuthController', function() {
   var isValidLogoutConfirmation = function(res) {
@@ -30,20 +31,23 @@ describe('AuthController', function() {
   });
 
   describe('local auth with no registered users', function() {
-    var users;  // user fixtures loaded fresh for each test
+    var newUserAttrs;
 
     beforeEach(function(done) {
-      users = require('../../fixtures/user');
+      // always copy newUserAttrs so we can change attributes in the tests
+      newUserAttrs = (JSON.parse(JSON.stringify(userFixtures.minAttrs)));
       done();
     });
 
     var isValidMinUserResult = function(res) {
-      assert.equal(res.body.name, users.minAttrs.name);
-      assert.equal(res.body.username, users.minAttrs.username);
+      assert.equal(res.body.name, userFixtures.minAttrs.name);
+      assert.equal(res.body.username, userFixtures.minAttrs.username);
+      assert.equal(res.body.isAdmin, false, 'isAdmin should be false');
+      assert.equal(res.body.isAgencyAdmin, false, 'isAgencyAdmin should be false');
       assert.notProperty(res.body, 'password');
     }
+
     it('sign up should return json user', function (done) {
-      newUserAttrs = users.minAttrs;
       newUserAttrs.json = true;
       request(sails.hooks.http.app)
         .post('/api/auth/local/register')
@@ -52,10 +56,19 @@ describe('AuthController', function() {
         .expect(isValidMinUserResult)
         .end(done)
     });
-    it('login should return json user', function (done) {
-      newUserAttrs = users.minAttrs;
+    it('sign up should not allow admin', function (done) {
       newUserAttrs.json = true;
-      User.register(users.minAttrs, function(err, user) {
+      newUserAttrs.isAdmin = true;
+      newUserAttrs.isAgencyAdmin = true;
+      request(sails.hooks.http.app)
+        .post('/api/auth/local/register')
+        .send(newUserAttrs)
+        .expect(200)
+        .expect(isValidMinUserResult)
+        .end(done)
+    });
+    it('login should return json user', function (done) {
+      User.register(newUserAttrs, function(err, user) {
         assert.isNull(err);
         request(sails.hooks.http.app)
           .post('/api/auth/local')
@@ -73,7 +86,7 @@ describe('AuthController', function() {
     it('should forgot password', function (done) {
       request(sails.hooks.http.app)
         .post('/api/auth/forgot')
-        .send({username: users.minAttrs.username})
+        .send({username: newUserAttrs.username})
         .expect(302)
         .end(done)
     });
