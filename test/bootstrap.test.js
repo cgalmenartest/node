@@ -4,7 +4,7 @@ before(function(done) {
   console.log('lifting sails: env='+process.env.NODE_ENV );
 
   var config = {
-    environment: 'verbose',
+    environment: 'test',
     // turn down the log level so we can view the test results
     log: {
       level: 'error'

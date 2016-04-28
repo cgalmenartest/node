@@ -1,3 +1,4 @@
+console.log('Loading... ', __filename);
 var cfenv = require('cfenv'),
     appEnv = cfenv.getAppEnv(),
     dbURL = appEnv.getServiceURL('psql-openopps');
@@ -24,41 +25,39 @@ var cfenv = require('cfenv'),
  */
 
 module.exports.connections = {
+  memory: {
+    adapter: 'sails-disk',
+    inMemory: true
+  },
 
+  local: {
+    adapter: 'sails-disk'
+  },
 
-    memory: {
-      adapter: 'sails-disk',
-      inMemory: true
-    },
-
-    local: {
-      adapter: 'sails-disk'
-    },
-
-    // POSTGRES
-    // Set your postgres database settings here, including the username, password
-    // and database name
-    postgresql: {
-      adapter     : 'sails-postgresql',
-      host        : 'localhost',
-      user        : 'midas',
-      password    : 'midas',
-      database    : 'midas',
-      // populateFast: true  -- removed with sails 0.12.1 upgrade
-      // TODO: delete?       -- was this part of soft-delete implementation?
-    }
-
-  };
-
-  if (dbURL) {
-    module.exports.connections = {
-      postgresql: {
-        adapter: 'sails-postgresql',
-        url: dbURL,
-        populateFast: true
-      }
-    };
-    module.exports.models = {
-      connection: 'postgresql'
-    };
+  // POSTGRES
+  // Set your postgres database settings here, including the username, password
+  // and database name
+  postgresql: {
+    adapter     : 'sails-postgresql',
+    host        : 'localhost',
+    user        : 'midas',
+    password    : 'midas',
+    database    : 'midas',
+    // populateFast: true  -- removed with sails 0.12.1 upgrade
+    // TODO: delete?       -- was this part of soft-delete implementation?
   }
+
+};
+
+if (dbURL) {
+  module.exports.connections = {
+    postgresql: {
+      adapter: 'sails-postgresql',
+      url: dbURL,
+      populateFast: true
+    }
+  };
+  module.exports.models = {
+    connection: 'postgresql'
+  };
+}
