@@ -5,6 +5,8 @@ before(function(done) {
 
   var config = {
     environment: 'test',
+    port: 9999,   // so we can run the app and tests at the same time
+    hostName: 'localhost:9999',
     // turn down the log level so we can view the test results
     log: {
       level: 'error'
