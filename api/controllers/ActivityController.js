@@ -17,7 +17,7 @@ module.exports = {
           // Ensure that the User model is being queried for both the original
           // task creator and the users that are labeled as volunteers.
 
-          var allUserIds = _.uniq(_.union( _.pluck( tasks, 'userId' ),
+          var allUserIds = _.uniq(_.union( _.pluck( tasks, 'owner' ),
                                            _.pluck( vols, 'userId' )));
 
           User.find( {id: allUserIds} ).exec(function(err, users) {

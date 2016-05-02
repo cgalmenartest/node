@@ -9,12 +9,16 @@ module.exports = {
 
   attributes: {
 
-    // The task which a user volunteers for
-    taskId: 'INTEGER',
     // the user that is volunteering
     userId: 'INTEGER',
     // send notification or not, after create
-    silent: 'BOOLEAN'
+    silent: 'BOOLEAN',
+
+    // The task which a user volunteers for
+    task: {
+      model: 'task',
+      columnName: 'taskId'
+    }
 
   },
 

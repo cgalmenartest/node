@@ -14,5 +14,16 @@ module.exports = {
     passwordAttempts: 0,
     completedTasks: 0,
     bio: 'JavaScript expert with an interest in public policy.'
-  }
+  },
+  'emmy': {
+    'name': 'Emmy Noether',
+    'username': 'emmy@midascrowd.com',
+    'password': 'TestTest123#'
+  },
+  'alan': {
+    'name': 'Alan Turing',
+    'username': 'alan@midascrowd.com',
+    'password': 'TestTest123#'
+  },
+
 }

@@ -3,7 +3,7 @@
 */
 
 module.exports = function ownerOrAdmin (req, res, next) {
-  // check if owner of the project or task
+  // check if owner of the task
   if (req.isOwner || req.user.isAdmin) {
     return next();
   }

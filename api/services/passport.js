@@ -66,6 +66,7 @@ passport.protocols = require('./protocols');
  * @param {Function} next
  */
 passport.connect = function (req, query, profile, next) {
+  sails.log.verbose('passport.connect')
   var user = {}
     , provider;
 
@@ -149,7 +150,7 @@ passport.connect = function (req, query, profile, next) {
           }
 
           // Fetch the user associated with the Passport
-          User.findOne(passport.user.id, next);
+          User.findOne(passport.user.id).populate('tags').exec(next);
         });
       }
     } else {
@@ -187,6 +188,8 @@ passport.connect = function (req, query, profile, next) {
  * @param  {Object} res
  */
 passport.endpoint = function (req, res) {
+  sails.log.verbose('passport.endpoint')
+
   var strategies = sails.config.passport
     , provider   = req.param('provider')
     , options    = {};
@@ -219,6 +222,8 @@ passport.endpoint = function (req, res) {
  * @param {Function} next
  */
 passport.callback = function (req, res, next) {
+  sails.log.verbose('passport.callback')
+
   var provider = req.param('provider', 'local')
     , action   = req.param('action');
 
@@ -275,6 +280,7 @@ passport.callback = function (req, res, next) {
 passport.loadStrategies = function () {
   var self       = this
     , strategies = sails.config.passport;
+  sails.log.verbose('passport.loadStrategies', strategies)
 
   Object.keys(strategies).forEach(function (key) {
     var options = { passReqToCallback: true }, Strategy;
@@ -342,6 +348,7 @@ passport.loadStrategies = function () {
  * @param  {Object} res
  */
 passport.disconnect = function (req, res, next) {
+  sails.log.verbose('passport.disconnect')
   var user     = req.user
     , provider = req.param('provider', 'local')
     , query    = {};
@@ -371,54 +378,11 @@ passport.serializeUser(function (user, next) {
 });
 
 passport.deserializeUser(function (id, next) {
-  // TODO: populate('tags')
-  User.findOne(id).exec(function(err, user){
+  // TODO: consider caching active users
+  User.findOne(id).populate('tags').populate('badges').exec(function(err, user){
     if (err) next(err);
     next(null, user);
   });
 });
 
 module.exports = passport;
-
-function linkedinProfile(profile) {
-  // parse profile data to standard format
-  // take standard low-res photo
-  if (profile._json.pictureUrl) {
-    profile.photoUrl = profile._json.pictureUrl;
-  }
-  // upgrade to higher res photo if its available
-  if (profile._json.pictureUrls && (profile._json.pictureUrls._total > 0)) {
-    profile.photoUrl = profile._json.pictureUrls.values[0];
-  }
-  // bio
-  if (profile._json.summary) {
-    profile.bio = profile._json.summary;
-  }
-  // current company and title
-  if (profile._json.threeCurrentPositions && (profile._json.threeCurrentPositions._total > 0)) {
-    profile.company = profile._json.threeCurrentPositions.values[0].company.name;
-    profile.title = profile._json.threeCurrentPositions.values[0].title;
-  }
-  // parse skills
-  profile.skill = [];
-  if (profile._json.skills && (profile._json.skills._total > 0)) {
-    _.each(profile._json.skills.values, function (s) {
-      profile.skill.push(s.skill.name);
-    });
-  }
-  // parse topics
-  profile.topic = [];
-  if (profile._json.interests) {
-    _.each(profile._json.interests.split(','), function (i) {
-      i = i.trim();
-      if (i.toLowerCase().substring(0,4) == 'and ') {
-        i = i.slice(3).trim();
-      }
-      if (i.substring(0,1) == '&') {
-        i = i.slice(1).trim();
-      }
-      profile.topic.push(i);
-    });
-  }
-  return profile;
-}

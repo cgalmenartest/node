@@ -9,7 +9,6 @@ var HomeController = BaseController.extend({
   // The initialize method is mainly used for event bindings (for efficiency)
   initialize: function (options) {
     var self = this;
-    console.log("initialize HomeController", Backbone)
 
     if (!window.cache.currentUser) {
       this.homeView = new HomeView().render();

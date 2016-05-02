@@ -32,11 +32,11 @@ module.exports.policies = {
   },
   TaskController : {
     'find': true,
-    'findOne': ['authorizeTask'],
+    'findOne': true,
     'copy': ['requireAuth', 'addUserId'],
     'create': ['requireAuth', 'addUserId'],
-    'update': ['requireAuth', 'requireId', 'authorizeTask', 'ownerOrAdmin'],
-    'destroy': ['requireAuth', 'requireId', 'authorizeTask', 'ownerOrAdmin'],
+    'update': ['requireAuth', 'requireId', 'addUserId', 'authorizeTask', 'ownerOrAdmin'],
+    'destroy': ['requireAuth', 'requireId','authorizeTask', 'ownerOrAdmin'],
     // 'export': ['admin']
   },
 
@@ -60,6 +60,12 @@ module.exports.policies = {
 
   ActivityController: {
     '*': ['requireAuth', 'addUserId']
+  },
+
+  VolunteerController : {
+    '*': false,
+    'create': ['requireAuth', 'addUserId'],
+    'destroy': ['requireAuth', 'addUserId', 'requireId', 'ownerOrAdmin'],
   },
 
 

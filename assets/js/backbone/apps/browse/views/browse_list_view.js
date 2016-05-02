@@ -81,8 +81,10 @@ var BrowseListView = Backbone.View.extend({
         if (typeof this.options.collection[i] == 'undefined') {
           break;
         }
+        var obj = this.options.collection[i];
+        obj.userId = obj.owner.id;
         var item = {
-          item: this.options.collection[i],
+          item: obj,
           user: window.cache.currentUser,
           tagConfig: TagConfig,
           tagShow: ['location', 'skill', 'topic', 'task-time-estimate', 'task-time-required']

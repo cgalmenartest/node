@@ -1,6 +1,7 @@
 var assert = require('chai').assert;
 var request = require('supertest');
 var userFixtures = require('../../fixtures/user');
+var taskFixtures = require('../../fixtures/task');
 
 describe('AdminController', function() {
   describe('when not logged in', function() {
@@ -84,21 +85,48 @@ describe('AdminController', function() {
           .end(done);
       });
     });
+    describe('/api/admin/tasks', function() {
 
-    it('/api/admin/tasks returns category lists', function (done) {
-      agent.get('/api/admin/tasks')
-        .expect(200)
-        .expect(function(res) {
-          assert.deepEqual(res.body, {
-            assigned: [],
-            completed: [],
-            drafts: [],
-            open: [],
-            submitted: [],
-            withSignups: []
-          });
+      it('returns category lists', function (done) {
+        agent.get('/api/admin/tasks')
+          .expect(200)
+          .expect(function(res) {
+            assert.deepEqual(res.body, {
+              assigned: [],
+              completed: [],
+              draft: [],
+              open: [],
+              submitted: []
+            });
+          })
+          .end(done);
+      });
+      it('returns tasks in categories', function (done) {
+        var keys = ['draft', 'submitted', 'open',
+                             'assigned', 'completed', 'archived'];
+        attrList = _.pick(taskFixtures, keys);
+        attrList = _.values(attrList);
+        Task.create(attrList)
+        .then(function(tasks) {
+          assert.equal(tasks.length, keys.length);
+          agent.get('/api/admin/tasks')
+            .expect(200)
+            .expect(function(res) {
+              var result = res.body;
+              assert.equal(result.draft.length, 1);
+              assert.equal(result.draft[0].state, 'draft');
+              assert.equal(result.submitted.length, 1);
+              assert.equal(result.submitted[0].state, 'submitted');
+              assert.equal(result.open.length, 1);
+              assert.equal(result.open[0].state, 'open');
+              assert.equal(result.assigned.length, 1);
+              assert.equal(result.assigned[0].state, 'assigned');
+              assert.equal(result.completed.length, 1);
+              assert.equal(result.completed[0].state, 'completed');
+            })
+            .end(done);
         })
-        .end(done);
+      });
     });
 
   });

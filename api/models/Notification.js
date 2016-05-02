@@ -140,7 +140,6 @@ module.exports = {
     ]);
 
     // Send mail over SMTP with node-mailer
-    console.log('protocol', protocol);
     if (protocol === '') {
       sails.log.info('email OFF, would have sent:', options);
     } else {

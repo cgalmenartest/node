@@ -75,7 +75,7 @@ var TaskItemView = BaseView.extend({
 
     self.data.ui = UIConfig;
     self.data.vol = vol;
-
+    self.data.model.userId = self.data.model.owner.id; // TODO: maybe this should be elsewhere
     var compiledTemplate = _.template(TaskShowTemplate)(self.data);
 
     self.$el.html(compiledTemplate);

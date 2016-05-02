@@ -13,8 +13,6 @@ module.exports = {
       type: 'STRING',
       defaultsTo: sails.config.taskState || 'draft',
     },
-    // user id of the task owner
-    userId: 'INTEGER',
     // project id of the parent project
     projectId: 'INTEGER',
     // title of the task
@@ -28,12 +26,25 @@ module.exports = {
     completedAt: 'datetime',
     submittedAt: 'datetime',
 
+    owner: {
+      columnName: 'userId',
+      model: 'user'
+    },
+    volunteers: {
+      collection: 'volunteer',
+      via: 'task'
+    },
     tags: {
       collection: 'tagEntity',
       via: 'tasks',
       dominant: true,
     },
-
+    getOwnerId: function() {
+      // if populate has been called, we'll have a user object
+      // otherwise user is a number and is the id of the user
+      var id = (typeof this.owner === 'object') ? this.owner.id : this.owner;
+      return id;
+    },
     isOpen: function() {
       if (_.indexOf(['open', 'public', 'assigned'], this.state) != -1) {
         return true;
@@ -55,7 +66,7 @@ module.exports = {
         task = this;
         task.isOwner = false;
         // check if current user is owner
-        if (user && (user.id == task.userId)) {
+        if (user && (task.getOwnerId() == user.id)) {
           task.isOwner = true;
           return task;   // owners always have access
         }
@@ -92,13 +103,51 @@ module.exports = {
   // sets isOwner if user is given and is the owner
   // only returns task if public or user has special access
   authorized: function(taskId, user, done) {
-    Task.findOneById(taskId).populate('tags').exec(function(err, task) {
+    Task.findOneById(taskId)
+    .populate('tags')
+    .exec(function(err, task) {
       if (err) { return done(err) }
       if (!task) { return done('Error finding task.'); }
       result = task.authorized(user);
       return done(null, result);
     });
   },
+
+  // returns an object with categories that each have a list of tasks
+  // categories are all of the states, plus a separate category for
+  // tasks that are open and have volunteers
+  // assigned: [],
+  // completed: [],
+  // draft: [],
+  // open: [],
+  // submitted: []
+  byCategory: function(page, limit, sort) {
+    var page = page || 1,
+      limit = limit || 1000,
+      sort = sort || 'createdAt desc',
+      output = {
+        assigned: [],
+        completed: [],
+        draft: [],
+        open: [],
+        submitted: [],
+      };
+
+    var promise =
+      Task.find({ state: [ 'draft', 'submitted', 'open', 'assigned', 'completed' ] })
+          .populate('owner')
+          .populate('volunteers')
+          .sort(sort)
+          .paginate({ page: page, limit: limit })
+      .then(function(tasks) {
+        _.forEach(tasks, function(t) {
+          output[t.state].push(t);
+        })
+        return output;
+      })
+    return promise;
+  },
+
 
   /* TODO Export
     exportFormat: {
@@ -162,10 +211,10 @@ module.exports = {
   },
   afterUpdate: function(task, done) {
     var self = this;
-
-    Task.find({ userId: task.userId }).populate('tags').exec(function(err, tasks) {
+    var ownerId = task.owner;
+    Task.find({ userId: ownerId }).populate('tags').exec(function(err, tasks) {
       if (err) return done(err);
-      Badge.awardForTaskPublish(tasks, task.userId);
+      Badge.awardForTaskPublish(tasks, ownerId);
       done();
     });
   },

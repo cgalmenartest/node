@@ -33,14 +33,14 @@
 
     <div class="task-list-bottom-person border-top">
       <div class="task-list-person">
-        <div class="project-people-div float-left" data-userid="<%- item.userId %>" style="text-align: right;">
-          <img src="/api/user/photo/<%- item.userId %>" class="project-people" width="30"/>
+        <div class="project-people-div float-left" data-userid="<%- item.owner.id %>" style="text-align: right;">
+          <img src="/api/user/photo/<%- item.owner.id %>" class="project-people" width="30"/>
         </div>
         <div class="task-list-requestbox">
           <div class="task-list-requested">requested by</div>
-          <div class="task-list-name"><%- item.user.name %></div>
-          <% if (item.user.agency) { %>
-          <div class="task-list-agency task-single-overflow"><%- item.user.agency.name %></div>
+          <div class="task-list-name"><%- item.owner.name %></div>
+          <% if (item.owner.agency) { %>
+          <div class="task-list-agency task-single-overflow"><%- item.owner.agency.name %></div>
           <% } %>
         </div>
       </div>

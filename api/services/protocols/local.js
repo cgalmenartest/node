@@ -108,7 +108,7 @@ exports.login = function (req, identifier, password, next) {
       maxAttempts = sails.config.auth.local.passwordAttempts;
 
   sails.log.verbose("login attempt for: ", query)
-  User.findOne(query, function (err, user) {
+  User.findOne(query).populate('tags').exec(function (err, user) {
     sails.log.verbose("from db (err, user)", err, user)
     if (err) return next(err);
 

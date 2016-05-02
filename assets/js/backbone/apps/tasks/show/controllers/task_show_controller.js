@@ -190,50 +190,6 @@ var TaskShowController = BaseView.extend({
     Backbone.history.navigate('tasks/' + this.model.id, { trigger: true });
   },
 
-  deleteUserSettingByKey: function(settingKey) {
-    //this function expects the entire row from usersetting in the form
-    //     window.cache.currentUser[settingKey] = {}
-    var self = this;
-
-    //if not set skip
-    var targetId =  ( window.cache.currentUser[settingKey] ) ? window.cache.currentUser[settingKey].id : null ;
-
-    if ( targetId ){
-      $.ajax({
-        url: '/api/usersetting/'+targetId,
-        type: 'DELETE',
-        dataType: 'json'
-      })
-    }
-
-  },
-
-  saveUserSettingByKey: function(userId, options) {
-    //this function expects the entire row from usersetting in the form
-    //     window.cache.currentUser[settingKey] = {}
-    var self = this;
-
-    //are values the same, stop
-    if ( options.newValue == options.oldValue ) { return true; }
-
-    //if delete old is set, delete exisitng value
-    //   default is delete
-    if ( !options.deleteOld ){
-      self.deleteUserSettingByKey(options.settingKey);
-    }
-
-    $.ajax({
-        url: '/api/usersetting/',
-        type: 'POST',
-        dataType: 'json',
-        data: {
-          userId: userId,
-          key: options.settingKey,
-          value: options.newValue
-        }
-      });
-  },
-
   volunteer: function (e) {
     if (e.preventDefault) e.preventDefault();
     if (!window.cache.currentUser) {
@@ -340,17 +296,7 @@ var TaskShowController = BaseView.extend({
         modalTitle: i18n.t("volunteerModal.title")
       }).render();
 
-      if ( UIConfig.supervisorEmail.useSupervisorEmail ) {
-        //not assigning as null because null injected into the modalContent var shows as a literal value
-        //    when what we want is nothing if value is null
-        var supervisorEmail = ( window.cache.currentUser.supervisorEmail ) ? window.cache.currentUser.supervisorEmail.value  : "";
-        var supervisorName = ( window.cache.currentUser.supervisorName ) ? window.cache.currentUser.supervisorName.value : "";
-        var validateBeforeSubmit = true;
-        var modalContent = _.template(VolunteerSupervisorNotifyTemplate)({supervisorEmail: supervisorEmail,supervisorName: supervisorName});
-      } else {
-        validateBeforeSubmit = false;
-        var modalContent = _.template(VolunteerTextTemplate)({});
-      }
+      var modalContent = _.template(VolunteerTextTemplate)({});
 
       this.modalAlert = new ModalAlert({
         el: "#check-volunteer .modal-template",
@@ -358,12 +304,8 @@ var TaskShowController = BaseView.extend({
         content: modalContent,
         cancel: i18n.t('volunteerModal.cancel'),
         submit: i18n.t('volunteerModal.ok'),
-        validateBeforeSubmit: validateBeforeSubmit,
+        validateBeforeSubmit: false,
         callback: function (e) {
-          if ( UIConfig.supervisorEmail.useSupervisorEmail ) {
-            self.saveUserSettingByKey(window.cache.currentUser.id,{settingKey:"supervisorEmail",newValue: $('#userSuperVisorEmail').val(),oldValue: supervisorEmail});
-            self.saveUserSettingByKey(window.cache.currentUser.id,{settingKey:"supervisorName",newValue: $('#userSuperVisorName').val(),oldValue: supervisorName});
-          }
           // user clicked the submit button
           $.ajax({
             url: '/api/volunteer/',

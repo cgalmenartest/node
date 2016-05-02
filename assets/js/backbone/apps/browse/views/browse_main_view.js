@@ -6,7 +6,7 @@ var $ = require('jquery');
 
 
 var UIConfig = require('../../../config/ui.json');
-//var Popovers = require('../../../mixins/popovers');
+var Popovers = require('../../../mixins/popovers');
 var TagConfig = require('../../../config/tag');
 var BrowseListView = require('./browse_list_view');
 // var ProfileListView = require('./profile_list_view');
@@ -16,15 +16,16 @@ var BrowseSearchTag = fs.readFileSync(__dirname + ('/../templates/browse_search_
 var i18n = require('i18next');
 require('jquery-i18next');
 
-//bootstrap TODO: var popovers = new Popovers();
+// TODO: ideally this wouldn't be global
+global.popovers = new Popovers();
 
 var BrowseMainView = Backbone.View.extend({
 
   events: {
     "keyup #search": 'search',
     "change #stateFilters input": 'stateFilter',
-    //  "mouseenter .project-people-div"  : popovers.popoverPeopleOn,
-    //  "click      .project-people-div"  : popovers.popoverClick,
+    "mouseenter .project-people-div"  : popovers.popoverPeopleOn,
+    "click      .project-people-div"  : popovers.popoverClick,
   },
 
   initialize: function(options) {
@@ -156,7 +157,7 @@ var BrowseMainView = Backbone.View.extend({
     $("#browse-list").show();
     this.browseListView.render();
 
-    // popovers.popoverPeopleInit(".project-people-div");
+    popovers.popoverPeopleInit(".project-people-div");
   },
 
   renderMap: function(profiles) {

@@ -84,30 +84,24 @@ var getVolunteers = function (task, cb) {
  * @return callback(error, tasks)
  */
 var findTasks = function (where, cb) {
-  console.log(where);
   var self = this;
   var w = where || {};
   Task.find()
   .where(w)
   .populate('tags')
+  .populate('owner')
   .sort({ publishedAt: 0, updatedAt: 0 })
   .exec(function (err, tasks) {
     if (err) { return cb({ message: 'Error looking up tasks.' }, null); }
-    // function for looking up user info
-    User.find({ id: _(tasks).pluck('userId').uniq().value() })
-      //.populate('tags', { where: { type: 'agency' } })
-      .exec(function (err, users) {
-        if (err) return cb({ message: 'Error looking up user info.' }, null);
-        tasks.forEach(function(task) {
-          var user = _.findWhere(users, { id: task.userId }) || {};
-          task.user = {
-            name: user.name,
-            agency: user.tags && user.tags[0]
-          };
-        });
-        return cb(null, tasks);
-      });
-
+    tasks.forEach(function(task) {
+      var owner = task.owner
+      task.owner = {
+        id: owner.id,
+        name: owner.name,
+        agency: owner.tags && owner.tags[0]
+      };
+    });
+    return cb(null, tasks);
   });
 };
 

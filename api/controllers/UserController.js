@@ -37,38 +37,25 @@ module.exports = {
 		});
 	},
 
-  info: function (req, res) {
-    var reqId = null;
-    if (req.user) {
-      reqId = req.user.id;
-    }
-    sails.services.utils.user.getUser(req.route.params.id, reqId, function (err, user) {
-      if (err) { return res.send(400, { message: err }); }
-      // prune out any info you don't want to be public here.
-      if (reqId !== req.route.params.id) user.username = null;
-      sails.log.debug('User Get:', user);
-      res.send(user);
-    });
-  },
-
   find: function(req, res) {
     // If the user is not logged in, return null object
     if (!req.user) {
-      return res.send(403, null);
+      return res.forbidden("Login required.");
     }
-    var reqId = req.user.id;
-    var userId = req.user.id;
     if (req.route.params.id) {
       userId = req.route.params.id;
-    }
-    sails.services.utils.user.getUser(userId, reqId, req.user, function (err, user) {
-      // this will only be shown to logged in users.
-      if (err) { return res.send(400, { message: err }); }
-      // non-strict equality test because params are strings
-      if (userId != reqId && !req.user.isAdmin) user.username = null;
-      sails.log.debug('User Get:', user);
-      res.send(user);
-    });
+			User.findOne(userId).populate('tags').populate('badges')
+			.exec(function(err, user){
+				sails.log.verbose('find (err user)',err,user);
+				if (err) return res.negotiate(err);
+				if (req.user.id != user.id && !req.user.isAdmin) user.username = null; // hide email address
+				user.isOwner = false;
+				return res.send(user);
+			});
+    } else {
+			req.user.isOwner = true;
+			return res.send(req.user);
+		}
   },
 
   findOne: function(req, res) {
@@ -91,43 +78,6 @@ module.exports = {
     });
   },
 
-  // Use default Blueprint template with filtered data to return full profiles
-  profile: function(req, res) {
-    if (!req.user) return res.forbidden();
-
-    // Lookup for records that match the specified criteria
-    var Model = actionUtil.parseModel(req),
-        where = _.omit(actionUtil.parseCriteria(req), 'access_token'),
-        query = Model.find()
-          .where(where)
-          .limit(actionUtil.parseLimit(req))
-          .skip(actionUtil.parseSkip(req))
-          .sort(actionUtil.parseSort(req));
-
-    query.exec(function found(err, matchingRecords) {
-      if (err) return res.serverError(err);
-
-      matchingRecords = _.reject(matchingRecords, 'disabled');
-      var ids  = matchingRecords.map(function(m) { return m.id; }),
-          reqId = req.user.id;
-
-      async.map(ids, function(userId, cb) {
-        sails.services.utils.user.getUser(userId, reqId, req.user, function (err, user) {
-          if (err) return cb(err);
-          if (userId !== reqId && !_.contains(where.username, user.username)) {
-            delete user.username;
-          }
-          delete user.emails;
-          delete user.auths;
-          cb(null, user);
-        });
-      }, function(err, results) {
-        if (err) { return res.send(400, err); }
-        res.ok(results);
-      });
-    });
-  },
-
   emailCount: function(req, res) {
     var testEmail = req.param('email');
     User.count({ username: testEmail }).exec(function(err, count) {
@@ -139,7 +89,7 @@ module.exports = {
   activities: function (req, res) {
 		sails.log.verbose('UserController.activities')
 		var userId = (req.user || req.params).id;
-		if (!userId) res.err("Cant't get activies: no user specified")
+		if (!userId) res.badRequest("Cant't get activies: no user specified")
     var result = {tasks: {created:[], volunteered:[]}};
 		// TODO: this should be refactored into User model
     async.parallel([
@@ -149,12 +99,13 @@ module.exports = {
           Task.findOne()
           .where({ id: vol.taskId })
           .exec(function(err, taskEntry) {
-            taskUtils.getMetadata(taskEntry, userId, function(err, newTask) {
-              if (!err) {
-                tasks.created.push(newTask);
-              }
+						// TODO
+            // taskUtils.getMetadata(taskEntry, userId, function(err, newTask) {
+            //   if (!err) {
+            //     tasks.created.push(newTask);
+            //   }
               return done(err);
-            });
+            // });
           });
         };
         Volunteer.find()

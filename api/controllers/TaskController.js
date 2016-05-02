@@ -10,19 +10,49 @@ var userUtil = require('../services/utils/user');
 var i18n = require('i18next');
 
 module.exports = {
+  // note: policy addUserId will make the logged in user the owner
+  create: function (req, res) {
+    var attrs = req.body;
+    sails.log.verbose("creating task:",attrs)
+    Task.create(attrs)
+    .then(function(task) {
+      task.owner = req.user.toJSON();
+      res.status(201); // created
+      res.json(task)
+    })
+    .catch(res.negotiate);
+  },
+
+  // by default update will populate with volunteers
+  // but the client doesn't expect that, so we override this
+  update: function (req, res) {
+    sails.log.verbose("update task:",req.body)
+    var taskId = req.params.id
+    Task.update({id: taskId}, req.body)
+    .then(function(tasks) {
+      res.status(200);    // created
+      res.json(tasks[0]); // tasks are unique by id
+    })
+    .catch(res.negotiate);
+  },
+
   find: function (req, res) {
-    sails.log.verbose('Task.find', req.task);
+    sails.log.verbose('Task.find', req.params);
     var user = req.user,
+        taskId = req.params['id'],
         where = {};
 
-    if (req.task) {
-      taskUtil.getMetadata(req.task, user, function (err) {
-        if (err) { return res.send(400, { message: i18n.t('taskAPI.errMsg.likes', 'Error looking up task likes.') }); }
-        taskUtil.getVolunteers(req.task, function (err) {
-          if (err) { return res.send(400, { message: i18n.t('taskAPI.errMsg.volunteers','Error looking up task volunteers.') }); }
-          sails.log.verbose('sending task:', req.task);
-          return res.send(req.task);
-        });
+    if (taskId) {
+      Task.findOneById(taskId)
+      .populate('tags')
+      .populate('owner')
+      .populate('volunteers')
+      .exec(function(err, task) {
+        if (err) { return res.negotiate(err) }
+        if (!task) { return res.notFound('Error finding task.'); }
+        task = task.authorized(user);
+        if (!task) { return res.forbidden('Task not found.'); }
+        return res.send(task);
       });
     } else {
       // Only show drafts for current user

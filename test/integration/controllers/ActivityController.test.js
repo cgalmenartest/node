@@ -45,11 +45,12 @@ describe('ActivityController', function() {
           user.completedTasks = 1;
 
           Badge.awardForTaskCompletion(task, user, function(err, badges) {
+            assert.isNull(err);
             agent.get('/api/activity/badges')
               .expect(200)
               .expect(function(res) {
-                assert(res.body.length, 1);
-                assert(res.body[0].badges.length, 1);
+                assert.equal(res.body.length, 1);
+                assert.equal(res.body[0].badges.length, 1, "there should be one badge");
               })
               .end(done)
           });

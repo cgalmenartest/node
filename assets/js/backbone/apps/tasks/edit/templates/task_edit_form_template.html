@@ -129,8 +129,8 @@
         <h3 style="display: inline-block;">Requestor</h3>
         <a id="change-owner" href="#">Change</a>
       </div>
-      <div class="project-people-show-div project-owner" data-userid="<%- data.userId %>">
-        <img src="/api/user/photo/<%- data.userId %>" alt="<%- data.owner.name %>"/>
+      <div class="project-people-show-div project-owner" data-userid="<%- data.owner.id %>">
+        <img src="/api/user/photo/<%- data.owner.id %>" alt="<%- data.owner.name %>"/>
         <label class="project-people-show-label"><%- data.owner.name %></label>
       </div>
       <div class="change-project-owner" style="display: none;">

@@ -48,7 +48,10 @@ describe('UserController', function() {
             assert.equal(res.body.username, newUserAttrs.username);
             assert.equal(res.body.name, newUserAttrs.name);
             assert.equal(res.body.id, 1);
+            assert.equal(res.body.isOwner, true);
             assert.isUndefined(res.body['password']);
+            assert.property(res.body, 'tags');
+            assert.property(res.body, 'badges');
           })
           .end(done)
       });

@@ -38,12 +38,13 @@ var Popovers = BaseComponent.extend({
     var popover = target.data('bs.popover');
     // if the data element isn't set or popovers not init'd, abort
     if ((_.isUndefined(target.data('userid'))) || (_.isUndefined(popover))) {
+      console.log('popoverPeopleOn data unavailable:', target.data('userid'));
       return;
     }
     target.popover('show');
     // Only load data if the popover hasn't previously been loaded
     if (popover.options.title == 'load') {
-      $.ajax({ url: '/api/user/info/' + target.data('userid') }).done(function(data) {
+      $.ajax({ url: '/api/user/' + target.data('userid') }).done(function(data) {
         var template = _.template(PopoverProfile)({data: data});
         popover.options.title = 'done';
         popover.options.content = template;
