@@ -140,13 +140,17 @@ module.exports = {
     ]);
 
     // Send mail over SMTP with node-mailer
-    sails.log.info('Sending SMTP message', options);
-    this._transport.sendMail(options, function (err, info) {
-      if (err) sails.log.error('Failed to send mail. If this is unexpected, ' +
-        'please check your email configuration in config/local.js.', err);
-      if (done) return done(err, info);
-    });
-
+    console.log('protocol', protocol);
+    if (protocol === '') {
+      sails.log.info('email OFF, would have sent:', options);
+    } else {
+      sails.log.info('Sending SMTP message', options);
+      this._transport.sendMail(options, function (err, info) {
+        if (err) sails.log.error('Failed to send mail. If this is unexpected, ' +
+          'please check your email configuration in config/local.js.', err);
+        if (done) return done(err, info);
+      });
+    }
   },
 
   // Mailer transport

@@ -19,11 +19,11 @@ before(function(done) {
     },
     models: {
       connection: 'testDB'
-    }
+    },
+    emailProtocol: ''
     // TODO: validateDomains: false,
     // TODO: requireAgency: false,
     // TODO: requireLocation: false,
-    // TODO: emailProtocol: '',
     // TODO: taskState: 'draft',
     // TODO: draftAdminOnly: false,
   };
