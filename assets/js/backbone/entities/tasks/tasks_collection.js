@@ -1,9 +1,8 @@
+'use strict';
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var TaskModel = require('./task_model');
-
-'use strict';
 
 var TasksCollection = Backbone.Collection.extend({
 

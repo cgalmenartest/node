@@ -166,10 +166,11 @@ global.validate = function (e) {
         $(parent).find('.error-' + o).hide();
       }
     }
+    var bits;
     if (o == 'email'){
       var correctLength = false;
-      if ( val != "" && val.indexOf("@") >= 2 ){
-        var bits = val.split("@");
+      if ( val !== "" && val.indexOf("@") >= 2 ){
+        bits = val.split("@");
         var addrBits = bits[1].split(".");
         if ( addrBits.length >=2 ) {
           for (i=0; i<addrBits.length; i++ ){
@@ -192,8 +193,8 @@ global.validate = function (e) {
     }
     if ( o== 'emaildomain'){
       var domain = $(e.currentTarget).data('emaildomain');
-      if ( val != "" && val.indexOf("@") >= 2 ){
-        var bits = val.split("@");
+      if ( val !== "" && val.indexOf("@") >= 2 ){
+        bits = val.split("@");
         if ( bits[1] != domain ){
           $(parent).find('.error-emaildomain').show();
           result = true;

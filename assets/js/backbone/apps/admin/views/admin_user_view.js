@@ -210,7 +210,7 @@ var AdminUserView = Backbone.View.extend({
 
   updateUser: function (t, data) {
     var self = this;
-    var spinner = $($(t.parent()[0]).children('.btn-spin')[0])
+    var spinner = $($(t.parent()[0]).children('.btn-spin')[0]);
     spinner.show();
     t.hide();
     if (data.url) {

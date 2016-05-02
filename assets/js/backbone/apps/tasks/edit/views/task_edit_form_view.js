@@ -257,7 +257,7 @@ var TaskEditFormView = Backbone.View.extend({
       }
 
       if ( owner ) { modelData[ 'userId' ] = owner.id; }
-      if ( completedBy != '' ) { modelData[ 'completedBy' ] = completedBy; }
+      if ( completedBy !== '' ) { modelData[ 'completedBy' ] = completedBy; }
       if ( newParticipant ) {
         if ( this.$( '#participant-notify:checked' ).length > 0 ) { silent = false; }
         $.ajax( {

@@ -211,7 +211,7 @@ var TaskShowController = BaseView.extend({
 
       // If user's profile has no name, ask them to enter one
       if (!window.cache.currentUser.name) {
-        var modalContent = _.template(UpdateNameTemplate)({});
+        var modalNameTemplate = _.template(UpdateNameTemplate)({});
         this.modalComponent = new ModalComponent({
           el: "#modal-volunteer",
           id: "update-name",
@@ -220,7 +220,7 @@ var TaskShowController = BaseView.extend({
         this.modalAlert = new ModalAlert({
           el: "#update-name .modal-template",
           modalDiv: '#update-name',
-          content: modalContent,
+          content: modalNameTemplate,
           validateBeforeSubmit: true,
           cancel: i18n.t('volunteerModal.cancel'),
           submit: i18n.t('volunteerModal.ok'),
@@ -244,7 +244,7 @@ var TaskShowController = BaseView.extend({
       // If user's profile doesn't location, ask them to enter one
       // Includes  quick check to make sure these fields are required
       else if (requiredTags.length !== 2 && (agencyRequired && locationRequired)) {
-        var modalContent = _.template(UpdateLocationAgencyTemplate)({});
+        var modalInfoTemplate = _.template(UpdateLocationAgencyTemplate)({});
         this.modalComponent = new ModalComponent({
           el: "#modal-volunteer",
           id: "update-profile",
@@ -253,7 +253,7 @@ var TaskShowController = BaseView.extend({
         this.modalAlert = new ModalAlert({
           el: "#update-profile .modal-template",
           modalDiv: '#update-profile',
-          content: modalContent,
+          content: modalInfoTemplate,
           validateBeforeSubmit: true,
           cancel: i18n.t('volunteerModal.cancel'),
           submit: i18n.t('volunteerModal.ok'),

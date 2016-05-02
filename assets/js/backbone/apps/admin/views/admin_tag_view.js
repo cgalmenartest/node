@@ -47,7 +47,7 @@ var AdminTagView = Backbone.View.extend({
     var $sel = this.tagFactory.createTagDropDown({
       type: type,
       selector: "#" + type,
-    })
+    });
 
     $sel.on('change', function(e) {
       var $el = self.$(e.currentTarget);

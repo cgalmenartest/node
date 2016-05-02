@@ -11,6 +11,10 @@ before(function(done) {
     log: {
       level: 'error'
     },
+    hooks: {
+      sockets: false,
+      pubsub: false
+    },
     csrf: false,
     connections: {
       testDB: {

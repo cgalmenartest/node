@@ -19,7 +19,7 @@ var ProfileSettingsView = Backbone.View.extend({
   render: function () {
     var data = {
       user: window.cache.currentUser || {}
-    }
+    };
     var template = _.template(ProfileSettingsTemplate)(data);
     this.$el.html(template);
     return this;

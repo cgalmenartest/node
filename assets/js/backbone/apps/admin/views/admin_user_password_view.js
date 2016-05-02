@@ -38,7 +38,7 @@ var AdminUserPasswordView = Backbone.View.extend({
     // validate input fields
     var validateIds = ['#newPassword'];
     var abort = false;
-    for (i in validateIds) {
+    for (var i in validateIds) {
       var iAbort = validate({ currentTarget: validateIds[i] });
       abort = abort || iAbort;
     }

@@ -91,10 +91,10 @@ var ProfileShowView = Backbone.View.extend({
   },
 
   getTags: function(types) {
-    var allTags = this.model.attributes.tags
+    var allTags = this.model.attributes.tags;
     var result = _.filter(allTags, function(tag) {
       return _.contains(types, tag.type);
-    })
+    });
     return result;
   },
   render: function () {

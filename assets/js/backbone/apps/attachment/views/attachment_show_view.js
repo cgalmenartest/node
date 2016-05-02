@@ -72,13 +72,14 @@ var AttachmentShowView = Backbone.View.extend({
         );
       },
       done: function (e, data) {
+        var result;
         // for IE8/9 that use iframe
         if (data.dataType == 'iframe text') {
-          var result = JSON.parse(data.result);
+          result = JSON.parse(data.result);
         }
         // for modern XHR browsers
         else {
-          var result = JSON.parse($(data.result).text());
+          result = JSON.parse($(data.result).text());
         }
 
         // store id in the database with the file
@@ -104,7 +105,7 @@ var AttachmentShowView = Backbone.View.extend({
         if (data.jqXHR.status == 413) {
           message = "The uploaded file exceeds the maximum file size.";
         }
-        self.$(".file-upload-alert > span").html(message)
+        self.$(".file-upload-alert > span").html(message);
         self.$(".file-upload-alert").show();
       }
     });

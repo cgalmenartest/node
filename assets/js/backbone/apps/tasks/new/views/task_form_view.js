@@ -173,7 +173,7 @@ var TaskFormView = Backbone.View.extend({
       });
     } else {
       $modal.hide();
-    };
+    }
 
   },
 

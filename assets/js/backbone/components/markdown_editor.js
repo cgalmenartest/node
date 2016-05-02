@@ -119,7 +119,7 @@ var MarkdownEditor = BaseComponent.extend({
         after = '';
       }
       // set placeholder text if no text is selected by the user
-      if (selText == '') {
+      if (selText === '') {
         selText = this.actions[editData].text;
       }
       // insert markdown syntax

@@ -1,9 +1,8 @@
+'use strict';
 var _ = require('underscore');
 var Backbone = require('backbone');
 var CommentModel = require('./comment_model');
 var CommentListController = require('../../apps/comments/list/controllers/comment_list_controller');
-
-'use strict';
 
 var CommentCollection = Backbone.Collection.extend({
 

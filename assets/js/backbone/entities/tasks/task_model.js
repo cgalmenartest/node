@@ -1,7 +1,6 @@
+'use strict';
 var _ = require('underscore');
 var Backbone = require('backbone');
-
-'use strict';
 
 var TaskModel = Backbone.Model.extend({
 
