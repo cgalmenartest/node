@@ -41,7 +41,7 @@ describe('ActivityController', function() {
 
       Task.create({'userId': user.id}).then(function(newTask) {
         task = newTask;
-        Task.update(task.id, {state: 'completed'}).exec(function (err, updated_task) {
+        Task.update(task.id, {id: task.id, state: 'completed'}).exec(function (err, updated_task) {
           user.completedTasks = 1;
 
           Badge.awardForTaskCompletion(task, user, function(err, badges) {

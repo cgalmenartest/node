@@ -91,6 +91,27 @@ module.exports = {
     }
     done();
   },
+
+  beforeCreate: function(values, done) {
+    // If configured, validate that user has an email from a valid domain
+    if (sails.config.validateDomains && sails.config.domains) {
+      var domains = sails.config.domains.map(function(domain) {
+            return new RegExp(domain.replace(/\./g, '\.') + '$');
+          });
+      if (!_.find(domains, function(domain) {
+        return domain.test(values.username.split('@')[1]);
+      })) return done('invalid domain');
+    }
+    done();
+  },
+
+  afterCreate: function(model, done) {
+    Notification.create({
+      action: 'user.create.welcome',
+      model: model
+    }, done);
+  },
+
   // Note: this can be used to create admin users
   // relies on filtering in controller actions for safety
   register: function(attributes, done) {

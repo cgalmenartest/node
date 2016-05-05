@@ -28,6 +28,7 @@ module.exports = {
   update: function (req, res) {
     sails.log.verbose("update task:",req.body)
     var taskId = req.params.id
+    req.body.id = taskId;
     Task.update({id: taskId}, req.body)
     .then(function(tasks) {
       res.status(200);    // created

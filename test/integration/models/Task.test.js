@@ -52,7 +52,7 @@ describe('TaskModel', function() {
     });
     describe('state', function() {
       it('submitted sets submittedAt', function(done) {
-        Task.update(task.id, {state: 'submitted'}).exec(function (err, updated_task) {
+        Task.update(task.id, {id: task.id, state: 'submitted'}).exec(function (err, updated_task) {
           if ( err ) { return done( err ); }
           assert(updated_task[0].submittedAt <= new Date(), 'submittedAt not set');
           done();
@@ -271,4 +271,5 @@ describe('TaskModel', function() {
       });
     });
   });
+
 });

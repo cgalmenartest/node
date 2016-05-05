@@ -5,6 +5,38 @@
 // TODO:  var exportUtils = require('../services/utils/export'),
 //   moment = require('moment');
 
+// handle a possible state change for an existing task
+// (always a state "change" for a new task)
+// update values with dates and return action
+function handleStateChange(values, task) {
+  // If task state hasn't changed, continue
+  if (task && task.state === values.state) return null;
+
+  // If new task or state has changed, update timestamps
+  var action = null;
+  switch (values.state) {
+    case 'submitted':
+      values.submittedAt = new Date();
+      action = 'task.update.submitted';
+      break;
+    case 'open':
+      values.publishedAt = new Date();
+      action = 'task.update.opened';
+      break;
+    case 'assigned':
+      values.assignedAt = new Date();
+      action = 'task.update.assigned';
+      break;
+    case 'completed':
+      values.completedAt = new Date();
+      action = 'task.update.completed';
+      task && task.volunteersCompleted();
+      break;
+  }
+  return action;
+}
+
+
 module.exports = {
 
   attributes: {
@@ -168,94 +200,68 @@ module.exports = {
   */
 
   beforeUpdate: function(values, done) {
+    sails.log.verbose("Task.beforeUpdate", values)
     Task.findOne({ id: values.id }).exec(function(err, task) {
       if (err) return done(err);
-
-      // If task state hasn't changed, continue
-      if (task && task.state === values.state) return done();
-
-      // If new task or state has changed, update timestamps
-      var action = false;
-      switch (values.state) {
-        case 'submitted':
-          values.submittedAt = new Date();
-          action = 'task.update.submitted';
-          break;
-        case 'open':
-          values.publishedAt = new Date();
-          action = 'task.update.opened';
-          break;
-        case 'assigned':
-          values.assignedAt = new Date();
-          action = 'task.update.assigned';
-          break;
-        case 'completed':
-          values.completedAt = new Date();
-          action = 'task.update.completed';
-          task && task.volunteersCompleted();
-          break;
+      if (!task) {
+        sails.log.error('beforeUpdate no task found', values);
+        return done({message: "task not found for id: " + values.id });
       }
+      var action = handleStateChange(values, task);
 
       // If no notification specified, continue
-      if (!values.id || !action) return done();
+      if (!action) return done();
 
       // Set up notification for updates (needs to happen here instead
       // of afterUpdate so we can compare to see if state changed)
-      // TODO: Notification
-      // Notification.create({
-      //   action: action,
-      //   model: values,
-      // }, done);
-      done();
+      for (var attr in values) { task[attr] = values[attr]; }
+      Notification.create({
+        action: action,
+        model: task,
+      }, done);
+
     });
   },
+
   afterUpdate: function(task, done) {
+    sails.log.verbose("Task.afterUpdate", task)
     var self = this;
     var ownerId = task.owner;
     Task.find({ userId: ownerId }).populate('tags').exec(function(err, tasks) {
       if (err) return done(err);
-      Badge.awardForTaskPublish(tasks, ownerId);
-      done();
+      Badge.awardForTaskPublish(tasks, ownerId, done);
     });
   },
+
   beforeCreate: function(values, done) {
     sails.log.verbose("Task.beforeCreate")
-      // If default state is not draft, we need to set dates
-    this.beforeUpdate(values, done);
+    // If initial state is not draft, we need to set dates
+    handleStateChange(values);
+    done();
   },
 
   /*
    * After creation of the model, the
    */
   afterCreate: function(model, done) {
-    sails.log.verbose("Task.afterCreate")
+    sails.log.verbose("Task.afterCreate", model)
 
     if ('draft' === model.state) {
-
-      if (model.createdAt === model.updatedAt) {
-        // TODO: notification
-        // Notification.create({
-        //
-        //   action: 'task.create.draft',
-        //   model: model,
-        //
-        // }, done);
-        done();
+      // afterCreate model.createdAt and updatedAt are strings
+      // so cast to compare for consistency
+      if (String(model.createdAt) == String(model.updatedAt)) {
+        Notification.create({
+          action: 'task.create.draft',
+          model: model,
+        }, done);
       } else {
-
         done();
-
       }
-
     } else {
-      // TODO: notification
-      // Notification.create({
-      //
-      //   action: 'task.create.thanks',
-      //   model: model,
-      //
-      // }, done);
-      done();
+      Notification.create({
+        action: 'task.create.thanks',
+        model: model,
+      }, done);
     }
 
   },
