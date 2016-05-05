@@ -57,6 +57,19 @@ describe('NotificationModel', function() {
 
   describe('#trigger', function() {
     var user, task;
+
+    function checkTriggerEmail(data, done) {
+      var email;
+      Notification._transport.sendMail = function mockSend(options, cb) {
+        email = options;
+        cb(null);
+      };
+      Notification.trigger(data, function(err, info) {
+        assert.isNull(err);
+        done(err, email);
+      });
+    }
+
     before(function(done) {
       User.create(userFixtures.minAttrs)
       .then(function(newUser) {
@@ -72,15 +85,14 @@ describe('NotificationModel', function() {
     after(function() {
       sails.config.emailProtocol = '';
     })
+
     it('user.create.welcome', function (done) {
-      Notification._transport.sendMail = function mockSend(options, cb) {
-         console.log('==> sendMail', options)
-         cb(null);
-      };
-      Notification.trigger({action: 'user.create.welcome', model:user}, function(err, info) {
-        assert.isNull(err);
+      data = {action: 'user.create.welcome', model:user}
+      checkTriggerEmail(data, function(err, email) {
+        assert.equal(email.to, user.username);
+        assert.equal(email.subject, "Welcome to "+sails.config.systemName);
         done();
-      });
+      })
     });
   });
 
