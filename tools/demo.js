@@ -1,7 +1,4 @@
-var async = require("async");
-var fs = require("fs");
 var Promise = require('bluebird');
-
 var Sails = require('sails').constructor;
 var sailsApp = new Sails();
 
@@ -15,10 +12,12 @@ dbTools.checkTableSetup('midas_user')
   return sailsLift({
       log: {
         level: 'error'
-      }
+      },
+      emailProtocol: ''
     });
 })
 .then(function(liftedApp) {
+  // Note that liftedApp === sailsApp
   console.log('config connections:', liftedApp.config.connections);
   console.log('config models.connection:', liftedApp.config.models.connection);
   return sailsModel.importFromFile(sails.models['user'], dataDir + '/users.csv');
@@ -30,7 +29,6 @@ dbTools.checkTableSetup('midas_user')
 .then(function(tasks) {
   console.log('new tasks created: ', tasks);
   console.log("Sails app lifted successfully: http://localhost:"+sailsApp.config.port);
-  // Note that liftedApp === sailsApp
 })
 .catch(function(err) {
   console.log('err: ', err)
