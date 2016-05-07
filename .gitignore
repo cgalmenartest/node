@@ -1,6 +1,9 @@
 lib-cov
 coverage/*
 
+# don't want to check it in temporary import data
+tools/import/*
+
 pids
 logs
 results
