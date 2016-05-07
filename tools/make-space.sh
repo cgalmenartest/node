@@ -15,7 +15,7 @@ fi
 SPACE=$1
 echo "making Cloud Foundry space: ${SPACE}"
 
-set -o verbose  # echo commands as we go
+set -xv  # echo commands as we go
 
 cf create-space $SPACE
 cf target -s $SPACE
@@ -28,17 +28,19 @@ cf create-service s3 basic s3-midas-assets
 export CREDS_FILE="$(< ./tools/credentials.json)"
 export CREDS="'{${CREDS_FILE//[$'\t\r\n ']}}'"
 
-# do this on the shell
-echo "next run this on the command line:"
-echo '  cf create-user-provided-service env-openopps -p "$CREDS"'
+set +xv  # turn debugging off
 
-# TODO: does this work in the script?
-# echo "$CREDS" | xargs -0 cf create-user-provided-service env-openopps -p
+echo "setting up new space with these enviorment settings"
+echo $CREDS
+echo "$CREDS" | xargs -0 cf create-user-provided-service env-openopps -p
+
+# might need to do something like this manually, ^^^ still needs testing
+# cf create-user-provided-service env-openopps -p "$CREDS"
 
 echo "go to your openopps-platform directory"
 echo "create a manifest-$SPACE.yml file"
 echo "deploy the app with:"
-echo "  cf push -f manifest-new.yml"
+echo "  cf push -f manifest-$SPACE.yml"
 echo "creating the rds service created a database"
 echo "we need schema and initial data"
 echo "so as a one-time thing:"
