@@ -52,6 +52,12 @@ module.exports = {
     userId: 1,
     tags: [tags.oneTime]
   },
+  'oneTimeOpen': {
+    title: 'Fake one time task',
+    state: 'open',
+    userId: 1,
+    tags: [tags.oneTime]
+  },
   'oneTime': {
     title: 'Fake one time task',
     userId: 1,

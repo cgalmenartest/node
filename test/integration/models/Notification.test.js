@@ -128,6 +128,58 @@ describe('Notification model', function() {
         })
       });
     });
+    describe('for open task', function() {
+      beforeEach(function(done) {
+        Task.create(taskFixtures.oneTimeOpen)
+        .then(function(newTask) {
+          task = newTask;
+          done();
+        });
+      });
+
+      it('task.update.assigned', function (done) {
+        data = {action: 'task.update.assigned', model:task}
+        checkTriggerEmail(data, function(err, email) {
+          assert.equal(email.cc, user.username);
+          done();
+        })
+      });
+      it('task.update.completed', function (done) {
+        data = {action: 'task.update.completed', model:task}
+        checkTriggerEmail(data, function(err, email) {
+          assert.equal(email.cc, user.username);
+          done();
+        })
+      });
+      it('task.update.opened', function (done) {
+        data = {action: 'task.update.opened', model:task}
+        checkTriggerEmail(data, function(err, email) {
+          assert.equal(email.to, user.username);
+          done();
+        })
+      });
+      it('task.update.submitted', function (done) {
+        data = {action: 'task.update.submitted', model:task}
+        checkTriggerEmail(data, function(err, email) {
+          assert.equal(email.to, user.username);
+          done();
+        })
+      });
+      it('task.due.soon', function (done) {
+        data = {action: 'task.due.soon', model:task}
+        checkTriggerEmail(data, function(err, email) {
+          assert.equal(email.cc, user.username);
+          done();
+        })
+      });
+      it('task.due.today', function (done) {
+        data = {action: 'task.due.today', model:task}
+        checkTriggerEmail(data, function(err, email) {
+          assert.equal(email.cc, user.username);
+          done();
+        })
+      });
+    });
 
   });
 
