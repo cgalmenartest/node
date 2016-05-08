@@ -124,6 +124,15 @@ describe('UserModel', function() {
 
           });
       });
+      it('should notify user.create.welcome', function (done) {
+          Notification.find().limit(1).sort('id DESC')
+          .then(function(notifications) {
+            assert.equal(notifications.length, 1, 'a notification should have been generated');
+            assert.equal(notifications[0].action, 'user.create.welcome');
+            assert.equal(notifications[0].model.username, user.username);
+            done();
+          }).catch(done);
+      });
     });
     describe('with invalid params', function() {
       it ('should fail with invalid user name', function(done) {

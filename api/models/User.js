@@ -105,13 +105,6 @@ module.exports = {
     done();
   },
 
-  afterCreate: function(model, done) {
-    Notification.create({
-      action: 'user.create.welcome',
-      model: model
-    }, done);
-  },
-
   // Note: this can be used to create admin users
   // relies on filtering in controller actions for safety
   register: function(attributes, done) {
@@ -138,7 +131,14 @@ module.exports = {
           });
         }
 
-        done(null, user);
+        Notification.create({
+          action: 'user.create.welcome',
+          model: user
+        }, function(err, notification) {
+          if (err) return done(err);
+          return done(null, user);
+        });
+
       });
     });
 
