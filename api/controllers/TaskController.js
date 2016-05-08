@@ -14,7 +14,7 @@ module.exports = {
   create: function (req, res) {
     var attrs = req.body;
     sails.log.verbose("creating task:",attrs)
-    Task.create(attrs)
+    Task.createAction(attrs)
     .then(function(task) {
       task.owner = req.user.toJSON();
       res.status(201); // created

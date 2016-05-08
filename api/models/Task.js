@@ -238,37 +238,38 @@ module.exports = {
     },
   */
 
-  beforeCreate: function(values, done) {
-    sails.log.verbose("Task.beforeCreate", values)
-    // If initial state is not draft, we need to set dates
+  // encapsulates all domain logic and dependencies (notifcation, badges)
+  // for when a user creates a task
+  createAction: function(values) {
+    sails.log.verbose("Task.createAction", values)
     handleStateChange(values);
-    done();
-  },
 
-  /*
-   * After creation of the model, the
-   */
-  afterCreate: function(model, done) {
-    sails.log.verbose("Task.afterCreate", model)
-
-    if ('draft' === model.state) {
-      // afterCreate model.createdAt and updatedAt are strings
-      // so cast to compare for consistency
-      if (String(model.createdAt) == String(model.updatedAt)) {
-        Notification.create({
-          action: 'task.create.draft',
-          model: model,
-        }, done);
+    var promise = Task.create(values)
+    .then(function(task) {
+      if ('draft' === task.state) {
+        // afterCreate model.createdAt and updatedAt are strings
+        // so cast to compare for consistency
+        if (String(task.createdAt) == String(task.updatedAt)) {
+          return Notification.create({
+            action: 'task.create.draft',
+            model: task,
+          }).then(function(notification) {
+            return task;
+          });
+        } else {
+          return task;
+        }
       } else {
-        done();
+        return Notification.create({
+          action: 'task.create.thanks',
+          model: task,
+        }).then(function(notification) {
+          return task;
+        });
       }
-    } else {
-      Notification.create({
-        action: 'task.create.thanks',
-        model: model,
-      }, done);
-    }
+    });
 
+    return promise;
   },
 
   // TODO: notifications
