@@ -33,6 +33,7 @@ function handleStateChange(values, task) {
       task && task.volunteersCompleted();
       break;
   }
+  sails.log.verbose('handleStateChange action:', action)
   return action;
 }
 
@@ -204,13 +205,15 @@ module.exports = {
     Task.findOne({ id: values.id }).exec(function(err, task) {
       if (err) return done(err);
       if (!task) {
-        sails.log.error('beforeUpdate no task found', values);
-        return done({message: "task not found for id: " + values.id });
+        // beforeUpdate seems to be called with { owner: null }
+        // after it is called with the real values...
+        // this will ignore that spurious call
+        return done(null);
       }
       var action = handleStateChange(values, task);
 
       // If no notification specified, continue
-      if (!action) return done();
+      if (!action) return done(null);
 
       // Set up notification for updates (needs to happen here instead
       // of afterUpdate so we can compare to see if state changed)
@@ -234,7 +237,7 @@ module.exports = {
   },
 
   beforeCreate: function(values, done) {
-    sails.log.verbose("Task.beforeCreate")
+    sails.log.verbose("Task.beforeCreate", values)
     // If initial state is not draft, we need to set dates
     handleStateChange(values);
     done();

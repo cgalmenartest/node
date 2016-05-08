@@ -4,7 +4,7 @@ var taskFixtures = require('../../fixtures/task');
 var userFixtures = require('../../fixtures/user');
 var _ = require('lodash');
 
-describe('TaskModel', function() {
+describe('Task model', function() {
   var task;
 
   describe('default properties', function() {
@@ -50,101 +50,126 @@ describe('TaskModel', function() {
       });
 
     });
-    describe('state', function() {
-      it('submitted sets submittedAt', function(done) {
-        Task.update(task.id, {id: task.id, state: 'submitted'}).exec(function (err, updated_task) {
-          if ( err ) { return done( err ); }
-          assert(updated_task[0].submittedAt <= new Date(), 'submittedAt not set');
-          done();
-        });
-      });
-    });
-    describe('.authorized', function() {
-      describe('without user', function() {
-        it('draft and submitted tasks are hidden', function(done) {
-          _(['draft', 'submitted'])
-            .forEach(function(state) {
-              // we have a fixture named for each state
-              var task = new Task._model(taskFixtures[state]);
-              result = task.authorized(null);
-              assert.equal(result, null, "for state "+state);
-            })
-          done();
-        });
-        it('public tasks are visible', function(done) {
-          _(['open', 'assigned', 'completed', 'archived'])
-            .forEach(function(state) {
-              // we have a fixture named for each state
-              var task = new Task._model(taskFixtures[state]);
-              result = task.authorized(null);
-              assert.equal(result, task);
-            })
-          done();
-        });
-      });
-      describe('with user not owner', function() {
-        var owner, user;
-        beforeEach(function(done) {
-          owner = 1;
-          User.create(userFixtures.minAttrs)
-          .then(function() {
-            done();
-          });
-        });
-        it('draft tasks are hidden', function(done) {
-          Task.create(taskFixtures.draft)
-          .then(function(task) {
-            task.userId = owner;
-            result = task.authorized(user);
-            assert.equal(result, null);
-            done();
-          })
-        });
-      });
-      describe('with user owner', function() {
-        var owner, user;
-        beforeEach(function(done) {
-          User.create(userFixtures.minAttrs)
-          .then(function(newUser) {
-            user = newUser;
-            done();
-          })
-          .catch(done);
-        });
-        it('draft tasks are visible', function(done) {
-          Task.create(taskFixtures.draft)
-          .then(function(newTask) {
-            result = newTask.authorized(user);
-            assert.equal(result, newTask);
-            done();
-          })
-          .catch(done);
-        });
-      });
 
+  });
+  describe('draft task', function() {
+    beforeEach(function(done) {
+      Task.create(taskFixtures.draft).then(function(newTask) {
+        task = newTask;
+        done();
+      })
+      .catch(done);
     });
-    describe('#authorized', function() {
-      var task, user;
+    it('submitted sets submittedAt', function(done) {
+      Task.update(task.id, {id: task.id, state: 'submitted'}).exec(function (err, updated_task) {
+        if ( err ) { return done( err ); }
+        assert(updated_task[0].submittedAt <= new Date(), 'submittedAt not set');
+        done();
+      });
+    });
+  });
+  describe('submitted task', function() {
+    beforeEach(function(done) {
+      Task.create(taskFixtures.submitted).then(function(newTask) {
+        task = newTask;
+        done();
+      })
+      .catch(done);
+    });
+    it('open sets publishedAt', function(done) {
+      Task.update(task.id, {id: task.id, state: 'open'}).exec(function (err, updated_task) {
+        if ( err ) { return done( err ); }
+        assert(updated_task[0].publishedAt <= new Date(), 'publishedAt not set');
+        done();
+      });
+    });
+  });
+
+  describe('.authorized', function() {
+    describe('without user', function() {
+      it('draft and submitted tasks are hidden', function(done) {
+        _(['draft', 'submitted'])
+          .forEach(function(state) {
+            // we have a fixture named for each state
+            var task = new Task._model(taskFixtures[state]);
+            result = task.authorized(null);
+            assert.equal(result, null, "for state "+state);
+          })
+        done();
+      });
+      it('public tasks are visible', function(done) {
+        _(['open', 'assigned', 'completed', 'archived'])
+          .forEach(function(state) {
+            // we have a fixture named for each state
+            var task = new Task._model(taskFixtures[state]);
+            result = task.authorized(null);
+            assert.equal(result, task);
+          })
+        done();
+      });
+    });
+    describe('with user not owner', function() {
+      var owner, user;
+      beforeEach(function(done) {
+        owner = 1;
+        User.create(userFixtures.minAttrs)
+        .then(function() {
+          done();
+        });
+      });
+      it('draft tasks are hidden', function(done) {
+        Task.create(taskFixtures.draft)
+        .then(function(task) {
+          task.userId = owner;
+          result = task.authorized(user);
+          assert.equal(result, null);
+          done();
+        })
+      });
+    });
+    describe('with user owner', function() {
+      var owner, user;
       beforeEach(function(done) {
         User.create(userFixtures.minAttrs)
         .then(function(newUser) {
           user = newUser;
-          return Task.create(taskFixtures.open)
-        })
-        .then(function(newTask) {
-          task = newTask;
           done();
         })
-        .catch(done)
+        .catch(done);
       });
-      it('returns the authorized task', function(done) {
-        Task.authorized(task.id, user, function(err, result) {
-          assert.isNull(err);
-          assert.isNotNull(result);
-          assert.equal(result.id, task.id);
-          assert.equal(result.isOwner, true);
+      it('draft tasks are visible', function(done) {
+        Task.create(taskFixtures.draft)
+        .then(function(newTask) {
+          result = newTask.authorized(user);
+          assert.equal(result, newTask);
           done();
-        });
+        })
+        .catch(done);
+      });
+    });
+
+  });
+  describe('#authorized', function() {
+    var task, user;
+    beforeEach(function(done) {
+      User.create(userFixtures.minAttrs)
+      .then(function(newUser) {
+        user = newUser;
+        return Task.create(taskFixtures.open)
+      })
+      .then(function(newTask) {
+        task = newTask;
+        done();
+      })
+      .catch(done)
+    });
+    it('returns the authorized task', function(done) {
+      Task.authorized(task.id, user, function(err, result) {
+        assert.isNull(err);
+        assert.isNotNull(result);
+        assert.equal(result.id, task.id);
+        assert.equal(result.isOwner, true);
+        done();
       });
     });
   });
