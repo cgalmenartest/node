@@ -2,6 +2,7 @@
     :: Task
     -> model
 ---------------------*/
+var Promise = require('bluebird');
 // TODO:  var exportUtils = require('../services/utils/export'),
 //   moment = require('moment');
 
@@ -129,6 +130,43 @@ module.exports = {
         });
       });
     },
+
+    // this is called when a human is performing an update action
+    // on the task, use this instead of the class method
+    // when all of the domain logic needs to be followed
+    updateAction: function(values) {
+      var task = this;
+      sails.log.verbose("task.updateAction", values)
+      var action = handleStateChange(values, task);
+      values.id = task.id;
+      var promise =
+        Task.update(task.id, values)
+        .then(function(updatedTasks) {
+          var updatedTask = updatedTasks[0];
+          sails.log.verbose('task updated, action:', action);
+          // If no notification specified, continue
+          if (!action) return updatedTask;
+
+          return Notification.create({
+            action: action,
+            model: updatedTask,
+          })
+          .then(function(notification) {
+            return updatedTask;
+          });
+        })
+        .then(function(updatedTask) {
+          var ownerId = updatedTask.owner;
+          return Task.find({ userId: ownerId }).populate('tags').then(function(tasks) {
+            var awardBadge = Promise.promisify(Badge.awardForTaskPublish, {context: Badge});
+            return awardBadge(tasks, ownerId).then(function(badge) {
+              sails.log.verbose('awardForTaskPublish completed', badge);
+              return updatedTask;
+            });
+          });
+        });
+      return promise;
+    }
   },
 
   //** CLASS METHODS **
@@ -199,42 +237,6 @@ module.exports = {
       'completion_date': {field: 'completedAt', filter: exportUtils.excelDateFormat},
     },
   */
-
-  beforeUpdate: function(values, done) {
-    sails.log.verbose("Task.beforeUpdate", values)
-    Task.findOne({ id: values.id }).exec(function(err, task) {
-      if (err) return done(err);
-      if (!task) {
-        // beforeUpdate seems to be called with { owner: null }
-        // after it is called with the real values...
-        // this will ignore that spurious call
-        return done(null);
-      }
-      var action = handleStateChange(values, task);
-
-      // If no notification specified, continue
-      if (!action) return done(null);
-
-      // Set up notification for updates (needs to happen here instead
-      // of afterUpdate so we can compare to see if state changed)
-      for (var attr in values) { task[attr] = values[attr]; }
-      Notification.create({
-        action: action,
-        model: task,
-      }, done);
-
-    });
-  },
-
-  afterUpdate: function(task, done) {
-    sails.log.verbose("Task.afterUpdate", task)
-    var self = this;
-    var ownerId = task.owner;
-    Task.find({ userId: ownerId }).populate('tags').exec(function(err, tasks) {
-      if (err) return done(err);
-      Badge.awardForTaskPublish(tasks, ownerId, done);
-    });
-  },
 
   beforeCreate: function(values, done) {
     sails.log.verbose("Task.beforeCreate", values)

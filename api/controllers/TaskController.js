@@ -26,13 +26,14 @@ module.exports = {
   // by default update will populate with volunteers
   // but the client doesn't expect that, so we override this
   update: function (req, res) {
-    sails.log.verbose("update task:",req.body)
+    sails.log.verbose("update task:",req.task)
+    sails.log.verbose("values:",req.body)
     var taskId = req.params.id
     req.body.id = taskId;
-    Task.update({id: taskId}, req.body)
-    .then(function(tasks) {
+    req.task.updateAction(req.body)
+    .then(function(task) {
       res.status(200);    // created
-      res.json(tasks[0]); // tasks are unique by id
+      res.json(task); // tasks are unique by id
     })
     .catch(res.negotiate);
   },

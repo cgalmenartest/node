@@ -52,24 +52,6 @@ describe('Notification events', function() {
           done();
         }).catch(done);
     });
-    // this is testing a lot of things, but it is really the
-    // important end-user effect and we don't really test
-    // this integration elsewhere
-    it('when published, should create update and badge events', function(done) {
-      Task.update(task.id, {id:task.id, state: 'open'})
-      .then(function(openTask) {
-        return Notification.find().limit(2).sort('id DESC')
-      })
-      .then(function(notifications) {
-        assert.equal(notifications.length, 2, 'notifications should have been found');
-        assert.equal(notifications[0].action, 'badge.create.owner');
-        assert.equal(notifications[0].model.badge.type, 'instigator');
-        assert.equal(notifications[1].action, 'task.update.opened');
-        assert.equal(notifications[1].model.title, task.title);
-        // assert.equal(notifications[1].model.title, task.title);
-        done();
-      }).catch(done);
-    })
   });
 
 
