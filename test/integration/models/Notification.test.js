@@ -179,6 +179,32 @@ describe('Notification model', function() {
           done();
         })
       });
+
+      describe('with volunteer', function() {
+        var emmy;
+        var volunteer;
+        beforeEach(function(done) {
+          User.create(userFixtures.emmy)
+          .then(function(newUser) {
+            emmy = newUser;
+            return Volunteer.create({userId:emmy.id, taskId:task.id})
+          })
+          .then(function(newVolunteer) {
+            volunteer = newVolunteer;
+            done();
+          });
+        });
+        it('volunteer.create.thanks', function (done) {
+          data = {action: 'volunteer.create.thanks', model:volunteer}
+          checkTriggerEmail(data, function(err, email) {
+            assert.equal(email.to, emmy.username);
+            assert.equal(email.cc, user.username);
+            done();
+          })
+        });
+
+      });
+
     });
 
   });
