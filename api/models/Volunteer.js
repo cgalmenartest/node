@@ -5,6 +5,8 @@
  * @description :: Stores volunteer information for tasks
  *
  */
+var Promise = require('bluebird');
+
 module.exports = {
 
   attributes: {
@@ -28,18 +30,22 @@ module.exports = {
     },
 
   },
-  afterCreate: function ( model, done ) {
+  createAction: function(values) {
+    var promise = Volunteer.create(values)
+    .then(function(newVolunteer) {
+      var assign = Promise.promisify(Volunteer.assignVolunteerCountBadges);
+      return assign(newVolunteer).then(function() {
+        if ( true === newVolunteer.silent ) { return newVolunteer; }
 
-    this.assignVolunteerCountBadges( model , function(err) {
-      if (err) return done(err);
-
-      if ( true === model.silent ) { return done(); }
-
-      Notification.create( {
-        action: 'volunteer.create.thanks',
-        model: model,
-      }, done );
+        return Notification.create({
+          action: 'volunteer.create.thanks',
+          model: newVolunteer
+        }).then(function() {
+          return newVolunteer;
+        });
+      });
     });
+    return promise;
   },
 
   afterDestroy: function(model, done) {

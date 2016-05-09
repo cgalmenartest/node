@@ -25,7 +25,7 @@ function createVolunteers(users, task) {
   var promises = [];
   var resolver = Promise.defer();
   Promise.each(users, function(user, index, length) {
-    var promise = Volunteer.create({user: users[index].id, taskId: task});
+    var promise = Volunteer.createAction({user: users[index].id, taskId: task});
 
     promises.push(promise);
 
@@ -58,7 +58,7 @@ describe('Volunteer model', function() {
       createUsers(1).then(function(users) {
         var user = users[0];
 
-        Volunteer.create({userId: user.id, taskId: task.id}).then(function(volunteer) {
+        Volunteer.createAction({userId: user.id, taskId: task.id}).then(function(volunteer) {
           assert.equal(volunteer.userId, user.id);
           assert.equal(volunteer.task, task.id);
 
