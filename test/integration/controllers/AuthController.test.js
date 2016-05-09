@@ -82,14 +82,52 @@ describe('AuthController', function() {
           .end(done)
       })
     });
-
-    it('should forgot password', function (done) {
-      request(sails.hooks.http.app)
-        .post('/api/auth/forgot')
-        .send({username: newUserAttrs.username})
-        .expect(302)
-        .end(done)
-    });
   });
+  describe('with a registered user', function() {
+    var user;
+    beforeEach(function(done) {
+      User.create(userFixtures.minAttrs)
+      .then(function(newUser) {
+          user = newUser;
+          done();
+      })
+      .catch(done);
+    });
+    describe('forgot password', function() {
+      it('should respond with success when email is valid', function (done) {
+        request(sails.hooks.http.app)
+          .post('/api/auth/forgot')
+          .send({username: user.username})
+          .expect(200)
+          .expect(function(res) {
+            assert.deepEqual(res.body, {
+                  success:true,
+                  email: user.username
+            });
+          })
+          .end(done)
+      });
+      it('should report error when email is blank', function (done) {
+        request(sails.hooks.http.app)
+          .post('/api/auth/forgot')
+          .send({username: ''})
+          .expect(400)
+          .expect(function(res) {
+            assert.equal(res.body.message, 'You must enter an email address.');
+          })
+          .end(done)
+      });
+      it('should report error when email is invalid', function (done) {
+        request(sails.hooks.http.app)
+          .post('/api/auth/forgot')
+          .send({username: 'foo'})
+          .expect(400)
+          .expect(function(res) {
+            assert.equal(res.body.message, 'Please enter a valid email address.');
+          })
+          .end(done)
+      });
 
+    })
+  });
 });

@@ -69,6 +69,15 @@ describe('UserModel', function() {
           done();
       });
     });
+    describe('#forgotPassword', function() {
+      xit('creates password reset', function (done) {
+        User.forgotPassword(createAttrs.username)
+        .then(function(token) {
+          assert.isNotNull(token)
+        })
+        done();
+      });
+    });
   }); // 'new user'
 
   describe('#register', function() {

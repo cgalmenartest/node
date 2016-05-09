@@ -30,6 +30,12 @@ module.exports.policies = {
   AdminController : {
     '*': 'admin',
   },
+
+  // Auth controller can be accessed by anyone
+  AuthController : {
+    '*': true
+  },
+  
   TaskController : {
     'find': true,
     'findOne': true,

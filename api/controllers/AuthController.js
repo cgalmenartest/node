@@ -4,6 +4,8 @@
  * @description :: Server-side logic for handling authentication requests
  */
 
+var userUtils = require('../services/utils/user');
+
 module.exports = {
 	/**
    * Log out a user and return them to the homepage
@@ -160,22 +162,21 @@ module.exports = {
    */
   forgot: function (req, res) {
     var email = req.param('username');
-    if (!email) {
-      return res.send(400, { message: 'You must enter an email address. '});
+    sails.log.verbose('AuthController.forgot', email);
+    if (!email || email === '') {
+      return res.send(400, { message: 'You must enter an email address.'});
     }
-    userUtils.forgotPassword(email, function (err, token) {
-      if (err) {
-        return res.send(400, err);
-      }
+    User.forgotPassword(email)
+    .then(function(token) {
+      sails.log.verbose('forgotPassword success, token:', token)
       var result = {
         success: true,
         email: email
       };
-      // send the token back to test that it is working
-      if (process.env.NODE_ENV == 'test') {
-        result.token = token.token;
-      }
       return res.send(result);
+    })
+    .catch(function(err) {
+      return res.send(400, {message: err});
     });
   },
   /**
@@ -191,7 +192,7 @@ module.exports = {
     if (!token) {
       return res.send(400, { message: 'Must provide a token for validation.' });
     }
-    userUtils.checkToken(token, function (err, valid, validToken) {
+    UserPasswordReset.checkToken(token, function (err, valid, validToken) {
       if (err) { return res.send(400, { message: 'Error looking up token.', err:err }); }
       if (valid === true) {
         User.findOneById(validToken.userId, function (err, validUser) {
@@ -216,7 +217,7 @@ module.exports = {
       message: 'Must provide a token for validation.'
     });
 
-    userUtils.checkToken(token, function (err, valid, validToken) {
+    UserPasswordReset.checkToken(token, function (err, valid, validToken) {
       if (err) return res.send(400, {
         message: 'Error looking up token.',
         err: err
