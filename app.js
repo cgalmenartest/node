@@ -17,6 +17,19 @@
  * The same command-line arguments are supported, e.g.:
  * `node app.js --silent --port=80 --prod`
  */
+ var extend = require('util')._extend,
+     cfenv = require('cfenv'),
+     appEnv = cfenv.getAppEnv(),
+     userEnv = appEnv.getServiceCreds('env-openopps');
+
+ // Import vars from Cloud Foundry service
+ if (userEnv) extend(process.env, userEnv);
+
+ // If settings present, start New Relic
+ if (process.env.NEW_RELIC_APP_NAME && process.env.NEW_RELIC_LICENSE_KEY) {
+   console.log('Activating New Relic: ', process.env.NEW_RELIC_APP_NAME);
+   require('newrelic');
+ }
 
 // Ensure we're in the project directory, so relative paths work as expected
 // no matter where we actually lift from.
