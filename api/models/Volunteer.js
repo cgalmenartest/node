@@ -18,11 +18,16 @@ module.exports = {
     task: {
       model: 'task',
       columnName: 'taskId'
-    }
+    },
+
+    toJSON: function() {
+      var obj = this.toObject();
+      obj.taskId = obj.task;    // backwards compatibility, TODO: API design
+      delete obj.task;
+      return obj;
+    },
 
   },
-
-  // create notification after creating a volunteer
   afterCreate: function ( model, done ) {
 
     this.assignVolunteerCountBadges( model , function(err) {
