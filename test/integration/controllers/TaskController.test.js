@@ -65,6 +65,8 @@ describe('TaskController', function() {
               assert.equal(result.state, 'open');
               assert.property(result, 'owner');
               assert.equal(result.owner.name, user.name);
+              assert.property(result, 'volunteers');
+              assert.equal(result.volunteers.length, 0);
             })
             .end(done)
         });

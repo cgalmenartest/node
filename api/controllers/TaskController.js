@@ -60,7 +60,7 @@ module.exports = {
         Volunteer.findUsersByTask({taskId: taskId})
         .then(function(taskVolunteers) {
           sails.log.verbose('volunteers', taskVolunteers);
-          task.volunteers = taskVolunteers[taskId];
+          task.volunteers = taskVolunteers[taskId] || [];
           sails.log.verbose('task', task);
           return res.send(task);
         })
