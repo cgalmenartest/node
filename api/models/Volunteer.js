@@ -57,6 +57,40 @@ module.exports = {
     }, done);
   },
 
+  // query: {taskId: id} or an array of these
+  //        or anything we can pass to find
+  // returns a hash with taskId as the keys
+  // value is an array of
+  //    { id: <volunteer id>, name: <user.name>, userId: <user.id>}
+  findUsersByTask: function(query) {
+    var taskVolunteers = {};
+    var promise =
+    Volunteer.find(query)
+    .then(function(vols) {
+      volunteers = vols;
+      var userIds = _.map(vols, function(v) { return {id: v.userId} });
+      return User.find(userIds)
+    })
+    .then(function(users) {
+      var userNames = {};
+      _.forEach(users, function(user) {
+        userNames[user.id] = user.name;
+      });
+      _.forEach(volunteers, function(v) {
+        v.name = userNames[v.userId];
+        delete v.silent;
+        delete v.createdAt;
+        delete v.updatedAt;
+        var taskId = v.task;
+        taskVolunteers[taskId] = taskVolunteers[taskId] || []
+        taskVolunteers[taskId].push(v);
+        delete v.task;
+      });
+      return taskVolunteers;
+    });
+    return promise;
+  },
+
   assignVolunteerCountBadges: function (model, done) {
 
     Volunteer.find({ taskId: model.task }).exec(function(err, vols) {

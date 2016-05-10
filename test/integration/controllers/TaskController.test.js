@@ -68,6 +68,36 @@ describe('TaskController', function() {
             })
             .end(done)
         });
+        describe('with a volunteer', function() {
+          var participant;
+          beforeEach(function(done) {
+            User.create(userFixtures.emmy)
+            .then(function(newUser) {
+              participant = newUser;
+              return Volunteer.create({userId:newUser.id, taskId:task.id})
+            })
+            .then(function(newVol) {
+              done();
+            })
+          })
+          it('/api/task/1 returns task with volunteer', function (done) {
+            request(sails.hooks.http.app)
+              .get('/api/task/1')
+              .expect(200)
+              .expect(function(res) {
+                var result = res.body;
+                assert.isNotNull(result);
+                assert.equal(result.id, 1);
+                assert.property(result, 'volunteers');
+                assert.equal(result.volunteers.length, 1);
+                var vol = result.volunteers[0]
+                assert.equal(vol.userId, participant.id);
+                assert.equal(vol.name, participant.name);
+                assert.property(vol, 'id');
+              })
+              .end(done)
+          });
+        })
 
       })
     });

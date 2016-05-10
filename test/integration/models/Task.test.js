@@ -22,11 +22,6 @@ describe('Task model', function() {
         assert.equal(task.owner, null);
         done();
       });
-      it('volunteers default to empty list', function(done) {
-        assert.isNotNull(task.volunteers);
-        assert.equal(task.volunteers.length, 0);
-        done();
-      });
 
       it('state default to configured state', function(done) {
         assert.equal(task.state, sails.config.taskState, 'badge should default to configured state');

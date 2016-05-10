@@ -49,18 +49,25 @@ describe('Task#byCategory', function() {
   describe('with signups', function() {
     var users, tasks;
     beforeEach(function(done) {
-      users = [userFixtures.minAttrs, userFixtures.emmy, userFixtures.alan]
-      User.create(users).then(function(users) {
-        return Task.create([taskFixtures.open, taskFixtures.assigned  ]);
+      userAttrs = [userFixtures.minAttrs, userFixtures.emmy, userFixtures.alan]
+      User.create(userAttrs).then(function(newUsers) {
+        users = newUsers;
+        return Task.create([taskFixtures.open, taskFixtures.assigned]);
       }).then(function(tasks) {
-          done();
+        return Volunteer.create({taskId:tasks[0].id, userId:users[1].id})
+      }).then(function(vols) {
+        done();
       }).catch(function(err) {
         done(err);
       })
     });
     it('returns task correctly', function(done) {
       Task.byCategory().then(function(result) {
+        console.log('Task.byCategory result', result);
         assert.equal(result.open.length, 1);
+        assert.property(result.open[0], 'volunteers');
+        assert.equal(result.open[0].volunteers.length, 1);
+        assert.equal(result.open[0].volunteers[0].name, users[1].name);
         assert.equal(result.assigned.length, 1);
         done();
       })

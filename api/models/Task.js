@@ -64,10 +64,6 @@ module.exports = {
       columnName: 'userId',
       model: 'user'
     },
-    volunteers: {
-      collection: 'volunteer',
-      via: 'task'
-    },
     tags: {
       collection: 'tagEntity',
       via: 'tasks',
@@ -203,16 +199,21 @@ module.exports = {
         open: [],
         submitted: [],
       };
-
+    var tasks, volunteers;
     var promise =
       Task.find({ state: [ 'draft', 'submitted', 'open', 'assigned', 'completed' ] })
           .populate('owner')
-          .populate('volunteers')
           .sort(sort)
           .paginate({ page: page, limit: limit })
-      .then(function(tasks) {
+      .then(function(allTasks) {
+        tasks = allTasks;
+        volQuery = _.map(tasks, function(t) { return {taskId: t.id} });
+        return Volunteer.findUsersByTask(volQuery)
+      })
+      .then(function(taskVolunteers) {
         _.forEach(tasks, function(t) {
           output[t.state].push(t);
+          t.volunteers = taskVolunteers[t.id] || []
         })
         return output;
       })

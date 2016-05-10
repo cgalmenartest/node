@@ -48,13 +48,26 @@ module.exports = {
       Task.findOneById(taskId)
       .populate('tags')
       .populate('owner')
-      .populate('volunteers')
       .exec(function(err, task) {
+        sails.log.verbose('Task.find', task);
         if (err) { return res.negotiate(err) }
         if (!task) { return res.notFound('Error finding task.'); }
         task = task.authorized(user);
         if (!task) { return res.forbidden('Task not found.'); }
-        return res.send(task);
+
+        // this all would be way better with associations!
+        var volunteers;
+        Volunteer.findUsersByTask({taskId: taskId})
+        .then(function(taskVolunteers) {
+          sails.log.verbose('volunteers', taskVolunteers);
+          task.volunteers = taskVolunteers[taskId];
+          sails.log.verbose('task', task);
+          return res.send(task);
+        })
+        .catch(function(err) {
+          sails.log.verbose('error fetching volunteers for task', err);
+          return res.negotiate(err);
+        });
       });
     } else {
       // Only show drafts for current user
