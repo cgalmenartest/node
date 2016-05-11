@@ -5,6 +5,7 @@
  */
 
 var userUtils = require('../services/utils/user');
+url = require('url');
 
 module.exports = {
 	/**
@@ -69,6 +70,7 @@ module.exports = {
    * @param {Object} res
    */
   callback: function (req, res) {
+    sails.log.verbose('AuthController.callback', req.params)
     function tryAgain (err) {
 
       // Only certain error messages are returned via req.flash('error', someError)

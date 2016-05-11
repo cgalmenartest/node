@@ -144,7 +144,7 @@ passport.connect = function (req, query, profile, next) {
         }
 
         // Save any updates to the Passport before moving on
-        passport.save(function (err, passport) {
+        passport.save(function (err, obj) {
           if (err) {
             return next(err);
           }
@@ -316,7 +316,7 @@ passport.loadStrategies = function () {
 
       Strategy = strategies[key].strategy;
 
-      var baseUrl = sails.getBaseurl();
+      var baseUrl = sails.config.appUrl;
 
       switch (protocol) {
         case 'oauth':

@@ -9,6 +9,9 @@ module.exports = {
       passwordAttempts : 5,
       // expire password reset tokens after this many milliseconds
       tokenExpiration  : 60*60*1000
+    },
+    myusa : {
+      overwrite   : false
     }
   },
   // Pass the login.json config object to sails

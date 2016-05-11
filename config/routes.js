@@ -98,13 +98,12 @@ module.exports.routes = {
   'post /api/auth/local/:action': 'AuthController.callback',
 
   'post /api/auth/forgot': 'AuthController.forgot',
-  // TODO: google auth?
-  // 'post /api/auth/disconnect/:provider': 'AuthController.disconnect',
-  // 'get /api/auth/checkToken/:token': 'AuthController.checkToken',
-  //
-  // 'get /api/auth/:provider': 'AuthController.provider',
-  // 'get /api/auth/callback/:provider': 'AuthController.callback',
-  // 'get /api/auth/:provider/:action': 'AuthController.callback'
+  'post /api/auth/disconnect/:provider': 'AuthController.disconnect',
+  'get /api/auth/checkToken/:token': 'AuthController.checkToken',
+
+  'get /api/auth/:provider': 'AuthController.provider',
+  'get /api/auth/callback/:provider': 'AuthController.callback',
+  'get /api/auth/:provider/:action': 'AuthController.callback'
 
 
   /***************************************************************************

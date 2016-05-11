@@ -134,6 +134,9 @@ module.exports = {
   // Note: this can be used to create admin users
   // relies on filtering in controller actions for safety
   register: function(attributes, done) {
+    if (!attributes.password || attributes.password === '') {
+      return done(new Error('password may not be blank'));
+    }
     User.create(attributes, function (err, user) {
       if (err) {
         // used to set req.flash: Error.Passport.User.Exists
