@@ -48,8 +48,9 @@ module.exports = {
 			.exec(function(err, user){
 				sails.log.verbose('find (err user)',err,user);
 				if (err) return res.negotiate(err);
-				if (req.user.id != user.id && !req.user.isAdmin) user.username = null; // hide email address
 				user.isOwner = false;
+				if (req.user.id === user.id) user.isOwner = true;
+				if (req.user.id != user.id && !req.user.isAdmin) user.username = null; // hide email address
 				return res.send(user);
 			});
     } else {

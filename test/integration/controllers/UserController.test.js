@@ -7,16 +7,18 @@ var userFixtures = require('../../fixtures/user');
 describe('UserController', function() {
   var users;  // user fixtures loaded fresh for each test
   var newUserAttrs;
+  var loggedInUser;
 
   beforeEach(function(done) {
     newUserAttrs = (JSON.parse(JSON.stringify(userFixtures.minAttrs)));
     User.register(newUserAttrs, function(err, user) {
+      loggedInUser = user;
       assert.isNull(err);
       done();
     })
   });
 
-  describe('/api/user', function() {
+  describe('getting user info', function() {
     describe('when not logged in', function() {
       it('should be forbidden', function (done) {
         request(sails.hooks.http.app)
@@ -43,6 +45,21 @@ describe('UserController', function() {
       });
       it('should return current user info', function (done) {
         agent.get('/api/user')
+          .expect(200)
+          .expect(function(res) {
+            assert.equal(res.body.username, newUserAttrs.username);
+            assert.equal(res.body.name, newUserAttrs.name);
+            assert.equal(res.body.id, 1);
+            assert.equal(res.body.isOwner, true);
+            assert.isUndefined(res.body['password']);
+            assert.property(res.body, 'tags');
+            assert.property(res.body, 'badges');
+          })
+          .end(done)
+      });
+      it('should set owner correctly when id is given', function (done) {
+        assert.property(loggedInUser, 'id');
+        agent.get('/api/user/'+loggedInUser.id)
           .expect(200)
           .expect(function(res) {
             assert.equal(res.body.username, newUserAttrs.username);
