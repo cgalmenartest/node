@@ -130,7 +130,7 @@
         <a id="change-owner" href="#">Change</a>
       </div>
       <div class="project-people-show-div project-owner" data-userid="<%- data.owner.id %>">
-        <img src="/api/user/photo/<%- data.owner.id %>" alt="<%- data.owner.name %>"/>
+        <img src="/api/user/photo/<%- data.owner.id %>" alt="<%- data.owner.name %>" class="project-people"/>
         <label class="project-people-show-label"><%- data.owner.name %></label>
       </div>
       <div class="change-project-owner" style="display: none;">
@@ -145,8 +145,8 @@
       <% if (data.volunteers.length > 0) { %>
         <% _.each(data.volunteers, function (v) { %>
         <div class="project-people-show-div" data-userid="<%- v.userId %>" data-voluserid="<%- v.userId %>">
-          <a href="#" class="delete-volunteer volunteer-delete fa fa-times"  id="delete-volunteer-<%- v.id %>" data-uid="<%- v.userId %>" data-vid="<%- v.id %>"></a>
-          <img src="/api/user/photo/<%- v.userId %>" alt="<%- v.name %>"/>
+          <a href="#" class="volunteer-delete fa fa-times" data-uid="<%- v.userId %>" data-vid="<%- v.id %>"></a>
+          <img src="/api/user/photo/<%- v.userId %>" alt="<%- v.name %>"  class="project-people"/>
           <label class="project-people-show-label"><%- v.name %></label>
         </div>
         <% }); %>

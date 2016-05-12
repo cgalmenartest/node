@@ -132,7 +132,7 @@
         <% if (model.volunteers.length > 0) { %>
           <% _.each(model.volunteers, function (v) { %>
           <div class="project-people-show-div" data-userid="<%- v.userId %>" data-voluserid="<%- v.userId %>">
-            <img src="/api/user/photo/<%- v.userId %>" alt="<%- v.name %>"/>
+            <img src="/api/user/photo/<%- v.userId %>" alt="<%- v.name %>" class="project-people" />
             <label class="project-people-show-label"><%- v.name %></label>
           </div>
           <% }); %>

@@ -12,7 +12,7 @@
       <%= item.descriptionHtml %>
     </div>
 
-    <div class="task-list-bottom border-top">
+    <div class="task-list-bottom">
       <% _.each(tagShow, function (tagType) { %>
 
         <% if (tags[tagType]) { %>
@@ -31,7 +31,7 @@
       <% }); %>
     </div>
 
-    <div class="task-list-bottom-person border-top">
+    <div class="task-list-bottom-person">
       <div class="task-list-person">
         <div class="project-people-div float-left" data-userid="<%- item.owner.id %>" style="text-align: right;">
           <img src="/api/user/photo/<%- item.owner.id %>" class="project-people" width="30"/>

@@ -44,7 +44,7 @@ var TaskShowController = BaseView.extend({
     'click #task-reopen'                  : 'stateReopen',
     'click #task-copy'                    : 'copy',
     'click .link-backbone'                : linkBackbone,
-    'click .delete-volunteer'             : 'removeVolunteer',
+    'click .volunteer-delete'             : 'removeVolunteer',
     'mouseenter .project-people-show-div' : popovers.popoverPeopleOn,
     'click .project-people-show-div'      : popovers.popoverClick,
   },
@@ -318,7 +318,7 @@ var TaskShowController = BaseView.extend({
             $('.volunteer-false').hide();
             var html = '<div class="project-people-div" data-userid="' + data.userId + '" data-voluserid="' + data.userId + '"><img src="/api/user/photo/' + data.userId + '" class="project-people"/>';
             if (self.options.action === "edit") {
-              html += '<a href="#" class="delete-volunteer volunteer-delete fa fa-times"  id="delete-volunteer-' + data.id + '" data-uid="' + data.userId + '" data-vid="' +  data.id + '"></a>';
+              html += '<a href="#" class="delete-volunteer fa fa-times"  id="delete-volunteer-' + data.id + '" data-uid="' + data.userId + '" data-vid="' +  data.id + '"></a>';
             }
             html += '</div>';
             $('#task-volunteers').append(html);
