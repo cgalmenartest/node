@@ -228,7 +228,7 @@ Save.
 
 ### All Platforms
 
-#### Installing the Open Opportunities Theme (Optional)
+#### Optional: Installing the Open Opportunities Theme
 
 Typically we do development without the theme.  Tests are designed
 to run without the theme, which sets up alternate configuration.
@@ -242,6 +242,9 @@ Here's an example using `export`:
     npm install
 
 [openopps_theme_repo]: https://github.com/18F/open-opportunities-theme "Open Opportunities Theme"
+
+Note: the tests don't currently pass when the theme is installed since it
+also changes configuration.  
 
 #### Clone the git repository.
 

@@ -119,6 +119,7 @@ passport.connect = function (req, query, profile, next) {
       //           authentication provider.
       // Action:   Create a new user and assign them a passport.
       if (!passport) {
+        sails.log.verbose('new user with 3rd party auth');
         User.findOrCreate({ username: user.username }, user, function(err, user) {
           if (err) return next(err);
 
@@ -138,6 +139,7 @@ passport.connect = function (req, query, profile, next) {
       //           connected passport.
       // Action:   Get the user associated with the passport.
       else {
+        sails.log.verbose('existing user with already connected passport:', passport.user);
         // If the tokens have changed since the last session, update them
         if (query.hasOwnProperty('tokens') && query.tokens !== passport.tokens) {
           passport.tokens = query.tokens;
@@ -150,7 +152,11 @@ passport.connect = function (req, query, profile, next) {
           }
 
           // Fetch the user associated with the Passport
-          User.findOne(passport.user.id).populate('tags').exec(next);
+          User.findOne(passport.user).populate('tags')
+          .exec(function(err, user) {
+            if (err) sails.log.verbose('error finding user:', err);
+            next(err, user);
+          });
         });
       }
     } else {
@@ -158,6 +164,7 @@ passport.connect = function (req, query, profile, next) {
       //           passport.
       // Action:   Create and assign a new passport to the user.
       if (!passport) {
+        sails.log.verbose('connecting new passport');
         query.user = req.user.id;
 
         Passport.create(query, function (err, passport) {
@@ -172,6 +179,7 @@ passport.connect = function (req, query, profile, next) {
       // Scenario: Connection already exists.
       // Action:   Simply pass along the already established session.
       else {
+        sails.log.verbose('re-connecting passport to existing session');
         next(null, req.user);
       }
     }
