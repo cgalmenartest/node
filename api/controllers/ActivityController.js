@@ -11,7 +11,7 @@ module.exports = {
       Badge.find({ task: taskIds }).exec(function(err, badges){
         if (err) return res.negotiate(err);
 
-        Volunteer.find({ taskId: taskIds }).exec(function(err, vols) {
+        Volunteer.find({ task: taskIds }).exec(function(err, vols) {
           if (err) return res.negotiate(err);
 
           // Ensure that the User model is being queried for both the original
@@ -33,8 +33,9 @@ module.exports = {
             badges = _.reject(badges, function(b) { return b.user == null } );
 
             tasks = tasks.map(function(task) {
+
               var ids = _(vols).chain()
-                    .where({ taskId: task.id })
+                    .where({ task: task.id })
                     .pluck('userId').value();
 
               task.badges = _.where(badges, { task: task.id });

@@ -37,10 +37,18 @@ describe('ActivityController', function() {
     });
 
     it('should return a list containing recent badges for a task', function(done) {
-      var task;
+      var task, emmy;
+      var emmyAttrs = require('../../fixtures/user').emmyAttrs;
 
       Task.create({'userId': user.id}).then(function(newTask) {
         task = newTask;
+        return User.create(emmyAttrs)
+      })
+      .then(function(newUser) {
+        emmy = newUser
+        return Volunteer.create({userId:emmy.id, taskId:task.id})
+      })
+      .then(function(newVolunteer) {
         Task.update(task.id, {id: task.id, state: 'completed'}).exec(function (err, updated_task) {
           user.completedTasks = 1;
 
@@ -51,6 +59,7 @@ describe('ActivityController', function() {
               .expect(function(res) {
                 assert.equal(res.body.length, 1);
                 assert.equal(res.body[0].badges.length, 1, "there should be one badge");
+                assert.equal(res.body[0].participants.length, 1, "there should be one participant");
               })
               .end(done)
           });
