@@ -90,11 +90,16 @@ var TaskFormView = Backbone.View.extend({
               if ((!agencyId) || (userAgency && agencyId === userAgency.id)) return true;
               return false;
             }).map(function (item) {
-              if (item.name == 'One time') {
+              if (item.value == 'One time') {
                 item.description = 'A one time task with a defined timeline';
+                item.alwaysRestrictAgency = false;
               }
-              else if (item.name == 'Ongoing') {
+              else if (item.value == 'Ongoing') {
                 item.description = 'Requires a portion of participant’s time until a goal is reached';
+                item.alwaysRestrictAgency = false;
+              }
+              else if (item.value == 'Full Time Detail') {
+                item.alwaysRestrictAgency = true;
               }
               return item;
             }).value();
@@ -263,16 +268,22 @@ var TaskFormView = Backbone.View.extend({
       timeRequired       = this.$('#time-options-time-required'),
       timeRequiredAside  = this.$('#time-options-time-required aside'),
       completionDate     = this.$('#time-options-completion-date'),
-      timeFrequency      = this.$('#time-options-time-frequency');
+      timeFrequency      = this.$('#time-options-time-frequency'),
+      restrictAgency     = this.$('#task-restrict-agency'),
+      timeRequiredTag;
 
     timeOptionsParent.css('display', 'block');
-    if (currentValue == 1) { // time selection is "One time"
+
+    timeRequiredTag = _.findWhere(this.tagSources['task-time-required'], {id: parseInt(currentValue)});
+    restrictAgency.prop('disabled', timeRequiredTag.alwaysRestrictAgency);
+
+    if (timeRequiredTag.value === 'One time') {
       timeRequired.show();
       completionDate.show();
       timeRequiredAside.hide();
       timeFrequency.hide();
     }
-    else if (currentValue == 2) { // time selection is "On going"
+    else if (timeRequiredTag.value === 'Ongoing') {
       timeRequired.show();
       timeRequiredAside.show();
       timeFrequency.show();
@@ -283,6 +294,13 @@ var TaskFormView = Backbone.View.extend({
       timeRequiredAside.hide();
       timeFrequency.hide();
       completionDate.hide();
+    }
+
+    if (timeRequiredTag.value === 'Full Time Detail') {
+      restrictAgency.prop('checked', true);
+    }
+    else {
+      restrictAgency.prop('checked', false);
     }
   },
 
