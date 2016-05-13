@@ -4,6 +4,7 @@
  * @description :: Server-side logic for managing Users
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
+var exportUtil = require('../services/utils/export');
 var validator = require('validator');
 
 module.exports = {

@@ -6,7 +6,7 @@
  */
 var taskUtil = require('../services/utils/task');
 var userUtil = require('../services/utils/user');
-// TODO var exportUtil = require('../services/utils/export');
+var exportUtil = require('../services/utils/export');
 var i18n = require('i18next');
 
 module.exports = {

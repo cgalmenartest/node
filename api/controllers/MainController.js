@@ -26,8 +26,6 @@ module.exports = {
     res.view(data);
   },
 
-  // Tasks the should run on a cron schedule
-  /** TODO
 	 cron: function(req, res) {
 		 if (req.param('token') !== sails.config.cron_token) return res.send(400, 'No token');
 		 res.send(200);
@@ -39,6 +37,5 @@ module.exports = {
 		 Task.sendNotifications();
 
 	 }
-	**/
 
 };

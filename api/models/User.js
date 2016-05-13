@@ -4,6 +4,7 @@
  * @description :: User model, unique by email
  */
 var crypto    = require('crypto');
+var exportUtils = require('../services/utils/export');
 var Promise = require('bluebird');
 var validator = require('validator');
 
@@ -171,5 +172,24 @@ module.exports = {
       });
     });
 
-  }
+  },
+
+  // TODO: add more fields, likely driven off subqueries
+  exportFormat: {
+    'user_id': 'id',
+    'name': {field: 'name', filter: exportUtils.nullToEmptyString},
+    'username': {field: 'username', filter: exportUtils.nullToEmptyString},
+    'title': {field: 'title', filter: exportUtils.nullToEmptyString},
+
+    // The two below fields are not directly on the user model
+    // They are populated from tags by UserController.export
+    'agency': {field: 'agency', filter: exportUtils.nullToEmptyString},
+    'location': {field: 'location', filter: exportUtils.nullToEmptyString},
+
+    'bio': {field: 'bio', filter: exportUtils.nullToEmptyString},
+    'admin': 'isAdmin',
+    'disabled': 'disabled'
+  },
+
+
 };

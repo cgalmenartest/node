@@ -12,7 +12,6 @@ var buildDictionary = require('sails-build-dictionary');
 
 module.exports.bootstrap = function(cb) {
 
-  // TODO: ennable for uploads
   // If upload directory is missing, create it
   // var config = sails.config.fileStore || {},
   //     dir = config.local.dirname || '/assets/uploads',

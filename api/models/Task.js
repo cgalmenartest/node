@@ -3,8 +3,8 @@
     -> model
 ---------------------*/
 var Promise = require('bluebird');
-// TODO:  var exportUtils = require('../services/utils/export'),
-//   moment = require('moment');
+var exportUtils = require('../services/utils/export'),
+    moment = require('moment');
 
 // handle a possible state change for an existing task
 // (always a state "change" for a new task)
@@ -220,24 +220,21 @@ module.exports = {
     return promise;
   },
 
-
-  /* TODO Export
-    exportFormat: {
-      'project_id': 'projectId',
-      'name': {field: 'title', filter: exportUtils.nullToEmptyString},
-      'description': {field: 'description', filter: exportUtils.nullToEmptyString},
-      'created_date': {field: 'createdAt', filter: exportUtils.excelDateFormat},
-      'published_date': {field: 'publishedAt', filter: exportUtils.excelDateFormat},
-      'assigned_date': {field: 'assignedAt', filter: exportUtils.excelDateFormat},
-      'submitted_date': {field: 'submittedAt', filter: exportUtils.excelDateFormat},
-      'creator_name': {field: 'creator_name', filter: exportUtils.nullToEmptyString},
-      'signups': 'signups',
-      'task_id': 'id',
-      'task_state': 'state',
-      'agency_name': {field: 'agency_name', filter: exportUtils.nullToEmptyString},
-      'completion_date': {field: 'completedAt', filter: exportUtils.excelDateFormat},
-    },
-  */
+  exportFormat: {
+    'project_id': 'projectId',
+    'name': {field: 'title', filter: exportUtils.nullToEmptyString},
+    'description': {field: 'description', filter: exportUtils.nullToEmptyString},
+    'created_date': {field: 'createdAt', filter: exportUtils.excelDateFormat},
+    'published_date': {field: 'publishedAt', filter: exportUtils.excelDateFormat},
+    'assigned_date': {field: 'assignedAt', filter: exportUtils.excelDateFormat},
+    'submitted_date': {field: 'submittedAt', filter: exportUtils.excelDateFormat},
+    'creator_name': {field: 'creator_name', filter: exportUtils.nullToEmptyString},
+    'signups': 'signups',
+    'task_id': 'id',
+    'task_state': 'state',
+    'agency_name': {field: 'agency_name', filter: exportUtils.nullToEmptyString},
+    'completion_date': {field: 'completedAt', filter: exportUtils.excelDateFormat},
+  },
 
   // encapsulates all domain logic and dependencies (notifcation, badges)
   // for when a user creates a task
@@ -273,31 +270,30 @@ module.exports = {
     return promise;
   },
 
-  // TODO: notifications
-  // sendNotifications: function(i) {
-  //   i = i || 0;
-  //
-  //   var now = new Date(new Date().toISOString().split('T')[0]),
-  //     begin = moment(now).add(i, 'days').toDate(),
-  //     end = moment(now).add(i + 1, 'days').toDate();
-  //
-  //   Task.find({
-  //     completedBy: { '>=': begin, '<': end },
-  //     state: 'assigned',
-  //   }).exec(function(err, tasks) {
-  //     if (err) return sails.log.error(err);
-  //     var action = i ? 'task.due.soon' : 'task.due.today';
-  //
-  //     tasks.forEach(function(task) {
-  //       var find = { action: action, callerId: task.id },
-  //         model = { action: action, callerId: task.id, model: task };
-  //       Notification.findOrCreate(find, model, function(err, notification) {
-  //         if (err) sails.log.error(err);
-  //         if (notification) sails.log.verbose('New notification', notification);
-  //       });
-  //     });
-  //
-  //   });
-  // },
+  sendNotifications: function(i) {
+    i = i || 0;
+
+    var now = new Date(new Date().toISOString().split('T')[0]),
+      begin = moment(now).add(i, 'days').toDate(),
+      end = moment(now).add(i + 1, 'days').toDate();
+
+    Task.find({
+      completedBy: { '>=': begin, '<': end },
+      state: 'assigned',
+    }).exec(function(err, tasks) {
+      if (err) return sails.log.error(err);
+      var action = i ? 'task.due.soon' : 'task.due.today';
+
+      tasks.forEach(function(task) {
+        var find = { action: action, callerId: task.id },
+          model = { action: action, callerId: task.id, model: task };
+        Notification.findOrCreate(find, model, function(err, notification) {
+          if (err) sails.log.error(err);
+          if (notification) sails.log.verbose('New notification', notification);
+        });
+      });
+
+    });
+  },
 
 };

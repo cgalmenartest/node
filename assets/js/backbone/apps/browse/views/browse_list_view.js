@@ -6,8 +6,6 @@ var async = require('async');
 var UIConfig = require('../../../config/ui.json');
 var marked = require('marked');
 var TagConfig = require('../../../config/tag');
-// TODO:
-//var ProjectListItem = require('../templates/project_list_item.html');
 var fs = require('fs');
 var TaskListItem = fs.readFileSync(__dirname + '/../templates/task_list_item.html').toString();
 var NoListItem = fs.readFileSync(__dirname + '/../templates/no_search_results.html').toString();

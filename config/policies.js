@@ -26,7 +26,20 @@ module.exports.policies = {
   *                                                                          *
   ***************************************************************************/
 
-  // '*': true,  TODO: should default to false and whitelist APIs
+  // default require authentication
+  // see api/policies/requireAuth.js
+  '*': 'requireAuth',
+
+  // Main rendering controller, allow open access to homepage
+  MainController : {
+    '*': true
+  },
+
+
+  ActivityController: {
+    '*': ['requireAuth', 'addUserId']
+  },
+
   AdminController : {
     '*': 'admin',
   },
@@ -35,37 +48,63 @@ module.exports.policies = {
   AuthController : {
     '*': true
   },
-  
+
+  AcController : {
+    'tag': true,
+    'location': true
+  },
+
+  CommentController : {
+    '*': false,   // defualt to no access
+    'find': false,
+    'findOne': false,
+    'create': ['requireAuth', 'requireId', 'addUserId', 'authorizeTask'],
+    'update': ['requireAuth', 'requireId', 'authorizeTask', 'comment', 'ownerOrAdmin'],
+    'destroy': ['requireAuth', 'requireId', 'admin'],
+    'findAllByTaskId': ['requireAuth', 'requireId', 'authorizeTask']
+  },
+
+  LocationController : {
+    'suggest': true
+  },
+
+  SearchController : {
+    '*': true
+  },
+
+  TagEntityController : {
+    '*': false,   // defualt to no access
+    '*': ['requireAuth'],
+    'update': ['admin'],
+    'destroy': ['admin']
+  },
+
   TaskController : {
+    '*': false,   // defualt to no access
     'find': true,
     'findOne': true,
     'copy': ['requireAuth', 'addUserId'],
     'create': ['requireAuth', 'addUserId'],
     'update': ['requireAuth', 'requireId', 'addUserId', 'authorizeTask', 'ownerOrAdmin'],
     'destroy': ['requireAuth', 'requireId','authorizeTask', 'ownerOrAdmin'],
-    // 'export': ['admin']
+    'export': ['admin']
   },
 
   UserController : {
     '*': false,
     'profile': true,
+    'find': 'requireAuth',
+    'findOne': 'requireAuth',
     'photo': ['requireId'],
     'info': ['requireId'],
-    'update': ['requireAuth', 'requireId'], //, 'user', 'protectAdmin'],
+    'update': ['requireAuth', 'requireId', 'user'],
     'username': true,
-    'find': ['requireAuth'],
     'all': ['requireAuth'],
-    'findOne': ['requireAuth'],
     'activities': ['requireAuth'],
-    // 'disable': ['passport', 'authenticated', 'requireId', 'requireAuth'],
-    // 'enable': ['passport', 'authenticated', 'requireId', 'requireAuth', 'admin'],
-    // 'resetPassword': ['passport', 'authenticated', 'requireAuth'],
-    // 'emailCount': ['test'],
-    // 'export': ['passport', 'authenticated', 'admin']
-  },
-
-  ActivityController: {
-    '*': ['requireAuth', 'addUserId']
+    'disable': ['requireAuth', 'requireId', 'admin'],
+    'enable': ['requireAuth', 'requireId', 'admin'],
+    'resetPassword': ['requireAuth'],
+    'export': ['admin']
   },
 
   VolunteerController : {
@@ -75,24 +114,4 @@ module.exports.policies = {
   },
 
 
-  /***************************************************************************
-  *                                                                          *
-  * Here's an example of mapping some policies to run before a controller    *
-  * and its actions                                                          *
-  *                                                                          *
-  ***************************************************************************/
-	// RabbitController: {
-
-		// Apply the `false` policy as the default for all of RabbitController's actions
-		// (`false` prevents all access, which ensures that nothing bad happens to our rabbits)
-		// '*': false,
-
-		// For the action `nurture`, apply the 'isRabbitMother' policy
-		// (this overrides `false` above)
-		// nurture	: 'isRabbitMother',
-
-		// Apply the `isNiceToAnimals` AND `hasRabbitFood` policies
-		// before letting any users feed our rabbits
-		// feed : ['isNiceToAnimals', 'hasRabbitFood']
-	// }
 };
