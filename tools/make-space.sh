@@ -25,7 +25,7 @@ cf create-service redis28-swarm standard redis-openopps
 cf create-service s3 basic s3-midas-assets
 
 # doesn't really work as expected cups prompts interactively
-export CREDS_FILE="$(< ./tools/credentials.json)"
+export CREDS_FILE="$(< ./tools/$SPACE-credentials.json)"
 export CREDS="'{${CREDS_FILE//[$'\t\r\n ']}}'"
 
 set +xv  # turn debugging off
