@@ -5,7 +5,7 @@ node_js:
 services:
   - postgresql
 addons:
-  postgresql: "9.5"
+  postgresql: "9.4"
 before_install:
   - psql -c "CREATE DATABASE midas;" -U postgres
   - psql -c "CREATE USER midas WITH PASSWORD 'midas';" -U postgres
