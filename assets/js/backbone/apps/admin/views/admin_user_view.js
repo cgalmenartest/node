@@ -32,6 +32,7 @@ var AdminUserView = Backbone.View.extend({
   },
 
   initialize: function (options) {
+    console.log('AdminUserView options', options);
     this.options = options;
     this.data = {
       page: 1
@@ -40,7 +41,9 @@ var AdminUserView = Backbone.View.extend({
 
   render: function () {
     var self = this;
-    Backbone.history.navigate('/admin/user');
+    var url = '/admin/users';
+    if (this.options.agencyId) url = url + '/' + this.options.agencyId
+    Backbone.history.navigate(url);
     this.$el.show();
     if (this.rendered === true) {
       return this;
@@ -118,8 +121,11 @@ var AdminUserView = Backbone.View.extend({
 
   fetchData: function (self, data) {
     // perform the ajax request to fetch the user list
+    var url = '/api/admin/users';
+    if (self.options.agencyId) url = url + '/' + self.options.agencyId
+
     $.ajax({
-      url: '/api/admin/users',
+      url: url,
       dataType: 'json',
       data: data,
       success: function (data) {
