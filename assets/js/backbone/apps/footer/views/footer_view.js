@@ -12,11 +12,11 @@ function versionLink(version) {
   var link;
   var parts = version.split('-');
   if (parts.length === 1) {
-    link = "https://github.com/18F/openopps-platform/releases/tag/v" + parts[0];
+    link = "https://github.com/openopps/openopps-platform/releases/tag/v" + parts[0];
   } else {
     // this is a pre-release version, like 0.10.1-beta
     // since we won't have tagged a release yet, show the issues for this milestone
-    link = "https://github.com/18F/openopps-platform/issues?q=milestone%3A" + parts[0] + "+is%3Aclosed";
+    link = "https://github.com/openopps/openopps-platform/issues?q=milestone%3A" + parts[0] + "+is%3Aclosed";
   }
   return link;
 }
