@@ -18,11 +18,11 @@ with this waiver of copyright interest.
 Anyone actively contributing or using OpenOpps, should join our [Mailing List](https://groups.google.com/forum/#!forum/openopps-platform).
 We also have a public Slack chat room. If you're interested in following along with the development process or have questions, feel free to [join us](https://chat.18f.gov/?channel=openopps-public).
 
-You should be using the master branch for most stable release, please review [release notes](https://github.com/18F/midas/releases) regularly. We do releases every week or two and send out notes.  We're generally using [semantic versioning](http://semver.org/), but we're pre-1.0, so API can change at any time. We use the minor version for changes where there are significant installation process changes or API changes or a database migration is needed.
+You should be using the master branch for most stable release, please review [release notes](https://github.com/openopps/openopps-platform/releases) regularly. We do releases every week or two and send out notes.  We're generally using [semantic versioning](http://semver.org/), but we're pre-1.0, so API can change at any time. We use the minor version for changes where there are significant installation process changes or API changes or a database migration is needed.
 
 If you want to keep up with the latest changes, we work in the "dev" branch.  If you are using dev, keep an eagle-eye on commits and/or join our daily standup.
 
-We also have a [wiki](https://github.com/18F/midas/wiki) where we keep various development notes. If anything is confusing or your questions are not answered there, please shout out on the [mailing list](https://groups.google.com/forum/#!forum/openopps-platform).
+We also have a [wiki](https://github.com/openopps/openopps-platform/wiki) where we keep various development notes. If anything is confusing or your questions are not answered there, please shout out on the [mailing list](https://groups.google.com/forum/#!forum/openopps-platform).
 
 ## Development Process
 
@@ -76,7 +76,7 @@ Since Midas accepts and displays user-generated content, take care to make sure 
 
 Escape all content that doesn't need to render as HTML in the client template file with [HTML-escaped filters](http://underscorejs.org/#template) `<%- ... %>`.
 
-Any content that does need to display HTML, such as the user's profile, should be escaped in the view with `_.escape(content)` or by passing markdown content through `marked()`, which will sanitize HTML by default. Also include [a comment](https://github.com/18F/midas/blob/dev/assets/js/backbone/apps/profiles/show/templates/profile_show_template.html#L148) about how the content has been escaped so we can easily audit the templates.
+Any content that does need to display HTML, such as the user's profile, should be escaped in the view with `_.escape(content)` or by passing markdown content through `marked()`, which will sanitize HTML by default. Also include [a comment](https://github.com/openopps/openopps-platform/blob/dev/assets/js/backbone/apps/profiles/show/templates/profile_show_template.html#L148) about how the content has been escaped so we can easily audit the templates.
 
 Note: server-side templates use [node-ejs](https://github.com/tj/ejs) instead of [underscore](http://underscorejs.org/#template) for templates. The syntax is very similar, but HTML-escaping is done by default with `<%= ... %>` with EJS instead of `<%- ... %>` like underscore.
 
