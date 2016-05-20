@@ -5,7 +5,7 @@ The current members of the core team are as follows:
 * [Dave Best](https://github.com/davidebest)
 * [Claire Sarsam](https://github.com/csarsam)
 * [Jeremia Kimelman](https://github.com/jeremiak)
-* [Roger Ruiz](https://github.com/rogeruiz)
+* [Roger Steve Ruiz](https://github.com/rogeruiz)
 * [Brendan Sudol](https://github.com/brendansudol)
 
 The process for joining the core team is described in the [Governance](GOVERNANCE.md) document.
