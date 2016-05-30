@@ -36,11 +36,11 @@
         <div class="col-md-4">
         </div>
       </div>
-      <div id="time-options">
+      <div>
         <div class="row" id="time-options-time-required">
           <div class="col-md-8 display-block">
             <label for="js-task-time-estimate">
-              <span class="create__label">How much time is needed?</span>
+              <h3>How much time is needed?</h3>
             </label>
             <select id="js-task-time-estimate" class="dropdown">
               <% _.each(tags['task-time-estimate'], function (timeEstimate) { %>
@@ -48,7 +48,7 @@
               <% }); %>
             </select>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-4" style="height:20px">
             <aside>
               <h4>Example</h4>
               <p>If 2 hours are needed each week, then select:</p>
@@ -61,7 +61,7 @@
         <div class="row" id="time-options-completion-date">
           <div class="col-md-8 display-block">
             <label for="estimated-completion-date">
-              <span class="create__label">Estimated completion date (optional)</span>
+              <h3>Estimated completion date (optional)</h3>
             </label>
             <input id="estimated-completion-date" type="date">
             <span class="help-block error-empty" style="display:none;">You must enter a completion date for this one-time <span data-i18n="task">opportunity</span></span>
@@ -72,7 +72,7 @@
         <div class="row" id="time-options-time-frequency">
           <div class="col-md-8 display-block">
             <label for="js-time-frequency-estimate">
-              <span>How often is this time needed?</span>
+              <h3>How often is this time needed?</h3>
             </label>
             <select id="js-time-frequency-estimate" class="dropdown">
               <% _.each(tags['task-length'], function (timeEstimate) { %>
@@ -89,7 +89,7 @@
       <div class="row">
         <div class="col-md-8 display-block">
           <label>
-            <span>Where can participants be located?</span>
+            <h3>Where can participants be located?</h3>
           </label>
           <div class="radio">
             <label>
@@ -104,7 +104,7 @@
             </label>
           </div>
           <label for="participants">
-            <span>How many people are needed?</span>
+            <h3>How many people are needed?</h3>
           </label>
           <select id="js-participant-selection" class="dropdown">
             <% _.each(tags['task-people'], function (person) { %>

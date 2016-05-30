@@ -54,17 +54,23 @@ module.exports = {
     title: 'STRING',
     // description of the task
     description: 'STRING',
-    completedBy: 'datetime',
 
+    // timestaps for state changes
+    completedBy: 'datetime',
     publishedAt: 'datetime',
     assignedAt: 'datetime',
     completedAt: 'datetime',
     submittedAt: 'datetime',
 
+    // limit participation to a specific agency
+    restrict: 'STRING',
+
+    // owner has specific privileges, defaults to task creator
     owner: {
       columnName: 'userId',
       model: 'user'
     },
+
     tags: {
       collection: 'tagEntity',
       via: 'tasks',

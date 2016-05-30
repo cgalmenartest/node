@@ -52,8 +52,10 @@
                      <!-- Time commitment should not be shown when the task is a full time detail. -->
                      !(madlibTags['task-time-required'] && madlibTags['task-time-required'][0].name === 'Full Time Detail')) { %>
                 &mdash;
-                <!-- 2-4 hours, etc. -->
-                <%= madlibTags['task-time-estimate'][0].name %> per week
+                 <%- madlibTags['task-time-estimate'][0].name %>
+              <% } %>
+              <% if (madlibTags['task-time-required'][0].name === "Ongoing") { %>  <!-- 2-4 hours, etc. -->
+                <%- madlibTags['task-length'][0].name.toLowerCase() %>
               <% } %>
             </div>
             <% if (model.completedBy) { %>  <!-- estimated completion date -->

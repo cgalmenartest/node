@@ -49,8 +49,15 @@
             </label>
           </div>
         <% }); %>
+        <div class="py2" id="task-restrict-agency-area" >
+          <label>
+            <input type="checkbox" id="task-restrict-agency" name="task-restrict-agency">
+            Limit Participation to <%- agency.abbr %> Employees
+          </label>
+        </div>
       </div>
-      <div class="form-group">
+
+      <div class="form-group" id="time-options-time-required">
         <label for="time-estimate">
           <h3>How much time is needed?</h3>
         </label>
@@ -61,12 +68,23 @@
           <% }); %>
         </select>
       </div>
-      <div class="form-group">
+      <div class="form-group" id="time-options-completion-date">
         <label for="estimated-completion-date">
           <h3>Estimated completion date (optional)</h3>
         </label>
         <input id="estimated-completion-date" type="date" <% if (data.completedBy) { %> value="<%- moment(data.completedBy).format('YYYY-MM-DD') %>" <% } %> >
       </div>
+      <div class="form-group" id="time-options-time-frequency">
+        <label for="js-time-frequency-estimate">
+          <h3>How often is this time needed?</h3>
+        </label>
+        <select id="js-time-frequency-estimate" class="dropdown">
+          <% _.each(tagTypes['task-length'], function (timeEstimate) { %>
+            <option value="<%- timeEstimate.id %>"><%- timeEstimate.name %></option>
+          <% }); %>
+        </select>
+      </div>
+
       <div class="form-group">
         <label for="time-required">
           <h3>Where can participants be located?</h3>

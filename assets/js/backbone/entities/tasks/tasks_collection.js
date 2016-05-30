@@ -38,6 +38,7 @@ var TasksCollection = Backbone.Collection.extend({
    * Add data to the collection
    */
   addAndSave: function ( data ) {
+    console.log('addAndSave', data);
 
     var collection = this;
 
@@ -45,7 +46,6 @@ var TasksCollection = Backbone.Collection.extend({
       .save( null, {
 
         success: function ( model ) {
-
           if ( 'draft' !== model.attributes.state ) {
 
             collection.trigger( 'task:save:success', model.attributes.id );

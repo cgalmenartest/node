@@ -1,12 +1,15 @@
-var Bootstrap = require('bootstrap');
 var _ = require('underscore');
-var Backbone = require('backbone');
 var async = require('async');
-var MarkdownEditor = require('../../../../components/markdown_editor');
-var TaskModel = require('../../../../entities/tasks/task_model');
-var TagFactory = require('../../../../components/tag_factory');
-var ShowMarkdownMixin = require('../../../../components/show_markdown_mixin');
+var Backbone = require('backbone');
+var Bootstrap = require('bootstrap');
 
+var MarkdownEditor = require('../../../../components/markdown_editor');
+var ShowMarkdownMixin = require('../../../../components/show_markdown_mixin');
+var TagFactory = require('../../../../components/tag_factory');
+var TaskModel = require('../../../../entities/tasks/task_model');
+var TaskFormViewHelper = require('../../task-form-view-helper');
+
+// templates
 var fs = require('fs');
 var TaskFormTemplate = fs.readFileSync(`${__dirname}/../templates/task_form_template.html`).toString();
 
@@ -23,7 +26,6 @@ var TaskFormView = Backbone.View.extend({
     'change #task-location'           : 'locationChange',
     'click #js-task-draft'            : 'saveDraft',
     'click #js-task-create'           : 'submit',
-    'change [name=task-time-required]': 'timeRequiredChanged',
   },
 
   /*
@@ -31,6 +33,7 @@ var TaskFormView = Backbone.View.extend({
    */
   initialize: function (options) {
     this.options = _.extend(options, this.defaults);
+    this.agency = window.cache.currentUser.agency;
     this.tasks = this.options.tasks;
     this.tagFactory = new TagFactory();
     this.data = {};
@@ -65,8 +68,6 @@ var TaskFormView = Backbone.View.extend({
     ];
 
     this.tagSources = {};
-    this.agency = window.cache.currentUser.agency;
-
     var requestAllTagsByType = function (type) {
       $.ajax({
         url: '/api/ac/tag?type=' + type + '&list',
@@ -81,28 +82,7 @@ var TaskFormView = Backbone.View.extend({
             data = _.sortBy(data, 'updatedAt');
           }
           else if (type === 'task-time-required') {
-            data = _.chain(data).filter(function (item) {
-              // if an agency is included in the data of a tag
-              // then restrict it to users who are also
-              // in that agency
-              var agencyId = false;
-              if (item.data && item.data.agency) agencyId = item.data.agency.id;
-              if ((!agencyId) || (self.agency && agencyId === self.agency.id)) return true;
-              return false;
-            }).map(function (item) {
-              if (item.value == 'One time') {
-                item.description = 'A one time task with a defined timeline';
-                item.alwaysRestrictAgency = false;
-              }
-              else if (item.value == 'Ongoing') {
-                item.description = 'Requires a portion of participant’s time until a goal is reached';
-                item.alwaysRestrictAgency = false;
-              }
-              else if (item.value == 'Full Time Detail') {
-                item.alwaysRestrictAgency = true;
-              }
-              return item;
-            }).value();
+            data = TaskFormViewHelper.annotateTimeRequired(data, self.agency);
           }
           self.tagSources[type] = data;
         },
@@ -152,16 +132,18 @@ var TaskFormView = Backbone.View.extend({
       textAreaId       : 'task-description',
     });
 
-    this.$( '#time-options' ).css( 'display', 'none' );
     var restrictAgencyArea     = this.$('#task-restrict-agency-area');
+    var restrictAgency         = this.$('#task-restrict-agency');
+
     if (this.agency.allowRestrictAgency === true) {
       restrictAgencyArea.show();
+      if (this.model.restrict) this.$( '#task-restrict-agency' ).val(true);
     } else {
       restrictAgencyArea.hide();
     }
     this.$el.localize();
-
     this.renderSaveSuccessModal(false);
+    this.toggleTimeOptions();
 
     // Return this for chaining.
     return this;
@@ -268,42 +250,7 @@ var TaskFormView = Backbone.View.extend({
    * Setup Time Options toggling
    */
   toggleTimeOptions: function (e) {
-    var currentValue     = this.$('[name=task-time-required]:checked').val(),
-      timeOptionsParent  = this.$('#time-options'),
-      timeRequired       = this.$('#time-options-time-required'),
-      timeRequiredAside  = this.$('#time-options-time-required aside'),
-      completionDate     = this.$('#time-options-completion-date'),
-      timeFrequency      = this.$('#time-options-time-frequency'),
-      restrictAgency     = this.$('#task-restrict-agency'),
-      timeRequiredTag;
-
-    timeOptionsParent.css('display', 'block');
-
-    timeRequiredTag = _.findWhere(this.tagSources['task-time-required'], {id: parseInt(currentValue)});
-    if (this.agency.allowRestrictAgency) {
-      restrictAgency.prop('disabled', timeRequiredTag.alwaysRestrictAgency);
-      restrictAgency.prop('checked', (timeRequiredTag.value === 'Full Time Detail'));
-    }
-
-    if (timeRequiredTag.value === 'One time') {
-      timeRequired.show();
-      completionDate.show();
-      timeRequiredAside.hide();
-      timeFrequency.hide();
-    }
-    else if (timeRequiredTag.value === 'Ongoing') {
-      timeRequired.show();
-      timeRequiredAside.show();
-      timeFrequency.show();
-      completionDate.hide();
-    }
-    else {
-      timeRequired.hide();
-      timeRequiredAside.hide();
-      timeFrequency.hide();
-      completionDate.hide();
-    }
-
+    TaskFormViewHelper.toggleTimeOptions(this)
   },
 
   locationChange: function (e) {
@@ -354,12 +301,11 @@ var TaskFormView = Backbone.View.extend({
     var view = this;
 
     this.model.set( {
-
       title        :  this.$( '#task-title' ).val(),
       description  :  this.$( '#task-description' ).val(),
       state        :  'draft',
       tags         :  this.getTags(),
-
+      restrict     :  TaskFormViewHelper.getRestrictAgencyValue(this)
     } );
 
     this.collection.trigger( 'task:draft', this.model );
@@ -379,10 +325,13 @@ var TaskFormView = Backbone.View.extend({
 
     if ( ! validForm ) { return this; }
 
-    this.model.set( 'title', this.$( '#task-title' ).val() );
-    this.model.set( 'description', this.$( '#task-description' ).val() );
-    this.model.set( 'state', 'submitted' );
-    this.model.set( 'tags', this.getTags() );
+    this.model.set( {
+      title        :  this.$( '#task-title' ).val(),
+      description  :  this.$( '#task-description' ).val(),
+      state        :  'submitted',
+      tags         :  this.getTags(),
+      restrict     :  TaskFormViewHelper.getRestrictAgencyValue(this)
+    } );
 
     if ( ! _.isEmpty( completedBy ) ) {
 
