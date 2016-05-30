@@ -26,9 +26,10 @@
               </label>
             </div>
           <% }); %>
-          <div class="py2">
+          <div class="py2" id="task-restrict-agency-area" >
             <label>
-              <input type="checkbox" id="task-restrict-agency" name="task-restrict-agency"> Limit Participation to GSA Employees
+              <input type="checkbox" id="task-restrict-agency" name="task-restrict-agency">
+              Limit Participation to <%- agency.abbr %> Employees
             </label>
           </div>
         </div>

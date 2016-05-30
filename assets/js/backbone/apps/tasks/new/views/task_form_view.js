@@ -65,6 +65,7 @@ var TaskFormView = Backbone.View.extend({
     ];
 
     this.tagSources = {};
+    this.agency = window.cache.currentUser.agency;
 
     var requestAllTagsByType = function (type) {
       $.ajax({
@@ -76,7 +77,6 @@ var TaskFormView = Backbone.View.extend({
             window.location = '/';
             return;
           }
-          var userAgency = _.where(window.cache.currentUser.tags, { type: 'agency' })[0];
           if (type === 'task-time-estimate' || type === 'task-length') {
             data = _.sortBy(data, 'updatedAt');
           }
@@ -87,7 +87,7 @@ var TaskFormView = Backbone.View.extend({
               // in that agency
               var agencyId = false;
               if (item.data && item.data.agency) agencyId = item.data.agency.id;
-              if ((!agencyId) || (userAgency && agencyId === userAgency.id)) return true;
+              if ((!agencyId) || (self.agency && agencyId === self.agency.id)) return true;
               return false;
             }).map(function (item) {
               if (item.value == 'One time') {
@@ -137,7 +137,7 @@ var TaskFormView = Backbone.View.extend({
 
       tags: this.tagSources,
       model: this.model,
-
+      agency: this.agency
     };
 
     var template = _.template( TaskFormTemplate )( data );
@@ -153,7 +153,12 @@ var TaskFormView = Backbone.View.extend({
     });
 
     this.$( '#time-options' ).css( 'display', 'none' );
-
+    var restrictAgencyArea     = this.$('#task-restrict-agency-area');
+    if (this.agency.allowRestrictAgency === true) {
+      restrictAgencyArea.show();
+    } else {
+      restrictAgencyArea.hide();
+    }
     this.$el.localize();
 
     this.renderSaveSuccessModal(false);
@@ -275,7 +280,10 @@ var TaskFormView = Backbone.View.extend({
     timeOptionsParent.css('display', 'block');
 
     timeRequiredTag = _.findWhere(this.tagSources['task-time-required'], {id: parseInt(currentValue)});
-    restrictAgency.prop('disabled', timeRequiredTag.alwaysRestrictAgency);
+    if (this.agency.allowRestrictAgency) {
+      restrictAgency.prop('disabled', timeRequiredTag.alwaysRestrictAgency);
+      restrictAgency.prop('checked', (timeRequiredTag.value === 'Full Time Detail'));
+    }
 
     if (timeRequiredTag.value === 'One time') {
       timeRequired.show();
@@ -296,12 +304,6 @@ var TaskFormView = Backbone.View.extend({
       completionDate.hide();
     }
 
-    if (timeRequiredTag.value === 'Full Time Detail') {
-      restrictAgency.prop('checked', true);
-    }
-    else {
-      restrictAgency.prop('checked', false);
-    }
   },
 
   locationChange: function (e) {

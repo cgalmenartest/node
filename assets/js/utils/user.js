@@ -17,7 +17,8 @@ class User {
              name: agencyTag.name,
              abbr: agencyTag.data.abbr,
              domain: agencyTag.data.domain[0],
-             slug: agencyTag.data.abbr.toLowerCase()
+             slug: agencyTag.data.abbr.toLowerCase(),
+             allowRestrictAgency: agencyTag.data.allowRestrictAgency
            }
   }
 

@@ -17,6 +17,7 @@ Sails.lift(opts, function(err, sails) {
       type: 'agency',
       name: agencyName,
       data: {
+        allowRestrictAgency: true,
         domain: ['gsa.gov'],
         abbr: 'GSA'
       }
