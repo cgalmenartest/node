@@ -306,13 +306,12 @@ module.exports = {
   // returns a promise
   findByOwnerDomain: function(domain) {
     var queryStr = "SELECT task.* from task where \"userId\" " +
-                   "in (SELECT id FROM midas_user WHERE username SIMILAR TO '%(@|.)" +
-                   domain + "')";
+                   "in (SELECT id FROM midas_user WHERE username SIMILAR TO '%(@|.)' || $1)";
     var taskQuery = Promise.promisify(Task.query, {context: Task});
-    return taskQuery(queryStr).
-    then(function(result) {
-      return result.rows;
-    })
+    return taskQuery({name:'Task.findByOwnerDomain', text:queryStr, values:[domain]}).
+      then(function(result) {
+        return result.rows;
+      })
   },
 
   sendNotifications: function(i) {

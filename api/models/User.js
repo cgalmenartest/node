@@ -176,10 +176,9 @@ module.exports = {
 
   // returns a promise
   findByDomain: function(domain) {
-    var queryStr = "SELECT * FROM midas_user WHERE username SIMILAR TO '%(@|.)" +
-                   domain + "'";
+    var queryStr = "SELECT * FROM midas_user WHERE username SIMILAR TO '%(@|.)' || $1";
     var userQuery = Promise.promisify(User.query, {context: User});
-    return userQuery(queryStr).
+    return userQuery({name:'User.findByDomain', text:queryStr, values:[domain]}).
     then(function(result) {
       return result.rows;
     })
