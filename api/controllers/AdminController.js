@@ -21,7 +21,6 @@ module.exports = {
    * @param q the filter to apply to the search (filters by name)
    */
   users: function (req, res) {
-    sails.log.verbose('AdminController users', req.allParams())
     var page = parseInt(req.param('page', 1));
     var limit = req.param('limit', 25);
     var query = req.param('q');

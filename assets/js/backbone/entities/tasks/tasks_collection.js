@@ -38,7 +38,6 @@ var TasksCollection = Backbone.Collection.extend({
    * Add data to the collection
    */
   addAndSave: function ( data ) {
-    console.log('addAndSave', data);
 
     var collection = this;
 
