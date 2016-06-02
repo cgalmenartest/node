@@ -45,7 +45,6 @@ var TasksCollection = Backbone.Collection.extend({
       .save( null, {
 
         success: function ( model ) {
-
           if ( 'draft' !== model.attributes.state ) {
 
             collection.trigger( 'task:save:success', model.attributes.id );

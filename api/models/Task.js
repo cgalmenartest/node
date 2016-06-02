@@ -2,6 +2,7 @@
     :: Task
     -> model
 ---------------------*/
+var _ = require('lodash');
 var Promise = require('bluebird');
 var exportUtils = require('../services/utils/export'),
     moment = require('moment');
@@ -53,17 +54,23 @@ module.exports = {
     title: 'STRING',
     // description of the task
     description: 'STRING',
-    completedBy: 'datetime',
 
+    // timestaps for state changes
+    completedBy: 'datetime',
     publishedAt: 'datetime',
     assignedAt: 'datetime',
     completedAt: 'datetime',
     submittedAt: 'datetime',
 
+    // limit participation to a specific agency
+    restrict: 'STRING',
+
+    // owner has specific privileges, defaults to task creator
     owner: {
       columnName: 'userId',
       model: 'user'
     },
+
     tags: {
       collection: 'tagEntity',
       via: 'tasks',
@@ -191,15 +198,8 @@ module.exports = {
   byCategory: function(page, limit, sort) {
     var page = page || 1,
       limit = limit || 1000,
-      sort = sort || 'createdAt desc',
-      output = {
-        assigned: [],
-        completed: [],
-        draft: [],
-        open: [],
-        submitted: [],
-      };
-    var tasks, volunteers;
+      sort = sort || 'createdAt desc';
+    var tasks;
     var promise =
       Task.find({ state: [ 'draft', 'submitted', 'open', 'assigned', 'completed' ] })
           .populate('owner')
@@ -207,14 +207,44 @@ module.exports = {
           .paginate({ page: page, limit: limit })
       .then(function(allTasks) {
         tasks = allTasks;
-        volQuery = _.map(tasks, function(t) { return {taskId: t.id} });
-        return Volunteer.findUsersByTask(volQuery)
+        return Task.byCategoryWithVolunteers(tasks);
       })
+      .then(function(output) {
+        return output;
+      })
+    return promise;
+  },
+  // returns a promise to annotate the tasks with their volunteers
+  // and sort into a hash by task state
+  byCategoryWithVolunteers: function(tasks) {
+    var states = [ 'draft', 'submitted', 'open', 'assigned', 'completed' ]
+    var output = {}
+    for (var i in states) {
+      state = states[i]
+      output[state] = [];
+    }
+    var volQuery = _.map(tasks, function(t) { return {taskId: t.id} });
+    var promise =
+      Volunteer.findUsersByTask(volQuery)
       .then(function(taskVolunteers) {
         _.forEach(tasks, function(t) {
-          output[t.state].push(t);
-          t.volunteers = taskVolunteers[t.id] || []
+          if (_.includes(states, t.state)) {
+            output[t.state].push(t);
+            t.volunteers = taskVolunteers[t.id] || []
+          }
         })
+        return output;
+      })
+    return promise;
+  },
+  byCategoryForDomain: function(domain) {
+    var promise =
+      Task.findByOwnerDomain(domain)
+      .then(function(allTasks) {
+        tasks = allTasks;
+        return Task.byCategoryWithVolunteers(tasks)
+      })
+      .then(function(output) {
         return output;
       })
     return promise;
@@ -267,6 +297,18 @@ module.exports = {
     });
 
     return promise;
+  },
+
+  // find where owner has username with matching domain
+  // returns a promise
+  findByOwnerDomain: function(domain) {
+    var queryStr = "SELECT task.* from task where \"userId\" " +
+                   "in (SELECT id FROM midas_user WHERE username SIMILAR TO '%(@|.)' || $1)";
+    var taskQuery = Promise.promisify(Task.query, {context: Task});
+    return taskQuery({name:'Task.findByOwnerDomain', text:queryStr, values:[domain]}).
+      then(function(result) {
+        return result.rows;
+      })
   },
 
   sendNotifications: function(i) {

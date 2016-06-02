@@ -7,6 +7,8 @@ var marked = require('marked');
 var MarkdownEditor = require('../../../../components/markdown_editor');
 var TagFactory = require('../../../../components/tag_factory');
 var ShowMarkdownMixin = require('../../../../components/show_markdown_mixin');
+var TaskFormViewHelper = require('../../task-form-view-helper');
+
 var TaskEditFormTemplate = fs.readFileSync(__dirname + '/../templates/task_edit_form_template.html').toString();
 
 
@@ -19,18 +21,21 @@ var TaskEditFormView = Backbone.View.extend({
     'click #task-view'                 : 'view',
     'submit #task-edit-form'           : 'submit',
     'click .js-task-draft'             : 'saveDraft',
-    'change [name=task-time-required]' : 'timeRequiredChanged',
+    'click [name=task-time-required]' : 'toggleTimeOptions',
   },
 
   initialize: function (options) {
-
     _.extend(this, Backbone.Events);
 
     var view                    = this;
     this.options                = options;
     this.tagFactory             = new TagFactory();
+    this.agency                 = window.cache.currentUser.agency;
     this.data                   = {};
     this.data.newTag            = {};
+
+    TaskFormViewHelper.annotateTimeRequired(options.tagTypes['task-time-required'], this.agency);
+    this.tagSources = options.tagTypes;  // align with naming in TaskFormView, so we can share completionDate
 
     this.initializeListeners();
 
@@ -88,6 +93,7 @@ var TaskEditFormView = Backbone.View.extend({
       tags: this.options.tags,
       madlibTags: this.options.madlibTags,
       ui: UIConfig,
+      agency: this.agency,
     };
 
     compiledTemplate = _.template(TaskEditFormTemplate)(this.data);
@@ -105,6 +111,7 @@ var TaskEditFormView = Backbone.View.extend({
     });
 
     this.$( '.js-success-message' ).hide();
+    this.toggleTimeOptions();
   },
 
   initializeSelect2: function () {
@@ -183,6 +190,11 @@ var TaskEditFormView = Backbone.View.extend({
       width: '130px',
     });
 
+    $('#js-time-frequency-estimate').select2({
+      placeholder: 'time-frequency',
+      width: '130px',
+    });
+
     $('#people').select2({
       placeholder: 'people',
       width: '150px',
@@ -243,6 +255,7 @@ var TaskEditFormView = Backbone.View.extend({
         completedAt : this.$( '#completedAt' ).val() || undefined,
         projectId   : null,
         state       : this.model.get( 'state' ),
+        restrict    : TaskFormViewHelper.getRestrictAgencyValue(this),
       };
 
 
@@ -332,6 +345,13 @@ var TaskEditFormView = Backbone.View.extend({
 
   },
 
+  /*
+   * Setup Time Options toggling
+   */
+  toggleTimeOptions: function (e) {
+    TaskFormViewHelper.toggleTimeOptions(this)
+  },
+
   displayChangeOwner: function (e) {
     e.preventDefault();
     this.$('.project-owner').hide();
@@ -365,8 +385,7 @@ var TaskEditFormView = Backbone.View.extend({
     tags.push.apply(tags,[this.$('#people').select2('data')]);
     tags.push.apply(tags,[this.$('#time-required').select2('data')]);
     tags.push.apply(tags,[this.$('#time-estimate').select2('data')]);
-    tags.push.apply(tags,[this.$('#length').select2('data')]);
-
+    tags.push.apply(tags,[this.$('#js-time-frequency-estimate').select2('data')]);
     return tags;
   },
 
