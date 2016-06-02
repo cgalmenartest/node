@@ -19,7 +19,7 @@ env:
     - CF_USERNAME=deploy-open-opportunities
     - CF_ORGANIZATION=open-opportunities
     - B_DOMAIN=18f.gov
-    - secure: "EYl3NnLIJBH0LplugWMpXyPphV05ScdGHCrwCGv/enynALxwpWKv9iXg9sqm8g4NCTqJTdx3kdPlnPrWIz3Zj70QFFk5vRohh1xcuKs1Mf2lqCW5sSPmpDQlTWPoD2cAVIOJd2TXxOHhhs1lSWVCp/Eld5l0U/XdDpzi7U9feQk="
+    - secure: "jNZWNeSMl4pCb6jjzlDGZ2BIOXM0BFocCFpbI0y0HFuS2sPJkaGXwPbdDwxaeE+fUWIz6RmMjTqvGZ0DL5nBYXlw1pynIG7oBOPiRwyoz6TT0DcvL/P6WChZb+SLVB2U+Uheg0mnk4mt2wSw7Qp5kb5P/nuvcvFS7aKhIQH/jOXXOF8pow9e4n7aoOC3cVQBLKTy2C6sWWei9GI0cXJZYez8/vBuhJRmzId/XfnL+oAl3CFcKii//5Mbwc4lxOoNuzDJhz/9Lb5NFG9Xs2TuTaRU98oO/+zu0HAIjYo8rBLR5VQktI15Ro0nq0R6nswr0kODbPvIhy8xByohlIeyAi6irO9J0zouvDuJhL6/sNXMEUgpsFcsfQE2BwUbW7qoPxV0nBeo5510kxMTXinICrgl0p1ef8fPta3Klqo6WD7Uf35/lzVrf4s3glkbHkZ9bndWty/V/rgeD4y0hRKCRhNrpbIdw6eysDffK9mkjX2byCEX1wW5UoqHWY9i5Gg21eL+rLXVjwKrFBDduKDyPBjSSLRkijRPj0kho4ADXlofOSo96XVIKeErpzuRGiCfCWWd4l+7UBKVwozK1UZQub1mQ/aFWyC0c1+EcRgLvRhLRWZ6MTr1pgO7QFYtICHxxQUBr6UTYXfwH6JdbH0K0/3gemkO2zLb727wqOQhmGY="
 deploy:
   - provider: script
     script: export CF_SPACE=prod && cf-blue-green-travis
