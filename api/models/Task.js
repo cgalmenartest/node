@@ -195,7 +195,7 @@ module.exports = {
   // draft: [],
   // open: [],
   // submitted: []
-  byCategory: function(page, limit, sort, domain) {
+  byCategory: function(page, limit, sort) {
     var page = page || 1,
       limit = limit || 1000,
       sort = sort || 'createdAt desc';
@@ -223,15 +223,12 @@ module.exports = {
       state = states[i]
       output[state] = [];
     }
-    sails.log.verbose('output', output);
-
     var volQuery = _.map(tasks, function(t) { return {taskId: t.id} });
     var promise =
       Volunteer.findUsersByTask(volQuery)
       .then(function(taskVolunteers) {
         _.forEach(tasks, function(t) {
           if (_.includes(states, t.state)) {
-            sails.log.verbose('output:', t.state, t.title);
             output[t.state].push(t);
             t.volunteers = taskVolunteers[t.id] || []
           }
