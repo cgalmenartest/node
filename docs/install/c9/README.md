@@ -86,7 +86,7 @@ Get Started With Cloud 9
 
   After a lot of output, you should see:
 
-`  ```
+```
   info:
   info:
   info:    Sails              <|
@@ -109,6 +109,6 @@ Get Started With Cloud 9
   debug: Environment : development
   debug: Port        : 8080
   debug: --------------------------------------------------------
-  ````
+  ```
 
 14. Click "http://localhost:8080" and then "Open" in the menu, and a new tab will open. With a URL that looks something like: http://openopps-yourgithubusername.c9users.io:8080
