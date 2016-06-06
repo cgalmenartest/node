@@ -10,7 +10,7 @@ Get Started With Cloud 9
 
   !["Your development environment, in the cloud" with signup field and button](img/c9-sign-up.png)
 
-4. Create a new Cloud 9 workspace, use OpenOpps as the workspace name (and you can leave the description blank)
+4. Create a new Cloud 9 workspace, use `openopps` as the workspace name (and you can leave the description blank)
 
   ![screenshot: create a new workspace with text fields for Workspace Name and Description](img/c9-new-workspace.png)
 
