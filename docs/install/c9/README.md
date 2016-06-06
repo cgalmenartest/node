@@ -10,13 +10,11 @@ Get Started With Cloud 9
 
   !["Your development environment, in the cloud" with signup field and button](img/c9-sign-up.png)
 
-4. Create a new Cloud 9 workspace, use `openopps` as the workspace name (and you can leave the description blank)
+4. Create a new Cloud 9 workspace, use `openopps` as the workspace name (and you can leave the description blank, use the https github URL from your fork, and choose the Node.js template:
 
-  ![screenshot: create a new workspace with text fields for Workspace Name and Description](img/c9-new-workspace.png)
+  ![screenshot: create a new workspace with text fields for Workspace Name and Description, github URL and nodejs template](img/c9-create-workspace.png)
 
-  use the github URL from your fork, and choose the Node.js template:
-
-  ![Choose a template offers many options, the second is Node.js](img/c9-nodejs-workspace.png)
+  Click "Create workspace" at the bottom.
 
 4. The Cloud9 workspace should look like this:
 
@@ -118,29 +116,66 @@ Get Started With Cloud 9
 
   After a lot of output, you should see:
 
-```
-  info:
-  info:
-  info:    Sails              <|
-  info:    v0.10.5             |\
-  info:                       /|.\
-  info:                      / || \
-  info:                    ,'  |'  \
-  info:                 .-'.-==|/_--'
-  info:                 `--'-------'
-  info:    __---___--___---___--___---___--___
-  info:  ____---___--___---___--___---___--___-__
-  info:
-  info: Server lifted in `/home/ubuntu/workspace`
-  info: To see your app, visit http://localhost:8080
-  info: To shut down Sails, press <CTRL> + C at any time.
+  ```
+    info:
+    info:
+    info:    Sails              <|
+    info:    v0.10.5             |\
+    info:                       /|.\
+    info:                      / || \
+    info:                    ,'  |'  \
+    info:                 .-'.-==|/_--'
+    info:                 `--'-------'
+    info:    __---___--___---___--___---___--___
+    info:  ____---___--___---___--___---___--___-__
+    info:
+    info: Server lifted in `/home/ubuntu/workspace`
+    info: To see your app, visit http://localhost:8080
+    info: To shut down Sails, press <CTRL> + C at any time.
 
-  debug: --------------------------------------------------------
-  debug: :: Sun Jun 05 2016 21:27:08 GMT+0000 (UTC)
+    debug: --------------------------------------------------------
+    debug: :: Sun Jun 05 2016 21:27:08 GMT+0000 (UTC)
 
-  debug: Environment : development
-  debug: Port        : 8080
-  debug: --------------------------------------------------------
+    debug: Environment : development
+    debug: Port        : 8080
+    debug: --------------------------------------------------------
+    ```
+
+    We're not really running the server, we just use SailsJS to set up the database with some data that the app needs to start.
+
+14. `Ctrl-C` to stop the process (Hold down the Control Key and hit `C`)
+
+15. Start the server using the command that you will use for development:
+
+  ```
+  npm run watch
   ```
 
-14. Click "http://localhost:8080" and then "Open" in the menu, and a new tab will open. With a URL that looks something like: http://openopps-yourgithubusername.c9users.io:8080
+  After a bit of output, you should see again:
+
+  ```
+    info:
+    info:
+    info:    Sails              <|
+    info:    v0.10.5             |\
+    info:                       /|.\
+    info:                      / || \
+    info:                    ,'  |'  \
+    info:                 .-'.-==|/_--'
+    info:                 `--'-------'
+    info:    __---___--___---___--___---___--___
+    info:  ____---___--___---___--___---___--___-__
+    info:
+    info: Server lifted in `/home/ubuntu/workspace`
+    info: To see your app, visit http://localhost:8080
+    info: To shut down Sails, press <CTRL> + C at any time.
+
+    debug: --------------------------------------------------------
+    debug: :: Sun Jun 05 2016 21:27:08 GMT+0000 (UTC)
+
+    debug: Environment : development
+    debug: Port        : 8080
+    debug: --------------------------------------------------------
+    ```
+
+16. Click "http://localhost:8080" and then "Open" in the menu, and a new tab will open. With a URL that looks something like: http://openopps-yourgithubusername.c9users.io:8080
