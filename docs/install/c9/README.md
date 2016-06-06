@@ -2,16 +2,48 @@ Get Started With Cloud 9
 ========================
 
 1. Create a github account
-2. On github, fork the project
-3. Sign up for Cloud 9
-4. Create a new Cloud 9 workspace  (use the github URL from your fork)
-5. In the workspace, you have full access to a VM, try these commands:
+2. Fork the project: https://github.com/openopps/openopps-platform
+
+  ![Fork button in upper right](img/fork.png)
+
+3. Sign up for [Cloud9](https://c9.io)
+
+  !["Your development environment, in the cloud" with signup field and button](img/c9-sign-up.png)
+
+4. Create a new Cloud 9 workspace, use OpenOpps as the workspace name (and you can leave the description blank)
+
+  ![screenshot: create a new workspace with text fields for Workspace Name and Description](img/c9-new-workspace.png)
+
+  use the github URL from your fork, and choose the Node.js template:
+
+  ![Choose a template offers many options, the second is Node.js](img/c9-nodejs-workspace.png)
+
+4. The Cloud9 workspace should look like this:
+
+  ![menus across the top, list of files on the left and big welcome screen](img/c9-workspace.png)
+
+  Notice that the list of files on the left are the same files that were on github.  
+
+5. We just created a virtual machine with a real-live unix terminal. At the bottom, you can see a terminal window, where you can type unix commands. Try these:
 
   ```
   ls
+  ```
+  `ls` is short for "list" which will display a list of files in the current directory. You should see something like this:
+
+  ```
+  Aptfile          GOVERNANCE.md  README.md  config/           manifest-new.yml      migrations/    tasks/
+  CONFIG.md        Gruntfile.js   api/       docs/             manifest-prod.yml     newrelic.js    test/
+  CONTRIBUTING.md  INSTALL.md     app.js     exclude.txt       manifest-staging.yml  node_modules/  tools/
+  CORETEAM.md      LICENSE.md     assets/    manifest-dev.yml  manifest.yml          package.json   views/
+  ```
+
+  To check the version of Nodejs you are running:
+
+  ```
   node -v
   ```
-6. Start PostgreSQL which will allow our app to access a database:
+6. Next, start PostgreSQL which will allow our app to access a database:
 
   ```
   sudo service postgresql start
