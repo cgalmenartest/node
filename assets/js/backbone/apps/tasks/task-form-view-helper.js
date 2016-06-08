@@ -2,7 +2,6 @@ var _ = require('underscore');
 
 module.exports = {
   annotateTimeRequired: function(data, userAgency) {
-    console.log('annotateTimeRequired in', data);
     data = _.chain(data).filter(function (item) {
       // if an agency is included in the data of a tag
       // then restrict it to users who are also
@@ -25,7 +24,6 @@ module.exports = {
       }
       return item;
     }).value();
-    console.log('annotateTimeRequired out', data);
 
     return data;
   },
@@ -34,9 +32,7 @@ module.exports = {
    * server if the restrict agency checkbox is checked
    */
   getRestrictAgencyValue: function(view) {
-    var restrictAgencyChecked = view.$( '#task-restrict-agency' ).val();
-    var tmp = restrictAgencyChecked ? view.agency.abbr : '';
-    console.log(tmp, typeof(tmp));
+    var restrictAgencyChecked = view.$( '#task-restrict-agency' ).prop('checked');
     return restrictAgencyChecked ? view.agency.abbr : '';
   },
 
@@ -52,6 +48,9 @@ module.exports = {
       restrictAgency     = view.$('#task-restrict-agency'),
       timeRequiredTag;
 
+    // restrict is a String with agency abbr or empty string for not restricted
+    var isRestricted = !(view.model.get( 'restrict' ) === '')
+
     // hide everything by default
     timeRequired.hide();
     timeRequiredAside.hide();
@@ -62,7 +61,7 @@ module.exports = {
     if (timeRequiredTag) {
       if (view.agency.allowRestrictAgency) {
         restrictAgency.prop('disabled', timeRequiredTag.alwaysRestrictAgency);
-        restrictAgency.prop('checked', (timeRequiredTag.value === 'Full Time Detail'));
+        restrictAgency.prop('checked', (timeRequiredTag.value === 'Full Time Detail') || isRestricted);
       }
 
       if (timeRequiredTag.value === 'One time') {
