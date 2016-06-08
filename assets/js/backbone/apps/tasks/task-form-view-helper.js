@@ -49,7 +49,7 @@ module.exports = {
       timeRequiredTag;
 
     // restrict is a String with agency abbr or empty string for not restricted
-    var isRestricted = !(view.model.get( 'restrict' ) == '')
+    var isRestricted = !(view.model.get( 'restrict' ) === '')
 
     // hide everything by default
     timeRequired.hide();
