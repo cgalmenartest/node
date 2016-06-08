@@ -12,13 +12,15 @@ class User {
   get agency() {
     var agencyTag = _(this.tags).findWhere({ type: 'agency' });
 
+    if (!agencyTag) agencyTag = {};
+
     // ideally this would be its own object
     return { id: agencyTag.id,
              name: agencyTag.name,
-             abbr: agencyTag.data.abbr,
-             domain: agencyTag.data.domain[0],
-             slug: agencyTag.data.abbr.toLowerCase(),
-             allowRestrictAgency: agencyTag.data.allowRestrictAgency
+             abbr: agencyTag.data ? agencyTag.data.abbr : '',
+             domain: agencyTag.data ? agencyTag.data.domain[0] : '',
+             slug: agencyTag.data ? agencyTag.data.abbr.toLowerCase() : '',
+             allowRestrictAgency: agencyTag.data ? agencyTag.data.allowRestrictAgency : false
            }
   }
 
