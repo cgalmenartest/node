@@ -353,12 +353,12 @@ var TaskFormView = Backbone.View.extend({
    *
    */
   getTags: function getTags () {
-
     var tags        = [];
-    var effortType  = this.$( '[name=task-time-required]:checked' ).val();
     var tagSkills   = this.$( '#js-task-tag' ).select2( 'data' );
     var tagLocation = this.$( '#js-task-location' ).select2( 'data' );
     var peopleCount = this.$( '#js-participant-selection' ).select2( 'data' );
+    var timeRequiredTagId  = this.$( '[name=task-time-required]:checked' ).val();
+    var timeRequiredTag = _.findWhere(this.tagSources['task-time-required'], {id: parseInt(timeRequiredTagId)});
 
     // check for the presence of data in these fields
     // no data means no tags are supplied
@@ -366,25 +366,25 @@ var TaskFormView = Backbone.View.extend({
     if ( tagSkills != [] ) tags.push.apply( tags, tagSkills );
     if ( tagLocation != [] ) tags.push.apply( tags, tagLocation );
     if ( peopleCount != [] ) tags.push( peopleCount );
-    if ( effortType ) tags.push.apply( tags,[ { id: effortType } ] );
+    if ( timeRequiredTag ) tags.push.apply( tags,[ timeRequiredTag ] );
 
     // if time selection is NOT full-time, make sure to include
     // the other tags
-    if ( effortType == 1 ) { // time selection is 'One time'
+    if ( timeRequiredTag.value === 'One time' ) { // time selection is 'One time'
       tags.push.apply( tags,[ this. $( '#js-task-time-estimate' ).select2( 'data' ) ] );
-    } else if ( effortType == 2 ) { // time selection is 'On going'
+    } else if ( timeRequiredTag.value === 'Ongoing' ) { // time selection is 'On going'
       tags.push.apply( tags,[ this. $( '#js-task-time-estimate' ).select2( 'data' ) ] );
       tags.push.apply( tags,[ this. $( '#js-time-frequency-estimate' ).select2( 'data' ) ] );
     }
 
-    return _( tags ).map( function ( tag ) {
+    tags = _( tags ).map( function ( tag ) {
       return ( tag.id && tag.id !== tag.name && tag.id !== undefined ) ? +tag.id : {
         name: tag.name,
         type: tag.tagType,
         data: tag.data,
       };
     } );
-
+    return tags;
   },
 
   /*
