@@ -4,7 +4,6 @@ var marked = require('marked');
 var renderer = new marked.Renderer();
 
 function unescape(html) {
-  console.log('html', html)
 	// explicitly match decimal, hex, and named HTML entities
   return html.replace(/&(#(?:\d+)|(?:#x[0-9A-Fa-f]+)|(\w+))/g, function(_, n) {
     console.log('found', n);
