@@ -54,7 +54,7 @@
                 &mdash;
                  <%- madlibTags['task-time-estimate'][0].name %>
               <% } %>
-              <% if (madlibTags['task-time-required'][0].name === "Ongoing") { %>  <!-- 2-4 hours, etc. -->
+              <% if (madlibTags['task-time-required'][0].name === "Ongoing" && madlibTags['task-length']) { %>  <!-- 2-4 hours, etc. -->
                 <%- madlibTags['task-length'][0].name.toLowerCase() %>
               <% } %>
             </div>
