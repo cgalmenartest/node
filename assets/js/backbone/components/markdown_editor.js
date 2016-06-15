@@ -20,6 +20,7 @@ var fs = require('fs');
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
+var jqSelection = require('../../vendor/jquery.selection');
 var marked = require('marked');
 var BaseComponent = require('../base/base_component');
 var EditorTemplate = fs.readFileSync(
