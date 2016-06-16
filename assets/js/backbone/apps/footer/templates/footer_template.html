@@ -1,6 +1,8 @@
 <footer class="container center">
+  <% if (ui.contact) { %>
   Questions? Contact us: <a href="<%- ui.contact.link %>" target="_blank"><%- ui.contact.name %></a>
   |
+  <% } %>
   Version <a target="_blank"
   href="<%- versionLink %>"><%- version %></a>
   <% if (login.terms.enabled === true) { %>
