@@ -3,6 +3,7 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var Login = require('../../../config/login.json');
+var UIConfig = require('../../../config/ui.json');
 
 var FooterTemplate = fs.readFileSync(
   __dirname + '/../templates/footer_template.html'
@@ -28,7 +29,8 @@ var FooterView = Backbone.View.extend({
     var data = {
       version: version,
       versionLink: versionLink(version),
-      login: Login
+      login: Login,
+      ui: UIConfig,
     };
     var compiledTemplate = _.template(FooterTemplate)(data);
     this.$el.html(compiledTemplate);

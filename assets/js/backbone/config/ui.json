@@ -7,6 +7,10 @@
     "url"  : "/faq"
   },
   "systemEmail" : "test@midas.com",
+  "contact": {
+    "name": "openopps-platform group",
+    "link": "https://groups.google.com/forum/#!forum/openopps-platform"
+  },
   "browse": {
     "pageSize" : 27,
     "useInfiniteScroll" : false
