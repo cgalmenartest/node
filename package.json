@@ -115,7 +115,7 @@
     "jshint": "find assets/js/backbone -name \\*js -exec ./node_modules/jshint/bin/jshint {} \\;",
     "cover": "istanbul cover ./node_modules/mocha/bin/_mocha -- test/bootstrap.test.js test/integration/**/*.test.js",
     "debug": "node debug app.js",
-    "browserify": "browserify -d assets/js/backbone/app.js -o assets/js/bundle.js -t [ babelify --presets [ es2015 stage-0 ] ] -t [ brfs ]",
+    "browserify": "browserify assets/js/backbone/app.js -o assets/js/bundle.js -t [ babelify --presets [ es2015 stage-0 ] ] -t [ brfs ]",
     "watch": "npm run watch:server & npm run watch:client",
     "watch:server": "nodemon app.js --ignore assets/app --ignore .tmp/ --ignore node_modules/",
     "watch:client": "npm run watch:client:js",
