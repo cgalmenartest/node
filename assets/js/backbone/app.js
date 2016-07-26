@@ -17,7 +17,7 @@ Backbone.$ = $;
 
 
 // Set CSRF header
-$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
+$.ajaxPrefilter(function (options, originalOptions, jqXHR) {
   var token;
   token = $('meta[name="csrf-token"]').attr('content');
   if (token) {
