@@ -102,7 +102,7 @@
     "dir": "."
   },
   "scripts": {
-    "preinstall": "if [ \"$THEME\" ]; then git clone $THEME _theme; npm run import --openopps-platform:dir=_theme; fi",
+    "preinstall": "if [ \"$THEME\" ]; then rm -rf _theme; git clone $THEME _theme; npm run import --openopps-platform:dir=_theme; fi",
     "import": "cp -v $npm_package_config_dir/exclude.txt exclude.txt | true && rsync -av --exclude-from=exclude.txt $npm_package_config_dir/* .",
     "install": "npm run migrate && npm run uswds && node --version && pwd && ls",
     "init": "node ./tools/init.js",
