@@ -131,9 +131,9 @@
     "url": "https://github.com/18F/openopps-platform.git"
   },
   "bugs": "https://github.com/18F/openopps-platform/issues",
-  "license": "CC0",
+  "license": "CC0-1.0",
   "engines": {
-    "node": "~4.4.x",
-    "npm": "~3.8.x"
+    "node": "4.4.7",
+    "npm": "3.8.9"
   }
 }

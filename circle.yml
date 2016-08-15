@@ -1,0 +1,14 @@
+machine:
+  environment:
+    - DB_OWNER: ubuntu
+    - DB_USER: midas
+    - DB_PASSWORD: midas
+  node:
+    version: 4.4.7
+  npm:
+    version: 3.8.9
+
+dependencies:
+  pre:
+    - ./tools/postgres/create-db.sh
+
