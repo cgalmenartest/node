@@ -12,7 +12,6 @@ before_install:
   - psql -c "GRANT ALL PRIVILEGES ON DATABASE midas to midas;" -U postgres
   - psql -c "ALTER SCHEMA public OWNER TO midas;" -U postgres
   - if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
-before_deploy:
   - curl -L "https://cli.run.pivotal.io/stable?release=linux64binary&source=github" | tar -zx
   - ./cf api CF_API
   - ./cf login -u $CF_USERNAME -p $CF_PASSWORD -o CF_ORGANIZATION
