@@ -15,7 +15,7 @@ before_install:
 before_deploy:
   - curl -L "https://cli.run.pivotal.io/stable?release=linux64-binary&source=github" | tar -zx
   - ./cf api $CF_API
-  - ./cf login -u $CF_USERNAME -p $CF_PASSWORD -o CF_ORGANIZATION
+  - ./cf login -u $CF_USERNAME -p $CF_PASSWORD -o $CF_ORGANIZATION
   - ./cf -v
   - go get github.com/concourse/autopilot
   - ./cf install-plugin $GOPATH/bin/autopilot -f
