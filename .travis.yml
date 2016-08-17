@@ -14,11 +14,13 @@ before_install:
   - if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
 before_deploy:
   - curl -L "https://cli.run.pivotal.io/stable?release=linux64-binary&source=github" | tar -zx
-  - ./cf api $CF_API
-  - ./cf login -u $CF_USERNAME -p $CF_PASSWORD -o $CF_ORGANIZATION -s dev
-  - ./cf -v
+  - mkdir- p ./tmp/
+  - mv -v cf ./tmp/cf
+  - ./tmp/cf api $CF_API
+  - ./tmp/cf login -u $CF_USERNAME -p $CF_PASSWORD -o $CF_ORGANIZATION -s dev
+  - ./tmp/cf -v
   - go get github.com/concourse/autopilot
-  - ./cf install-plugin $GOPATH/bin/autopilot -f
+  - ./tmp/cf install-plugin $GOPATH/bin/autopilot -f
 env:
   global:
     - GOPATH="${HOME}/.go_workspace"
@@ -31,19 +33,19 @@ env:
 deploy:
   - provider: script
     script:
-      - ./cf t -s prod
-      - ./cf zero-downtime-push $CF_APP -f manifest-prod.yml
+      - ./tmp/cf t -s prod
+      - ./tmp/cf zero-downtime-push $CF_APP -f manifest-prod.yml
     on:
       branch: master
   - provider: script
     script:
-      - ./cf t -s staging
-      - ./cf zero-downtime-push $CF_APP -f manifest-staging.yml
+      - ./tmp/cf t -s staging
+      - ./tmp/cf zero-downtime-push $CF_APP -f manifest-staging.yml
     on:
       branch: staging
   - provider: script
     script:
-      - ./cf t -s dev
-      - ./cf zero-downtime-push $CF_APP -f manifest-dev.yml
+      - ./tmp/cf t -s dev
+      - ./tmp/cf zero-downtime-push $CF_APP -f manifest-dev.yml
     on:
       branch: dev
