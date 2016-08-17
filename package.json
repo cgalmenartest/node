@@ -31,6 +31,7 @@
     "file-type": "^3.8.0",
     "gm": "^1.22.0",
     "grunt": "0.4.5",
+    "grunt-cli": "1.2.0",
     "grunt-contrib-clean": "0.6.0",
     "grunt-contrib-coffee": "0.13.0",
     "grunt-contrib-concat": "0.5.1",
@@ -104,7 +105,7 @@
   "scripts": {
     "preinstall": "if [ \"$THEME\" ]; then rm -rf _theme; git clone $THEME _theme; npm run import --openopps-platform:dir=_theme; fi",
     "import": "cp -v $npm_package_config_dir/exclude.txt exclude.txt | true && rsync -av --exclude-from=exclude.txt $npm_package_config_dir/* .",
-    "install": "npm run migrate && npm run uswds && node --version && pwd && ls",
+    "postinstall": "npm run migrate && npm run uswds && node --version && pwd && ls",
     "init": "node ./tools/init.js",
     "demo": "node ./tools/demo.js",
     "build": "npm run browserify",
