@@ -9,8 +9,8 @@ var UIConfig = require('../../../config/ui.json');
 var Popovers = require('../../../mixins/popovers');
 var TagConfig = require('../../../config/tag');
 var BrowseListView = require('./browse_list_view');
-// var ProfileListView = require('./profile_list_view');
-// var ProfileMapView = require('./profile_map_view');
+var ProfileListView = require('./profile_list_view');
+var ProfileMapView = require('./profile_map_view');
 var BrowseMainTemplate = fs.readFileSync(__dirname + ('/../templates/browse_main_view_template.html')).toString();
 var BrowseSearchTag = fs.readFileSync(__dirname + ('/../templates/browse_search_tag.html')).toString();
 var i18n = require('i18next');
@@ -161,6 +161,7 @@ var BrowseMainView = Backbone.View.extend({
   },
 
   renderMap: function(profiles) {
+    return;
     // create a new view for the returned data. Need to show the div before
     // rendering otherwise the SVG borders will be wrong.
     if (this.browseMapView) { this.browseMapView.cleanup(); }

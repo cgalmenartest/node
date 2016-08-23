@@ -1,7 +1,7 @@
 {
   "name": "openopps-platform",
   "private": true,
-  "version": "0.12.0",
+  "version": "0.13.0-rc1",
   "description": "platform that creates an empowered network through sharing skills and collaborating on projects",
   "keywords": [],
   "dependencies": {
@@ -83,6 +83,8 @@
     "uswds": "^0.9.1",
     "validator": "^5.1.0",
     "watchify": "^3.7.0",
+    "d3": "^4.2.2",
+    "html-browserify": "0.0.6",
     "xmlhttprequest": "^1.8.0"
   },
   "devDependencies": {
@@ -116,11 +118,11 @@
     "jshint": "find assets/js/backbone -name \\*js -exec ./node_modules/jshint/bin/jshint {} \\;",
     "cover": "istanbul cover ./node_modules/mocha/bin/_mocha -- test/bootstrap.test.js test/integration/**/*.test.js",
     "debug": "node debug app.js",
-    "browserify": "browserify assets/js/backbone/app.js -o assets/js/bundle.js -t [ babelify --presets [ es2015 stage-0 ] ] -t [ brfs ]",
+    "browserify": "browserify assets/js/backbone/app.js -o assets/js/bundle.js -t [ html-browserify ] -t [ babelify --presets [ es2015 stage-0 ] ] -t [ brfs ]",
     "watch": "npm run watch:server & npm run watch:client",
     "watch:server": "nodemon app.js --ignore assets/app --ignore .tmp/ --ignore node_modules/",
     "watch:client": "npm run watch:client:js",
-    "watch:client:js": "watchify --debug assets/js/backbone/app.js -o assets/js/bundle.js -t [ babelify --presets [ es2015 stage-0 ] ] -t [ brfs ]",
+    "watch:client:js": "watchify --debug assets/js/backbone/app.js -o assets/js/bundle.js -t [ html-browserify ] -t [ babelify --presets [ es2015 stage-0 ] ] -t [ brfs ]",
     "uswds": "npm run uswds:css && npm run uswds:images && npm run uswds:fonts",
     "uswds:css": "cp node_modules/uswds/dist/css/uswds.css assets/styles/",
     "uswds:images": "cp -r node_modules/uswds/dist/img/ ./assets/images/uswds",
