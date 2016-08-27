@@ -269,7 +269,10 @@ var TaskEditFormView = Backbone.View.extend({
         modelData.state = 'submitted';
       }
 
-      if ( owner ) { modelData[ 'userId' ] = owner.id; }
+      if ( owner ) {
+        modelData[ 'userId' ] = owner.id;
+        modelData.owner = owner;
+      }
       if ( completedBy !== '' ) { modelData[ 'completedBy' ] = completedBy; }
       if ( newParticipant ) {
         if ( this.$( '#participant-notify:checked' ).length > 0 ) { silent = false; }
