@@ -2,7 +2,7 @@ module.exports = function ( grunt ) {
 
   grunt.config.set( 'browserSync', {
     bsFiles: {
-      src: [ 'assets/**/*' ],
+      src: [ '.tmp/**/*' ],
     },
     options: {
       proxy: 'localhost:1337',
