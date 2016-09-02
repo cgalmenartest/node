@@ -1,7 +1,7 @@
 {
   "name": "openopps-platform",
   "private": true,
-  "version": "0.13.3",
+  "version": "0.13.4",
   "description": "platform that creates an empowered network through sharing skills and collaborating on projects",
   "keywords": [],
   "dependencies": {
@@ -88,10 +88,10 @@
     "xmlhttprequest": "^1.8.0"
   },
   "devDependencies": {
-    "babel-core": "^6.14.0",
-    "babel-loader": "^6.2.5",
-    "babel-preset-es2015": "^6.14.0",
-    "casperjs": "^1.1.3",
+    "babel-core": "6.14.0",
+    "babel-loader": "6.2.5",
+    "babel-preset-es2015": "6.14.0",
+    "casperjs": "1.1.3",
     "chai": "^3.5.0",
     "chai-datetime": "^1.4.1",
     "grunt-browser-sync": "^2.2.0",
@@ -105,7 +105,7 @@
     "sinon": "^1.17.3",
     "superagent": "^1.8.3",
     "supertest": "^1.2.0",
-    "webpack": "^1.13.2"
+    "webpack": "1.13.2"
   },
   "config": {
     "dir": "."
