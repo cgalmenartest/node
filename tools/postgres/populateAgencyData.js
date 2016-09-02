@@ -64,8 +64,8 @@ function getAbbr ( name ) {
 }
 
 /**
-  * The meat-and-potatoes function for populataing all the tags.
-  * This function returns a Promise which inturn returns an array of Promises
+  * The meat-and-potatoes function for populating all the tags.
+  * This function returns a Promise which in turn returns an array of Promises
   * to resolve the record#save command.
   * @return { Sails#Waterline#Promise } This Promise is bluebird-like and is
   * returned by the Waterline ORM.
