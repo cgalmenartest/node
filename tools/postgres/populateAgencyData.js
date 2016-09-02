@@ -75,7 +75,7 @@ function populateTags () {
     .then( function ( tags ) {
       return _( tags ).map( function ( tag ) {
         var abbreviation = getAbbr( tag.name );
-        if ( abbreviation  !== null ) {
+        if ( abbreviation !== null ) {
           abbreviation = abbreviation[ 1 ];
           sails.log.info( `The abbreviation will be ${ abbreviation } for ${ tag.name }` );
           tag.data = {
