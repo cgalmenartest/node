@@ -58,7 +58,7 @@ module.exports = {
       var s3 = new AWS.S3(),
           params = {
             Bucket: config.s3.bucket,
-            Key: p.join(config.s3.prefix || '', file.name)
+            Key: p.join(config.s3.prefix || '', file.fd)
           };
       s3.getObject(params).createReadStream()
         .on('error', function(e) {
