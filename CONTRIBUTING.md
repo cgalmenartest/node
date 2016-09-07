@@ -14,12 +14,12 @@ with this waiver of copyright interest.
 
 ## Communication
 
-Anyone actively contributing or using OpenOpps, should join our [Mailing List](https://groups.google.com/forum/#!forum/openopps-platform).
+Anyone actively contributing to or using OpenOpps should join our [Mailing List](https://groups.google.com/forum/#!forum/openopps-platform).
 We also have a public Slack chat room. If you're interested in following along with the development process or have questions, feel free to [join us](https://chat.18f.gov/?channel=openopps-public).
 
-You should be using the master branch for most stable release, please review [release notes](https://github.com/openopps/openopps-platform/releases) regularly. We do releases every week or two and send out notes.  We're generally using [semantic versioning](http://semver.org/), but we're pre-1.0, so API can change at any time. We use the minor version for changes where there are significant installation process changes or API changes or a database migration is needed.
+You should be using the master branch for the most stable release; please review [release notes](https://github.com/openopps/openopps-platform/releases) regularly. We do releases every week or two and send out notes. We're generally using [semantic versioning](http://semver.org/), but we're pre-1.0, so the API can change at any time. We use the minor version for changes where there are significant installation process changes or API changes or a database migration is needed.
 
-If you want to keep up with the latest changes, we work in the "dev" branch.  If you are using dev, keep an eagle-eye on commits and/or join our daily standup.
+If you want to keep up with the latest changes, we work in the `dev` branch.  If you are using dev, keep an eagle-eye on commits and/or join our daily standup.
 
 We also have a [wiki](https://github.com/openopps/openopps-platform/wiki) where we keep various development notes. If anything is confusing or your questions are not answered there, please shout out on the [mailing list](https://groups.google.com/forum/#!forum/openopps-platform).
 
