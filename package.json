@@ -125,7 +125,7 @@
     "cover": "istanbul cover ./node_modules/mocha/bin/_mocha -- test/bootstrap.test.js test/integration/**/*.test.js",
     "debug": "node debug app.js",
     "watch": "npm run watch:server & npm run watch:client",
-    "watch:server": "nodemon app.js --ignore assets/app --ignore .tmp/ --ignore node_modules/",
+    "watch:server": "nodemon --ignore .git/ --ignore assets/app --ignore .tmp/ --ignore node_modules/ app.js",
     "watch:client": "npm run watch:client:js",
     "watch:client:js": "watchify --debug assets/js/backbone/app.js -o assets/js/bundle.js -t [ html-browserify ] -t [ babelify --presets [ es2015 stage-0 ] ] -t [ brfs ]",
     "uswds": "npm run uswds:css && npm run uswds:images && npm run uswds:fonts",
