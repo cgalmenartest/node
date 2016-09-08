@@ -101,7 +101,7 @@ var findTasks = function (where, cb) {
           id: owner.id,
           name: owner.name,
           agency: owner.tags && owner.tags[0]
-        };        
+        };
       }
     });
     return cb(null, tasks);
