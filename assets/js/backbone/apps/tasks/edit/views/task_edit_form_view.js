@@ -30,7 +30,7 @@ var TaskEditFormView = Backbone.View.extend({
     var view                    = this;
     this.options                = options;
     this.tagFactory             = new TagFactory();
-    this.agency                 = window.cache.currentUser.agency;
+    this.agency                 = this.model.attributes.owner.agency;
     this.data                   = {};
     this.data.newTag            = {};
 
@@ -352,7 +352,7 @@ var TaskEditFormView = Backbone.View.extend({
    * Setup Time Options toggling
    */
   toggleTimeOptions: function (e) {
-    TaskFormViewHelper.toggleTimeOptions(this)
+    TaskFormViewHelper.toggleTimeOptions(this);
   },
 
   displayChangeOwner: function (e) {
@@ -374,7 +374,7 @@ var TaskEditFormView = Backbone.View.extend({
 
     // Gather tags for submission after the task is created
     var tags = [],
-      taskTimeTag = this.$('[name=task-time-required]:checked').val();
+        taskTimeTag = this.$('[name=task-time-required]:checked').val();
 
     if (taskTimeTag) {
       tags.push.apply(tags,[{
