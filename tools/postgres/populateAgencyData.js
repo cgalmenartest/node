@@ -29,12 +29,20 @@ Sails.lift( options, function ( error, sails ) {
   }
 
   populateTags()
-    .then( function ( saves ) {
-      Promise.all( saves )
-        .then( function () {
-          done( error, sails );
+    .then( function ( tagSaves ) {
+      Promise.all( tagSaves )
+        .then( function ( data ) {
+          sails.log.info( 'Migration complete for adding agency data to the agency tag.' );
+          populateTasks()
+            .then( function ( taskSaves ) {
+              Promise.all( taskSaves )
+                .then( function () {
+                  done( error, sails );
+                } );
+            } );
         } );
     } );
+
 
 } );
 
@@ -63,6 +71,20 @@ function getAbbr ( name ) {
   return /\(([A-Z]+)\)/.exec( name );
 }
 
+function createAgencyDataHash ( agencyName ) {
+  var abbreviation = getAbbr( agencyName );
+  if ( abbreviation !== null ) {
+    abbreviation = abbreviation[ 1 ];
+    sails.log.info( `The abbreviation will be ${ abbreviation } for ${ agencyName }` );
+    return {
+      abbr: abbreviation,
+      domain: `${ abbreviation.toLowerCase() }.gov`,
+      slug: abbreviation.toLowerCase(),
+      allowRestrictAgency: true,
+    };
+  }
+}
+
 /**
   * The meat-and-potatoes function for populating all the tags.
   * This function returns a Promise which in turn returns an array of Promises
@@ -74,16 +96,8 @@ function populateTags () {
   return TagEntity.find( { type: 'agency' } )
     .then( function ( tags ) {
       return _( tags ).map( function ( tag ) {
-        var abbreviation = getAbbr( tag.name );
-        if ( abbreviation !== null ) {
-          abbreviation = abbreviation[ 1 ];
-          sails.log.info( `The abbreviation will be ${ abbreviation } for ${ tag.name }` );
-          tag.data = {
-            abbr: abbreviation,
-            domain: `${ abbreviation.toLowerCase() }.gov`,
-            slug: abbreviation.toLowerCase(),
-            allowRestrictAgency: true,
-          };
+        tag.data = createAgencyDataHash( tag.name );
+        if ( tag.data ) {
           return new Promise( function ( resolve, reject ) {
             tag.save( function ( error ) {
               if ( error ) {
@@ -93,7 +107,7 @@ function populateTags () {
               }
               sails.log.info( `Done saving ${ tag.name }` );
               sails.log.info( `    as agency#data = ${ JSON.stringify( tag.data ) }` );
-              resolve();
+              resolve( tag );
             } );
           } );
         }
@@ -101,5 +115,36 @@ function populateTags () {
     } )
     .catch( function ( error ) {
       sails.log.error( 'Whoops! An error has occurred', error );
+    } );
+}
+
+function populateTasks () {
+  return Task.find()
+    .then( function ( tasks ) {
+      return _( tasks ).map( function ( task ) {
+        return User.findOne( { id: task.owner } )
+          .populate( 'tags' )
+          .then( function ( user ) {
+            var returnData;
+            var actualData = _.find( user.tags, { type: 'agency' } );
+            if ( actualData && actualData.data ) {
+              returnData = {
+                name: actualData.name,
+                abbr: actualData.data.abbr,
+                domain: actualData.data.domain,
+                slug: actualData.data.slug,
+                projectNetwork: false,
+              };
+              sails.log.info( JSON.stringify( returnData ) );
+            }
+            task.restrict = returnData;
+            task.save( function ( error ) {
+              if ( error ) {
+                sails.log.error( `Whoops! There was an error`, error );
+                return;
+              }
+            } );
+          } );
+      } );
     } );
 }

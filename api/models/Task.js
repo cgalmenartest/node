@@ -63,7 +63,7 @@ module.exports = {
     submittedAt: 'datetime',
 
     // limit participation to a specific agency
-    restrict: 'STRING',
+    restrict: 'JSON',
 
     // owner has specific privileges, defaults to task creator
     owner: {
