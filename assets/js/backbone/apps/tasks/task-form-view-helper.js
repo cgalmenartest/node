@@ -42,7 +42,7 @@ module.exports = {
         completionDate     = view.$('#time-options-completion-date'),
         timeFrequency      = view.$('#time-options-time-frequency'),
         restrictAgency     = view.$('#task-restrict-agency'),
-        timeRequiredTag;
+        timeRequiredTag = _.findWhere(view.tagSources['task-time-required'], {id: parseInt(currentValue)});
 
     // restrict is a String with agency abbr or empty string for not restricted
     var isRestricted = view.model.get( 'restrict' ).projectNetwork;
@@ -54,11 +54,13 @@ module.exports = {
     timeFrequency.hide();
     completionDate.hide();
 
-    timeRequiredTag = _.findWhere(view.tagSources['task-time-required'], {id: parseInt(currentValue)});
     if (timeRequiredTag) {
       if (isFullTimeDetail || isRestricted) {
         restrictAgency.prop('disabled', timeRequiredTag.alwaysRestrictAgency);
         restrictAgency.prop('checked', isFullTimeDetail || isRestricted);
+      } else {
+        restrictAgency.prop('checked', isFullTimeDetail || isRestricted);
+        restrictAgency.prop('disabled', false);
       }
 
       if (timeRequiredTag.value === 'One time') {
