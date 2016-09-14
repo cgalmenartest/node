@@ -74,46 +74,24 @@ var BrowseMainView = Backbone.View.extend({
     this.filter(undefined, { state: states });
   },
 
-  filter: function(term, filters) {
+  filter: function (term, filters, agency) {
     var items;
 
     if (typeof term !== 'undefined') this.term = term;
     if (typeof filters !== 'undefined') this.filters = filters;
     term = this.term;
     filters = this.filters;
-
-    items = this.collection.chain().pluck('attributes').filter(function(item) {
-      // filter out tasks that are full time details with other agencies
-      var userAgency = { id: false },
-        timeRequiredTag = _.where(item.tags, { type: 'task-time-required' })[0],
-        fullTimeTag = false;
-
-      if (window.cache.currentUser) {
-        userAgency = _.where(window.cache.currentUser.tags, { type: 'agency' })[0];
-      }
-
-      if (timeRequiredTag && timeRequiredTag.name === 'Full Time Detail') {
-        fullTimeTag = true;
-      }
-
-      if (!fullTimeTag) return item;
-      if (fullTimeTag && userAgency && (timeRequiredTag.data.agency.id === userAgency.id)) return item;
-    }).filter(function(data) {
-      var searchBody = JSON.stringify(_.values(data)).toLowerCase();
-      return !term || searchBody.indexOf(term.toLowerCase()) >= 0;
-    }).filter(function(data) {
-      var test = [];
-      _.each(filters, function(value, key) {
-        if (_.isArray(value)) {
-          test.push(_.some(value, function(val) {
-            return data[key] === val || _.contains(data[key], value);
-          }));
-        } else {
-          test.push(data[key] === value || _.contains(data[key], value));
-        }
-      });
-      return test.length === _.compact(test).length;
-    }).value();
+    /**
+     * TODO: There are three separate filters happening here on the same dataset.
+     * There should not be three separate filters. The following code is used throughout
+     * the application so modify it at your own risk.
+     */
+    items = this.collection.chain()
+      .pluck('attributes')
+      .filter( _.bind( filterTaskByAgency, this, agency ) )
+      .filter( _.bind( filterTaskByTerm, this, term ) )
+      .filter( _.bind( filterTaskByFilter, this, filters ) )
+      .value();
 
     this.renderList(items);
     if (this.options.target === 'profiles') this.renderMap(items);
@@ -183,5 +161,34 @@ var BrowseMainView = Backbone.View.extend({
   }
 
 });
+
+
+function filterTaskByAgency ( agency, task ) {
+  var getAbbr = _.property( 'abbr' );
+  if ( agency ) {
+    return getAbbr( agency.data ) === getAbbr( task.restrict );
+  }
+
+  return task;
+}
+
+function filterTaskByTerm ( term, task ) {
+  var searchBody = JSON.stringify( _.values( task ) ).toLowerCase();
+  return ( ! term ) || ( searchBody.indexOf( term.toLowerCase() ) >= 0 );
+}
+
+function filterTaskByFilter ( filters, task ) {
+  var test = [];
+  _.each( filters, function ( value, key ) {
+    if ( _.isArray( value ) ) {
+      test.push( _.some( value, function ( val ) {
+        return task[ key ] === val || _.contains( task[ key ], value );
+      } ) );
+    } else {
+      test.push( task[ key ] === value || _.contains( task[ key ], value ) );
+    }
+  } );
+  return test.length === _.compact(test).length;
+}
 
 module.exports = BrowseMainView;

@@ -52,9 +52,13 @@ var DashboardView = Backbone.View.extend({
     this.listenToOnce(this.collection, 'browse:task:fetch', function () {
       self.collection.fetch({
         success: function (collection) {
+          var userAgency;
           self.collection = collection;
           self.browseMainView.collection = collection;
-          self.browseMainView.filter();
+          if (window.cache.currentUser) {
+            userAgency = _.where(window.cache.currentUser.tags, { type: 'agency' })[0];
+          }
+          self.browseMainView.filter( undefined, {}, userAgency );
         },
       });
     });
