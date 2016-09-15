@@ -45,8 +45,8 @@ module.exports = {
         timeRequiredTag = _.findWhere(view.tagSources['task-time-required'], {id: parseInt(currentValue)});
 
     // restrict is a String with agency abbr or empty string for not restricted
-    var isRestricted = view.model.get( 'restrict' ).projectNetwork;
-    var isFullTimeDetail = timeRequiredTag.value === 'Full Time Detail';
+    var isRestricted = _.property( 'projectNetwork', view.model.get( 'restrict' ) );
+    var isFullTimeDetail = _.property( 'value' )( timeRequiredTag ) === 'Full Time Detail';
 
     // hide everything by default
     timeRequired.hide();
