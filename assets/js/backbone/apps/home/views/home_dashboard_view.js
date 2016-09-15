@@ -58,7 +58,7 @@ var DashboardView = Backbone.View.extend({
           if (window.cache.currentUser) {
             userAgency = _.where(window.cache.currentUser.tags, { type: 'agency' })[0];
           }
-          self.browseMainView.filter( undefined, {}, userAgency );
+          self.browseMainView.filter( undefined, { state: "open" }, userAgency );
         },
       });
     });
