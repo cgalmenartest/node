@@ -165,11 +165,15 @@ var BrowseMainView = Backbone.View.extend({
 
 function filterTaskByAgency ( agency, task ) {
   var getAbbr = _.property( 'abbr' );
-  if ( agency ) {
-    return getAbbr( agency.data ) === getAbbr( task.restrict );
+
+  if ( _.isUndefined( agency ) ) {
+    return task;
   }
 
-  return task;
+  if ( getAbbr( agency.data ) === getAbbr( task.restrict ) ) {
+    return _.property( 'restrictToAgency' )( task.restrict ) || _.property( 'projectNetwork' )( task.restrict );
+  }
+
 }
 
 function filterTaskByTerm ( term, task ) {

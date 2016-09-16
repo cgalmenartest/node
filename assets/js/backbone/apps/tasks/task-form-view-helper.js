@@ -22,15 +22,15 @@ module.exports = {
    * return the unique identifier (agency.abbr) which we'll save on the
    * server if the restrict agency checkbox is checked
    */
-  getRestrictAgencyValue: function ( view ) {
-    var restrictAgencyChecked = view.$(  '#task-restrict-agency'  ).prop( 'checked' );
-    if ( restrictAgencyChecked ) {
-      view.model.attributes.restrict.projectNetwork = true;
-    } else {
-      view.model.attributes.restrict.projectNetwork = false;
-    }
-    return view.model.attributes.restrict;
-  },
+  // getRestrictAgencyValue: function ( view ) {
+    // var restrictAgencyChecked = ;
+    // if ( restrictAgencyChecked ) {
+      // view.model.attributes.restrict.projectNetwork = true;
+    // } else {
+      // view.model.attributes.restrict.projectNetwork = false;
+    // }
+    // return view.model.attributes.restrict.projectNetwork;
+  // },
 
   /*
    * Setup Time Options toggling

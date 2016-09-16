@@ -30,7 +30,7 @@ var TaskEditFormView = Backbone.View.extend({
     var view                    = this;
     this.options                = options;
     this.tagFactory             = new TagFactory();
-    this.agency                 = this.model.attributes.restrict;
+    this.agency                 = this.model.get( 'restrict' );
     this.data                   = {};
     this.data.newTag            = {};
 
@@ -255,8 +255,10 @@ var TaskEditFormView = Backbone.View.extend({
         completedAt : this.$( '#completedAt' ).val() || undefined,
         projectId   : null,
         state       : this.model.get( 'state' ),
-        restrict    : TaskFormViewHelper.getRestrictAgencyValue(this),
+        restrict    : this.model.get( 'restrict' ),
       };
+
+      modelData.restrict.projectNetwork = view.$(  '#task-restrict-agency'  ).prop( 'checked' );
 
 
       // README: Check if draft is being saved or if this is a submission.
