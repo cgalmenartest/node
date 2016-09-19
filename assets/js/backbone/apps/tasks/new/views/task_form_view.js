@@ -325,7 +325,7 @@ var TaskFormView = Backbone.View.extend({
         abbr: this.agency.abbr,
         slug: this.agency.slug,
         domain: this.agency.slug + '.gov',
-        projectNetwork: view.$(  '#task-restrict-agency'  ).prop( 'checked' ),
+        projectNetwork: this.$(  '#task-restrict-agency'  ).prop( 'checked' ),
       },
     } );
 
