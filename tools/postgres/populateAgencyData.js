@@ -54,7 +54,7 @@ Sails.lift( options, function ( error, sails ) {
 function done ( error, sails ) {
   if ( error ) {
     sails.log.error( 'Whoops! Something went wrong with the migration', error );
-    return;
+    process.exit( 1 );
   }
   sails.log.info( 'All done!' );
   sails.log.info( 'Migration complete for adding agency#data JSON to the task db table.' );
@@ -125,24 +125,27 @@ function populateTasks () {
         return User.findOne( { id: task.owner } )
           .populate( 'tags' )
           .then( function ( user ) {
-            var returnData;
-            var actualData = _.find( user.tags, { type: 'agency' } );
-            if ( actualData && actualData.data ) {
-              returnData = {
-                name: actualData.name,
-                abbr: actualData.data.abbr,
-                domain: actualData.data.domain,
-                slug: actualData.data.slug,
-                projectNetwork: false,
-              };
-              sails.log.info( JSON.stringify( returnData ) );
-            }
-            task.restrict = returnData;
-            task.save( function ( error ) {
-              if ( error ) {
-                sails.log.error( `Whoops! There was an error`, error );
-                return;
+            return new Promise( function ( resolve, reject ) {
+              var returnData;
+              var actualData = _.find( user.tags, { type: 'agency' } );
+              if ( actualData && actualData.data ) {
+                returnData = {
+                  name: actualData.name,
+                  abbr: actualData.data.abbr,
+                  domain: actualData.data.domain,
+                  slug: actualData.data.slug,
+                  projectNetwork: false,
+                };
               }
+              task.restrict = returnData;
+              task.save( function ( error ) {
+                if ( error ) {
+                  sails.log.error( `Whoops! There was an error`, error );
+                  reject( error );
+                }
+                resolve( task );
+                sails.log.info( JSON.stringify( returnData ) );
+              } );
             } );
           } );
       } );
