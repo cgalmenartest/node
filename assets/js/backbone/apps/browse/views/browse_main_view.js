@@ -24,6 +24,7 @@ var BrowseMainView = Backbone.View.extend({
   events: {
     "keyup #search": 'search',
     "change #stateFilters input": 'stateFilter',
+    'change #js-restrict-task-filter input': 'agencyFilter',
     "mouseenter .project-people-div"  : popovers.popoverPeopleOn,
     "click      .project-people-div"  : popovers.popoverClick,
   },
@@ -70,8 +71,23 @@ var BrowseMainView = Backbone.View.extend({
   },
 
   stateFilter: function(event) {
+    var isAgencyChecked = !!$( '#js-restrict-task-filter input:checked' ).length;
     var states = _($('#stateFilters input:checked')).pluck('value');
-    this.filter(undefined, { state: states });
+    if ( isAgencyChecked ) {
+      this.filter( undefined, { state: states }, { data: window.cache.currentUser.agency } );
+    } else {
+      this.filter(undefined, { state: states });
+    }
+  },
+
+  agencyFilter: function ( event ) {
+    var isChecked = event.target.checked;
+    var states = _( $( '#stateFilters input:checked' ) ).pluck( 'value' );
+    if ( isChecked ) {
+      this.filter( undefined, { state: states }, { data: window.cache.currentUser.agency } );
+    } else {
+      this.stateFilter();
+    }
   },
 
   filter: function (term, filters, agency) {
