@@ -4,7 +4,7 @@
 [![Deployment Status](https://img.shields.io/travis/18F/openopps-platform.svg?maxAge=2592000)](http://travis-ci.org/18F/openopps-platform)
 [![Dependency Status](https://gemnasium.com/badges/github.com/openopps/openopps-platform.svg)](https://gemnasium.com/github.com/openopps/openopps-platform)
 [![Code Climate](https://codeclimate.com/github/openopps/openopps-platform/badges/gpa.svg)](https://codeclimate.com/github/openopps/openopps-platform)
-[![Current Version](https://img.shields.io/badge/release-v0.12.0-0e5487.svg)](https://github.com/openopps/openopps-platform/releases)
+[![Current Version](https://img.shields.io/badge/release-v0.14.0-0e5487.svg)](https://github.com/openopps/openopps-platform/releases)
 
 ---
 

@@ -53,7 +53,13 @@
         <% if ( agency ) { %>
         <div class="py2" id="task-restrict-agency-area" >
           <label>
-            <input type="checkbox" id="task-restrict-agency" name="task-restrict-agency">
+            <input
+              type="checkbox"
+              <% if (agency.projectNetwork ) { %>
+              checked="checked"
+              <% } %>
+              id="task-restrict-agency"
+              name="task-restrict-agency">
             Limit Participation to <%- agency.abbr %> Employees
           </label>
         </div>
