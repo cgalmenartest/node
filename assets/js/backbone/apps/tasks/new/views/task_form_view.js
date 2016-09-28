@@ -1,6 +1,7 @@
 var _ = require('underscore');
 var async = require('async');
 var Backbone = require('backbone');
+var $ = require('jquery');
 var Bootstrap = require('bootstrap');
 
 var MarkdownEditor = require('../../../../components/markdown_editor');
