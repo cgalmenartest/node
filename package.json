@@ -38,7 +38,7 @@
     "grunt-contrib-cssmin": "^1.x.x",
     "grunt-contrib-jst": "^1.x.x",
     "grunt-contrib-sass": "^1.x.x",
-    "grunt-contrib-uglify": "^1.x.x",
+    "grunt-contrib-uglify": "^2.x.x",
     "grunt-contrib-watch": "^1.x.x",
     "grunt-sails-linker": "~0.10.1",
     "grunt-sass": "^1.1.0",
@@ -96,13 +96,13 @@
     "chai-datetime": "^1.4.1",
     "istanbul": "^0.4.2",
     "jshint": "^2.9.2",
-    "mocha": "^2.4.5",
+    "mocha": "^3.x.x",
     "mocha-casperjs": "^0.5.6",
     "replay": "^2.0.6",
     "sails-memory": "^0.10.6",
     "sinon": "^1.17.3",
-    "superagent": "^1.8.3",
-    "supertest": "^1.2.0",
+    "superagent": "^2.x.x",
+    "supertest": "^2.x.x",
     "webpack": "1.13.2"
   },
   "config": {
@@ -139,7 +139,7 @@
   "bugs": "https://github.com/18F/openopps-platform/issues",
   "license": "CC0-1.0",
   "engines": {
-    "node": "4.4.7",
+    "node": "5.11.1",
     "npm": "3.8.9"
   }
 }
