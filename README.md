@@ -66,7 +66,7 @@ We also welcome [direct participation][contributing] from government and private
 
 ## Dependencies
 
-Please read the [DEPENDENCIES.md]() file containing dependency version
+Please read the [DEPENDENCIES.md](DEPENDENCIES.md) file containing dependency version
 information for all the dependencies that the Open Opportunities Platform is
 built with.  This file contains version badges and explanations of out-of-date
 or forked dependencies and contains the most up-to-date information about
