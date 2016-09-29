@@ -1,10 +1,12 @@
 ![OpenOpps Platform](assets/images/logo.png)
 
-[![Build Status](https://circleci.com/gh/openopps/openopps-platform.svg?style=shield&circle-token=fc05032b464335e120cd4133f124a3b694bc5d2b)](https://circleci.com/gh/openopps/openopps-platform)
-[![Deployment Status](https://img.shields.io/travis/18F/openopps-platform.svg?maxAge=2592000)](http://travis-ci.org/18F/openopps-platform)
-[![Dependency Status](https://gemnasium.com/badges/github.com/openopps/openopps-platform.svg)](https://gemnasium.com/github.com/openopps/openopps-platform)
-[![Code Climate](https://codeclimate.com/github/openopps/openopps-platform/badges/gpa.svg)](https://codeclimate.com/github/openopps/openopps-platform)
-[![Current Version](https://img.shields.io/badge/release-v0.14.0-0e5487.svg)](https://github.com/openopps/openopps-platform/releases)
+Badge | Status
+--- | ---
+**Circle CI Build** | [![Build Status](https://circleci.com/gh/openopps/openopps-platform.svg?style=shield&circle-token=fc05032b464335e120cd4133f124a3b694bc5d2b)](https://circleci.com/gh/openopps/openopps-platform)
+**Travis CI Deployment** | [![Deployment Status](https://img.shields.io/travis/18F/openopps-platform.svg?maxAge=2592000)](http://travis-ci.org/18F/openopps-platform)
+**Version Eye** | [![Version Eye Dependency Status](https://www.versioneye.com/user/projects/57297a80a0ca35004baf7d09/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/57297a80a0ca35004baf7d09#tab-dependencies)
+**Code Climate** | [![Code Climate](https://codeclimate.com/github/openopps/openopps-platform/badges/gpa.svg)](https://codeclimate.com/github/openopps/openopps-platform)
+**Current Version** | [![Current Version](https://img.shields.io/badge/release-v0.14.0-0e5487.svg)](https://github.com/openopps/openopps-platform/releases)
 
 ---
 
