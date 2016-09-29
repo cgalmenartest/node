@@ -64,6 +64,14 @@ We use an [Agile Roadmap](https://github.com/18F/openopps-platform/wiki/Roadmap)
 
 We also welcome [direct participation][contributing] from government and private sector and are always in need of people who can write documentation or marketing material, visual and UX designers, as well as software coders.
 
+## Dependencies
+
+Please read the [DEPENDENCIES.md]() file containing dependency version
+information for all the dependencies that the Open Opportunities Platform is
+built with.  This file contains version badges and explanations of out-of-date
+or forked dependencies and contains the most up-to-date information about
+versioned dependencies.
+
 ## History
 
 Open Opportunities was initially validated as part of a Digital Government initiative using WordPress and a Lean Startup "concierge" approach. In its initial pilot phase, people from over 50 government agencies, completing over 100 projects, ranging from 1 hour tasks to working part-time for 3-6 months.  Open Opportunities moved to this software platform in October 2014, and is [now available for all federal employees](https://openopps.digitalgov.gov/). The platform was originally developed for foreign service officers the Department of State in 2013 as a Presidential Innovation Fellows project under the code name [Midas](https://18f.gsa.gov/2014/07/16/midas-a-marketplace-for-innovation-in-government/).
