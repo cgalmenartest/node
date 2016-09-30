@@ -18,7 +18,7 @@
 
     <!-- special SailsJS markers -->
     <!--STYLES-->
-    <link rel="stylesheet" href="/styles/main.css">
+    <link rel="stylesheet" href="/styles/main.css?v<%- JSON.stringify(version) %>">
     <!--STYLES END-->
   </head>
 
@@ -44,7 +44,7 @@
     </div>
     <footer class="bg-white p1" id="footer"></footer>
     <%- partial ('sails.ejs') %>
-    <script src="/js/bundle.js"></script>
+    <script src="/js/bundle.js?v<%- JSON.stringify(version) %>"></script>
     <%- partial ('analytics.ejs') %>
 
   </body>
