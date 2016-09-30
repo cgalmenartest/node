@@ -17,7 +17,7 @@ dependencies license is outlined at the end of this document.
 Express is the lightweight framework that is relied on by the more robust
 Sails framework that Open Opportunities Platform is built on. The reason why the
 version is locked a major version behind is because of the critical middleware
-that Sails depends on were removed in [versions greater than [express-reason].
+that Sails depends on were removed in [versions greater than ][express-reason].
 
 [express-reason]: https://github.com/expressjs/express/blob/master/History.md?_ga=1.190227883.1428253699.1469419900#400--2014-04-09 "Express Release Notes"
 
