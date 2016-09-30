@@ -6,7 +6,7 @@ Badge | Status
 **Travis CI Deployment** | [![Deployment Status](https://img.shields.io/travis/18F/openopps-platform.svg?maxAge=2592000)](http://travis-ci.org/18F/openopps-platform)
 **Version Eye** | [![Version Eye Dependency Status](https://www.versioneye.com/user/projects/57297a80a0ca35004baf7d09/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/57297a80a0ca35004baf7d09#tab-dependencies)
 **Code Climate** | [![Code Climate](https://codeclimate.com/github/openopps/openopps-platform/badges/gpa.svg)](https://codeclimate.com/github/openopps/openopps-platform)
-**Current Version** | [![Current Version](https://img.shields.io/badge/release-v0.14.0-0e5487.svg)](https://github.com/openopps/openopps-platform/releases)
+**Current Version** | [![Current Version](https://img.shields.io/badge/release-v0.14.3-0e5487.svg)](https://github.com/openopps/openopps-platform/releases)
 
 ---
 

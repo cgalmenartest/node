@@ -1,7 +1,7 @@
 ---
 name: Open Opportunities
 uniqueID: OCSIT-20140904-20150721-03
-version: 0.11.0
+version: 0.14.3
 phase: live
 information-types:
 - D26 Civilian Operations
@@ -37,11 +37,11 @@ staff:
         unit: 18F
         email: devops@gsa.gov
     technical-lead:
-        name: Roger Steve Ruiz
-        title: Engineer
-        org: General Services Administration
-        unit: 18F
-        email: roger.ruiz@gsa.gov
+        name:
+        title:
+        org:
+        unit:
+        email:
 leveraged-authorizations:
 - https://www.fedramp.gov/marketplace/compliant-systems/amazon-web-services-aws-eastwest-us-public-cloud/
 purpose: https://github.com/18F/openopps-platform/blob/dev/README.md
