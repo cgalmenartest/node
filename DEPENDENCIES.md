@@ -48,6 +48,9 @@ None of these dependencies are currently out of date.
 
 ## Licenses
 
+The following licenses do not fall under the [`LICENSE.md`](LICENSE.md) file
+referenced by the Open Opportunities Platform.
+
 Package | License
 --- | ---
 async | MIT
