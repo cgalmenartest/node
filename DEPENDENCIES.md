@@ -34,13 +34,25 @@ notes][marked-reason] for more information on [the vulnerability][marked-issue].
 
     "sails": "^0.12.x"
 
-The Sails framework is the very foundation of the Open Opps Platform's API.
+The Sails framework is the very foundation of the Open Opportunities Platform's API.
 While the client-side is written mostly in Backbone and jQuery, the server-side
 API component depends heavily on the conventions in Sails. While there are tags
 greater than `0.12.x` in the releases for the repository, [the latest release
 resolves with the current version][sails-reason].
 
 [sails-reason]: https://github.com/balderdashy/sails/releases/latest "Sails Latest Release"
+
+    "select2": "3.5.2-browserify"
+
+The Select2 library is used for any of the dropdowns in the application. The
+only stable release that Open Opportunities Platform can use because of our
+dependency on Browserify. Although [a version of the package exists which
+officially states it supports Browserify][select2-browserify], we have tested it
+and found that [it in fact does not support using the "Full" version of the
+package][select2-issue].
+
+[select2-browserify]: https://github.com/select2/select2/issues/3461 "Select2 Issue about Browserify"
+[select2-issue]: https://groups.google.com/d/msg/select2/yifYbU1HPOY/elnBFC5-dLMJ "Select2 Issue Not Loading Full"
 
 ## Development Dependencies
 
