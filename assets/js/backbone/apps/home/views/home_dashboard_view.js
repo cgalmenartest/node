@@ -1,6 +1,7 @@
 var _ = require('underscore');
 var async = require('async');
 var Backbone = require('backbone');
+var $ = require('jquery');
 
 var ActivityCollection = window.c = require('../../../entities/activities/activities_collection');
 var TaskCollection = require('../../../entities/tasks/tasks_collection');

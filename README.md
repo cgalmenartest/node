@@ -1,10 +1,12 @@
 ![OpenOpps Platform](assets/images/logo.png)
 
-[![Build Status](https://circleci.com/gh/openopps/openopps-platform.svg?style=shield&circle-token=fc05032b464335e120cd4133f124a3b694bc5d2b)](https://circleci.com/gh/openopps/openopps-platform)
-[![Deployment Status](https://img.shields.io/travis/18F/openopps-platform.svg?maxAge=2592000)](http://travis-ci.org/18F/openopps-platform)
-[![Dependency Status](https://gemnasium.com/badges/github.com/openopps/openopps-platform.svg)](https://gemnasium.com/github.com/openopps/openopps-platform)
-[![Code Climate](https://codeclimate.com/github/openopps/openopps-platform/badges/gpa.svg)](https://codeclimate.com/github/openopps/openopps-platform)
-[![Current Version](https://img.shields.io/badge/release-v0.14.0-0e5487.svg)](https://github.com/openopps/openopps-platform/releases)
+Badge | Status
+--- | ---
+**Circle CI Build** | [![Build Status](https://circleci.com/gh/openopps/openopps-platform.svg?style=shield&circle-token=fc05032b464335e120cd4133f124a3b694bc5d2b)](https://circleci.com/gh/openopps/openopps-platform)
+**Travis CI Deployment** | [![Deployment Status](https://img.shields.io/travis/18F/openopps-platform.svg?maxAge=2592000)](http://travis-ci.org/18F/openopps-platform)
+**Version Eye** | [![Version Eye Dependency Status](https://www.versioneye.com/user/projects/57297a80a0ca35004baf7d09/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/57297a80a0ca35004baf7d09#tab-dependencies)
+**Code Climate** | [![Code Climate](https://codeclimate.com/github/openopps/openopps-platform/badges/gpa.svg)](https://codeclimate.com/github/openopps/openopps-platform)
+**Current Version** | [![Current Version](https://img.shields.io/badge/release-v0.14.0-0e5487.svg)](https://github.com/openopps/openopps-platform/releases)
 
 ---
 
@@ -61,6 +63,14 @@ A cross-agency working group meets regularly to discuss program needs.
 We use an [Agile Roadmap](https://github.com/18F/openopps-platform/wiki/Roadmap) where the product team selects features that we believe will meet goals.  We strive to make data-driven decisions based on metrics and qualitative user research and to validate the outcomes based on observed community behavior.  This is an iterative process.
 
 We also welcome [direct participation][contributing] from government and private sector and are always in need of people who can write documentation or marketing material, visual and UX designers, as well as software coders.
+
+## Dependencies
+
+Please read the [DEPENDENCIES.md](DEPENDENCIES.md) file containing dependency version
+information for all the dependencies that the Open Opportunities Platform is
+built with.  This file contains version badges and explanations of out-of-date
+or forked dependencies and contains the most up-to-date information about
+versioned dependencies.
 
 ## History
 

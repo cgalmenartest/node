@@ -6,6 +6,7 @@
 
 var _ = require('underscore');
 var Backbone = require('backbone');
+var $ = require('jquery');
 //var jqCaret = require('jquery.caret/dist/jquery.caret.min');
 //var jqAt = require('jquery.atwho/dist/js/jquery.atwho');
 
