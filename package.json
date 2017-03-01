@@ -27,7 +27,7 @@
     "db-migrate": "^0.10.0-beta.11",
     "db-migrate-pg": "^0.1.9",
     "ejs": "^2.x.x",
-    "express": "^3.x.x",
+    "express": "^4.0.0",
     "file-type": "^3.8.0",
     "gm": "^1.22.0",
     "grunt": "^1.x.x",
