@@ -1,0 +1,122 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.7.1
+ignore: {}
+# patches apply the minimum changes required to fix a vulnerability
+patch:
+  'npm:ms:20170412':
+    - sails > skipper > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - sails > @sailshq/express > send > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - grunt-contrib-watch > tiny-lr > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - sails > grunt-contrib-watch > tiny-lr > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - sails > connect > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - sails > compression > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - sails > express-session > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - sails > method-override > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - sails > @sailshq/express > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - express > connect > compression > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - sails > @sailshq/express > @sailshq/connect > compression > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - sails > @sailshq/express > @sailshq/connect > connect-timeout > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - sails > @sailshq/express > @sailshq/connect > express-session > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - sails > @sailshq/express > @sailshq/connect > finalhandler > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - sails > @sailshq/express > @sailshq/connect > morgan > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - sails > @sailshq/express > @sailshq/connect > serve-index > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - grunt-contrib-watch > tiny-lr > body-parser > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - sails > grunt-contrib-watch > tiny-lr > body-parser > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - sails > connect > finalhandler > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - grunt-browser-sync > browser-sync > connect > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - grunt-browser-sync > browser-sync > serve-index > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - sails > serve-static > send > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - sails > @sailshq/express > @sailshq/connect > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - sails > @sailshq/express > @sailshq/connect > serve-static > send > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - grunt-browser-sync > browser-sync > connect > finalhandler > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - sails > @sailshq/express > @sailshq/connect > @sailshq/body-parser > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - sails > @sailshq/express > send > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - sails > serve-favicon > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - sails > serve-static > send > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - gm > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - sails > skipper > skipper-disk > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - grunt-browser-sync > browser-sync > localtunnel > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - grunt-browser-sync > browser-sync > socket.io > socket.io-parser > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - grunt-browser-sync > browser-sync > socket.io-client > socket.io-parser > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - grunt-browser-sync > browser-sync > socket.io > socket.io-client > socket.io-parser > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - sails > sails-hook-sockets > socket.io > socket.io-client > socket.io-parser > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - sails > sails-hook-sockets > socket.io > socket.io-parser > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - grunt-browser-sync > browser-sync > socket.io > socket.io-adapter > socket.io-parser > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - sails > sails-hook-sockets > socket.io > socket.io-adapter > socket.io-parser > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - sails > @sailshq/express > @sailshq/connect > connect-timeout > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - sails > @sailshq/express > @sailshq/connect > serve-static > send > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - sails > @sailshq/express > @sailshq/connect > serve-favicon > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - db-migrate > tunnel-ssh > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - grunt-browser-sync > browser-sync > socket.io > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - grunt-browser-sync > browser-sync > socket.io > engine.io > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - grunt-browser-sync > browser-sync > socket.io > socket.io-adapter > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - sails > sails-hook-sockets > socket.io > socket.io-adapter > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - grunt-browser-sync > browser-sync > socket.io-client > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - grunt-browser-sync > browser-sync > socket.io > socket.io-client > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - grunt-browser-sync > browser-sync > socket.io-client > engine.io-client > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - grunt-browser-sync > browser-sync > socket.io > socket.io-client > engine.io-client > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - sails > sails-hook-sockets > socket.io > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - sails > sails-hook-sockets > socket.io > engine.io > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - sails > sails-hook-sockets > socket.io > socket.io-client > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - sails > sails-hook-sockets > socket.io > socket.io-client > engine.io-client > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - sails > skipper > body-parser > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - grunt-browser-sync > browser-sync > serve-static > send > ms:
+        patched: '2017-06-21T02:20:17.295Z'
+    - grunt-browser-sync > browser-sync > serve-static > send > debug > ms:
+        patched: '2017-06-21T02:20:17.295Z'

@@ -27,7 +27,7 @@
     "db-migrate": "^0.10.0-beta.11",
     "db-migrate-pg": "^0.1.9",
     "ejs": "^2.x.x",
-    "express": "^3.x.x",
+    "express": "^4.15.3",
     "file-type": "^3.8.0",
     "gm": "^1.22.0",
     "grunt": "^1.x.x",
@@ -45,7 +45,7 @@
     "grunt-sync": "0.6.2",
     "grunt-browser-sync": "^2.2.0",
     "grunt-browserify": "^5.0.0",
-    "helmet": "^2.1.1",
+    "helmet": "^3.6.1",
     "i18next": "^3.x.x",
     "i18next-xhr-backend": "^1.x.x",
     "include-all": "^1.x.x",
@@ -85,7 +85,8 @@
     "watchify": "^3.7.0",
     "d3": "^4.2.2",
     "html-browserify": "0.0.6",
-    "xmlhttprequest": "^1.8.0"
+    "xmlhttprequest": "^1.8.0",
+    "snyk": "^1.35.0"
   },
   "devDependencies": {
     "babel-core": "6.14.0",
@@ -129,7 +130,9 @@
     "uswds": "npm run uswds:css && npm run uswds:images && npm run uswds:fonts",
     "uswds:css": "cp node_modules/uswds/dist/css/uswds.css assets/styles/",
     "uswds:images": "cp -r node_modules/uswds/dist/img/ ./assets/images/uswds",
-    "uswds:fonts": "mkdir -p ./assets/fonts && cp node_modules/uswds/dist/fonts/* ./assets/fonts/."
+    "uswds:fonts": "mkdir -p ./assets/fonts && cp node_modules/uswds/dist/fonts/* ./assets/fonts/.",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "main": "app.js",
   "repository": {
@@ -141,5 +144,6 @@
   "engines": {
     "node": "5.11.1",
     "npm": "3.8.9"
-  }
+  },
+  "snyk": true
 }
