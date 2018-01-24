@@ -15,7 +15,7 @@
     "bcryptjs": "*",
     "bluebird": "^3.3.5",
     "blueimp-file-upload": "^9.x.x",
-    "bootstrap": "^3.3.6",
+    "bootstrap": "^4.0.0",
     "bourbon": "^4.2.6",
     "brfs": "^1.4.3",
     "browserify": "^13.0.0",
