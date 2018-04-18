@@ -58,7 +58,7 @@
     "marked": "openopps/marked",
     "moment": "^2.12.0",
     "navigator": "^1.0.1",
-    "newrelic": "^1.27.2",
+    "newrelic": "^4.0.0",
     "node-uuid": "^1.4.7",
     "nodemailer": "latest",
     "nodemailer-smtp-pool": "^2.5.2",
