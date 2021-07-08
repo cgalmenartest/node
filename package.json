@@ -83,7 +83,7 @@
     "uswds": "latest",
     "validator": "^5.1.0",
     "watchify": "^3.7.0",
-    "d3": "^4.2.2",
+    "d3": "^7.0.0",
     "html-browserify": "0.0.6",
     "xmlhttprequest": "^1.8.0"
   },
