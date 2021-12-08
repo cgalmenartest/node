@@ -41,7 +41,7 @@
     "grunt-contrib-uglify": "^2.x.x",
     "grunt-contrib-watch": "^1.x.x",
     "grunt-sails-linker": "~0.10.1",
-    "grunt-sass": "^1.1.0",
+    "grunt-sass": "^3.0.0",
     "grunt-sync": "0.6.2",
     "grunt-browser-sync": "^2.2.0",
     "grunt-browserify": "^5.0.0",
