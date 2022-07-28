@@ -28,7 +28,7 @@
     "db-migrate-pg": "^0.1.9",
     "ejs": "^2.x.x",
     "express": "^3.x.x",
-    "file-type": "^3.8.0",
+    "file-type": "^16.5.4",
     "gm": "^1.22.0",
     "grunt": "^1.x.x",
     "grunt-cli": "1.2.0",
