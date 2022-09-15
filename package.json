@@ -6,7 +6,7 @@
   "keywords": [],
   "dependencies": {
     "async": "^2.0.0-rc.2",
-    "autolinker": "^1.1.0",
+    "autolinker": "^3.16.1",
     "aws-sdk": "^2.3.4",
     "babel-preset-es2015": "^6.6.0",
     "babel-preset-stage-0": "^6.5.0",
@@ -41,7 +41,7 @@
     "grunt-contrib-uglify": "^2.x.x",
     "grunt-contrib-watch": "^1.x.x",
     "grunt-sails-linker": "~0.10.1",
-    "grunt-sass": "^1.1.0",
+    "grunt-sass": "^3.0.0",
     "grunt-sync": "0.6.2",
     "grunt-browser-sync": "^2.2.0",
     "grunt-browserify": "^5.0.0",
